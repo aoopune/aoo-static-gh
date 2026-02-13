@@ -19,7 +19,7 @@ The website fetches data from this spreadsheet. No API key; sheets must be **pub
 | **FAQ** | `category`, `title`, `question`, `answer` | FAQ page | New row = new FAQ item. |
 | **Government_Schemes** | 35 columns | Government schemes page (cards) | New row = new scheme. Column visibility controlled by Config `gov_schemes.column.COLNAME.visible`. |
 | **Document_Checklist** | `category`, `subcategory`, `item`, `mandatory` | Document checklist page | New row = new document item. Grouping by category/subcategory is configurable in Config. |
-| **About_Us** | `section`, `heading`, `content` | About page | New row = new section block. |
+| **About_Us** | `section`, `heading`, `content` | About page | New row = new section block. Put **one sentence per line** in `content` (Alt+Enter) so each line shows as its own paragraph. Do not duplicate the mission line (it already appears under the page title). See `ABOUT_SHEET_STEPS.md`. |
 | **Quick_Overview** | `section`, `subtitle` (optional), `content`, `sort_order` | Quick overview page | New row; use `sort_order` for order. `subtitle` = italic sentence below section title. Every line in `content` (Alt+Enter) shows as its own paragraph. |
 | **PM_Vidyalaxmi** | `section`, `key`, `value`, `extra` | PM-Vidyalaxmi / Schemes page (scheme content) | New row for each key-value block. |
 | **PM_Vidyalaxmi_QHEI** | 14 columns | PM-Vidyalaxmi page → QHEI institutes table | New row = new institute. Column visibility: Config `qhei.column.COLNAME.visible`. |

@@ -828,6 +828,18 @@ textarea { min-height: 100px; resize: vertical; }
   line-height: 1.6;
 }
 
+/* About page – mission statement (Apple/Microsoft/Oracle-style prominence) */
+.about-mission {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  color: var(--text);
+  max-width: 38em;
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-8);
+}
+
 .section-spacer {
   margin-top: var(--space-10);
 }
@@ -969,6 +981,27 @@ textarea { min-height: 100px; resize: vertical; }
 #about-container,
 #overview-container {
   margin-top: var(--space-6);
+}
+
+/* About page – sentences as separate paragraphs */
+.about-heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 var(--space-3);
+  color: var(--primary-dark);
+}
+.about-card {
+  padding: var(--space-5) var(--space-6);
+  margin-bottom: var(--space-6);
+}
+.about-block {
+  margin: 0 0 var(--space-3);
+  color: var(--text);
+  line-height: 1.65;
+  font-size: 0.9375rem;
+}
+.about-card .about-block:last-child {
+  margin-bottom: 0;
 }
 
 /* Gov container */
