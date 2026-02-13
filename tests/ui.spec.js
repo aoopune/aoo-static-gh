@@ -19,12 +19,13 @@ test.describe('Apply Only Once – UI', function () {
     await expect(page.locator('text=Standardized Document list').first()).toBeVisible();
   });
 
-  test('navbar has logo left, nav right (Home, Quick overview, About us)', async ({ page }) => {
+  test('navbar has logo left, nav right (Home, Pro-Tips, Quick overview, About us)', async ({ page }) => {
     await page.goto('/');
     await waitForLayout(page);
     await expect(page.locator('.site-header-inner').first()).toBeVisible();
     await expect(page.locator('[data-testid="nav-logo"]').first()).toBeVisible();
     await expect(page.locator('.site-nav').getByTestId('nav-home').first()).toBeVisible();
+    await expect(page.locator('.site-nav').getByTestId('nav-pro-tips').first()).toBeVisible();
     await expect(page.locator('.site-nav').getByTestId('nav-quick-overview').first()).toBeVisible();
     await expect(page.locator('.site-nav').getByTestId('nav-about').first()).toBeVisible();
     const logoBeforeNav = await page.locator('.site-header-inner').evaluate(function (inner) {
@@ -421,6 +422,7 @@ test.describe('Apply Only Once – UI', function () {
     await page.locator('[data-testid="nav-hamburger"]').click();
     await expect(page.locator('#nav-drawer')).toHaveClass(/open/);
     await expect(page.locator('.nav-drawer-nav [data-testid="nav-home"]')).toBeVisible();
+    await expect(page.locator('.nav-drawer-nav [data-testid="nav-pro-tips"]')).toBeVisible();
     await expect(page.locator('.nav-drawer-nav [data-testid="nav-quick-overview"]')).toBeVisible();
     await expect(page.locator('.nav-drawer-nav [data-testid="nav-about"]')).toBeVisible();
   });

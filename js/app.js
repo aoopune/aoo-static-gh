@@ -118,9 +118,10 @@
     });
   };
 
-  /* Header / Footer – same on every page. Navbar has 4 items per diagram: Home, Quick overview, About us (+ logo). */
+  /* Header / Footer – same on every page. Nav: Home, Pro-Tips Before You Apply, Quick overview, About us (+ logo). */
   const navItems = [
     { path: 'index.html', label: 'Home' },
+    { path: 'pro-tips.html', label: 'Pro-Tips Before You Apply' },
     { path: 'quick-overview.html', label: 'Quick overview' },
     { path: 'about.html', label: 'About us' }
   ];

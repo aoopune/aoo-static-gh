@@ -1,6 +1,6 @@
 # Apply Only Once – Audit Trail & Requirements
 
-**Last updated**: 2026-02-13 (Quick overview section-wise UI and new content steps)
+**Last updated**: 2026-02-13 (Pro-Tips: UI – two-column layout, contained table, compact spacing)
 
 This document is the comprehensive audit trail of requirements, implementation status, and changes for applyonlyonce.com.
 
@@ -306,6 +306,9 @@ This document is the comprehensive audit trail of requirements, implementation s
 | UI tests | Done | 44 tests including Edit answers restores saved answers to form |
 | **Quick overview section-wise UI** | Done | 2026-02-13: Section-wise layout; content split into paragraphs (double newline → &lt;p&gt;); CSS .overview-section, .overview-section-title, .overview-section-card, .overview-para; sheet data steps in QUICK_OVERVIEW_SHEET_STEPS.md |
 | **Quick overview – all content visible + italic subtitle** | Done | 2026-02-13: Content split by single newline (every line → &lt;p&gt;) so all sheet content visible; optional column **subtitle** shown as italic below section title; case-insensitive column names (Section/Content/etc.); .overview-subtitle CSS |
+| **Pro-Tips: sections + table + paragraphs + links** | Done | 2026-02-13: Sheet columns section_heading, block_type, content; block_type heading \| table_header \| table_row \| paragraph; table cells pipe-separated in content; [text](url) for links; **bold**; PRO_TIPS_SHEET_STEPS.md; AGENT_CONTEXT.md for agent instructions |
+| **Pro-Tips: UI – less scroll, more info visible** | Done | 2026-02-13: #protips-container two-column grid on desktop (≥900px); sections with table span full width; .protips-table-wrapper max-height 320px/40vh + overflow auto; compact table font/padding; tighter section/para margins |
+| **Government Schemes: height reset, no double scheme name, Sort order row, full data capture** | Done | 2026-02-13: Table height reverted to min(85vh, 900px). Scheme name shown only in column header (not as a body row). Optional **Sort order** row: first column = "Sort order", put 1–17 in each column to set row order on site; that row excluded from scheme columns. Data from fetchSheetRaw + buildRowsFromRaw so all columns captured (empty headers → Column_N). GOVERNMENT_SCHEMES_ORDER.md, DATA_SHEET_GUIDE.md updated. |
 
 ---
 
@@ -336,6 +339,12 @@ This document is the comprehensive audit trail of requirements, implementation s
 
 | Date | Change | Files / Notes |
 |------|--------|----------------|
+| 2026-02-13 | **Government Schemes: height, no double scheme name, Sort order row, full data** | |
+| | • Table height reset to previous: max-height min(85vh, 900px); padding 0.35rem | `css/style.css` |
+| | • Scheme name shown only in header; "Scheme name" excluded from body rows (no doubling) | `js/government-schemes.js` |
+| | • **Sort order** row: row with first column = "Sort order" and numbers 1–17 per column sets row order; row not shown as scheme | `js/government-schemes.js` |
+| | • Data capture: use fetchSheetRaw + buildRowsFromRaw; empty headers → Column_N so all 17 columns preserved | `js/government-schemes.js` |
+| | • Docs: GOVERNMENT_SCHEMES_ORDER.md (Sort order section), DATA_SHEET_GUIDE.md, AUDIT_TRAIL.md | docs |
 | 2026-02-13 | **Quick overview – section-wise readable UI and new content** | |
 | | • Section-wise layout: each sheet row → `<section class="overview-section">` with `<h2 class="overview-section-title">` + card | `js/quick-overview.js` |
 | | • Content with multiple paragraphs: split by double newline, each paragraph in `<p class="overview-para">` for readability | `js/quick-overview.js` |
