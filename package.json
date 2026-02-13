@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "start": "python3 -m http.server 8765",
+    "serve": "node scripts/serve.js",
     "test": "node tests/run-unit.js 2>/dev/null || true",
     "test:ui": "npx playwright test",
     "test:deployed": "BASE_URL=${BASE_URL:-https://YOUR_USERNAME.github.io/applyonlyonce/} npx playwright test"

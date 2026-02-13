@@ -249,6 +249,37 @@ main h3 {
   margin: 0 0 var(--space-3);
 }
 
+/* ========== Quick overview page – section-wise readable ========== */
+.overview-section {
+  margin-bottom: var(--space-8);
+}
+.overview-section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 var(--space-3);
+  color: var(--primary-dark);
+  line-height: 1.35;
+}
+.overview-subtitle {
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  margin: 0 0 var(--space-4);
+  line-height: 1.5;
+}
+.overview-section-card {
+  padding: var(--space-5) var(--space-6);
+}
+.overview-para {
+  margin: 0 0 var(--space-4);
+  color: var(--text);
+  line-height: 1.65;
+  font-size: 0.9375rem;
+}
+.overview-para:last-child {
+  margin-bottom: 0;
+}
+
 /* ========== Homepage ========== */
 main.home-main {
   text-align: center;

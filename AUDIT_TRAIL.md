@@ -1,6 +1,6 @@
 # Apply Only Once – Audit Trail & Requirements
 
-**Last updated**: 2025-02-05 (Edit answers restores saved answers to form)
+**Last updated**: 2026-02-13 (Quick overview section-wise UI and new content steps)
 
 This document is the comprehensive audit trail of requirements, implementation status, and changes for applyonlyonce.com.
 
@@ -304,6 +304,8 @@ This document is the comprehensive audit trail of requirements, implementation s
 | **Edit answers direct** | Done | "Want to change answers?" + hidden panel removed; direct "Edit answers" link (href=questions.html) in .results-actions |
 | **Edit answers restores form** | Done | questions.js restoreAnswers() loads aoo_answers from sessionStorage on load; form pre-populates so user edits, not starts from scratch |
 | UI tests | Done | 44 tests including Edit answers restores saved answers to form |
+| **Quick overview section-wise UI** | Done | 2026-02-13: Section-wise layout; content split into paragraphs (double newline → &lt;p&gt;); CSS .overview-section, .overview-section-title, .overview-section-card, .overview-para; sheet data steps in QUICK_OVERVIEW_SHEET_STEPS.md |
+| **Quick overview – all content visible + italic subtitle** | Done | 2026-02-13: Content split by single newline (every line → &lt;p&gt;) so all sheet content visible; optional column **subtitle** shown as italic below section title; case-insensitive column names (Section/Content/etc.); .overview-subtitle CSS |
 
 ---
 
@@ -327,3 +329,21 @@ This document is the comprehensive audit trail of requirements, implementation s
 | PM_Vidyalaxmi | 4 (section, key, value, extra) | 39 |
 | Config | 2 (key, value) | 3 |
 | FAQ | 4 | 18 |
+
+---
+
+## 9. Change log (recent)
+
+| Date | Change | Files / Notes |
+|------|--------|----------------|
+| 2026-02-13 | **Quick overview – section-wise readable UI and new content** | |
+| | • Section-wise layout: each sheet row → `<section class="overview-section">` with `<h2 class="overview-section-title">` + card | `js/quick-overview.js` |
+| | • Content with multiple paragraphs: split by double newline, each paragraph in `<p class="overview-para">` for readability | `js/quick-overview.js` |
+| | • CSS for overview: .overview-section, .overview-section-title, .overview-section-card, .overview-para (spacing, typography) | `css/style.css` |
+| | • Step-by-step guide for Google Sheets data: 5 sections (Foundation, Secured vs Unsecured, Money Flow, Repayment, Strategy) with exact copy | `QUICK_OVERVIEW_SHEET_STEPS.md` (new) |
+| | • Audit trail entry and this changelog | `AUDIT_TRAIL.md` |
+| 2026-02-13 | **Quick overview – all content visible + italic subtitle** | |
+| | • Content split by single newline (/\n+/) so every line in sheet becomes a paragraph; all content visible on site | `js/quick-overview.js` |
+| | • Optional **subtitle** column: italic sentence below section title; .overview-subtitle CSS | `js/quick-overview.js`, `css/style.css` |
+| | • Case-insensitive column names (Section/Content/Subtitle/Sort_order) via get(r, key) | `js/quick-overview.js` |
+| | • QUICK_OVERVIEW_SHEET_STEPS.md and DATA_SHEET_GUIDE.md updated for subtitle column | docs |

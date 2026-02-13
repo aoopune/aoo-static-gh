@@ -14,10 +14,11 @@ module.exports = {
     screenshot: 'only-on-failure'
   },
   webServer: process.env.CI ? undefined : {
-    command: 'python3 -m http.server ' + PORT,
+    command: 'node scripts/serve.js',
     cwd: require('path').resolve(__dirname),
     url: 'http://localhost:' + PORT,
-    reuseExistingServer: true
+    reuseExistingServer: true,
+    env: { PORT: String(PORT) }
   },
   projects: [{ name: 'chromium', use: { browserName: 'chromium' } }]
 };
