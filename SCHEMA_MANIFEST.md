@@ -18,6 +18,7 @@ Public fetch URL pattern: `https://docs.google.com/spreadsheets/d/1eaYl0tfAiTR4A
 | PM_Vidyalaxmi | 4 (section, key, value, extra) | 39 | Scheme + bank rates |
 | PM_Vidyalaxmi_QHEI | 14 | 918 | QHEI institutes |
 | Quick_Overview | 3 (section, content, sort_order) | 8 | Quick overview content |
+| Roadmap | 4 (heading, time, description, sort_order) | 6 | Quick overview page – timeline (right column) |
 | Summary | 16 | 44 | Summary / tips |
 
 All sheets parsed successfully. No empty sheets. CSV encoding UTF-8; quoted commas handled in parser.

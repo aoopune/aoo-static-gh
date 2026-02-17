@@ -17,13 +17,15 @@ The website fetches data from this spreadsheet. No API key; sheets must be **pub
 | **Education_Loans_Abroad** | 83 columns | Compare page → “Abroad education” tab | Same as India: new row = new product; new column needs Config. |
 | **Banks** | `bank_id`, `bank_name`, `page_link`, `sector` | Bank lookup (compare, results) | New row = new bank. `bank_id` must match references in Education_Loans_India / Education_Loans_Abroad. |
 | **FAQ** | `category`, `title`, `question`, `answer` | FAQ page | New row = new FAQ item. |
-| **Government_Schemes** | Many columns (e.g. Scheme name, Purpose, Gist, …) | Government schemes page (table) | New row = new scheme. **Sort order**: Add a row with first column = “Sort order” and put 1, 2, 3, … 17 in each column to set row order on the site (1 = first row). Scheme name is shown only in the header (no duplicate row). Data is read from raw CSV so all columns are captured. See `GOVERNMENT_SCHEMES_ORDER.md`. Column visibility: Config `gov_schemes.column.COLNAME.visible`. |
-| **Document_Checklist** | `category`, `subcategory`, `item`, `mandatory` | Document checklist page | New row = new document item. Grouping by category/subcategory is configurable in Config. |
+| **Government_Schemes** | Many columns (e.g. Scheme name, Purpose, Gist, …) | Government schemes page (table) | New row = new scheme. **Sort order**: Add a row with first column = “Sort order” and put 1, 2, 3, … 17 in each column to set row order on the site (1 = first row). Scheme name is shown only in the header (no duplicate row). Data is read from raw CSV so all columns are captured. See `GOVERNMENT_SCHEMES_ORDER.md`. Column visibility: all columns from the sheet are shown by default; set `gov_schemes.column.COLNAME.visible` = `false` in Config to hide a column. |
+| **Document_Checklist** | `category`, `subcategory`, `item`, `mandatory`, `heading_note` (optional) | Document checklist page | New row = new document item. **Order** = row order (first occurrence of category/subcategory wins). Rows with empty **category** are skipped (no "Other"). Main heading = collapsible section; sub-heading = collapsible; both start **closed**. Optional `heading_note` on one row per category. See **DOCUMENT_CHECKLIST_SHEET_STEPS.md**. |
 | **About_Us** | `section`, `heading`, `content` | About page | New row = new section block. Put **one sentence per line** in `content` (Alt+Enter) so each line shows as its own paragraph. Do not duplicate the mission line (it already appears under the page title). See `ABOUT_SHEET_STEPS.md`. |
-| **Quick_Overview** | `section`, `subtitle` (optional), `content`, `sort_order` | Quick overview page | New row; use `sort_order` for order. `subtitle` = italic sentence below section title. Every line in `content` (Alt+Enter) shows as its own paragraph. |
+| **Quick_Overview** | `section`, `subtitle` (optional), `content`, `sort_order` | Quick overview page (left column – flow of sections) | One row per section. `section` = headline; `subtitle` = italic subheadline (e.g. in brackets); `content` = bullet points (one per line, use Alt+Enter). Rows with empty `section` are hidden. See **QUICK_OVERVIEW_SHEET_STEPS.md**. |
+| **Roadmap** | `heading`, `time`, `description`, `sort_order` | Quick overview page (right column – timeline) | New row = new roadmap step. `heading` = step title; `time` = e.g. "18–15 months before intake"; `description` = short text; `sort_order` = order (1, 2, …). See **ROADMAP_SHEET_STEPS.md**. |
 | **PM_Vidyalaxmi** | `section`, `key`, `value`, `extra` | PM-Vidyalaxmi / Schemes page (scheme content) | New row for each key-value block. |
 | **PM_Vidyalaxmi_QHEI** | 14 columns | PM-Vidyalaxmi page → QHEI institutes table | New row = new institute. Column visibility: Config `qhei.column.COLNAME.visible`. |
 | **Attribute_Info** | `attribute_name`, `info_text` | Row metadata for compare table | New row to describe an attribute. |
+| **Pro-Tips_Before_You_Apply** | `section_heading`, `sub_heading`, `block_type`, `content` | Pro-Tips page | **heading** = section (H2) + optional intro in content; **sub** = sub-heading (H3), then **table_header**/ **table_row** or **bullet**/ **paragraph**. See **PRO_TIPS_SHEET_STEPS.md**. |
 | **Summary** | 16 columns | Summary / tips | New row as needed. |
 
 ---
@@ -42,7 +44,8 @@ The website fetches data from this spreadsheet. No API key; sheets must be **pub
 - **New bank / loan product (Abroad)**: Add row to **Education_Loans_Abroad**; add bank to **Banks** if new bank.
 - **New FAQ**: Add row to **FAQ** (category, title, question, answer).
 - **New government scheme**: Add row to **Government_Schemes**.
-- **New document in checklist**: Add row to **Document_Checklist** (category, subcategory, item, mandatory).
+- **New document in checklist**: Add row to **Document_Checklist** (category, subcategory, item, mandatory; optional heading_note). See **DOCUMENT_CHECKLIST_SHEET_STEPS.md** for structure and full list.
+- **Edit roadmap (Quick overview timeline)**: Add or edit rows in **Roadmap** (heading, time, description, sort_order). See **ROADMAP_SHEET_STEPS.md**.
 - **New QHEI institute**: Add row to **PM_Vidyalaxmi_QHEI**.
 - **Change contact / cache / default tab**: Edit **Config** (key/value).
 - **Hide/show a column**: Edit **Config** (set the corresponding `*.column.COLNAME.visible` to `false` or `true`).

@@ -309,6 +309,7 @@ This document is the comprehensive audit trail of requirements, implementation s
 | **Pro-Tips: sections + table + paragraphs + links** | Done | 2026-02-13: Sheet columns section_heading, block_type, content; block_type heading \| table_header \| table_row \| paragraph; table cells pipe-separated in content; [text](url) for links; **bold**; PRO_TIPS_SHEET_STEPS.md; AGENT_CONTEXT.md for agent instructions |
 | **Pro-Tips: UI – less scroll, more info visible** | Done | 2026-02-13: #protips-container two-column grid on desktop (≥900px); sections with table span full width; .protips-table-wrapper max-height 320px/40vh + overflow auto; compact table font/padding; tighter section/para margins |
 | **Government Schemes: height reset, no double scheme name, Sort order row, full data capture** | Done | 2026-02-13: Table height reverted to min(85vh, 900px). Scheme name shown only in column header (not as a body row). Optional **Sort order** row: first column = "Sort order", put 1–17 in each column to set row order on site; that row excluded from scheme columns. Data from fetchSheetRaw + buildRowsFromRaw so all columns captured (empty headers → Column_N). GOVERNMENT_SCHEMES_ORDER.md, DATA_SHEET_GUIDE.md updated. |
+| **Government Schemes: show all columns by default** | Done | Config no longer restricts to only columns with visible=true. All columns from the sheet are shown; Config `gov_schemes.column.COLNAME.visible` = false only hides. Fixes 10 columns showing when sheet has 17. |
 
 ---
 

@@ -15,11 +15,9 @@ test.describe('Apply Only Once – UI', function () {
     await expect(page.locator('text=See what fits you').first()).toBeVisible();
     await expect(page.locator('text=Clean & Simplified information of 35+ banks')).toBeVisible();
     await expect(page.locator('text=We are not partnered with any bank or NBFCs')).toBeVisible();
-    await expect(page.locator('text=Frequently Asked Questions').first()).toBeVisible();
-    await expect(page.locator('text=Standardized Document list').first()).toBeVisible();
   });
 
-  test('navbar has logo left, nav right (Home, Pro-Tips, Quick overview, About us)', async ({ page }) => {
+  test('navbar has logo left, nav right (Home, Pro tips, Quick overview, Schemes, Government schemes, FAQ, Standardised document list, About us)', async ({ page }) => {
     await page.goto('/');
     await waitForLayout(page);
     await expect(page.locator('.site-header-inner').first()).toBeVisible();
@@ -27,6 +25,10 @@ test.describe('Apply Only Once – UI', function () {
     await expect(page.locator('.site-nav').getByTestId('nav-home').first()).toBeVisible();
     await expect(page.locator('.site-nav').getByTestId('nav-pro-tips').first()).toBeVisible();
     await expect(page.locator('.site-nav').getByTestId('nav-quick-overview').first()).toBeVisible();
+    await expect(page.locator('.site-nav').getByTestId('nav-schemes').first()).toBeVisible();
+    await expect(page.locator('.site-nav').getByTestId('nav-government-schemes').first()).toBeVisible();
+    await expect(page.locator('.site-nav').getByTestId('nav-faq').first()).toBeVisible();
+    await expect(page.locator('.site-nav').getByTestId('nav-document-checklist').first()).toBeVisible();
     await expect(page.locator('.site-nav').getByTestId('nav-about').first()).toBeVisible();
     const logoBeforeNav = await page.locator('.site-header-inner').evaluate(function (inner) {
       var logo = inner.querySelector('.site-logo');
@@ -36,13 +38,10 @@ test.describe('Apply Only Once – UI', function () {
     expect(logoBeforeNav).toBe(true);
   });
 
-  test('home has 4 nav links below cards', async ({ page }) => {
+  test('home has no duplicate nav links below cards (all in header)', async ({ page }) => {
     await page.goto('/');
     await waitForLayout(page);
-    await expect(page.locator('.home-nav-links').getByTestId('home-link-faq').first()).toBeVisible();
-    await expect(page.locator('.home-nav-links').getByTestId('home-link-schemes').first()).toBeVisible();
-    await expect(page.locator('.home-nav-links').getByTestId('home-link-government-schemes').first()).toBeVisible();
-    await expect(page.locator('.home-nav-links').getByTestId('home-link-document-checklist').first()).toBeVisible();
+    await expect(page.locator('.home-nav-links')).toHaveCount(0);
   });
 
   test('Compare on your own navigates to compare page', async ({ page }) => {
@@ -422,8 +421,6 @@ test.describe('Apply Only Once – UI', function () {
     await page.locator('[data-testid="nav-hamburger"]').click();
     await expect(page.locator('#nav-drawer')).toHaveClass(/open/);
     await expect(page.locator('.nav-drawer-nav [data-testid="nav-home"]')).toBeVisible();
-    await expect(page.locator('.nav-drawer-nav [data-testid="nav-pro-tips"]')).toBeVisible();
-    await expect(page.locator('.nav-drawer-nav [data-testid="nav-quick-overview"]')).toBeVisible();
     await expect(page.locator('.nav-drawer-nav [data-testid="nav-about"]')).toBeVisible();
   });
 

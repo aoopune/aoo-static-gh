@@ -94,7 +94,23 @@ On the website, the table can show many rows. If not all fit on screen:
 
 ---
 
-## 5. Summary
+## 5. Pointers inside cells (separate bullets)
+
+To show **multiple points** inside a cell as **separate pointers** (not one long paragraph):
+
+1. In the **Government_Schemes** sheet, click the cell (e.g. "Application process" for a scheme).
+2. Type the first point.
+3. Press **Alt+Enter** (Windows) or **Option+Enter** (Mac) to start a **new line** in the same cell.
+4. Type the next point. Repeat for each point.
+
+On the website, each line in the cell is shown as a **separate bullet** in that cell, so it’s easier to read (e.g. "Offline: Visit the bank branch…" and "Online: Apply through the DoHE portal…" as two bullets instead of one block of text).
+
+- **Single line** in the cell → no bullets; text shows as before.
+- **Two or more lines** in the cell → the site shows a bullet list in that cell.
+
+---
+
+## 6. Summary
 
 | What | On the website |
 |------|-----------------|

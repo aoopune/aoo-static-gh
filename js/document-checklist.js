@@ -23,23 +23,36 @@
       return '';
     }
     var byCat = {};
+    var orderedCats = [];
+    var orderedSubcats = {};
+    var headingNote = {};
     rows.forEach(function (r) {
-      var cat = get(r, 'category') || get(r, 'Category') || 'Other';
+      var cat = get(r, 'category') || get(r, 'Category') || '';
+      if (!cat) return;
       var sub = get(r, 'subcategory') || get(r, 'Subcategory') || '';
       var item = get(r, 'item') || get(r, 'Item') || '';
       var mand = get(r, 'mandatory') || get(r, 'Mandatory') || '';
-      if (!byCat[cat]) byCat[cat] = {};
+      var note = get(r, 'heading_note') || get(r, 'Heading note') || '';
+      if (!byCat[cat]) {
+        byCat[cat] = {};
+        orderedCats.push(cat);
+        if (note) headingNote[cat] = note;
+      }
+      if (!orderedSubcats[cat]) orderedSubcats[cat] = [];
+      if (orderedSubcats[cat].indexOf(sub) === -1) orderedSubcats[cat].push(sub);
       if (!byCat[cat][sub]) byCat[cat][sub] = [];
-      byCat[cat][sub].push({ item: item, mandatory: mand });
+      if (item) byCat[cat][sub].push({ item: item, mandatory: mand });
     });
     var html = '<div class="doc-accordion-list" data-testid="doc-accordion-list">';
-    Object.keys(byCat).sort().forEach(function (cat) {
-      html += '<section class="doc-section">';
-      html += '<h2 class="doc-section-header">' + esc(cat) + '</h2>';
-      var subcats = Object.keys(byCat[cat]).filter(Boolean).sort();
-      if (subcats.length === 0) subcats = [''];
+    orderedCats.forEach(function (cat) {
+      var subcats = orderedSubcats[cat].length ? orderedSubcats[cat] : [''];
+      html += '<details class="doc-section-accordion doc-section" data-testid="doc-section-accordion">';
+      html += '<summary class="doc-section-header doc-section-summary">' + esc(cat);
+      if (headingNote[cat]) html += ' <span class="doc-heading-note">' + esc(headingNote[cat]) + '</span>';
+      html += '</summary>';
+      html += '<div class="doc-section-content">';
       subcats.forEach(function (sub) {
-        var entries = byCat[cat][sub];
+        var entries = byCat[cat][sub] || [];
         html += '<details class="doc-accordion" data-testid="doc-accordion">';
         html += '<summary class="doc-accordion-summary">' + esc(sub || 'Documents') + '</summary>';
         html += '<div class="doc-accordion-content"><ul class="doc-item-list">';
@@ -51,7 +64,7 @@
         });
         html += '</ul></div></details>';
       });
-      html += '</section>';
+      html += '</div></details>';
     });
     html += '</div>';
     container.innerHTML = html;

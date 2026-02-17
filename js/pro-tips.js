@@ -56,34 +56,69 @@
     return bits.length > 0 ? bits.join('<br>') : escAndBold(s);
   }
 
+  function flushBullets(html, bullets) {
+    if (bullets.length === 0) return html;
+    html += '<ul class="protips-bullets">';
+    bullets.forEach(function (text) {
+      html += '<li class="protips-bullet">' + parseLinksAndBold(text) + '</li>';
+    });
+    html += '</ul>';
+    return html;
+  }
+
   function render(rows) {
     if (!rows || rows.length === 0) {
-      container.innerHTML = '<p class="text-secondary">No data yet. Use sheet Pro-Tips_Before_You_Apply with columns: section_heading, block_type, content. See PRO_TIPS_SHEET_STEPS.md.</p>';
+      container.innerHTML = '<p class="text-secondary">No data yet. Use sheet Pro-Tips_Before_You_Apply with columns: section_heading, sub_heading, block_type, content. See PRO_TIPS_SHEET_STEPS.md.</p>';
       return;
     }
     var html = '';
     var currentTable = null;
     var sectionOpen = false;
+    var currentBullets = [];
     var i = 0;
     while (i < rows.length) {
       var r = rows[i];
       var sectionHeading = get(r, 'section_heading');
+      var subHeading = get(r, 'sub_heading') || get(r, 'sub-heading');
       var blockType = (get(r, 'block_type') || '').toLowerCase().trim();
       var content = get(r, 'content');
 
-      if (sectionHeading && sectionHeading.trim()) {
+      if (!blockType && subHeading && subHeading.toLowerCase().trim() === 'heading') blockType = 'heading';
+
+      if (sectionHeading && sectionHeading.trim() && (blockType === 'heading' || (!blockType && !content))) {
         if (currentTable) {
           html += currentTable + '</tbody></table></div>';
           currentTable = null;
         }
+        html = flushBullets(html, currentBullets);
+        currentBullets = [];
         if (sectionOpen) html += '</div>';
         sectionOpen = true;
         html += '<div class="protips-section">';
         html += '<h2 class="protips-section-title">' + esc(sectionHeading.trim()) + '</h2>';
+        if (content && content.trim()) {
+          html += '<p class="protips-section-intro">' + parseLinksAndBold(content) + '</p>';
+        }
+        i++;
+        continue;
+      }
+
+      if (blockType === 'sub' && subHeading && subHeading.trim()) {
+        if (currentTable) {
+          html += currentTable + '</tbody></table></div>';
+          currentTable = null;
+        }
+        html = flushBullets(html, currentBullets);
+        currentBullets = [];
+        html += '<h3 class="protips-sub-title">' + esc(subHeading.trim()) + '</h3>';
+        i++;
+        continue;
       }
 
       if (blockType === 'table_header') {
         if (currentTable) html += currentTable;
+        html = flushBullets(html, currentBullets);
+        currentBullets = [];
         var headers = (content || '').split(/\|/).map(function (c) { return c.trim(); });
         currentTable = '<div class="protips-table-wrapper table-scroll-wrapper" role="region" aria-label="Table"><table class="data-table pro-tips-table" data-testid="pro-tips-table"><thead><tr>';
         headers.forEach(function (h) { currentTable += '<th>' + esc(h) + '</th>'; });
@@ -93,17 +128,26 @@
         currentTable += '<tr>';
         cells.forEach(function (c) { currentTable += '<td>' + cellHtml(c) + '</td>'; });
         currentTable += '</tr>';
-      } else if (blockType === 'paragraph' || (blockType === '' && content && content.trim())) {
+      } else if (blockType === 'bullet' && content) {
         if (currentTable) {
           html += currentTable + '</tbody></table></div>';
           currentTable = null;
         }
+        currentBullets.push(content.trim());
+      } else if (blockType === 'paragraph' || (blockType === '' && content && content.trim() && !subHeading)) {
+        if (currentTable) {
+          html += currentTable + '</tbody></table></div>';
+          currentTable = null;
+        }
+        html = flushBullets(html, currentBullets);
+        currentBullets = [];
         var para = parseLinksAndBold(content);
         if (para) html += '<p class="protips-para">' + para + '</p>';
       }
       i++;
     }
     if (currentTable) html += currentTable + '</tbody></table></div>';
+    html = flushBullets(html, currentBullets);
     if (sectionOpen) html += '</div>';
 
     container.innerHTML = html || '<p class="text-secondary">No content.</p>';

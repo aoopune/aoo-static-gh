@@ -118,11 +118,15 @@
     });
   };
 
-  /* Header / Footer – same on every page. Nav: Home, Pro-Tips Before You Apply, Quick overview, About us (+ logo). */
+  /* Header / Footer – same on every page. Nav: logo extreme left; links extreme right in this order. */
   const navItems = [
     { path: 'index.html', label: 'Home' },
-    { path: 'pro-tips.html', label: 'Pro-Tips Before You Apply' },
+    { path: 'pro-tips.html', label: 'Pro tips before you apply' },
     { path: 'quick-overview.html', label: 'Quick overview' },
+    { path: 'schemes.html', label: 'Schemes' },
+    { path: 'government-schemes.html', label: 'Government schemes' },
+    { path: 'faq.html', label: 'FAQ' },
+    { path: 'document-checklist.html', label: 'Standardised document list' },
     { path: 'about.html', label: 'About us' }
   ];
 

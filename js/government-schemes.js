@@ -6,18 +6,12 @@
 
   function getVisibleKeys(keys, config) {
     var cfg = config || {};
-    var fromConfig = keys.filter(function (k) {
-      var key = 'gov_schemes.column.' + k + '.visible';
-      var val = cfg[key];
-      return val === true || val === 'true' || val === '1' || (typeof val === 'string' && val.toLowerCase() === 'true');
-    });
     var hidden = keys.filter(function (k) {
       var key = 'gov_schemes.column.' + k + '.visible';
       var val = cfg[key];
       return val === false || val === 'false' || val === '0' || (typeof val === 'string' && val.toLowerCase() === 'false');
     });
     if (hidden.length > 0) return keys.filter(function (k) { return hidden.indexOf(k) === -1; });
-    if (fromConfig.length > 0) return fromConfig;
     return keys;
   }
 
@@ -40,9 +34,7 @@
     );
   }
 
-  function formatCell(val, key) {
-    if (val == null || val === '') return '—';
-    var str = String(val).trim();
+  function formatCellContent(str) {
     var out = '';
     var re = /\[([^\]]*)\]\((https?:\/\/[^)\s]+)\)/g;
     var lastIndex = 0;
@@ -54,6 +46,20 @@
     }
     out += linkifyBareUrls(esc(str.slice(lastIndex)));
     return out;
+  }
+
+  function formatCell(val, key) {
+    if (val == null || val === '') return '—';
+    var str = String(val).trim();
+    var parts = str.split(/\n+/).map(function (p) { return p.trim(); }).filter(Boolean);
+    if (parts.length === 0) return '—';
+    if (parts.length === 1) return formatCellContent(parts[0]);
+    var listHtml = '<ul class="gov-schemes-cell-points">';
+    parts.forEach(function (p) {
+      listHtml += '<li class="gov-schemes-cell-point">' + formatCellContent(p) + '</li>';
+    });
+    listHtml += '</ul>';
+    return listHtml;
   }
 
   function buildRowsFromRaw(rawRows) {
