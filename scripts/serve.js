@@ -25,6 +25,9 @@ var server = http.createServer(function (req, res) {
         fs.readFile(filePath, function (e2, d2) {
           if (e2) { res.writeHead(404); res.end('Not found'); return; }
           res.setHeader('Content-Type', mime(filePath));
+          if (path.extname(filePath) === '.html') {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+          }
           res.end(d2);
         });
         return;
@@ -32,6 +35,9 @@ var server = http.createServer(function (req, res) {
       res.writeHead(404); res.end('Not found'); return;
     }
     res.setHeader('Content-Type', mime(filePath));
+    if (path.extname(filePath) === '.html') {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    }
     res.end(data);
   });
 });

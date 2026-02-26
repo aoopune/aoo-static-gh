@@ -3,19 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>Apply Only Once – Education loan comparison</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="site-header" id="site-header"></header>
   <main class="home-main">
-    <h1 class="home-heading">Let Banks Compete for Your Education Loan.<br>You Choose the Best Offer.</h1>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-9">
+          <h1 class="home-heading">Let Banks Compete for Your Education Loan.<br>You Choose the Best Offer.</h1>
 
-    <p class="home-subheading">Compare 35+ lenders. Apply with one application to all. No logins required.</p>
+          <p class="home-subheading">Compare 35+ lenders. Apply with one application to all. No logins required.</p>
 
-    <p class="home-course-types">Save 40+ hours of branch visits, repeated paperwork and get the lowest interest rates.</p>
+          <p class="home-course-types">Save 40+ hours of branch visits, repeated paperwork and get the lowest interest rates.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <!-- Table section full-width so embedded table matches standalone UI (filters + table) -->
+        </div>
+      </div>
+    </div>
+    <section class="home-table-section" aria-label="Loan comparison">
+      <div id="loan-table-root" class="home-loan-table" style="min-height:120px;padding:1.5rem;text-align:center;background:#f0f4f8;color:#1e293b;border-radius:8px;">
+        <span id="loan-table-status">Loading comparison table…</span>
+      </div>
+    </section>
   </main>
   <footer class="site-footer" id="site-footer"></footer>
   <script src="js/app.js"></script>
+  <script src="js/aoo-loan-table-standalone.js?v=1"></script>
+  <script>
+    (function() {
+      var root = document.getElementById('loan-table-root');
+      if (!root) return;
+      function showError(msg) {
+        root.innerHTML = '<p style="color:#b91c1c;padding:1rem;margin:0;font-weight:600;">' + msg + '</p>';
+      }
+      function runMount() {
+        if (typeof window.AooLoanTable === 'undefined') {
+          showError('Table script did not load. In Network tab, check aoo-loan-table-standalone.js (200 or 404?).');
+          return;
+        }
+        if (window.AooLoanTable._loadError) {
+          var err = window.AooLoanTable._loadError;
+          showError('Table script error: ' + (err && err.message ? err.message : String(err)));
+          console.error('AooLoanTable load error', err);
+          return;
+        }
+        if (typeof window.AooLoanTable.mount !== 'function') {
+          showError('Table script did not load. In Network tab, check aoo-loan-table-standalone.js (200 or 404?).');
+          return;
+        }
+        try {
+          root.innerHTML = '';
+          root.removeAttribute('style');
+          window.AooLoanTable.mount('#loan-table-root');
+        } catch (e) {
+          showError('Table error: ' + (e && e.message ? e.message : String(e)));
+          console.error('AooLoanTable.mount', e);
+        }
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runMount);
+      } else {
+        runMount();
+      }
+    })();
+  </script>
 </body>
 </html>
