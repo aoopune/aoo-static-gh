@@ -49,9 +49,9 @@ This document is the comprehensive audit trail of requirements, implementation s
 - **Not** in navbar: FAQ, PM-Vidyalaxmi, Government Schemes, Document list (those are homepage content links)
 
 ### Page 1 – Landing (homepage)
-- **Main heading**: "Education loan rules differ from bank to bank"
-- **Subheading**: "Clean & Simplified information of 35+ banks and NBFCs on one platform to get the best loan offer"
-- **Course types**: "Loans available from School education to Diploma, Graduation, Post-Graduation, Doctorate courses, Executive & working-professional programs, Skill development & vocational courses (job-oriented as well) and Professional & Technical courses."
+- **Main heading**: "Let Banks Compete for Your Education Loan. You Choose the Best Offer."
+- **Subheading**: "Compare 35+ lenders. Apply with one application to all. No logins required."
+- **Course types**: "Save 40+ hours of branch visits, repeated paperwork and get the lowest interest rates"
 - **Trust line**: "We are not partnered with any bank or NBFCs. Lenders do not pay us to be listed, ranked, or recommended."
 - **Two cards side-by-side**:
   1. **Compare on your own** – "Browse loan eligibility criteria, features, fees & charges, etc. across all banks in India at your own pace"

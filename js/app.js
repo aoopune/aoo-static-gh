@@ -32,6 +32,8 @@
   }
 
   function parseCSV(text) {
+    if (typeof text !== 'string') return [];
+    if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
     const rows = [];
     let row = [];
     let cell = '';
@@ -86,7 +88,8 @@
       const cached = getCached(sheetName);
       if (cached) return Promise.resolve(cached);
     }
-    return fetch(sheetUrl(sheetName))
+    const fetchOpts = useCache === false ? { cache: 'no-store' } : {};
+    return fetch(sheetUrl(sheetName), fetchOpts)
       .then(r => { if (!r.ok) throw new Error('Sheet fetch failed'); return r.text(); })
       .then(text => {
         const rows = parseCSV(text);
@@ -100,12 +103,31 @@
     return fetch(sheetUrl(sheetName)).then(r => r.text()).then(parseCSV);
   };
 
+  function normalizeConfigKey(k) {
+    return (k || '').trim().toLowerCase().replace(/\s+/g, '_');
+  }
+
   function parseConfigRows(rows) {
     const cfg = {};
-    (rows || []).forEach(r => {
-      const k = (r.key || r.Key || '').trim();
-      const v = (r.value != null ? r.value : r.Value);
-      if (k) cfg[k] = v;
+    const list = rows || [];
+    if (list.length === 0) return cfg;
+    var keyHeader = null;
+    var valueHeader = null;
+    var headersChecked = false;
+    list.forEach(function (r) {
+      if (!headersChecked && r && typeof r === 'object') {
+        var keys = Object.keys(r);
+        for (var i = 0; i < keys.length; i++) {
+          var n = normalizeConfigKey(keys[i]);
+          if (n === 'key') keyHeader = keys[i];
+          if (n === 'value') valueHeader = keys[i];
+        }
+        headersChecked = true;
+      }
+      var rawKey = keyHeader != null ? r[keyHeader] : (r.key || r.Key || '');
+      var k = normalizeConfigKey(rawKey) || (rawKey && rawKey.trim());
+      var v = valueHeader != null ? r[valueHeader] : (r.value != null ? r.value : r.Value);
+      if (k) cfg[k] = v != null ? String(v).trim() : '';
     });
     return cfg;
   }
@@ -120,7 +142,6 @@
 
   /* Header / Footer – same on every page. Nav: logo extreme left; links extreme right in this order. */
   const navItems = [
-    { path: 'index.html', label: 'Home' },
     { path: 'pro-tips.html', label: 'Pro tips before you apply' },
     { path: 'quick-overview.html', label: 'Quick overview' },
     { path: 'schemes.html', label: 'Schemes' },
@@ -162,6 +183,8 @@
         const testId = 'nav-' + (n.path === 'index.html' ? 'home' : n.path.replace('.html', ''));
         return '<a href="' + href + '"' + (isActive ? ' class="active"' : '') + ' data-testid="' + testId + '">' + n.label + '</a>';
       }).join('');
+      var homeLinkHtml = '<a href="' + homeHref + '"' + (cur === 'index.html' ? ' class="active"' : '') + ' data-testid="nav-home">Home</a>';
+      var drawerNavLinksHtml = homeLinkHtml + navLinksHtml;
       header.innerHTML =
         '<div class="site-header-inner">' +
         '<div class="site-logo"><a href="' + homeHref + '" data-testid="nav-logo">Apply Only Once</a></div>' +
@@ -171,7 +194,7 @@
         '</div>' +
         '<div class="nav-drawer-overlay" id="nav-drawer-overlay" aria-hidden="true"></div>' +
         '<div class="nav-drawer" id="nav-drawer" aria-label="Navigation menu">' +
-        '<nav class="nav-drawer-nav" aria-label="Main">' + navLinksHtml + '</nav></div>';
+        '<nav class="nav-drawer-nav" aria-label="Main">' + drawerNavLinksHtml + '</nav></div>';
       (function () {
         var hamburger = header.querySelector('.nav-hamburger');
         var drawer = document.getElementById('nav-drawer');
@@ -206,10 +229,16 @@
         'Mail: <a href="mailto:' + contactEmail + '">' + contactEmail + '</a>' +
         '</div>';
     }
+    var resultsContact = document.getElementById('results-contact');
+    if (resultsContact) {
+      resultsContact.innerHTML =
+        'Call/WhatsApp <a href="' + telHref + '">' + contactPhone + '</a>, Mail: <a href="mailto:' + contactEmail + '">' + contactEmail + '</a>';
+    }
   };
 
   document.addEventListener('DOMContentLoaded', function () {
-    window.fetchSheet('Config', false).then(rows => {
+    window.__aooConfig = null;
+    window.fetchSheet('Config', false).then(function (rows) {
       window.__aooConfig = parseConfigRows(rows);
       window.renderHeaderFooter(window.__aooConfig);
     }).catch(function () {

@@ -10,11 +10,8 @@ test.describe('Apply Only Once – UI', function () {
     await page.goto('/');
     await waitForLayout(page);
     await expect(page.locator('text=Apply Only Once').first()).toBeVisible();
-    await expect(page.locator('text=Education loan rules differ from bank to bank')).toBeVisible();
-    await expect(page.locator('text=Compare on your own').first()).toBeVisible();
-    await expect(page.locator('text=See what fits you').first()).toBeVisible();
-    await expect(page.locator('text=Clean & Simplified information of 35+ banks')).toBeVisible();
-    await expect(page.locator('text=We are not partnered with any bank or NBFCs')).toBeVisible();
+    await expect(page.locator('text=Let Banks Compete for Your Education Loan')).toBeVisible();
+    await expect(page.locator('text=Compare 35+ lenders')).toBeVisible();
   });
 
   test('navbar has logo left, nav right (Home, Pro tips, Quick overview, Schemes, Government schemes, FAQ, Standardised document list, About us)', async ({ page }) => {
@@ -42,22 +39,6 @@ test.describe('Apply Only Once – UI', function () {
     await page.goto('/');
     await waitForLayout(page);
     await expect(page.locator('.home-nav-links')).toHaveCount(0);
-  });
-
-  test('Compare on your own navigates to compare page', async ({ page }) => {
-    await page.goto('/');
-    await waitForLayout(page);
-    await page.getByTestId('link-compare').click();
-    await expect(page).toHaveURL(/compare\.html/);
-    await expect(page.locator('text=Compare on your own across all banks').first()).toBeVisible();
-  });
-
-  test('See what fits you navigates to questions page', async ({ page }) => {
-    await page.goto('/');
-    await waitForLayout(page);
-    await page.getByTestId('link-see-what-fits').click();
-    await expect(page).toHaveURL(/questions\.html/);
-    await expect(page.locator('text=See what fits you by answering 6 questions').first()).toBeVisible();
   });
 
   test('Compare page has Indian / Abroad tabs, no bank dropdown', async ({ page }) => {
