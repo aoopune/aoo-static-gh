@@ -610,6 +610,21 @@ main.home-main {
   overflow-x: hidden;
 }
 
+/* Embedded table form: keep "54 offers..." and Submit on one line (match pic 2) */
+#loan-table-root .aoo-loan-table-wrap .field.submit-field {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+#loan-table-root .aoo-loan-table-wrap .field.submit-field .count {
+  display: inline-block !important;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 .home-nav-links {
   display: flex;
   flex-wrap: wrap;
