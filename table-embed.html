@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Loan comparison table</title>
+  <!-- No site CSS – only the table script's CSS runs, so layout matches table app exactly -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 0; background: transparent; font-family: 'Montserrat', system-ui, sans-serif; overflow-x: hidden; }
+    #loan-table-root { min-height: 400px; }
+
+    /* Mobile: 2-column form – Col1: Gender, Loan amount, Loan type | Col2: Country, University, Level of study. Keep labels and input bars fully visible. */
+    @media (max-width: 767px) {
+      body { padding-left: env(safe-area-inset-left, 0); padding-right: env(safe-area-inset-right, 0); }
+      #loan-table-root {
+        width: 100%;
+        max-width: 100%;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        overflow-x: hidden;
+      }
+      #loan-table-root .aoo-loan-table-wrap {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+      }
+      #loan-table-root .wrap {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        padding: 0.25rem 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #loan-table-root .query-card {
+        width: 100%;
+        max-width: 22rem;
+        min-width: 0;
+        padding: 0.5rem 0.75rem;
+        overflow: visible;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      #loan-table-root .aoo-loan-table-wrap .form-row {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto auto;
+        grid-auto-flow: column;
+        row-gap: 0.5rem;
+        column-gap: 0.5rem;
+        align-items: start;
+        min-width: 0;
+        width: 100%;
+      }
+      #loan-table-root .aoo-loan-table-wrap .form-row .field:nth-child(1) { grid-column: 1; grid-row: 1; min-width: 0; }
+      #loan-table-root .aoo-loan-table-wrap .form-row .field:nth-child(2) { grid-column: 1; grid-row: 2; min-width: 0; }
+      #loan-table-root .aoo-loan-table-wrap .form-row .field:nth-child(3) { grid-column: 1; grid-row: 3; min-width: 0; }
+      #loan-table-root .aoo-loan-table-wrap .form-row .field:nth-child(4) { grid-column: 2; grid-row: 1; min-width: 0; }
+      #loan-table-root .aoo-loan-table-wrap .form-row .field:nth-child(5) { grid-column: 2; grid-row: 2; min-width: 0; }
+      #loan-table-root .aoo-loan-table-wrap .form-row .field:nth-child(6) { grid-column: 2; grid-row: 3; min-width: 0; }
+      #loan-table-root .aoo-loan-table-wrap .form-row .field {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.25rem;
+        min-width: 0;
+        overflow: visible;
+      }
+      /* Allow dropdown (.combo-menu) to show – do not clip */
+      #loan-table-root .aoo-loan-table-wrap .form-row .field .combo {
+        overflow: visible;
+      }
+      #loan-table-root .aoo-loan-table-wrap .form-row .field label { text-align: left; }
+      #loan-table-root .aoo-loan-table-wrap .form-row .field > label { justify-content: flex-start; }
+      /* Keep input bars fully visible inside their cell */
+      #loan-table-root .aoo-loan-table-wrap .form-row .field input:not([type="radio"]),
+      #loan-table-root .aoo-loan-table-wrap .form-row .field .combo input {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+      }
+      #loan-table-root .aoo-loan-table-wrap .form-row .field .choice-group {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0;
+        box-sizing: border-box;
+      }
+      #loan-table-root .aoo-loan-table-wrap .form-row .field .combo {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+      }
+      #loan-table-root .aoo-loan-table-wrap .field.submit-field {
+        grid-column: 1 / -1;
+        grid-row: 4;
+        justify-self: center;
+        align-self: start;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loan-table-root"></div>
+  <script src="/js/aoo-loan-table-standalone.js?v=6"></script>
+  <script>
+    (function() {
+      var root = document.getElementById('loan-table-root');
+      if (!root) return;
+      function showError(msg) {
+        root.innerHTML = '<p style="color:#b91c1c;padding:1rem;margin:0;font-weight:600;">' + msg + '</p>';
+      }
+      function runMount() {
+        if (typeof window.AooLoanTable === 'undefined') {
+          showError('Table script did not load.');
+          return;
+        }
+        if (window.AooLoanTable._loadError) {
+          showError('Table error: ' + (window.AooLoanTable._loadError.message || ''));
+          return;
+        }
+        if (typeof window.AooLoanTable.mount !== 'function') {
+          showError('Table script did not load.');
+          return;
+        }
+        try {
+          window.AooLoanTable.mount('#loan-table-root');
+        } catch (e) {
+          showError('Table error: ' + (e && e.message ? e.message : String(e)));
+        }
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runMount);
+      } else {
+        runMount();
+      }
+    })();
+  </script>
+</body>
+</html>
