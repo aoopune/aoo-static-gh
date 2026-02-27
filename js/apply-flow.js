@@ -30,6 +30,8 @@
   }
 
   var PENDING_KEY = 'aoo_apply_pending_v1';
+  var initApplyFlowRetries = 0;
+  var maxInitApplyFlowRetries = 40;
 
   function getRoot() {
     return document.querySelector('#loan-table-root');
@@ -500,6 +502,13 @@
       return;
     }
     addApplyButton();
+    if (!document.getElementById('apply-button')) {
+      if (initApplyFlowRetries < maxInitApplyFlowRetries) {
+        initApplyFlowRetries += 1;
+        setTimeout(initApplyFlow, 150);
+      }
+      return;
+    }
 
     // If user just returned from Google login: we have pending selection and need a session.
     // The OAuth hash is on the parent URL; parent runs getSession() to persist to localStorage.
