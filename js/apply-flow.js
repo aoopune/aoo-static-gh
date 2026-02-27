@@ -1,6 +1,19 @@
 /**
- * Apply flow: disclaimer → Google auth → Supabase insert → Razorpay → success.
- * Reads offers and input data from DOM only (Option A). Uses credentials from window.
+ * Apply flow (user journey):
+ * 1. Apply – user clicks Apply to selected banks
+ * 2. Continue & Pay – disclaimer modal; user clicks Continue & Pay
+ * 3. Google Auth – redirect to Google sign-in
+ * 4. Sign in done – user completes Google sign-in
+ * 5. Data to Supabase – back on home page; we INSERT application row (email, offers, input_data, status: initiated)
+ * 6. Home page – user is on homepage (iframe + table)
+ * 7. Redirect to Razorpay – Razorpay checkout opens automatically
+ * 8. User makes payment – in Razorpay modal
+ * 9. Payment success – Razorpay handler runs
+ * 10. Back on home – modal closes; user stays on home page
+ * 11. Show popup "Payment successful" – toast + success block
+ * 12. Supabase updates status to paid – we UPDATE application row (status: 'paid', razorpay_payment_id)
+ *
+ * Reads offers and input data from DOM only. Uses window.SUPABASE_*, RAZORPAY_KEY_ID, APPLICATION_PRICE_PAISE.
  */
 (function () {
   'use strict';
@@ -304,6 +317,7 @@
         prefill: { email: email },
         readonly: { email: true },
         handler: function (response) {
+          showToast('Payment successful!', false);
           supabaseClient.from('applications').update({
             status: 'paid',
             razorpay_payment_id: response.razorpay_payment_id
