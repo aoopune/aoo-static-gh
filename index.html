@@ -82,18 +82,37 @@
             if (parts.length >= 2) params[decodeURIComponent(parts[0])] = decodeURIComponent(parts.slice(1).join('=').replace(/\+/g, ' '));
           });
           if (params.access_token) {
-            client.auth.setSession({ access_token: params.access_token, refresh_token: params.refresh_token || '' })
-              .then(function () { if (window.history && window.history.replaceState) window.history.replaceState(null, '', window.location.pathname + window.location.search); })
-              .catch(function () {});
+            function trySetSession(retrying) {
+              client.auth.setSession({ access_token: params.access_token, refresh_token: params.refresh_token || '' })
+                .then(function () { if (window.history && window.history.replaceState) window.history.replaceState(null, '', window.location.pathname + window.location.search); })
+                .catch(function (err) {
+                  var msg = (err && err.message) ? String(err.message) : '';
+                  if (/failed to fetch|network|timeout|timed out|connection|reset/i.test(msg) && !retrying) {
+                    setTimeout(function () { trySetSession(true); }, 2000);
+                  }
+                });
+            }
+            trySetSession(false);
           }
         } else if (code && client.auth.exchangeCodeForSession) {
-          client.auth.exchangeCodeForSession(code).then(function () {
+          function clearCodeFromUrl() {
             if (window.history && window.history.replaceState) {
               var search = (window.location.search || '').replace(/\bcode=[^&]*&?/gi, '').replace(/^&|&$/g, '');
               var clean = window.location.pathname + (search ? '?' + search : '') + (window.location.hash || '');
               window.history.replaceState(null, '', clean);
             }
-          }).catch(function () {});
+          }
+          function onCodeSuccess() { clearCodeFromUrl(); }
+          function tryExchange(retrying) {
+            client.auth.exchangeCodeForSession(code).then(onCodeSuccess).catch(function (err) {
+              var msg = (err && err.message) ? String(err.message) : '';
+              var isNetwork = /failed to fetch|network|timeout|timed out|connection|reset/i.test(msg);
+              if (isNetwork && !retrying) {
+                setTimeout(function () { tryExchange(true); }, 2000);
+              }
+            });
+          }
+          tryExchange(false);
         }
       } catch (e) {}
     })();

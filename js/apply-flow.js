@@ -229,7 +229,12 @@
       '.apply-flow-btn-cancel:hover { background: var(--bg-subtle); }',
       '#apply-button.apply-floating-btn { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: auto; max-width: 90%; padding: 8px 16px; font-size: 12px; font-weight: 600; border-radius: 999px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); white-space: nowrap; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.05rem; min-height: auto; font-family: Montserrat, system-ui, sans-serif; background: var(--accent); color: #fff; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; } #apply-button.apply-floating-btn:hover { background: var(--accent-hover); transform: translateX(-50%) translateY(-1px); } #apply-button.apply-floating-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: translateX(-50%); }',
       '#apply-button.apply-floating-btn .apply-btn-line2 { font-size: 0.65rem; font-weight: 500; opacity: 0.95; }',
-      '@media (max-width: 768px) { #apply-button.apply-floating-btn { padding: 8px 14px; font-size: 11px; max-width: 92%; width: auto; left: 50%; transform: translateX(-50%); min-height: 44px; } #apply-button.apply-floating-btn:hover { transform: translateX(-50%) translateY(-1px); } #apply-button.apply-floating-btn:disabled { transform: translateX(-50%); } }',
+      '.apply-filter-right-section { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }',
+      '#loan-table-root .aoo-loan-table-wrap .query-card .field.submit-field { justify-content: space-between !important; align-items: center !important; }',
+      '.apply-filter-right-section #apply-button.apply-floating-btn { position: static !important; transform: none !important; bottom: auto !important; left: auto !important; }',
+      '.apply-filter-right-section #apply-button.apply-floating-btn:hover { transform: none !important; }',
+      '.apply-filter-right-section #apply-button.apply-floating-btn:disabled { transform: none !important; }',
+      '@media (max-width: 768px) { #apply-button.apply-floating-btn { padding: 8px 14px; font-size: 11px; max-width: 92%; width: auto; left: 50%; transform: translateX(-50%); min-height: 44px; } #apply-button.apply-floating-btn:hover { transform: translateX(-50%) translateY(-1px); } #apply-button.apply-floating-btn:disabled { transform: translateX(-50%); } .apply-filter-right-section #apply-button.apply-floating-btn { transform: none !important; } .apply-filter-right-section #apply-button.apply-floating-btn:hover { transform: none !important; } }',
       '.apply-flow-success-block { margin-bottom: 0.75rem; padding: 1rem 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow); font-family: Montserrat, system-ui, sans-serif; }',
       '.apply-flow-success-block .payment-success { color: #059669; font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }',
       '.apply-flow-success-block p { margin: 0 0 0.35rem 0; font-size: 0.9rem; }',
@@ -316,8 +321,27 @@
       status: 'initiated'
     };
 
-    return supabaseClient.from('applications').insert(payload).select().single().then(function (res) {
-      if (res.error) throw res.error;
+    function doInsert() {
+      return supabaseClient.from('applications').insert(payload).select().single();
+    }
+    function tryInsert(retrying) {
+      return doInsert().then(function (res) {
+        if (res.error) throw res.error;
+        return res;
+      }).catch(function (err) {
+        var isConnection = /failed to fetch|network|load failed|connection|reset|timeout|timed out/i.test((err && err.message) || '') || (err && err.name === 'TypeError');
+        if (isConnection && !retrying) {
+          return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+              tryInsert(true).then(resolve, reject);
+            }, 1500);
+          });
+        }
+        throw err;
+      });
+    }
+
+    return tryInsert(false).then(function (res) {
       var applicationId = res.data.id;
 
       var options = {
@@ -334,6 +358,8 @@
             status: 'paid',
             razorpay_payment_id: response.razorpay_payment_id
           }).eq('id', applicationId).then(function () {
+            showPaymentSuccessModal(email);
+          }).catch(function () {
             showPaymentSuccessModal(email);
           });
           if (applyBtn) applyBtn.disabled = false;
@@ -422,8 +448,8 @@
             console.error('[Apply flow]', err);
           }
           var msg = raw;
-          if (/failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
-            msg = "Can't reach our servers (connection reset or blocked). Try: another network (e.g. mobile data), turn off VPN, or try again later. Need help? Call 91123 34367 or email aoopune@gmail.com.";
+          if (/failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors|timeout|timed out/i.test(msg) || (err && err.name === 'TypeError')) {
+            msg = "Can't reach our servers (connection reset, timeout, or blocked). Try: another network (e.g. mobile data), turn off VPN, or try again in a moment. Need help? Call 91123 34367 or email aoopune@gmail.com.";
           } else if (/applications|relation.*does not exist|row.level.security|RLS|JWT|auth/i.test(msg)) {
             msg = "Supabase setup needed: In your Supabase project open SQL Editor and run applications-setup.sql (creates applications table + RLS). Need help? Call 91123 34367 or aoopune@gmail.com";
           }
@@ -435,9 +461,21 @@
   }
 
   function addApplyButton() {
-    var wrap = getWrap();
-    if (!wrap) return;
+    var root = getRoot();
+    if (!root) return;
     if (document.getElementById('apply-button')) return;
+
+    var submitField = root.querySelector('.field.submit-field');
+    if (!submitField) return;
+
+    var countEl = submitField.querySelector('.count') || document.getElementById('count');
+    var submitBtn = submitField.querySelector('button[type="submit"]');
+    if (!countEl) return;
+
+    var rightSection = document.createElement('div');
+    rightSection.className = 'apply-filter-right-section';
+
+    rightSection.appendChild(countEl);
 
     var applyButton = document.createElement('button');
     applyButton.type = 'button';
@@ -448,7 +486,8 @@
       runApplyFlow();
     });
 
-    document.body.appendChild(applyButton);
+    rightSection.appendChild(applyButton);
+    submitField.appendChild(rightSection);
   }
 
   function initApplyFlow() {
@@ -474,12 +513,24 @@
         var retryCount = 0;
         var maxRetries = 10;
         var retryMs = 400;
+        function connectionStyleError(err) {
+          var raw = (err && err.message) ? err.message : (err && String(err)) || '';
+          return /failed to fetch|network|load failed|connection|reset|pr_connect|timeout|timed out/i.test(raw) || (err && err.name === 'TypeError');
+        }
         function doResume(session) {
           if (ran || !session || !session.user) return;
           ran = true;
           startPaymentFlow(session.user, pending.offers, pending.inputData, applyBtn)
-            .catch(function () {
+            .catch(function (err) {
               if (applyBtn) applyBtn.disabled = false;
+              var msg = (err && err.message) ? err.message : (err && String(err)) || 'Something went wrong.';
+              if (connectionStyleError(err)) {
+                msg = "Can't reach our servers (connection reset, timeout, or blocked). Try another network, turn off VPN, or try again. Need help? Call 91123 34367 or aoopune@gmail.com.";
+              } else if (/applications|relation.*does not exist|RLS|JWT|auth/i.test(msg)) {
+                msg = "Server setup issue. Need help? Call 91123 34367 or aoopune@gmail.com.";
+              }
+              showToast(msg, true);
+              clearPendingApplication();
             });
         }
         function tryGetSession() {
