@@ -192,7 +192,15 @@
       if (session && session.user) return session.user;
       return supabaseClient.auth.signInWithOAuth({ provider: 'google' }).then(function (oauthRes) {
         if (oauthRes.data && oauthRes.data.url) {
-          window.location.href = oauthRes.data.url;
+          // When running inside the embedded iframe on applyonlyonce.com, Supabase's
+          // auth page cannot be loaded in-frame (it sets X-Frame-Options). Always
+          // redirect the top window instead of just the iframe.
+          var targetWindow = (window.top || window);
+          try {
+            targetWindow.location.href = oauthRes.data.url;
+          } catch (e) {
+            window.location.href = oauthRes.data.url;
+          }
           return new Promise(function () {});
         }
         return supabaseClient.auth.getSession().then(function (r) {
