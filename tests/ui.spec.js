@@ -10,7 +10,7 @@ test.describe('Apply Only Once – UI', function () {
     await page.goto('/');
     await waitForLayout(page);
     await expect(page.locator('text=Apply Only Once').first()).toBeVisible();
-    await expect(page.locator('text=Let 35+ Lenders Compete for Your Education Loan')).toBeVisible();
+    await expect(page.locator('text=Let 35+ Lenders Compete for Your Lowest Education Loan Rate')).toBeVisible();
     await expect(page.locator('text=Compare, select & apply with one application • ₹99 total • 48hr reply or refund')).toBeVisible();
   });
 
