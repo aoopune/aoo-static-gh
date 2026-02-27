@@ -296,6 +296,9 @@
         })
         .catch(function (err) {
           var msg = (err && err.message) ? err.message : 'Something went wrong.';
+          if (/failed to fetch|network|load failed|connection|reset|pr_connect|authenticity/i.test(msg) || (err && err.name === 'TypeError')) {
+            msg = "Can't reach our servers (connection reset or blocked). Try: another network (e.g. mobile data), turn off VPN, or try again later. Need help? Call 91123 34367 or email aoopune@gmail.com.";
+          }
           showToast(msg, true);
           if (applyBtn) applyBtn.disabled = false;
         });
