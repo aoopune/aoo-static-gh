@@ -30,8 +30,6 @@
   }
 
   var PENDING_KEY = 'aoo_apply_pending_v1';
-  var initApplyFlowRetries = 0;
-  var maxInitApplyFlowRetries = 40;
 
   function getRoot() {
     return document.querySelector('#loan-table-root');
@@ -40,6 +38,11 @@
   function getWrap() {
     var root = getRoot();
     return root ? root.querySelector('.aoo-loan-table-wrap .wrap') : null;
+  }
+
+  function getTableContainer() {
+    var root = getRoot();
+    return root ? root.querySelector('.aoo-loan-table-wrap') : null;
   }
 
   function getQueryForm() {
@@ -229,14 +232,10 @@
       '.apply-flow-btn { padding: 0.5rem 1.25rem; border-radius: 100px; font-weight: 600; font-size: 0.875rem; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text); transition: background 0.2s, border-color 0.2s; }',
       '.apply-flow-btn-continue { background: var(--accent); color: #fff; border-color: var(--accent); } .apply-flow-btn-continue:hover { background: var(--accent-hover); border-color: var(--accent-hover); }',
       '.apply-flow-btn-cancel:hover { background: var(--bg-subtle); }',
-      '#apply-button.apply-floating-btn { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: auto; max-width: 90%; padding: 8px 16px; font-size: 12px; font-weight: 600; border-radius: 999px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); white-space: nowrap; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.05rem; min-height: auto; font-family: Montserrat, system-ui, sans-serif; background: var(--accent); color: #fff; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; } #apply-button.apply-floating-btn:hover { background: var(--accent-hover); transform: translateX(-50%) translateY(-1px); } #apply-button.apply-floating-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: translateX(-50%); }',
+      '#loan-table-root .aoo-loan-table-wrap { position: relative; }',
+      '#apply-button.apply-floating-btn { position: absolute; bottom: 16px; right: 16px; z-index: 10; width: auto; max-width: 90%; padding: 8px 16px; font-size: 12px; font-weight: 600; border-radius: 999px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); white-space: nowrap; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.05rem; min-height: auto; font-family: Montserrat, system-ui, sans-serif; background: var(--accent); color: #fff; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; } #apply-button.apply-floating-btn:hover { background: var(--accent-hover); transform: translateY(-1px); } #apply-button.apply-floating-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }',
       '#apply-button.apply-floating-btn .apply-btn-line2 { font-size: 0.65rem; font-weight: 500; opacity: 0.95; }',
-      '.apply-filter-right-section { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }',
-      '#loan-table-root .aoo-loan-table-wrap .query-card .field.submit-field { justify-content: space-between !important; align-items: center !important; }',
-      '.apply-filter-right-section #apply-button.apply-floating-btn { position: static !important; transform: none !important; bottom: auto !important; left: auto !important; }',
-      '.apply-filter-right-section #apply-button.apply-floating-btn:hover { transform: none !important; }',
-      '.apply-filter-right-section #apply-button.apply-floating-btn:disabled { transform: none !important; }',
-      '@media (max-width: 768px) { #apply-button.apply-floating-btn { padding: 8px 14px; font-size: 11px; max-width: 92%; width: auto; left: 50%; transform: translateX(-50%); min-height: 44px; } #apply-button.apply-floating-btn:hover { transform: translateX(-50%) translateY(-1px); } #apply-button.apply-floating-btn:disabled { transform: translateX(-50%); } .apply-filter-right-section #apply-button.apply-floating-btn { transform: none !important; } .apply-filter-right-section #apply-button.apply-floating-btn:hover { transform: none !important; } }',
+      '@media (max-width: 768px) { #apply-button.apply-floating-btn { bottom: 12px; right: 12px; padding: 8px 14px; font-size: 11px; max-width: 92%; width: auto; min-height: 44px; } #apply-button.apply-floating-btn:hover { transform: translateY(-1px); } #apply-button.apply-floating-btn:disabled { transform: none; } }',
       '.apply-flow-success-block { margin-bottom: 0.75rem; padding: 1rem 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow); font-family: Montserrat, system-ui, sans-serif; }',
       '.apply-flow-success-block .payment-success { color: #059669; font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }',
       '.apply-flow-success-block p { margin: 0 0 0.35rem 0; font-size: 0.9rem; }',
@@ -251,7 +250,7 @@
       '.apply-flow-payment-success-modal .apply-flow-btn-got-it { padding: 0.6rem 1.5rem; min-height: 44px; border-radius: 100px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; background: var(--accent); color: #fff; font-family: inherit; transition: background 0.2s; }',
       '.apply-flow-payment-success-modal .apply-flow-btn-got-it:hover { background: var(--accent-hover); }',
       '@media (max-width: 640px) { .apply-flow-payment-success-overlay { padding: 0.75rem; align-items: center; } .apply-flow-payment-success-modal { width: 90%; max-width: 95vw; padding: 1.25rem 1rem; } .apply-flow-payment-success-modal .apply-flow-btn-got-it { width: 100%; max-width: none; } }',
-      '@media (max-width: 640px) { .apply-flow-backdrop { padding: 0.5rem; align-items: flex-end; } .apply-flow-modal { max-height: 92vh; width: 100%; border-radius: var(--radius-lg) var(--radius-lg) 0 0; } .apply-flow-disclaimer { max-height: 70vh; overflow-y: auto; -webkit-overflow-scrolling: touch; } .apply-flow-disclaimer-actions { flex-wrap: wrap; gap: 0.5rem; } .apply-flow-btn { min-height: 44px; min-width: 44px; padding: 0.6rem 1.25rem; } #apply-button.apply-floating-btn { min-height: 44px; padding: 8px 14px; } .apply-flow-success-block { font-size: 0.875rem; padding: 0.875rem 1rem; } }'
+      '@media (max-width: 640px) { .apply-flow-backdrop { padding: 0.5rem; align-items: flex-end; } .apply-flow-modal { max-height: 92vh; width: 100%; border-radius: var(--radius-lg) var(--radius-lg) 0 0; } .apply-flow-disclaimer { max-height: 70vh; overflow-y: auto; -webkit-overflow-scrolling: touch; } .apply-flow-disclaimer-actions { flex-wrap: wrap; gap: 0.5rem; } .apply-flow-btn { min-height: 44px; min-width: 44px; padding: 0.6rem 1.25rem; } #apply-button.apply-floating-btn { min-height: 44px; padding: 8px 14px; bottom: 12px; right: 12px; } .apply-flow-success-block { font-size: 0.875rem; padding: 0.875rem 1rem; } }'
     ].join('\n');
     document.head.appendChild(style);
   }
@@ -323,27 +322,8 @@
       status: 'initiated'
     };
 
-    function doInsert() {
-      return supabaseClient.from('applications').insert(payload).select().single();
-    }
-    function tryInsert(retrying) {
-      return doInsert().then(function (res) {
-        if (res.error) throw res.error;
-        return res;
-      }).catch(function (err) {
-        var isConnection = /failed to fetch|network|load failed|connection|reset|timeout|timed out/i.test((err && err.message) || '') || (err && err.name === 'TypeError');
-        if (isConnection && !retrying) {
-          return new Promise(function (resolve, reject) {
-            setTimeout(function () {
-              tryInsert(true).then(resolve, reject);
-            }, 1500);
-          });
-        }
-        throw err;
-      });
-    }
-
-    return tryInsert(false).then(function (res) {
+    return supabaseClient.from('applications').insert(payload).select().single().then(function (res) {
+      if (res.error) throw res.error;
       var applicationId = res.data.id;
 
       var options = {
@@ -360,8 +340,6 @@
             status: 'paid',
             razorpay_payment_id: response.razorpay_payment_id
           }).eq('id', applicationId).then(function () {
-            showPaymentSuccessModal(email);
-          }).catch(function () {
             showPaymentSuccessModal(email);
           });
           if (applyBtn) applyBtn.disabled = false;
@@ -450,8 +428,8 @@
             console.error('[Apply flow]', err);
           }
           var msg = raw;
-          if (/failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors|timeout|timed out/i.test(msg) || (err && err.name === 'TypeError')) {
-            msg = "Can't reach our servers (connection reset, timeout, or blocked). Try: another network (e.g. mobile data), turn off VPN, or try again in a moment. Need help? Call 91123 34367 or email aoopune@gmail.com.";
+          if (/failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
+            msg = "Can't reach our servers (connection reset or blocked). Try: another network (e.g. mobile data), turn off VPN, or try again later. Need help? Call 91123 34367 or email aoopune@gmail.com.";
           } else if (/applications|relation.*does not exist|row.level.security|RLS|JWT|auth/i.test(msg)) {
             msg = "Supabase setup needed: In your Supabase project open SQL Editor and run applications-setup.sql (creates applications table + RLS). Need help? Call 91123 34367 or aoopune@gmail.com";
           }
@@ -463,21 +441,12 @@
   }
 
   function addApplyButton() {
-    var root = getRoot();
-    if (!root) return;
+    var wrap = getWrap();
+    if (!wrap) return;
     if (document.getElementById('apply-button')) return;
 
-    var submitField = root.querySelector('.field.submit-field');
-    if (!submitField) return;
-
-    var countEl = submitField.querySelector('.count') || document.getElementById('count');
-    var submitBtn = submitField.querySelector('button[type="submit"]');
-    if (!countEl) return;
-
-    var rightSection = document.createElement('div');
-    rightSection.className = 'apply-filter-right-section';
-
-    rightSection.appendChild(countEl);
+    var tableContainer = getTableContainer();
+    if (!tableContainer) return;
 
     var applyButton = document.createElement('button');
     applyButton.type = 'button';
@@ -488,8 +457,7 @@
       runApplyFlow();
     });
 
-    rightSection.appendChild(applyButton);
-    submitField.appendChild(rightSection);
+    tableContainer.appendChild(applyButton);
   }
 
   function initApplyFlow() {
@@ -502,13 +470,6 @@
       return;
     }
     addApplyButton();
-    if (!document.getElementById('apply-button')) {
-      if (initApplyFlowRetries < maxInitApplyFlowRetries) {
-        initApplyFlowRetries += 1;
-        setTimeout(initApplyFlow, 150);
-      }
-      return;
-    }
 
     // If user just returned from Google login: we have pending selection and need a session.
     // The OAuth hash is on the parent URL; parent runs getSession() to persist to localStorage.
@@ -522,24 +483,12 @@
         var retryCount = 0;
         var maxRetries = 10;
         var retryMs = 400;
-        function connectionStyleError(err) {
-          var raw = (err && err.message) ? err.message : (err && String(err)) || '';
-          return /failed to fetch|network|load failed|connection|reset|pr_connect|timeout|timed out/i.test(raw) || (err && err.name === 'TypeError');
-        }
         function doResume(session) {
           if (ran || !session || !session.user) return;
           ran = true;
           startPaymentFlow(session.user, pending.offers, pending.inputData, applyBtn)
-            .catch(function (err) {
+            .catch(function () {
               if (applyBtn) applyBtn.disabled = false;
-              var msg = (err && err.message) ? err.message : (err && String(err)) || 'Something went wrong.';
-              if (connectionStyleError(err)) {
-                msg = "Can't reach our servers (connection reset, timeout, or blocked). Try another network, turn off VPN, or try again. Need help? Call 91123 34367 or aoopune@gmail.com.";
-              } else if (/applications|relation.*does not exist|RLS|JWT|auth/i.test(msg)) {
-                msg = "Server setup issue. Need help? Call 91123 34367 or aoopune@gmail.com.";
-              }
-              showToast(msg, true);
-              clearPendingApplication();
             });
         }
         function tryGetSession() {
