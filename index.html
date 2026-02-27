@@ -7,17 +7,41 @@
   <title>Apply Only Once – Education loan comparison</title>
   <link rel="stylesheet" href="css/style.css?v=2">
   <style>
-    /* Table runs in iframe so it uses only the table app's CSS – no site CSS can affect it */
-    .home-table-section iframe.loan-table-embed {
+    /* Homepage layout: no page scroll, table scrolls inside its own viewport area */
+    body.home-page {
+      height: 100vh;
+      overflow-y: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .home-page .home-main {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .home-page .home-table-section {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Table runs in iframe; give iframe a fixed viewport height so its own scroll bar handles the table */
+    .home-page .home-table-section iframe.loan-table-embed {
       display: block;
       width: 100%;
-      min-height: 900px;
+      height: 100%;
+      min-height: 0;
       border: none;
       background: transparent;
     }
   </style>
 </head>
-<body>
+<body class="home-page">
   <header class="site-header" id="site-header"></header>
   <main class="home-main">
     <div class="container">
