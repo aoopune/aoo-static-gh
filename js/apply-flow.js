@@ -1,19 +1,7 @@
 /**
- * Apply flow (user journey):
- * 1. Apply – user clicks Apply to selected banks
- * 2. Continue & Pay – disclaimer modal; user clicks Continue & Pay
- * 3. Google Auth – redirect to Google sign-in
- * 4. Sign in done – user completes Google sign-in
- * 5. Data to Supabase – back on home page; we INSERT application row (email, offers, input_data, status: initiated)
- * 6. Home page – user is on homepage (iframe + table)
- * 7. Redirect to Razorpay – Razorpay checkout opens automatically
- * 8. User makes payment – in Razorpay modal
- * 9. Payment success – Razorpay handler runs
- * 10. Back on home – modal closes; user stays on home page
- * 11. Show popup "Payment successful" – toast + success block
- * 12. Supabase updates status to paid – we UPDATE application row (status: 'paid', razorpay_payment_id)
- *
- * Reads offers and input data from DOM only. Uses window.SUPABASE_*, RAZORPAY_KEY_ID, APPLICATION_PRICE_PAISE.
+ * Apply flow (parent) – runs in index.html only.
+ * Receives selection from iframe via postMessage. Handles disclaimer, OAuth, Supabase, Razorpay, success modal.
+ * State machine: IDLE → AUTH_REQUIRED → AUTH_COMPLETED → PAYMENT_PENDING → PAYMENT_COMPLETED
  */
 (function () {
   'use strict';
@@ -29,110 +17,31 @@
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   }
 
-  var PENDING_KEY = 'aoo_apply_pending_v1';
+  var applyFlowInitialized = false;
+  var resumeInProgress = false;
+  var paymentFlowStarted = false;
+  var flowState = 'IDLE';
 
-  function getRoot() {
-    return document.querySelector('#loan-table-root');
+  function getIframe() {
+    return document.querySelector('iframe.loan-table-embed');
   }
 
-  function getWrap() {
-    var root = getRoot();
-    return root ? root.querySelector('.aoo-loan-table-wrap .wrap') : null;
+  function postToIframe(msg) {
+    var f = getIframe();
+    if (f && f.contentWindow) f.contentWindow.postMessage(msg, '*');
   }
 
-  function getTableContainer() {
-    var root = getRoot();
-    return root ? root.querySelector('.aoo-loan-table-wrap') : null;
-  }
-
-  function getQueryForm() {
-    var root = getRoot();
-    return root ? root.querySelector('#query-form') : null;
-  }
-
-  /** Get column keys from table header (th[data-column-key]) in order. */
-  function getTableColumnKeys() {
-    var root = getRoot();
-    if (!root) return [];
-    var thead = root.querySelector('#results-thead');
-    if (!thead) return [];
-    var ths = thead.querySelectorAll('th[data-column-key]');
-    var keys = [];
-    for (var i = 0; i < ths.length; i++) {
-      var k = ths[i].getAttribute('data-column-key');
-      if (k && k !== 'OfferSelect') keys.push(k);
-    }
-    return keys;
-  }
-
-  /** Option A: read selected offers from visible table DOM only. */
-  function getSelectedOffers() {
-    var root = getRoot();
-    if (!root) return [];
-    var tbody = root.querySelector('#results-body');
-    if (!tbody) return [];
-    var columnKeys = getTableColumnKeys();
-    var rows = tbody.querySelectorAll('tr');
-    var result = [];
-    for (var r = 0; r < rows.length; r++) {
-      var tr = rows[r];
-      var checkbox = tr.querySelector('.offer-checkbox-cell input.offer-checkbox');
-      if (!checkbox || !checkbox.checked) continue;
-      var cells = tr.querySelectorAll('td');
-      var lenderName = '';
-      var sector = '';
-      var obj = {};
-      for (var c = 0; c < cells.length; c++) {
-        var cell = cells[c];
-        var text = (cell.textContent || '').trim();
-        if (cell.classList.contains('bank-name-cell')) {
-          lenderName = text;
-          obj.lenderName = lenderName;
-        } else if (cell.classList.contains('sector-name-cell')) {
-          sector = text;
-          obj.sector = sector;
-        } else if (cell.classList.contains('offer-checkbox-cell')) {
-          continue;
-        } else {
-          var key = cell.getAttribute('data-column-key');
-          if (key) obj[key] = text;
-        }
-      }
-      if (lenderName || Object.keys(obj).length) result.push(obj);
-    }
-    return result;
-  }
-
-  /** Read input section data from #query-form. */
-  function getInputSectionData() {
-    var form = getQueryForm();
-    if (!form) return { gender: '', amount: '', secured: '', country: '', university: '', levelOfStudy: '' };
-    var genderEl = form.querySelector('input[name="gender"]:checked');
-    var amountEl = form.querySelector('#amount, input[name="amount"]');
-    var securedEl = form.querySelector('input[name="secured"]:checked');
-    var countryEl = form.querySelector('#country, input[name="country"]');
-    var universityEl = form.querySelector('#university, input[name="university"]');
-    var levelEl = form.querySelector('#levelOfStudy, input[name="levelOfStudy"]');
-    var amountRaw = amountEl ? String(amountEl.value || '').replace(/\D/g, '') : '';
-    return {
-      gender: genderEl ? genderEl.value : '',
-      amount: amountRaw || '',
-      secured: securedEl ? securedEl.value : '',
-      country: countryEl ? (countryEl.value || '').trim() : '',
-      university: universityEl ? (universityEl.value || '').trim() : '',
-      levelOfStudy: levelEl ? (levelEl.value || '').trim() : ''
-    };
+  function setButtonEnabled(enabled) {
+    postToIframe({ type: 'AOO_SET_BUTTON_STATE', disabled: !enabled });
   }
 
   function showToast(message, isError) {
-    var root = getRoot();
-    if (!root) return;
-    var existing = root.querySelector('.apply-flow-toast');
+    var existing = document.querySelector('.apply-flow-toast');
     if (existing) existing.remove();
     var el = document.createElement('div');
     el.className = 'apply-flow-toast' + (isError ? ' apply-flow-toast-error' : '');
-    el.style.cssText = 'position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);padding:0.6rem 1rem;border-radius:8px;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-lg);font-size:0.9rem;z-index:10002;max-width:90vw;';
-    if (isError) el.style.borderColor = '#b91c1c'; el.style.background = '#fef2f2';
+    el.style.cssText = 'position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);padding:0.6rem 1rem;border-radius:8px;background:var(--surface,#fff);border:1px solid var(--border,#e5e7eb);box-shadow:0 4px 6px -2px rgba(0,0,0,0.05);font-size:0.9rem;z-index:10002;max-width:90vw;';
+    if (isError) { el.style.borderColor = '#b91c1c'; el.style.background = '#fef2f2'; }
     el.textContent = message;
     document.body.appendChild(el);
     setTimeout(function () { el.remove(); }, 4000);
@@ -140,11 +49,7 @@
 
   function savePendingApplication(offers, inputData) {
     try {
-      var state = {
-        offers: offers || [],
-        inputData: inputData || {},
-        ts: Date.now()
-      };
+      var state = { offers: offers || [], inputData: inputData || {}, ts: Date.now() };
       window.localStorage.setItem(APPLY_STATE_KEY, JSON.stringify(state));
     } catch (e) {}
   }
@@ -160,11 +65,8 @@
       var raw = window.localStorage.getItem(APPLY_STATE_KEY);
       if (!raw) return null;
       var state = JSON.parse(raw);
-      if (!state || !state.offers || !state.offers.length) {
-        return null;
-      }
+      if (!state || !state.offers || !state.offers.length) return null;
       if (state.ts && Date.now() - state.ts > 15 * 60 * 1000) {
-        // Older than 15 minutes – treat as stale.
         clearPendingApplication();
         return null;
       }
@@ -180,25 +82,18 @@
       '<p><strong>Disclaimer</strong></p>' +
       '<p>The loan features shown on home page are indicative and are currently assessed without using your personal information.</p>' +
       '<p>Final offer terms (With or without collateral, interest rate, loan amount, etc.) will be confirmed after reviewing your complete application i.e., personal information such as:</p>' +
-      '<ul>' +
-      '<li>Your academic profile</li>' +
-      '<li>Co-applicant financial documents</li>' +
-      '<li>Property/Collateral value (If secured loan)</li>' +
-      '<li>CIBIL report of you & your co-applicant</li>' +
-      '<li>Others, as required by the lender</li>' +
-      '</ul>' +
+      '<ul><li>Your academic profile</li><li>Co-applicant financial documents</li><li>Property/Collateral value (If secured loan)</li><li>CIBIL report of you & your co-applicant</li><li>Others, as required by the lender</li></ul>' +
       '<p>By proceeding, you agree to share the required information for assessment.</p>' +
       '<div class="apply-flow-disclaimer-actions">' +
       '<button type="button" class="apply-flow-btn apply-flow-btn-cancel">Cancel</button>' +
       '<button type="button" class="apply-flow-btn apply-flow-btn-continue">Continue & Pay</button>' +
-      '</div>' +
-      '</div>'
+      '</div></div>'
     );
   }
 
   function showDisclaimerModal(onContinue) {
-    var root = getRoot();
-    if (!root) return;
+    var existing = document.querySelector('.apply-flow-backdrop');
+    if (existing) existing.remove();
     var backdrop = document.createElement('div');
     backdrop.className = 'apply-flow-backdrop';
     backdrop.setAttribute('aria-modal', 'true');
@@ -206,7 +101,7 @@
     backdrop.innerHTML = '<div class="apply-flow-modal apply-flow-modal-disclaimer">' + getDisclaimerHtml() + '</div>';
     var modal = backdrop.querySelector('.apply-flow-modal');
     backdrop.addEventListener('click', function (e) {
-      if (e.target === backdrop) { backdrop.remove(); }
+      if (e.target === backdrop) backdrop.remove();
     });
     modal.addEventListener('click', function (e) { e.stopPropagation(); });
     var cancelBtn = backdrop.querySelector('.apply-flow-btn-cancel');
@@ -224,7 +119,7 @@
     var style = document.createElement('style');
     style.id = 'apply-flow-styles';
     style.textContent = [
-      '.apply-flow-ctx, :root { --surface: #ffffff; --border: #e5e7eb; --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 6px 16px -4px rgba(0,0,0,0.06); --shadow-lg: 0 4px 6px -2px rgba(0,0,0,0.05), 0 24px 48px -12px rgba(0,0,0,0.1); --radius-lg: 20px; --text: #000000; --accent: #64748b; --accent-hover: #475569; --bg-subtle: #f1f5f9; }',
+      '.apply-flow-ctx, :root { --surface: #ffffff; --border: #e5e7eb; --shadow: 0 1px 3px rgba(0,0,0,0.04); --shadow-lg: 0 4px 6px -2px rgba(0,0,0,0.05); --radius-lg: 20px; --text: #000000; --accent: #64748b; --accent-hover: #475569; --bg-subtle: #f1f5f9; }',
       '.apply-flow-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); z-index: 10001; display: flex; align-items: center; justify-content: center; padding: 1rem; overflow-y: auto; }',
       '.apply-flow-modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); max-width: min(520px, 94vw); max-height: 85vh; overflow-y: auto; padding: 1.25rem; font-family: Montserrat, system-ui, sans-serif; }',
       '.apply-flow-disclaimer p { margin: 0 0 0.75rem 0; } .apply-flow-disclaimer ul { margin: 0.5rem 0 1rem 1.25rem; }',
@@ -232,25 +127,15 @@
       '.apply-flow-btn { padding: 0.5rem 1.25rem; border-radius: 100px; font-weight: 600; font-size: 0.875rem; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text); transition: background 0.2s, border-color 0.2s; }',
       '.apply-flow-btn-continue { background: var(--accent); color: #fff; border-color: var(--accent); } .apply-flow-btn-continue:hover { background: var(--accent-hover); border-color: var(--accent-hover); }',
       '.apply-flow-btn-cancel:hover { background: var(--bg-subtle); }',
-      '#loan-table-root .aoo-loan-table-wrap { position: relative; }',
-      '#apply-button.apply-floating-btn { position: absolute; bottom: 16px; right: 16px; z-index: 10; width: auto; max-width: 90%; padding: 8px 16px; font-size: 12px; font-weight: 600; border-radius: 999px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); white-space: nowrap; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.05rem; min-height: auto; font-family: Montserrat, system-ui, sans-serif; background: var(--accent); color: #fff; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; } #apply-button.apply-floating-btn:hover { background: var(--accent-hover); transform: translateY(-1px); } #apply-button.apply-floating-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }',
-      '#apply-button.apply-floating-btn .apply-btn-line2 { font-size: 0.65rem; font-weight: 500; opacity: 0.95; }',
-      '@media (max-width: 768px) { #apply-button.apply-floating-btn { bottom: 12px; right: 12px; padding: 8px 14px; font-size: 11px; max-width: 92%; width: auto; min-height: 44px; } #apply-button.apply-floating-btn:hover { transform: translateY(-1px); } #apply-button.apply-floating-btn:disabled { transform: none; } }',
-      '.apply-flow-success-block { margin-bottom: 0.75rem; padding: 1rem 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow); font-family: Montserrat, system-ui, sans-serif; }',
-      '.apply-flow-success-block .payment-success { color: #059669; font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }',
-      '.apply-flow-success-block p { margin: 0 0 0.35rem 0; font-size: 0.9rem; }',
       '.apply-flow-payment-success-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.5); backdrop-filter: blur(4px); z-index: 10003; display: flex; align-items: center; justify-content: center; padding: 1rem; overflow-y: auto; box-sizing: border-box; }',
-      '.apply-flow-payment-success-modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); max-width: min(480px, 95vw); width: 100%; padding: 1.5rem 1.5rem 1.25rem; font-family: Montserrat, system-ui, sans-serif; box-sizing: border-box; }',
-      '.apply-flow-payment-success-modal h2 { margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 700; color: var(--text); }',
-      '.apply-flow-payment-success-modal .payment-success-body { margin: 0 0 1.25rem 0; font-size: 0.9rem; line-height: 1.5; color: var(--text); word-wrap: break-word; }',
+      '.apply-flow-payment-success-modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); max-width: min(480px, 95vw); width: 100%; padding: 1.5rem; font-family: Montserrat, system-ui, sans-serif; }',
+      '.apply-flow-payment-success-modal h2 { margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 700; }',
+      '.apply-flow-payment-success-modal .payment-success-body { margin: 0 0 1.25rem 0; font-size: 0.9rem; line-height: 1.5; }',
       '.apply-flow-payment-success-modal .payment-success-body p { margin: 0 0 0.5rem 0; }',
-      '.apply-flow-payment-success-modal .payment-success-body p:last-child { margin-bottom: 0; }',
       '.apply-flow-payment-success-modal .payment-success-body a { color: var(--accent); }',
-      '.apply-flow-payment-success-modal .payment-success-actions { display: flex; justify-content: center; }',
-      '.apply-flow-payment-success-modal .apply-flow-btn-got-it { padding: 0.6rem 1.5rem; min-height: 44px; border-radius: 100px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; background: var(--accent); color: #fff; font-family: inherit; transition: background 0.2s; }',
+      '.apply-flow-payment-success-modal .apply-flow-btn-got-it { padding: 0.6rem 1.5rem; min-height: 44px; border-radius: 100px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; background: var(--accent); color: #fff; }',
       '.apply-flow-payment-success-modal .apply-flow-btn-got-it:hover { background: var(--accent-hover); }',
-      '@media (max-width: 640px) { .apply-flow-payment-success-overlay { padding: 0.75rem; align-items: center; } .apply-flow-payment-success-modal { width: 90%; max-width: 95vw; padding: 1.25rem 1rem; } .apply-flow-payment-success-modal .apply-flow-btn-got-it { width: 100%; max-width: none; } }',
-      '@media (max-width: 640px) { .apply-flow-backdrop { padding: 0.5rem; align-items: flex-end; } .apply-flow-modal { max-height: 92vh; width: 100%; border-radius: var(--radius-lg) var(--radius-lg) 0 0; } .apply-flow-disclaimer { max-height: 70vh; overflow-y: auto; -webkit-overflow-scrolling: touch; } .apply-flow-disclaimer-actions { flex-wrap: wrap; gap: 0.5rem; } .apply-flow-btn { min-height: 44px; min-width: 44px; padding: 0.6rem 1.25rem; } #apply-button.apply-floating-btn { min-height: 44px; padding: 8px 14px; bottom: 12px; right: 12px; } .apply-flow-success-block { font-size: 0.875rem; padding: 0.875rem 1rem; } }'
+      '@media (max-width: 640px) { .apply-flow-backdrop { padding: 0.5rem; align-items: flex-end; } .apply-flow-modal { max-height: 92vh; border-radius: var(--radius-lg) var(--radius-lg) 0 0; } .apply-flow-btn { min-height: 44px; min-width: 44px; } }'
     ].join('\n');
     document.head.appendChild(style);
   }
@@ -262,21 +147,11 @@
       if (session && session.user) return session.user;
       return supabaseClient.auth.signInWithOAuth({
         provider: 'google',
-        options: {
-          // After Google auth, send user back to the public site.
-          redirectTo: 'https://applyonlyonce.com/'
-        }
+        options: { redirectTo: 'https://applyonlyonce.com/' }
       }).then(function (oauthRes) {
         if (oauthRes.data && oauthRes.data.url) {
-          // When running inside the embedded iframe on applyonlyonce.com, Supabase's
-          // auth page cannot be loaded in-frame (it sets X-Frame-Options). Always
-          // redirect the top window instead of just the iframe.
           var targetWindow = (window.top || window);
-          try {
-            targetWindow.location.href = oauthRes.data.url;
-          } catch (e) {
-            window.location.href = oauthRes.data.url;
-          }
+          try { targetWindow.location.href = oauthRes.data.url; } catch (e) { window.location.href = oauthRes.data.url; }
           return new Promise(function () {});
         }
         return supabaseClient.auth.getSession().then(function (r) {
@@ -287,76 +162,6 @@
     });
   }
 
-  function startPaymentFlow(user, offers, inputData, applyBtn) {
-    if (!supabaseClient) {
-      showToast('Supabase is not configured.', true);
-      if (applyBtn) applyBtn.disabled = false;
-      return Promise.resolve();
-    }
-    if (!window.Razorpay || !RAZORPAY_KEY_ID) {
-      showToast('Razorpay is not loaded.', true);
-      if (applyBtn) applyBtn.disabled = false;
-      return Promise.resolve();
-    }
-    if (!user || !user.email) {
-      showToast('Could not get your email. Please sign in with Google.', true);
-      if (applyBtn) applyBtn.disabled = false;
-      clearPendingApplication();
-      return Promise.resolve();
-    }
-    if (!offers || !offers.length) {
-      showToast('Please select at least one offer/lender to apply.', true);
-      if (applyBtn) applyBtn.disabled = false;
-      clearPendingApplication();
-      return Promise.resolve();
-    }
-
-    clearPendingApplication();
-
-    var email = user.email;
-    var payload = {
-      email: email,
-      offers: offers,
-      input_data: inputData || {},
-      amount_paise: APPLICATION_PRICE_PAISE,
-      status: 'initiated'
-    };
-
-    return supabaseClient.from('applications').insert(payload).select().single().then(function (res) {
-      if (res.error) throw res.error;
-      var applicationId = res.data.id;
-
-      var options = {
-        key: RAZORPAY_KEY_ID,
-        amount: APPLICATION_PRICE_PAISE,
-        currency: 'INR',
-        name: 'ApplyOnlyOnce',
-        description: 'Loan application offers',
-        prefill: { email: email },
-        readonly: { email: true },
-        handler: function (response) {
-          showToast('Payment successful!', false);
-          supabaseClient.from('applications').update({
-            status: 'paid',
-            razorpay_payment_id: response.razorpay_payment_id
-          }).eq('id', applicationId).then(function () {
-            showPaymentSuccessModal(email);
-          });
-          if (applyBtn) applyBtn.disabled = false;
-        },
-        modal: {
-          ondismiss: function () {
-            if (applyBtn) applyBtn.disabled = false;
-          }
-        }
-      };
-
-      var rzp = new window.Razorpay(options);
-      rzp.open();
-    });
-  }
-
-  /** Payment success overlay modal – shown only after Razorpay success; does not affect layout. */
   function showPaymentSuccessModal(userEmail) {
     var existing = document.querySelector('.apply-flow-payment-success-overlay');
     if (existing) existing.remove();
@@ -364,23 +169,18 @@
     overlay.className = 'apply-flow-payment-success-overlay';
     overlay.setAttribute('aria-modal', 'true');
     overlay.setAttribute('role', 'dialog');
-    overlay.setAttribute('aria-labelledby', 'payment-success-title');
     overlay.innerHTML =
       '<div class="apply-flow-payment-success-modal">' +
       '<h2 id="payment-success-title">Payment Successful</h2>' +
       '<div class="payment-success-body">' +
       '<p>We\'ve received your application for the selected offers/lenders. We\'ll contact you in the next 48 hours at <span id="payment-success-user-email"></span>.</p>' +
       '<p>Even if you missed selecting an offer or want to correct the information, let us know at 91123 34367 or <a href="mailto:aoopune@gmail.com">aoopune@gmail.com</a>.</p>' +
-      '</div>' +
-      '<div class="payment-success-actions">' +
-      '<button type="button" class="apply-flow-btn-got-it">Got It</button>' +
-      '</div>' +
-      '</div>';
-    var modal = overlay.querySelector('.apply-flow-payment-success-modal');
+      '</div><div class="payment-success-actions"><button type="button" class="apply-flow-btn-got-it">Got It</button></div></div>';
     var emailEl = overlay.querySelector('#payment-success-user-email');
     if (emailEl) emailEl.textContent = userEmail && String(userEmail).trim() ? userEmail : 'your registered email';
     var gotItBtn = overlay.querySelector('.apply-flow-btn-got-it');
-    var previousOverflow = '';
+    var previousOverflow = document.body.style.overflow || '';
+    document.body.style.overflow = 'hidden';
     function closeModal() {
       overlay.remove();
       document.body.style.overflow = previousOverflow;
@@ -393,40 +193,113 @@
           window.history.replaceState({}, '', u.pathname + u.search + u.hash);
         }
       } catch (e) {}
+      flowState = 'IDLE';
+      paymentFlowStarted = false;
+      setButtonEnabled(true);
     }
-    previousOverflow = document.body.style.overflow || '';
-    document.body.style.overflow = 'hidden';
     gotItBtn.addEventListener('click', closeModal);
     overlay.addEventListener('click', function (e) {
       if (e.target === overlay) closeModal();
     });
-    modal.addEventListener('click', function (e) { e.stopPropagation(); });
+    overlay.querySelector('.apply-flow-payment-success-modal').addEventListener('click', function (e) { e.stopPropagation(); });
     document.body.appendChild(overlay);
   }
 
-  function runApplyFlow() {
-    var offers = getSelectedOffers();
-    if (!offers.length) {
+  function startPaymentFlow(user, offers, inputData) {
+    if (paymentFlowStarted) return Promise.resolve();
+    if (!supabaseClient) {
+      showToast('Supabase is not configured.', true);
+      setButtonEnabled(true);
+      return Promise.resolve();
+    }
+    if (!window.Razorpay || !RAZORPAY_KEY_ID) {
+      showToast('Razorpay is not loaded.', true);
+      setButtonEnabled(true);
+      return Promise.resolve();
+    }
+    if (!user || !user.email) {
+      showToast('Could not get your email. Please sign in with Google.', true);
+      setButtonEnabled(true);
+      clearPendingApplication();
+      return Promise.resolve();
+    }
+    if (!offers || !offers.length) {
+      showToast('Please select at least one offer/lender to apply.', true);
+      setButtonEnabled(true);
+      clearPendingApplication();
+      return Promise.resolve();
+    }
+
+    clearPendingApplication();
+    flowState = 'AUTH_COMPLETED';
+    var email = user.email;
+    var payload = {
+      email: email,
+      offers: offers,
+      input_data: inputData || {},
+      amount_paise: APPLICATION_PRICE_PAISE,
+      status: 'initiated'
+    };
+
+    return supabaseClient.from('applications').insert(payload).select().single().then(function (res) {
+      if (res.error) throw res.error;
+      var applicationId = res.data.id;
+      flowState = 'PAYMENT_PENDING';
+      paymentFlowStarted = true;
+
+      var options = {
+        key: RAZORPAY_KEY_ID,
+        amount: APPLICATION_PRICE_PAISE,
+        currency: 'INR',
+        name: 'ApplyOnlyOnce',
+        description: 'Loan application offers',
+        prefill: { email: email },
+        readonly: { email: true },
+        handler: function (response) {
+          flowState = 'PAYMENT_COMPLETED';
+          paymentFlowStarted = false;
+          showToast('Payment successful!', false);
+          supabaseClient.from('applications').update({
+            status: 'paid',
+            razorpay_payment_id: response.razorpay_payment_id
+          }).eq('id', applicationId).then(function () {
+            showPaymentSuccessModal(email);
+          });
+          setButtonEnabled(true);
+        },
+        modal: {
+          ondismiss: function () {
+            flowState = 'IDLE';
+            paymentFlowStarted = false;
+            setButtonEnabled(true);
+          }
+        }
+      };
+
+      var rzp = new window.Razorpay(options);
+      rzp.open();
+    });
+  }
+
+  function runApplyFlowFromSelection(offers, inputData) {
+    if (!offers || !offers.length) {
       showToast('Please select at least one offer/lender to apply.', true);
       return;
     }
-
+    flowState = 'IDLE';
     showDisclaimerModal(function () {
-      var applyBtn = document.getElementById('apply-button');
-      if (applyBtn) applyBtn.disabled = true;
-
-      var inputData = getInputSectionData();
+      setButtonEnabled(false);
       savePendingApplication(offers, inputData);
+      flowState = 'AUTH_REQUIRED';
 
       getOrSignInUser()
         .then(function (user) {
-          return startPaymentFlow(user, offers, inputData, applyBtn);
+          return startPaymentFlow(user, offers, inputData);
         })
         .catch(function (err) {
+          flowState = 'IDLE';
           var raw = (err && err.message) ? err.message : (err && String(err)) || 'Something went wrong.';
-          if (typeof console !== 'undefined' && console.error) {
-            console.error('[Apply flow]', err);
-          }
+          if (typeof console !== 'undefined' && console.error) console.error('[Apply flow]', err);
           var msg = raw;
           if (/failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
             msg = "Can't reach our servers (connection reset or blocked). Try: another network (e.g. mobile data), turn off VPN, or try again later. Need help? Call 91123 34367 or email aoopune@gmail.com.";
@@ -435,92 +308,74 @@
           }
           showToast(msg, true);
           clearPendingApplication();
-          if (applyBtn) applyBtn.disabled = false;
+          setButtonEnabled(true);
         });
     });
   }
 
-  function addApplyButton() {
-    var wrap = getWrap();
-    if (!wrap) return;
-    if (document.getElementById('apply-button')) return;
+  function handleMessage(event) {
+    if (!event || !event.data || typeof event.data !== 'object') return;
+    var msg = event.data;
+    if (msg.type === 'AOO_APPLY_CLICKED') {
+      postToIframe({ type: 'AOO_GET_SELECTION' });
+    } else if (msg.type === 'AOO_SELECTION_RESPONSE') {
+      var offers = msg.offers || [];
+      var inputData = msg.inputData || {};
+      runApplyFlowFromSelection(offers, inputData);
+    }
+  }
 
-    var tableContainer = getTableContainer();
-    if (!tableContainer) return;
+  function runResumeFlow() {
+    if (resumeInProgress) return;
+    var pending = loadPendingApplication();
+    if (!pending || !pending.offers || !pending.offers.length) return;
+    if (!supabaseClient) return;
 
-    var applyButton = document.createElement('button');
-    applyButton.type = 'button';
-    applyButton.id = 'apply-button';
-    applyButton.className = 'apply-floating-btn';
-    applyButton.innerHTML = '<span>Apply</span>';
-    applyButton.addEventListener('click', function () {
-      runApplyFlow();
+    resumeInProgress = true;
+    var ran = false;
+    setButtonEnabled(false);
+
+    function doResume(session) {
+      if (ran || !session || !session.user) return;
+      ran = true;
+      startPaymentFlow(session.user, pending.offers, pending.inputData || {})
+        .catch(function () {
+          resumeInProgress = false;
+          setButtonEnabled(true);
+        });
+      resumeInProgress = false;
+    }
+
+    var authListener = supabaseClient.auth.onAuthStateChange(function (event, session) {
+      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') doResume(session);
     });
 
-    tableContainer.appendChild(applyButton);
+    supabaseClient.auth.getSession().then(function (res) {
+      var session = res.data && res.data.session;
+      if (session && session.user) {
+        doResume(session);
+      }
+    });
+
+    var maxWait = 4500;
+    setTimeout(function () {
+      if (!ran) {
+        resumeInProgress = false;
+        setButtonEnabled(true);
+        try {
+          var sub = (authListener && authListener.data && authListener.data.subscription) || (authListener && authListener.data) || authListener;
+          if (sub && typeof sub.unsubscribe === 'function') sub.unsubscribe();
+        } catch (e) {}
+      }
+    }, maxWait);
   }
 
   function initApplyFlow() {
+    if (applyFlowInitialized) return;
+    applyFlowInitialized = true;
     ensureApplyFlowStyles();
-    var root = getRoot();
-    if (!root) return;
-    var wrap = root.querySelector('.aoo-loan-table-wrap .wrap');
-    if (!wrap) {
-      setTimeout(initApplyFlow, 150);
-      return;
-    }
-    addApplyButton();
-
-    // If user just returned from Google login: we have pending selection and need a session.
-    // The OAuth hash is on the parent URL; parent runs getSession() to persist to localStorage.
-    // We retry getSession() so we pick up the session once the parent has stored it, then auto-open Razorpay.
-    if (supabaseClient) {
-      var pending = loadPendingApplication();
-      if (pending && pending.offers && pending.offers.length) {
-        var applyBtn = document.getElementById('apply-button');
-        if (applyBtn) applyBtn.disabled = true;
-        var ran = false;
-        var retryCount = 0;
-        var maxRetries = 10;
-        var retryMs = 400;
-        function doResume(session) {
-          if (ran || !session || !session.user) return;
-          ran = true;
-          startPaymentFlow(session.user, pending.offers, pending.inputData, applyBtn)
-            .catch(function () {
-              if (applyBtn) applyBtn.disabled = false;
-            });
-        }
-        function tryGetSession() {
-          if (ran) return;
-          supabaseClient.auth.getSession().then(function (res) {
-            var session = res.data && res.data.session;
-            if (session && session.user) {
-              doResume(session);
-              return;
-            }
-            retryCount += 1;
-            if (retryCount < maxRetries) {
-              setTimeout(tryGetSession, retryMs);
-            } else if (applyBtn) {
-              applyBtn.disabled = false;
-            }
-          });
-        }
-        var authListener = supabaseClient.auth.onAuthStateChange(function (event, session) {
-          if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') doResume(session);
-        });
-        tryGetSession();
-        // If still no session after ~4s, re-enable button and stop retrying.
-        setTimeout(function () {
-          if (!ran && applyBtn) applyBtn.disabled = false;
-          try {
-            var sub = (authListener && authListener.data && authListener.data.subscription) || (authListener && authListener.data) || authListener;
-            if (sub && typeof sub.unsubscribe === 'function') sub.unsubscribe();
-          } catch (e) {}
-        }, maxRetries * retryMs + 500);
-      }
-    }
+    window.addEventListener('message', handleMessage);
+    runResumeFlow();
   }
 
   if (document.readyState === 'loading') {
@@ -530,7 +385,4 @@
   } else {
     setTimeout(initApplyFlow, 100);
   }
-  window.addEventListener('load', function () {
-    setTimeout(initApplyFlow, 50);
-  });
 })();
