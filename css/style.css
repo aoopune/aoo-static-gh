@@ -590,23 +590,13 @@ main.home-main {
   color: var(--text);
 }
 
-.home-subheading {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  color: var(--text-secondary);
-  margin: 0 auto var(--space-1);
-  line-height: 1.55;
-  font-weight: 500;
-  white-space: nowrap;
-  max-width: 90vw;
-}
-
-.home-course-types {
-  font-size: clamp(0.9375rem, 1.5vw, 1rem);
-  color: var(--text-muted);
-  margin: 0 auto var(--space-1);
-  line-height: 1.6;
-  padding: 0 var(--space-4);
-  white-space: nowrap;
+.hero-subheading {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 12px auto 0;
+  color: #4b5563;
+  text-align: center;
+  line-height: 1.5;
   max-width: 90vw;
 }
 
@@ -1577,15 +1567,12 @@ textarea { min-height: 100px; resize: vertical; }
 
   .home-heading { font-size: 1.375rem; }
 
-  .home-subheading,
-  .home-course-types {
+  .hero-subheading {
     white-space: normal;
     max-width: 100%;
     text-align: center;
+    font-size: 1.0625rem;
   }
-
-  .home-subheading { font-size: 1.0625rem; }
-  .home-course-types { font-size: 0.9375rem; }
 
   /* Ensure hero heading block scrolls with the page (not fixed/sticky) */
   .home-main .col-12.col-lg-10.col-xl-9 {
@@ -1787,8 +1774,7 @@ textarea { min-height: 100px; resize: vertical; }
   main { padding: var(--space-5) var(--space-3); }
   main h1 { font-size: 1.25rem; line-height: 1.35; }
   .home-heading { font-size: 1.25rem; }
-  .home-subheading { font-size: 1rem; }
-  .home-course-types { font-size: 0.875rem; }
+  .hero-subheading { font-size: 1rem; }
   .card { padding: var(--space-4); }
   .data-table { font-size: 0.8125rem; }
   .data-table th,
