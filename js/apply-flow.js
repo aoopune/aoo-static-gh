@@ -334,7 +334,7 @@
             status: 'paid',
             razorpay_payment_id: response.razorpay_payment_id
           }).eq('id', applicationId).then(function () {
-            showPaymentSuccessModal();
+            showPaymentSuccessModal(email);
           });
           if (applyBtn) applyBtn.disabled = false;
         },
@@ -351,7 +351,7 @@
   }
 
   /** Payment success overlay modal – shown only after Razorpay success; does not affect layout. */
-  function showPaymentSuccessModal() {
+  function showPaymentSuccessModal(userEmail) {
     var existing = document.querySelector('.apply-flow-payment-success-overlay');
     if (existing) existing.remove();
     var overlay = document.createElement('div');
@@ -363,7 +363,7 @@
       '<div class="apply-flow-payment-success-modal">' +
       '<h2 id="payment-success-title">Payment Successful</h2>' +
       '<div class="payment-success-body">' +
-      '<p>We\'ve received your application for the selected offers/lenders. We\'ll contact you in the next 48 hours at aoopune@gmail.com.</p>' +
+      '<p>We\'ve received your application for the selected offers/lenders. We\'ll contact you in the next 48 hours at <span id="payment-success-user-email"></span>.</p>' +
       '<p>Even if you missed selecting an offer or want to correct the information, let us know at 91123 34367 or <a href="mailto:aoopune@gmail.com">aoopune@gmail.com</a>.</p>' +
       '</div>' +
       '<div class="payment-success-actions">' +
@@ -371,6 +371,8 @@
       '</div>' +
       '</div>';
     var modal = overlay.querySelector('.apply-flow-payment-success-modal');
+    var emailEl = overlay.querySelector('#payment-success-user-email');
+    if (emailEl) emailEl.textContent = userEmail && String(userEmail).trim() ? userEmail : 'your registered email';
     var gotItBtn = overlay.querySelector('.apply-flow-btn-got-it');
     var previousOverflow = '';
     function closeModal() {
