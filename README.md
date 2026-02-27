@@ -37,12 +37,26 @@ npm start
 
 ## Deploy to GitHub Pages
 
+**Quick deploy** (stage, commit, push — same build as http://localhost:8765 goes live on the domain):
+
+```bash
+# From aoo-static-gh folder:
+npm run deploy
+# Or with a custom commit message:
+npm run deploy -- "Your commit message"
+```
+
+Or run the script directly:
+- **PowerShell**: `.\scripts\deploy.ps1` or `.\scripts\deploy.ps1 "Your message"`
+- **Git Bash**: `./scripts/deploy.sh` or `./scripts/deploy.sh "Your message"`
+
+One-time setup (if not done already):
+
 1. Initialize git (if not done): `git init`
 2. Add and commit: `git add . && git commit -m "Initial commit"`
-3. Create GitHub repo named `applyonlyonce` (Settings → New repository).
-4. Add remote and push: `git remote add origin https://github.com/YOUR_USERNAME/applyonlyonce.git && git branch -M main && git push -u origin main`
-5. Settings → Pages → Source: Deploy from branch → Branch: main → Folder: / (root) → Save.
-6. Site live at `https://YOUR_USERNAME.github.io/applyonlyonce/`
+3. Create GitHub repo (e.g. `aoo-static-gh` or `applyonlyonce`) and add remote: `git remote add origin https://github.com/YOUR_USERNAME/REPO.git && git branch -M main && git push -u origin main`
+4. Settings → Pages → Source: Deploy from branch → Branch: main → Folder: / (root) → Save.
+5. Site live at your Pages URL (e.g. https://applyonlyonce.com if CNAME is set).
 
 ## Tests
 

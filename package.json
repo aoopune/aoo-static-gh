@@ -8,7 +8,8 @@
     "serve": "node scripts/serve.js",
     "test": "node tests/run-unit.js 2>/dev/null || true",
     "test:ui": "npx playwright test",
-    "test:deployed": "BASE_URL=${BASE_URL:-https://YOUR_USERNAME.github.io/applyonlyonce/} npx playwright test"
+    "test:deployed": "BASE_URL=${BASE_URL:-https://YOUR_USERNAME.github.io/applyonlyonce/} npx playwright test",
+    "deploy": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy.ps1"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.1",
