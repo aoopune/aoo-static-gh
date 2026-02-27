@@ -16,6 +16,8 @@
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   }
 
+  var PENDING_KEY = 'aoo_apply_pending_v1';
+
   function getRoot() {
     return document.querySelector('#loan-table-root');
   }
@@ -411,24 +413,38 @@
     }
     addApplyButton();
 
-    // If user just returned from Google login and we have a stored
-    // pending application, automatically continue to Supabase insert
-    // and Razorpay without asking them to click again.
+    // If user just returned from Google login (URL has #access_token), wait for
+    // Supabase to restore the session from the hash, then insert and open Razorpay.
+    // Without waiting, getSession() can be null and insert runs without JWT → RLS error.
     if (supabaseClient) {
       var pending = loadPendingApplication();
       if (pending && pending.offers && pending.offers.length) {
         var applyBtn = document.getElementById('apply-button');
         if (applyBtn) applyBtn.disabled = true;
-        supabaseClient.auth.getSession().then(function (res) {
-          var session = res.data && res.data.session;
-          if (!session || !session.user) {
-            if (applyBtn) applyBtn.disabled = false;
-            return;
-          }
-          startPaymentFlow(session.user, pending.offers, pending.inputData, applyBtn);
-        }).catch(function () {
-          if (applyBtn) applyBtn.disabled = false;
+        var ran = false;
+        function doResume(session) {
+          if (ran || !session || !session.user) return;
+          ran = true;
+          startPaymentFlow(session.user, pending.offers, pending.inputData, applyBtn)
+            .catch(function () {
+              if (applyBtn) applyBtn.disabled = false;
+            });
+        }
+        var authListener = supabaseClient.auth.onAuthStateChange(function (event, session) {
+          if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') doResume(session);
         });
+        // Session may already be restored from hash; try immediately.
+        supabaseClient.auth.getSession().then(function (res) {
+          doResume(res.data && res.data.session);
+        });
+        // If no session after 3s, re-enable button (e.g. hash was stripped or storage cleared).
+        setTimeout(function () {
+          if (!ran && applyBtn) applyBtn.disabled = false;
+          try {
+            var sub = (authListener && authListener.data && authListener.data.subscription) || (authListener && authListener.data) || authListener;
+            if (sub && typeof sub.unsubscribe === 'function') sub.unsubscribe();
+          } catch (e) {}
+        }, 3000);
       }
     }
   }
