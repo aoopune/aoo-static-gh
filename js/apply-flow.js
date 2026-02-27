@@ -9,6 +9,7 @@
   var SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY;
   var RAZORPAY_KEY_ID = window.RAZORPAY_KEY_ID;
   var APPLICATION_PRICE_PAISE = window.APPLICATION_PRICE_PAISE || 9900;
+  var APPLY_STATE_KEY = 'aoo_apply_state_v1';
 
   var supabaseClient = null;
   if (typeof window.supabase !== 'undefined' && SUPABASE_URL && SUPABASE_ANON_KEY) {
@@ -117,6 +118,42 @@
     setTimeout(function () { el.remove(); }, 4000);
   }
 
+  function savePendingApplication(offers, inputData) {
+    try {
+      var state = {
+        offers: offers || [],
+        inputData: inputData || {},
+        ts: Date.now()
+      };
+      window.localStorage.setItem(APPLY_STATE_KEY, JSON.stringify(state));
+    } catch (e) {}
+  }
+
+  function clearPendingApplication() {
+    try {
+      window.localStorage.removeItem(APPLY_STATE_KEY);
+    } catch (e) {}
+  }
+
+  function loadPendingApplication() {
+    try {
+      var raw = window.localStorage.getItem(APPLY_STATE_KEY);
+      if (!raw) return null;
+      var state = JSON.parse(raw);
+      if (!state || !state.offers || !state.offers.length) {
+        return null;
+      }
+      if (state.ts && Date.now() - state.ts > 15 * 60 * 1000) {
+        // Older than 15 minutes – treat as stale.
+        clearPendingApplication();
+        return null;
+      }
+      return state;
+    } catch (e) {
+      return null;
+    }
+  }
+
   function getDisclaimerHtml() {
     return (
       '<div class="apply-flow-disclaimer">' +
@@ -190,7 +227,13 @@
     return supabaseClient.auth.getSession().then(function (res) {
       var session = res.data && res.data.session;
       if (session && session.user) return session.user;
-      return supabaseClient.auth.signInWithOAuth({ provider: 'google' }).then(function (oauthRes) {
+      return supabaseClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          // After Google auth, send user back to the public site.
+          redirectTo: 'https://applyonlyonce.com/'
+        }
+      }).then(function (oauthRes) {
         if (oauthRes.data && oauthRes.data.url) {
           // When running inside the embedded iframe on applyonlyonce.com, Supabase's
           // auth page cannot be loaded in-frame (it sets X-Frame-Options). Always
@@ -208,6 +251,74 @@
           return s ? s.user : null;
         });
       });
+    });
+  }
+
+  function startPaymentFlow(user, offers, inputData, applyBtn) {
+    if (!supabaseClient) {
+      showToast('Supabase is not configured.', true);
+      if (applyBtn) applyBtn.disabled = false;
+      return Promise.resolve();
+    }
+    if (!window.Razorpay || !RAZORPAY_KEY_ID) {
+      showToast('Razorpay is not loaded.', true);
+      if (applyBtn) applyBtn.disabled = false;
+      return Promise.resolve();
+    }
+    if (!user || !user.email) {
+      showToast('Could not get your email. Please sign in with Google.', true);
+      if (applyBtn) applyBtn.disabled = false;
+      clearPendingApplication();
+      return Promise.resolve();
+    }
+    if (!offers || !offers.length) {
+      showToast('Please select at least one offer/lender to apply.', true);
+      if (applyBtn) applyBtn.disabled = false;
+      clearPendingApplication();
+      return Promise.resolve();
+    }
+
+    clearPendingApplication();
+
+    var email = user.email;
+    var payload = {
+      email: email,
+      offers: offers,
+      input_data: inputData || {},
+      amount_paise: APPLICATION_PRICE_PAISE,
+      status: 'initiated'
+    };
+
+    return supabaseClient.from('applications').insert(payload).select().single().then(function (res) {
+      if (res.error) throw res.error;
+      var applicationId = res.data.id;
+
+      var options = {
+        key: RAZORPAY_KEY_ID,
+        amount: APPLICATION_PRICE_PAISE,
+        currency: 'INR',
+        name: 'ApplyOnlyOnce',
+        description: 'Loan application offers',
+        prefill: { email: email },
+        readonly: { email: true },
+        handler: function (response) {
+          supabaseClient.from('applications').update({
+            status: 'paid',
+            razorpay_payment_id: response.razorpay_payment_id
+          }).eq('id', applicationId).then(function () {
+            showSuccessBlock(email);
+          });
+          if (applyBtn) applyBtn.disabled = false;
+        },
+        modal: {
+          ondismiss: function () {
+            if (applyBtn) applyBtn.disabled = false;
+          }
+        }
+      };
+
+      var rzp = new window.Razorpay(options);
+      rzp.open();
     });
   }
 
@@ -234,15 +345,6 @@
   }
 
   function runApplyFlow() {
-    if (!supabaseClient) {
-      showToast('Supabase is not configured.', true);
-      return;
-    }
-    if (!window.Razorpay || !RAZORPAY_KEY_ID) {
-      showToast('Razorpay is not loaded.', true);
-      return;
-    }
-
     var offers = getSelectedOffers();
     if (!offers.length) {
       showToast('Please select at least one offer/lender to apply.', true);
@@ -253,54 +355,12 @@
       var applyBtn = document.getElementById('apply-button');
       if (applyBtn) applyBtn.disabled = true;
 
+      var inputData = getInputSectionData();
+      savePendingApplication(offers, inputData);
+
       getOrSignInUser()
         .then(function (user) {
-          if (!user || !user.email) {
-            showToast('Could not get your email. Please sign in with Google.', true);
-            if (applyBtn) applyBtn.disabled = false;
-            return;
-          }
-          var email = user.email;
-          var inputData = getInputSectionData();
-          var payload = {
-            email: email,
-            offers: offers,
-            input_data: inputData,
-            amount_paise: APPLICATION_PRICE_PAISE,
-            status: 'initiated'
-          };
-
-          return supabaseClient.from('applications').insert(payload).select().single().then(function (res) {
-            if (res.error) throw res.error;
-            var applicationId = res.data.id;
-
-            var options = {
-              key: RAZORPAY_KEY_ID,
-              amount: APPLICATION_PRICE_PAISE,
-              currency: 'INR',
-              name: 'ApplyOnlyOnce',
-              description: 'Loan application offers',
-              prefill: { email: email },
-              readonly: { email: true },
-              handler: function (response) {
-                supabaseClient.from('applications').update({
-                  status: 'paid',
-                  razorpay_payment_id: response.razorpay_payment_id
-                }).eq('id', applicationId).then(function () {
-                  showSuccessBlock(email);
-                });
-                if (applyBtn) applyBtn.disabled = false;
-              },
-              modal: {
-                ondismiss: function () {
-                  if (applyBtn) applyBtn.disabled = false;
-                }
-              }
-            };
-
-            var rzp = new window.Razorpay(options);
-            rzp.open();
-          });
+          return startPaymentFlow(user, offers, inputData, applyBtn);
         })
         .catch(function (err) {
           var msg = (err && err.message) ? err.message : 'Something went wrong.';
@@ -308,6 +368,7 @@
             msg = "Can't reach our servers (connection reset or blocked). Try: another network (e.g. mobile data), turn off VPN, or try again later. Need help? Call 91123 34367 or email aoopune@gmail.com.";
           }
           showToast(msg, true);
+          clearPendingApplication();
           if (applyBtn) applyBtn.disabled = false;
         });
     });
@@ -349,6 +410,27 @@
       return;
     }
     addApplyButton();
+
+    // If user just returned from Google login and we have a stored
+    // pending application, automatically continue to Supabase insert
+    // and Razorpay without asking them to click again.
+    if (supabaseClient) {
+      var pending = loadPendingApplication();
+      if (pending && pending.offers && pending.offers.length) {
+        var applyBtn = document.getElementById('apply-button');
+        if (applyBtn) applyBtn.disabled = true;
+        supabaseClient.auth.getSession().then(function (res) {
+          var session = res.data && res.data.session;
+          if (!session || !session.user) {
+            if (applyBtn) applyBtn.disabled = false;
+            return;
+          }
+          startPaymentFlow(session.user, pending.offers, pending.inputData, applyBtn);
+        }).catch(function () {
+          if (applyBtn) applyBtn.disabled = false;
+        });
+      }
+    }
   }
 
   if (document.readyState === 'loading') {
