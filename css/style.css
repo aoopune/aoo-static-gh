@@ -3,13 +3,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
 :root {
-  /* Modern palette – crisp blues with soft neutrals */
-  --primary: #0ea5e9;
-  --primary-dark: #0284c7;
-  --primary-pastel: #e0f2fe;
-  --primary-light: rgba(14, 165, 233, 0.12);
-  --secondary: #1e3a5f;
-  --secondary-pastel: #dbeafe;
+  /* Neutral greys for UI; dedicated link blue */
+  --primary: #EEEEEE;
+  --primary-dark: #d4d4d4;
+  --primary-pastel: #f5f5f5;
+  --primary-light: rgba(238, 238, 238, 0.4);
+  --link: #0066cc;
+  --link-hover: #004c99;
+  --link-bg: #e6f2ff;
+  --secondary: #555555;
+  --secondary-pastel: #f0f0f0;
   --bg: #fafbfc;
   --bg-surface: #ffffff;
   --bg-elevated: #ffffff;
@@ -24,9 +27,9 @@
   --border-light: #f1f5f9;
   --card-bg: #ffffff;
   --card-border: #e2e8f0;
-  --home-hero-bg: linear-gradient(180deg, #f0f9ff 0%, #ffffff 50%, #f8fafc 100%);
+  --home-hero-bg: linear-gradient(180deg, #f5f5f5 0%, #ffffff 50%, #f0f0f0 100%);
   --home-card-bg: #ffffff;
-  --home-card-accent: rgba(14, 165, 233, 0.08);
+  --home-card-accent: rgba(238, 238, 238, 0.6);
   --footer-bg: #f1f5f9;
   --heading-accent: #57564F;
 
@@ -84,8 +87,8 @@ body {
   overflow-x: hidden;
 }
 
-a { color: var(--primary); text-decoration: none; transition: color var(--transition-fast); }
-a:hover { color: var(--primary-dark); text-decoration: underline; }
+a { color: var(--link); text-decoration: none; transition: color var(--transition-fast); }
+a:hover { color: var(--link-hover); text-decoration: underline; }
 
 /* ========== Header & Nav – light bar, logo left, nav right ========== */
 .site-header {
@@ -658,7 +661,7 @@ main.home-main {
 }
 
 .home-nav-links a {
-  color: var(--primary);
+  color: var(--link);
   font-weight: 600;
   font-size: 0.9375rem;
   padding: var(--space-4) var(--space-6);
@@ -670,15 +673,15 @@ main.home-main {
   text-decoration: none;
 }
 .home-nav-links a:hover {
-  background: var(--primary);
+  background: var(--link);
   color: #fff;
-  border-color: var(--primary);
+  border-color: var(--link);
   box-shadow: var(--elevation-2);
   transform: translateY(-1px);
   text-decoration: none;
 }
 .home-nav-links a:focus-visible {
-  outline: 2px solid var(--primary);
+  outline: 2px solid var(--link);
   outline-offset: 2px;
 }
 
@@ -977,7 +980,7 @@ main.compare-main #table-wrapper + p {
 
 .site-footer p { margin: 0 0 var(--space-1); }
 .site-footer .contact { margin-top: var(--space-3); }
-.site-footer a { color: var(--primary); font-weight: 500; }
+.site-footer a { color: var(--link); font-weight: 500; }
 .site-footer a:hover { text-decoration: underline; }
 
 /* ========== Forms ========== */
@@ -1266,7 +1269,7 @@ textarea { min-height: 100px; resize: vertical; }
   white-space: normal;
 }
 .gov-schemes-table .gov-schemes-td a {
-  color: var(--primary);
+  color: var(--link);
   text-decoration: underline;
 }
 .gov-schemes-table .gov-schemes-td a:hover {
@@ -1562,6 +1565,67 @@ textarea { min-height: 100px; resize: vertical; }
 
   .home-subheading { font-size: 1.0625rem; }
   .home-course-types { font-size: 0.9375rem; }
+
+  /* Ensure hero heading block scrolls with the page (not fixed/sticky) */
+  .home-main .col-12.col-lg-10.col-xl-9 {
+    position: static !important;
+    overflow: visible !important;
+  }
+
+  /* Home hero + table: scroll whole page until table header reaches top,
+     then only table rows scroll inside their container. */
+  main.home-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-height: none;
+  }
+
+  .home-table-section {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .home-table-section #loan-table-root {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  /* Results card contains the table; make its body the only inner scroller */
+  #loan-table-root .results-card {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  #loan-table-root .table-scroll-inner {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Make the whole table header sticky when it reaches the top
+     (just below the site header, which is already sticky). */
+  #loan-table-root #results-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: #ffffff;
+  }
+
+  #loan-table-root #results-table thead tr {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: #ffffff;
+  }
 
   /* Cards: comfortable padding and tap spacing */
   .card {

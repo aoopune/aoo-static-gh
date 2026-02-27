@@ -104,11 +104,22 @@
         align-items: center;
       }
     }
+
+    /* Desktop / all-breakpoint overrides so iframe version matches your desired layout */
+    #loan-table-root .aoo-loan-table-wrap #amount {
+      width: 70% !important;
+      max-width: 70% !important;
+      box-sizing: border-box;
+    }
+    #loan-table-root .aoo-loan-table-wrap .choice-group {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
   </style>
 </head>
 <body>
   <div id="loan-table-root"></div>
-  <script src="/js/aoo-loan-table-standalone.js?v=6"></script>
+  <script src="js/aoo-loan-table-standalone.js?v=6"></script>
   <script>
     (function() {
       var root = document.getElementById('loan-table-root');

@@ -144,7 +144,6 @@
   const navItems = [
     { path: 'pro-tips.html', label: 'Pro tips before you apply' },
     { path: 'quick-overview.html', label: 'Quick overview' },
-    { path: 'schemes.html', label: 'Schemes' },
     { path: 'government-schemes.html', label: 'Government schemes' },
     { path: 'faq.html', label: 'FAQ' },
     { path: 'document-checklist.html', label: 'Standardised document list' },
@@ -170,7 +169,7 @@
   window.renderHeaderFooter = function (cfg) {
     cfg = cfg || window.__aooConfig || {};
     const contactPhone = (cfg.contact_phone || '+91 91123 34367').trim();
-    const contactEmail = (cfg.contact_email || 'applyonlyonceindia@gmail.com').trim();
+    const contactEmail = (cfg.contact_email || 'aoopune@gmail.com').trim();
     const telHref = 'tel:' + contactPhone.replace(/\s/g, '');
 
     const cur = currentPage();
