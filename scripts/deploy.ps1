@@ -9,7 +9,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$repoRoot = if ($PSScriptRoot) { Join-Path $PSScriptRoot ".." } else { Get-Location }
+$repoRoot = if ($PSScriptRoot) { (Get-Item (Join-Path $PSScriptRoot "..")).FullName } else { (Get-Location).Path }
 Set-Location $repoRoot
 
 # Default commit message if none provided
