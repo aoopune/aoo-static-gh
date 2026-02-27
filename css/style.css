@@ -557,12 +557,28 @@ main.home-main {
   flex: 0 0 auto;
   min-height: 0;
   text-align: center;
-  max-width: 1280px;
+  max-width: 1400px;
+  width: 95%;
+  margin: 0 auto;
   background: linear-gradient(180deg, #f8fafc 0%, #EEEEEE 50%, #e8e8e8 100%);
   padding-top: var(--space-3);
   padding-bottom: var(--space-4);
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* Hero container: full width of main, no extra padding (main provides 16px) */
+.home-main .container {
+  max-width: none;
+  width: 100%;
   padding-left: 0;
   padding-right: 0;
+}
+
+/* Headings use full width of hero */
+.home-main .container .col-12.col-lg-10.col-xl-9 {
+  max-width: 100%;
+  flex: 0 0 100%;
 }
 
 .home-heading {
@@ -812,7 +828,10 @@ main.compare-main {
   min-height: 0;
   height: calc(100vh - 64px);
   max-height: calc(100vh - 64px);
-  padding: var(--space-4) var(--space-6);
+  padding: var(--space-4) 16px;
+  max-width: 1400px;
+  width: 95%;
+  margin: 0 auto;
 }
 
 main.compare-main h1 {
@@ -836,6 +855,8 @@ main.compare-main .compare-tabs {
   overflow: auto;
   max-height: none;
   margin-bottom: var(--space-4);
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 #table-wrapper.compare-table-wrapper .table-scroll-inner {
@@ -1579,11 +1600,23 @@ textarea { min-height: 100px; resize: vertical; }
     flex-direction: column;
     min-height: 100vh;
     max-height: none;
+    width: 96%;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .home-main .container {
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .home-table-section {
     flex: 1 1 auto;
     display: flex;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
     flex-direction: column;
     min-height: 0;
   }
@@ -1690,6 +1723,9 @@ textarea { min-height: 100px; resize: vertical; }
     height: auto;
     min-height: 60vh;
     max-height: none;
+    width: 96%;
+    padding-left: 12px;
+    padding-right: 12px;
   }
   #table-wrapper.compare-table-wrapper {
     min-height: 240px;
@@ -1697,6 +1733,8 @@ textarea { min-height: 100px; resize: vertical; }
     flex: 1 1 auto;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   /* Compare tabs: full-width, easy tap */
