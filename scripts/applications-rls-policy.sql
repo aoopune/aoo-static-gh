@@ -1,6 +1,6 @@
 -- Fix RLS for applications table so insert/update work after Google sign-in.
+-- Run applications-table.sql first if the table does not exist.
 -- Run in Supabase Dashboard → SQL Editor → New query, then Run.
--- Your applications table must have an "email" column (text) that stores the user's email.
 
 -- Ensure RLS is on
 alter table public.applications enable row level security;

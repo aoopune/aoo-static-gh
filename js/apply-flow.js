@@ -365,9 +365,15 @@
           return startPaymentFlow(user, offers, inputData, applyBtn);
         })
         .catch(function (err) {
-          var msg = (err && err.message) ? err.message : 'Something went wrong.';
-          if (/failed to fetch|network|load failed|connection|reset|pr_connect|authenticity/i.test(msg) || (err && err.name === 'TypeError')) {
+          var raw = (err && err.message) ? err.message : (err && String(err)) || 'Something went wrong.';
+          if (typeof console !== 'undefined' && console.error) {
+            console.error('[Apply flow]', err);
+          }
+          var msg = raw;
+          if (/failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
             msg = "Can't reach our servers (connection reset or blocked). Try: another network (e.g. mobile data), turn off VPN, or try again later. Need help? Call 91123 34367 or email aoopune@gmail.com.";
+          } else if (/applications|relation.*does not exist|row.level.security|RLS|JWT|auth/i.test(msg)) {
+            msg = "Server setup issue. Please contact support (Call 91123 34367 or aoopune@gmail.com) and mention: Apply failed.";
           }
           showToast(msg, true);
           clearPendingApplication();
