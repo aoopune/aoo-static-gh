@@ -61,6 +61,20 @@
       <iframe class="loan-table-embed" src="table-embed.html" title="Education loan comparison table"></iframe>
     </section>
   </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    (function () {
+      var SUPABASE_URL = 'https://hyvpuivgexbxxiluxryx.supabase.co';
+      var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5dnB1aXZnZXhieHhpbHV4cnl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MjQwNjgsImV4cCI6MjA4NzUwMDA2OH0.bEoMNHn138BH4j9-iZp8ZKVRFjKoC856J7lKH6d12uA';
+      if (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY) {
+        try {
+          // This parses the access token hash on return from OAuth
+          // and stores the session in localStorage for the iframe.
+          window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } catch (e) {}
+      }
+    })();
+  </script>
   <script src="js/app.js"></script>
 </body>
 </html>
