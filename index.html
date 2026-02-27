@@ -65,9 +65,36 @@
       var SUPABASE_URL = 'https://hyvpuivgexbxxiluxryx.supabase.co';
       var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5dnB1aXZnZXhieHhpbHV4cnl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MjQwNjgsImV4cCI6MjA4NzUwMDA2OH0.bEoMNHn138BH4j9-iZp8ZKVRFjKoC856J7lKH6d12uA';
       try {
-        // This parses the Supabase OAuth callback hash on the homepage
-        // and stores the session so the iframe can resume and open Razorpay.
-        supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        var loc = typeof window !== 'undefined' && window.location ? window.location : { search: '', hash: '' };
+        var code = null;
+        if (loc.search) {
+          var q = loc.search.slice(1).split('&');
+          for (var i = 0; i < q.length; i++) {
+            var parts = q[i].split('=');
+            if (parts[0] === 'code' && parts[1]) { code = decodeURIComponent(parts[1]); break; }
+          }
+        }
+        if (!code && loc.hash && loc.hash.indexOf('access_token=') !== -1) {
+          var params = {};
+          loc.hash.slice(1).split('&').forEach(function (p) {
+            var parts = p.split('=');
+            if (parts.length >= 2) params[decodeURIComponent(parts[0])] = decodeURIComponent(parts.slice(1).join('=').replace(/\+/g, ' '));
+          });
+          if (params.access_token) {
+            client.auth.setSession({ access_token: params.access_token, refresh_token: params.refresh_token || '' })
+              .then(function () { if (window.history && window.history.replaceState) window.history.replaceState(null, '', window.location.pathname + window.location.search); })
+              .catch(function () {});
+          }
+        } else if (code && client.auth.exchangeCodeForSession) {
+          client.auth.exchangeCodeForSession(code).then(function () {
+            if (window.history && window.history.replaceState) {
+              var search = (window.location.search || '').replace(/\bcode=[^&]*&?/gi, '').replace(/^&|&$/g, '');
+              var clean = window.location.pathname + (search ? '?' + search : '') + (window.location.hash || '');
+              window.history.replaceState(null, '', clean);
+            }
+          }).catch(function () {});
+        }
       } catch (e) {}
     })();
   </script>

@@ -441,7 +441,7 @@
     applyButton.type = 'button';
     applyButton.id = 'apply-button';
     applyButton.className = 'apply-floating-btn';
-    applyButton.innerHTML = '<span>Apply to Selected Banks at ₹99 Flat Fee</span><span class="apply-btn-line2">48hr Reply or Money Back</span>';
+    applyButton.innerHTML = '<span>Apply</span>';
     applyButton.addEventListener('click', function () {
       runApplyFlow();
     });
@@ -460,15 +460,18 @@
     }
     addApplyButton();
 
-    // If user just returned from Google login (URL has #access_token), wait for
-    // Supabase to restore the session from the hash, then insert and open Razorpay.
-    // Without waiting, getSession() can be null and insert runs without JWT → RLS error.
+    // If user just returned from Google login: we have pending selection and need a session.
+    // The OAuth hash is on the parent URL; parent runs getSession() to persist to localStorage.
+    // We retry getSession() so we pick up the session once the parent has stored it, then auto-open Razorpay.
     if (supabaseClient) {
       var pending = loadPendingApplication();
       if (pending && pending.offers && pending.offers.length) {
         var applyBtn = document.getElementById('apply-button');
         if (applyBtn) applyBtn.disabled = true;
         var ran = false;
+        var retryCount = 0;
+        var maxRetries = 10;
+        var retryMs = 400;
         function doResume(session) {
           if (ran || !session || !session.user) return;
           ran = true;
@@ -477,21 +480,34 @@
               if (applyBtn) applyBtn.disabled = false;
             });
         }
+        function tryGetSession() {
+          if (ran) return;
+          supabaseClient.auth.getSession().then(function (res) {
+            var session = res.data && res.data.session;
+            if (session && session.user) {
+              doResume(session);
+              return;
+            }
+            retryCount += 1;
+            if (retryCount < maxRetries) {
+              setTimeout(tryGetSession, retryMs);
+            } else if (applyBtn) {
+              applyBtn.disabled = false;
+            }
+          });
+        }
         var authListener = supabaseClient.auth.onAuthStateChange(function (event, session) {
           if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') doResume(session);
         });
-        // Session may already be restored from hash; try immediately.
-        supabaseClient.auth.getSession().then(function (res) {
-          doResume(res.data && res.data.session);
-        });
-        // If no session after 3s, re-enable button (e.g. hash was stripped or storage cleared).
+        tryGetSession();
+        // If still no session after ~4s, re-enable button and stop retrying.
         setTimeout(function () {
           if (!ran && applyBtn) applyBtn.disabled = false;
           try {
             var sub = (authListener && authListener.data && authListener.data.subscription) || (authListener && authListener.data) || authListener;
             if (sub && typeof sub.unsubscribe === 'function') sub.unsubscribe();
           } catch (e) {}
-        }, 3000);
+        }, maxRetries * retryMs + 500);
       }
     }
   }
