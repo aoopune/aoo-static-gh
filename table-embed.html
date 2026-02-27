@@ -13,6 +13,11 @@
     * { box-sizing: border-box; }
     body { margin: 0; padding: 0; background: transparent; font-family: 'Montserrat', system-ui, sans-serif; overflow-x: hidden; }
     #loan-table-root { min-height: 400px; }
+    /* Tighten spacing between filter card and table */
+    #loan-table-root .query-card {
+      margin-bottom: 0.75rem !important;
+      padding-bottom: 0.75rem !important;
+    }
 
     /* Mobile: 2-column form – Col1: Gender, Loan amount, Loan type | Col2: Country, University, Level of study. Keep labels and input bars fully visible. */
     @media (max-width: 767px) {
