@@ -11,14 +11,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; padding: 0; background: transparent; font-family: 'Montserrat', system-ui, sans-serif; overflow-x: hidden; }
-    #loan-table-root { min-height: 400px; }
+    body { margin: 0; padding: 0; background: transparent; font-family: 'Montserrat', system-ui, sans-serif; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+    #loan-table-root { min-height: 400px; flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
     /* Tighten spacing between filter card and table */
     #loan-table-root .query-card {
       margin-bottom: 0.5rem !important;
       padding-bottom: 0.5rem !important;
     }
-    /* Remove grey block / extra space below table */
+    /* Remove grey block / extra space below table; extend table to fill layout */
     #loan-table-root,
     #loan-table-root .aoo-loan-table-wrap,
     #loan-table-root .wrap {
@@ -26,6 +26,32 @@
       margin-bottom: 0 !important;
       padding-bottom: 0 !important;
       min-height: auto !important;
+    }
+    #loan-table-root .aoo-loan-table-wrap .wrap {
+      flex: 1 1 auto;
+      display: flex !important;
+      flex-direction: column !important;
+      min-height: 0 !important;
+      padding: 1.5rem 1.5rem 0 !important;
+    }
+    #loan-table-root .results-card {
+      flex: 1 1 auto;
+      display: flex !important;
+      flex-direction: column !important;
+      min-height: 0 !important;
+    }
+    #loan-table-root .results-card .table-wrap {
+      flex: 1 1 auto;
+      display: flex !important;
+      flex-direction: column !important;
+      min-height: 0 !important;
+    }
+    #loan-table-root .table-scroll-inner {
+      flex: 1 1 auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
     }
 
     /* Mobile: 2-column form – Col1: Gender, Loan amount, Loan type | Col2: Country, University, Level of study. Keep labels and input bars fully visible. */
