@@ -15,8 +15,17 @@
     #loan-table-root { min-height: 400px; }
     /* Tighten spacing between filter card and table */
     #loan-table-root .query-card {
-      margin-bottom: 0.75rem !important;
-      padding-bottom: 0.75rem !important;
+      margin-bottom: 0.5rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+    /* Remove grey block / extra space below table */
+    #loan-table-root,
+    #loan-table-root .aoo-loan-table-wrap,
+    #loan-table-root .wrap {
+      background: transparent !important;
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+      min-height: auto !important;
     }
 
     /* Mobile: 2-column form – Col1: Gender, Loan amount, Loan type | Col2: Country, University, Level of study. Keep labels and input bars fully visible. */
