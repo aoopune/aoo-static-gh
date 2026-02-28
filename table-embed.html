@@ -350,12 +350,20 @@
   <script>
     (function() {
       var TABLE_SCRIPT_URL = 'js/aoo-loan-table-standalone.js?v=6';
+      var APPLY_BUTTON_SCRIPT_URL = 'js/apply-button-iframe.js?v=4';
+      function showError(msg) {
+        var root = document.getElementById('loan-table-root');
+        if (root) root.innerHTML = '<p style="color:#b91c1c;padding:1rem;margin:0;font-weight:600;">' + msg + '</p>';
+      }
+      function loadApplyButtonScript() {
+        var s = document.createElement('script');
+        s.src = APPLY_BUTTON_SCRIPT_URL;
+        s.setAttribute('data-cfasync', 'false');
+        document.head.appendChild(s);
+      }
       function runMount() {
         var root = document.getElementById('loan-table-root');
         if (!root) return;
-        function showError(msg) {
-          root.innerHTML = '<p style="color:#b91c1c;padding:1rem;margin:0;font-weight:600;">' + msg + '</p>';
-        }
         if (typeof window.AooLoanTable === 'undefined') {
           showError('Table script did not load.');
           return;
@@ -370,24 +378,29 @@
         }
         try {
           window.AooLoanTable.mount('#loan-table-root');
+          loadApplyButtonScript();
         } catch (e) {
           showError('Table error: ' + (e && e.message ? e.message : String(e)));
+        }
+      }
+      function scheduleMount() {
+        if (typeof requestIdleCallback !== 'undefined') {
+          requestIdleCallback(runMount, { timeout: 300 });
+        } else {
+          setTimeout(runMount, 0);
         }
       }
       function loadTableScript() {
         var s = document.createElement('script');
         s.src = TABLE_SCRIPT_URL;
         s.setAttribute('data-cfasync', 'false');
-        s.onload = runMount;
-        s.onerror = function() {
-          var root = document.getElementById('loan-table-root');
-          if (root) root.innerHTML = '<p style="color:#b91c1c;padding:1rem;margin:0;font-weight:600;">Table script did not load.</p>';
-        };
+        s.onload = scheduleMount;
+        s.onerror = function() { showError('Table script did not load.'); };
         document.head.appendChild(s);
       }
       function whenIdle() {
         if (typeof requestIdleCallback !== 'undefined') {
-          requestIdleCallback(loadTableScript, { timeout: 400 });
+          requestIdleCallback(loadTableScript, { timeout: 600 });
         } else {
           setTimeout(loadTableScript, 0);
         }
@@ -399,6 +412,5 @@
       }
     })();
   </script>
-  <script defer src="js/apply-button-iframe.js?v=3" data-cfasync="false"></script>
 </body>
 </html>
