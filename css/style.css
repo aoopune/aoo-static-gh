@@ -645,36 +645,38 @@ main.home-main {
   overflow-x: hidden;
 }
 
-/* Embedded table form: force same layout as table app – single row, "54 offers..." + Submit on one line.
-   These rules override both site CSS and component CSS so the form always matches table/index.html. */
+/* Embedded table form: input row + "54 offers..." on a separate centered line below; equal spacing between fields. */
 #loan-table-root .aoo-loan-table-wrap .query-card .form-row {
   display: grid !important;
   grid-template-columns: minmax(7rem, 1fr) minmax(5rem, 1fr) minmax(9rem, 1fr) minmax(5rem, 1fr) minmax(5rem, 1fr) minmax(5rem, 1fr) minmax(20rem, auto) !important;
-  grid-template-rows: auto !important;
+  grid-template-rows: auto auto !important;
   grid-auto-flow: row !important;
-  column-gap: 1.25rem !important;
-  row-gap: 0.5rem !important;
+  column-gap: 1.5rem !important;
+  row-gap: 0.75rem !important;
   align-items: end !important;
   width: 100% !important;
 }
+#loan-table-root .aoo-loan-table-wrap .query-card .form-row .field:not(.submit-field) {
+  grid-row: 1 !important;
+  position: relative;
+  z-index: 1;
+}
 #loan-table-root .aoo-loan-table-wrap .query-card .field.submit-field {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  align-items: center !important;
-  gap: 0.75rem !important;
-  justify-content: flex-end !important;
-  align-self: end !important;
-  justify-self: end !important;
-  grid-column: auto !important;
-  grid-row: auto !important;
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  display: block !important;
+  text-align: center !important;
+  margin-top: 0.5rem !important;
+  position: relative;
+  z-index: 0;
 }
 #loan-table-root .aoo-loan-table-wrap .query-card .field.submit-field .count {
-  display: inline-block !important;
+  display: block !important;
   white-space: nowrap !important;
-  flex-shrink: 0 !important;
+  text-align: center !important;
+  margin: 0 !important;
 }
-/* Force single row on desktop; override component's 768px breakpoint */
+/* Submit button (if present) stays in row 1 col 7 via component/inline styles; count is row 2 only here */
 @media (min-width: 769px) {
   #loan-table-root .aoo-loan-table-wrap .query-card .form-row {
     grid-template-columns: minmax(7rem, 1fr) minmax(5rem, 1fr) minmax(9rem, 1fr) minmax(5rem, 1fr) minmax(5rem, 1fr) minmax(5rem, 1fr) minmax(20rem, auto) !important;

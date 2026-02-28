@@ -73,6 +73,40 @@
       overflow-x: auto;
     }
 
+    /* Desktop: input row + count on its own row below, centered; increased equal gaps between fields */
+    @media (min-width: 768px) {
+      #loan-table-root .aoo-loan-table-wrap .query-card .form-row {
+        display: grid !important;
+        grid-template-columns: minmax(7rem, 1fr) minmax(5rem, 1fr) minmax(9rem, 1fr) minmax(5rem, 1fr) minmax(5rem, 1fr) minmax(5rem, 1fr) minmax(20rem, auto);
+        grid-template-rows: auto auto;
+        grid-auto-flow: row;
+        column-gap: 1.5rem;
+        row-gap: 0.75rem;
+        align-items: end;
+        width: 100%;
+      }
+      #loan-table-root .aoo-loan-table-wrap .query-card .form-row .field:nth-child(1),
+      #loan-table-root .aoo-loan-table-wrap .query-card .form-row .field:nth-child(2),
+      #loan-table-root .aoo-loan-table-wrap .query-card .form-row .field:nth-child(3),
+      #loan-table-root .aoo-loan-table-wrap .query-card .form-row .field:nth-child(4),
+      #loan-table-root .aoo-loan-table-wrap .query-card .form-row .field:nth-child(5),
+      #loan-table-root .aoo-loan-table-wrap .query-card .form-row .field:nth-child(6) {
+        grid-row: 1;
+      }
+      #loan-table-root .aoo-loan-table-wrap .query-card .field.submit-field {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        display: block;
+        text-align: center;
+        margin-top: 0.5rem;
+      }
+      #loan-table-root .aoo-loan-table-wrap .query-card .field.submit-field .count {
+        display: block;
+        text-align: center;
+        margin: 0;
+      }
+    }
+
     /* Mobile: 2-column form – Col1: Gender, Loan amount, Loan type | Col2: Country, University, Level of study. Keep labels and input bars fully visible. */
     @media (max-width: 767px) {
       body { padding-left: env(safe-area-inset-left, 0); padding-right: env(safe-area-inset-right, 0); }
@@ -111,8 +145,8 @@
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto auto auto;
         grid-auto-flow: column;
-        row-gap: 0.5rem;
-        column-gap: 0.5rem;
+        row-gap: 0.75rem;
+        column-gap: 0.75rem;
         align-items: start;
         min-width: 0;
         width: 100%;
@@ -161,6 +195,12 @@
         justify-self: center;
         align-self: start;
         align-items: center;
+        text-align: center;
+      }
+      #loan-table-root .aoo-loan-table-wrap .field.submit-field .count {
+        display: block;
+        text-align: center;
+        margin-top: 0.5rem;
       }
     }
 
