@@ -40,6 +40,117 @@
     return keys;
   }
 
+  /** Get PDF table structure: { headers: string[], rows: string[][], columnKeys: string[] } in same order so data aligns under headers */
+  function getTableDataForPdf() {
+    var root = getRoot();
+    if (!root) return { headers: [], rows: [], columnKeys: [] };
+    var thead = root.querySelector('#results-thead');
+    var tbody = root.querySelector('#results-body');
+    if (!thead || !tbody) return { headers: [], rows: [], columnKeys: [] };
+    var columnKeys = [];
+    var headers = [];
+    var ths = thead.querySelectorAll('th[data-column-key]');
+    for (var i = 0; i < ths.length; i++) {
+      var k = ths[i].getAttribute('data-column-key');
+      if (!k || k === 'OfferSelect') continue;
+      columnKeys.push(k);
+      var labelEl = ths[i].querySelector('.th-head-label');
+      var label = labelEl ? (labelEl.textContent || '').trim() : (ths[i].textContent || '').trim();
+      headers.push(label || k);
+    }
+    var trs = tbody.querySelectorAll('tr');
+    var rows = [];
+    for (var r = 0; r < trs.length; r++) {
+      var tr = trs[r];
+      if (tr.querySelector('.empty')) continue;
+      var row = [];
+      for (var c = 0; c < columnKeys.length; c++) {
+        var td = tr.querySelector('td[data-column-key="' + columnKeys[c] + '"]');
+        var text = td ? (td.textContent || '').trim().replace(/\s+/g, ' ') : '';
+        row.push(text);
+      }
+      if (row.length === columnKeys.length) rows.push(row);
+    }
+    return { headers: headers, rows: rows, columnKeys: columnKeys };
+  }
+
+  /** Build and download PDF with aligned columns and wrapped text. Uses jsPDF + autoTable when available. */
+  function docPdfFromTable() {
+    var JsPDF = window.jspdf && window.jspdf.jsPDF;
+    if (!JsPDF || typeof JsPDF !== 'function') return;
+    var doc = new JsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+    var pageW = doc.internal.pageSize.getWidth();
+    var pageH = doc.internal.pageSize.getHeight();
+    var margin = 8;
+    var x = margin;
+    var y = margin;
+    var w = pageW - 2 * margin;
+
+    doc.setFontSize(14);
+    doc.text('Loan comparison – Your results', x, y);
+    y += 8;
+
+    var inputData = getInputSectionData();
+    doc.setFontSize(10);
+    doc.text('Your selections: Gender ' + (inputData.gender || '–') + ', Loan amount \u20B9' + (inputData.amount || '–') + ', ' + (inputData.secured === 'true' ? 'Secured' : 'Unsecured') + ', Country ' + (inputData.country || '–') + ', University ' + (inputData.university || '–') + ', Level ' + (inputData.levelOfStudy || '–'), x, y);
+    y += 10;
+
+    var tableData = getTableDataForPdf();
+    if (!tableData.headers.length || !tableData.rows.length) {
+      doc.text('No table data to export.', x, y);
+      doc.save('loan-comparison-results.pdf');
+      return;
+    }
+
+    var colCount = tableData.headers.length;
+    var totalW = w;
+    var minCol = 12;
+    var maxCol = 35;
+    var colWidths = [];
+    for (var i = 0; i < colCount; i++) {
+      colWidths.push(Math.max(minCol, Math.min(maxCol, totalW / colCount)));
+    }
+    var sum = colWidths.reduce(function (a, b) { return a + b; }, 0);
+    if (sum > totalW) {
+      var scale = totalW / sum;
+      for (var j = 0; j < colWidths.length; j++) colWidths[j] = colWidths[j] * scale;
+    }
+
+    var columnStyles = {};
+    for (var k = 0; k < colCount; k++) {
+      columnStyles[k] = { cellWidth: colWidths[k], overflow: 'linebreak', cellPadding: 2 };
+    }
+
+    doc.autoTable({
+      head: [tableData.headers],
+      body: tableData.rows,
+      startY: y,
+      margin: { left: x },
+      tableWidth: totalW,
+      columnStyles: columnStyles,
+      styles: { fontSize: 7, overflow: 'linebreak', cellPadding: 2 },
+      headStyles: { fillColor: [41, 78, 120], textColor: 255, fontStyle: 'bold', fontSize: 7 },
+      bodyStyles: { valign: 'top' },
+      alternateRowStyles: { fillColor: [245, 248, 250] },
+      didDrawPage: function () {
+        doc.setFontSize(7);
+        doc.text('Apply Only Once – loan comparison', margin, pageH - 4);
+      }
+    });
+
+    y = doc.lastAutoTable.finalY + 8;
+    if (y > pageH - 20) {
+      doc.addPage([pageH, pageW], 'landscape');
+      y = margin;
+    }
+
+    doc.setFontSize(10);
+    doc.text('View details (per lender) are available in the table on the website.', x, y);
+
+    doc.save('loan-comparison-results.pdf');
+  }
+  window.docPdfFromTable = docPdfFromTable;
+
   function getSelectedOffers() {
     var root = getRoot();
     if (!root) return [];
@@ -105,8 +216,8 @@
       '#loan-table-root .aoo-loan-table-wrap .wrap { position: relative; }',
       '#apply-download-buttons { position: absolute; bottom: 16px; right: 16px; z-index: 10; display: flex; flex-direction: row; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; max-width: 90%; }',
       '#apply-button.apply-floating-btn, #download-results-btn.apply-floating-btn { width: auto; padding: 8px 16px; font-size: 12px; font-weight: 600; border-radius: 999px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); white-space: nowrap; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.05rem; min-height: auto; font-family: "Montserrat", sans-serif; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; }',
-      '#apply-button.apply-floating-btn { background: var(--accent, #64748b); color: #fff; }',
-      '#apply-button.apply-floating-btn:hover { background: var(--accent-hover, #475569); transform: translateY(-1px); }',
+      '#apply-button.apply-floating-btn { background: #0d9488; color: #fff; }',
+      '#apply-button.apply-floating-btn:hover { background: #0f766e; transform: translateY(-1px); }',
       '#apply-button.apply-floating-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }',
       '#download-results-btn.apply-floating-btn { background: #e2e8f0; color: #334155; }',
       '#download-results-btn.apply-floating-btn:hover { background: #cbd5e1; transform: translateY(-1px); }',
@@ -146,7 +257,9 @@
     downloadBtn.className = 'apply-floating-btn';
     downloadBtn.innerHTML = '<span>Download results</span>';
     downloadBtn.addEventListener('click', function () {
-      if (typeof window.AooLoanTable !== 'undefined' && typeof window.AooLoanTable.downloadResults === 'function') {
+      if (typeof window.jspdf !== 'undefined' && window.jspdf.jsPDF && typeof window.docPdfFromTable === 'function') {
+        window.docPdfFromTable();
+      } else if (typeof window.AooLoanTable !== 'undefined' && typeof window.AooLoanTable.downloadResults === 'function') {
         window.AooLoanTable.downloadResults();
       }
     });

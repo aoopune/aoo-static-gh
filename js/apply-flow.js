@@ -122,7 +122,7 @@
     var style = document.createElement('style');
     style.id = 'apply-flow-styles';
     style.textContent = [
-      '.apply-flow-ctx, :root { --surface: #ffffff; --border: #e5e7eb; --shadow: 0 1px 3px rgba(0,0,0,0.04); --shadow-lg: 0 4px 6px -2px rgba(0,0,0,0.05); --radius-lg: 20px; --text: #000000; --accent: #64748b; --accent-hover: #475569; --bg-subtle: #f1f5f9; }',
+      '.apply-flow-ctx, :root { --surface: #ffffff; --border: #e5e7eb; --shadow: 0 1px 3px rgba(0,0,0,0.04); --shadow-lg: 0 4px 6px -2px rgba(0,0,0,0.05); --radius-lg: 20px; --text: #000000; --accent: #0d9488; --accent-hover: #0f766e; --bg-subtle: #f1f5f9; }',
       '.apply-flow-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,0.4); backdrop-filter: blur(4px); z-index: 10001; display: flex; align-items: center; justify-content: center; padding: 1rem; overflow-y: auto; }',
       '.apply-flow-modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); max-width: min(520px, 94vw); max-height: 85vh; overflow-y: auto; padding: 1.25rem; font-family: "Montserrat", sans-serif; }',
       '.apply-flow-disclaimer p { margin: 0 0 0.75rem 0; } .apply-flow-disclaimer ul { margin: 0.5rem 0 1rem 1.25rem; }',

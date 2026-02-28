@@ -73,6 +73,11 @@
       overflow-x: auto;
     }
 
+    /* Hide Submit button – table runs on input change; keep count only */
+    #loan-table-root .aoo-loan-table-wrap .field.submit-field .btn,
+    #loan-table-root .aoo-loan-table-wrap .field.submit-field button[type="submit"] {
+      display: none !important;
+    }
     /* Force "54 offers..." line centered (overrides component's text-align: right) at all viewports */
     #loan-table-root .aoo-loan-table-wrap .query-card .field.submit-field .count {
       text-align: center !important;
@@ -87,7 +92,8 @@
         grid-template-columns: repeat(6, 1fr);
         grid-template-rows: auto auto;
         grid-auto-flow: row;
-        gap: 1.25rem;
+        column-gap: 1.25rem;
+        row-gap: 0.35rem;
         align-items: end;
         width: 100%;
       }
@@ -104,7 +110,7 @@
         grid-row: 2 !important;
         display: block !important;
         text-align: center !important;
-        margin-top: 0.5rem !important;
+        margin-top: 0.15rem !important;
         width: 100% !important;
         justify-content: center !important;
       }
@@ -153,7 +159,8 @@
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto auto auto;
         grid-auto-flow: column;
-        gap: 1rem;
+        column-gap: 1rem;
+        row-gap: 0.5rem;
         align-items: start;
         min-width: 0;
         width: 100%;
@@ -207,7 +214,7 @@
       #loan-table-root .aoo-loan-table-wrap .field.submit-field .count {
         display: block;
         text-align: center;
-        margin-top: 0.5rem;
+        margin-top: 0.2rem;
       }
     }
 
