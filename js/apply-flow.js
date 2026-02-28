@@ -13,8 +13,11 @@
   var APPLY_STATE_KEY = 'aoo_apply_state_v1';
 
   var supabaseClient = null;
-  if (typeof window.supabase !== 'undefined' && SUPABASE_URL && SUPABASE_ANON_KEY) {
+  if (typeof window !== 'undefined' && window.__aooSupabaseClient) {
+    supabaseClient = window.__aooSupabaseClient;
+  } else if (typeof window.supabase !== 'undefined' && SUPABASE_URL && SUPABASE_ANON_KEY) {
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    if (typeof window !== 'undefined') window.__aooSupabaseClient = supabaseClient;
   }
 
   var applyFlowInitialized = false;

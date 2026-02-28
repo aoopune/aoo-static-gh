@@ -80,8 +80,8 @@
       var SUPABASE_URL = 'https://hyvpuivgexbxxiluxryx.supabase.co';
       var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5dnB1aXZnZXhieHhpbHV4cnl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MjQwNjgsImV4cCI6MjA4NzUwMDA2OH0.bEoMNHn138BH4j9-iZp8ZKVRFjKoC856J7lKH6d12uA';
       try {
-        var client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        var loc = typeof window !== 'undefined' && window.location ? window.location : { search: '', hash: '' };
+        var client = window.__aooSupabaseClient || (window.__aooSupabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY));
+        var loc = typeof window !== 'undefined' && window.location ? window.location : { search: '', hash: '', pathname: '' };
         var code = null;
         if (loc.search) {
           var q = loc.search.slice(1).split('&');
