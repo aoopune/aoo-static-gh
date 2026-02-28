@@ -369,10 +369,16 @@
       status: 'initiated'
     };
 
-    var insertPromise = db.collection('applications').add(payload);
+    function generateShortId(len) {
+      var alphabet = 'abcdefghjkmnpqrstuvwxyz23456789';
+      var id = '';
+      for (var i = 0; i < len; i++) id += alphabet[Math.floor(Math.random() * alphabet.length)];
+      return id;
+    }
+    var applicationId = generateShortId(8);
+    var insertPromise = db.collection('applications').doc(applicationId).set(payload);
 
-    return insertPromise.then(function (docRef) {
-      var applicationId = docRef.id;
+    return insertPromise.then(function () {
       clearPendingApplication();
       flowState = 'IDLE';
       paymentFlowStarted = false;
