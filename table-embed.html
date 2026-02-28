@@ -177,42 +177,35 @@
 </head>
 <body>
   <div id="loan-table-root"></div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-  <script src="js/aoo-loan-table-standalone.js?v=6"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <script defer src="js/aoo-loan-table-standalone.js?v=6"></script>
   <script>
-    (function() {
+    document.addEventListener('DOMContentLoaded', function() {
       var root = document.getElementById('loan-table-root');
       if (!root) return;
       function showError(msg) {
         root.innerHTML = '<p style="color:#b91c1c;padding:1rem;margin:0;font-weight:600;">' + msg + '</p>';
       }
-      function runMount() {
-        if (typeof window.AooLoanTable === 'undefined') {
-          showError('Table script did not load.');
-          return;
-        }
-        if (window.AooLoanTable._loadError) {
-          showError('Table error: ' + (window.AooLoanTable._loadError.message || ''));
-          return;
-        }
-        if (typeof window.AooLoanTable.mount !== 'function') {
-          showError('Table script did not load.');
-          return;
-        }
-        try {
-          window.AooLoanTable.mount('#loan-table-root');
-        } catch (e) {
-          showError('Table error: ' + (e && e.message ? e.message : String(e)));
-        }
+      if (typeof window.AooLoanTable === 'undefined') {
+        showError('Table script did not load.');
+        return;
       }
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', runMount);
-      } else {
-        runMount();
+      if (window.AooLoanTable._loadError) {
+        showError('Table error: ' + (window.AooLoanTable._loadError.message || ''));
+        return;
       }
-    })();
+      if (typeof window.AooLoanTable.mount !== 'function') {
+        showError('Table script did not load.');
+        return;
+      }
+      try {
+        window.AooLoanTable.mount('#loan-table-root');
+      } catch (e) {
+        showError('Table error: ' + (e && e.message ? e.message : String(e)));
+      }
+    });
   </script>
-  <script src="js/apply-button-iframe.js?v=2"></script>
+  <script defer src="js/apply-button-iframe.js?v=2"></script>
 </body>
 </html>

@@ -208,6 +208,23 @@
     document.body.appendChild(overlay);
   }
 
+  function loadRazorpay() {
+    if (window.Razorpay) return Promise.resolve();
+    return new Promise(function (resolve, reject) {
+      if (document.querySelector('script[src*="razorpay.com"]')) {
+        var t = setInterval(function () { if (window.Razorpay) { clearInterval(t); resolve(); } }, 50);
+        setTimeout(function () { clearInterval(t); reject(new Error('Razorpay timeout')); }, 15000);
+        return;
+      }
+      var s = document.createElement('script');
+      s.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      s.async = true;
+      s.onload = function () { resolve(); };
+      s.onerror = function () { reject(new Error('Razorpay failed to load')); };
+      document.head.appendChild(s);
+    });
+  }
+
   function startPaymentFlow(user, offers, inputData) {
     if (paymentFlowStarted) return Promise.resolve();
     if (!supabaseClient) {
@@ -215,8 +232,8 @@
       setButtonEnabled(true);
       return Promise.resolve();
     }
-    if (!window.Razorpay || !RAZORPAY_KEY_ID) {
-      showToast('Razorpay is not loaded.', true);
+    if (!RAZORPAY_KEY_ID) {
+      showToast('Razorpay is not configured.', true);
       setButtonEnabled(true);
       return Promise.resolve();
     }
@@ -235,6 +252,7 @@
 
     flowState = 'AUTH_COMPLETED';
     var email = user.email;
+    return loadRazorpay().then(function () {
     var payload = {
       email: email,
       offers: offers,
@@ -281,6 +299,7 @@
 
       var rzp = new window.Razorpay(options);
       rzp.open();
+    });
     }).catch(function (err) {
       flowState = 'IDLE';
       paymentFlowStarted = false;
