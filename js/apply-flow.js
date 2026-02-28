@@ -310,7 +310,7 @@
 
   function startPaymentFlow(user, offers, inputData) {
     if (paymentFlowStarted) return Promise.resolve();
-    var useQrPayment = window.USE_QR_PAYMENT === true;
+    var useQrPayment = window.USE_QR_PAYMENT !== false;
     if (!ensureFirebase()) {
       showToast('Our servers are temporarily unreachable. Please refresh the page and try again in a few minutes.', true);
       setButtonEnabled(true);
