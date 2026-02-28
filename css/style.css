@@ -159,30 +159,11 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   transition: color var(--nav-transition), background var(--nav-transition), box-shadow var(--nav-transition);
   border-bottom: none;
   text-decoration: none;
-  position: relative;
-}
-.site-nav a::after {
-  content: '';
-  position: absolute;
-  left: var(--space-4);
-  right: var(--space-4);
-  bottom: var(--space-1);
-  height: 1px;
-  background: var(--nav-text-hover);
-  opacity: 0;
-  transform: scaleX(0);
-  transform-origin: center;
-  border-radius: 1px;
-  transition: opacity var(--nav-transition), transform var(--nav-transition);
 }
 .site-nav a:hover {
   color: var(--nav-text-hover);
   background: var(--primary-pastel);
   text-decoration: none;
-}
-.site-nav a:hover::after {
-  opacity: 0.4;
-  transform: scaleX(1);
 }
 .site-nav a.active {
   color: var(--nav-text-hover);
@@ -190,10 +171,6 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   background: var(--primary-pastel);
   text-decoration: none;
   box-shadow: var(--nav-pill-glow);
-}
-.site-nav a.active::after {
-  opacity: 0;
-  transform: scaleX(0);
 }
 .site-nav a:focus-visible {
   outline: 2px solid var(--primary);
