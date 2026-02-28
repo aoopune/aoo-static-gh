@@ -177,7 +177,7 @@
       '.apply-flow-payment-success-modal .apply-flow-btn-got-it:hover { background: var(--aoo-accent-hover); }',
       '@media (max-width: 640px) { .apply-flow-backdrop { padding: 0.5rem; align-items: flex-end; } .apply-flow-modal { max-height: 92vh; border-radius: var(--aoo-radius-lg) var(--aoo-radius-lg) 0 0; } .apply-flow-btn { min-height: 44px; min-width: 44px; } }',
       '.apply-flow-modal-payment { max-width: min(440px, 94vw); width: 100%; padding: 0; overflow: hidden; }',
-      '.apply-flow-payment-iframe { display: block; width: 100%; min-height: 420px; height: 70vh; max-height: 560px; border: none; border-radius: 0 0 var(--aoo-radius-lg) var(--aoo-radius-lg); }'
+      '.apply-flow-payment-iframe { display: block; width: 100%; min-height: 460px; height: 78vh; max-height: 640px; border: none; border-radius: 0 0 var(--aoo-radius-lg) var(--aoo-radius-lg); }'
     ].join('\n');
     document.head.appendChild(style);
   }
