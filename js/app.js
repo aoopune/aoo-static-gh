@@ -237,12 +237,14 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     window.__aooConfig = null;
+    // Render header/footer immediately with defaults so nav and layout show without waiting for Config fetch
+    window.renderHeaderFooter({});
     window.fetchSheet('Config', false).then(function (rows) {
       window.__aooConfig = parseConfigRows(rows);
       window.renderHeaderFooter(window.__aooConfig);
     }).catch(function () {
       window.__aooConfig = {};
-      window.renderHeaderFooter({});
+      window.renderHeaderFooter(window.__aooConfig);
     });
   });
 })();
