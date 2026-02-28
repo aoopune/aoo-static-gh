@@ -104,26 +104,28 @@
   function showOpenPaymentModal(qrUrl, homeUrl) {
     var existing = document.querySelector('.apply-flow-backdrop');
     if (existing) existing.remove();
+    ensureApplyFlowStyles();
     var backdrop = document.createElement('div');
-    backdrop.className = 'apply-flow-backdrop';
+    backdrop.className = 'apply-flow-backdrop apply-flow-payment-backdrop';
     backdrop.setAttribute('aria-modal', 'true');
     backdrop.setAttribute('role', 'dialog');
-    backdrop.innerHTML =
-      '<div class="apply-flow-modal">' +
-      '<p><strong>Application saved.</strong></p>' +
-      '<p>Click the button below to open the payment window, then complete payment. You will be taken to the home page.</p>' +
-      '<div class="apply-flow-disclaimer-actions">' +
-      '<button type="button" class="apply-flow-btn apply-flow-btn-continue" id="apply-flow-open-payment-btn">Open payment window</button>' +
-      '</div></div>';
+    backdrop.innerHTML = '<div class="apply-flow-modal apply-flow-modal-payment"><iframe class="apply-flow-payment-iframe" title="Complete your payment"></iframe></div>';
+    var iframe = backdrop.querySelector('.apply-flow-payment-iframe');
+    if (iframe) iframe.src = qrUrl;
     var modal = backdrop.querySelector('.apply-flow-modal');
-    backdrop.addEventListener('click', function (e) { if (e.target === backdrop) backdrop.remove(); });
+    backdrop.addEventListener('click', function (e) { if (e.target === backdrop) closePaymentModal(); });
     modal.addEventListener('click', function (e) { e.stopPropagation(); });
-    var btn = backdrop.querySelector('#apply-flow-open-payment-btn');
-    btn.addEventListener('click', function () {
+    function closePaymentModal() {
+      window.removeEventListener('message', onPaymentDone);
       backdrop.remove();
-      window.open(qrUrl, 'paymentQR', 'width=400,height=500');
       if (homeUrl) window.location.href = homeUrl;
-    });
+    }
+    function onPaymentDone(e) {
+      if (e && e.data && e.data.type === 'AOO_PAYMENT_DONE') {
+        closePaymentModal();
+      }
+    }
+    window.addEventListener('message', onPaymentDone);
     document.body.appendChild(backdrop);
   }
 
@@ -171,7 +173,9 @@
       '.apply-flow-payment-success-modal .payment-success-body a { color: var(--aoo-accent); }',
       '.apply-flow-payment-success-modal .apply-flow-btn-got-it { padding: 0.6rem 1.5rem; min-height: 44px; border-radius: 100px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; background: var(--aoo-accent); color: #fff; }',
       '.apply-flow-payment-success-modal .apply-flow-btn-got-it:hover { background: var(--aoo-accent-hover); }',
-      '@media (max-width: 640px) { .apply-flow-backdrop { padding: 0.5rem; align-items: flex-end; } .apply-flow-modal { max-height: 92vh; border-radius: var(--aoo-radius-lg) var(--aoo-radius-lg) 0 0; } .apply-flow-btn { min-height: 44px; min-width: 44px; } }'
+      '@media (max-width: 640px) { .apply-flow-backdrop { padding: 0.5rem; align-items: flex-end; } .apply-flow-modal { max-height: 92vh; border-radius: var(--aoo-radius-lg) var(--aoo-radius-lg) 0 0; } .apply-flow-btn { min-height: 44px; min-width: 44px; } }',
+      '.apply-flow-modal-payment { max-width: min(440px, 94vw); width: 100%; padding: 0; overflow: hidden; }',
+      '.apply-flow-payment-iframe { display: block; width: 100%; min-height: 420px; height: 70vh; max-height: 560px; border: none; border-radius: 0 0 var(--aoo-radius-lg) var(--aoo-radius-lg); }'
     ].join('\n');
     document.head.appendChild(style);
   }

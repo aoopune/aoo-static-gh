@@ -227,7 +227,7 @@
     }
   };
 
-  document.addEventListener('DOMContentLoaded', function () {
+  function initHeaderAndConfig() {
     window.__aooConfig = null;
     // Render header immediately with defaults so nav and layout show without waiting for Config fetch
     window.renderHeaderFooter({});
@@ -238,5 +238,10 @@
       window.__aooConfig = {};
       window.renderHeaderFooter(window.__aooConfig);
     });
-  });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeaderAndConfig);
+  } else {
+    initHeaderAndConfig();
+  }
 })();
