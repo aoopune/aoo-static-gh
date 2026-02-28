@@ -243,7 +243,7 @@
   function startPaymentFlow(user, offers, inputData) {
     if (paymentFlowStarted) return Promise.resolve();
     if (!ensureSupabaseClient()) {
-      showToast('Supabase is not configured.', true);
+      showToast('Our servers are temporarily unreachable. Please refresh the page and try again in a few minutes.', true);
       setButtonEnabled(true);
       return Promise.resolve();
     }
@@ -343,8 +343,8 @@
           var raw = (err && err.message) ? err.message : (err && String(err)) || 'Something went wrong.';
           if (typeof console !== 'undefined' && console.error) console.error('[Apply flow]', err);
           var msg = raw;
-          if (/failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
-            msg = "Can't reach our servers (connection reset or blocked). Try: another network (e.g. mobile data), turn off VPN, or try again later. Need help? Call 91123 34367 or email aoopune@gmail.com.";
+          if (/SSL|525|handshake failed|unreachable|failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
+            msg = 'Our servers are temporarily unreachable. Please try again in a few minutes. If it persists, try another network (e.g. mobile data) or turn off VPN. Need help? Call 91123 34367 or aoopune@gmail.com.';
           } else if (/applications|relation.*does not exist|row.level.security|RLS|JWT|auth/i.test(msg)) {
             msg = "Supabase setup needed: In your Supabase project open SQL Editor and run applications-setup.sql (creates applications table + RLS). Need help? Call 91123 34367 or aoopune@gmail.com";
           }
