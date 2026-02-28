@@ -644,10 +644,10 @@ main.home-main {
   overflow-x: hidden;
 }
 
-/* Embedded table form: input row + "54 offers..." on a separate centered line below; equal spacing between fields. */
+/* Embedded table form: 6 equal columns so inputs fill full width with equal gaps; count on row 2 centered. */
 #loan-table-root .aoo-loan-table-wrap .query-card .form-row {
   display: grid !important;
-  grid-template-columns: minmax(7rem, 1fr) minmax(5rem, 1fr) minmax(9rem, 1fr) minmax(5rem, 1fr) minmax(5rem, 1fr) minmax(5rem, 1fr) minmax(20rem, auto) !important;
+  grid-template-columns: repeat(6, 1fr) !important;
   grid-template-rows: auto auto !important;
   grid-auto-flow: row !important;
   gap: 1.25rem !important;
@@ -674,10 +674,9 @@ main.home-main {
   text-align: center !important;
   margin: 0 !important;
 }
-/* Submit button (if present) stays in row 1 col 7 via component/inline styles; count is row 2 only here */
 @media (min-width: 769px) {
   #loan-table-root .aoo-loan-table-wrap .query-card .form-row {
-    grid-template-columns: minmax(7rem, 1fr) minmax(5rem, 1fr) minmax(9rem, 1fr) minmax(5rem, 1fr) minmax(5rem, 1fr) minmax(5rem, 1fr) minmax(20rem, auto) !important;
+    grid-template-columns: repeat(6, 1fr) !important;
   }
 }
 

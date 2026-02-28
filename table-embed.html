@@ -80,11 +80,11 @@
       margin-left: auto !important;
       margin-right: auto !important;
     }
-    /* Desktop: input row + count on its own row below, centered in input section; equal gaps between all inputs */
+    /* Desktop: 6 equal columns so inputs fill full width with equal gaps; count on row 2 centered */
     @media (min-width: 768px) {
       #loan-table-root .aoo-loan-table-wrap .query-card .form-row {
         display: grid !important;
-        grid-template-columns: minmax(7rem, 1fr) minmax(5rem, 1fr) minmax(9rem, 1fr) minmax(5rem, 1fr) minmax(5rem, 1fr) minmax(5rem, 1fr) minmax(20rem, auto);
+        grid-template-columns: repeat(6, 1fr);
         grid-template-rows: auto auto;
         grid-auto-flow: row;
         gap: 1.25rem;
