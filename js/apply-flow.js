@@ -6,7 +6,14 @@
 (function () {
   'use strict';
 
-  var FIREBASE_CONFIG = window.FIREBASE_CONFIG;
+  var FIREBASE_CONFIG = window.FIREBASE_CONFIG || {
+    apiKey: 'AIzaSyDclPn8yIT5zZ7p4mPB3gd4QG7yxy765uU',
+    authDomain: 'aoo-loan-applications.firebaseapp.com',
+    projectId: 'aoo-loan-applications',
+    storageBucket: 'aoo-loan-applications.firebasestorage.app',
+    messagingSenderId: '265777801986',
+    appId: '1:265777801986:web:dafe7d11343d1540a1f01b'
+  };
   var USE_QR_PAYMENT = window.USE_QR_PAYMENT === true;
   var RAZORPAY_KEY_ID = window.RAZORPAY_KEY_ID;
   var APPLICATION_PRICE_PAISE = window.APPLICATION_PRICE_PAISE || 9900;
@@ -173,7 +180,7 @@
   /** Load Firebase SDK scripts dynamically and init. Resolves when Firebase is ready or rejects on failure. */
   function loadFirebaseAndInit() {
     if (ensureFirebase()) return Promise.resolve(true);
-    if (!FIREBASE_CONFIG || typeof window === 'undefined') return Promise.resolve(false);
+    if (typeof window === 'undefined') return Promise.resolve(false);
     if (window.__aooFirebaseLoadPromise) return window.__aooFirebaseLoadPromise;
     var promise = new Promise(function (resolve, reject) {
       function tryInit() {

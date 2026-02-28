@@ -65,7 +65,15 @@
       if (tr.querySelector('.empty')) continue;
       var row = [];
       for (var c = 0; c < columnKeys.length; c++) {
-        var td = tr.querySelector('td[data-column-key="' + columnKeys[c] + '"]');
+        var key = columnKeys[c];
+        var td = null;
+        if (key === 'Lender') {
+          td = tr.querySelector('td.bank-name-cell');
+        } else if (key === 'Sector') {
+          td = tr.querySelector('td.sector-name-cell');
+        } else {
+          td = tr.querySelector('td[data-column-key="' + key + '"]');
+        }
         var text = td ? (td.textContent || '').trim().replace(/\s+/g, ' ') : '';
         row.push(text);
       }
@@ -74,80 +82,198 @@
     return { headers: headers, rows: rows, columnKeys: columnKeys };
   }
 
-  /** Build and download PDF with aligned columns and wrapped text. Uses jsPDF + autoTable when available. */
+  function pdfSafeText(s) {
+    if (s == null || s === undefined) return '';
+    s = String(s);
+    if (typeof s.normalize === 'function') s = s.normalize('NFC');
+    s = s.replace(/\uFFFD/g, '').replace(/\u20B9/g, 'Rs.').replace(/\u2014/g, '-').replace(/\u2022/g, '*');
+    return s.replace(/\s+/g, ' ').trim();
+  }
+
+  /** Build and download PDF: Input data, Table, View details, Listed universities. Filename: Personalized-Education-Loan-Comparison-Report-YYYY-MM-DD.pdf */
   function docPdfFromTable() {
     var JsPDF = window.jspdf && window.jspdf.jsPDF;
     if (!JsPDF || typeof JsPDF !== 'function') return;
     var doc = new JsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
     var pageW = doc.internal.pageSize.getWidth();
     var pageH = doc.internal.pageSize.getHeight();
-    var margin = 8;
+    var margin = 10;
     var x = margin;
     var y = margin;
     var w = pageW - 2 * margin;
 
-    doc.setFontSize(14);
-    doc.text('Loan comparison – Your results', x, y);
-    y += 8;
+    var today = new Date();
+    var dateStr = today.getDate() + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][today.getMonth()] + ' ' + today.getFullYear();
+    var filename = 'Personalized-Education-Loan-Comparison-Report-' + today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0') + '.pdf';
+
+    function drawPageHeader() {
+      doc.setFontSize(9);
+      doc.text('Apply Only Once', pageW - margin, 8, { align: 'right' });
+    }
+
+    doc.setFontSize(16);
+    doc.text('Personalized Education Loan Comparison Report', pageW / 2, y + 6, { align: 'center' });
+    y += 14;
+    doc.setFontSize(9);
+    doc.text('Generated ' + dateStr, pageW / 2, y, { align: 'center' });
+    y += 12;
 
     var inputData = getInputSectionData();
+    var amountFormatted = inputData.amount ? Number(inputData.amount).toLocaleString('en-IN') : '';
+    var amountDisplay = amountFormatted ? 'Rs.' + amountFormatted : '-';
     doc.setFontSize(10);
-    doc.text('Your selections: Gender ' + (inputData.gender || '–') + ', Loan amount \u20B9' + (inputData.amount || '–') + ', ' + (inputData.secured === 'true' ? 'Secured' : 'Unsecured') + ', Country ' + (inputData.country || '–') + ', University ' + (inputData.university || '–') + ', Level ' + (inputData.levelOfStudy || '–'), x, y);
-    y += 10;
+    doc.setFont(undefined, 'bold');
+    doc.text('Your selections', x, y);
+    doc.setFont(undefined, 'normal');
+    y += 8;
+    doc.setFillColor(248, 250, 252);
+    doc.rect(x, y - 2, w, 32, 'F');
+    doc.setFontSize(9);
+    var selLines = [
+      'Gender: ' + pdfSafeText(inputData.gender || '-'),
+      'Security: ' + (inputData.secured === 'true' ? 'Secured' : inputData.secured === 'false' ? 'Unsecured' : '-'),
+      'Loan amount: ' + pdfSafeText(amountDisplay),
+      'Level: ' + pdfSafeText(inputData.levelOfStudy || '-'),
+      'Country: ' + pdfSafeText(inputData.country || '-'),
+      'University: ' + pdfSafeText(inputData.university || '-')
+    ];
+    for (var i = 0; i < selLines.length; i++) {
+      doc.text(pdfSafeText(selLines[i]), x + 4, y + 5 + i * 5);
+    }
+    y += 38;
 
     var tableData = getTableDataForPdf();
-    if (!tableData.headers.length || !tableData.rows.length) {
-      doc.text('No table data to export.', x, y);
-      doc.save('loan-comparison-results.pdf');
-      return;
-    }
-
-    var colCount = tableData.headers.length;
-    var totalW = w;
-    var minCol = 12;
-    var maxCol = 35;
-    var colWidths = [];
-    for (var i = 0; i < colCount; i++) {
-      colWidths.push(Math.max(minCol, Math.min(maxCol, totalW / colCount)));
-    }
-    var sum = colWidths.reduce(function (a, b) { return a + b; }, 0);
-    if (sum > totalW) {
-      var scale = totalW / sum;
-      for (var j = 0; j < colWidths.length; j++) colWidths[j] = colWidths[j] * scale;
-    }
-
-    var columnStyles = {};
-    for (var k = 0; k < colCount; k++) {
-      columnStyles[k] = { cellWidth: colWidths[k], overflow: 'linebreak', cellPadding: 2 };
-    }
-
-    doc.autoTable({
-      head: [tableData.headers],
-      body: tableData.rows,
-      startY: y,
-      margin: { left: x },
-      tableWidth: totalW,
-      columnStyles: columnStyles,
-      styles: { fontSize: 7, overflow: 'linebreak', cellPadding: 2 },
-      headStyles: { fillColor: [41, 78, 120], textColor: 255, fontStyle: 'bold', fontSize: 7 },
-      bodyStyles: { valign: 'top' },
-      alternateRowStyles: { fillColor: [245, 248, 250] },
-      didDrawPage: function () {
-        doc.setFontSize(7);
-        doc.text('Apply Only Once – loan comparison', margin, pageH - 4);
-      }
-    });
-
-    y = doc.lastAutoTable.finalY + 8;
-    if (y > pageH - 20) {
-      doc.addPage([pageH, pageW], 'landscape');
-      y = margin;
-    }
-
     doc.setFontSize(10);
-    doc.text('View details (per lender) are available in the table on the website.', x, y);
+    doc.setFont(undefined, 'bold');
+    doc.text('Comparison table', x, y);
+    doc.setFont(undefined, 'normal');
+    y += 6;
 
-    doc.save('loan-comparison-results.pdf');
+    if (tableData.headers.length) {
+      var body = tableData.rows.length ? tableData.rows : (function() {
+        var r = [];
+        for (var i = 0; i < tableData.headers.length; i++) r.push('');
+        r[0] = 'No results. Run a query to see offers.';
+        return [r];
+      }());
+      var colCount = tableData.headers.length;
+      var colW = Math.max(15, w / colCount);
+      var columnStyles = {};
+      for (var k = 0; k < colCount; k++) columnStyles[k] = { cellWidth: colW, overflow: 'linebreak', cellPadding: 2 };
+      doc.autoTable({
+        head: [tableData.headers.map(function(h) { return pdfSafeText(h); })],
+        body: body.map(function(row) { return row.map(function(cell) { return pdfSafeText(cell); }); }),
+        startY: y,
+        margin: { left: x },
+        tableWidth: w,
+        columnStyles: columnStyles,
+        showHead: 'everyPage',
+        rowPageBreak: 'avoid',
+        styles: { fontSize: 7, overflow: 'linebreak', cellPadding: 2 },
+        headStyles: { fillColor: [51, 65, 85], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7 },
+        alternateRowStyles: body.length ? [{ fillColor: [255, 255, 255] }, { fillColor: [248, 250, 252] }] : undefined,
+        didDrawPage: drawPageHeader
+      });
+      y = doc.lastAutoTable.finalY + 10;
+    }
+
+    var getDetailsForLender = typeof window.AooLoanTable !== 'undefined' && typeof window.AooLoanTable.getViewDetailsForLender === 'function' ? window.AooLoanTable.getViewDetailsForLender : null;
+    var getBankCriteriaUniversityMap = typeof window.AooLoanTable !== 'undefined' && typeof window.AooLoanTable.getBankCriteriaUniversityMap === 'function' ? window.AooLoanTable.getBankCriteriaUniversityMap : null;
+
+    var uniqueLenders = [];
+    if (tableData.rows.length && tableData.columnKeys.indexOf('Lender') !== -1) {
+      var lenderColIdx = tableData.columnKeys.indexOf('Lender');
+      var seen = {};
+      for (var ri = 0; ri < tableData.rows.length; ri++) {
+        var name = (tableData.rows[ri][lenderColIdx] || '').trim();
+        if (name && !seen[name]) { seen[name] = true; uniqueLenders.push(name); }
+      }
+    }
+
+    if (uniqueLenders.length > 0 && getDetailsForLender) {
+      if (y > pageH - 50) { doc.addPage('a4', 'landscape'); y = margin + 12; drawPageHeader(); }
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'bold');
+      doc.text('View details (per lender)', x, y);
+      doc.setFont(undefined, 'normal');
+      y += 10;
+      var detailKeys = [['Apply via', 'applyVia'], ['Margin', 'margin'], ['Interest Rate', 'interestRate'], ['Loan Amount Covers', 'loanAmountCovers'], ['Other Charges', 'otherCharges'], ['Security', 'security'], ['Course', 'course'], ['Others', 'others']];
+      var detailMaxWidth = w - 8;
+      var lineH = 4;
+      for (var L = 0; L < uniqueLenders.length; L++) {
+        if (y > pageH - 40) { doc.addPage('a4', 'landscape'); y = margin + 12; drawPageHeader(); }
+        doc.setFontSize(9);
+        doc.setFont(undefined, 'bold');
+        doc.text(pdfSafeText(uniqueLenders[L]), x + 4, y);
+        doc.setFont(undefined, 'normal');
+        y += 6;
+        var details = getDetailsForLender(uniqueLenders[L]) || {};
+        doc.setFontSize(7);
+        for (var d = 0; d < detailKeys.length; d++) {
+          var section = details[detailKeys[d][1]];
+          var bullets = section && Array.isArray(section.bullets) ? section.bullets : [];
+          var raw = section && section.raw != null ? String(section.raw).trim() : '';
+          var text = bullets.length ? bullets.join('; ') : (raw || 'None');
+          text = pdfSafeText(detailKeys[d][0] + ': ' + text);
+          var lines = doc.splitTextToSize(text, detailMaxWidth);
+          doc.text(lines, x + 6, y + 3);
+          y += lines.length * lineH + 2;
+        }
+        y += 4;
+      }
+      y += 8;
+    }
+
+    var banksWithListed = [];
+    if (tableData.rows.length && tableData.columnKeys.indexOf('Preferred University') !== -1) {
+      var prefIdx = tableData.columnKeys.indexOf('Preferred University');
+      var lenderIdx = tableData.columnKeys.indexOf('Lender');
+      if (lenderIdx >= 0) {
+        for (var bi = 0; bi < tableData.rows.length; bi++) {
+          var prefVal = (tableData.rows[bi][prefIdx] || '').toLowerCase();
+          if (prefVal.indexOf('listed') !== -1) {
+            var bName = (tableData.rows[bi][lenderIdx] || '').trim();
+            if (bName && banksWithListed.indexOf(bName) === -1) banksWithListed.push(bName);
+          }
+        }
+      }
+    }
+
+    if (banksWithListed.length > 0 && getBankCriteriaUniversityMap) {
+      if (y > pageH - 40) { doc.addPage('a4', 'landscape'); y = margin + 12; drawPageHeader(); }
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'bold');
+      doc.text('Appendix: University lists by bank', x, y);
+      doc.setFont(undefined, 'normal');
+      y += 10;
+      doc.setFontSize(7);
+      for (var b = 0; b < banksWithListed.length; b++) {
+        if (y > pageH - 30) { doc.addPage('a4', 'landscape'); y = margin + 12; drawPageHeader(); }
+        var byCriteria = getBankCriteriaUniversityMap(banksWithListed[b]) || {};
+        var criteriaKeys = Object.keys(byCriteria).sort(function(a, b) { return a.localeCompare(b); });
+        doc.setFont(undefined, 'bold');
+        doc.text(pdfSafeText(banksWithListed[b]), x + 4, y);
+        doc.setFont(undefined, 'normal');
+        y += 5;
+        for (var ck = 0; ck < criteriaKeys.length; ck++) {
+          doc.text(pdfSafeText(criteriaKeys[ck] + ':'), x + 6, y);
+          y += 4;
+          var univList = byCriteria[criteriaKeys[ck]] || [];
+          for (var u = 0; u < Math.min(univList.length, 25); u++) {
+            doc.text(pdfSafeText('* ' + univList[u]), x + 8, y);
+            y += 3.5;
+          }
+          if (univList.length > 25) {
+            doc.text(pdfSafeText('* ... and ' + (univList.length - 25) + ' more'), x + 8, y);
+            y += 3.5;
+          }
+          y += 2;
+        }
+        y += 4;
+      }
+    }
+
+    doc.save(filename);
   }
   window.docPdfFromTable = docPdfFromTable;
 

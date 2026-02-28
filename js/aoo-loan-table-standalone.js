@@ -2649,6 +2649,9 @@ function queryAllBanksLocal(criteria) {
       bindAmountInput();
       loadAndRunDefault();
     })();
+    window.AooLoanTable.getViewDetailsForLender = getDetailsForLender;
+    window.AooLoanTable.getBankCriteriaUniversityMap = getBankCriteriaUniversityMap;
+    window.AooLoanTable.getInstitutesList = function() { return institutesList || []; };
     }
   };
     })();
