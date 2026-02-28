@@ -223,28 +223,28 @@
     return promise;
   }
 
-  function getOrSignInUser() {
+  /** Call signInWithPopup in same tick as user click so the popup is not blocked. Returns promise that resolves with user or rejects. */
+  function signInWithPopupOnly() {
     if (!ensureFirebase()) return Promise.reject(new Error('Firebase not configured'));
     var auth = firebaseAuth;
     var provider = window.firebase && window.firebase.auth ? new window.firebase.auth.GoogleAuthProvider() : null;
     if (!provider) return Promise.reject(new Error('Google sign-in not available'));
+    return auth.signInWithPopup(provider).then(function (result) {
+      var u = result && result.user;
+      if (u && u.email) return u;
+      return Promise.reject(new Error('No user from sign-in'));
+    });
+  }
 
+  function getOrSignInUser() {
+    if (!ensureFirebase()) return Promise.reject(new Error('Firebase not configured'));
+    var auth = firebaseAuth;
+    var user = auth.currentUser;
+    if (user && user.email) return Promise.resolve(user);
     return auth.getRedirectResult().then(function (result) {
-      var user = (result && result.user) || auth.currentUser;
-      if (user && user.email) return user;
-      return auth.signInWithPopup(provider).then(function (popupResult) {
-        var u = popupResult && popupResult.user;
-        if (u && u.email) return u;
-        return Promise.reject(new Error('No user from sign-in'));
-      }).catch(function (popupErr) {
-        var code = (popupErr && popupErr.code) ? String(popupErr.code) : '';
-        if (/popup-blocked|cancelled-popup|popup-closed|auth\/cancelled/.test(code)) {
-          return auth.signInWithRedirect(provider).then(function () {
-            return new Promise(function () {});
-          });
-        }
-        return Promise.reject(popupErr);
-      });
+      var u = (result && result.user) || auth.currentUser;
+      if (u && u.email) return u;
+      return signInWithPopupOnly();
     });
   }
 
@@ -423,30 +423,38 @@
       savePendingApplication(offers, inputData);
       flowState = 'AUTH_REQUIRED';
 
+      function onSignInSuccess(user) {
+        if (!user) return;
+        return startPaymentFlow(user, offers, inputData);
+      }
+      function onSignInError(err) {
+        flowState = 'IDLE';
+        setButtonEnabled(true);
+        var raw = (err && err.message) ? err.message : (err && String(err)) || 'Something went wrong.';
+        if (typeof console !== 'undefined' && console.error) console.error('[Apply flow]', err);
+        var msg = raw;
+        var code = (err && err.code) ? String(err.code) : '';
+        if (/popup-blocked|auth\/cancelled|cancelled-popup|popup-closed/.test(code)) {
+          msg = 'Sign-in window was blocked. Please allow popups for this site and click Continue & Pay again. Need help? Call 91123 34367 or aoopune@gmail.com.';
+        } else if (/Firebase not configured|failed to load|SDK|Not in a browser/i.test(msg)) {
+          msg = 'Sign-in could not load. Please refresh the page, check your connection, or try disabling ad blockers. Need help? Call 91123 34367 or aoopune@gmail.com.';
+        } else if (/SSL|525|handshake failed|unreachable|failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
+          msg = 'Our servers are temporarily unreachable. Please try again in a few minutes. If it persists, try another network (e.g. mobile data) or turn off VPN. Need help? Call 91123 34367 or aoopune@gmail.com.';
+        } else if (/permission|firestore|unavailable|applications|auth/i.test(msg)) {
+          msg = "Firebase setup needed: Check Firestore rules and that the applications collection is allowed. Need help? Call 91123 34367 or aoopune@gmail.com";
+        }
+        showToast(msg, true);
+        clearPendingApplication();
+      }
+
+      if (ensureFirebase()) {
+        signInWithPopupOnly().then(onSignInSuccess).catch(onSignInError);
+        return;
+      }
       loadFirebaseAndInit()
-        .then(function () {
-          return getOrSignInUser();
-        })
-        .then(function (user) {
-          if (!user) return;
-          return startPaymentFlow(user, offers, inputData);
-        })
-        .catch(function (err) {
-          flowState = 'IDLE';
-          var raw = (err && err.message) ? err.message : (err && String(err)) || 'Something went wrong.';
-          if (typeof console !== 'undefined' && console.error) console.error('[Apply flow]', err);
-          var msg = raw;
-          if (/Firebase not configured|failed to load|SDK|Not in a browser/i.test(msg)) {
-            msg = 'Sign-in could not load. Please refresh the page, check your connection, or try disabling ad blockers. Need help? Call 91123 34367 or aoopune@gmail.com.';
-          } else if (/SSL|525|handshake failed|unreachable|failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
-            msg = 'Our servers are temporarily unreachable. Please try again in a few minutes. If it persists, try another network (e.g. mobile data) or turn off VPN. Need help? Call 91123 34367 or aoopune@gmail.com.';
-          } else if (/permission|firestore|unavailable|applications|auth/i.test(msg)) {
-            msg = "Firebase setup needed: Check Firestore rules and that the applications collection is allowed. Need help? Call 91123 34367 or aoopune@gmail.com";
-          }
-          showToast(msg, true);
-          clearPendingApplication();
-          setButtonEnabled(true);
-        });
+        .then(function () { return signInWithPopupOnly(); })
+        .then(onSignInSuccess)
+        .catch(onSignInError);
     });
   }
 
