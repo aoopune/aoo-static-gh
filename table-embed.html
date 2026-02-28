@@ -232,32 +232,57 @@
 </head>
 <body>
   <div id="loan-table-root"></div>
-  <script defer src="js/aoo-loan-table-standalone.js?v=6" data-cfasync="false"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var root = document.getElementById('loan-table-root');
-      if (!root) return;
-      function showError(msg) {
-        root.innerHTML = '<p style="color:#b91c1c;padding:1rem;margin:0;font-weight:600;">' + msg + '</p>';
+    (function() {
+      var TABLE_SCRIPT_URL = 'js/aoo-loan-table-standalone.js?v=6';
+      function runMount() {
+        var root = document.getElementById('loan-table-root');
+        if (!root) return;
+        function showError(msg) {
+          root.innerHTML = '<p style="color:#b91c1c;padding:1rem;margin:0;font-weight:600;">' + msg + '</p>';
+        }
+        if (typeof window.AooLoanTable === 'undefined') {
+          showError('Table script did not load.');
+          return;
+        }
+        if (window.AooLoanTable._loadError) {
+          showError('Table error: ' + (window.AooLoanTable._loadError.message || ''));
+          return;
+        }
+        if (typeof window.AooLoanTable.mount !== 'function') {
+          showError('Table script did not load.');
+          return;
+        }
+        try {
+          window.AooLoanTable.mount('#loan-table-root');
+        } catch (e) {
+          showError('Table error: ' + (e && e.message ? e.message : String(e)));
+        }
       }
-      if (typeof window.AooLoanTable === 'undefined') {
-        showError('Table script did not load.');
-        return;
+      function loadTableScript() {
+        var s = document.createElement('script');
+        s.src = TABLE_SCRIPT_URL;
+        s.setAttribute('data-cfasync', 'false');
+        s.onload = runMount;
+        s.onerror = function() {
+          var root = document.getElementById('loan-table-root');
+          if (root) root.innerHTML = '<p style="color:#b91c1c;padding:1rem;margin:0;font-weight:600;">Table script did not load.</p>';
+        };
+        document.head.appendChild(s);
       }
-      if (window.AooLoanTable._loadError) {
-        showError('Table error: ' + (window.AooLoanTable._loadError.message || ''));
-        return;
+      function whenIdle() {
+        if (typeof requestIdleCallback !== 'undefined') {
+          requestIdleCallback(loadTableScript, { timeout: 400 });
+        } else {
+          setTimeout(loadTableScript, 0);
+        }
       }
-      if (typeof window.AooLoanTable.mount !== 'function') {
-        showError('Table script did not load.');
-        return;
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', whenIdle);
+      } else {
+        whenIdle();
       }
-      try {
-        window.AooLoanTable.mount('#loan-table-root');
-      } catch (e) {
-        showError('Table error: ' + (e && e.message ? e.message : String(e)));
-      }
-    });
+    })();
   </script>
   <script defer src="js/apply-button-iframe.js?v=3" data-cfasync="false"></script>
 </body>
