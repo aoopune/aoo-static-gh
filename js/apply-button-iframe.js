@@ -198,26 +198,31 @@
       doc.setFont(undefined, 'normal');
       y += 10;
       var detailKeys = [['Apply via', 'applyVia'], ['Margin', 'margin'], ['Interest Rate', 'interestRate'], ['Loan Amount Covers', 'loanAmountCovers'], ['Other Charges', 'otherCharges'], ['Security', 'security'], ['Course', 'course'], ['Others', 'others']];
-      var detailMaxWidth = w - 8;
-      var lineH = 4;
+      var labelIndent = 6;
+      var valueIndent = 32;
+      var valueMaxWidth = w - labelIndent - valueIndent - 4;
+      var lineH = 3.8;
+      doc.setFontSize(7);
       for (var L = 0; L < uniqueLenders.length; L++) {
         if (y > pageH - 40) { doc.addPage('a4', 'landscape'); y = margin + 12; drawPageHeader(); }
-        doc.setFontSize(9);
         doc.setFont(undefined, 'bold');
         doc.text(pdfSafeText(uniqueLenders[L]), x + 4, y);
         doc.setFont(undefined, 'normal');
-        y += 6;
+        y += 5;
         var details = getDetailsForLender(uniqueLenders[L]) || {};
-        doc.setFontSize(7);
         for (var d = 0; d < detailKeys.length; d++) {
           var section = details[detailKeys[d][1]];
           var bullets = section && Array.isArray(section.bullets) ? section.bullets : [];
           var raw = section && section.raw != null ? String(section.raw).trim() : '';
-          var text = bullets.length ? bullets.join('; ') : (raw || 'None');
-          text = pdfSafeText(detailKeys[d][0] + ': ' + text);
-          var lines = doc.splitTextToSize(text, detailMaxWidth);
-          doc.text(lines, x + 6, y + 3);
-          y += lines.length * lineH + 2;
+          var valueText = bullets.length ? bullets.join('; ') : (raw || 'None');
+          valueText = pdfSafeText(valueText).replace(/\s+/g, ' ');
+          var label = pdfSafeText(detailKeys[d][0] + ': ');
+          doc.setFont(undefined, 'bold');
+          doc.text(label, x + labelIndent, y + 3);
+          doc.setFont(undefined, 'normal');
+          var valueLines = doc.splitTextToSize(valueText, valueMaxWidth);
+          doc.text(valueLines, x + labelIndent + valueIndent, y + 3);
+          y += valueLines.length * lineH + 2;
         }
         y += 4;
       }
