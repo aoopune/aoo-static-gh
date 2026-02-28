@@ -230,7 +230,6 @@
       return Promise.resolve();
     }
 
-    clearPendingApplication();
     flowState = 'AUTH_COMPLETED';
     var email = user.email;
     var payload = {
@@ -243,6 +242,7 @@
 
     return supabaseClient.from('applications').insert(payload).select().single().then(function (res) {
       if (res.error) throw res.error;
+      clearPendingApplication();
       var applicationId = res.data.id;
       flowState = 'PAYMENT_PENDING';
       paymentFlowStarted = true;
@@ -278,6 +278,11 @@
 
       var rzp = new window.Razorpay(options);
       rzp.open();
+    }).catch(function (err) {
+      flowState = 'IDLE';
+      paymentFlowStarted = false;
+      setButtonEnabled(true);
+      throw err;
     });
   }
 
@@ -321,6 +326,14 @@
     } else if (msg.type === 'AOO_SELECTION_RESPONSE') {
       var offers = msg.offers || [];
       var inputData = msg.inputData || {};
+      if (offers.length === 0) {
+        var pending = loadPendingApplication();
+        if (pending && pending.offers && pending.offers.length) {
+          showToast('Retrying with your saved selection.', false);
+          runApplyFlowFromSelection(pending.offers, pending.inputData || {});
+          return;
+        }
+      }
       runApplyFlowFromSelection(offers, inputData);
     }
   }
@@ -335,18 +348,44 @@
     var ran = false;
     setButtonEnabled(false);
 
+    function reEnableButton() {
+      if (ran) return;
+      resumeInProgress = false;
+      setButtonEnabled(true);
+      showToast('Connection timed out. Click Apply to retry with your saved selection.', false);
+      try {
+        var sub = (authListener && authListener.data && authListener.data.subscription) || (authListener && authListener.data) || authListener;
+        if (sub && typeof sub.unsubscribe === 'function') sub.unsubscribe();
+      } catch (e) {}
+    }
+
+    var authListener = null;
+
     function doResume(session) {
       if (ran || !session || !session.user) return;
       ran = true;
+      var insertTimeout = setTimeout(function () {
+        if (paymentFlowStarted) return;
+        flowState = 'IDLE';
+        resumeInProgress = false;
+        setButtonEnabled(true);
+        showToast('Connection timed out. Click Apply to retry with your saved selection.', false);
+        try {
+          var sub = (authListener && authListener.data && authListener.data.subscription) || (authListener && authListener.data) || authListener;
+          if (sub && typeof sub.unsubscribe === 'function') sub.unsubscribe();
+        } catch (e) {}
+      }, 20000);
       startPaymentFlow(session.user, pending.offers, pending.inputData || {})
+        .then(function () { clearTimeout(insertTimeout); })
         .catch(function () {
+          clearTimeout(insertTimeout);
           resumeInProgress = false;
           setButtonEnabled(true);
         });
       resumeInProgress = false;
     }
 
-    var authListener = supabaseClient.auth.onAuthStateChange(function (event, session) {
+    authListener = supabaseClient.auth.onAuthStateChange(function (event, session) {
       if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') doResume(session);
     });
 
@@ -355,17 +394,14 @@
       if (session && session.user) {
         doResume(session);
       }
+    }).catch(function () {
+      reEnableButton();
     });
 
-    var maxWait = 4500;
+    var maxWait = 8000;
     setTimeout(function () {
       if (!ran) {
-        resumeInProgress = false;
-        setButtonEnabled(true);
-        try {
-          var sub = (authListener && authListener.data && authListener.data.subscription) || (authListener && authListener.data) || authListener;
-          if (sub && typeof sub.unsubscribe === 'function') sub.unsubscribe();
-        } catch (e) {}
+        reEnableButton();
       }
     }, maxWait);
   }
