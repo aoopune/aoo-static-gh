@@ -18,7 +18,9 @@
   --bg-nav: rgba(255, 255, 255, 0.92);
   --nav-text: #0f172a;
   --nav-text-hover: #0d9488;
-  --nav-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.04);
+  --nav-shadow: 0 1px 0 rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.06);
+  --nav-pill-glow: 0 0 0 1px rgba(13, 148, 136, 0.22), 0 2px 8px rgba(13, 148, 136, 0.12);
+  --nav-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   --text: #0f172a;
   --text-secondary: #475569;
   --text-muted: #64748b;
@@ -90,18 +92,21 @@ body {
 a { color: var(--link); text-decoration: none; transition: color var(--transition-fast); }
 a:hover { color: var(--link-hover); text-decoration: underline; }
 
-/* ========== Header & Nav – fintech bar, soft shadow ========== */
+/* ========== Header & Nav – modern SaaS style: layered depth, pill active, smooth transitions ========== */
 .site-header {
   background: var(--bg-nav);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
-  padding: var(--space-3) var(--space-6);
+  padding: var(--space-3) var(--space-8);
   position: sticky;
   top: 0;
   z-index: 100;
   box-shadow: var(--nav-shadow);
-  transition: box-shadow var(--transition-normal);
+  transition: box-shadow var(--nav-transition);
+  min-height: 56px;
+  display: flex;
+  align-items: center;
 }
 
 .site-header-inner {
@@ -110,13 +115,13 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-2);
+  gap: var(--space-4);
 }
 
 .site-logo {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.25rem;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.01em;
   color: var(--nav-text);
   flex-shrink: 0;
   margin-right: 0;
@@ -124,7 +129,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 .site-logo a {
   color: inherit;
   text-decoration: none;
-  transition: opacity var(--transition-fast);
+  transition: opacity var(--nav-transition);
 }
 .site-logo a:hover {
   opacity: 0.9;
@@ -138,32 +143,57 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  gap: var(--space-1) var(--space-2);
+  gap: var(--space-2);
   justify-content: flex-end;
   margin-left: 0;
   flex-shrink: 0;
 }
 .site-nav a {
   color: var(--nav-text);
-  font-size: 0.9rem;
-  font-weight: 500;
-  padding: var(--space-2) var(--space-3);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: var(--space-2) var(--space-4);
   white-space: nowrap;
-  border-radius: var(--radius-sm);
-  transition: background var(--transition-normal), color var(--transition-normal), box-shadow var(--transition-fast);
+  border-radius: 999px;
+  transition: color var(--nav-transition), background var(--nav-transition), box-shadow var(--nav-transition);
   border-bottom: none;
   text-decoration: none;
+  position: relative;
+}
+.site-nav a::after {
+  content: '';
+  position: absolute;
+  left: var(--space-4);
+  right: var(--space-4);
+  bottom: var(--space-1);
+  height: 1px;
+  background: var(--nav-text-hover);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  border-radius: 1px;
+  transition: opacity var(--nav-transition), transform var(--nav-transition);
 }
 .site-nav a:hover {
   color: var(--nav-text-hover);
   background: var(--primary-pastel);
   text-decoration: none;
 }
+.site-nav a:hover::after {
+  opacity: 0.4;
+  transform: scaleX(1);
+}
 .site-nav a.active {
   color: var(--nav-text-hover);
   font-weight: 600;
   background: var(--primary-pastel);
   text-decoration: none;
+  box-shadow: var(--nav-pill-glow);
+}
+.site-nav a.active::after {
+  opacity: 0;
+  transform: scaleX(0);
 }
 .site-nav a:focus-visible {
   outline: 2px solid var(--primary);
@@ -250,12 +280,13 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   min-height: 44px;
   line-height: 1.4;
   color: var(--text);
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.9375rem;
-  border-radius: var(--radius-sm);
+  letter-spacing: 0.01em;
+  border-radius: 999px;
   border-bottom: none;
   text-decoration: none;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  transition: background var(--nav-transition), color var(--nav-transition), box-shadow var(--nav-transition);
   -webkit-tap-highlight-color: transparent;
 }
 .nav-drawer-nav a:hover {
@@ -268,6 +299,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   color: var(--heading-accent);
   font-weight: 600;
   text-decoration: none;
+  box-shadow: var(--nav-pill-glow);
 }
 .nav-drawer-nav a:focus-visible {
   outline: 2px solid var(--primary);
