@@ -119,7 +119,6 @@
         var app = window.__aooFirebaseApp || (window.__aooFirebaseApp = fb.initializeApp(window.FIREBASE_CONFIG));
         window.__aooAuth = fb.auth(app);
         window.__aooFirestore = fb.firestore(app);
-        window.__aooAuth.getRedirectResult().then(function () {}).catch(function () {});
       } catch (e) {}
     })();
   </script>
