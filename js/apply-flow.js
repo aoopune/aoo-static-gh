@@ -31,6 +31,7 @@
   var resumeInProgress = false;
   var paymentFlowStarted = false;
   var flowState = 'IDLE';
+  var paymentPopupWindow = null;
 
   function getIframe() {
     return document.querySelector('iframe.loan-table-embed');
@@ -348,7 +349,12 @@
       paymentFlowStarted = false;
       setButtonEnabled(true);
       var qrUrl = (typeof window !== 'undefined' && window.location && window.location.origin ? window.location.origin : '') + '/payment-qr.html?id=' + encodeURIComponent(applicationId);
-      window.open(qrUrl, 'paymentQR', 'width=400,height=500');
+      if (paymentPopupWindow && !paymentPopupWindow.closed) {
+        try { paymentPopupWindow.location.href = qrUrl; } catch (e) { paymentPopupWindow = window.open(qrUrl, 'paymentQR', 'width=400,height=500'); }
+      } else {
+        paymentPopupWindow = window.open(qrUrl, 'paymentQR', 'width=400,height=500');
+      }
+      paymentPopupWindow = null;
       var homeUrl = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin + '/' : 'https://applyonlyonce.com/';
       window.location.href = homeUrl;
     }).catch(function (err) {
@@ -366,6 +372,7 @@
     }
     flowState = 'IDLE';
     showDisclaimerModal(function () {
+      paymentPopupWindow = window.open('about:blank', 'paymentQR', 'width=400,height=500');
       setButtonEnabled(false);
       savePendingApplication(offers, inputData);
       flowState = 'AUTH_REQUIRED';
@@ -377,6 +384,8 @@
       function onSignInError(err) {
         flowState = 'IDLE';
         setButtonEnabled(true);
+        if (paymentPopupWindow && !paymentPopupWindow.closed) try { paymentPopupWindow.close(); } catch (e) {}
+        paymentPopupWindow = null;
         var raw = (err && err.message) ? err.message : (err && String(err)) || 'Something went wrong.';
         if (typeof console !== 'undefined' && console.error) console.error('[Apply flow]', err);
         var msg = raw;
