@@ -310,14 +310,8 @@
 
   function startPaymentFlow(user, offers, inputData) {
     if (paymentFlowStarted) return Promise.resolve();
-    var useQrPayment = window.USE_QR_PAYMENT !== false;
     if (!ensureFirebase()) {
       showToast('Our servers are temporarily unreachable. Please refresh the page and try again in a few minutes.', true);
-      setButtonEnabled(true);
-      return Promise.resolve();
-    }
-    if (!useQrPayment && !RAZORPAY_KEY_ID) {
-      showToast('Razorpay is not configured.', true);
       setButtonEnabled(true);
       return Promise.resolve();
     }
@@ -347,64 +341,16 @@
 
     var insertPromise = db.collection('applications').add(payload);
 
-    if (useQrPayment) {
-      return insertPromise.then(function (docRef) {
-        var applicationId = docRef.id;
-        clearPendingApplication();
-        flowState = 'IDLE';
-        paymentFlowStarted = false;
-        setButtonEnabled(true);
-        var qrUrl = (typeof window !== 'undefined' && window.location && window.location.origin ? window.location.origin : '') + '/payment-qr.html?id=' + encodeURIComponent(applicationId);
-        window.open(qrUrl, 'paymentQR', 'width=400,height=500');
-        var homeUrl = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin + '/' : 'https://applyonlyonce.com/';
-        window.location.href = homeUrl;
-      }).catch(function (err) {
-        flowState = 'IDLE';
-        paymentFlowStarted = false;
-        setButtonEnabled(true);
-        throw err;
-      });
-    }
-
-    return loadRazorpay().then(function () {
-      return insertPromise.then(function (docRef) {
-        var applicationId = docRef.id;
-        clearPendingApplication();
-        flowState = 'PAYMENT_PENDING';
-        paymentFlowStarted = true;
-
-        var options = {
-          key: RAZORPAY_KEY_ID,
-          amount: APPLICATION_PRICE_PAISE,
-          currency: 'INR',
-          name: 'ApplyOnlyOnce',
-          description: 'Loan application offers',
-          prefill: { email: email },
-          readonly: { email: true },
-          handler: function (response) {
-            flowState = 'PAYMENT_COMPLETED';
-            paymentFlowStarted = false;
-            showToast('Payment successful!', false);
-            db.collection('applications').doc(applicationId).update({
-              status: 'paid',
-              razorpay_payment_id: response.razorpay_payment_id
-            }).then(function () {
-              showPaymentSuccessModal(email);
-            });
-            setButtonEnabled(true);
-          },
-          modal: {
-            ondismiss: function () {
-              flowState = 'IDLE';
-              paymentFlowStarted = false;
-              setButtonEnabled(true);
-            }
-          }
-        };
-
-        var rzp = new window.Razorpay(options);
-        rzp.open();
-      });
+    return insertPromise.then(function (docRef) {
+      var applicationId = docRef.id;
+      clearPendingApplication();
+      flowState = 'IDLE';
+      paymentFlowStarted = false;
+      setButtonEnabled(true);
+      var qrUrl = (typeof window !== 'undefined' && window.location && window.location.origin ? window.location.origin : '') + '/payment-qr.html?id=' + encodeURIComponent(applicationId);
+      window.open(qrUrl, 'paymentQR', 'width=400,height=500');
+      var homeUrl = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin + '/' : 'https://applyonlyonce.com/';
+      window.location.href = homeUrl;
     }).catch(function (err) {
       flowState = 'IDLE';
       paymentFlowStarted = false;
