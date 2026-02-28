@@ -11,22 +11,65 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; padding: 0; background: transparent; font-family: 'Montserrat', system-ui, sans-serif; overflow-x: hidden; }
-    #loan-table-root { height: auto; min-height: auto; }
-    /* Tighten spacing between filter card and table */
+    /* Lock page height, no scroll – only table scrolls internally */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: transparent;
+      font-family: 'Montserrat', system-ui, sans-serif;
+    }
+    /* Full-height flex layout: root → wrap → query (shrink 0) + results (flex 1, scroll) */
+    #loan-table-root {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+      overflow: hidden;
+      background: transparent !important;
+    }
+    #loan-table-root .aoo-loan-table-wrap {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      background: transparent !important;
+    }
+    #loan-table-root .wrap {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+      background: transparent !important;
+    }
+    /* Header / filter section – natural height */
     #loan-table-root .query-card {
+      flex-shrink: 0;
       margin-bottom: 0.5rem !important;
       padding-bottom: 0.5rem !important;
     }
-    /* Remove grey block / extra space below table – table section ends at last row */
-    #loan-table-root,
-    #loan-table-root .aoo-loan-table-wrap,
-    #loan-table-root .wrap {
-      background: transparent !important;
-      margin-bottom: 0 !important;
-      padding-bottom: 0 !important;
-      min-height: auto !important;
-      height: auto !important;
+    /* Table section – takes all remaining space */
+    #loan-table-root .results-card {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    #loan-table-root .table-wrap {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+    /* Table scroll container – only this scrolls */
+    #loan-table-root .table-scroll-inner {
+      height: 100%;
+      max-height: none !important;
+      overflow-y: auto;
+      overflow-x: auto;
     }
 
     /* Mobile: 2-column form – Col1: Gender, Loan amount, Loan type | Col2: Country, University, Level of study. Keep labels and input bars fully visible. */
