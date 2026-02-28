@@ -103,10 +103,14 @@
     style.id = 'apply-button-iframe-styles';
     style.textContent = [
       '#loan-table-root .aoo-loan-table-wrap .wrap { position: relative; }',
-      '#apply-button.apply-floating-btn { position: absolute; bottom: 16px; right: 16px; z-index: 10; width: auto; max-width: 90%; padding: 8px 16px; font-size: 12px; font-weight: 600; border-radius: 999px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); white-space: nowrap; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.05rem; min-height: auto; font-family: Montserrat, system-ui, sans-serif; background: var(--accent, #64748b); color: #fff; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; }',
+      '#apply-download-buttons { position: absolute; bottom: 16px; right: 16px; z-index: 10; display: flex; flex-direction: row; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; max-width: 90%; }',
+      '#apply-button.apply-floating-btn, #download-results-btn.apply-floating-btn { width: auto; padding: 8px 16px; font-size: 12px; font-weight: 600; border-radius: 999px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); white-space: nowrap; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.05rem; min-height: auto; font-family: Montserrat, system-ui, sans-serif; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; }',
+      '#apply-button.apply-floating-btn { background: var(--accent, #64748b); color: #fff; }',
       '#apply-button.apply-floating-btn:hover { background: var(--accent-hover, #475569); transform: translateY(-1px); }',
       '#apply-button.apply-floating-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }',
-      '@media (max-width: 768px) { #apply-button.apply-floating-btn { bottom: 12px; right: 12px; padding: 8px 14px; font-size: 11px; max-width: 92%; width: auto; min-height: 44px; } }'
+      '#download-results-btn.apply-floating-btn { background: #e2e8f0; color: #334155; }',
+      '#download-results-btn.apply-floating-btn:hover { background: #cbd5e1; transform: translateY(-1px); }',
+      '@media (max-width: 768px) { #apply-download-buttons { bottom: 12px; right: 12px; gap: 6px; } #apply-button.apply-floating-btn, #download-results-btn.apply-floating-btn { padding: 8px 14px; font-size: 11px; min-height: 44px; } }'
     ].join('\n');
     document.head.appendChild(style);
   }
@@ -119,10 +123,13 @@
   function addApplyButton() {
     var wrap = getWrap();
     if (!wrap) return false;
-    if (document.getElementById('apply-button')) return true;
+    if (document.getElementById('apply-download-buttons')) return true;
 
     var tableContainer = getTableContainer();
     if (!tableContainer) return false;
+
+    var wrapper = document.createElement('div');
+    wrapper.id = 'apply-download-buttons';
 
     var applyButton = document.createElement('button');
     applyButton.type = 'button';
@@ -133,7 +140,20 @@
       if (window.parent) window.parent.postMessage({ type: 'AOO_APPLY_CLICKED' }, '*');
     });
 
-    tableContainer.appendChild(applyButton);
+    var downloadBtn = document.createElement('button');
+    downloadBtn.type = 'button';
+    downloadBtn.id = 'download-results-btn';
+    downloadBtn.className = 'apply-floating-btn';
+    downloadBtn.innerHTML = '<span>Download results</span>';
+    downloadBtn.addEventListener('click', function () {
+      if (typeof window.AooLoanTable !== 'undefined' && typeof window.AooLoanTable.downloadResults === 'function') {
+        window.AooLoanTable.downloadResults();
+      }
+    });
+
+    wrapper.appendChild(downloadBtn);
+    wrapper.appendChild(applyButton);
+    tableContainer.appendChild(wrapper);
     return true;
   }
 
