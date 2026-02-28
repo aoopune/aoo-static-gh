@@ -226,14 +226,24 @@
   function getOrSignInUser() {
     if (!ensureFirebase()) return Promise.reject(new Error('Firebase not configured'));
     var auth = firebaseAuth;
-    var redirectUrl = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin + '/' : 'https://applyonlyonce.com/';
-    return auth.getRedirectResult().then(function () {
-      var user = auth.currentUser;
+    var provider = window.firebase && window.firebase.auth ? new window.firebase.auth.GoogleAuthProvider() : null;
+    if (!provider) return Promise.reject(new Error('Google sign-in not available'));
+
+    return auth.getRedirectResult().then(function (result) {
+      var user = (result && result.user) || auth.currentUser;
       if (user && user.email) return user;
-      var provider = window.firebase && window.firebase.auth ? new window.firebase.auth.GoogleAuthProvider() : null;
-      if (!provider) return Promise.reject(new Error('Google sign-in not available'));
-      return auth.signInWithRedirect(provider).then(function () {
-        return new Promise(function () {});
+      return auth.signInWithPopup(provider).then(function (popupResult) {
+        var u = popupResult && popupResult.user;
+        if (u && u.email) return u;
+        return Promise.reject(new Error('No user from sign-in'));
+      }).catch(function (popupErr) {
+        var code = (popupErr && popupErr.code) ? String(popupErr.code) : '';
+        if (/popup-blocked|cancelled-popup|popup-closed|auth\/cancelled/.test(code)) {
+          return auth.signInWithRedirect(provider).then(function () {
+            return new Promise(function () {});
+          });
+        }
+        return Promise.reject(popupErr);
       });
     });
   }
