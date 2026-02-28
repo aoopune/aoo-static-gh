@@ -78,7 +78,33 @@
   </noscript>
 </head>
 <body class="home-locked">
-  <header class="site-header" id="site-header"></header>
+  <header class="site-header" id="site-header">
+    <div class="site-header-inner">
+      <div class="site-logo"><a href="index.html" data-testid="nav-logo">Apply Only Once</a></div>
+      <nav class="site-nav" aria-label="Main">
+        <a href="pages/pro-tips.html" data-testid="nav-pro-tips">Pro tips before you apply</a>
+        <a href="pages/quick-overview.html" data-testid="nav-quick-overview">Quick overview</a>
+        <a href="pages/government-schemes.html" data-testid="nav-government-schemes">Government schemes</a>
+        <a href="pages/faq.html" data-testid="nav-faq">FAQ</a>
+        <a href="pages/document-checklist.html" data-testid="nav-document-checklist">Standardised document list</a>
+        <a href="pages/about.html" data-testid="nav-about">About us</a>
+      </nav>
+      <button type="button" class="nav-hamburger" aria-label="Open menu" aria-expanded="false" data-testid="nav-hamburger">
+        <span class="nav-hamburger-bar"></span><span class="nav-hamburger-bar"></span><span class="nav-hamburger-bar"></span>
+      </button>
+    </div>
+    <div class="nav-dropdown" id="nav-dropdown" aria-label="Navigation menu" aria-hidden="true">
+      <nav class="nav-dropdown-nav" aria-label="Main">
+        <a href="index.html" class="active" data-testid="nav-home">Home</a>
+        <a href="pages/pro-tips.html" data-testid="nav-pro-tips">Pro tips before you apply</a>
+        <a href="pages/quick-overview.html" data-testid="nav-quick-overview">Quick overview</a>
+        <a href="pages/government-schemes.html" data-testid="nav-government-schemes">Government schemes</a>
+        <a href="pages/faq.html" data-testid="nav-faq">FAQ</a>
+        <a href="pages/document-checklist.html" data-testid="nav-document-checklist">Standardised document list</a>
+        <a href="pages/about.html" data-testid="nav-about">About us</a>
+      </nav>
+    </div>
+  </header>
   <main class="home-main">
     <div class="container">
       <div class="row justify-content-center">
