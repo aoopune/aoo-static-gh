@@ -149,12 +149,13 @@
       firebaseFirestore = window.__aooFirestore || null;
       return !!(firebaseAuth && firebaseFirestore);
     }
-    if (typeof firebase !== 'undefined' && FIREBASE_CONFIG) {
+    var fb = typeof window !== 'undefined' ? window.firebase : undefined;
+    if (typeof fb !== 'undefined' && FIREBASE_CONFIG) {
       try {
-        var app = window.__aooFirebaseApp || firebase.initializeApp(FIREBASE_CONFIG);
+        var app = window.__aooFirebaseApp || fb.initializeApp(FIREBASE_CONFIG);
         window.__aooFirebaseApp = app;
-        firebaseAuth = firebase.auth(app);
-        firebaseFirestore = firebase.firestore(app);
+        firebaseAuth = fb.auth(app);
+        firebaseFirestore = fb.firestore(app);
         window.__aooAuth = firebaseAuth;
         window.__aooFirestore = firebaseFirestore;
         return true;
@@ -170,7 +171,8 @@
     return auth.getRedirectResult().then(function () {
       var user = auth.currentUser;
       if (user && user.email) return user;
-      var provider = new firebase.auth.GoogleAuthProvider();
+      var provider = window.firebase && window.firebase.auth ? new window.firebase.auth.GoogleAuthProvider() : null;
+      if (!provider) return Promise.reject(new Error('Google sign-in not available'));
       return auth.signInWithRedirect(provider).then(function () {
         return new Promise(function () {});
       });
