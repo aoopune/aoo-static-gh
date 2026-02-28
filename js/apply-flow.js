@@ -374,15 +374,21 @@
       status: 'initiated'
     };
 
-    function generateShortId(len) {
-      var id = '';
-      for (var i = 0; i < len; i++) id += Math.floor(Math.random() * 10);
-      return id;
-    }
-    var applicationId = generateShortId(6);
-    var insertPromise = db.collection('applications').doc(applicationId).set(payload);
+    // Unique 6-digit ID via transaction; Firestore rules must allow read/write on _counters/applications
+    var counterRef = db.collection('_counters').doc('applications');
+    var appRef = db.collection('applications');
+    var insertPromise = db.runTransaction(function (transaction) {
+      return transaction.get(counterRef).then(function (snap) {
+        var last = (snap && snap.exists && snap.data().lastId) || 0;
+        var next = last + 1;
+        var applicationId = next <= 999999 ? ('000000' + next).slice(-6) : String(next);
+        transaction.set(counterRef, { lastId: next });
+        transaction.set(appRef.doc(applicationId), payload);
+        return applicationId;
+      });
+    });
 
-    return insertPromise.then(function () {
+    return insertPromise.then(function (applicationId) {
       clearPendingApplication();
       flowState = 'IDLE';
       paymentFlowStarted = false;
