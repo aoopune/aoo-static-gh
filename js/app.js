@@ -219,15 +219,6 @@
         });
       })();
     }
-    const footer = document.getElementById('site-footer');
-    if (footer) {
-      footer.innerHTML =
-        '<p><strong>Let us know anything we should know by:</strong></p>' +
-        '<div class="contact">' +
-        'Call / WhatsApp: <a href="' + telHref + '">' + contactPhone + '</a><br>' +
-        'Mail: <a href="mailto:' + contactEmail + '">' + contactEmail + '</a>' +
-        '</div>';
-    }
     var resultsContact = document.getElementById('results-contact');
     if (resultsContact) {
       resultsContact.innerHTML =
