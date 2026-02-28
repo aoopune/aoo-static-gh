@@ -310,12 +310,13 @@
 
   function startPaymentFlow(user, offers, inputData) {
     if (paymentFlowStarted) return Promise.resolve();
+    var useQrPayment = window.USE_QR_PAYMENT === true;
     if (!ensureFirebase()) {
       showToast('Our servers are temporarily unreachable. Please refresh the page and try again in a few minutes.', true);
       setButtonEnabled(true);
       return Promise.resolve();
     }
-    if (!USE_QR_PAYMENT && !RAZORPAY_KEY_ID) {
+    if (!useQrPayment && !RAZORPAY_KEY_ID) {
       showToast('Razorpay is not configured.', true);
       setButtonEnabled(true);
       return Promise.resolve();
@@ -346,7 +347,7 @@
 
     var insertPromise = db.collection('applications').add(payload);
 
-    if (USE_QR_PAYMENT) {
+    if (useQrPayment) {
       return insertPromise.then(function (docRef) {
         var applicationId = docRef.id;
         clearPendingApplication();
