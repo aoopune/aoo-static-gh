@@ -7,32 +7,45 @@
   <title>Apply Only Once – Education loan comparison</title>
   <link rel="stylesheet" href="css/style.css?v=2">
   <style>
-    /* Homepage: body locked to viewport height; table iframe fills remaining space and scrolls internally */
-    body.home-locked {
-      height: 100vh;
-      overflow: hidden;
+    /* Full-height flex layout: page locked to viewport, table fills remaining space and scrolls internally */
+    html:has(body.home-locked) {
+      height: 100%;
     }
-
+    body.home-locked {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .home-locked .site-header {
+      flex-shrink: 0;
+    }
     .home-locked .home-main {
       flex: 1 1 auto;
+      min-height: 0;
       display: flex;
       flex-direction: column;
       padding-top: var(--space-1);
       padding-bottom: var(--space-1);
     }
-
+    .home-locked .home-main .container {
+      flex-shrink: 0;
+    }
     .home-locked .home-table-section {
-      flex: 1 1 auto;
+      flex: 1;
       min-height: 0;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       margin-top: var(--space-1);
     }
-
     .home-locked .home-table-section iframe.loan-table-embed {
       display: block;
       width: 100%;
       height: 100%;
+      min-height: 0;
       border: none;
       background: transparent;
     }
