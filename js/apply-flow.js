@@ -375,12 +375,11 @@
     };
 
     function generateShortId(len) {
-      var alphabet = 'abcdefghjkmnpqrstuvwxyz23456789';
       var id = '';
-      for (var i = 0; i < len; i++) id += alphabet[Math.floor(Math.random() * alphabet.length)];
+      for (var i = 0; i < len; i++) id += Math.floor(Math.random() * 10);
       return id;
     }
-    var applicationId = generateShortId(8);
+    var applicationId = generateShortId(6);
     var insertPromise = db.collection('applications').doc(applicationId).set(payload);
 
     return insertPromise.then(function () {
