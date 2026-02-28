@@ -85,6 +85,31 @@
       margin-left: auto !important;
       margin-right: auto !important;
     }
+    #loan-table-root .aoo-loan-table-wrap .field input:not([type="radio"]),
+    #loan-table-root .aoo-loan-table-wrap .field select {
+      font: inherit;
+      font-family: 'Montserrat', system-ui, sans-serif;
+      font-size: 0.8rem;
+    }
+    #loan-table-root .aoo-loan-table-wrap .choice-option span {
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      line-height: 1;
+      margin: 0;
+      color: var(--muted);
+    }
+    #loan-table-root .aoo-loan-table-wrap .choice-group {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0;
+      box-sizing: border-box;
+      display: flex !important;
+      gap: 2px !important;
+      padding: 1px !important;
+      min-height: 40px;
+      align-items: center;
+    }
     /* Desktop: 6 equal columns so inputs fill full width with equal gaps; count on row 2 centered */
     @media (min-width: 768px) {
       #loan-table-root .aoo-loan-table-wrap .query-card .form-row {
@@ -121,9 +146,10 @@
       }
     }
 
-    /* Mobile: 2-column form – Col1: Gender, Loan amount, Loan type | Col2: Country, University, Level of study. Keep labels and input bars fully visible. */
+    /* Mobile only: input section wider; table keeps its own spacing so columns stay clear. Desktop unchanged. */
     @media (max-width: 767px) {
       body { padding-left: env(safe-area-inset-left, 0); padding-right: env(safe-area-inset-right, 0); }
+      /* Root padding kept for table area – columns don't hide */
       #loan-table-root {
         width: 100%;
         max-width: 100%;
@@ -143,24 +169,26 @@
         padding: 0.25rem 0;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
       }
+      /* Input section only: stretch wider via negative margin (table below keeps root padding) */
       #loan-table-root .query-card {
-        width: 100%;
-        max-width: 22rem;
+        width: calc(100% + 1.5rem) !important;
+        max-width: none;
         min-width: 0;
-        padding: 0.5rem 0.75rem;
+        margin-left: -0.75rem;
+        margin-right: -0.75rem;
+        padding: 0.4rem 0.5rem;
         overflow: visible;
-        margin-left: auto;
-        margin-right: auto;
+        box-sizing: border-box;
       }
+      /* 2-column grid, equal columns, tight gap */
       #loan-table-root .aoo-loan-table-wrap .form-row {
         display: grid !important;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto auto auto;
         grid-auto-flow: column;
-        column-gap: 1rem;
-        row-gap: 0.5rem;
+        gap: 4px;
         align-items: start;
         min-width: 0;
         width: 100%;
@@ -171,37 +199,67 @@
       #loan-table-root .aoo-loan-table-wrap .form-row .field:nth-child(4) { grid-column: 2; grid-row: 1; min-width: 0; }
       #loan-table-root .aoo-loan-table-wrap .form-row .field:nth-child(5) { grid-column: 2; grid-row: 2; min-width: 0; }
       #loan-table-root .aoo-loan-table-wrap .form-row .field:nth-child(6) { grid-column: 2; grid-row: 3; min-width: 0; }
+      /* Label on top, input below; 6–8px vertical spacing; labels 12–13px, font-weight 500, reduced letter-spacing */
       #loan-table-root .aoo-loan-table-wrap .form-row .field {
         display: flex !important;
         flex-direction: column !important;
         align-items: stretch !important;
-        gap: 0.25rem;
+        gap: 6px;
         min-width: 0;
         overflow: visible;
       }
-      /* Allow dropdown (.combo-menu) to show – do not clip */
-      #loan-table-root .aoo-loan-table-wrap .form-row .field .combo {
-        overflow: visible;
+      #loan-table-root .aoo-loan-table-wrap .form-row .field label {
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.01em;
+        text-align: left;
+        line-height: 0.8;
       }
-      #loan-table-root .aoo-loan-table-wrap .form-row .field label { text-align: left; }
       #loan-table-root .aoo-loan-table-wrap .form-row .field > label { justify-content: flex-start; }
-      /* Keep input bars fully visible inside their cell */
-      #loan-table-root .aoo-loan-table-wrap .form-row .field input:not([type="radio"]),
+      /* Loan amount: keep full-size input bar */
+      #loan-table-root .aoo-loan-table-wrap .form-row .field input#amount {
+        width: 90% !important;
+        max-width: 90% !important;
+        box-sizing: border-box;
+        padding: 6px 10px !important;
+        min-height: 40px;
+        height: 40px;
+      }
+      /* Other input bars (Country, University, Level): slightly smaller */
       #loan-table-root .aoo-loan-table-wrap .form-row .field .combo input {
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box;
+        padding: 5px 8px !important;
+        min-height: 34px !important;
+        height: 34px !important;
       }
+      /* Toggle buttons (Secured/Unsecured, Gender): full-width in cell, flex with gap */
       #loan-table-root .aoo-loan-table-wrap .form-row .field .choice-group {
         width: 100% !important;
         max-width: 100% !important;
         min-width: 0;
         box-sizing: border-box;
+        display: flex !important;
+        gap: 2px !important;
+        padding: 1px !important;
+        min-height: 40px;
+        align-items: center;
+      }
+      #loan-table-root .aoo-loan-table-wrap .form-row .field .choice-group .choice-option {
+        flex: 1 1 0;
+        min-width: 0;
+        justify-content: center;
       }
       #loan-table-root .aoo-loan-table-wrap .form-row .field .combo {
         width: 100%;
         min-width: 0;
         max-width: 100%;
+      }
+      /* Strict row alignment: same baseline for Loan amount & University, etc. */
+      #loan-table-root .aoo-loan-table-wrap .form-row .field:nth-child(2),
+      #loan-table-root .aoo-loan-table-wrap .form-row .field:nth-child(5) {
+        align-items: stretch;
       }
       #loan-table-root .aoo-loan-table-wrap .field.submit-field {
         grid-column: 1 / -1;
@@ -211,22 +269,79 @@
         align-items: center;
         text-align: center;
       }
+      /* Offers line: tight gap above, center, slightly secondary (opacity) */
       #loan-table-root .aoo-loan-table-wrap .field.submit-field .count {
         display: block;
         text-align: center;
-        margin-top: 0.2rem;
+        margin-top: 4px;
+        opacity: 0.88;
+        font-size: 0.9rem;
       }
     }
 
-    /* Desktop / all-breakpoint overrides so iframe version matches your desired layout */
-    #loan-table-root .aoo-loan-table-wrap #amount {
-      width: 70% !important;
-      max-width: 70% !important;
-      box-sizing: border-box;
+    /* Desktop only: 70% width for amount (mobile uses 90% from the rule above) */
+    @media (min-width: 768px) {
+      #loan-table-root .aoo-loan-table-wrap #amount {
+        width: 70% !important;
+        max-width: 70% !important;
+        box-sizing: border-box;
+      }
     }
     #loan-table-root .aoo-loan-table-wrap .choice-group {
       width: 100% !important;
       max-width: 100% !important;
+    }
+    /* Narrower Lender and Sector columns (all viewports) */
+    #loan-table-root .aoo-loan-table-wrap .table-wrap {
+      --sticky-col1-width: 11ch;
+      --sticky-col2-width: 7ch;
+    }
+
+    /* Mobile only: whole iframe content scrolls – input section scrolls away, table can fill the screen */
+    @media (max-width: 767px) {
+      html, body {
+        height: auto;
+        min-height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      #loan-table-root {
+        height: auto;
+        min-height: 0;
+        overflow: visible;
+      }
+      #loan-table-root .aoo-loan-table-wrap {
+        flex: none;
+        min-height: 0;
+      }
+      #loan-table-root .wrap {
+        flex: none;
+        height: auto;
+        min-height: 0;
+        overflow: visible;
+      }
+      #loan-table-root .query-card {
+        flex-shrink: 0;
+      }
+      #loan-table-root .results-card {
+        flex: none;
+        min-height: 75vh;
+        overflow: visible;
+      }
+      #loan-table-root .table-wrap {
+        min-height: 0;
+        overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
+      }
+      #loan-table-root .table-scroll-inner {
+        height: auto;
+        min-height: 70vh;
+        overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
+      }
     }
   </style>
 </head>
