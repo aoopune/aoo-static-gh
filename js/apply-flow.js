@@ -346,7 +346,7 @@
 
     resumeInProgress = true;
     var ran = false;
-    setButtonEnabled(false);
+    /* Don't disable button here – if Supabase times out, button stays clickable. We only disable when opening Razorpay. */
 
     function reEnableButton() {
       if (ran) return;
@@ -364,6 +364,7 @@
     function doResume(session) {
       if (ran || !session || !session.user) return;
       ran = true;
+      setButtonEnabled(false);
       var insertTimeout = setTimeout(function () {
         if (paymentFlowStarted) return;
         flowState = 'IDLE';
