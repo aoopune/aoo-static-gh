@@ -106,6 +106,34 @@
       </nav>
     </div>
   </header>
+  <script data-cfasync="false">
+    (function () {
+      var hamburger = document.querySelector('.nav-hamburger');
+      var dropdown = document.getElementById('nav-dropdown');
+      if (!hamburger || !dropdown) return;
+      function openDropdown() {
+        dropdown.classList.add('open');
+        dropdown.setAttribute('aria-hidden', 'false');
+        hamburger.setAttribute('aria-expanded', 'true');
+        document.addEventListener('click', handleOutsideClick);
+      }
+      function closeDropdown() {
+        dropdown.classList.remove('open');
+        dropdown.setAttribute('aria-hidden', 'true');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.removeEventListener('click', handleOutsideClick);
+      }
+      function handleOutsideClick(e) {
+        if (!dropdown.contains(e.target) && !hamburger.contains(e.target)) closeDropdown();
+      }
+      hamburger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (dropdown.classList.contains('open')) closeDropdown(); else openDropdown();
+      });
+      var links = dropdown.querySelectorAll('a');
+      for (var i = 0; i < links.length; i++) links[i].addEventListener('click', closeDropdown);
+    })();
+  </script>
   <main class="home-main">
     <div class="container">
       <div class="row justify-content-center">
