@@ -451,7 +451,12 @@
 
     wrapper.appendChild(downloadBtn);
     wrapper.appendChild(applyButton);
-    tableContainer.appendChild(wrapper);
+    var queryCard = tableContainer.querySelector('.query-card');
+    if (queryCard && queryCard.nextSibling) {
+      tableContainer.insertBefore(wrapper, queryCard.nextSibling);
+    } else {
+      tableContainer.appendChild(wrapper);
+    }
     return true;
   }
 
