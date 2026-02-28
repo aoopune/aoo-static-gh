@@ -21,9 +21,16 @@
     }
     .home-locked .site-header {
       flex-shrink: 0;
-      background: var(--bg-nav); border-bottom: 1px solid rgba(0,0,0,0.06);
-      padding: 0.75rem 1.5rem; position: sticky; top: 0; z-index: 100;
-      box-shadow: var(--nav-shadow);
+      width: fit-content;
+      max-width: 95%;
+      margin: 10px auto 0 auto;
+      padding: 1px 60px;
+      border-radius: 999px;
+      background: var(--bg-nav);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     }
     .home-locked .home-main {
       flex: 1 1 auto; min-height: 0;
@@ -84,7 +91,7 @@
       <iframe class="loan-table-embed" src="table-embed.html" title="Education loan comparison table" loading="lazy"></iframe>
     </section>
   </main>
-  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script>
     (function () {
       function runAuth() {

@@ -144,11 +144,12 @@
   }
 
   function getOrSignInUser() {
-    if (!supabaseClient) return Promise.reject(new Error('Supabase not configured'));
-    return supabaseClient.auth.getSession().then(function (res) {
+    var client = ensureSupabaseClient();
+    if (!client) return Promise.reject(new Error('Supabase not configured'));
+    return client.auth.getSession().then(function (res) {
       var session = res.data && res.data.session;
       if (session && session.user) return session.user;
-      return supabaseClient.auth.signInWithOAuth({
+      return client.auth.signInWithOAuth({
         provider: 'google',
         options: { redirectTo: 'https://applyonlyonce.com/' }
       }).then(function (oauthRes) {
@@ -157,7 +158,7 @@
           try { targetWindow.location.href = oauthRes.data.url; } catch (e) { window.location.href = oauthRes.data.url; }
           return new Promise(function () {});
         }
-        return supabaseClient.auth.getSession().then(function (r) {
+        return client.auth.getSession().then(function (r) {
           var s = r.data && r.data.session;
           return s ? s.user : null;
         });
@@ -225,9 +226,23 @@
     });
   }
 
+  function ensureSupabaseClient() {
+    if (supabaseClient) return supabaseClient;
+    if (typeof window !== 'undefined' && window.__aooSupabaseClient) {
+      supabaseClient = window.__aooSupabaseClient;
+      return supabaseClient;
+    }
+    if (typeof window.supabase !== 'undefined' && SUPABASE_URL && SUPABASE_ANON_KEY) {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      if (typeof window !== 'undefined') window.__aooSupabaseClient = supabaseClient;
+      return supabaseClient;
+    }
+    return null;
+  }
+
   function startPaymentFlow(user, offers, inputData) {
     if (paymentFlowStarted) return Promise.resolve();
-    if (!supabaseClient) {
+    if (!ensureSupabaseClient()) {
       showToast('Supabase is not configured.', true);
       setButtonEnabled(true);
       return Promise.resolve();

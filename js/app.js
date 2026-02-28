@@ -191,31 +191,32 @@
         '<button type="button" class="nav-hamburger" aria-label="Open menu" aria-expanded="false" data-testid="nav-hamburger">' +
         '<span class="nav-hamburger-bar"></span><span class="nav-hamburger-bar"></span><span class="nav-hamburger-bar"></span></button>' +
         '</div>' +
-        '<div class="nav-drawer-overlay" id="nav-drawer-overlay" aria-hidden="true"></div>' +
-        '<div class="nav-drawer" id="nav-drawer" aria-label="Navigation menu">' +
-        '<nav class="nav-drawer-nav" aria-label="Main">' + drawerNavLinksHtml + '</nav></div>';
+        '<div class="nav-dropdown" id="nav-dropdown" aria-label="Navigation menu" aria-hidden="true">' +
+        '<nav class="nav-dropdown-nav" aria-label="Main">' + drawerNavLinksHtml + '</nav></div>';
       (function () {
         var hamburger = header.querySelector('.nav-hamburger');
-        var drawer = document.getElementById('nav-drawer');
-        var overlay = document.getElementById('nav-drawer-overlay');
-        function openDrawer() {
-          drawer.classList.add('open');
-          overlay.classList.add('open');
+        var dropdown = document.getElementById('nav-dropdown');
+        function openDropdown() {
+          dropdown.classList.add('open');
+          dropdown.setAttribute('aria-hidden', 'false');
           hamburger.setAttribute('aria-expanded', 'true');
-          overlay.setAttribute('aria-hidden', 'false');
+          document.addEventListener('click', handleOutsideClick);
         }
-        function closeDrawer() {
-          drawer.classList.remove('open');
-          overlay.classList.remove('open');
+        function closeDropdown() {
+          dropdown.classList.remove('open');
+          dropdown.setAttribute('aria-hidden', 'true');
           hamburger.setAttribute('aria-expanded', 'false');
-          overlay.setAttribute('aria-hidden', 'true');
+          document.removeEventListener('click', handleOutsideClick);
         }
-        hamburger.addEventListener('click', function () {
-          if (drawer.classList.contains('open')) closeDrawer(); else openDrawer();
+        function handleOutsideClick(e) {
+          if (!dropdown.contains(e.target) && !hamburger.contains(e.target)) closeDropdown();
+        }
+        hamburger.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (dropdown.classList.contains('open')) closeDropdown(); else openDropdown();
         });
-        overlay.addEventListener('click', closeDrawer);
-        drawer.querySelectorAll('a').forEach(function (a) {
-          a.addEventListener('click', closeDrawer);
+        dropdown.querySelectorAll('a').forEach(function (a) {
+          a.addEventListener('click', closeDropdown);
         });
       })();
     }

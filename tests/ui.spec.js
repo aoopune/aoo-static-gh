@@ -365,16 +365,16 @@ test.describe('Apply Only Once – UI', function () {
     expect(bg).toMatch(/rgb\s*\(\s*0\s*,\s*119\s*,\s*160\s*\)|rgba\s*\(\s*0\s*,\s*119\s*,\s*160/);
   });
 
-  test('Mobile: hamburger visible and opens side drawer with nav links', async ({ page }) => {
+  test('Mobile: hamburger visible and opens dropdown with nav links', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/');
     await waitForLayout(page);
     await expect(page.locator('[data-testid="nav-hamburger"]')).toBeVisible();
     await expect(page.locator('.site-nav')).toBeHidden();
     await page.locator('[data-testid="nav-hamburger"]').click();
-    await expect(page.locator('#nav-drawer')).toHaveClass(/open/);
-    await expect(page.locator('.nav-drawer-nav [data-testid="nav-home"]')).toBeVisible();
-    await expect(page.locator('.nav-drawer-nav [data-testid="nav-about"]')).toBeVisible();
+    await expect(page.locator('#nav-dropdown')).toHaveClass(/open/);
+    await expect(page.locator('.nav-dropdown-nav [data-testid="nav-home"]')).toBeVisible();
+    await expect(page.locator('.nav-dropdown-nav [data-testid="nav-about"]')).toBeVisible();
   });
 
   test('Compare page table visible on mobile viewport and scrolls inside wrapper', async ({ page }) => {
