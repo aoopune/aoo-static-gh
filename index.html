@@ -12,7 +12,7 @@
   <title>Apply Only Once – Education loan comparison</title>
   <!-- Critical: above-the-fold layout and typography (non-blocking) -->
   <style>
-    :root { --space-1: 0.25rem; --text: #0f172a; --bg-nav: #EEEEEE; --nav-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    :root { --space-1: 0.25rem; --text: #0f172a; --bg-nav: rgba(255,255,255,0.92); --nav-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04); }
     html:has(body.home-locked) { height: 100%; }
     body.home-locked {
       height: 100%; margin: 0; overflow: hidden;
@@ -21,7 +21,7 @@
     }
     .home-locked .site-header {
       flex-shrink: 0;
-      background: var(--bg-nav); border-bottom: 1px solid rgba(0,0,0,0.08);
+      background: var(--bg-nav); border-bottom: 1px solid rgba(0,0,0,0.06);
       padding: 0.75rem 1.5rem; position: sticky; top: 0; z-index: 100;
       box-shadow: var(--nav-shadow);
     }
@@ -43,7 +43,7 @@
     .hero-pipe { display: inline; }
     .hero-subheading {
       font-size: 18px; font-weight: 600; margin: 12px auto 0;
-      color: #4b5563; text-align: center; line-height: 1.5; max-width: 90vw;
+      color: #475569; text-align: center; line-height: 1.5; max-width: 90vw;
     }
     .home-locked .home-table-section {
       flex: 1; min-height: 0; overflow: hidden;
@@ -55,11 +55,11 @@
     }
   </style>
   <!-- Non-render-blocking: full stylesheet, Bootstrap, and fonts load after first paint -->
-  <link rel="stylesheet" href="css/style.css?v=3" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/style.css?v=4" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="css/style.css?v=4">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
   </noscript>
