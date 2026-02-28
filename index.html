@@ -151,9 +151,6 @@
       <iframe class="loan-table-embed" src="table-embed.html" title="Education loan comparison table" loading="lazy"></iframe>
     </section>
   </main>
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js" data-cfasync="false"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js" data-cfasync="false"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js" data-cfasync="false"></script>
   <script defer src="js/app.js" data-cfasync="false"></script>
   <script data-cfasync="false">
     window.FIREBASE_CONFIG = {
@@ -167,16 +164,7 @@
     window.RAZORPAY_KEY_ID = 'rzp_test_SLBd2DHmrSNADi';
     window.APPLICATION_PRICE_PAISE = 9900;
     window.USE_QR_PAYMENT = true;
-    (function () {
-      if (typeof window.firebase === 'undefined' || !window.FIREBASE_CONFIG) return;
-      try {
-        var fb = window.firebase;
-        var app = window.__aooFirebaseApp || (window.__aooFirebaseApp = fb.initializeApp(window.FIREBASE_CONFIG));
-        window.__aooAuth = fb.auth(app);
-        window.__aooFirestore = fb.firestore(app);
-      } catch (e) {}
-    })();
   </script>
-  <script defer src="js/apply-flow.js?v=17" data-cfasync="false"></script>
+  <script defer src="js/apply-flow.js?v=18" data-cfasync="false"></script>
 </body>
 </html>

@@ -2,11 +2,42 @@
  * Apply button iframe – runs inside table-embed iframe.
  * Adds Apply button, reads selection from DOM, communicates with parent via postMessage.
  * No Supabase, Razorpay, or payment logic.
+ * jsPDF is loaded on demand when user clicks Download results.
  */
 (function () {
   'use strict';
 
   var applyButtonIframeInitialized = false;
+
+  var JSPDF_URLS = [
+    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js'
+  ];
+
+  /** Load jsPDF + autotable on demand. Returns Promise that resolves when ready; rejects on load error. */
+  function loadJsPdf() {
+    if (typeof window.jspdf !== 'undefined' && window.jspdf.jsPDF) {
+      return Promise.resolve();
+    }
+    if (window.__aooJsPdfLoadPromise) return window.__aooJsPdfLoadPromise;
+    var promise = new Promise(function (resolve, reject) {
+      function loadNext(i) {
+        if (i >= JSPDF_URLS.length) {
+          if (typeof window.jspdf !== 'undefined' && window.jspdf.jsPDF) resolve();
+          else reject(new Error('jsPDF did not load'));
+          return;
+        }
+        var s = document.createElement('script');
+        s.src = JSPDF_URLS[i];
+        s.onload = function () { loadNext(i + 1); };
+        s.onerror = function () { reject(new Error('jsPDF script failed to load')); };
+        document.head.appendChild(s);
+      }
+      loadNext(0);
+    });
+    window.__aooJsPdfLoadPromise = promise;
+    return promise;
+  }
 
   function getRoot() {
     return document.querySelector('#loan-table-root');
@@ -390,9 +421,32 @@
     downloadBtn.addEventListener('click', function () {
       if (typeof window.jspdf !== 'undefined' && window.jspdf.jsPDF && typeof window.docPdfFromTable === 'function') {
         window.docPdfFromTable();
-      } else if (typeof window.AooLoanTable !== 'undefined' && typeof window.AooLoanTable.downloadResults === 'function') {
-        window.AooLoanTable.downloadResults();
+        return;
       }
+      var span = downloadBtn.querySelector('span');
+      var origText = span ? span.textContent : '';
+      if (span) span.textContent = 'Preparing…';
+      downloadBtn.disabled = true;
+      loadJsPdf()
+        .then(function () {
+          if (typeof window.docPdfFromTable === 'function') window.docPdfFromTable();
+        })
+        .catch(function () {
+          if (typeof window.AooLoanTable !== 'undefined' && typeof window.AooLoanTable.downloadResults === 'function') {
+            window.AooLoanTable.downloadResults();
+          } else if (document.querySelector('#loan-table-root')) {
+            var root = document.querySelector('#loan-table-root');
+            var msg = document.createElement('p');
+            msg.style.cssText = 'color:#b91c1c;padding:0.5rem 1rem;margin:0;font-size:0.875rem;';
+            msg.textContent = 'Download could not load. Please check your connection and try again.';
+            root.insertBefore(msg, root.firstChild);
+            setTimeout(function () { msg.remove(); }, 5000);
+          }
+        })
+        .then(function () {
+          downloadBtn.disabled = false;
+          if (span) span.textContent = origText;
+        });
     });
 
     wrapper.appendChild(downloadBtn);

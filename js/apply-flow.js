@@ -24,7 +24,9 @@
   if (typeof window !== 'undefined' && window.__aooAuth) {
     firebaseAuth = window.__aooAuth;
     firebaseFirestore = window.__aooFirestore || null;
-    window.__aooRedirectResultPromise = window.__aooAuth.getRedirectResult();
+    try {
+      window.__aooRedirectResultPromise = window.__aooAuth.getRedirectResult();
+    } catch (e) {}
   }
 
   var applyFlowInitialized = false;
@@ -228,6 +230,9 @@
             firebaseFirestore = fb.firestore(app);
             window.__aooAuth = firebaseAuth;
             window.__aooFirestore = firebaseFirestore;
+            try {
+              window.__aooRedirectResultPromise = firebaseAuth.getRedirectResult();
+            } catch (e) {}
             resolve(true);
           } catch (e) {
             reject(e);
@@ -537,7 +542,6 @@
     applyFlowInitialized = true;
     ensureApplyFlowStyles();
     window.addEventListener('message', handleMessage);
-    loadFirebaseAndInit().catch(function () {});
     runResumeFlow();
   }
 
