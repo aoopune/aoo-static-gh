@@ -142,6 +142,12 @@
     document.head.appendChild(style);
   }
 
+  var FIREBASE_SDK_URLS = [
+    'https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js',
+    'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js',
+    'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js'
+  ];
+
   function ensureFirebase() {
     if (firebaseAuth && firebaseFirestore) return true;
     if (typeof window !== 'undefined' && window.__aooAuth) {
@@ -162,6 +168,51 @@
       } catch (e) { return false; }
     }
     return false;
+  }
+
+  /** Load Firebase SDK scripts dynamically and init. Resolves when Firebase is ready or rejects on failure. */
+  function loadFirebaseAndInit() {
+    if (ensureFirebase()) return Promise.resolve(true);
+    if (!FIREBASE_CONFIG || typeof window === 'undefined') return Promise.resolve(false);
+    if (window.__aooFirebaseLoadPromise) return window.__aooFirebaseLoadPromise;
+    var promise = new Promise(function (resolve, reject) {
+      function tryInit() {
+        if (ensureFirebase()) {
+          resolve(true);
+          return;
+        }
+        var fb = window.firebase;
+        if (typeof fb !== 'undefined' && FIREBASE_CONFIG) {
+          try {
+            var app = window.__aooFirebaseApp || fb.initializeApp(FIREBASE_CONFIG);
+            window.__aooFirebaseApp = app;
+            firebaseAuth = fb.auth(app);
+            firebaseFirestore = fb.firestore(app);
+            window.__aooAuth = firebaseAuth;
+            window.__aooFirestore = firebaseFirestore;
+            resolve(true);
+          } catch (e) {
+            reject(e);
+          }
+          return;
+        }
+        reject(new Error('Firebase not configured'));
+      }
+      function loadNext(i) {
+        if (i >= FIREBASE_SDK_URLS.length) {
+          tryInit();
+          return;
+        }
+        var s = document.createElement('script');
+        s.src = FIREBASE_SDK_URLS[i];
+        s.onload = function () { loadNext(i + 1); };
+        s.onerror = function () { reject(new Error('Firebase SDK failed to load')); };
+        document.head.appendChild(s);
+      }
+      loadNext(0);
+    });
+    window.__aooFirebaseLoadPromise = promise;
+    return promise;
   }
 
   function getOrSignInUser() {
@@ -354,8 +405,18 @@
       savePendingApplication(offers, inputData);
       flowState = 'AUTH_REQUIRED';
 
-      getOrSignInUser()
+      loadFirebaseAndInit()
+        .then(function (ok) {
+          if (!ok) {
+            flowState = 'IDLE';
+            setButtonEnabled(true);
+            showToast('Sign-in is not available right now. Try refreshing the page or another browser. Need help? Call 91123 34367 or aoopune@gmail.com.', true);
+            return;
+          }
+          return getOrSignInUser();
+        })
         .then(function (user) {
+          if (!user) return;
           return startPaymentFlow(user, offers, inputData);
         })
         .catch(function (err) {
@@ -363,7 +424,9 @@
           var raw = (err && err.message) ? err.message : (err && String(err)) || 'Something went wrong.';
           if (typeof console !== 'undefined' && console.error) console.error('[Apply flow]', err);
           var msg = raw;
-          if (/SSL|525|handshake failed|unreachable|failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
+          if (/Firebase not configured|failed to load|SDK/i.test(msg)) {
+            msg = 'Sign-in could not load. Please refresh the page, check your connection, or try disabling ad blockers. Need help? Call 91123 34367 or aoopune@gmail.com.';
+          } else if (/SSL|525|handshake failed|unreachable|failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
             msg = 'Our servers are temporarily unreachable. Please try again in a few minutes. If it persists, try another network (e.g. mobile data) or turn off VPN. Need help? Call 91123 34367 or aoopune@gmail.com.';
           } else if (/permission|firestore|unavailable|applications|auth/i.test(msg)) {
             msg = "Firebase setup needed: Check Firestore rules and that the applications collection is allowed. Need help? Call 91123 34367 or aoopune@gmail.com";
