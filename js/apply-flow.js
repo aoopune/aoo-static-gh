@@ -31,7 +31,6 @@
   var resumeInProgress = false;
   var paymentFlowStarted = false;
   var flowState = 'IDLE';
-  var paymentPopupWindow = null;
 
   function getIframe() {
     return document.querySelector('iframe.loan-table-embed');
@@ -377,17 +376,7 @@
       var origin = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : '';
       var qrUrl = origin + '/payment-qr.html?id=' + encodeURIComponent(applicationId);
       var homeUrl = origin ? origin + '/' : 'https://applyonlyonce.com/';
-      if (paymentPopupWindow && !paymentPopupWindow.closed) {
-        try {
-          paymentPopupWindow.location.href = qrUrl;
-          window.location.href = homeUrl;
-        } catch (e) {
-          showOpenPaymentModal(qrUrl, homeUrl);
-        }
-      } else {
-        showOpenPaymentModal(qrUrl, homeUrl);
-      }
-      paymentPopupWindow = null;
+      showOpenPaymentModal(qrUrl, homeUrl);
     }).catch(function (err) {
       flowState = 'IDLE';
       paymentFlowStarted = false;
@@ -403,7 +392,6 @@
     }
     flowState = 'IDLE';
     showDisclaimerModal(function () {
-      paymentPopupWindow = window.open('about:blank', 'paymentQR', 'width=400,height=500');
       setButtonEnabled(false);
       savePendingApplication(offers, inputData);
       flowState = 'AUTH_REQUIRED';
@@ -415,8 +403,6 @@
       function onSignInError(err) {
         flowState = 'IDLE';
         setButtonEnabled(true);
-        if (paymentPopupWindow && !paymentPopupWindow.closed) try { paymentPopupWindow.close(); } catch (e) {}
-        paymentPopupWindow = null;
         var raw = (err && err.message) ? err.message : (err && String(err)) || 'Something went wrong.';
         if (typeof console !== 'undefined' && console.error) console.error('[Apply flow]', err);
         var msg = raw;
