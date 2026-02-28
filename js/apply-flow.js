@@ -177,10 +177,10 @@
     return false;
   }
 
-  /** Load Firebase SDK scripts dynamically and init. Resolves when Firebase is ready or rejects on failure. */
+  /** Load Firebase SDK scripts dynamically and init. Resolves when Firebase is ready or rejects on failure. Never resolves false in a browser. */
   function loadFirebaseAndInit() {
     if (ensureFirebase()) return Promise.resolve(true);
-    if (typeof window === 'undefined') return Promise.resolve(false);
+    if (typeof window === 'undefined') return Promise.reject(new Error('Not in a browser'));
     if (window.__aooFirebaseLoadPromise) return window.__aooFirebaseLoadPromise;
     var promise = new Promise(function (resolve, reject) {
       function tryInit() {
@@ -413,13 +413,7 @@
       flowState = 'AUTH_REQUIRED';
 
       loadFirebaseAndInit()
-        .then(function (ok) {
-          if (!ok) {
-            flowState = 'IDLE';
-            setButtonEnabled(true);
-            showToast('Sign-in is not available right now. Try refreshing the page or another browser. Need help? Call 91123 34367 or aoopune@gmail.com.', true);
-            return;
-          }
+        .then(function () {
           return getOrSignInUser();
         })
         .then(function (user) {
@@ -431,7 +425,7 @@
           var raw = (err && err.message) ? err.message : (err && String(err)) || 'Something went wrong.';
           if (typeof console !== 'undefined' && console.error) console.error('[Apply flow]', err);
           var msg = raw;
-          if (/Firebase not configured|failed to load|SDK/i.test(msg)) {
+          if (/Firebase not configured|failed to load|SDK|Not in a browser/i.test(msg)) {
             msg = 'Sign-in could not load. Please refresh the page, check your connection, or try disabling ad blockers. Need help? Call 91123 34367 or aoopune@gmail.com.';
           } else if (/SSL|525|handshake failed|unreachable|failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
             msg = 'Our servers are temporarily unreachable. Please try again in a few minutes. If it persists, try another network (e.g. mobile data) or turn off VPN. Need help? Call 91123 34367 or aoopune@gmail.com.';
@@ -469,8 +463,14 @@
     if (resumeInProgress) return;
     var pending = loadPendingApplication();
     if (!pending || !pending.offers || !pending.offers.length) return;
-    if (!ensureFirebase()) return;
+    loadFirebaseAndInit().then(function () {
+      runResumeFlowCore(pending);
+    }).catch(function () {});
+  }
 
+  function runResumeFlowCore(pending) {
+    if (resumeInProgress) return;
+    if (!ensureFirebase()) return;
     resumeInProgress = true;
     var ran = false;
     var auth = firebaseAuth;
@@ -534,6 +534,7 @@
     applyFlowInitialized = true;
     ensureApplyFlowStyles();
     window.addEventListener('message', handleMessage);
+    loadFirebaseAndInit().catch(function () {});
     runResumeFlow();
   }
 
