@@ -2689,6 +2689,17 @@ function queryAllBanksLocal(criteria) {
         var colorAltRow = [248, 250, 252];
         var colorSectionBg = [241, 245, 249];
 
+        function pdfSafeText(s) {
+          if (s == null || s === undefined) return '';
+          s = String(s);
+          if (typeof s.normalize === 'function') s = s.normalize('NFC');
+          s = s.replace(/\uFFFD/g, '');
+          s = s.replace(/\u20B9/g, 'Rs.');
+          s = s.replace(/\u2014/g, '-');
+          s = s.replace(/\u2022/g, '*');
+          return s.replace(/\s+/g, ' ').trim();
+        }
+
         function drawHeader() {
           doc.setDrawColor(colorLine[0], colorLine[1], colorLine[2]);
           doc.setLineWidth(0.5);
@@ -2696,7 +2707,7 @@ function queryAllBanksLocal(criteria) {
           doc.setFontSize(10);
           doc.setTextColor(colorHeaderBg[0], colorHeaderBg[1], colorHeaderBg[2]);
           doc.setFont(undefined, 'bold');
-          doc.text(headerLogo, pageW - margin, 16, { align: 'right' });
+          doc.text(pdfSafeText(headerLogo), pageW - margin, 16, { align: 'right' });
           doc.setFont(undefined, 'normal');
         }
 
@@ -2710,7 +2721,7 @@ function queryAllBanksLocal(criteria) {
           for (var h = 0; h < ths.length; h++) {
             var t = (ths[h].textContent || '').trim();
             if (!t && ths[h].querySelector('input')) t = 'Select';
-            headers.push(t || '');
+            headers.push(pdfSafeText(t || ''));
           }
         }
         if (tbody && tbody.rows) {
@@ -2724,7 +2735,7 @@ function queryAllBanksLocal(criteria) {
               if (input) {
                 row.push(input.checked ? 'Yes' : '');
               } else {
-                row.push((cell.textContent || '').trim().replace(/\s+/g, ' ') || '');
+                row.push(pdfSafeText((cell.textContent || '').trim().replace(/\s+/g, ' ') || ''));
               }
             }
             tableRows.push(row);
@@ -2737,7 +2748,7 @@ function queryAllBanksLocal(criteria) {
         doc.setFontSize(18);
         doc.setTextColor(colorHeaderBg[0], colorHeaderBg[1], colorHeaderBg[2]);
         doc.setFont(undefined, 'bold');
-        doc.text('Personalized Education Loan Comparison Report', pageW / 2, y + 16, { align: 'center' });
+        doc.text(pdfSafeText('Personalized Education Loan Comparison Report'), pageW / 2, y + 16, { align: 'center' });
         doc.setFont(undefined, 'normal');
         y += 28;
         doc.setDrawColor(colorLine[0], colorLine[1], colorLine[2]);
@@ -2746,13 +2757,13 @@ function queryAllBanksLocal(criteria) {
         y += 16;
         doc.setFontSize(9);
         doc.setTextColor(colorMuted[0], colorMuted[1], colorMuted[2]);
-        doc.text('Generated ' + dateStr, pageW / 2, y, { align: 'center' });
+        doc.text(pdfSafeText('Generated ' + dateStr), pageW / 2, y, { align: 'center' });
         y += 28;
 
         doc.setFontSize(11);
         doc.setTextColor(colorText[0], colorText[1], colorText[2]);
         doc.setFont(undefined, 'bold');
-        doc.text('Your selections', margin, y);
+        doc.text(pdfSafeText('Your selections'), margin, y);
         doc.setFont(undefined, 'normal');
         y += 20;
         doc.setFillColor(colorSectionBg[0], colorSectionBg[1], colorSectionBg[2]);
@@ -2760,14 +2771,14 @@ function queryAllBanksLocal(criteria) {
         doc.setFontSize(9);
         doc.setTextColor(colorText[0], colorText[1], colorText[2]);
         var sel = [
-          'Gender: ' + (inputData.gender || '—'),
-          'Security type: ' + (inputData.secured === 'true' ? 'Secured' : inputData.secured === 'false' ? 'Unsecured' : '—'),
-          'Loan amount: ' + (inputData.amount || '—'),
-          'Level of education: ' + (inputData.levelOfStudy || '—'),
-          'Country: ' + (inputData.country || '—'),
-          'University: ' + (inputData.university || '—')
+          'Gender: ' + pdfSafeText(inputData.gender || '-'),
+          'Security type: ' + (inputData.secured === 'true' ? 'Secured' : inputData.secured === 'false' ? 'Unsecured' : '-'),
+          'Loan amount: ' + pdfSafeText(inputData.amount || '-'),
+          'Level of education: ' + pdfSafeText(inputData.levelOfStudy || '-'),
+          'Country: ' + pdfSafeText(inputData.country || '-'),
+          'University: ' + pdfSafeText(inputData.university || '-')
         ];
-        sel.forEach(function(line) { doc.text(line, margin + 10, y + 10); y += 18; });
+        sel.forEach(function(line) { doc.text(pdfSafeText(line), margin + 10, y + 10); y += 18; });
         y += 24;
 
         var useTableBody = tableRows.length > 0 && (tableRows[0].length >= headers.length || tableRows.length > 1);
@@ -2778,17 +2789,25 @@ function queryAllBanksLocal(criteria) {
           doc.setFontSize(11);
           doc.setTextColor(colorText[0], colorText[1], colorText[2]);
           doc.setFont(undefined, 'bold');
-          doc.text('Comparison table', margin, y);
+          doc.text(pdfSafeText('Comparison table'), margin, y);
           doc.setFont(undefined, 'normal');
           y += 18;
+          var tableContentWidth = pageW - 2 * margin;
+          var numCols = Math.max(headers.length, 1);
+          var colWidth = Math.max(48, tableContentWidth / numCols);
+          var colStyles = {};
+          for (var ci = 0; ci < numCols; ci++) colStyles[ci] = { cellWidth: colWidth };
           doc.autoTable({
             startY: y,
             head: [headers],
-            body: useTableBody ? tableRows : (function() { var r = []; for (var i = 0; i < headers.length; i++) r.push(''); r[0] = 'No results. Run a query to see offers.'; return [r]; })(),
+            body: useTableBody ? tableRows : (function() { var r = []; for (var i = 0; i < headers.length; i++) r.push(''); r[0] = pdfSafeText('No results. Run a query to see offers.'); return [r]; })(),
             margin: { left: margin, right: margin },
-            tableWidth: 'auto',
-            styles: { fontSize: 8, cellPadding: 4, textColor: colorText },
-            headStyles: { fillColor: colorHeaderBg, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8, cellPadding: 5 },
+            tableWidth: tableContentWidth,
+            columnStyles: colStyles,
+            showHead: 'everyPage',
+            rowPageBreak: 'avoid',
+            styles: { fontSize: 8, cellPadding: { top: 6, right: 8, bottom: 6, left: 8 }, textColor: colorText, valign: 'top' },
+            headStyles: { fillColor: colorHeaderBg, textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 9, cellPadding: { top: 6, right: 8, bottom: 6, left: 8 }, halign: 'left' },
             alternateRowStyles: useTableBody ? [{ fillColor: [255, 255, 255] }, { fillColor: colorAltRow }] : undefined,
             didDrawPage: function(data) { drawHeader(); }
           });
@@ -2814,7 +2833,7 @@ function queryAllBanksLocal(criteria) {
           doc.setFontSize(12);
           doc.setTextColor(colorText[0], colorText[1], colorText[2]);
           doc.setFont(undefined, 'bold');
-          doc.text('View details (per lender)', margin, y);
+          doc.text(pdfSafeText('View details (per lender)'), margin, y);
           doc.setFont(undefined, 'normal');
           y += 22;
           var detailSections = [['Apply via', 'applyVia'], ['Margin', 'margin'], ['Interest Rate', 'interestRate'], ['Loan Amount Covers', 'loanAmountCovers'], ['Other Charges', 'otherCharges'], ['Security', 'security'], ['Course', 'course'], ['Others', 'others']];
@@ -2826,7 +2845,7 @@ function queryAllBanksLocal(criteria) {
             doc.setFontSize(10);
             doc.setTextColor(colorHeaderBg[0], colorHeaderBg[1], colorHeaderBg[2]);
             doc.setFont(undefined, 'bold');
-            doc.text(lenderName, margin + 8, y + 8);
+            doc.text(pdfSafeText(lenderName), margin + 8, y + 8);
             doc.setFont(undefined, 'normal');
             y += 20;
             var details = getDetailsForLender(lenderName) || {};
@@ -2839,7 +2858,7 @@ function queryAllBanksLocal(criteria) {
               var raw = section && section.raw != null ? String(section.raw).trim() : '';
               var text = bullets.length ? bullets.join('; ') : (raw || '—');
               if (text.length > 130) text = text.substring(0, 127) + '...';
-              doc.text(detailSections[s][0] + ': ' + text, margin + 10, y + 4);
+              doc.text(pdfSafeText(detailSections[s][0] + ': ' + text), margin + 10, y + 4);
               y += 12;
             }
             y += 10;
@@ -2880,7 +2899,7 @@ function queryAllBanksLocal(criteria) {
           doc.setFontSize(12);
           doc.setTextColor(colorText[0], colorText[1], colorText[2]);
           doc.setFont(undefined, 'bold');
-          doc.text('Appendix: University lists by bank', margin, y);
+          doc.text(pdfSafeText('Appendix: University lists by bank'), margin, y);
           doc.setFont(undefined, 'normal');
           y += 22;
           for (var b = 0; b < banksWithListed.length; b++) {
@@ -2892,20 +2911,20 @@ function queryAllBanksLocal(criteria) {
             doc.setFontSize(10);
             doc.setTextColor(colorHeaderBg[0], colorHeaderBg[1], colorHeaderBg[2]);
             doc.setFont(undefined, 'bold');
-            doc.text(banksWithListed[b], margin + 8, y + 8);
+            doc.text(pdfSafeText(banksWithListed[b]), margin + 8, y + 8);
             doc.setFont(undefined, 'normal');
             y += 20;
             doc.setTextColor(colorText[0], colorText[1], colorText[2]);
             for (var ck = 0; ck < criteriaKeys.length; ck++) {
               doc.setFontSize(8);
-              doc.text(criteriaKeys[ck] + ':', margin + 10, y + 4);
+              doc.text(pdfSafeText(criteriaKeys[ck] + ':'), margin + 10, y + 4);
               y += 12;
               var univList = byCriteria[criteriaKeys[ck]] || [];
               for (var u = 0; u < Math.min(univList.length, 25); u++) {
-                doc.text('• ' + univList[u], margin + 14, y + 4);
+                doc.text(pdfSafeText('* ' + univList[u]), margin + 14, y + 4);
                 y += 10;
               }
-              if (univList.length > 25) { doc.text('• ... and ' + (univList.length - 25) + ' more', margin + 14, y + 4); y += 10; }
+              if (univList.length > 25) { doc.text(pdfSafeText('* ... and ' + (univList.length - 25) + ' more'), margin + 14, y + 4); y += 10; }
               y += 6;
             }
             y += 10;
