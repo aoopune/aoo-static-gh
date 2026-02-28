@@ -102,6 +102,32 @@
     );
   }
 
+  function showOpenPaymentModal(qrUrl, homeUrl) {
+    var existing = document.querySelector('.apply-flow-backdrop');
+    if (existing) existing.remove();
+    var backdrop = document.createElement('div');
+    backdrop.className = 'apply-flow-backdrop';
+    backdrop.setAttribute('aria-modal', 'true');
+    backdrop.setAttribute('role', 'dialog');
+    backdrop.innerHTML =
+      '<div class="apply-flow-modal">' +
+      '<p><strong>Application saved.</strong></p>' +
+      '<p>Click the button below to open the payment window, then complete payment. You will be taken to the home page.</p>' +
+      '<div class="apply-flow-disclaimer-actions">' +
+      '<button type="button" class="apply-flow-btn apply-flow-btn-continue" id="apply-flow-open-payment-btn">Open payment window</button>' +
+      '</div></div>';
+    var modal = backdrop.querySelector('.apply-flow-modal');
+    backdrop.addEventListener('click', function (e) { if (e.target === backdrop) backdrop.remove(); });
+    modal.addEventListener('click', function (e) { e.stopPropagation(); });
+    var btn = backdrop.querySelector('#apply-flow-open-payment-btn');
+    btn.addEventListener('click', function () {
+      backdrop.remove();
+      window.open(qrUrl, 'paymentQR', 'width=400,height=500');
+      if (homeUrl) window.location.href = homeUrl;
+    });
+    document.body.appendChild(backdrop);
+  }
+
   function showDisclaimerModal(onContinue) {
     var existing = document.querySelector('.apply-flow-backdrop');
     if (existing) existing.remove();
@@ -348,15 +374,20 @@
       flowState = 'IDLE';
       paymentFlowStarted = false;
       setButtonEnabled(true);
-      var qrUrl = (typeof window !== 'undefined' && window.location && window.location.origin ? window.location.origin : '') + '/payment-qr.html?id=' + encodeURIComponent(applicationId);
+      var origin = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : '';
+      var qrUrl = origin + '/payment-qr.html?id=' + encodeURIComponent(applicationId);
+      var homeUrl = origin ? origin + '/' : 'https://applyonlyonce.com/';
       if (paymentPopupWindow && !paymentPopupWindow.closed) {
-        try { paymentPopupWindow.location.href = qrUrl; } catch (e) { paymentPopupWindow = window.open(qrUrl, 'paymentQR', 'width=400,height=500'); }
+        try {
+          paymentPopupWindow.location.href = qrUrl;
+          window.location.href = homeUrl;
+        } catch (e) {
+          showOpenPaymentModal(qrUrl, homeUrl);
+        }
       } else {
-        paymentPopupWindow = window.open(qrUrl, 'paymentQR', 'width=400,height=500');
+        showOpenPaymentModal(qrUrl, homeUrl);
       }
       paymentPopupWindow = null;
-      var homeUrl = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin + '/' : 'https://applyonlyonce.com/';
-      window.location.href = homeUrl;
     }).catch(function (err) {
       flowState = 'IDLE';
       paymentFlowStarted = false;
