@@ -73,6 +73,13 @@
       overflow-x: auto;
     }
 
+    /* Force "54 offers..." line centered (overrides component's text-align: right) at all viewports */
+    #loan-table-root .aoo-loan-table-wrap .query-card .field.submit-field .count {
+      text-align: center !important;
+      display: block !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
     /* Desktop: input row + count on its own row below, centered in input section; equal gaps between all inputs */
     @media (min-width: 768px) {
       #loan-table-root .aoo-loan-table-wrap .query-card .form-row {
@@ -90,19 +97,21 @@
       #loan-table-root .aoo-loan-table-wrap .query-card .form-row .field:nth-child(4),
       #loan-table-root .aoo-loan-table-wrap .query-card .form-row .field:nth-child(5),
       #loan-table-root .aoo-loan-table-wrap .query-card .form-row .field:nth-child(6) {
-        grid-row: 1;
+        grid-row: 1 !important;
       }
       #loan-table-root .aoo-loan-table-wrap .query-card .field.submit-field {
-        grid-column: 1 / -1;
-        grid-row: 2;
-        display: block;
-        text-align: center;
-        margin-top: 0.5rem;
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+        display: block !important;
+        text-align: center !important;
+        margin-top: 0.5rem !important;
+        width: 100% !important;
+        justify-content: center !important;
       }
       #loan-table-root .aoo-loan-table-wrap .query-card .field.submit-field .count {
-        display: block;
-        text-align: center;
-        margin: 0;
+        display: block !important;
+        text-align: center !important;
+        margin: 0 auto !important;
       }
     }
 
