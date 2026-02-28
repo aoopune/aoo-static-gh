@@ -99,6 +99,10 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   max-width: 95%;
   margin: 24px auto 0 auto;
   padding: 10px 24px;
+  min-height: 44px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
   border-radius: 999px;
   background: var(--bg-nav);
   position: sticky;
@@ -1934,6 +1938,18 @@ textarea { min-height: 100px; resize: vertical; }
   }
 
   .page-intro { font-size: 1rem; line-height: 1.6; }
+}
+
+@media (max-width: 767px) {
+  #loan-table-root .query-card {
+    width: 100%;
+    max-width: 22rem;
+    min-width: 0;
+    padding: 0rem 0.5rem;
+    overflow: visible;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 /* Extra small viewports – same UX, tighter spacing */
