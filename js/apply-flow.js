@@ -1,23 +1,22 @@
 /**
  * Apply flow (parent) – runs in index.html only.
- * Receives selection from iframe via postMessage. Handles disclaimer, OAuth, Supabase, Razorpay, success modal.
+ * Receives selection from iframe via postMessage. Handles disclaimer, OAuth, Firebase/Firestore, Razorpay or QR popup, success modal.
  * State machine: IDLE → AUTH_REQUIRED → AUTH_COMPLETED → PAYMENT_PENDING → PAYMENT_COMPLETED
  */
 (function () {
   'use strict';
 
-  var SUPABASE_URL = window.SUPABASE_URL;
-  var SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY;
+  var FIREBASE_CONFIG = window.FIREBASE_CONFIG;
+  var USE_QR_PAYMENT = window.USE_QR_PAYMENT === true;
   var RAZORPAY_KEY_ID = window.RAZORPAY_KEY_ID;
   var APPLICATION_PRICE_PAISE = window.APPLICATION_PRICE_PAISE || 9900;
   var APPLY_STATE_KEY = 'aoo_apply_state_v1';
 
-  var supabaseClient = null;
-  if (typeof window !== 'undefined' && window.__aooSupabaseClient) {
-    supabaseClient = window.__aooSupabaseClient;
-  } else if (typeof window.supabase !== 'undefined' && SUPABASE_URL && SUPABASE_ANON_KEY) {
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    if (typeof window !== 'undefined') window.__aooSupabaseClient = supabaseClient;
+  var firebaseAuth = null;
+  var firebaseFirestore = null;
+  if (typeof window !== 'undefined' && window.__aooAuth) {
+    firebaseAuth = window.__aooAuth;
+    firebaseFirestore = window.__aooFirestore || null;
   }
 
   var applyFlowInitialized = false;
@@ -143,25 +142,37 @@
     document.head.appendChild(style);
   }
 
+  function ensureFirebase() {
+    if (firebaseAuth && firebaseFirestore) return true;
+    if (typeof window !== 'undefined' && window.__aooAuth) {
+      firebaseAuth = window.__aooAuth;
+      firebaseFirestore = window.__aooFirestore || null;
+      return !!(firebaseAuth && firebaseFirestore);
+    }
+    if (typeof firebase !== 'undefined' && FIREBASE_CONFIG) {
+      try {
+        var app = window.__aooFirebaseApp || firebase.initializeApp(FIREBASE_CONFIG);
+        window.__aooFirebaseApp = app;
+        firebaseAuth = firebase.auth(app);
+        firebaseFirestore = firebase.firestore(app);
+        window.__aooAuth = firebaseAuth;
+        window.__aooFirestore = firebaseFirestore;
+        return true;
+      } catch (e) { return false; }
+    }
+    return false;
+  }
+
   function getOrSignInUser() {
-    var client = ensureSupabaseClient();
-    if (!client) return Promise.reject(new Error('Supabase not configured'));
-    return client.auth.getSession().then(function (res) {
-      var session = res.data && res.data.session;
-      if (session && session.user) return session.user;
-      return client.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: 'https://applyonlyonce.com/' }
-      }).then(function (oauthRes) {
-        if (oauthRes.data && oauthRes.data.url) {
-          var targetWindow = (window.top || window);
-          try { targetWindow.location.href = oauthRes.data.url; } catch (e) { window.location.href = oauthRes.data.url; }
-          return new Promise(function () {});
-        }
-        return client.auth.getSession().then(function (r) {
-          var s = r.data && r.data.session;
-          return s ? s.user : null;
-        });
+    if (!ensureFirebase()) return Promise.reject(new Error('Firebase not configured'));
+    var auth = firebaseAuth;
+    var redirectUrl = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin + '/' : 'https://applyonlyonce.com/';
+    return auth.getRedirectResult().then(function () {
+      var user = auth.currentUser;
+      if (user && user.email) return user;
+      var provider = new firebase.auth.GoogleAuthProvider();
+      return auth.signInWithRedirect(provider).then(function () {
+        return new Promise(function () {});
       });
     });
   }
@@ -226,28 +237,14 @@
     });
   }
 
-  function ensureSupabaseClient() {
-    if (supabaseClient) return supabaseClient;
-    if (typeof window !== 'undefined' && window.__aooSupabaseClient) {
-      supabaseClient = window.__aooSupabaseClient;
-      return supabaseClient;
-    }
-    if (typeof window.supabase !== 'undefined' && SUPABASE_URL && SUPABASE_ANON_KEY) {
-      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      if (typeof window !== 'undefined') window.__aooSupabaseClient = supabaseClient;
-      return supabaseClient;
-    }
-    return null;
-  }
-
   function startPaymentFlow(user, offers, inputData) {
     if (paymentFlowStarted) return Promise.resolve();
-    if (!ensureSupabaseClient()) {
+    if (!ensureFirebase()) {
       showToast('Our servers are temporarily unreachable. Please refresh the page and try again in a few minutes.', true);
       setButtonEnabled(true);
       return Promise.resolve();
     }
-    if (!RAZORPAY_KEY_ID) {
+    if (!USE_QR_PAYMENT && !RAZORPAY_KEY_ID) {
       showToast('Razorpay is not configured.', true);
       setButtonEnabled(true);
       return Promise.resolve();
@@ -267,7 +264,7 @@
 
     flowState = 'AUTH_COMPLETED';
     var email = user.email;
-    return loadRazorpay().then(function () {
+    var db = firebaseFirestore;
     var payload = {
       email: email,
       offers: offers,
@@ -276,45 +273,66 @@
       status: 'initiated'
     };
 
-    return supabaseClient.from('applications').insert(payload).select().single().then(function (res) {
-      if (res.error) throw res.error;
-      clearPendingApplication();
-      var applicationId = res.data.id;
-      flowState = 'PAYMENT_PENDING';
-      paymentFlowStarted = true;
+    var insertPromise = db.collection('applications').add(payload);
 
-      var options = {
-        key: RAZORPAY_KEY_ID,
-        amount: APPLICATION_PRICE_PAISE,
-        currency: 'INR',
-        name: 'ApplyOnlyOnce',
-        description: 'Loan application offers',
-        prefill: { email: email },
-        readonly: { email: true },
-        handler: function (response) {
-          flowState = 'PAYMENT_COMPLETED';
-          paymentFlowStarted = false;
-          showToast('Payment successful!', false);
-          supabaseClient.from('applications').update({
-            status: 'paid',
-            razorpay_payment_id: response.razorpay_payment_id
-          }).eq('id', applicationId).then(function () {
-            showPaymentSuccessModal(email);
-          });
-          setButtonEnabled(true);
-        },
-        modal: {
-          ondismiss: function () {
-            flowState = 'IDLE';
+    if (USE_QR_PAYMENT) {
+      return insertPromise.then(function (docRef) {
+        var applicationId = docRef.id;
+        clearPendingApplication();
+        flowState = 'IDLE';
+        paymentFlowStarted = false;
+        setButtonEnabled(true);
+        var qrUrl = (typeof window !== 'undefined' && window.location && window.location.origin ? window.location.origin : '') + '/payment-qr.html?id=' + encodeURIComponent(applicationId);
+        window.open(qrUrl, 'paymentQR', 'width=400,height=500');
+        var homeUrl = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin + '/' : 'https://applyonlyonce.com/';
+        window.location.href = homeUrl;
+      }).catch(function (err) {
+        flowState = 'IDLE';
+        paymentFlowStarted = false;
+        setButtonEnabled(true);
+        throw err;
+      });
+    }
+
+    return loadRazorpay().then(function () {
+      return insertPromise.then(function (docRef) {
+        var applicationId = docRef.id;
+        clearPendingApplication();
+        flowState = 'PAYMENT_PENDING';
+        paymentFlowStarted = true;
+
+        var options = {
+          key: RAZORPAY_KEY_ID,
+          amount: APPLICATION_PRICE_PAISE,
+          currency: 'INR',
+          name: 'ApplyOnlyOnce',
+          description: 'Loan application offers',
+          prefill: { email: email },
+          readonly: { email: true },
+          handler: function (response) {
+            flowState = 'PAYMENT_COMPLETED';
             paymentFlowStarted = false;
+            showToast('Payment successful!', false);
+            db.collection('applications').doc(applicationId).update({
+              status: 'paid',
+              razorpay_payment_id: response.razorpay_payment_id
+            }).then(function () {
+              showPaymentSuccessModal(email);
+            });
             setButtonEnabled(true);
+          },
+          modal: {
+            ondismiss: function () {
+              flowState = 'IDLE';
+              paymentFlowStarted = false;
+              setButtonEnabled(true);
+            }
           }
-        }
-      };
+        };
 
-      var rzp = new window.Razorpay(options);
-      rzp.open();
-    });
+        var rzp = new window.Razorpay(options);
+        rzp.open();
+      });
     }).catch(function (err) {
       flowState = 'IDLE';
       paymentFlowStarted = false;
@@ -345,8 +363,8 @@
           var msg = raw;
           if (/SSL|525|handshake failed|unreachable|failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
             msg = 'Our servers are temporarily unreachable. Please try again in a few minutes. If it persists, try another network (e.g. mobile data) or turn off VPN. Need help? Call 91123 34367 or aoopune@gmail.com.';
-          } else if (/applications|relation.*does not exist|row.level.security|RLS|JWT|auth/i.test(msg)) {
-            msg = "Supabase setup needed: In your Supabase project open SQL Editor and run applications-setup.sql (creates applications table + RLS). Need help? Call 91123 34367 or aoopune@gmail.com";
+          } else if (/permission|firestore|unavailable|applications|auth/i.test(msg)) {
+            msg = "Firebase setup needed: Check Firestore rules and that the applications collection is allowed. Need help? Call 91123 34367 or aoopune@gmail.com";
           }
           showToast(msg, true);
           clearPendingApplication();
@@ -379,11 +397,12 @@
     if (resumeInProgress) return;
     var pending = loadPendingApplication();
     if (!pending || !pending.offers || !pending.offers.length) return;
-    if (!supabaseClient) return;
+    if (!ensureFirebase()) return;
 
     resumeInProgress = true;
     var ran = false;
-    /* Don't disable button here – if Supabase times out, button stays clickable. We only disable when opening Razorpay. */
+    var auth = firebaseAuth;
+    var unsubscribe = null;
 
     function reEnableButton() {
       if (ran) return;
@@ -391,15 +410,12 @@
       setButtonEnabled(true);
       showToast('Connection timed out. Click Apply to retry with your saved selection.', false);
       try {
-        var sub = (authListener && authListener.data && authListener.data.subscription) || (authListener && authListener.data) || authListener;
-        if (sub && typeof sub.unsubscribe === 'function') sub.unsubscribe();
+        if (unsubscribe && typeof unsubscribe === 'function') unsubscribe();
       } catch (e) {}
     }
 
-    var authListener = null;
-
-    function doResume(session) {
-      if (ran || !session || !session.user) return;
+    function doResume(user) {
+      if (ran || !user || !user.email) return;
       ran = true;
       setButtonEnabled(false);
       var insertTimeout = setTimeout(function () {
@@ -409,11 +425,10 @@
         setButtonEnabled(true);
         showToast('Connection timed out. Click Apply to retry with your saved selection.', false);
         try {
-          var sub = (authListener && authListener.data && authListener.data.subscription) || (authListener && authListener.data) || authListener;
-          if (sub && typeof sub.unsubscribe === 'function') sub.unsubscribe();
+          if (unsubscribe && typeof unsubscribe === 'function') unsubscribe();
         } catch (e) {}
       }, 20000);
-      startPaymentFlow(session.user, pending.offers, pending.inputData || {})
+      startPaymentFlow(user, pending.offers, pending.inputData || {})
         .then(function () { clearTimeout(insertTimeout); })
         .catch(function () {
           clearTimeout(insertTimeout);
@@ -423,15 +438,13 @@
       resumeInProgress = false;
     }
 
-    authListener = supabaseClient.auth.onAuthStateChange(function (event, session) {
-      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') doResume(session);
+    unsubscribe = auth.onAuthStateChanged(function (user) {
+      if (user && user.email) doResume(user);
     });
 
-    supabaseClient.auth.getSession().then(function (res) {
-      var session = res.data && res.data.session;
-      if (session && session.user) {
-        doResume(session);
-      }
+    auth.getRedirectResult().then(function () {
+      var user = auth.currentUser;
+      if (user && user.email) doResume(user);
     }).catch(function () {
       reEnableButton();
     });

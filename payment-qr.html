@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Complete your payment</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 1.25rem;
+      background: #fff;
+      color: #0f172a;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+    }
+    h1 { font-size: 1.25rem; font-weight: 700; margin: 0 0 0.75rem 0; }
+    p { margin: 0 0 0.75rem 0; }
+    .qr-wrap {
+      text-align: center;
+      margin: 1rem 0;
+    }
+    .qr-wrap img {
+      max-width: 200px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    .qr-placeholder {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
+      background: #e2e8f0;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.8rem;
+    }
+    .app-id-row {
+      margin: 1rem 0;
+      padding: 0.75rem;
+      background: #f1f5f9;
+      border-radius: 8px;
+    }
+    .app-id-row strong { display: block; margin-bottom: 0.25rem; font-size: 0.8rem; color: #475569; }
+    .app-id-value { font-family: ui-monospace, monospace; word-break: break-all; font-size: 0.9rem; }
+    .btn-copy {
+      margin-top: 0.5rem;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.8rem;
+      border-radius: 6px;
+      border: 1px solid #0d9488;
+      background: #fff;
+      color: #0d9488;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-copy:hover { background: #f0fdfa; }
+    .support-line { margin: 1rem 0; padding-top: 0.75rem; border-top: 1px solid #e2e8f0; font-size: 0.875rem; color: #475569; }
+    .support-line a { color: #0d9488; text-decoration: none; }
+    .support-line a:hover { text-decoration: underline; }
+    .btn-done {
+      display: block;
+      width: 100%;
+      margin-top: 1.25rem;
+      padding: 0.65rem 1.25rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 100px;
+      border: none;
+      background: #0d9488;
+      color: #fff;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-done:hover { background: #0f766e; }
+  </style>
+</head>
+<body>
+  <h1>Complete your payment</h1>
+  <p>Application received. Pay ₹99 using the QR below.</p>
+
+  <div class="qr-wrap">
+    <img id="qr-image" src="img/qr-payment.png" alt="Scan to pay ₹99" onerror="this.style.display='none'; document.getElementById('qr-placeholder').style.display='flex';">
+    <div id="qr-placeholder" class="qr-placeholder" style="display: none;">Replace with your QR image (img/qr-payment.png)</div>
+  </div>
+
+  <div class="app-id-row">
+    <strong>Application ID</strong>
+    <span id="app-id-value" class="app-id-value"></span>
+    <button type="button" class="btn-copy" id="btn-copy">Copy</button>
+  </div>
+
+  <p><strong>In your payment app’s note/reference</strong>, enter the <strong>Application ID</strong> above so we can match your payment.</p>
+
+  <p class="support-line">Even if you missed selecting lender or want to correct the information, let us know at <a href="tel:9112334367">91123 34367</a> or <a href="mailto:aoopune@gmail.com">aoopune@gmail.com</a>.</p>
+
+  <button type="button" class="btn-done" id="btn-done">Done</button>
+
+  <script>
+    (function () {
+      var params = {};
+      if (typeof window !== 'undefined' && window.location && window.location.search) {
+        window.location.search.slice(1).split('&').forEach(function (p) {
+          var parts = p.split('=');
+          if (parts.length >= 2) params[decodeURIComponent(parts[0])] = decodeURIComponent(parts.slice(1).join('=').replace(/\+/g, ' '));
+        });
+      }
+      var appId = params.id || '';
+      var el = document.getElementById('app-id-value');
+      if (el) el.textContent = appId || '—';
+
+      document.getElementById('btn-copy').addEventListener('click', function () {
+        if (!appId) return;
+        try {
+          navigator.clipboard.writeText(appId);
+          this.textContent = 'Copied!';
+          var t = setTimeout(function () { document.getElementById('btn-copy').textContent = 'Copy'; }, 2000);
+        } catch (e) {}
+      });
+
+      document.getElementById('btn-done').addEventListener('click', function () {
+        try { window.close(); } catch (e) {}
+      });
+    })();
+  </script>
+</body>
+</html>
