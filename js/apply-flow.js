@@ -377,6 +377,21 @@
     // Unique 6-digit ID via transaction; Firestore rules must allow read/write on _counters/applications
     var counterRef = db.collection('_counters').doc('applications');
     var appRef = db.collection('applications');
+    function random6DigitId() {
+      var id = '';
+      for (var i = 0; i < 6; i++) id += Math.floor(Math.random() * 10);
+      return id;
+    }
+    function showPaymentModal(applicationId) {
+      clearPendingApplication();
+      flowState = 'IDLE';
+      paymentFlowStarted = false;
+      setButtonEnabled(true);
+      var origin = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : '';
+      var qrUrl = origin + '/payment-qr.html?id=' + encodeURIComponent(applicationId);
+      var homeUrl = origin ? origin + '/' : 'https://applyonlyonce.com/';
+      showOpenPaymentModal(qrUrl, homeUrl);
+    }
     var insertPromise = db.runTransaction(function (transaction) {
       return transaction.get(counterRef).then(function (snap) {
         var last = (snap && snap.exists && snap.data().lastId) || 0;
@@ -388,16 +403,12 @@
       });
     });
 
-    return insertPromise.then(function (applicationId) {
-      clearPendingApplication();
-      flowState = 'IDLE';
-      paymentFlowStarted = false;
-      setButtonEnabled(true);
-      var origin = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : '';
-      var qrUrl = origin + '/payment-qr.html?id=' + encodeURIComponent(applicationId);
-      var homeUrl = origin ? origin + '/' : 'https://applyonlyonce.com/';
-      showOpenPaymentModal(qrUrl, homeUrl);
-    }).catch(function (err) {
+    return insertPromise.then(showPaymentModal).catch(function (err) {
+      var isPermission = /permission|unavailable/i.test((err && err.message) || '');
+      if (isPermission) {
+        var fallbackId = random6DigitId();
+        return appRef.doc(fallbackId).set(payload).then(function () { showPaymentModal(fallbackId); });
+      }
       flowState = 'IDLE';
       paymentFlowStarted = false;
       setButtonEnabled(true);
@@ -434,7 +445,7 @@
         } else if (/SSL|525|handshake failed|unreachable|failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
           msg = 'Our servers are temporarily unreachable. Please try again in a few minutes. If it persists, try another network (e.g. mobile data) or turn off VPN. Need help? Call 91123 34367 or aoopune@gmail.com.';
         } else if (/permission|firestore|unavailable|applications|auth/i.test(msg)) {
-          msg = "Firebase setup needed: Check Firestore rules and that the applications collection is allowed. Need help? Call 91123 34367 or aoopune@gmail.com";
+          msg = "Firebase setup needed: In Firebase Console → Firestore → Rules, allow 'applications' and '_counters' for signed-in users. See firestore.rules in the repo. Need help? Call 91123 34367 or aoopune@gmail.com";
         }
         showToast(msg, true);
         clearPendingApplication();
