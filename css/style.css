@@ -153,6 +153,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   border-radius: var(--radius-sm);
   transition: background var(--transition-normal), color var(--transition-normal), box-shadow var(--transition-fast);
   border-bottom: none;
+  text-decoration: none;
 }
 .site-nav a:hover {
   color: var(--nav-text-hover);
@@ -254,17 +255,20 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   font-size: 0.9375rem;
   border-radius: var(--radius-sm);
   border-bottom: none;
+  text-decoration: none;
   transition: background var(--transition-fast), color var(--transition-fast);
   -webkit-tap-highlight-color: transparent;
 }
 .nav-drawer-nav a:hover {
   background: var(--primary-pastel);
   color: var(--text);
+  text-decoration: none;
 }
 .nav-drawer-nav a.active {
   background: var(--primary-pastel);
   color: var(--heading-accent);
   font-weight: 600;
+  text-decoration: none;
 }
 .nav-drawer-nav a:focus-visible {
   outline: 2px solid var(--primary);
