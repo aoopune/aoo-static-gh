@@ -24,6 +24,7 @@
   if (typeof window !== 'undefined' && window.__aooAuth) {
     firebaseAuth = window.__aooAuth;
     firebaseFirestore = window.__aooFirestore || null;
+    window.__aooRedirectResultPromise = window.__aooAuth.getRedirectResult();
   }
 
   var applyFlowInitialized = false;
@@ -514,14 +515,15 @@
       if (user && user.email) doResume(user);
     });
 
-    auth.getRedirectResult().then(function () {
-      var user = auth.currentUser;
+    var redirectPromise = (typeof window !== 'undefined' && window.__aooRedirectResultPromise) ? window.__aooRedirectResultPromise : auth.getRedirectResult();
+    redirectPromise.then(function (result) {
+      var user = (result && result.user) || auth.currentUser;
       if (user && user.email) doResume(user);
     }).catch(function () {
       reEnableButton();
     });
 
-    var maxWait = 8000;
+    var maxWait = 15000;
     setTimeout(function () {
       if (!ran) {
         reEnableButton();
@@ -539,10 +541,8 @@
   }
 
   if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', function () {
-      setTimeout(initApplyFlow, 100);
-    });
+    window.addEventListener('DOMContentLoaded', initApplyFlow);
   } else {
-    setTimeout(initApplyFlow, 100);
+    initApplyFlow();
   }
 })();
