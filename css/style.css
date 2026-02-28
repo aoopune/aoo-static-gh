@@ -87,6 +87,9 @@ body {
   overflow-x: hidden;
 }
 
+/* Single font across site: everything inherits Montserrat from body */
+*, *::before, *::after { font-family: inherit; }
+
 a { color: var(--link); text-decoration: none; transition: color var(--transition-fast); }
 a:hover { color: var(--link-hover); text-decoration: underline; }
 

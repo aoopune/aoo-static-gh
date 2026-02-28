@@ -183,3 +183,104 @@ comment on table public.applications is 'Loan application submissions; linked to
 - **Callback / return URL:** How Paytm posts back (webhook vs redirect); verify transaction server-side before marking `status = 'paid'` (recommended).
 
 Once you have Paytm merchant credentials and the exact API/docs, the changes above can be implemented file-by-file using this checklist.
+
+---
+
+# PayU integration
+
+PayU uses **Checkout Plus (Bolt)**: a JS SDK that opens a modal (no redirect). The backend must generate a **hash** (SHA-512) using your **Salt**; the Salt must never be in the frontend.
+
+**Docs:** [PayU Checkout Plus](https://docs.payu.in/docs/checkout-plus-integration), [Generate Hash](https://docs.payu.in/docs/generate-hash-payu-hosted).
+
+---
+
+## PayU 1. Backend: hash and transaction payload
+
+**Current:** Razorpay uses Orders API with key + secret.
+
+**Change for PayU:** Add an endpoint (or script) that:
+
+- Accepts: `applicationId`, `amount_paise`, `email`, `firstname` (or name), `productinfo` (e.g. "Loan application").
+- Builds a unique **txnid** (e.g. `applicationId` or `order_` + timestamp).
+- Computes **hash** as:  
+  `sha512(key|txnid|amount|productinfo|firstname|email|||||||||||SALT)`  
+  (exact format in [PayU hash docs](https://docs.payu.in/docs/generate-hash-payu-hosted); amount in INR, e.g. paise/100).
+- Returns to frontend: `{ key, txnid, amount, productinfo, firstname, email, hash, surl, furl }` (and any other required Bolt params). **Do not** return `SALT`.
+
+**New files / env:**
+
+- `aoo-static-gh/scripts/create-payu-payload.js` (Node) or API route that returns the Bolt payload with hash.
+- Env: `PAYU_KEY` (merchant key), `PAYU_SALT` (merchant salt). Use test key/salt for UAT: [PayU test credentials](https://docs.payu.in/docs/generate-test-merchant-key-and-salt).
+
+---
+
+## PayU 2. Main site – `aoo-static-gh`
+
+### PayU 2.1 `index.html`
+
+- **Preconnect:** Add `https://jssdk.payu.in` (or `https://jssdk-uat.payu.in` for test).
+- **Script:** Load Bolt in apply-flow or in HTML:  
+  `<script src="https://jssdk.payu.in/bolt/bolt.min.js"></script>`  
+  (UAT: `https://jssdk-uat.payu.in/bolt/bolt.min.js`)
+- **Config:** e.g. `window.PAYU_PAYLOAD_API = '/api/create-payu-payload'` (your backend that returns key, txnid, amount, hash, etc.).
+
+### PayU 2.2 `js/apply-flow.js`
+
+- **Config:** Read `window.PAYU_PAYLOAD_API` (and optionally `window.PAYMENT_GATEWAY` if supporting multiple).
+- **loadPayU():** Ensure Bolt is loaded: script `https://jssdk.payu.in/bolt/bolt.min.js`, wait for `window.PayUBolt` or global Bolt (check PayU docs for exact global name).
+- **startPaymentFlow() when gateway is PayU:**
+  1. After Supabase insert, `fetch(PAYU_PAYLOAD_API, { method: 'POST', body: JSON.stringify({ applicationId, amount_paise, email, firstname, productinfo }) })`.
+  2. Backend returns Bolt payload (key, txnid, amount, productinfo, firstname, email, hash, surl, furl).
+  3. Call `bolt.launch(payload, responseHandler)` (or equivalent from PayU docs). **surl** / **furl**: your return URLs; on success you can either handle in responseHandler or on surl (verify payment server-side).
+  4. In success path: update `applications` with `status: 'paid'`, `payu_txn_id: <from response>` (PayU returns txnid and other refs in response).
+  5. On cancel/failure: same as now (reset state, re-enable button).
+
+**Supabase update for PayU:** e.g. `payu_txn_id: response.txnid` (or the id PayU returns in success response).
+
+---
+
+## PayU 3. Test page
+
+- Add `pages/payu-test.html` + `js/payu-test.js`: call your PayU payload API, then `bolt.launch(...)` and show success/failure.
+
+---
+
+## PayU 4. Table standalone – `table/standalone-package`
+
+- **index.html:** Add Bolt script and PayU config (`PAYU_PAYLOAD_API`).
+- **js/apply-flow.js:** Same as main site: when PayU, get payload from API → `bolt.launch()` → on success update Supabase with `payu_txn_id`.
+
+---
+
+## PayU 5. Database – applications table
+
+- Add column: `payu_txn_id text` (and optionally `payu_txnid` if you store the same id PayU uses).
+- Comment: e.g. “Loan application submissions; payment via Razorpay / Paytm / PayU.”
+
+```sql
+alter table public.applications
+  add column if not exists payu_txn_id text;
+```
+
+---
+
+## PayU 6. PayU-specific details
+
+- **Hash:** SHA-512; format `key|txnid|amount|productinfo|firstname|email|||||||||||SALT` (see [docs](https://docs.payu.in/docs/generate-hash-payu-hosted)). Amount in INR (e.g. ₹99 = 99.00).
+- **Bolt:** [Checkout Plus](https://docs.payu.in/docs/checkout-plus-integration) – `bolt.launch(transactionData, responseHandler)`. Use UAT script for test.
+- **Success/failure:** Handle in `responseHandler` and/or on **surl**/**furl**; verify payment status server-side before marking `status = 'paid'`.
+
+---
+
+## 10. Combined summary checklist (Razorpay + Paytm + PayU)
+
+| # | Item | Action |
+|---|------|--------|
+| 1 | Backend | Razorpay: existing. Paytm: order API (checksum) → orderId + txnToken. PayU: payload API (hash) → Bolt payload. |
+| 2 | `aoo-static-gh/index.html` | Preconnect + scripts: add Paytm and/or PayU; config for all enabled gateways. |
+| 3 | `aoo-static-gh/js/apply-flow.js` | Support multiple gateways: branch on gateway; for PayU call payload API then `bolt.launch()`; update DB with provider-specific id. |
+| 4 | DB `applications` | Add `paytm_order_id`, `paytm_txn_id`, `payu_txn_id` as needed; keep `razorpay_payment_id`. |
+| 5 | Test pages | razorpay-test (existing), paytm-test, payu-test. |
+| 6 | `table/standalone-package` | Same config + apply-flow branches for Paytm/PayU. |
+| 7 | `supabase-auth-test` | Add Paytm/PayU config and test UI if you use this repo for payment tests. |
+| 8 | Docs / comments | Mention all supported gateways where relevant. |
