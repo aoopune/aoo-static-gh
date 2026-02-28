@@ -2,7 +2,7 @@
 const { test, expect } = require('@playwright/test');
 
 async function waitForLayout(page) {
-  await page.waitForSelector('.site-header a, .site-footer a', { state: 'visible', timeout: 10000 });
+  await page.waitForSelector('.site-header a', { state: 'visible', timeout: 10000 });
 }
 
 test.describe('Apply Only Once – UI', function () {
@@ -159,23 +159,6 @@ test.describe('Apply Only Once – UI', function () {
     await page.goto('/pages/about.html');
     await waitForLayout(page);
     await expect(page.locator('h1:has-text("About Apply Only Once")')).toBeVisible();
-  });
-
-  test('Footer has tel and mailto', async ({ page }) => {
-    await page.goto('/');
-    await waitForLayout(page);
-    await expect(page.locator('a[href^="tel:"]')).toBeVisible();
-    await expect(page.locator('a[href^="mailto:"]')).toBeVisible();
-  });
-
-  test('Footer has non-white background', async ({ page }) => {
-    await page.goto('/');
-    await waitForLayout(page);
-    const bg = await page.locator('.site-footer').evaluate(function (el) {
-      var s = getComputedStyle(el);
-      return s.backgroundColor;
-    });
-    expect(bg).not.toMatch(/rgb\s*\(\s*255\s*,\s*255\s*,\s*255\s*\)/);
   });
 
   test('Navbar Apply Only Once logo is visible', async ({ page }) => {
@@ -380,16 +363,6 @@ test.describe('Apply Only Once – UI', function () {
       return s.backgroundColor;
     });
     expect(bg).toMatch(/rgb\s*\(\s*0\s*,\s*119\s*,\s*160\s*\)|rgba\s*\(\s*0\s*,\s*119\s*,\s*160/);
-  });
-
-  test('Footer has lighter SBI blue background', async ({ page }) => {
-    await page.goto('/');
-    await waitForLayout(page);
-    const bg = await page.locator('.site-footer').evaluate(function (el) {
-      var s = getComputedStyle(el);
-      return s.backgroundColor;
-    });
-    expect(bg).toMatch(/rgb\s*\(\s*224\s*,\s*247\s*,\s*252\s*\)|rgba\s*\(\s*224\s*,\s*247\s*,\s*252/);
   });
 
   test('Mobile: hamburger visible and opens side drawer with nav links', async ({ page }) => {

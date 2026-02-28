@@ -29,7 +29,6 @@
   --home-hero-bg: #ffffff;
   --home-card-bg: #ffffff;
   --home-card-accent: rgba(13, 148, 136, 0.08);
-  --footer-bg: #ffffff;
   --heading-accent: #0f766e;
 
   /* Spacing (8px base) – slightly more whitespace */
@@ -1030,23 +1029,6 @@ main.compare-main #table-wrapper + p {
   margin-bottom: var(--space-2);
 }
 
-/* ========== Footer ========== */
-.site-footer {
-  margin-top: var(--space-8);
-  padding: var(--space-5) var(--space-6);
-  border-top: 1px solid var(--border);
-  background: var(--footer-bg);
-  font-size: 0.9375rem;
-  color: var(--text-secondary);
-  text-align: center;
-  box-shadow: 0 -1px 0 var(--border);
-}
-
-.site-footer p { margin: 0 0 var(--space-1); }
-.site-footer .contact { margin-top: var(--space-3); }
-.site-footer a { color: var(--link); font-weight: 500; }
-.site-footer a:hover { text-decoration: underline; }
-
 /* ========== Forms ========== */
 label {
   display: block;
@@ -1829,14 +1811,6 @@ textarea { min-height: 100px; resize: vertical; }
   }
 
   .page-intro { font-size: 1rem; line-height: 1.6; }
-  .site-footer {
-    padding: var(--space-3) var(--space-4);
-    padding-left: max(var(--space-4), env(safe-area-inset-left));
-    padding-right: max(var(--space-4), env(safe-area-inset-right));
-    font-size: 0.875rem;
-  }
-  .site-footer p { margin: 0 0 var(--space-1); }
-  .site-footer .contact { margin-top: var(--space-2); }
 }
 
 /* Extra small viewports – same UX, tighter spacing */
@@ -1856,11 +1830,6 @@ textarea { min-height: 100px; resize: vertical; }
   .faq-item .accordion-header,
   .doc-accordion-summary,
   .doc-section-accordion .doc-section-summary { padding: var(--space-4) var(--space-4); }
-  .site-footer {
-    padding: var(--space-3) var(--space-3);
-    font-size: 0.8125rem;
-  }
-  .site-footer .contact { margin-top: var(--space-2); }
 }
 
 /* Prevent content from overflowing; smooth touch scroll */

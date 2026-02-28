@@ -140,7 +140,7 @@
     });
   };
 
-  /* Header / Footer – same on every page. Nav: logo extreme left; links extreme right in this order. */
+  /* Header – same on every page. Nav: logo extreme left; links extreme right in this order. */
   const navItems = [
     { path: 'pro-tips.html', label: 'Pro tips before you apply' },
     { path: 'quick-overview.html', label: 'Quick overview' },
@@ -228,7 +228,7 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     window.__aooConfig = null;
-    // Render header/footer immediately with defaults so nav and layout show without waiting for Config fetch
+    // Render header immediately with defaults so nav and layout show without waiting for Config fetch
     window.renderHeaderFooter({});
     window.fetchSheet('Config', false).then(function (rows) {
       window.__aooConfig = parseConfigRows(rows);
