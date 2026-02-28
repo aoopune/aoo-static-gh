@@ -239,6 +239,29 @@
       window.renderHeaderFooter(window.__aooConfig);
     });
   }
+  /** Show loading spinner when navigating to another page (internal link click). */
+  function showNavLoading() {
+    var el = document.getElementById('aoo-nav-loading');
+    if (el) return;
+    el = document.createElement('div');
+    el.id = 'aoo-nav-loading';
+    el.className = 'aoo-loading-overlay';
+    el.setAttribute('aria-live', 'polite');
+    el.setAttribute('aria-label', 'Loading page');
+    el.innerHTML = '<div class="aoo-loading-spinner"></div>';
+    document.body.appendChild(el);
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a') : null;
+    if (!a || a.target === '_blank') return;
+    var href = (a.getAttribute && a.getAttribute('href')) || '';
+    if (!href || href.charAt(0) === '#' || /^javascript:/.test(href) || /^mailto:/.test(href) || /^tel:/.test(href)) return;
+    try {
+      if (a.hostname && a.hostname !== window.location.hostname) return;
+    } catch (_) {}
+    showNavLoading();
+  }, false);
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initHeaderAndConfig);
   } else {

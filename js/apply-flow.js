@@ -47,6 +47,21 @@
     postToIframe({ type: 'AOO_SET_BUTTON_STATE', disabled: !enabled });
   }
 
+  function showLoadingOverlay() {
+    hideLoadingOverlay();
+    var el = document.createElement('div');
+    el.className = 'aoo-loading-overlay';
+    el.setAttribute('aria-live', 'polite');
+    el.setAttribute('aria-label', 'Loading');
+    el.innerHTML = '<div class="aoo-loading-spinner"></div>';
+    el.id = 'apply-flow-loading-overlay';
+    document.body.appendChild(el);
+  }
+  function hideLoadingOverlay() {
+    var el = document.getElementById('apply-flow-loading-overlay');
+    if (el && el.parentNode) el.parentNode.removeChild(el);
+  }
+
   function showToast(message, isError) {
     var existing = document.querySelector('.apply-flow-toast');
     if (existing) existing.remove();
@@ -111,9 +126,20 @@
     backdrop.className = 'apply-flow-backdrop apply-flow-payment-backdrop';
     backdrop.setAttribute('aria-modal', 'true');
     backdrop.setAttribute('role', 'dialog');
-    backdrop.innerHTML = '<div class="apply-flow-modal apply-flow-modal-payment"><iframe class="apply-flow-payment-iframe" title="Complete your payment"></iframe></div>';
+    backdrop.innerHTML = '<div class="apply-flow-modal apply-flow-modal-payment">' +
+      '<div class="apply-flow-payment-loading" id="apply-flow-payment-loading" aria-label="Loading"><div class="aoo-loading-spinner"></div></div>' +
+      '<iframe class="apply-flow-payment-iframe" title="Complete your payment"></iframe></div>';
     var iframe = backdrop.querySelector('.apply-flow-payment-iframe');
-    if (iframe) iframe.src = qrUrl;
+    var loadingEl = backdrop.querySelector('#apply-flow-payment-loading');
+    function hidePaymentLoading() {
+      if (loadingEl && loadingEl.parentNode) loadingEl.remove();
+    }
+    if (iframe) {
+      iframe.addEventListener('load', hidePaymentLoading);
+      iframe.src = qrUrl;
+    } else {
+      hidePaymentLoading();
+    }
     var modal = backdrop.querySelector('.apply-flow-modal');
     backdrop.addEventListener('click', function (e) { if (e.target === backdrop) closePaymentModal(); });
     modal.addEventListener('click', function (e) { e.stopPropagation(); });
@@ -176,8 +202,11 @@
       '.apply-flow-payment-success-modal .apply-flow-btn-got-it { padding: 0.6rem 1.5rem; min-height: 44px; border-radius: 100px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; background: var(--aoo-accent); color: #fff; }',
       '.apply-flow-payment-success-modal .apply-flow-btn-got-it:hover { background: var(--aoo-accent-hover); }',
       '@media (max-width: 640px) { .apply-flow-backdrop { padding: 0.5rem; align-items: flex-end; } .apply-flow-modal { max-height: 92vh; border-radius: var(--aoo-radius-lg) var(--aoo-radius-lg) 0 0; } .apply-flow-btn { min-height: 44px; min-width: 44px; } }',
-      '.apply-flow-modal-payment { max-width: min(440px, 94vw); width: 100%; padding: 0; overflow: hidden; }',
-      '.apply-flow-payment-iframe { display: block; width: 100%; min-height: 460px; height: 78vh; max-height: 640px; border: none; border-radius: 0 0 var(--aoo-radius-lg) var(--aoo-radius-lg); }'
+      '.apply-flow-modal-payment { max-width: min(440px, 94vw); width: 100%; padding: 0; overflow: hidden; position: relative; }',
+      '.apply-flow-payment-iframe { display: block; width: 100%; min-height: 460px; height: 78vh; max-height: 640px; border: none; border-radius: 0 0 var(--aoo-radius-lg) var(--aoo-radius-lg); }',
+      '.apply-flow-payment-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.9); z-index: 1; border-radius: 0 0 var(--aoo-radius-lg) var(--aoo-radius-lg); }',
+      '.apply-flow-payment-loading .aoo-loading-spinner { width: 40px; height: 40px; border: 3px solid var(--aoo-border); border-top-color: var(--aoo-accent); border-radius: 50%; animation: aoo-spin 0.8s linear infinite; }',
+      '@keyframes aoo-spin { to { transform: rotate(360deg); } }'
     ].join('\n');
     document.head.appendChild(style);
   }
@@ -383,6 +412,7 @@
       return id;
     }
     function showPaymentModal(applicationId) {
+      hideLoadingOverlay();
       clearPendingApplication();
       flowState = 'IDLE';
       paymentFlowStarted = false;
@@ -409,6 +439,7 @@
         var fallbackId = random6DigitId();
         return appRef.doc(fallbackId).set(payload).then(function () { showPaymentModal(fallbackId); });
       }
+      hideLoadingOverlay();
       flowState = 'IDLE';
       paymentFlowStarted = false;
       setButtonEnabled(true);
@@ -426,12 +457,14 @@
       setButtonEnabled(false);
       savePendingApplication(offers, inputData);
       flowState = 'AUTH_REQUIRED';
+      showLoadingOverlay();
 
       function onSignInSuccess(user) {
-        if (!user) return;
+        if (!user) { hideLoadingOverlay(); return; }
         return startPaymentFlow(user, offers, inputData);
       }
       function onSignInError(err) {
+        hideLoadingOverlay();
         flowState = 'IDLE';
         setButtonEnabled(true);
         var raw = (err && err.message) ? err.message : (err && String(err)) || 'Something went wrong.';
@@ -495,12 +528,14 @@
     if (resumeInProgress) return;
     if (!ensureFirebase()) return;
     resumeInProgress = true;
+    showLoadingOverlay();
     var ran = false;
     var auth = firebaseAuth;
     var unsubscribe = null;
 
     function reEnableButton() {
       if (ran) return;
+      hideLoadingOverlay();
       resumeInProgress = false;
       setButtonEnabled(true);
       showToast('Connection timed out. Click Apply to retry with your saved selection.', false);

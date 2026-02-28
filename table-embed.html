@@ -347,10 +347,23 @@
 </head>
 <body>
   <div id="loan-table-root"></div>
+  <style id="table-embed-loading-style">
+    #loan-table-root .aoo-loading-overlay { position: absolute; inset: 0; background: rgba(248,250,252,0.9); display: flex; align-items: center; justify-content: center; z-index: 10; }
+    #loan-table-root .aoo-loading-spinner,
+    .aoo-loan-table-portal .aoo-loading-spinner { width: 40px; height: 40px; border: 3px solid #e2e8f0; border-top-color: #0d9488; border-radius: 50%; animation: aoo-spin 0.8s linear infinite; }
+    .aoo-loan-table-portal .listed-popup-loading { display: flex; align-items: center; justify-content: center; padding: 2rem; min-height: 120px; }
+    @keyframes aoo-spin { to { transform: rotate(360deg); } }
+  </style>
   <script>
     (function() {
       var TABLE_SCRIPT_URL = 'js/aoo-loan-table-standalone.js?v=6';
       var APPLY_BUTTON_SCRIPT_URL = 'js/apply-button-iframe.js?v=4';
+      function showLoading() {
+        var root = document.getElementById('loan-table-root');
+        if (root && !root.querySelector('.aoo-loading-overlay')) {
+          root.innerHTML = '<div class="aoo-loading-overlay" aria-label="Loading"><div class="aoo-loading-spinner"></div></div>';
+        }
+      }
       function showError(msg) {
         var root = document.getElementById('loan-table-root');
         if (root) root.innerHTML = '<p style="color:#b91c1c;padding:1rem;margin:0;font-weight:600;">' + msg + '</p>';
@@ -377,6 +390,7 @@
           return;
         }
         try {
+          root.innerHTML = '';
           window.AooLoanTable.mount('#loan-table-root');
           loadApplyButtonScript();
         } catch (e) {
@@ -399,6 +413,7 @@
         document.head.appendChild(s);
       }
       function whenIdle() {
+        showLoading();
         if (typeof requestIdleCallback !== 'undefined') {
           requestIdleCallback(loadTableScript, { timeout: 600 });
         } else {

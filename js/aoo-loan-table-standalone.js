@@ -508,7 +508,15 @@ function queryAllBanksLocal(criteria) {
         mode: 'criteria',
         search: ''
       };
-      renderListedPopupContent(listedPopupState.bankName, listedPopupState.criteria, listedPopupState.mode);
+      var popup = ensureListedPopup();
+      var listEl = popup.querySelector('#listed-popup-list');
+      var inner = popup.querySelector('.listed-popup');
+      if (listEl) listEl.innerHTML = '<li class="listed-popup-loading" style="list-style:none;margin:0;padding:0"><div class="listed-popup-loading" style="display:flex;align-items:center;justify-content:center;padding:2rem;min-height:120px"><div class="aoo-loading-spinner"></div></div></li>';
+      if (inner) inner.style.display = 'flex';
+      listedPopupBackdrop.style.display = 'flex';
+      requestAnimationFrame(function () {
+        renderListedPopupContent(listedPopupState.bankName, listedPopupState.criteria, listedPopupState.mode);
+      });
     }
 
     function ensureDetailsPopup() {
@@ -575,7 +583,15 @@ function queryAllBanksLocal(criteria) {
     }
 
     function openDetailsPopupForLender(lenderName) {
-      renderDetailsPopupContent(lenderName || 'N/A');
+      var popup = ensureDetailsPopup();
+      var contentEl = popup.querySelector('#details-popup-content');
+      var inner = popup.querySelector('.listed-popup');
+      if (contentEl) contentEl.innerHTML = '<div class="listed-popup-loading" style="display:flex;align-items:center;justify-content:center;padding:2rem;min-height:120px"><div class="aoo-loading-spinner"></div></div>';
+      if (inner) inner.style.display = 'flex';
+      detailsPopupBackdrop.style.display = 'flex';
+      requestAnimationFrame(function () {
+        renderDetailsPopupContent(lenderName || 'N/A');
+      });
     }
 
     function fmtObj(v) {
