@@ -147,18 +147,19 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   color: var(--nav-text);
   font-size: 0.9rem;
   font-weight: 500;
-  padding: var(--space-2) var(--space-3);
+  padding: 8px 18px;
   white-space: nowrap;
-  border-radius: var(--radius-sm);
+  border-radius: 999px;
   transition: all 0.2s ease;
   border-bottom: none;
   text-decoration: none;
 }
 .site-nav a:hover {
   color: var(--nav-text-hover);
-  filter: brightness(1.06);
-  opacity: 0.92;
+  background: var(--primary-pastel);
   text-decoration: none;
+  filter: none;
+  opacity: 1;
 }
 .site-nav a.active {
   color: var(--nav-text-hover);
