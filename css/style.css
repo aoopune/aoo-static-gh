@@ -645,6 +645,20 @@ main.home-main {
   text-align: center !important;
   margin: 0 !important;
 }
+/* Lender name in table: blue as link, underline on hover */
+#loan-table-root .aoo-loan-table-wrap .lender-name.view-details-trigger {
+  color: #2563eb;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+}
+#loan-table-root .aoo-loan-table-wrap .lender-name.view-details-trigger:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
 
 /* Tablet: 3 columns for form so it fits viewport */
 @media (min-width: 769px) and (max-width: 992px) {
