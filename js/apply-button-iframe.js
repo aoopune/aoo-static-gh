@@ -417,7 +417,7 @@
     downloadBtn.type = 'button';
     downloadBtn.id = 'download-results-btn';
     downloadBtn.className = 'apply-floating-btn';
-    downloadBtn.innerHTML = '<span>Download results</span>';
+    downloadBtn.innerHTML = '<span>Download results <em>(Free)</em></span>';
     downloadBtn.addEventListener('click', function () {
       if (typeof window.jspdf !== 'undefined' && window.jspdf.jsPDF && typeof window.docPdfFromTable === 'function') {
         window.docPdfFromTable();
