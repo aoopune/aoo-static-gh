@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://checkout.razorpay.com" crossorigin>
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://firebaseapp.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Apply Only Once – Education loan comparison</title>
+  <!-- Critical: above-the-fold layout and typography (non-blocking) -->
+  <style>
+    :root { --space-1: 0.25rem; --text: #0f172a; --bg-nav: rgba(255,255,255,0.92); --nav-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04); }
+    html:has(body.home-locked) { height: 100%; }
+    body.home-locked {
+      height: 100%; margin: 0; overflow: hidden;
+      display: flex; flex-direction: column; min-height: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .home-locked .site-header {
+      flex-shrink: 0;
+      width: fit-content;
+      max-width: 95%;
+      margin: 15px auto 0 auto;
+      padding: 4px 35px;
+      min-height: 44px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      border-radius: 999px;
+      background: var(--bg-nav);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+    .home-locked .home-main {
+      flex: 1 1 auto; min-height: 0;
+      display: flex; flex-direction: column;
+      padding-top: 13px; padding-bottom: var(--space-1);
+    }
+    .home-locked .home-main .container { flex-shrink: 0; width: 100%; max-width: none; padding-left: 0; padding-right: 0; }
+    .home-locked .home-main .row { display: flex; flex-wrap: wrap; margin-left: -0.5rem; margin-right: -0.5rem; }
+    .home-locked .home-main .col-12 { flex: 0 0 100%; max-width: 100%; padding: 0 0.5rem; }
+    .home-locked .home-main .justify-content-center { justify-content: center; }
+    .home-heading {
+      margin: 0 0 var(--space-1);
+      font-size: clamp(1.35rem, 2.85vw, 2rem); font-weight: 700;
+      letter-spacing: -0.03em; line-height: 1.2; color: var(--text);
+      white-space: nowrap;
+    }
+    /* Mobile: allow heading to wrap so full text is visible (no clip from body overflow:hidden) */
+    @media (max-width: 992px) {
+      .home-heading { white-space: normal; display: block; line-height: 1.35; }
+      .home-heading .hero-pipe { display: none; }
+      .home-heading .hero-line1 { display: block; white-space: normal; word-wrap: break-word; margin-bottom: 0.2rem; }
+      .home-heading .hero-line2 { display: block; }
+    }
+    .hero-line2 { display: inline; }
+    .hero-pipe { display: inline; }
+    .hero-subheading {
+      font-size: 18px; font-weight: 600; margin: 12px auto 0;
+      color: #475569; text-align: center; line-height: 1.5; max-width: 90vw;
+    }
+    .home-locked .home-table-section {
+      flex: 1; min-height: 0; overflow: hidden;
+      display: flex; flex-direction: column; margin-top: 6px;
+    }
+    .home-locked .home-table-section iframe.loan-table-embed {
+      display: block; width: 100%; height: 100%; min-height: 0;
+      border: none; background: transparent;
+    }
+    /* Mobile only: whole screen scrolls; table section is tall (not reduced) so many banks visible. Desktop unchanged. */
+    @media (max-width: 768px) {
+      html:has(body.home-locked) { height: auto; min-height: 100%; }
+      body.home-locked {
+        height: auto;
+        min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .home-locked .home-main {
+        flex: 0 0 auto;
+        min-height: 0;
+      }
+      .home-locked .home-table-section {
+        flex: 0 0 auto;
+        min-height: 95vh;
+        overflow: visible;
+      }
+      .home-locked .home-table-section iframe.loan-table-embed {
+        min-height: 95vh;
+        height: 95vh;
+      }
+    }
+  </style>
+  <!-- Bootstrap first, then our styles (so Montserrat overrides Bootstrap font) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/style.css?v=4" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+  </noscript>
+</head>
+<body class="home-locked">
+  <!-- nav-inline -->
+  <header class="site-header" id="site-header">
+    <div class="site-header-inner">
+      <div class="site-logo"><a href="index.html" data-testid="nav-logo">Apply Only Once</a></div>
+      <nav class="site-nav" aria-label="Main">
+        <a href="pages/pro-tips.html" data-testid="nav-pro-tips">Pro tips before you apply</a>
+        <a href="pages/quick-overview.html" data-testid="nav-quick-overview">Quick overview</a>
+        <a href="pages/government-schemes.html" data-testid="nav-government-schemes">Government schemes</a>
+        <a href="pages/faq.html" data-testid="nav-faq">FAQ</a>
+        <a href="pages/document-checklist.html" data-testid="nav-document-checklist">Standardised document list</a>
+        <a href="pages/about.html" data-testid="nav-about">About us</a>
+      </nav>
+      <button type="button" class="nav-hamburger" aria-label="Open menu" aria-expanded="false" data-testid="nav-hamburger">
+        <span class="nav-hamburger-bar"></span><span class="nav-hamburger-bar"></span><span class="nav-hamburger-bar"></span>
+      </button>
+    </div>
+    <div class="nav-dropdown" id="nav-dropdown" aria-label="Navigation menu" aria-hidden="true">
+      <nav class="nav-dropdown-nav" aria-label="Main">
+        <a href="index.html" class="active" data-testid="nav-home">Home</a>
+        <a href="pages/pro-tips.html" data-testid="nav-pro-tips">Pro tips before you apply</a>
+        <a href="pages/quick-overview.html" data-testid="nav-quick-overview">Quick overview</a>
+        <a href="pages/government-schemes.html" data-testid="nav-government-schemes">Government schemes</a>
+        <a href="pages/faq.html" data-testid="nav-faq">FAQ</a>
+        <a href="pages/document-checklist.html" data-testid="nav-document-checklist">Standardised document list</a>
+        <a href="pages/about.html" data-testid="nav-about">About us</a>
+      </nav>
+    </div>
+  </header>
+  <script data-cfasync="false">
+    (function () {
+      var hamburger = document.querySelector('.nav-hamburger');
+      var dropdown = document.getElementById('nav-dropdown');
+      if (!hamburger || !dropdown) return;
+      function openDropdown() {
+        dropdown.classList.add('open');
+        dropdown.setAttribute('aria-hidden', 'false');
+        hamburger.setAttribute('aria-expanded', 'true');
+        document.addEventListener('click', handleOutsideClick);
+      }
+      function closeDropdown() {
+        dropdown.classList.remove('open');
+        dropdown.setAttribute('aria-hidden', 'true');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.removeEventListener('click', handleOutsideClick);
+      }
+      function handleOutsideClick(e) {
+        if (!dropdown.contains(e.target) && !hamburger.contains(e.target)) closeDropdown();
+      }
+      hamburger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (dropdown.classList.contains('open')) closeDropdown(); else openDropdown();
+      });
+      var links = dropdown.querySelectorAll('a');
+      for (var i = 0; i < links.length; i++) links[i].addEventListener('click', closeDropdown);
+    })();
+  </script>
+  <main class="home-main">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-9">
+          <h1 class="home-heading"><span class="hero-line1">Compare 35+ Education Loan Lenders & Apply in One Click</span><span class="hero-pipe"> | </span><span class="hero-line2">₹99 Only | 48hrs Reply or Refund</span></h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <!-- Table section full-width so embedded table matches standalone UI (filters + table) -->
+        </div>
+      </div>
+    </div>
+    <section class="home-table-section" aria-label="Loan comparison">
+      <iframe class="loan-table-embed" src="table-embed.html" title="Education loan comparison table" loading="lazy"></iframe>
+    </section>
+  </main>
+  <script defer src="js/app.js" data-cfasync="false"></script>
+  <script data-cfasync="false">
+    window.FIREBASE_CONFIG = {
+      apiKey: "AIzaSyDclPn8yIT5zZ7p4mPB3gd4QG7yxy765uU",
+      authDomain: "aoo-loan-applications.firebaseapp.com",
+      projectId: "aoo-loan-applications",
+      storageBucket: "aoo-loan-applications.firebasestorage.app",
+      messagingSenderId: "265777801986",
+      appId: "1:265777801986:web:dafe7d11343d1540a1f01b"
+    };
+    window.RAZORPAY_KEY_ID = 'rzp_test_SLBd2DHmrSNADi';
+    window.APPLICATION_PRICE_PAISE = 9900;
+    window.USE_QR_PAYMENT = true;
+  </script>
+  <script defer src="js/apply-flow.js?v=18" data-cfasync="false"></script>
+</body>
+</html>

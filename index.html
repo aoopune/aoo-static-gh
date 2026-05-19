@@ -3,199 +3,376 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="preconnect" href="https://checkout.razorpay.com" crossorigin>
-  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://firebaseapp.com" crossorigin>
+  <title>Apply Only Once</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <title>Apply Only Once – Education loan comparison</title>
-  <!-- Critical: above-the-fold layout and typography (non-blocking) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;1,400&display=swap">
   <style>
-    :root { --space-1: 0.25rem; --text: #0f172a; --bg-nav: rgba(255,255,255,0.92); --nav-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04); }
-    html:has(body.home-locked) { height: 100%; }
-    body.home-locked {
-      height: 100%; margin: 0; overflow: hidden;
-      display: flex; flex-direction: column; min-height: 0;
-      font-family: 'Montserrat', sans-serif;
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Montserrat', Arial, sans-serif;
     }
-    .home-locked .site-header {
-      flex-shrink: 0;
-      width: fit-content;
-      max-width: 95%;
-      margin: 15px auto 0 auto;
-      padding: 4px 35px;
-      min-height: 44px;
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 50% 0%, #fff 0%, #fbfbfd 42%, #f5f5f7 100%);
+      color: #1d1d1f;
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .home-content {
+      --section-gap: clamp(96px, 15dvh, 190px);
+      height: 100svh;
+      height: 100dvh;
       box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      border-radius: 999px;
-      background: var(--bg-nav);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+      display: grid;
+      grid-template-rows: auto auto auto;
+      align-content: center;
+      justify-items: center;
+      gap: var(--section-gap);
+      padding: clamp(76px, 10dvh, 112px) clamp(20px, 6vw, 48px) clamp(62px, 8dvh, 88px);
+      text-align: center;
     }
-    .home-locked .home-main {
-      flex: 1 1 auto; min-height: 0;
-      display: flex; flex-direction: column;
-      padding-top: 13px; padding-bottom: var(--space-1);
+
+    .site-logo {
+      position: fixed;
+      top: 28px;
+      left: 32px;
+      color: #1d1d1f;
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: -0.055em;
     }
-    .home-locked .home-main .container { flex-shrink: 0; width: 100%; max-width: none; padding-left: 0; padding-right: 0; }
-    .home-locked .home-main .row { display: flex; flex-wrap: wrap; margin-left: -0.5rem; margin-right: -0.5rem; }
-    .home-locked .home-main .col-12 { flex: 0 0 100%; max-width: 100%; padding: 0 0.5rem; }
-    .home-locked .home-main .justify-content-center { justify-content: center; }
-    .home-heading {
-      margin: 0 0 var(--space-1);
-      font-size: clamp(1.35rem, 2.85vw, 2rem); font-weight: 700;
-      letter-spacing: -0.03em; line-height: 1.2; color: var(--text);
+
+    .hero-copy,
+    .mission-copy {
+      max-width: 980px;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-size: clamp(58px, 8.4vw, 92px);
+      font-weight: 600;
+      line-height: 0.94;
+      letter-spacing: -0.07em;
+    }
+
+    .hero-subtitle {
+      margin: 8px 0 0;
+      color: #1d1d1f;
+      font-size: clamp(26px, 3.6vw, 38px);
+      font-weight: 400;
+      line-height: 1.04;
+      letter-spacing: -0.045em;
+    }
+
+    .mission-label {
+      margin: 0 0 10px;
+      color: rgba(29, 29, 31, 0.68);
+      font-size: clamp(12px, 1.25vw, 14px);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 0.08em;
+    }
+
+    .mission-text {
+      margin: 0;
+      font-size: clamp(24px, 3.1vw, 32px);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.052em;
+      text-wrap: balance;
+    }
+
+    .mission-text strong {
+      font-weight: 600;
+    }
+
+    .mission-break {
+      display: block;
+    }
+
+    .mobile-mission-break {
+      display: none;
+    }
+
+    .mission-last-line {
       white-space: nowrap;
     }
-    /* Mobile: allow heading to wrap so full text is visible (no clip from body overflow:hidden) */
-    @media (max-width: 992px) {
-      .home-heading { white-space: normal; display: block; line-height: 1.35; }
-      .home-heading .hero-pipe { display: none; }
-      .home-heading .hero-line1 { display: block; white-space: normal; word-wrap: break-word; margin-bottom: 0.2rem; }
-      .home-heading .hero-line2 { display: block; }
+
+    .contact-copy {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .hero-line2 { display: inline; }
-    .hero-pipe { display: inline; }
-    .hero-subheading {
-      font-size: 18px; font-weight: 600; margin: 12px auto 0;
-      color: #475569; text-align: center; line-height: 1.5; max-width: 90vw;
+
+    .contact-prompt {
+      margin: 0 0 12px;
+      color: #1d1d1f;
+      font-size: clamp(15px, 1.5625vw, 18px);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      text-align: center;
     }
-    .home-locked .home-table-section {
-      flex: 1; min-height: 0; overflow: hidden;
-      display: flex; flex-direction: column; margin-top: 6px;
+
+    .contact-line {
+      margin: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
     }
-    .home-locked .home-table-section iframe.loan-table-embed {
-      display: block; width: 100%; height: 100%; min-height: 0;
-      border: none; background: transparent;
+
+    .contact-phone,
+    .contact-whatsapp {
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 12px 22px;
+      border-radius: 980px;
+      font-size: 17px;
+      line-height: 1.1764705882;
+      font-weight: 400;
+      letter-spacing: -0.022em;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
     }
-    /* Mobile only: whole screen scrolls; table section is tall (not reduced) so many banks visible. Desktop unchanged. */
-    @media (max-width: 768px) {
-      html:has(body.home-locked) { height: auto; min-height: 100%; }
-      body.home-locked {
-        height: auto;
-        min-height: 100vh;
-        overflow-x: hidden;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+
+    .contact-phone {
+      background: #0071e3;
+      color: #fff;
+      border: none;
+    }
+
+    .contact-phone:hover {
+      background: #0077ed;
+    }
+
+    .contact-whatsapp {
+      background: transparent;
+      color: #0071e3;
+      border: 1px solid #0071e3;
+    }
+
+    .contact-whatsapp:hover {
+      background: rgba(0, 113, 227, 0.06);
+    }
+
+    .contact-phone:active,
+    .contact-whatsapp:active {
+      opacity: 0.82;
+    }
+
+    .contact-phone:focus-visible,
+    .contact-whatsapp:focus-visible {
+      outline: 2px solid #0071e3;
+      outline-offset: 3px;
+    }
+
+    .education-loan-button {
+      position: fixed;
+      left: 28px;
+      bottom: 24px;
+      padding: 8px 14px;
+      border: 1px solid #1d1d1f;
+      border-radius: 999px;
+      background: transparent;
+      color: #1d1d1f;
+      font-size: 13px;
+      line-height: 1.15;
+      text-decoration: none;
+      transition: background 160ms ease, color 160ms ease;
+    }
+
+    .education-loan-button:hover {
+      background: #1d1d1f;
+      color: #fff;
+    }
+
+    .education-loan-button:focus-visible {
+      outline: 2px solid #111827;
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 640px) {
+      .home-content {
+        grid-template-rows: repeat(3, 1fr);
+        align-content: stretch;
+        align-items: center;
+        gap: 0;
+        padding: 76px 22px 52px;
       }
-      .home-locked .home-main {
-        flex: 0 0 auto;
-        min-height: 0;
+
+      .site-logo {
+        top: 28px;
+        left: 50%;
+        font-size: 28px;
+        transform: translateX(-50%);
       }
-      .home-locked .home-table-section {
-        flex: 0 0 auto;
-        min-height: 95vh;
-        overflow: visible;
+
+      .hero-title {
+        font-size: clamp(48px, 14vw, 72px);
+        line-height: 0.95;
       }
-      .home-locked .home-table-section iframe.loan-table-embed {
-        min-height: 95vh;
-        height: 95vh;
+
+      .hero-subtitle {
+        margin-top: 6px;
+        font-size: clamp(23px, 7vw, 32px);
+        line-height: 1.02;
       }
+
+      .mission-text {
+        font-size: clamp(21px, 6vw, 28px);
+        line-height: 1.04;
+        text-wrap: wrap;
+      }
+
+      .mission-label {
+        font-size: clamp(12px, 3.2vw, 14px);
+      }
+
+      .contact-prompt {
+        font-size: clamp(15px, 4vw, 18px);
+      }
+
+      .mission-copy {
+        max-width: 100%;
+        width: 100%;
+        padding: 0 4px;
+        box-sizing: border-box;
+      }
+
+      .mission-last-line {
+        display: inline-block;
+        max-width: 100%;
+        font-size: clamp(17px, 4.6vw, 21px);
+        letter-spacing: -0.045em;
+      }
+
+      .mission-break {
+        display: block;
+      }
+
+      .mobile-mission-break {
+        display: block;
+      }
+
+      .contact-line {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 10px;
+      }
+
+      .education-loan-button {
+        left: 16px;
+        bottom: 14px;
+        padding: 7px 12px;
+        font-size: 12px;
+      }
+
+    }
+
+    @media (max-width: 640px) and (max-height: 720px) {
+      .home-content {
+        padding-top: 64px;
+        padding-bottom: 42px;
+      }
+
+      .site-logo {
+        top: 22px;
+        font-size: 24px;
+      }
+
+      .hero-title {
+        font-size: clamp(42px, 13vw, 56px);
+      }
+
+      .hero-subtitle {
+        font-size: clamp(21px, 6.4vw, 26px);
+      }
+
+      .mission-text {
+        font-size: clamp(19px, 5.6vw, 23px);
+      }
+
+      .mission-label {
+        font-size: 11px;
+      }
+
+      .contact-prompt {
+        font-size: 14px;
+      }
+
+    }
+
+    @media (max-height: 520px) {
+      .home-content {
+        padding-top: 52px;
+        padding-bottom: 34px;
+      }
+
+      .site-logo {
+        top: 16px;
+        font-size: 22px;
+      }
+
+      .hero-title {
+        font-size: clamp(38px, 10vw, 54px);
+      }
+
+      .hero-subtitle {
+        font-size: clamp(18px, 5vw, 24px);
+      }
+
+      .mission-text {
+        font-size: clamp(17px, 4.4vw, 22px);
+      }
+
+      .mission-label {
+        font-size: 10px;
+      }
+
+      .contact-prompt {
+        font-size: 13px;
+      }
+
+      .education-loan-button {
+        bottom: 10px;
+        padding: 8px 11px;
+      }
+
     }
   </style>
-  <!-- Bootstrap first, then our styles (so Montserrat overrides Bootstrap font) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="css/style.css?v=4" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css?v=4">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
-  </noscript>
 </head>
-<body class="home-locked">
-  <!-- nav-inline -->
-  <header class="site-header" id="site-header">
-    <div class="site-header-inner">
-      <div class="site-logo"><a href="index.html" data-testid="nav-logo">Apply Only Once</a></div>
-      <nav class="site-nav" aria-label="Main">
-        <a href="pages/pro-tips.html" data-testid="nav-pro-tips">Pro tips before you apply</a>
-        <a href="pages/quick-overview.html" data-testid="nav-quick-overview">Quick overview</a>
-        <a href="pages/government-schemes.html" data-testid="nav-government-schemes">Government schemes</a>
-        <a href="pages/faq.html" data-testid="nav-faq">FAQ</a>
-        <a href="pages/document-checklist.html" data-testid="nav-document-checklist">Standardised document list</a>
-        <a href="pages/about.html" data-testid="nav-about">About us</a>
-      </nav>
-      <button type="button" class="nav-hamburger" aria-label="Open menu" aria-expanded="false" data-testid="nav-hamburger">
-        <span class="nav-hamburger-bar"></span><span class="nav-hamburger-bar"></span><span class="nav-hamburger-bar"></span>
-      </button>
-    </div>
-    <div class="nav-dropdown" id="nav-dropdown" aria-label="Navigation menu" aria-hidden="true">
-      <nav class="nav-dropdown-nav" aria-label="Main">
-        <a href="index.html" class="active" data-testid="nav-home">Home</a>
-        <a href="pages/pro-tips.html" data-testid="nav-pro-tips">Pro tips before you apply</a>
-        <a href="pages/quick-overview.html" data-testid="nav-quick-overview">Quick overview</a>
-        <a href="pages/government-schemes.html" data-testid="nav-government-schemes">Government schemes</a>
-        <a href="pages/faq.html" data-testid="nav-faq">FAQ</a>
-        <a href="pages/document-checklist.html" data-testid="nav-document-checklist">Standardised document list</a>
-        <a href="pages/about.html" data-testid="nav-about">About us</a>
-      </nav>
-    </div>
-  </header>
-  <script data-cfasync="false">
-    (function () {
-      var hamburger = document.querySelector('.nav-hamburger');
-      var dropdown = document.getElementById('nav-dropdown');
-      if (!hamburger || !dropdown) return;
-      function openDropdown() {
-        dropdown.classList.add('open');
-        dropdown.setAttribute('aria-hidden', 'false');
-        hamburger.setAttribute('aria-expanded', 'true');
-        document.addEventListener('click', handleOutsideClick);
-      }
-      function closeDropdown() {
-        dropdown.classList.remove('open');
-        dropdown.setAttribute('aria-hidden', 'true');
-        hamburger.setAttribute('aria-expanded', 'false');
-        document.removeEventListener('click', handleOutsideClick);
-      }
-      function handleOutsideClick(e) {
-        if (!dropdown.contains(e.target) && !hamburger.contains(e.target)) closeDropdown();
-      }
-      hamburger.addEventListener('click', function (e) {
-        e.stopPropagation();
-        if (dropdown.classList.contains('open')) closeDropdown(); else openDropdown();
-      });
-      var links = dropdown.querySelectorAll('a');
-      for (var i = 0; i < links.length; i++) links[i].addEventListener('click', closeDropdown);
-    })();
-  </script>
-  <main class="home-main">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-12 col-lg-10 col-xl-9">
-          <h1 class="home-heading"><span class="hero-line1">Compare 35+ Education Loan Lenders & Apply in One Click</span><span class="hero-pipe"> | </span><span class="hero-line2">₹99 Only | 48hrs Reply or Refund</span></h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <!-- Table section full-width so embedded table matches standalone UI (filters + table) -->
-        </div>
-      </div>
-    </div>
-    <section class="home-table-section" aria-label="Loan comparison">
-      <iframe class="loan-table-embed" src="table-embed.html" title="Education loan comparison table" loading="lazy"></iframe>
+<body>
+  <div class="site-logo">ApplyOnlyOnce</div>
+  <main class="home-content">
+    <section class="hero-copy" aria-labelledby="home-loan-title">
+      <h1 class="hero-title" id="home-loan-title">Home Loan</h1>
+      <p class="hero-subtitle">Unbiased help. No fees.</p>
+    </section>
+    <section class="mission-copy" aria-label="Our Mission">
+      <p class="mission-label">OUR MISSION</p>
+      <p class="mission-text"><strong>Save every single rupee</strong> <br class="mobile-mission-break">in your home loan journey,<br class="mission-break"><span class="mission-last-line">Across interest, bank charges &amp; EMIs</span></p>
+    </section>
+    <section class="contact-copy" aria-label="Contact">
+      <p class="contact-prompt">New loan or paying a loan? Ask me anything.</p>
+      <p class="contact-line">
+        <a class="contact-phone" href="tel:+919112334367">Call Yash</a>
+        <a class="contact-whatsapp" href="https://wa.me/919112334367?text=Hi" target="_blank" rel="noopener">WhatsApp Yash</a>
+      </p>
     </section>
   </main>
-  <script defer src="js/app.js" data-cfasync="false"></script>
-  <script data-cfasync="false">
-    window.FIREBASE_CONFIG = {
-      apiKey: "AIzaSyDclPn8yIT5zZ7p4mPB3gd4QG7yxy765uU",
-      authDomain: "aoo-loan-applications.firebaseapp.com",
-      projectId: "aoo-loan-applications",
-      storageBucket: "aoo-loan-applications.firebasestorage.app",
-      messagingSenderId: "265777801986",
-      appId: "1:265777801986:web:dafe7d11343d1540a1f01b"
-    };
-    window.RAZORPAY_KEY_ID = 'rzp_test_SLBd2DHmrSNADi';
-    window.APPLICATION_PRICE_PAISE = 9900;
-    window.USE_QR_PAYMENT = true;
-  </script>
-  <script defer src="js/apply-flow.js?v=18" data-cfasync="false"></script>
+  <a class="education-loan-button" href="education-loan.html">Education Loan</a>
 </body>
 </html>
