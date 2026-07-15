@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy — Shroffin</title>
+  <meta name="description" content="How Shroffin collects, uses, and protects your personal data in India.">
+  <link rel="icon" href="favicon.ico?v=6" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/logos/favicon-32.png?v=6">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/logos/favicon-16.png?v=6">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=6">
+  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf') format('truetype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf') format('truetype');
+      font-weight: 600;
+      font-style: normal;
+      font-display: block;
+    }
+
+    :root {
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --ink: #1d1d1f;
+      --muted: rgba(0, 0, 0, 0.56);
+      --rule: rgba(0, 0, 0, 0.12);
+      --link: #0066cc;
+      --max: 720px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Google Sans Flex', sans-serif;
+      font-size: 17px;
+      line-height: 1.47059;
+      color: var(--ink);
+      background:
+        radial-gradient(120% 80% at 0% 0%, rgba(0, 102, 204, 0.06), transparent 55%),
+        radial-gradient(90% 60% at 100% 10%, rgba(29, 29, 31, 0.04), transparent 50%),
+        var(--bg);
+    }
+
+    a {
+      color: var(--link);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+
+    a:hover { text-decoration: none; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(245, 245, 247, 0.92);
+      backdrop-filter: saturate(180%) blur(16px);
+      -webkit-backdrop-filter: saturate(180%) blur(16px);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .topbar-inner {
+      width: min(980px, calc(100% - 40px));
+      margin: 0 auto;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .topbar-logo {
+      display: block;
+      height: 22px;
+      width: auto;
+    }
+
+    .topbar-back {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .topbar-back:hover { color: var(--ink); }
+
+    main {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      padding: 40px 0 64px;
+    }
+
+    .legal-hero {
+      margin: 0 0 28px;
+    }
+
+    .legal-hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      line-height: 1.1;
+    }
+
+    .legal-meta {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .legal-meta span + span::before {
+      content: "·";
+      margin: 0 0.45em;
+      opacity: 0.6;
+    }
+
+    .notice {
+      margin: 0 0 28px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .toc {
+      margin: 0 0 36px;
+      padding: 18px 18px 8px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+    }
+
+    .toc h2 {
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+
+    .toc ol {
+      margin: 0;
+      padding: 0 0 0 1.2em;
+      columns: 1;
+      gap: 24px;
+    }
+
+    @media (min-width: 640px) {
+      .toc ol { columns: 2; }
+    }
+
+    .toc li {
+      margin: 0 0 8px;
+      break-inside: avoid;
+      font-size: 14px;
+    }
+
+    .toc a {
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .toc a:hover { color: var(--link); }
+
+    section {
+      margin: 0 0 32px;
+      scroll-margin-top: 72px;
+    }
+
+    section > h2 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    section > h3 {
+      margin: 20px 0 8px;
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    p { margin: 0 0 12px; }
+
+    ul, ol {
+      margin: 0 0 12px;
+      padding-left: 1.25em;
+    }
+
+    li { margin: 0 0 6px; }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 0 12px;
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      background: var(--surface);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    th {
+      font-weight: 600;
+      background: rgba(0, 0, 0, 0.03);
+      white-space: nowrap;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .site-footer {
+      background: rgb(245, 245, 247);
+      color: rgba(0, 0, 0, 0.56);
+      font-size: 12px;
+      line-height: 1.33337;
+      border-top: 1px solid var(--rule);
+    }
+
+    .site-footer-inner {
+      width: min(980px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 24px 0 36px;
+    }
+
+    .site-footer a {
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .site-footer a:hover { text-decoration: underline; }
+
+    .site-footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin: 0 0 12px;
+      padding: 0;
+      list-style: none;
+    }
+
+    @media (max-width: 480px) {
+      main { padding-top: 28px; }
+      body { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="index.html" aria-label="Shroffin Home">
+        <img
+          class="topbar-logo"
+          src="images/logos/logo-h-light-clear-781x173.png"
+          alt="Shroffin"
+          width="99"
+          height="22"
+        >
+      </a>
+      <a class="topbar-back" href="index.html">Home</a>
+    </div>
+  </header>
+
+  <main>
+    <header class="legal-hero">
+      <h1>Privacy Policy</h1>
+      <p class="legal-meta">
+        <span>Effective 13 July 2026</span>
+        <span>Last updated 13 July 2026</span>
+        <span>India only</span>
+      </p>
+    </header>
+
+    <p class="notice">
+      This notice explains how Shroffin (also known as Apply Only Once) collects, uses, stores, shares, and protects your personal data on shroffin.com and when we help with loan comparison and applications. It is written for users in India.
+    </p>
+
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#who">Who we are</a></li>
+        <li><a href="#scope">Scope</a></li>
+        <li><a href="#collect">What we collect</a></li>
+        <li><a href="#why">Why we use it</a></li>
+        <li><a href="#consent">Consent</a></li>
+        <li><a href="#share">Who we share with</a></li>
+        <li><a href="#cross-border">Cross-border processing</a></li>
+        <li><a href="#cookies">Cookies and storage</a></li>
+        <li><a href="#retention">How long we keep data</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#rights">Your rights</a></li>
+        <li><a href="#grievance">Grievance contact</a></li>
+        <li><a href="#children">Children</a></li>
+        <li><a href="#do-not">What we do not do</a></li>
+        <li><a href="#changes">Changes</a></li>
+        <li><a href="#law">Governing law</a></li>
+      </ol>
+    </nav>
+
+    <section id="who">
+      <h2>1. Who we are</h2>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><th scope="row">Brand</th><td>Shroffin (registered product name: Apply Only Once)</td></tr>
+            <tr><th scope="row">Website</th><td><a href="https://shroffin.com">shroffin.com</a></td></tr>
+            <tr><th scope="row">What we do</th><td>Independent home-loan comparison and application assistance. We are not a bank, NBFC, or lender. We do not approve, sanction, or disburse loans.</td></tr>
+            <tr><th scope="row">Operator</th><td>Operated by Yash from India. A separate company has not yet been incorporated. For Indian data protection law, we act as the Data Fiduciary for personal data we decide how to use.</td></tr>
+            <tr><th scope="row">Contact</th><td><a href="mailto:aoopune@gmail.com">aoopune@gmail.com</a> · <a href="mailto:support@shroffin.com">support@shroffin.com</a> · <a href="tel:+919112334367">+91 91123 34367</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Loan agreements are only between you and the bank or lender you choose.</p>
+    </section>
+
+    <section id="scope">
+      <h2>2. Scope</h2>
+      <p>This Policy covers personal data we process in India when you:</p>
+      <ul>
+        <li>browse or use shroffin.com;</li>
+        <li>contact us by email, phone, or messaging apps linked from our website;</li>
+        <li>ask for home-loan comparison, guidance, or application assistance;</li>
+        <li>use any online enquiry or application forms on the site;</li>
+        <li>receive related support after you engage us.</li>
+      </ul>
+      <p>We do not intentionally offer the service to people outside India.</p>
+    </section>
+
+    <section id="collect">
+      <h2>3. What we collect</h2>
+      <p>We collect only what we need for the purpose you came for.</p>
+
+      <h3>3.1 Data you give us</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Category</th>
+              <th scope="col">Examples</th>
+              <th scope="col">When</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Identity and contact</td>
+              <td>Name, phone number, email address</td>
+              <td>When you call, email, message, or fill a form</td>
+            </tr>
+            <tr>
+              <td>Enquiry details</td>
+              <td>City, property type, loan amount sought, new loan or balance transfer, banks you want to apply to</td>
+              <td>When you ask for comparison or application help</td>
+            </tr>
+            <tr>
+              <td>Application and KYC materials</td>
+              <td>Identity and address proofs, income documents, property papers, employment details</td>
+              <td>When you ask us to help apply, with your consent</td>
+            </tr>
+            <tr>
+              <td>Credit-related information</td>
+              <td>Credit score, existing loans, or bank feedback you share</td>
+              <td>Only if you share it for guidance or applications</td>
+            </tr>
+            <tr>
+              <td>Online form or account data</td>
+              <td>Sign-in email (for example Google), filter answers, lenders you select</td>
+              <td>When you use an online apply or enquiry flow</td>
+            </tr>
+            <tr>
+              <td>Payment references</td>
+              <td>Application ID, payment confirmation, UPI reference notes</td>
+              <td>When a site flow includes a payment step</td>
+            </tr>
+            <tr>
+              <td>Communications</td>
+              <td>Messages, call notes, and emails between you and us</td>
+              <td>When you contact us or we reply</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>You do not need to share personal data only to read public comparison information on the website.</p>
+
+      <h3>3.2 Data collected automatically</h3>
+      <p>When you visit shroffin.com, hosting and security providers may process technical data such as IP address, browser and device information, pages visited, date and time, and approximate location from IP. See also <a href="#cookies">cookies and storage</a>.</p>
+      <p>We do not currently run third-party advertising pixels or marketing analytics tools on the public site. If that changes, we will update this Policy and, where required, ask for consent.</p>
+
+      <h3>3.3 Data from others</h3>
+      <p>We may receive limited information from banks or lenders you asked us to approach (for example application status), and from service providers who host our site or store application records. We do not buy personal data lists for marketing.</p>
+    </section>
+
+    <section id="why">
+      <h2>4. Why we use your data</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Purpose</th>
+              <th scope="col">What we do</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Show comparison information</td>
+              <td>Operate shroffin.com so you can see home-loan rules, rates, documents, and related information.</td>
+            </tr>
+            <tr>
+              <td>Respond to you</td>
+              <td>Answer calls, emails, and messages about home loans and our service.</td>
+            </tr>
+            <tr>
+              <td>Guide your decision</td>
+              <td>Give unbiased comparison help so you can pick which banks to approach.</td>
+            </tr>
+            <tr>
+              <td>Application assistance</td>
+              <td>Prepare and submit applications to the banks you choose, with your consent.</td>
+            </tr>
+            <tr>
+              <td>Competition round</td>
+              <td>After banks respond, create competition among the lenders you selected so they can compete on terms for your benefit. You decide which offer to take.</td>
+            </tr>
+            <tr>
+              <td>Operate online flows</td>
+              <td>Create and track an enquiry or application record where an online flow is used.</td>
+            </tr>
+            <tr>
+              <td>Payments (where applicable)</td>
+              <td>Match a payment to your application ID so we can continue the process.</td>
+            </tr>
+            <tr>
+              <td>Security and legal</td>
+              <td>Protect the website, meet Indian law, and handle grievances.</td>
+            </tr>
+            <tr>
+              <td>Improve the service</td>
+              <td>Fix errors and improve comparison and assistance. We do not sell your individual lead.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>If we need a new purpose, we will tell you and, where consent is required, ask again.</p>
+    </section>
+
+    <section id="consent">
+      <h2>5. Consent</h2>
+      <p>Where Indian law requires consent, we ask for it in clear language before we process your personal data for that purpose (for example, when you ask us to apply to banks, or when you submit an online form).</p>
+      <p>You may withdraw consent for consent-based processing by emailing us (see <a href="#grievance">grievance contact</a>). Withdrawal does not affect processing already completed lawfully, or processing we must continue under law.</p>
+      <p>We may also process personal data when needed to respond to your request, comply with a legal obligation, or protect our systems against fraud or security threats.</p>
+    </section>
+
+    <section id="share">
+      <h2>6. Who we share data with</h2>
+      <p>We do not sell your personal data. We do not sell individual customer leads.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Recipient</th>
+              <th scope="col">Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Banks and lenders you select</td>
+              <td>So they can assess and process your loan application, with your consent.</td>
+            </tr>
+            <tr>
+              <td>Hosting and infrastructure</td>
+              <td>Website hosting and content delivery (for example GitHub Pages and Cloudflare, or successors).</td>
+            </tr>
+            <tr>
+              <td>Cloud storage and sign-in</td>
+              <td>Online application records and Google sign-in, where used (currently Firebase / Google services for certain online flows).</td>
+            </tr>
+            <tr>
+              <td>Fonts, scripts, and content tools</td>
+              <td>CDNs or tools that load fonts, libraries, or public comparison content.</td>
+            </tr>
+            <tr>
+              <td>Payment systems</td>
+              <td>Your bank or UPI app processes payments you make; we may see confirmation details needed to match your application.</td>
+            </tr>
+            <tr>
+              <td>Professional advisors</td>
+              <td>Lawyers or accountants, if needed for compliance, under confidentiality.</td>
+            </tr>
+            <tr>
+              <td>Authorities</td>
+              <td>When Indian law requires disclosure.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>When we send your file to a bank, that bank becomes responsible for how it uses your data under its own policies. Read the lender’s privacy notice as well.</p>
+    </section>
+
+    <section id="cross-border">
+      <h2>7. Cross-border processing</h2>
+      <p>Our primary audience and operations are in India. Some service providers (including Google / Firebase and global CDNs) may process or store data on servers outside India. Where that happens, we rely on providers that offer reasonable security and contractual protections, and we follow Indian law on cross-border transfers as it applies to us.</p>
+    </section>
+
+    <section id="cookies">
+      <h2>8. Cookies and browser storage</h2>
+      <p>We use essential or functional storage to keep the site working (for example session state during an apply flow), and temporary local or session storage for forms or quiz answers on your device until you clear them or they expire.</p>
+      <p>We do not use advertising cookies today. You can control cookies and site data in your browser settings. Blocking essential storage may break parts of an online apply flow.</p>
+    </section>
+
+    <section id="retention">
+      <h2>9. How long we keep data</h2>
+      <p>We keep personal data only as long as needed for the purpose it was collected:</p>
+      <ul>
+        <li>General support enquiries — until closed, then a short follow-up period, unless you ask us to delete sooner where law allows.</li>
+        <li>Application assistance files — for the period needed to complete applications and related follow-up, then delete or anonymise when no longer needed.</li>
+        <li>Online application records — while active and for a reasonable period afterward for support and dispute handling.</li>
+        <li>Legal or security logs — as needed for security and legal claims.</li>
+      </ul>
+      <p>You can ask us what we hold about you (see <a href="#rights">your rights</a>).</p>
+    </section>
+
+    <section id="security">
+      <h2>10. Security</h2>
+      <p>We use reasonable technical and organisational measures to protect personal data, including access controls on application records and use of reputable cloud providers. No method of transmission or storage is fully secure.</p>
+      <p>Please share sensitive documents only through channels we confirm with you, and avoid sending passwords or full card details by email.</p>
+      <p>If we become aware of a personal data breach that requires notice under Indian law, we will follow applicable rules.</p>
+    </section>
+
+    <section id="rights">
+      <h2>11. Your rights (India)</h2>
+      <p>Subject to Indian law (including the IT Act / SPDI Rules while they apply, and the Digital Personal Data Protection Act, 2023 and Rules as they come into force), you may have the right to:</p>
+      <ul>
+        <li>access the personal data we hold about you;</li>
+        <li>correct inaccurate or incomplete data;</li>
+        <li>erase data that is no longer needed for the stated purpose, subject to legal exceptions;</li>
+        <li>withdraw consent where processing is based on consent;</li>
+        <li>use our grievance process;</li>
+        <li>nominate another person to exercise rights on your behalf where the law provides for nomination;</li>
+        <li>complain to the Data Protection Board of India once that channel is available for your case.</li>
+      </ul>
+      <p>Email <a href="mailto:aoopune@gmail.com">aoopune@gmail.com</a> or <a href="mailto:support@shroffin.com">support@shroffin.com</a> with the subject line “Privacy request”, and include enough detail for us to find your records. We may need to verify your identity before responding.</p>
+    </section>
+
+    <section id="grievance">
+      <h2>12. Grievance contact</h2>
+      <p>Until a separate Data Protection Officer is formally appointed (if required), privacy and grievance requests are handled by:</p>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><th scope="row">Name</th><td>Yash</td></tr>
+            <tr><th scope="row">Role</th><td>Operator / privacy contact for Shroffin</td></tr>
+            <tr><th scope="row">Email</th><td><a href="mailto:aoopune@gmail.com">aoopune@gmail.com</a> · <a href="mailto:support@shroffin.com">support@shroffin.com</a></td></tr>
+            <tr><th scope="row">Phone</th><td><a href="tel:+919112334367">+91 91123 34367</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="children">
+      <h2>13. Children</h2>
+      <p>Our services are meant for adults who can take or help with a home loan. We do not knowingly collect personal data from children under 18 for our services. If you believe a child has shared data with us, contact us and we will delete it where required.</p>
+    </section>
+
+    <section id="do-not">
+      <h2>14. What we do not do</h2>
+      <ul>
+        <li>We do not approve or reject loans (banks do).</li>
+        <li>We do not sell your personal data or individual leads.</li>
+        <li>We do not use your data to secretly push one bank over another for our own commission.</li>
+        <li>We do not ask for personal data solely so you can browse public comparison pages.</li>
+      </ul>
+    </section>
+
+    <section id="changes">
+      <h2>15. Changes to this Policy</h2>
+      <p>We may update this Policy when our practices, tools, or the law change. The “Last updated” date at the top will change. For important changes, we will take reasonable steps to notify you.</p>
+    </section>
+
+    <section id="law">
+      <h2>16. Governing law</h2>
+      <p>This Policy is governed by the laws of India. Courts in Pune, Maharashtra, India shall have jurisdiction, subject to mandatory consumer or data-protection forums that apply to you.</p>
+      <p>Shroffin is not a bank, NBFC, or lender. Information on the website is for comparison and education and is indicative. Final rates, charges, and approval are decided only by the lender.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="site-footer-inner">
+      <ul class="site-footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="privacy-policy.html" aria-current="page">Privacy Policy</a></li>
+      </ul>
+      <p>Copyright © 2026 Shroffin. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

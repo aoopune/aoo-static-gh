@@ -1,0 +1,39 @@
+---
+description: Shroffin brand font — Google Sans Flex for website and home page UI
+globs: "**/*.{html,css,js}"
+alwaysApply: false
+---
+
+# Shroffin brand font
+
+**Family:** Google Sans Flex  
+**Source of truth (brand kit):** `/home/yash/etc/creatives/brand/Font/`  
+**Website files:** `fonts/GoogleSansFlex/`
+
+## Always
+
+1. Use **Google Sans Flex** for every piece of text on the Shroffin website — nav, headlines, body, buttons, flyouts, future pages.
+2. Load fonts via local `@font-face` from `fonts/GoogleSansFlex/` — not Google Fonts CDN, Montserrat, Inter, Roboto, Arial-as-primary, or system UI stacks as the main face.
+3. CSS stack: `'Google Sans Flex', Arial, sans-serif` (or `var(--font-brand)` when defined).
+4. If adding weights, copy matching `GoogleSansFlex_72pt-*.ttf` files from the brand kit Font folder into `fonts/GoogleSansFlex/`.
+5. Use only the font’s natural spacing. Pick a **weight** (and size) when needed — do not invent letter-spacing, tracking, or other type “polish” rules.
+
+## Weight map
+
+| CSS weight | File |
+|---|---|
+| 100 | GoogleSansFlex_72pt-Thin.ttf |
+| 200 | GoogleSansFlex_72pt-ExtraLight.ttf |
+| 300 | GoogleSansFlex_72pt-Light.ttf |
+| 400 | GoogleSansFlex_72pt-Regular.ttf |
+| 500 | GoogleSansFlex_72pt-Medium.ttf |
+| 600 | GoogleSansFlex_72pt-SemiBold.ttf |
+| 700 | GoogleSansFlex_72pt-Bold.ttf |
+| 800 | GoogleSansFlex_72pt-ExtraBold.ttf |
+| 900 | GoogleSansFlex_72pt-Black.ttf |
+
+## Never
+
+- Do not use Montserrat (legacy site) on the redesigned home page.
+- Do not invent a different brand typeface without an explicit user request.
+- Do not add `letter-spacing`, tracking, or Apple-style kerning tweaks. Let Google Sans Flex render as designed.

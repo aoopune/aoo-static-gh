@@ -1,0 +1,2708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Guide – Home loan overview – Shroffin</title>
+  <meta name="description" content="Home loan overview. How much you can borrow, EMI, fixed vs floating rates, and costs beyond the EMI.">
+  <link rel="icon" href="../favicon.ico?v=6" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/logos/favicon-32.png?v=6">
+  <link rel="icon" type="image/png" sizes="16x16" href="../images/logos/favicon-16.png?v=6">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png?v=6">
+  <link rel="manifest" href="../site.webmanifest?v=6">
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Thin.ttf') format('truetype');
+      font-weight: 100;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraLight.ttf') format('truetype');
+      font-weight: 200;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Light.ttf') format('truetype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf') format('truetype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf') format('truetype');
+      font-weight: 600;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Bold.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraBold.ttf') format('truetype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Black.ttf') format('truetype');
+      font-weight: 900;
+      font-style: normal;
+      font-display: block;
+    }
+
+    :root {
+      --gn-height: 48px;
+      --ln-height: 52px;
+      --gn-bg: #fbfbfd;
+      --gn-text: rgba(29, 29, 31, 0.8);
+      --gn-text-hover: #1d1d1f;
+      --gn-ink: #1d1d1f;
+      --gn-max: 980px;
+      --font-brand: 'Google Sans Flex', sans-serif;
+      --guide-max: 980px;
+      --guide-band: #f5f5f7;
+      --guide-tile: #fff;
+      /* Apple Card–style tile radii (mobile-first ladder) */
+      --guide-radius: 10px;
+      /* Proximity + type scale (shared with guide-documents) */
+      --guide-gap-pair: 4px;      /* label ↔ supporting line */
+      --guide-gap-related: 10px;  /* h3 ↔ body */
+      --guide-gap-stack: 16px;    /* title ↔ lead */
+      --guide-gap-block: 36px;    /* lead ↔ content module */
+      --guide-gap-item: 18px;     /* list-row vertical pad */
+      --guide-type-row: 17px;     /* row primary */
+      --guide-type-support: 14px; /* row secondary / captions in lists */
+      --guide-type-body: 16px;    /* limit body */
+      --guide-type-micro: 12px;   /* legal / micro labels */
+    }
+
+    @media (min-width: 735px) {
+      :root {
+        --guide-radius: 30px;
+      }
+    }
+
+    @media (min-width: 1069px) {
+      :root {
+        --guide-radius: 40px;
+      }
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: var(--font-brand);
+    }
+
+    html {
+      scrollbar-gutter: stable;
+      scroll-padding-top: calc(var(--gn-height) + var(--ln-height) + 20px);
+    }
+
+    body {
+      background: var(--guide-band);
+      color: #1d1d1f;
+    }
+
+    body.gn-locked {
+      overflow: hidden;
+    }
+
+    /* ——— Apple globalnav ——— */
+    .globalnav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      height: var(--gn-height);
+      background: var(--gn-bg);
+      transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .globalnav.flyout-open {
+      background: #fafafc;
+    }
+
+    .globalnav-content {
+      position: relative;
+      z-index: 3;
+      max-width: var(--gn-max);
+      height: var(--gn-height);
+      margin: 0 auto;
+      padding: 0 22px;
+      box-sizing: border-box;
+    }
+
+    .globalnav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .globalnav-item {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .globalnav-link,
+    .globalnav-support-trigger {
+      display: inline-flex;
+      align-items: center;
+      height: 100%;
+      min-height: 44px;
+      padding: 0 8px;
+      border: 0;
+      background: transparent;
+      color: var(--gn-text);
+      font-family: var(--font-brand);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .globalnav-link:hover,
+    .globalnav-support-trigger:hover,
+    .globalnav.flyout-open .globalnav-support-trigger,
+    .globalnav-link[aria-current="page"] {
+      color: var(--gn-text-hover);
+    }
+
+    .globalnav-link:focus-visible,
+    .globalnav-support-trigger:focus-visible {
+      outline: 2px solid rgba(29, 29, 31, 0.45);
+      outline-offset: -4px;
+      border-radius: 4px;
+    }
+
+    .globalnav-link-brand {
+      padding-left: 0;
+      padding-right: 4px;
+    }
+
+    .globalnav-logo {
+      display: block;
+      height: 22px;
+      width: auto;
+      max-width: 100%;
+    }
+
+    .globalnav-item-about {
+      margin-left: auto;
+    }
+
+    .globalnav-flyout {
+      position: absolute;
+      top: var(--gn-height);
+      left: 0;
+      right: 0;
+      z-index: 2;
+      overflow: hidden;
+      visibility: hidden;
+      pointer-events: none;
+      max-height: 0;
+      background: #fafafc;
+      transition:
+        max-height 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .globalnav.flyout-open .globalnav-flyout {
+      visibility: visible;
+      pointer-events: auto;
+      max-height: 320px;
+    }
+
+    .globalnav-flyout-content {
+      max-width: var(--gn-max);
+      margin: 0 auto;
+      padding: 40px 22px 52px;
+      box-sizing: border-box;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition:
+        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .globalnav.flyout-open .globalnav-flyout-content {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .globalnav-submenu-header {
+      margin: 0 0 18px;
+      color: #6e6e73;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.33337;
+      text-transform: uppercase;
+    }
+
+    .globalnav-submenu-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .globalnav-submenu-list li {
+      opacity: 0;
+      transform: translateY(-6px);
+      transition:
+        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .globalnav.flyout-open .globalnav-submenu-list li {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+        .globalnav.flyout-open .globalnav-submenu-list li:nth-child(1) { transition-delay: 120ms; }
+    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(2) { transition-delay: 200ms; }
+    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(3) { transition-delay: 280ms; }
+
+    .globalnav-submenu-link {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 10px 0;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .globalnav-submenu-link:hover,
+    .globalnav-submenu-link:hover .globalnav-submenu-value {
+      color: #0066cc;
+    }
+
+    .globalnav-submenu-link:focus-visible {
+      outline: 2px solid rgba(29, 29, 31, 0.45);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    .globalnav-submenu-label {
+      color: var(--gn-ink);
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.16667;
+    }
+
+    .globalnav-submenu-value {
+      color: #6e6e73;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.42859;
+      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .globalnav-veil {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      background: rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .globalnav-veil.is-visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    /* ——— Localnav (Guide sub-bar) ——— */
+    .localnav {
+      position: sticky;
+      top: var(--gn-height);
+      z-index: 9000;
+      height: var(--ln-height);
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.16);
+    }
+
+    .localnav-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      max-width: var(--gn-max);
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 22px;
+      box-sizing: border-box;
+      min-width: 0;
+    }
+
+    .localnav-title {
+      flex: 0 0 auto;
+      margin: 0;
+      color: #1d1d1f;
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .localnav-menu {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 20px;
+      min-width: 0;
+      flex: 1 1 auto;
+      align-self: stretch;
+    }
+
+    .localnav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: stretch;
+      align-self: stretch;
+      height: 100%;
+      gap: 20px;
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .localnav-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .localnav-list li {
+      display: flex;
+      align-items: stretch;
+      flex: 0 0 auto;
+    }
+
+    .localnav-link {
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      height: 100%;
+      min-height: 44px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #1d1d1f;
+      font-family: var(--font-brand);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .localnav-link:hover {
+      color: #0066cc;
+    }
+
+    .localnav-link:focus-visible {
+      outline: 2px solid rgba(29, 29, 31, 0.45);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+
+    .localnav-link[aria-current="page"] {
+      color: #1d1d1f;
+      cursor: default;
+    }
+
+    .localnav-link[aria-current="page"]::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: #1d1d1f;
+    }
+
+    .localnav-link-nolink {
+      cursor: default;
+      color: rgba(29, 29, 31, 0.56);
+    }
+
+    .localnav-link-nolink:hover {
+      color: rgba(29, 29, 31, 0.56);
+    }
+
+    .localnav-cta {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 22px;
+      padding: 3px 10px;
+      border: 1px solid transparent;
+      border-radius: 980px;
+      background: #0071e3;
+      color: #fff;
+      font-family: var(--font-brand);
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.2;
+      text-decoration: none;
+      white-space: nowrap;
+      box-sizing: border-box;
+      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .localnav-cta:hover {
+      background: #0076df;
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .localnav-cta:active {
+      background: #006edb;
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .localnav-cta:focus-visible {
+      outline: 2px solid #0071e3;
+      outline-offset: 2px;
+    }
+
+    /* ——— Guide page (spaced story moments) ——— */
+    .guide-content {
+      padding-top: var(--gn-height);
+      box-sizing: border-box;
+      min-height: 60vh;
+    }
+
+    .guide-hero {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: clamp(72px, 14vw, 120px) 22px clamp(48px, 9vw, 72px);
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .guide-hero-title {
+      margin: 0 0 12px;
+      color: #1d1d1f;
+      font-size: clamp(44px, 8vw, 64px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.02;
+    }
+
+    .guide-hero-lead {
+      margin: 0 auto;
+      max-width: 18em;
+      color: #6e6e73;
+      font-size: clamp(19px, 3vw, 24px);
+      font-weight: 400;
+      letter-spacing: -0.012em;
+      line-height: 1.33337;
+    }
+
+    .guide-story {
+      max-width: var(--guide-max);
+      margin: 0 auto;
+      padding: 0 22px clamp(88px, 14vw, 140px);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(64px, 12vw, 120px);
+    }
+
+    .guide-moment {
+      display: grid;
+      gap: 20px;
+      scroll-margin-top: calc(var(--gn-height) + var(--ln-height) + 20px);
+      opacity: 0;
+      transform: translateY(14px);
+      transition:
+        opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .guide-moment.is-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (min-width: 834px) {
+      .guide-moment--pair {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: stretch;
+      }
+    }
+
+    .guide-moment--pair .guide-tile {
+      min-height: min(48vh, 420px);
+      justify-content: center;
+      padding-top: clamp(56px, 9vw, 88px);
+      padding-bottom: clamp(56px, 9vw, 88px);
+    }
+
+    .guide-tile {
+      position: relative;
+      overflow: hidden;
+      background: var(--guide-tile);
+      border-radius: var(--guide-radius);
+      padding: clamp(48px, 7vw, 72px) clamp(28px, 5vw, 52px);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      min-height: 0;
+    }
+
+    .guide-tile-mark {
+      position: absolute;
+      top: auto;
+      bottom: clamp(24px, 4vw, 40px);
+      right: clamp(24px, 4vw, 40px);
+      width: clamp(56px, 9vw, 88px);
+      height: clamp(56px, 9vw, 88px);
+      color: rgba(0, 0, 0, 0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    .guide-tile-mark svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .guide-tile-mark--glyph {
+      font-family: var(--font-brand);
+      font-size: clamp(52px, 8.5vw, 80px);
+      font-weight: 300;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.06);
+    }
+
+    .guide-tile--hero {
+      min-height: min(52vh, 420px);
+      justify-content: center;
+      text-align: left;
+      align-items: flex-start;
+      padding-top: clamp(56px, 10vw, 88px);
+      padding-bottom: clamp(56px, 10vw, 88px);
+    }
+
+    .guide-tile--hero .guide-tile-copy {
+      max-width: 26em;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .guide-tile--stage {
+      text-align: left;
+      align-items: flex-start;
+      padding-top: clamp(48px, 8vw, 72px);
+      /* Room for the bottom-right mark so last content isn’t tight against it */
+      padding-bottom: clamp(96px, 14vw, 136px);
+    }
+
+    .guide-tile--stage .guide-tile-copy,
+    .guide-tile--stage .guide-tile-list,
+    .guide-tile--stage .guide-bands,
+    .guide-tile--stage .guide-flow {
+      max-width: 40em;
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .guide-tile--stage .guide-limits {
+      max-width: 52em;
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .guide-tile--stage .guide-tile-list,
+    .guide-tile--stage .guide-flow,
+    .guide-tile--stage .guide-limits {
+      text-align: left;
+    }
+
+    .guide-flip {
+      perspective: 1600px;
+      width: 100%;
+    }
+
+    .guide-flip-inner {
+      position: relative;
+      width: 100%;
+      transform-style: preserve-3d;
+      transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .guide-flip.is-flipped .guide-flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .guide-flip-face {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .guide-flip-face--front {
+      position: relative;
+    }
+
+    .guide-flip-face--back {
+      position: absolute;
+      inset: 0;
+      transform: rotateY(180deg);
+      text-align: left;
+      align-items: flex-start;
+    }
+
+    .guide-flip.is-flipped .guide-flip-face--front {
+      pointer-events: none;
+    }
+
+    .guide-flip:not(.is-flipped) .guide-flip-face--back {
+      pointer-events: none;
+    }
+
+    /*
+      Flip CTA spacing: borrow from stage bottom pad (mark still clears)
+      so the link sits lower under the copy without growing the card.
+    */
+    .guide-flip-face.guide-tile--stage {
+      padding-bottom: clamp(48px, 7vw, 72px);
+    }
+
+    .guide-flip-face .guide-flip-link {
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .guide-calc-main {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      max-width: 52em;
+      margin: 0;
+      overflow: visible;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .guide-flip-face--back .guide-calc-main {
+      flex: 0 0 auto;
+      min-height: auto;
+      width: 100%;
+      overflow: visible;
+    }
+
+    /* Slightly taller so estimate fits without moving “Back to overview”. */
+    #emi-flip .guide-tile.guide-flip-face {
+      min-height: 620px;
+    }
+
+    #emi-flip .guide-flip-face--back .guide-calc-main {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .guide-limits {
+      display: grid;
+      gap: var(--guide-gap-block);
+      margin-top: var(--guide-gap-block);
+      width: 100%;
+    }
+
+    @media (min-width: 700px) {
+      .guide-limits {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: start;
+      }
+    }
+
+    .guide-limit-title {
+      margin: 0 0 var(--guide-gap-related);
+      color: #1d1d1f;
+      font-size: clamp(22px, 3vw, 26px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .guide-limit-note {
+      margin-left: 0.35em;
+      color: #6e6e73;
+      font-size: 0.55em;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      vertical-align: middle;
+    }
+
+    .guide-limit-copy {
+      margin: 0;
+      color: #1d1d1f;
+      font-size: var(--guide-type-body);
+      letter-spacing: -0.01em;
+      line-height: 1.45;
+    }
+
+    .guide-share-list {
+      list-style: none;
+      margin: 20px 0 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    .guide-share-list li {
+      display: flex;
+      flex-direction: column;
+      gap: var(--guide-gap-pair);
+      margin: 0;
+      padding: var(--guide-gap-item) 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .guide-share-list li:first-child {
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .guide-share-when {
+      color: #6e6e73;
+      font-size: var(--guide-type-support);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+    }
+
+    .guide-share-then {
+      color: #1d1d1f;
+      font-size: var(--guide-type-row);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+    }
+
+    .guide-share-list--plain li {
+      color: #1d1d1f;
+      font-size: var(--guide-type-row);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+      border: 0;
+      padding-top: var(--guide-gap-item);
+      padding-bottom: var(--guide-gap-item);
+    }
+
+    .guide-share-list--plain li:first-child {
+      border: 0;
+      padding-top: 0;
+    }
+
+    .guide-limit .guide-glance {
+      margin-top: 14px;
+      font-size: var(--guide-type-support);
+    }
+
+    .guide-emi-chart {
+      margin: 10px 0 0;
+      width: 100%;
+      text-align: left;
+    }
+
+    .guide-calc-result .guide-emi-chart {
+      margin-top: 10px;
+    }
+
+    .guide-emi-chart-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: clamp(4px, 1.2vw, 8px);
+      width: 100%;
+    }
+
+    .guide-emi-bar {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .guide-emi-bar-stack {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 96px;
+      border-radius: 5px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    .guide-calc-result .guide-emi-bar-stack {
+      height: 88px;
+    }
+
+    .guide-emi-seg {
+      width: 100%;
+      flex-shrink: 0;
+      min-height: 0;
+    }
+
+    .guide-emi-seg--interest {
+      background: #c7c7cc;
+    }
+
+    .guide-emi-seg--principal {
+      background: #1d1d1f;
+    }
+
+    .guide-emi-bar-label {
+      color: #6e6e73;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .guide-emi-chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 16px;
+      margin: 8px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .guide-emi-chart-legend li {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #6e6e73;
+      font-size: 12px;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    .guide-emi-swatch {
+      display: block;
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .guide-emi-swatch--interest {
+      background: #c7c7cc;
+    }
+
+    .guide-emi-swatch--principal {
+      background: #1d1d1f;
+    }
+
+    .guide-flip-link {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin: 0 auto;
+      align-self: center;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #0066cc;
+      font-family: var(--font-brand);
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+      min-height: 44px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* After base padding/margin reset — min air above CTA; leaner bottom pad
+       on flip faces keeps card height from growing */
+    .guide-flip-face--front .guide-flip-link {
+      margin: auto auto 0;
+      padding-top: 64px;
+    }
+
+    .guide-flip-face--back .guide-flip-link {
+      margin-top: auto;
+      padding-top: 48px;
+    }
+
+    .guide-flip-link-arrow {
+      display: block;
+      width: 0.55em;
+      height: 0.55em;
+      flex-shrink: 0;
+      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .guide-flip-link:hover {
+      text-decoration: underline;
+    }
+
+    .guide-flip-link:hover .guide-flip-link-arrow {
+      transform: translateX(3px);
+    }
+
+    .guide-flip-link:focus-visible {
+      outline: 2px solid #0071e3;
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    .guide-flip-link--back .guide-flip-link-arrow {
+      transform: scaleX(-1);
+    }
+
+    .guide-flip-link--back:hover .guide-flip-link-arrow {
+      transform: scaleX(-1) translateX(3px);
+    }
+
+    .guide-calc-lead {
+      margin-top: 8px;
+      max-width: 28em;
+    }
+
+    .guide-calc-body {
+      display: grid;
+      gap: 20px;
+      width: 100%;
+      margin-top: 20px;
+      align-items: start;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .guide-calc {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 16px;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      align-content: start;
+    }
+
+    .guide-calc-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+      min-width: 0;
+    }
+
+    .guide-calc-label {
+      color: #6e6e73;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    .guide-calc-input {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid #d2d2d7;
+      border-radius: 12px;
+      background: #fff;
+      color: #1d1d1f;
+      font-family: var(--font-brand);
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .guide-calc-input:focus {
+      outline: none;
+      border-color: #0071e3;
+      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2);
+    }
+
+    .guide-calc-select {
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236e6e73' d='M1.1 1.1 6 6 10.9 1.1'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px;
+    }
+
+    .guide-calc-submit {
+      appearance: none;
+      margin-top: 0;
+      min-height: 44px;
+      padding: 10px 20px;
+      border: 0;
+      border-radius: 980px;
+      background: #0071e3;
+      color: #fff;
+      font-family: var(--font-brand);
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      align-self: end;
+      width: 100%;
+    }
+
+    .guide-calc-submit:hover {
+      background: #0076df;
+    }
+
+    .guide-calc-submit:focus-visible {
+      outline: 2px solid #0071e3;
+      outline-offset: 3px;
+    }
+
+    .guide-calc-result {
+      margin: 0;
+      max-width: none;
+      text-align: left;
+      padding: 12px 14px 14px;
+      border-radius: 16px;
+      background: #f5f5f7;
+      align-self: start;
+      width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .guide-calc-result-kicker {
+      margin: 0;
+      color: #6e6e73;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .guide-calc-result-num {
+      margin: 2px 0 0;
+      color: #1d1d1f;
+      font-size: clamp(26px, 3.8vw, 34px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .guide-calc-split {
+      list-style: none;
+      margin: 8px 0 0;
+      padding: 0;
+      color: #1d1d1f;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .guide-calc-split li {
+      margin: 0 0 2px;
+    }
+
+    .guide-calc-split strong {
+      font-weight: 600;
+    }
+
+    .guide-calc-result .guide-glance {
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    @media (min-width: 700px) {
+      .guide-calc-body {
+        grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr);
+        gap: 28px;
+        align-items: start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .guide-calc {
+        gap: 10px 10px;
+      }
+
+      .guide-calc-label {
+        font-size: 11px;
+      }
+
+      .guide-calc-input {
+        min-height: 40px;
+        padding: 8px 10px;
+        font-size: 15px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .guide-flip-inner {
+        transition: none;
+      }
+
+      .guide-flip.is-flipped .guide-flip-inner {
+        transform: none;
+      }
+
+      .guide-flip:not(.is-flipped) .guide-flip-face--back {
+        visibility: hidden;
+      }
+
+      .guide-flip.is-flipped .guide-flip-face--front {
+        visibility: hidden;
+      }
+
+      .guide-flip.is-flipped .guide-flip-face--back {
+        transform: none;
+      }
+    }
+
+    .guide-tile-kicker {
+      margin: 0 0 12px;
+      color: #6e6e73;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    .guide-tile-title {
+      margin: 0;
+      color: #1d1d1f;
+      font-size: clamp(28px, 4.8vw, 44px);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.06;
+    }
+
+    .guide-tile-copy {
+      margin: var(--guide-gap-stack) 0 0;
+      color: #1d1d1f;
+      font-size: clamp(17px, 2.2vw, 21px);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.381;
+    }
+
+    .guide-tile-copy--muted {
+      color: #6e6e73;
+    }
+
+    .guide-tile-list {
+      list-style: none;
+      margin: 36px 0 0;
+      padding: 0;
+    }
+
+    .guide-tile-list li {
+      margin: 0;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      color: #1d1d1f;
+      font-size: clamp(18px, 2.4vw, 21px);
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+    }
+
+    .guide-tile-list li:first-child {
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .guide-bands {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 36px;
+      width: 100%;
+    }
+
+    .guide-band {
+      text-align: center;
+      padding: 22px 10px;
+      border-radius: 18px;
+      background: #f5f5f7;
+    }
+
+    .guide-band-num {
+      margin: 0;
+      color: #1d1d1f;
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .guide-band-cap {
+      margin: 6px 0 0;
+      color: #6e6e73;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+    }
+
+    .guide-glance {
+      margin: 28px 0 0;
+      color: #6e6e73;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      line-height: 1.5;
+    }
+
+    .guide-glance--center {
+      max-width: 28em;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .guide-flow {
+      list-style: none;
+      margin: 36px 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+    }
+
+    .guide-flow--center {
+      max-width: 22em;
+    }
+
+    .guide-flow li {
+      position: relative;
+      margin: 0;
+      padding: 20px 0 20px 40px;
+      color: #1d1d1f;
+      font-size: clamp(17px, 2.2vw, 19px);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .guide-flow li:first-child {
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .guide-flow li::before {
+      content: attr(data-step);
+      position: absolute;
+      left: 0;
+      top: 20px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #1d1d1f;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 26px;
+      text-align: center;
+    }
+
+    .guide-ask {
+      list-style: none;
+      margin: 20px 0 0;
+      padding: 0;
+      max-width: 22em;
+      width: 100%;
+      text-align: left;
+    }
+
+    .guide-ask-label {
+      margin: 40px 0 0;
+      color: #6e6e73;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      line-height: 1.3;
+    }
+
+    .guide-ask li {
+      margin: 0;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      color: #1d1d1f;
+      font-size: clamp(17px, 2.2vw, 19px);
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+    }
+
+    .guide-ask li:first-child {
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      margin-top: 14px;
+    }
+
+    .guide-hybrid {
+      margin: 40px auto 0;
+      max-width: 36em;
+      width: 100%;
+      text-align: center;
+    }
+
+    .guide-hybrid .guide-share-list {
+      text-align: left;
+    }
+
+    .guide-hybrid .guide-glance {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 28em;
+    }
+
+    .guide-jump-wrap {
+      max-width: var(--guide-max);
+      margin: 0 auto;
+      padding: 0 22px clamp(24px, 5vw, 40px);
+      box-sizing: border-box;
+    }
+
+    .guide-jump {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 17px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    /* Exact mirror of .home-hero-cta + .home-hero-cta-secondary on index.html */
+    .guide-jump a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      min-height: 44px;
+      padding: 11px 22px;
+      border: 1px solid #0066cc;
+      border-radius: 980px;
+      background: transparent;
+      color: #0066cc;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.23536;
+      text-decoration: none;
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .guide-jump a:hover {
+      background: #0076df;
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .guide-jump a:active {
+      background: #006edb;
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .guide-jump a:focus-visible {
+      outline: 2px solid #0071e3;
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 833px) {
+      .guide-jump {
+        gap: 14px;
+      }
+
+      .guide-jump a {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+    }
+
+    .guide-fine-wrap {
+      max-width: var(--guide-max);
+      margin: 0 auto;
+      padding: 0 22px clamp(48px, 8vw, 72px);
+      box-sizing: border-box;
+    }
+
+    .guide-fine {
+      margin: 0;
+      color: #6e6e73;
+      font-size: var(--guide-type-micro);
+      letter-spacing: -0.01em;
+      line-height: 1.5;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .guide-moment {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+
+    /* ——— Footer ——— */
+    .site-footer {
+      margin-top: clamp(48px, 10vw, 96px);
+      background: #f5f5f7;
+      color: #6e6e73;
+    }
+
+    .site-footer-inner {
+      width: min(980px, calc(100% - 40px));
+      margin: 0 auto;
+      padding-top: 40px;
+      box-sizing: border-box;
+    }
+
+    .site-footer-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .site-footer-logo {
+      display: block;
+      height: 22px;
+      width: auto;
+      max-width: 100%;
+    }
+
+    .site-footer-tagline {
+      margin: 0;
+      color: #6e6e73;
+      font-size: 12px;
+      line-height: 1.33337;
+    }
+
+    .site-footer-rule {
+      width: min(980px, calc(100% - 40px));
+      margin: 20px auto 0;
+      border: 0;
+      border-top: 1px solid #d2d2d7;
+    }
+
+    .site-footer-copy {
+      margin: 0;
+      padding: 17px 0 40px;
+      color: #6e6e73;
+      font-size: 12px;
+      line-height: 1.33337;
+    }
+
+    .site-footer-copy a {
+      color: #424245;
+      text-decoration: none;
+    }
+
+    .site-footer-copy a:hover {
+      text-decoration: underline;
+    }
+
+    @media (min-width: 834px) {
+      .localnav-content {
+        padding: 0 22px;
+      }
+    }
+
+    @media (max-width: 833px) {
+      .localnav-content {
+        padding: 0 16px;
+        gap: 12px;
+      }
+
+      .localnav-title {
+        font-size: 19px;
+      }
+
+      .localnav-menu {
+        gap: 14px;
+      }
+
+      .localnav-list {
+        gap: 16px;
+      }
+
+      .globalnav-content {
+        padding: 0 16px;
+      }
+    }
+
+    @media (max-width: 733px) {
+      .site-footer-inner {
+        width: min(980px, calc(100% - 32px));
+        padding-top: 24px;
+      }
+
+      .site-footer-copy {
+        padding-bottom: 32px;
+      }
+
+      .guide-hero,
+      .guide-story,
+      .guide-fine-wrap,
+      .guide-jump-wrap {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .globalnav-submenu-label {
+        font-size: 21px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .globalnav,
+      .globalnav-flyout,
+      .globalnav-flyout-content,
+      .globalnav-submenu-list li,
+      .globalnav-veil,
+      .globalnav-link,
+      .globalnav-support-trigger,
+      .localnav-cta {
+        transition: none;
+      }
+
+      .globalnav-flyout-content,
+      .globalnav-submenu-list li {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="globalnav-veil" id="globalnav-veil" hidden></div>
+  <nav class="globalnav" id="globalnav" aria-label="Global">
+    <div class="globalnav-content">
+      <ul class="globalnav-list">
+        <li class="globalnav-item globalnav-item-brand">
+          <a class="globalnav-link globalnav-link-brand" href="../index.html" aria-label="Shroffin Home">
+            <img
+              class="globalnav-logo"
+              src="../images/logos/logo-h-light-clear-781x173.png"
+              alt="Shroffin"
+              width="99"
+              height="22"
+            >
+          </a>
+        </li>
+        <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="compare.html">Compare</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="quick-overview.html">Overview</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="schemes.html">Schemes</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="faq.html">FAQ</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="document-checklist.html">Documents</a>
+        </li>
+        -->
+        <!-- EDUCATION_LOAN_PRODUCT: kept in code, hidden from UI until re-enabled
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="../education-loan.html">Education</a>
+        </li>
+        -->
+        <li class="globalnav-item globalnav-item-about">
+          <a class="globalnav-link" href="guide.html" aria-current="page">Guide</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="about.html">About</a>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-support-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >
+            Support
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content">
+        <h2 class="globalnav-submenu-header">Get Help</h2>
+        <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
+              <span class="globalnav-submenu-label">Email</span>
+              <span class="globalnav-submenu-value">support@shroffin.com</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="tel:+919112334367">
+              <span class="globalnav-submenu-label">Call</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="globalnav-submenu-link"
+              href="https://wa.me/919112334367"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="globalnav-submenu-label">Chat on WhatsApp ↗</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="guide-content">
+    <nav class="localnav" aria-label="Guide">
+      <div class="localnav-content">
+        <p class="localnav-title">Guide</p>
+        <div class="localnav-menu">
+          <ul class="localnav-list">
+            <li>
+              <a class="localnav-link" href="guide.html" aria-current="page">Overview</a>
+            </li>
+            <li>
+              <a class="localnav-link" href="home-loan-insurance.html">Insurance</a>
+            </li>
+            <li>
+              <span class="localnav-link localnav-link-nolink">Prepayment</span>
+            </li>
+            <li>
+              <span class="localnav-link localnav-link-nolink">Charges</span>
+            </li>
+            <li>
+              <a class="localnav-link" href="guide-documents.html">Documents</a>
+            </li>
+            <li>
+              <a class="localnav-link" href="home-loan-complaints.html">Complaints</a>
+            </li>
+          </ul>
+          <a class="localnav-cta" href="learn-more.html">Explore banks</a>
+        </div>
+      </div>
+    </nav>
+
+    <header class="guide-hero">
+      <h1 class="guide-hero-title">
+        The essentials, before you choose a lender.
+      </h1>
+    </header>
+
+    <nav class="guide-jump-wrap" aria-label="Overview sections">
+      <ul class="guide-jump">
+        <li><a href="#loan-amount">Loan amount</a></li>
+        <li><a href="#emi">EMI</a></li>
+        <li><a href="#rates">Rates</a></li>
+        <li><a href="#tenure">Tenure</a></li>
+        <li><a href="#charges">Charges</a></li>
+      </ul>
+    </nav>
+
+    <div class="guide-story">
+      <section class="guide-moment">
+        <article class="guide-tile guide-tile--hero">
+          <span class="guide-tile-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" focusable="false">
+              <path d="M8.5 21.5 24 8.5l15.5 13" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12.5 20.5v16.5a2 2 0 0 0 2 2h19a2 2 0 0 0 2-2V20.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20.5 39V28.5h7V39" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <h2 class="guide-tile-title">A loan secured<br>by your home.</h2>
+          <p class="guide-tile-copy">
+            The lender advances the amount. You repay monthly. Until closure, they hold a claim on the property papers.
+          </p>
+          <p class="guide-tile-copy guide-tile-copy--muted">
+            Lender means a bank or housing finance company.
+          </p>
+        </article>
+      </section>
+
+      <section class="guide-moment" id="loan-amount">
+        <div class="guide-flip" id="borrow-flip">
+          <div class="guide-flip-inner">
+            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
+              <span class="guide-tile-mark guide-tile-mark--glyph" aria-hidden="true">₹</span>
+              <h2 class="guide-tile-title">How much you can borrow</h2>
+              <p class="guide-tile-copy">
+                Two limits apply. You receive roughly the lower one.
+              </p>
+              <div class="guide-limits">
+                <div class="guide-limit">
+                  <h3 class="guide-limit-title">Property</h3>
+                  <p class="guide-limit-copy">
+                    The bank can lend only up to these percentages of the Agreement Value.
+                  </p>
+                  <ul class="guide-share-list">
+                    <li>
+                      <span class="guide-share-when">Agreement Value up to ₹30 lakh</span>
+                      <span class="guide-share-then">Bank can lend up to 90%.</span>
+                    </li>
+                    <li>
+                      <span class="guide-share-when">Agreement Value ₹30 lakh to ₹75 lakh</span>
+                      <span class="guide-share-then">Bank can lend up to 80%.</span>
+                    </li>
+                    <li>
+                      <span class="guide-share-when">Agreement Value above ₹75 lakh</span>
+                      <span class="guide-share-then">Bank can lend up to 75%.</span>
+                    </li>
+                  </ul>
+                  <p class="guide-glance">
+                    These are the highest limits set by RBI.<br>
+                    Banks may approve a lower or higher amount depending on your profile and bank policy.
+                  </p>
+                </div>
+                <div class="guide-limit">
+                  <h3 class="guide-limit-title">Income</h3>
+                  <p class="guide-limit-copy">
+                    The bank can lend only up to what your monthly EMI capacity supports.
+                  </p>
+                  <ul class="guide-share-list guide-share-list--plain">
+                    <li>Net take-home income per month</li>
+                    <li>Less existing EMIs, and a share of your credit card limits</li>
+                    <li>Whatever is left becomes your EMI capacity for the home loan.</li>
+                    <li>From that EMI, rate, and tenure, the bank works out the loan amount.</li>
+                  </ul>
+                  <p class="guide-glance">
+                    All EMIs are usually limited to about 55–70% of take-home.<br>
+                    An earning co-applicant can help to increase the loan amount.
+                  </p>
+                </div>
+              </div>
+              <button type="button" class="guide-flip-link" data-flip="borrow-flip" aria-controls="borrow-calc" aria-expanded="false">
+                Estimate your range
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </article>
+
+            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="borrow-calc" aria-hidden="true">
+              <div class="guide-calc-main">
+                <h2 class="guide-tile-title">Estimate</h2>
+                <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
+                  Indicative only.
+                </p>
+                <div class="guide-calc-body">
+                  <form class="guide-calc" id="borrow-calc-form" novalidate>
+                    <label class="guide-calc-field">
+                      <span class="guide-calc-label">Property agreement value (₹)</span>
+                      <input class="guide-calc-input" type="text" inputmode="numeric" name="price" autocomplete="off" placeholder="e.g. 75,00,000">
+                    </label>
+                    <label class="guide-calc-field">
+                      <span class="guide-calc-label">Monthly take-home income (₹)</span>
+                      <input class="guide-calc-input" type="text" inputmode="numeric" name="income" autocomplete="off" placeholder="e.g. 1,20,000">
+                    </label>
+                    <label class="guide-calc-field">
+                      <span class="guide-calc-label">Existing EMIs per month (₹)</span>
+                      <input class="guide-calc-input" type="text" inputmode="numeric" name="emis" autocomplete="off" placeholder="0 if none">
+                    </label>
+                    <label class="guide-calc-field">
+                      <span class="guide-calc-label">Total credit card limits (₹)</span>
+                      <input class="guide-calc-input" type="text" inputmode="numeric" name="cards" autocomplete="off" placeholder="0 if none">
+                    </label>
+                    <label class="guide-calc-field">
+                      <span class="guide-calc-label">Total EMI capacity of income (%) — FOIR</span>
+                      <select class="guide-calc-input guide-calc-select" name="foir" autocomplete="off">
+                        <option value="55" selected>55%</option>
+                        <option value="60">60%</option>
+                        <option value="65">65%</option>
+                        <option value="70">70%</option>
+                      </select>
+                    </label>
+                    <label class="guide-calc-field">
+                      <span class="guide-calc-label">Interest rate (%)</span>
+                      <input class="guide-calc-input" type="text" inputmode="decimal" name="rate" autocomplete="off" value="8.5">
+                    </label>
+                    <label class="guide-calc-field">
+                      <span class="guide-calc-label">Tenure (years)</span>
+                      <input class="guide-calc-input" type="text" inputmode="numeric" name="years" autocomplete="off" value="20">
+                    </label>
+                    <button type="submit" class="guide-calc-submit">Show estimate</button>
+                  </form>
+                  <div class="guide-calc-result" id="borrow-calc-result" hidden>
+                    <p class="guide-calc-result-kicker">Indicative amount</p>
+                    <p class="guide-calc-result-num" id="borrow-calc-total">—</p>
+                    <ul class="guide-calc-split">
+                      <li>By Agreement Value: <strong id="borrow-calc-prop">—</strong></li>
+                      <li>By income: <strong id="borrow-calc-inc">—</strong></li>
+                    </ul>
+                    <p class="guide-glance">
+                      Final eligibility depends on your profile.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="guide-flip-link guide-flip-link--back" data-flip="borrow-flip" aria-controls="borrow-calc" aria-expanded="true">
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back to overview
+              </button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="guide-moment" id="emi">
+        <div class="guide-flip" id="emi-flip">
+          <div class="guide-flip-inner">
+            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
+              <span class="guide-tile-mark" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" focusable="false">
+                  <rect x="8.5" y="12.5" width="31" height="27" rx="3.5" stroke="currentColor" stroke-width="1.35"/>
+                  <path d="M8.5 20.5h31" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+                  <path d="M16 9.5v6M32 9.5v6" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+                  <circle cx="24" cy="30" r="2.6" fill="currentColor"/>
+                </svg>
+              </span>
+              <h2 class="guide-tile-title">Equated Monthly Installment (EMI)</h2>
+              <p class="guide-tile-copy">
+                One monthly payment. Interest and principal.
+              </p>
+              <div class="guide-limits">
+                <div class="guide-limit">
+                  <h3 class="guide-limit-title">What you pay</h3>
+                  <p class="guide-limit-copy">
+                    Each EMI splits into interest on the outstanding loan and principal that reduces the balance.
+                  </p>
+                  <ul class="guide-share-list guide-share-list--plain">
+                    <li>Early years: more of each EMI goes to interest</li>
+                    <li>Later years: more of each EMI goes to principal</li>
+                  </ul>
+                  <p class="guide-glance">
+                    EMI stays the same while the rate stays the same. If the rate changes, EMI or tenure may change.
+                  </p>
+                </div>
+                <div class="guide-limit">
+                  <h3 class="guide-limit-title">When it starts</h3>
+                  <p class="guide-limit-copy">
+                    Typically starts one month after first disbursement.
+                  </p>
+                  <ul class="guide-share-list guide-share-list--plain">
+                    <li>Ready home: full EMI after disbursement</li>
+                  </ul>
+                </div>
+              </div>
+              <button type="button" class="guide-flip-link" data-flip="emi-flip" aria-controls="emi-calc" aria-expanded="false">
+                Estimate your EMI
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </article>
+
+            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="emi-calc" aria-hidden="true">
+              <div class="guide-calc-main">
+                <h2 class="guide-tile-title">Estimate</h2>
+                <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
+                  Indicative only.
+                </p>
+                <div class="guide-calc-body">
+                  <form class="guide-calc" id="emi-calc-form" novalidate>
+                    <label class="guide-calc-field">
+                      <span class="guide-calc-label">Loan amount (₹)</span>
+                      <input class="guide-calc-input" type="text" inputmode="numeric" name="amount" autocomplete="off" placeholder="e.g. 50,00,000">
+                    </label>
+                    <label class="guide-calc-field">
+                      <span class="guide-calc-label">Interest rate (%)</span>
+                      <input class="guide-calc-input" type="text" inputmode="decimal" name="rate" autocomplete="off" value="8.5">
+                    </label>
+                    <label class="guide-calc-field">
+                      <span class="guide-calc-label">Tenure (years)</span>
+                      <input class="guide-calc-input" type="text" inputmode="numeric" name="years" autocomplete="off" value="20">
+                    </label>
+                    <button type="submit" class="guide-calc-submit">Show estimate</button>
+                  </form>
+                  <div class="guide-calc-result" id="emi-calc-result" hidden>
+                    <p class="guide-calc-result-kicker">Indicative EMI</p>
+                    <p class="guide-calc-result-num" id="emi-calc-total">—</p>
+                    <ul class="guide-calc-split">
+                      <li>Total payable: <strong id="emi-calc-payable">—</strong></li>
+                      <li>Total interest: <strong id="emi-calc-interest">—</strong></li>
+                    </ul>
+                    <figure class="guide-emi-chart">
+                      <div class="guide-emi-chart-bars" id="emi-split-chart" role="img" aria-label="Year-by-year split of each EMI into interest and principal, based on your estimate."></div>
+                      <ul class="guide-emi-chart-legend" aria-hidden="true">
+                        <li><span class="guide-emi-swatch guide-emi-swatch--interest"></span> Interest</li>
+                        <li><span class="guide-emi-swatch guide-emi-swatch--principal"></span> Principal</li>
+                      </ul>
+                    </figure>
+                    <p class="guide-glance">
+                      Final EMI depends on the sanctioned rate, fees in the loan, and reset rules.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="guide-flip-link guide-flip-link--back" data-flip="emi-flip" aria-controls="emi-calc" aria-expanded="true">
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back to overview
+              </button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="guide-moment" id="tenure">
+        <article class="guide-tile guide-tile--stage">
+          <span class="guide-tile-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" focusable="false">
+              <circle cx="24" cy="25" r="14.5" stroke="currentColor" stroke-width="1.35"/>
+              <path d="M24 25V16.5M24 25l7 4.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20 8.5h8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <h2 class="guide-tile-title">Tenure</h2>
+          <p class="guide-tile-copy">
+            Max up to 30 years. Less if you're older, as per lender policy.
+          </p>
+        </article>
+      </section>
+
+      <section class="guide-moment" id="rates">
+        <div class="guide-flip" id="rate-flip">
+          <div class="guide-flip-inner">
+            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
+              <span class="guide-tile-mark guide-tile-mark--glyph" aria-hidden="true">%</span>
+              <h2 class="guide-tile-title">Interest rate</h2>
+              <p class="guide-tile-copy">
+                Two types. Banks may offer either.
+              </p>
+              <div class="guide-limits">
+                <div class="guide-limit">
+                  <h3 class="guide-limit-title">Floating <span class="guide-limit-note">Preferred</span></h3>
+                  <p class="guide-limit-copy">
+                    Moves with the benchmark over the loan tenure.
+                  </p>
+                  <ul class="guide-share-list guide-share-list--plain">
+                    <li>External benchmark (often the repo rate) + the bank’s spread</li>
+                    <li>Reset at least once every 3 months as per RBI</li>
+                    <li>If the rate rises, choose how the extra cost hits you: pay a lump sum, raise EMI, extend tenure, or mix these</li>
+                    <li>Prepayment / foreclosure charges: None</li>
+                  </ul>
+                </div>
+                <div class="guide-limit">
+                  <h3 class="guide-limit-title">Fixed / hybrid</h3>
+                  <p class="guide-limit-copy">
+                    Fixed for a set period, then the rate resets.
+                  </p>
+                  <ul class="guide-share-list guide-share-list--plain">
+                    <li>External benchmark (often the repo rate) + the bank’s spread + a fixed rate premium</li>
+                    <li>Usually fixed for 3 or 5 years, as per the lender</li>
+                    <li>Usually about 1% to 2% higher than floating during the fixed period</li>
+                    <li>Prepayment / foreclosure charges: 2% to 4%</li>
+                  </ul>
+                </div>
+              </div>
+              <p class="guide-glance guide-glance--center">
+                Switching fixed ↔ floating is available based on the lender’s policy, at applicable cost.
+              </p>
+              <button type="button" class="guide-flip-link" data-flip="rate-flip" aria-controls="rate-ask" aria-expanded="false">
+                Before you commit
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </article>
+
+            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="rate-ask" aria-hidden="true">
+              <div class="guide-calc-main">
+                <h2 class="guide-tile-title">Before you commit</h2>
+                <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
+                  Ask the lender these before you sign.
+                </p>
+                <ul class="guide-ask">
+                  <li>Floating, or fixed for a set period then reset?</li>
+                  <li>How long is the fixed period, and what happens after the rate resets?</li>
+                  <li>Which external benchmark, and how often does it reset?</li>
+                  <li>Can the bank’s spread change later?</li>
+                  <li>What charges apply if you switch or prepay?</li>
+                  <li>If the rate rises, what are your options?</li>
+                </ul>
+              </div>
+              <button type="button" class="guide-flip-link guide-flip-link--back" data-flip="rate-flip" aria-controls="rate-ask" aria-expanded="true">
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back to overview
+              </button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="guide-moment" id="charges">
+        <article class="guide-tile guide-tile--stage">
+          <span class="guide-tile-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" focusable="false">
+              <path d="M14.5 9.5h19a2 2 0 0 1 2 2v25.2l-3.1-2.1-3.1 2.1-3.1-2.1-3.1 2.1-3.1-2.1-3.1 2.1-3.1-2.1-3.1 2.1V11.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
+              <path d="M18.5 18.5h11M18.5 24.5h11M18.5 30.5h7" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <h2 class="guide-tile-title">Charges</h2>
+          <p class="guide-tile-copy">
+            Fees tied to getting the loan sanctioned and disbursed.
+          </p>
+          <div class="guide-limits">
+            <div class="guide-limit">
+              <h3 class="guide-limit-title">Bank fees</h3>
+              <p class="guide-limit-copy">
+                Fee the lender charges to process your case.
+              </p>
+              <ul class="guide-share-list guide-share-list--plain">
+                <li>
+                  <span class="guide-share-then">Processing fee</span>
+                  <span class="guide-share-when">A small amount taken upfront to log in your application.</span>
+                </li>
+                <li>
+                  <span class="guide-share-then">Others</span>
+                  <span class="guide-share-when">Account handling fees or any other as per lender.</span>
+                </li>
+              </ul>
+            </div>
+            <div class="guide-limit">
+              <h3 class="guide-limit-title">Other fees</h3>
+              <p class="guide-limit-copy">
+                Fees for checks and for registering the loan and security.
+              </p>
+              <ul class="guide-share-list guide-share-list--plain">
+                <li>
+                  <span class="guide-share-then">Legal and technical fees</span>
+                  <span class="guide-share-when">Fee to check legal papers and the property.</span>
+                </li>
+                <li>
+                  <span class="guide-share-then">Title search report fees</span>
+                  <span class="guide-share-when">Fee to check the property title.</span>
+                </li>
+                <li>
+                  <span class="guide-share-then">Valuation fees</span>
+                  <span class="guide-share-when">Fee to value the property.</span>
+                </li>
+                <li>
+                  <span class="guide-share-then">Government charges</span>
+                  <span class="guide-share-when">Government fees to register the loan security.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <div class="guide-fine-wrap">
+      <p class="guide-fine">
+        This guide is for education and comparison. It is indicative. Final rates, charges, eligibility, insurance, and approval depend on your profile, the property, and the lender. Your sanction letter, loan agreement, and policy papers prevail over any general summary. Shroffin / Apply Only Once is not a bank, NBFC, or lender.
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
+    <div class="site-footer-inner">
+      <div class="site-footer-brand">
+        <a href="../index.html" aria-label="Shroffin Home">
+          <img
+            class="site-footer-logo"
+            src="../images/logos/logo-h-light-clear-781x173.png"
+            alt="Shroffin"
+            width="99"
+            height="22"
+          >
+        </a>
+        <p class="site-footer-tagline">An Independent and transparent banking.</p>
+      </div>
+    </div>
+
+    <hr class="site-footer-rule" aria-hidden="true">
+
+    <div class="site-footer-inner">
+      <p class="site-footer-copy">
+        <a href="../privacy-policy.html">Privacy Policy</a>
+        <span aria-hidden="true"> · </span>
+        Copyright © 2026 Shroffin. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      function parseMoney(raw) {
+        if (raw == null) return NaN;
+        var cleaned = String(raw).replace(/[,+\s₹]/g, '');
+        if (!cleaned) return 0;
+        var n = Number(cleaned);
+        return Number.isFinite(n) ? n : NaN;
+      }
+
+      function formatRupee(n) {
+        if (!Number.isFinite(n) || n <= 0) return '₹0';
+        return '₹' + Math.round(n).toLocaleString('en-IN');
+      }
+
+      /** Indian comma style while typing: 12,00,000 */
+      function formatIndianAmount(str, maxDigits) {
+        var digits = String(str).replace(/\D/g, '').slice(0, maxDigits || 12);
+        if (!digits) return '';
+        if (digits.length <= 3) return digits;
+        var result = digits.slice(-3);
+        var rest = digits.slice(0, -3);
+        while (rest.length > 0) {
+          result = rest.slice(-2) + ',' + result;
+          rest = rest.slice(0, -2);
+        }
+        return result;
+      }
+
+      function bindIndianMoneyInputs(formEl, names) {
+        names.forEach(function (name) {
+          var el = formEl.elements[name];
+          if (!el) return;
+          el.addEventListener('input', function () {
+            var start = this.selectionStart;
+            var oldValue = this.value;
+            var digitsBefore = (oldValue.slice(0, start).match(/\d/g) || []).length;
+            var formatted = formatIndianAmount(oldValue, 12);
+            this.value = formatted;
+            var newPos = 0;
+            var count = 0;
+            for (var i = 0; i < formatted.length && count < digitsBefore; i++) {
+              if (/\d/.test(formatted[i])) count++;
+              newPos = i + 1;
+            }
+            this.setSelectionRange(newPos, newPos);
+          });
+        });
+      }
+
+      function propertyCap(price) {
+        if (price <= 3000000) return price * 0.9;
+        if (price <= 7500000) return price * 0.8;
+        return price * 0.75;
+      }
+
+      function loanFromEmi(emi, annualRate, years) {
+        if (emi <= 0 || years <= 0) return 0;
+        var r = annualRate / 100 / 12;
+        var n = Math.round(years * 12);
+        if (r <= 0) return emi * n;
+        return emi * (1 - Math.pow(1 + r, -n)) / r;
+      }
+
+      function emiFromLoan(principal, annualRate, years) {
+        if (principal <= 0 || years <= 0) return 0;
+        var r = annualRate / 100 / 12;
+        var n = Math.round(years * 12);
+        if (r <= 0) return principal / n;
+        return principal * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+      }
+
+      function setupFlip(flipId, formId, onReady) {
+        var flip = document.getElementById(flipId);
+        if (!flip) return null;
+
+        var front = flip.querySelector('.guide-flip-face--front');
+        var back = flip.querySelector('.guide-flip-face--back');
+        var inner = flip.querySelector('.guide-flip-inner');
+        var form = formId ? document.getElementById(formId) : null;
+        var lockedHeight = 0;
+        var syncRaf = 0;
+        var keepFrontHeight = flipId === 'emi-flip';
+
+        function measureBackHeight() {
+          if (!back) return 0;
+          var main = back.querySelector('.guide-calc-main');
+          var link = back.querySelector('.guide-flip-link');
+          var styles = window.getComputedStyle(back);
+          var pad =
+            (parseFloat(styles.paddingTop) || 0) +
+            (parseFloat(styles.paddingBottom) || 0);
+          var mainH = main ? main.scrollHeight : 0;
+          var linkH = 0;
+          if (link) {
+            var ls = window.getComputedStyle(link);
+            linkH =
+              link.offsetHeight +
+              (parseFloat(ls.marginTop) || 0) +
+              (parseFloat(ls.marginBottom) || 0);
+          }
+          return Math.ceil(pad + mainH + linkH);
+        }
+
+        function applyHeight(px) {
+          if (!inner || !(px > 0)) return;
+          var current = parseFloat(inner.style.height) || 0;
+          if (Math.abs(current - px) > 1) {
+            inner.style.height = px + 'px';
+          }
+        }
+
+        function syncHeight() {
+          if (!front || !inner) return;
+          if (!flip.classList.contains('is-flipped')) {
+            inner.style.height = 'auto';
+            lockedHeight = front.offsetHeight;
+            applyHeight(lockedHeight);
+            return;
+          }
+          var frontH = lockedHeight || front.offsetHeight;
+          /* EMI: never grow past the front — keeps Back aligned with Estimate your EMI. */
+          if (keepFrontHeight) {
+            applyHeight(frontH);
+            return;
+          }
+          applyHeight(Math.max(frontH, measureBackHeight()));
+        }
+
+        function scheduleSync() {
+          if (syncRaf) window.cancelAnimationFrame(syncRaf);
+          syncRaf = window.requestAnimationFrame(function () {
+            syncRaf = 0;
+            syncHeight();
+          });
+        }
+
+        function setFlipped(open) {
+          if (open) {
+            if (lockedHeight <= 0 && front) {
+              lockedHeight = front.offsetHeight;
+            }
+            applyHeight(lockedHeight || front.offsetHeight);
+          }
+          flip.classList.toggle('is-flipped', open);
+          if (back) back.setAttribute('aria-hidden', open ? 'false' : 'true');
+          flip.querySelectorAll('[data-flip]').forEach(function (btn) {
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          });
+          window.requestAnimationFrame(function () {
+            syncHeight();
+            if (open && form) {
+              var first = form.querySelector('input, select');
+              if (first) first.focus({ preventScroll: true });
+            }
+          });
+        }
+
+        flip.querySelectorAll('[data-flip]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            setFlipped(!flip.classList.contains('is-flipped'));
+          });
+        });
+
+        window.addEventListener('resize', scheduleSync);
+        syncHeight();
+
+        if (typeof onReady === 'function') {
+          onReady({
+            flip: flip,
+            form: form,
+            syncHeight: syncHeight,
+            scheduleSync: scheduleSync,
+            setFlipped: setFlipped
+          });
+        }
+
+        return { flip: flip, setFlipped: setFlipped };
+      }
+
+      var flips = [];
+
+      function pickChartYears(totalYears) {
+        var years = Math.max(1, Math.round(totalYears));
+        if (years <= 5) {
+          var all = [];
+          var i;
+          for (i = 1; i <= years; i++) all.push(i);
+          return all;
+        }
+        var count = 5;
+        var picked = [];
+        var step;
+        for (step = 0; step < count; step++) {
+          var yearNum = Math.round(1 + (years - 1) * step / (count - 1));
+          if (picked.indexOf(yearNum) === -1) picked.push(yearNum);
+        }
+        picked[picked.length - 1] = years;
+        return picked;
+      }
+
+      function renderEmiSplitChart(principal, annualRate, years) {
+        var host = document.getElementById('emi-split-chart');
+        if (!host) return;
+
+        years = Math.max(1, Math.round(years));
+        var monthly = emiFromLoan(principal, annualRate, years);
+        var balance = principal;
+        var r = annualRate / 100 / 12;
+        var yearly = [];
+        var y;
+
+        for (y = 1; y <= years; y++) {
+          var interest = 0;
+          var prin = 0;
+          var m;
+          for (m = 0; m < 12; m++) {
+            var interestPart = balance * r;
+            var principalPart = Math.min(balance, monthly - interestPart);
+            if (principalPart < 0) principalPart = 0;
+            interest += interestPart;
+            prin += principalPart;
+            balance = Math.max(0, balance - principalPart);
+          }
+          yearly.push({ year: y, interest: interest, principal: prin });
+        }
+
+        var showYears = pickChartYears(years);
+        host.textContent = '';
+        host.setAttribute(
+          'aria-label',
+          'Year-by-year split of each EMI into interest and principal for your estimate.'
+        );
+
+        showYears.forEach(function (yearNum) {
+          var row = yearly[yearNum - 1];
+          if (!row) return;
+          var total = row.interest + row.principal;
+          if (!(total > 0)) return;
+          var interestPct = (row.interest / total) * 100;
+          var principalPct = (row.principal / total) * 100;
+
+          var col = document.createElement('div');
+          col.className = 'guide-emi-bar';
+
+          var stack = document.createElement('div');
+          stack.className = 'guide-emi-bar-stack';
+          stack.title = 'Year ' + yearNum + ': interest ' + Math.round(interestPct) + '%, principal ' + Math.round(principalPct) + '%';
+
+          var interestSeg = document.createElement('div');
+          interestSeg.className = 'guide-emi-seg guide-emi-seg--interest';
+          interestSeg.style.height = interestPct + '%';
+
+          var principalSeg = document.createElement('div');
+          principalSeg.className = 'guide-emi-seg guide-emi-seg--principal';
+          principalSeg.style.height = principalPct + '%';
+
+          stack.appendChild(interestSeg);
+          stack.appendChild(principalSeg);
+
+          var label = document.createElement('div');
+          label.className = 'guide-emi-bar-label';
+          label.textContent = 'Year ' + yearNum;
+
+          col.appendChild(stack);
+          col.appendChild(label);
+          host.appendChild(col);
+        });
+      }
+
+      var borrow = setupFlip('borrow-flip', 'borrow-calc-form', function (ctx) {
+        var form = ctx.form;
+        if (!form) return;
+        var result = document.getElementById('borrow-calc-result');
+        var outTotal = document.getElementById('borrow-calc-total');
+        var outProp = document.getElementById('borrow-calc-prop');
+        var outInc = document.getElementById('borrow-calc-inc');
+
+        bindIndianMoneyInputs(form, ['price', 'income', 'emis', 'cards']);
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+          var price = parseMoney(form.price.value);
+          var income = parseMoney(form.income.value);
+          var emis = parseMoney(form.emis.value);
+          var cards = parseMoney(form.cards.value);
+          var years = parseMoney(form.years.value);
+          var rate = parseMoney(form.rate.value);
+          var foirPct = parseMoney(form.foir.value);
+          if (![55, 60, 65, 70].includes(foirPct)) foirPct = 55;
+
+          if (!(price > 0) || !(income > 0) || !(years > 0) || !(rate > 0)) {
+            if (result) result.hidden = true;
+            return;
+          }
+          if (!Number.isFinite(emis) || emis < 0) emis = 0;
+          if (!Number.isFinite(cards) || cards < 0) cards = 0;
+
+          var fromProperty = propertyCap(price);
+          var maxAllEmis = income * (foirPct / 100);
+          var cardLoad = cards * 0.1;
+          var homeEmiRoom = Math.max(0, maxAllEmis - emis - cardLoad);
+          var fromIncome = loanFromEmi(homeEmiRoom, rate, years);
+          var estimate = Math.min(fromProperty, fromIncome);
+
+          if (outProp) outProp.textContent = formatRupee(fromProperty);
+          if (outInc) outInc.textContent = formatRupee(fromIncome);
+          if (outTotal) outTotal.textContent = formatRupee(estimate);
+          if (result) result.hidden = false;
+          if (ctx.scheduleSync) ctx.scheduleSync();
+        });
+      });
+      if (borrow) flips.push(borrow);
+
+      var emi = setupFlip('emi-flip', 'emi-calc-form', function (ctx) {
+        var form = ctx.form;
+        if (!form) return;
+        var result = document.getElementById('emi-calc-result');
+        var outTotal = document.getElementById('emi-calc-total');
+        var outPayable = document.getElementById('emi-calc-payable');
+        var outInterest = document.getElementById('emi-calc-interest');
+
+        bindIndianMoneyInputs(form, ['amount']);
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+          var amount = parseMoney(form.amount.value);
+          var years = parseMoney(form.years.value);
+          var rate = parseMoney(form.rate.value);
+
+          if (!(amount > 0) || !(years > 0) || !(rate > 0)) {
+            if (result) result.hidden = true;
+            if (ctx.scheduleSync) ctx.scheduleSync();
+            return;
+          }
+
+          years = Math.min(40, years);
+          var monthly = emiFromLoan(amount, rate, years);
+          var months = Math.round(years * 12);
+          var totalPayable = monthly * months;
+          var totalInterest = Math.max(0, totalPayable - amount);
+
+          if (outTotal) outTotal.textContent = formatRupee(monthly);
+          if (outPayable) outPayable.textContent = formatRupee(totalPayable);
+          if (outInterest) outInterest.textContent = formatRupee(totalInterest);
+          renderEmiSplitChart(amount, rate, years);
+          if (result) result.hidden = false;
+          if (ctx.scheduleSync) ctx.scheduleSync();
+        });
+      });
+      if (emi) flips.push(emi);
+
+      var rate = setupFlip('rate-flip');
+      if (rate) flips.push(rate);
+
+      window.addEventListener('keydown', function (event) {
+        if (event.key !== 'Escape') return;
+        flips.forEach(function (item) {
+          if (item.flip.classList.contains('is-flipped')) item.setFlipped(false);
+        });
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      var moments = document.querySelectorAll('.guide-moment');
+      if (!moments.length) return;
+
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (reduce.matches || !('IntersectionObserver' in window)) {
+        moments.forEach(function (el) {
+          el.classList.add('is-in');
+        });
+        return;
+      }
+
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-in');
+            observer.unobserve(entry.target);
+          });
+        },
+        { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
+      );
+
+      moments.forEach(function (el) {
+        observer.observe(el);
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      var nav = document.getElementById('globalnav');
+      var support = document.getElementById('nav-support');
+      var trigger = document.getElementById('nav-support-trigger');
+      var flyout = document.getElementById('nav-support-flyout');
+      var veil = document.getElementById('globalnav-veil');
+      if (!nav || !support || !trigger || !flyout || !veil) return;
+
+      var closeTimer = null;
+      var canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+      function setFlyoutOpen(open) {
+        nav.classList.toggle('flyout-open', open);
+        document.body.classList.toggle('gn-locked', open);
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        flyout.setAttribute('aria-hidden', open ? 'false' : 'true');
+        veil.classList.toggle('is-visible', open);
+        if (open) veil.removeAttribute('hidden');
+        else veil.setAttribute('hidden', '');
+      }
+
+      function openFlyout() {
+        if (closeTimer) {
+          clearTimeout(closeTimer);
+          closeTimer = null;
+        }
+        setFlyoutOpen(true);
+      }
+
+      function closeFlyoutSoon() {
+        if (closeTimer) clearTimeout(closeTimer);
+        closeTimer = setTimeout(function () {
+          setFlyoutOpen(false);
+          closeTimer = null;
+        }, 220);
+      }
+
+      function closeFlyoutNow() {
+        if (closeTimer) {
+          clearTimeout(closeTimer);
+          closeTimer = null;
+        }
+        setFlyoutOpen(false);
+      }
+
+      trigger.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        setFlyoutOpen(!nav.classList.contains('flyout-open'));
+      });
+
+      support.addEventListener('mouseenter', function () {
+        if (canHover.matches) openFlyout();
+      });
+
+      support.addEventListener('mouseleave', function (event) {
+        if (!canHover.matches) return;
+        var next = event.relatedTarget;
+        if (next && (flyout.contains(next) || support.contains(next))) return;
+        closeFlyoutSoon();
+      });
+
+      flyout.addEventListener('mouseenter', function () {
+        if (canHover.matches) openFlyout();
+      });
+
+      flyout.addEventListener('mouseleave', function (event) {
+        if (!canHover.matches) return;
+        var next = event.relatedTarget;
+        if (next && (flyout.contains(next) || support.contains(next))) return;
+        closeFlyoutSoon();
+      });
+
+      veil.addEventListener('click', closeFlyoutNow);
+
+      flyout.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', closeFlyoutNow);
+      });
+
+      window.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') closeFlyoutNow();
+      });
+
+      window.addEventListener('resize', function () {
+        if (!canHover.matches) closeFlyoutNow();
+      });
+    })();
+  </script>
+</body>
+</html>

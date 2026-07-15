@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Compare every home loan bank side by side, apply once, and decide. How Shroffin works.">
+  <title>Learn more – Shroffin</title>
+  <link rel="icon" href="../favicon.ico?v=6" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/logos/favicon-32.png?v=6">
+  <link rel="icon" type="image/png" sizes="16x16" href="../images/logos/favicon-16.png?v=6">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png?v=6">
+  <link rel="manifest" href="../site.webmanifest?v=6">
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Thin.ttf') format('truetype');
+      font-weight: 100;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraLight.ttf') format('truetype');
+      font-weight: 200;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Light.ttf') format('truetype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf') format('truetype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf') format('truetype');
+      font-weight: 600;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Bold.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraBold.ttf') format('truetype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Google Sans Flex';
+      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Black.ttf') format('truetype');
+      font-weight: 900;
+      font-style: normal;
+      font-display: block;
+    }
+
+    :root {
+      --gn-height: 48px;
+      --gn-bg: #fbfbfd;
+      --gn-text: rgba(29, 29, 31, 0.8);
+      --gn-text-hover: #1d1d1f;
+      --gn-ink: #1d1d1f;
+      --gn-max: 980px;
+      --font-brand: 'Google Sans Flex', sans-serif;
+      --lm-ink: #1d1d1f;
+      --lm-muted: #6e6e73;
+      --lm-soft: #f5f5f7;
+      --lm-white: #ffffff;
+      --lm-max: 920px;
+      --lm-cta-dark: #1d1d1f;
+      --lm-cta-light: #f5f5f7;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: var(--font-brand);
+    }
+
+    html {
+      scrollbar-gutter: stable;
+    }
+
+    body {
+      background: var(--lm-soft);
+      color: var(--lm-ink);
+    }
+
+    body.gn-locked {
+      overflow: hidden;
+    }
+
+    /* ——— Apple globalnav ——— */
+    .globalnav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      height: var(--gn-height);
+      background: var(--gn-bg);
+      transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .globalnav.flyout-open {
+      background: #fafafc;
+    }
+
+    .globalnav-content {
+      position: relative;
+      z-index: 3;
+      max-width: var(--gn-max);
+      height: var(--gn-height);
+      margin: 0 auto;
+      padding: 0 22px;
+      box-sizing: border-box;
+    }
+
+    .globalnav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .globalnav-item {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .globalnav-link,
+    .globalnav-support-trigger {
+      display: inline-flex;
+      align-items: center;
+      height: 100%;
+      min-height: 44px;
+      padding: 0 8px;
+      border: 0;
+      background: transparent;
+      color: var(--gn-text);
+      font-family: var(--font-brand);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .globalnav-link:hover,
+    .globalnav-support-trigger:hover,
+    .globalnav.flyout-open .globalnav-support-trigger,
+    .globalnav-link[aria-current="page"] {
+      color: var(--gn-text-hover);
+    }
+
+    .globalnav-link:focus-visible,
+    .globalnav-support-trigger:focus-visible {
+      outline: 2px solid rgba(29, 29, 31, 0.45);
+      outline-offset: -4px;
+      border-radius: 4px;
+    }
+
+    .globalnav-link-brand {
+      padding-left: 0;
+      padding-right: 4px;
+    }
+
+    .globalnav-logo {
+      display: block;
+      height: 22px;
+      width: auto;
+      max-width: 100%;
+    }
+
+    .globalnav-item-about {
+      margin-left: auto;
+    }
+
+    .globalnav-flyout {
+      position: absolute;
+      top: var(--gn-height);
+      left: 0;
+      right: 0;
+      z-index: 2;
+      overflow: hidden;
+      visibility: hidden;
+      pointer-events: none;
+      max-height: 0;
+      background: #fafafc;
+      transition:
+        max-height 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .globalnav.flyout-open .globalnav-flyout {
+      visibility: visible;
+      pointer-events: auto;
+      max-height: 320px;
+    }
+
+    .globalnav-flyout-content {
+      max-width: var(--gn-max);
+      margin: 0 auto;
+      padding: 40px 22px 52px;
+      box-sizing: border-box;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition:
+        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .globalnav.flyout-open .globalnav-flyout-content {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .globalnav-submenu-header {
+      margin: 0 0 16px;
+      color: #6e6e73;
+      font-family: var(--font-brand);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.33337;
+    }
+
+    .globalnav-submenu-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .globalnav-submenu-list li {
+      opacity: 0;
+      transform: translateY(-6px);
+      transition:
+        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .globalnav.flyout-open .globalnav-submenu-list li {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+        .globalnav.flyout-open .globalnav-submenu-list li:nth-child(1) { transition-delay: 120ms; }
+    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(2) { transition-delay: 200ms; }
+    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(3) { transition-delay: 280ms; }
+
+    .globalnav-submenu-link {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      padding: 8px 0;
+      min-height: 44px;
+      color: var(--gn-ink);
+      font-family: var(--font-brand);
+      text-decoration: none;
+      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .globalnav-submenu-link:hover,
+    .globalnav-submenu-link:hover .globalnav-submenu-value {
+      color: #06c;
+    }
+
+    .globalnav-submenu-link:focus-visible {
+      outline: 2px solid rgba(29, 29, 31, 0.35);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    .globalnav-submenu-label {
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.16667;
+    }
+
+    .globalnav-submenu-value {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.33337;
+      color: #6e6e73;
+      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .globalnav-veil {
+      position: fixed;
+      top: var(--gn-height);
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9998;
+      background: rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .globalnav-veil.is-visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    /* ——— Learn more page ——— */
+    .lm-page {
+      padding-top: var(--gn-height);
+    }
+
+    .lm-hero {
+      position: relative;
+      overflow: hidden;
+      min-height: min(88svh, 820px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: clamp(56px, 10vw, 100px) 22px clamp(64px, 10vw, 96px);
+      box-sizing: border-box;
+      background: transparent;
+    }
+
+    .lm-hero-inner {
+      position: relative;
+      z-index: 1;
+      width: min(var(--lm-max), 100%);
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(14px);
+      animation:
+        lm-hero-fade 1.05s var(--ease) 0.15s forwards,
+        lm-hero-rise 1.45s var(--ease) 0.15s forwards;
+    }
+
+    .lm-brand {
+      margin: 0 0 18px;
+      color: var(--lm-ink);
+      font-size: clamp(17px, 2.4vw, 21px);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .lm-hero-title {
+      margin: 0 0 28px;
+      color: var(--lm-ink);
+      font-size: clamp(36px, 7.2vw, 64px);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+    }
+
+    .lm-hero-title .lm-line {
+      display: block;
+    }
+
+    .lm-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      min-height: 44px;
+      padding: 11px 22px;
+      border: 1px solid transparent;
+      border-radius: 980px;
+      box-sizing: border-box;
+      background: #0071e3;
+      color: #fff;
+      font-family: var(--font-brand);
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: normal;
+      line-height: 1.23536;
+      text-decoration: none;
+      transition: background 0.5s var(--ease), color 0.5s var(--ease), border-color 0.5s var(--ease);
+    }
+
+    .lm-cta:hover {
+      background: #0076df;
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .lm-cta:active {
+      background: #006edb;
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .lm-cta:focus-visible {
+      outline: 2px solid #0071e3;
+      outline-offset: 3px;
+    }
+
+    .lm-cta-light {
+      background: #0071e3;
+      color: #fff;
+    }
+
+    .lm-cta-light:hover {
+      background: #0076df;
+      color: #fff;
+    }
+
+    .lm-cta-light:active {
+      background: #006edb;
+      color: #fff;
+    }
+
+    .lm-band {
+      width: 100%;
+      padding: clamp(28px, 4vw, 40px) 22px;
+      box-sizing: border-box;
+      text-align: center;
+      background: transparent;
+    }
+
+    .lm-band-inner {
+      width: min(var(--lm-max), 100%);
+      margin: 0 auto;
+    }
+
+    .lm-band-lead {
+      padding: clamp(88px, 14vw, 140px) 22px clamp(64px, 10vw, 100px);
+      text-align: center;
+    }
+
+    .lm-band-lead .lm-lead {
+      text-align: center;
+    }
+
+    .lm-steps {
+      width: 100%;
+      padding: clamp(32px, 5vw, 56px) 22px clamp(88px, 12vw, 140px);
+      box-sizing: border-box;
+      background: transparent;
+    }
+
+    .lm-steps-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+
+    .lm-reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition:
+        opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .lm-reveal.is-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Scroll-paced product tiles — modest rise, settle soft */
+    .lm-card.lm-reveal {
+      opacity: 1;
+      transform: translateY(56px);
+      transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+
+    .lm-card.lm-reveal.is-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .lm-card.lm-reveal.lm-card-scroll {
+      transition: none;
+    }
+
+    /* Apple-style product tile — bigger, calmer */
+    .lm-card {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      width: 100%;
+      margin: 0;
+      overflow: hidden;
+      border-radius: 36px;
+      background: #ffffff;
+      text-align: left;
+      box-sizing: border-box;
+    }
+
+    .lm-card-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      order: 1;
+      padding: clamp(56px, 8vw, 96px) clamp(40px, 6vw, 88px);
+      box-sizing: border-box;
+    }
+
+    .lm-card-media {
+      position: relative;
+      order: 2;
+      width: auto;
+      min-height: 320px;
+      margin: 8px 32px 32px;
+      border-radius: 28px;
+      background: #f5f5f7;
+      box-sizing: border-box;
+    }
+
+    .lm-card-media-frame {
+      position: absolute;
+      inset: 0;
+    }
+
+    .lm-card-media img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      padding: clamp(28px, 4vw, 48px);
+      box-sizing: border-box;
+    }
+
+    .lm-kicker {
+      margin: 0 0 12px;
+      color: var(--lm-muted);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    .lm-title {
+      margin: 0 0 18px;
+      color: var(--lm-ink);
+      font-size: clamp(32px, 5.8vw, 48px);
+      font-weight: 600;
+      letter-spacing: -0.022em;
+      line-height: 1.08;
+    }
+
+    .lm-title .lm-line {
+      display: block;
+    }
+
+    /* Card type scale: label → hero → support */
+    .lm-card .lm-kicker {
+      margin: 0 0 28px;
+      color: #86868b;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .lm-card .lm-title {
+      margin: 0;
+      color: #1d1d1f;
+      font-size: clamp(34px, 4.8vw, 52px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .lm-card .lm-title .lm-line + .lm-line {
+      margin-top: 0.06em;
+    }
+
+    .lm-card .lm-body {
+      margin: 28px 0 0;
+      max-width: 20em;
+      color: #1d1d1f;
+      font-size: 21px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.5;
+    }
+
+    .lm-body {
+      margin: 0 auto;
+      max-width: 34em;
+      color: var(--lm-ink);
+      font-size: clamp(17px, 2.4vw, 21px);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.42859;
+    }
+
+    .lm-lead {
+      max-width: 48rem;
+      width: 100%;
+      margin: 0 auto;
+      color: #1d1d1f;
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: 0.004em;
+      line-height: 1.25;
+    }
+
+    .lm-lead-end {
+      display: block;
+      margin-top: 0.5em;
+    }
+
+    @media only screen and (max-width: 1068px) {
+      .lm-lead {
+        max-width: 40rem;
+        font-size: 24px;
+        letter-spacing: 0.009em;
+        line-height: 1.16667;
+      }
+    }
+
+    @media only screen and (max-width: 734px) {
+      .lm-band-lead {
+        text-align: left;
+      }
+
+      .lm-band-lead .lm-lead {
+        text-align: left;
+        max-width: none;
+        font-size: 21px;
+        letter-spacing: 0.011em;
+        line-height: 1.381;
+      }
+
+      .lm-lead {
+        max-width: none;
+        font-size: 21px;
+        letter-spacing: 0.011em;
+        line-height: 1.381;
+      }
+    }
+
+    .lm-body + .lm-body {
+      margin-top: 16px;
+    }
+
+    .lm-close {
+      padding: clamp(88px, 14vw, 140px) 22px;
+    }
+
+    .lm-close .lm-title {
+      margin-bottom: 28px;
+    }
+
+    .lm-footnote {
+      width: min(680px, calc(100% - 44px));
+      margin: 0 auto;
+      padding: 0 0 clamp(48px, 8vw, 72px);
+      color: var(--lm-muted);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    @keyframes lm-hero-fade {
+      to { opacity: 1; }
+    }
+
+    @keyframes lm-hero-rise {
+      to { transform: translateY(0); }
+    }
+
+    /* ——— Footer ——— */
+    .site-footer {
+      background: rgb(245, 245, 247);
+      color: rgba(0, 0, 0, 0.56);
+      font-size: 12px;
+      line-height: 1.33337;
+    }
+
+    .site-footer-inner {
+      width: min(980px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 28px 0 0;
+      box-sizing: border-box;
+    }
+
+    .site-footer-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 0;
+    }
+
+    .site-footer-logo {
+      display: block;
+      width: auto;
+      height: 28px;
+      max-width: 100%;
+    }
+
+    .site-footer-tagline {
+      margin: 0;
+      max-width: 36em;
+      color: #1d1d1f;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.42859;
+    }
+
+    .site-footer-rule {
+      display: block;
+      width: 100%;
+      height: 1px;
+      margin: 20px 0 0;
+      border: 0;
+      background: rgba(0, 0, 0, 0.16);
+    }
+
+    .site-footer-copy {
+      margin: 0;
+      padding: 16px 0 36px;
+    }
+
+    .site-footer-copy a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .site-footer-copy a:hover {
+      color: #1d1d1f;
+    }
+
+    @media (min-width: 834px) {
+      .lm-hero {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .lm-band,
+      .lm-close {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .lm-card {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        align-items: stretch;
+        min-height: 680px;
+      }
+
+      .lm-card-copy {
+        order: 1;
+        padding: 96px 48px 96px 96px;
+      }
+
+      .lm-card-media {
+        order: 2;
+        min-height: 0;
+        height: auto;
+        margin: 48px 48px 48px 16px;
+        align-self: stretch;
+      }
+
+      .lm-steps {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+
+    @media (min-width: 1068px) {
+      .site-footer-inner {
+        width: min(1068px, calc(100% - 48px));
+      }
+    }
+
+    @media (max-width: 833px) {
+      .lm-cta {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+
+      .lm-steps {
+        padding: 12px 12px clamp(40px, 8vw, 72px);
+      }
+
+      .lm-steps-inner {
+        width: 100%;
+        gap: 10px;
+      }
+
+      .lm-card {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: calc(100svh - var(--gn-height) - 28px);
+        min-height: calc(100dvh - var(--gn-height) - 28px);
+        border-radius: 28px;
+        overflow: hidden;
+      }
+
+      .lm-card.lm-reveal,
+      .lm-card.lm-reveal.lm-card-scroll {
+        /* Shorter rise on phone so cards aren’t clipped off-screen */
+        transform: translateY(40px);
+      }
+
+      .lm-card-copy {
+        flex: 0 0 auto;
+        order: 1;
+        padding: 40px 28px 16px;
+      }
+
+      .lm-card-media {
+        flex: 1 1 auto;
+        order: 2;
+        width: auto;
+        min-height: 0;
+        margin: 8px 16px 16px;
+        border-radius: 22px;
+      }
+
+      .lm-card .lm-kicker {
+        margin: 0 0 18px;
+      }
+
+      .lm-card .lm-title {
+        font-size: clamp(30px, 8.5vw, 40px);
+        line-height: 1.08;
+      }
+
+      .lm-card .lm-body {
+        margin-top: 18px;
+        max-width: none;
+        font-size: 19px;
+      }
+    }
+
+    @media (max-width: 733px) {
+      .site-footer-inner {
+        width: min(980px, calc(100% - 32px));
+        padding-top: 24px;
+      }
+
+      .site-footer-copy {
+        padding-bottom: 32px;
+      }
+
+      .globalnav-submenu-label {
+        font-size: 21px;
+      }
+
+      .lm-hero {
+        min-height: min(86svh, 720px);
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .lm-band,
+      .lm-close {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .lm-footnote {
+        width: min(680px, calc(100% - 32px));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .globalnav,
+      .globalnav-flyout,
+      .globalnav-flyout-content,
+      .globalnav-submenu-list li,
+      .globalnav-veil,
+      .globalnav-link,
+      .globalnav-support-trigger,
+      .lm-reveal,
+      .lm-cta {
+        transition: none;
+      }
+
+      .globalnav-flyout-content,
+      .globalnav-submenu-list li {
+        transform: none;
+      }
+
+      .lm-hero-inner {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+
+      .lm-reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+        will-change: auto;
+      }
+
+      .lm-card.lm-reveal,
+      .lm-card.lm-reveal.is-in,
+      .lm-card.lm-reveal.lm-card-scroll {
+        opacity: 1;
+        transform: none;
+        transition: none;
+        will-change: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="globalnav-veil" id="globalnav-veil" hidden></div>
+  <nav class="globalnav" id="globalnav" aria-label="Global">
+    <div class="globalnav-content">
+      <ul class="globalnav-list">
+        <li class="globalnav-item globalnav-item-brand">
+          <a class="globalnav-link globalnav-link-brand" href="../index.html" aria-label="Shroffin Home">
+            <img
+              class="globalnav-logo"
+              src="../images/logos/logo-h-light-clear-781x173.png"
+              alt="Shroffin"
+              width="99"
+              height="22"
+            >
+          </a>
+        </li>
+        <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="compare.html">Compare</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="quick-overview.html">Overview</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="schemes.html">Schemes</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="faq.html">FAQ</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="document-checklist.html">Documents</a>
+        </li>
+        -->
+        <!-- EDUCATION_LOAN_PRODUCT: kept in code, hidden from UI until re-enabled
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="../education-loan.html">Education</a>
+        </li>
+        -->
+        <li class="globalnav-item globalnav-item-about">
+          <a class="globalnav-link" href="guide.html">Guide</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="about.html">About</a>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-support-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >
+            Support
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content">
+        <h2 class="globalnav-submenu-header">Get Help</h2>
+        <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
+              <span class="globalnav-submenu-label">Email</span>
+              <span class="globalnav-submenu-value">support@shroffin.com</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="tel:+919112334367">
+              <span class="globalnav-submenu-label">Call</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="globalnav-submenu-link"
+              href="https://wa.me/919112334367"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="globalnav-submenu-label">Chat on WhatsApp ↗</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="lm-page">
+    <section class="lm-hero" aria-labelledby="lm-hero-title">
+      <div class="lm-hero-inner">
+        <h1 class="lm-hero-title" id="lm-hero-title">
+          <span class="lm-line">See every bank.</span>
+          <span class="lm-line">Before you apply.</span>
+        </h1>
+        <a class="lm-cta" href="compare.html">Explore banks</a>
+      </div>
+    </section>
+
+    <section class="lm-band lm-band-lead lm-band-white" aria-label="About Shroffin">
+      <div class="lm-band-inner lm-reveal">
+        <p class="lm-body lm-lead">We completely engineered your home loan journey. The entire market lives in a single, standardized matrix, designed so you can cross-examine rates, rules, and fine print at a glance. We stripped away the traditional traps by letting you explore every lender without surrendering your phone number or email upfront. From there, you are in control: pick your banks, send a single application to all of them at once.<span class="lm-lead-end">And let them compete for you.</span></p>
+      </div>
+    </section>
+
+    <section class="lm-steps" aria-label="How Shroffin works">
+      <div class="lm-steps-inner">
+        <article class="lm-card lm-reveal">
+          <div class="lm-card-copy">
+            <p class="lm-kicker">Compare</p>
+            <h2 class="lm-title" id="lm-s1-title">
+              <span class="lm-line">Every bank.</span>
+              <span class="lm-line">One view.</span>
+            </h2>
+            <p class="lm-body">See the full picture before you apply. Not after.</p>
+          </div>
+          <div class="lm-card-media" aria-hidden="true">
+            <div class="lm-card-media-frame"></div>
+          </div>
+        </article>
+
+        <article class="lm-card lm-reveal">
+          <div class="lm-card-copy">
+            <p class="lm-kicker">Pick</p>
+            <h2 class="lm-title" id="lm-s2-title">You choose the banks.</h2>
+            <p class="lm-body">You decide which banks see your application.</p>
+          </div>
+          <div class="lm-card-media" aria-hidden="true">
+            <div class="lm-card-media-frame"></div>
+          </div>
+        </article>
+
+        <article class="lm-card lm-reveal">
+          <div class="lm-card-copy">
+            <p class="lm-kicker">Apply</p>
+            <h2 class="lm-title" id="lm-s3-title">
+              <span class="lm-line">One application.</span>
+              <span class="lm-line">Many offers.</span>
+            </h2>
+            <p class="lm-body">Send once. Offers come back.</p>
+          </div>
+          <div class="lm-card-media" aria-hidden="true">
+            <div class="lm-card-media-frame"></div>
+          </div>
+        </article>
+
+        <article class="lm-card lm-reveal">
+          <div class="lm-card-copy">
+            <p class="lm-kicker">Decide</p>
+            <h2 class="lm-title" id="lm-s4-title">
+              <span class="lm-line">Banks compete.</span>
+              <span class="lm-line">You decide.</span>
+            </h2>
+            <p class="lm-body">They offer. You choose the loan that fits.</p>
+          </div>
+          <div class="lm-card-media" aria-hidden="true">
+            <div class="lm-card-media-frame"></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="lm-band lm-close" aria-labelledby="lm-close-title">
+      <div class="lm-band-inner lm-reveal">
+        <h2 class="lm-title" id="lm-close-title">Ready when you are.</h2>
+        <a class="lm-cta lm-cta-light" href="compare.html">Explore banks</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
+    <div class="site-footer-inner">
+      <div class="site-footer-brand">
+        <a href="../index.html" aria-label="Shroffin Home">
+          <img
+            class="site-footer-logo"
+            src="../images/logos/logo-h-light-clear-781x173.png"
+            alt="Shroffin"
+            width="99"
+            height="22"
+          >
+        </a>
+        <p class="site-footer-tagline">An Independent and transparent banking.</p>
+      </div>
+    </div>
+
+    <hr class="site-footer-rule" aria-hidden="true">
+
+    <div class="site-footer-inner">
+      <p class="site-footer-copy">
+        <a href="../privacy-policy.html">Privacy Policy</a>
+        <span aria-hidden="true"> · </span>
+        Copyright © 2026 Shroffin. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var nav = document.getElementById('globalnav');
+      var support = document.getElementById('nav-support');
+      var trigger = document.getElementById('nav-support-trigger');
+      var flyout = document.getElementById('nav-support-flyout');
+      var veil = document.getElementById('globalnav-veil');
+      if (!nav || !support || !trigger || !flyout || !veil) return;
+
+      var closeTimer = null;
+      var canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+      function setFlyoutOpen(open) {
+        nav.classList.toggle('flyout-open', open);
+        document.body.classList.toggle('gn-locked', open);
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        flyout.setAttribute('aria-hidden', open ? 'false' : 'true');
+        veil.classList.toggle('is-visible', open);
+        if (open) veil.removeAttribute('hidden');
+        else veil.setAttribute('hidden', '');
+      }
+
+      function openFlyout() {
+        if (closeTimer) {
+          clearTimeout(closeTimer);
+          closeTimer = null;
+        }
+        setFlyoutOpen(true);
+      }
+
+      function closeFlyoutSoon() {
+        if (closeTimer) clearTimeout(closeTimer);
+        closeTimer = setTimeout(function () {
+          setFlyoutOpen(false);
+          closeTimer = null;
+        }, 220);
+      }
+
+      function closeFlyoutNow() {
+        if (closeTimer) {
+          clearTimeout(closeTimer);
+          closeTimer = null;
+        }
+        setFlyoutOpen(false);
+      }
+
+      trigger.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        setFlyoutOpen(!nav.classList.contains('flyout-open'));
+      });
+
+      support.addEventListener('mouseenter', function () {
+        if (canHover.matches) openFlyout();
+      });
+
+      support.addEventListener('mouseleave', function (event) {
+        if (!canHover.matches) return;
+        var next = event.relatedTarget;
+        if (next && (flyout.contains(next) || support.contains(next))) return;
+        closeFlyoutSoon();
+      });
+
+      flyout.addEventListener('mouseenter', function () {
+        if (canHover.matches) openFlyout();
+      });
+
+      flyout.addEventListener('mouseleave', function (event) {
+        if (!canHover.matches) return;
+        var next = event.relatedTarget;
+        if (next && (flyout.contains(next) || support.contains(next))) return;
+        closeFlyoutSoon();
+      });
+
+      veil.addEventListener('click', closeFlyoutNow);
+
+      flyout.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', closeFlyoutNow);
+      });
+
+      window.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') closeFlyoutNow();
+      });
+
+      window.addEventListener('resize', function () {
+        if (!canHover.matches) closeFlyoutNow();
+      });
+    })();
+
+    (function () {
+      var nodes = document.querySelectorAll('.lm-reveal');
+      if (!nodes.length) return;
+
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (reduce.matches) {
+        nodes.forEach(function (node) {
+          node.classList.add('is-in');
+        });
+        return;
+      }
+
+      var cards = Array.prototype.slice.call(
+        document.querySelectorAll('.lm-card.lm-reveal')
+      );
+      var other = Array.prototype.slice.call(nodes).filter(function (node) {
+        return !node.classList.contains('lm-card');
+      });
+
+      /* Soft fade for lead / close — Apple intro style */
+      if ('IntersectionObserver' in window) {
+        var softObserver = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add('is-in');
+              softObserver.unobserve(entry.target);
+            });
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.12 }
+        );
+        other.forEach(function (node) {
+          softObserver.observe(node);
+        });
+      } else {
+        other.forEach(function (node) {
+          node.classList.add('is-in');
+        });
+      }
+
+      /*
+        Product tiles: scroll-scrubbed rise — modest travel, paced by scroll.
+        Desktop ~56px; phone ~40px. Fade is already settled (opacity: 1).
+      */
+      if (!cards.length) return;
+
+      cards.forEach(function (card) {
+        card.classList.add('lm-card-scroll');
+      });
+
+      var ticking = false;
+
+      function updateCards() {
+        ticking = false;
+        var vh = window.innerHeight || 1;
+        var isPhone = window.matchMedia('(max-width: 833px)').matches;
+        var risePx = isPhone ? 40 : 56;
+        var start = isPhone ? vh * 0.85 : vh * 0.7;
+        var end = isPhone ? vh * 0.12 : vh * 0.2;
+
+        cards.forEach(function (card) {
+          var rect = card.getBoundingClientRect();
+          var p = (start - rect.top) / (start - end);
+          if (p < 0) p = 0;
+          if (p > 1) p = 1;
+          var y = (1 - p) * risePx;
+          card.style.transform = 'translate3d(0,' + y + 'px,0)';
+          if (p > 0.02) card.classList.add('is-in');
+        });
+      }
+
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(updateCards);
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      updateCards();
+    })();
+  </script>
+</body>
+</html>

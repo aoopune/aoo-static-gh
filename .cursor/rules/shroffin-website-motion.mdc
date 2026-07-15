@@ -1,0 +1,79 @@
+---
+description: Shroffin website motion — calm, soft, unhurried (slow tiers + soft ease-out)
+globs: "**/*.{html,css,js}"
+alwaysApply: true
+---
+
+# Website motion & animation speed
+
+Shroffin motion must feel **soft and unhurried** — never snappy, never “quick quick.” Prefer **different speeds by job**, but bias every band **slower** than typical SaaS UI.
+
+If motion feels busy or rushed when reviewing, **go one band slower** and/or soften the ease. Do not “fix” hurry by making things snappier.
+
+Reference feel: Apple Card overview — quiet, scroll-paced, one idea settling at a time. Match the calm, not the brand.
+
+## Soft ease (required)
+
+Use a **soft ease-out** for motion (opacity, transform, max-height, scroll):
+
+- Preferred: `cubic-bezier(0.22, 1, 0.36, 1)`
+- Color-only hovers may use: `cubic-bezier(0.4, 0, 0.2, 1)`
+
+**Never** use snappy mid curves for structure/reveal: avoid `cubic-bezier(0.4, 0, 0.6, 1)` on flyouts, overlays, and entrances (it feels mechanical and hurried).
+
+Linear only for spinners.
+
+## Duration bands (minimums — calm bias)
+
+| Tier | Duration | Use for |
+|---|---|---|
+| **Micro** | **0.45–0.55s** | Color, opacity, border, button/link hover, paddle dim |
+| **UI** | **0.75–0.90s** | Nav flyout open/close, overlays, small transforms |
+| **Move** | **0.90–1.10s** | Carousels / scroll galleries, card flips, traveling arrows |
+| **Reveal** | **1.35–1.60s** | Scroll-in sections, hero entrance, large cards rising |
+
+Staggers: **120 / 200 / 280ms** (not tighter).
+
+Flyout hover-close delay (JS): **≥ 220ms**.
+
+Reveal travel: keep rise distances **modest** (about **12–24px** for text blocks; **≈40–56px** for large product cards). Avoid large jumps that finish “hard” (no multi-`vh` rises unless the user asks).
+
+## Fade settles before move (reveals)
+
+For scroll reveals and large entrances, **do not** use one duration for both properties. Prefer a quiet settle:
+
+- **Opacity** ~**1.00–1.15s** (finishes first)
+- **Transform** ~**1.35–1.55s** (lands last)
+
+Same soft ease on both. Matched 1.4s/1.4s feels flatter and slightly rushed by comparison.
+
+## Scroll-paced motion (large moments)
+
+For primary visuals that tell one story while the user scrolls (product tiles, hero media, long feature moments):
+
+1. Prefer **scroll-linked** motion (progress follows scroll position) over a fixed timer that can finish ahead of the reader.
+2. **Sticky** storytelling is allowed when one idea needs height to play out — keep other motion quiet during that stretch.
+3. **One moving idea** per section. Whitespace and stillness are part of the motion system.
+4. Timed IntersectionObserver reveals are fine for text blocks and secondary sections; use scrub for the few “hero object” moments.
+
+When in doubt on a redesigned page: soft ease-out + Reveal-band transform + modest travel + fade slightly ahead of move.
+
+## Always
+
+1. Match tier to change size; when unsure, pick the **slower** tier.
+2. Soft ease-out on anything that moves or fades in.
+3. Respect `prefers-reduced-motion: reduce` (instant settle / no scrub).
+4. Retunes move durations **up** into these bands — do not invent random one-off speeds.
+
+## Never
+
+- Do not ship Micro under **0.4s** on redesigned pages.
+- Do not ship Reveal / hero under **1.2s**.
+- Do not use one duration for nav, hover, and page entrance.
+- Do not add bounce / overshoot unless the user asks.
+- Do not optimize for “snappy” or “responsive = fast.” Calm > quick.
+- Do not race a timed animation ahead of scroll on a primary product reveal when scrub is already in place.
+
+## Quick self-check
+
+Sit with the page for a second: does the menu open *gently*, do sections *settle* into place, do hovers feel soft rather than instant? Does a big card rise feel tied to your scroll rather than “playing itself”? If anything still feels hurried, slow it again.

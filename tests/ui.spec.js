@@ -158,7 +158,7 @@ test.describe('Apply Only Once – UI', function () {
   test('About page loads', async ({ page }) => {
     await page.goto('/pages/about.html');
     await waitForLayout(page);
-    await expect(page.locator('h1:has-text("About Apply Only Once")')).toBeVisible();
+    await expect(page.locator('h1:has-text("About Shroffin")')).toBeVisible();
   });
 
   test('Navbar Apply Only Once logo is visible', async ({ page }) => {
