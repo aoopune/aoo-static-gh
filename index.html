@@ -3,1468 +3,376 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Shroffin</title>
-  <link rel="icon" href="favicon.ico?v=6" sizes="any">
-  <link rel="icon" type="image/png" sizes="32x32" href="images/logos/favicon-32.png?v=6">
-  <link rel="icon" type="image/png" sizes="16x16" href="images/logos/favicon-16.png?v=6">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=6">
-  <link rel="manifest" href="site.webmanifest?v=6">
-  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <title>Apply Only Once</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;1,400&display=swap">
   <style>
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-Thin.ttf') format('truetype');
-      font-weight: 100;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraLight.ttf') format('truetype');
-      font-weight: 200;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-Light.ttf') format('truetype');
-      font-weight: 300;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf') format('truetype');
-      font-weight: 400;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf') format('truetype');
-      font-weight: 500;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf') format('truetype');
-      font-weight: 600;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-Bold.ttf') format('truetype');
-      font-weight: 700;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraBold.ttf') format('truetype');
-      font-weight: 800;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-Black.ttf') format('truetype');
-      font-weight: 900;
-      font-style: normal;
-      font-display: block;
-    }
-
-    :root {
-      --gn-height: 48px;
-      --gn-bg: #fbfbfd;
-      --gn-text: rgba(29, 29, 31, 0.8);
-      --gn-text-hover: #1d1d1f;
-      --gn-ink: #1d1d1f;
-      --gn-max: 980px;
-      --font-brand: 'Google Sans Flex', sans-serif;
-    }
-
     html,
     body {
       height: 100%;
-      margin: 0;
-      font-family: var(--font-brand);
-    }
-
-    /* Keep the scrollbar lane reserved so locking scroll (Support flyout)
-       does not shift the whole page when the bar disappears. */
-    html {
-      scrollbar-gutter: stable;
+      overflow: hidden;
+      font-family: 'Montserrat', Arial, sans-serif;
     }
 
     body {
+      margin: 0;
       background:
         radial-gradient(circle at 50% 0%, #fff 0%, #fbfbfd 42%, #f5f5f7 100%);
       color: #1d1d1f;
-    }
-
-    body.gn-locked {
-      overflow: hidden;
-    }
-
-    /* ——— Apple globalnav flyout (Support) ——— */
-    .globalnav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 9999;
-      height: var(--gn-height);
-      background: var(--gn-bg);
-      transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .globalnav.flyout-open {
-      background: #fafafc;
-    }
-
-    .globalnav-content {
-      position: relative;
-      z-index: 3;
-      max-width: var(--gn-max);
-      height: var(--gn-height);
-      margin: 0 auto;
-      padding: 0 22px;
-      box-sizing: border-box;
-    }
-
-    .globalnav-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      min-width: 0;
-    }
-
-    .globalnav-item {
-      display: flex;
-      align-items: center;
-      height: 100%;
-    }
-
-    .globalnav-link,
-    .globalnav-support-trigger {
-      display: inline-flex;
-      align-items: center;
-      height: 100%;
-      padding: 0 8px;
-      border: 0;
-      background: transparent;
-      color: var(--gn-text);
-      font-family: var(--font-brand);
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 1;
-      text-decoration: none;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .globalnav-link:hover,
-    .globalnav-support-trigger:hover,
-    .globalnav.flyout-open .globalnav-support-trigger {
-      color: var(--gn-text-hover);
-    }
-
-    .globalnav-link:focus-visible,
-    .globalnav-support-trigger:focus-visible {
-      outline: 2px solid rgba(29, 29, 31, 0.45);
-      outline-offset: -4px;
-      border-radius: 4px;
-    }
-
-    .globalnav-link-brand {
-      padding-left: 0;
-      padding-right: 4px;
-    }
-
-    .globalnav-logo {
-      display: block;
-      height: 22px;
-      width: auto;
-    }
-
-    .globalnav-item-about {
-      margin-left: auto;
-    }
-
-    /* Full-width curtain under the bar */
-    .globalnav-flyout {
-      position: absolute;
-      top: var(--gn-height);
-      left: 0;
-      right: 0;
-      z-index: 2;
-      overflow: hidden;
-      visibility: hidden;
-      pointer-events: none;
-      max-height: 0;
-      background: #fafafc;
-      transition:
-        max-height 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-flyout {
-      visibility: visible;
-      pointer-events: auto;
-      max-height: 320px;
-    }
-
-    .globalnav-flyout-content {
-      max-width: var(--gn-max);
-      margin: 0 auto;
-      padding: 40px 22px 52px;
-      box-sizing: border-box;
-      opacity: 0;
-      transform: translateY(-6px);
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-flyout-content {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .globalnav-submenu-header {
-      margin: 0 0 16px;
-      color: #6e6e73;
-      font-family: var(--font-brand);
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 1.33337;
-    }
-
-    .globalnav-submenu-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .globalnav-submenu-list li {
-      opacity: 0;
-      transform: translateY(-6px);
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-submenu-list li {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-        .globalnav.flyout-open .globalnav-submenu-list li:nth-child(1) { transition-delay: 120ms; }
-    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(2) { transition-delay: 200ms; }
-    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(3) { transition-delay: 280ms; }
-
-    .globalnav-submenu-link {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 2px;
-      padding: 8px 0;
-      color: var(--gn-ink);
-      font-family: var(--font-brand);
-      text-decoration: none;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .globalnav-submenu-link:hover,
-    .globalnav-submenu-link:hover .globalnav-submenu-value {
-      color: #06c;
-    }
-
-    .globalnav-submenu-link:focus-visible {
-      outline: 2px solid rgba(29, 29, 31, 0.35);
-      outline-offset: 2px;
-      border-radius: 4px;
-    }
-
-    .globalnav-submenu-label {
-      font-size: 24px;
-      font-weight: 600;
-      line-height: 1.16667;
-    }
-
-    .globalnav-submenu-value {
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 1.33337;
-      color: #6e6e73;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* Page dim when flyout is open — Apple behavior */
-    .globalnav-veil {
-      position: fixed;
-      top: var(--gn-height);
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 9998;
-      background: rgba(0, 0, 0, 0.4);
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav-veil.is-visible {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
     }
 
     .home-content {
-      padding-top: var(--gn-height);
+      --section-gap: clamp(96px, 15dvh, 190px);
+      height: 100svh;
+      height: 100dvh;
       box-sizing: border-box;
-    }
-
-    /* ——— Hero ——— */
-    .home-hero {
-      position: relative;
-      width: 100%;
-      min-height: calc(100svh - var(--gn-height));
-      min-height: calc(100dvh - var(--gn-height));
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 0;
-      box-sizing: border-box;
-      overflow: hidden;
-      text-align: center;
-      background: #e8eef3;
-    }
-
-    .home-hero-picture {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      margin: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .home-hero-media {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 32%;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    /* Real HTML type (not baked into the photo) — stays sharp on zoom, like Apple */
-    .home-hero-copy {
-      position: relative;
-      z-index: 1;
-      width: min(920px, calc(100% - 48px));
-      margin: 0 auto;
-      padding: clamp(56px, 12vh, 120px) 0 0;
-      pointer-events: none;
-      opacity: 0;
-      transform: translateY(14px);
-      animation:
-        home-hero-fade 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards,
-        home-hero-rise 1.45s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
-    }
-
-    .home-hero-title {
-      margin: 0;
-      color: #1d1d1f;
-      font-weight: 600;
-      font-size: clamp(32px, 4vw, 48px);
-      line-height: 1.05;
-    }
-
-    .home-hero-sub {
-      margin: 6px auto 0;
-      max-width: 34em;
-      color: #1d1d1f;
-      font-weight: 400;
-      font-size: clamp(20px, 2.2vw, 28px);
-      line-height: 1.35;
-    }
-
-    .home-hero-ctas {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 17px;
-      margin: 17px 0 0;
-      pointer-events: auto;
-    }
-
-    .home-hero-cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 28px;
-      padding: 11px 22px;
-      border: 1px solid transparent;
-      border-radius: 980px;
-      font-family: inherit;
-      font-size: 17px;
-      font-weight: 400;
-      line-height: 1.23536;
-      text-decoration: none;
-      cursor: pointer;
-      box-sizing: border-box;
-      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .home-hero-cta-primary {
-      background: #0071e3;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .home-hero-cta-primary:hover {
-      background: #0076df;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .home-hero-cta-primary:active {
-      background: #006edb;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    /* Apple .button-secondary: outline at rest; fills blue + white text on hover */
-    .home-hero-cta-secondary {
-      background: transparent;
-      color: #0066cc;
-      border-color: #0066cc;
-    }
-
-    .home-hero-cta-secondary:hover {
-      background: #0076df;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .home-hero-cta-secondary:active {
-      background: #006edb;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .home-hero-cta:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 3px;
-    }
-
-    @media (max-width: 833px) {
-      .globalnav-content {
-        padding: 0 16px;
-      }
-
-      .globalnav-flyout-content {
-        padding: 28px 16px 40px;
-      }
-
-      .globalnav-submenu-label {
-        font-size: 28px;
-      }
-
-      .globalnav.flyout-open .globalnav-flyout {
-        max-height: 100vh;
-      }
-
-      .home-hero-media {
-        object-position: center 28%;
-      }
-
-      .home-hero-copy {
-        width: min(920px, calc(100% - 32px));
-        padding-top: clamp(48px, 10vh, 88px);
-      }
-
-      .home-hero-title {
-        font-size: clamp(28px, 7.5vw, 36px);
-      }
-
-      .home-hero-sub {
-        font-size: clamp(18px, 4.6vw, 22px);
-        margin-top: 4px;
-      }
-
-      .home-hero-ctas {
-        gap: 14px;
-        margin-top: 14px;
-      }
-
-      .home-hero-cta {
-        font-size: 16px;
-        padding: 10px 20px;
-      }
-    }
-
-    @media (min-width: 834px) {
-      .home-hero-media {
-        object-position: center 36%;
-      }
-    }
-
-    /* ——— Our fundamentals (Apple values-style cards) ——— */
-    .fundamentals {
-      background: rgb(245, 245, 247);
-      color: #1d1d1f;
-      padding: 72px 0 88px;
-      overflow-x: clip;
-    }
-
-    .fundamentals-inner {
-      width: min(980px, calc(100% - 48px));
-      margin: 0 auto;
-    }
-
-    .fundamentals-title {
-      margin: 0 0 50px;
-      font-size: clamp(32px, 4.5vw, 48px);
-      font-weight: 600;
-      line-height: 1.08349;
-    }
-
-    .home-moment {
-      opacity: 0;
-      transform: translateY(14px);
-      transition:
-        opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 1.45s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .home-moment.is-in {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .fundamentals-gallery {
-      position: relative;
-    }
-
-    .fundamentals-scroll {
-      overflow: visible;
-    }
-
-    .fundamentals-grid {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
+      grid-template-rows: auto auto auto;
+      align-content: center;
+      justify-items: center;
+      gap: var(--section-gap);
+      padding: clamp(76px, 10dvh, 112px) clamp(20px, 6vw, 48px) clamp(62px, 8dvh, 88px);
+      text-align: center;
     }
 
-    .fundamentals-card {
-      display: flex;
-      flex-direction: column;
-      box-sizing: border-box;
-      min-height: 100%;
-      padding: 36px 32px 40px;
-      background: #fff;
-      border-radius: 28px;
-      corner-shape: squircle;
-      transform: scale(1);
-      transform-origin: center center;
-      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-      will-change: transform;
-    }
-
-    /* Apple resources-card hover: subtle scale, devices with real hover only */
-    @media (hover: hover) and (pointer: fine) {
-      .fundamentals-card:hover {
-        transform: scale(1.02);
-      }
-    }
-
-    .fundamentals-icon {
-      display: block;
-      width: 40px;
-      height: 40px;
-      margin: 0 0 18px;
+    .site-logo {
+      position: fixed;
+      top: 28px;
+      left: 32px;
       color: #1d1d1f;
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: -0.055em;
     }
 
-    .fundamentals-icon svg {
-      display: block;
-      width: 100%;
-      height: 100%;
+    .hero-copy,
+    .mission-copy {
+      max-width: 980px;
     }
 
-    .fundamentals-card-title {
+    .hero-title {
       margin: 0;
-      font-size: clamp(21px, 2.4vw, 28px);
+      font-size: clamp(58px, 8.4vw, 92px);
       font-weight: 600;
-      line-height: 1.14286;
+      line-height: 0.94;
+      letter-spacing: -0.07em;
     }
 
-    .fundamentals-card-body {
-      margin: 12px 0 0;
-      font-size: 17px;
-      font-weight: 400;
-      line-height: 1.47059;
+    .hero-subtitle {
+      margin: 8px 0 0;
       color: #1d1d1f;
+      font-size: clamp(26px, 3.6vw, 38px);
+      font-weight: 400;
+      line-height: 1.04;
+      letter-spacing: -0.045em;
     }
 
-    .fundamentals-paddles {
+    .mission-label {
+      margin: 0 0 10px;
+      color: rgba(29, 29, 31, 0.68);
+      font-size: clamp(12px, 1.25vw, 14px);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 0.08em;
+    }
+
+    .mission-text {
+      margin: 0;
+      font-size: clamp(24px, 3.1vw, 32px);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.052em;
+      text-wrap: balance;
+    }
+
+    .mission-text strong {
+      font-weight: 600;
+    }
+
+    .mission-break {
+      display: block;
+    }
+
+    .mobile-mission-break {
       display: none;
     }
 
-    .fundamentals-paddle {
+    .mission-last-line {
+      white-space: nowrap;
+    }
+
+    .contact-copy {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .contact-prompt {
+      margin: 0 0 12px;
+      color: #1d1d1f;
+      font-size: clamp(15px, 1.5625vw, 18px);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      text-align: center;
+    }
+
+    .contact-line {
+      margin: 0;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 36px;
-      height: 36px;
-      padding: 0;
-      border: 0;
-      border-radius: 50%;
-      background: #d2d2d7;
-      color: #1d1d1f;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .contact-phone,
+    .contact-whatsapp {
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 12px 22px;
+      border-radius: 980px;
+      font-size: 17px;
+      line-height: 1.1764705882;
+      font-weight: 400;
+      letter-spacing: -0.022em;
+      text-decoration: none;
       cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      white-space: nowrap;
+      transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
     }
 
-    .fundamentals-paddle:hover:not(:disabled) {
-      background: #c7c7cc;
+    .contact-phone {
+      background: #0071e3;
+      color: #fff;
+      border: none;
     }
 
-    .fundamentals-paddle:disabled {
-      opacity: 0.32;
-      cursor: default;
+    .contact-phone:hover {
+      background: #0077ed;
     }
 
-    .fundamentals-paddle:focus-visible {
+    .contact-whatsapp {
+      background: transparent;
+      color: #0071e3;
+      border: 1px solid #0071e3;
+    }
+
+    .contact-whatsapp:hover {
+      background: rgba(0, 113, 227, 0.06);
+    }
+
+    .contact-phone:active,
+    .contact-whatsapp:active {
+      opacity: 0.82;
+    }
+
+    .contact-phone:focus-visible,
+    .contact-whatsapp:focus-visible {
       outline: 2px solid #0071e3;
       outline-offset: 3px;
     }
 
-    .fundamentals-paddle svg {
-      display: block;
-      width: 10px;
-      height: 18px;
+    .education-loan-button {
+      position: fixed;
+      left: 28px;
+      bottom: 24px;
+      padding: 8px 14px;
+      border: 1px solid #1d1d1f;
+      border-radius: 999px;
+      background: transparent;
+      color: #1d1d1f;
+      font-size: 13px;
+      line-height: 1.15;
+      text-decoration: none;
+      transition: background 160ms ease, color 160ms ease;
     }
 
-    @media (min-width: 734px) {
-      .fundamentals-inner {
-        width: min(980px, calc(100% - 48px));
-      }
-
-      .fundamentals-gallery {
-        width: min(980px, calc(100% - 48px));
-        margin: 0 auto;
-      }
-
-      .fundamentals-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        padding: 10px 0;
-        margin: -10px 0;
-      }
+    .education-loan-button:hover {
+      background: #1d1d1f;
+      color: #fff;
     }
 
-    @media (min-width: 1068px) {
-      .fundamentals {
-        padding: 88px 0 110px;
-      }
-
-      .fundamentals-inner,
-      .fundamentals-gallery {
-        width: min(1068px, calc(100% - 48px));
-      }
-
-      .fundamentals-title {
-        margin-bottom: 50px;
-      }
-
-      .fundamentals-card {
-        padding: 40px 36px 44px;
-        border-radius: 32px;
-        corner-shape: squircle;
-      }
+    .education-loan-button:focus-visible {
+      outline: 2px solid #111827;
+      outline-offset: 3px;
     }
 
-    /* Phone: Apple-style horizontal gallery with peek + paddles */
-    @media (max-width: 733px) {
-      .fundamentals {
-        padding: 56px 0 72px;
+    @media (max-width: 640px) {
+      .home-content {
+        grid-template-rows: repeat(3, 1fr);
+        align-content: stretch;
+        align-items: center;
+        gap: 0;
+        padding: 76px 22px 52px;
       }
 
-      .fundamentals-inner {
-        width: auto;
-        margin: 0;
-        padding: 0 max(16px, 6.25vw);
+      .site-logo {
+        top: 28px;
+        left: 50%;
+        font-size: 28px;
+        transform: translateX(-50%);
       }
 
-      .fundamentals-title {
-        margin-bottom: 40px;
+      .hero-title {
+        font-size: clamp(48px, 14vw, 72px);
+        line-height: 0.95;
       }
 
-      .fundamentals-gallery {
+      .hero-subtitle {
+        margin-top: 6px;
+        font-size: clamp(23px, 7vw, 32px);
+        line-height: 1.02;
+      }
+
+      .mission-text {
+        font-size: clamp(21px, 6vw, 28px);
+        line-height: 1.04;
+        text-wrap: wrap;
+      }
+
+      .mission-label {
+        font-size: clamp(12px, 3.2vw, 14px);
+      }
+
+      .contact-prompt {
+        font-size: clamp(15px, 4vw, 18px);
+      }
+
+      .mission-copy {
+        max-width: 100%;
         width: 100%;
-        margin: 0;
-      }
-
-      .fundamentals-scroll {
-        overflow-x: scroll;
-        overflow-y: hidden;
-        scroll-snap-type: x mandatory;
-        scroll-padding-inline: max(16px, 6.25vw);
-        -webkit-overflow-scrolling: touch;
-        touch-action: pan-x;
-        scrollbar-width: none;
-        overscroll-behavior-x: contain;
-        padding-block: 10px;
-        margin-block: -10px;
-      }
-
-      .fundamentals-scroll.is-animating {
-        scroll-snap-type: none;
-      }
-
-      .fundamentals-scroll::-webkit-scrollbar {
-        display: none;
-      }
-
-      .fundamentals-grid {
-        display: flex;
-        gap: 14px;
-        width: max-content;
-        padding-inline: max(16px, 6.25vw);
+        padding: 0 4px;
         box-sizing: border-box;
       }
 
-      .fundamentals-card {
-        flex: 0 0 calc(100vw - max(16px, 6.25vw) - 40px);
-        width: calc(100vw - max(16px, 6.25vw) - 40px);
-        max-width: 350px;
-        min-height: 280px;
-        padding: 28px 24px 32px;
-        border-radius: 22px;
-        corner-shape: squircle;
-        scroll-snap-align: start;
+      .mission-last-line {
+        display: inline-block;
+        max-width: 100%;
+        font-size: clamp(17px, 4.6vw, 21px);
+        letter-spacing: -0.045em;
       }
 
-      .fundamentals-card:last-child {
-        scroll-snap-align: end;
+      .mission-break {
+        display: block;
       }
 
-      .fundamentals-card-body {
-        font-size: 16px;
+      .mobile-mission-break {
+        display: block;
       }
 
-      .fundamentals-paddles {
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-        width: auto;
-        margin: 40px max(16px, 6.25vw) 0;
-      }
-    }
-
-    /* ——— Apple-like global footer ——— */
-    .site-footer {
-      background: rgb(245, 245, 247);
-      color: rgba(0, 0, 0, 0.56);
-      font-size: 12px;
-      line-height: 1.33337;
-    }
-
-    .site-footer-inner {
-      width: min(980px, calc(100% - 48px));
-      margin: 0 auto;
-      padding: 28px 0 0;
-      box-sizing: border-box;
-    }
-
-    .site-footer-brand {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
-      margin: 0;
-    }
-
-    .site-footer-logo {
-      display: block;
-      width: auto;
-      height: 28px;
-    }
-
-    .site-footer-tagline {
-      margin: 0;
-      max-width: 36em;
-      color: #1d1d1f;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.42859;
-    }
-
-    /* Full-bleed hairlines — stretch across the whole footer */
-    .site-footer-rule {
-      display: block;
-      width: 100%;
-      height: 1px;
-      margin: 20px 0 0;
-      border: 0;
-      background: rgba(0, 0, 0, 0.16);
-    }
-
-    .site-footer-legal {
-      padding-top: 20px;
-    }
-
-    .site-footer-disclaimer-title {
-      margin: 0 0 10px;
-      color: #1d1d1f;
-      font-size: 12px;
-      font-weight: 600;
-      line-height: 1.33337;
-    }
-
-    .site-footer-disclaimer {
-      margin: 0;
-    }
-
-    .site-footer-disclaimer p {
-      margin: 0 0 8px;
-    }
-
-    .site-footer-disclaimer p:last-child {
-      margin-bottom: 0;
-    }
-
-    .site-footer-copy {
-      margin: 0;
-      padding: 16px 0 36px;
-    }
-
-    .site-footer-copy a {
-      color: inherit;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    .site-footer-copy a:hover {
-      color: #1d1d1f;
-    }
-
-    @media (min-width: 1068px) {
-      .site-footer-inner {
-        width: min(1068px, calc(100% - 48px));
-      }
-    }
-
-    @media (max-width: 733px) {
-      .site-footer-inner {
-        width: min(980px, calc(100% - 32px));
-        padding-top: 24px;
+      .contact-line {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 10px;
       }
 
-      .site-footer-copy {
-        padding-bottom: 32px;
+      .education-loan-button {
+        left: 16px;
+        bottom: 14px;
+        padding: 7px 12px;
+        font-size: 12px;
       }
+
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .globalnav,
-      .globalnav-flyout,
-      .globalnav-flyout-content,
-      .globalnav-submenu-list li,
-      .globalnav-veil,
-      .globalnav-link,
-      .globalnav-support-trigger,
-      .globalnav-submenu-link,
-      .home-hero-cta,
-      .fundamentals-card,
-      .home-moment {
-        transition: none;
+    @media (max-width: 640px) and (max-height: 720px) {
+      .home-content {
+        padding-top: 64px;
+        padding-bottom: 42px;
       }
 
-      .globalnav-flyout-content,
-      .globalnav-submenu-list li,
-      .home-moment {
-        transform: none;
+      .site-logo {
+        top: 22px;
+        font-size: 24px;
       }
 
-      .home-hero-copy {
-        opacity: 1;
-        transform: none;
-        animation: none;
+      .hero-title {
+        font-size: clamp(42px, 13vw, 56px);
       }
 
-      .home-moment {
-        opacity: 1;
+      .hero-subtitle {
+        font-size: clamp(21px, 6.4vw, 26px);
       }
+
+      .mission-text {
+        font-size: clamp(19px, 5.6vw, 23px);
+      }
+
+      .mission-label {
+        font-size: 11px;
+      }
+
+      .contact-prompt {
+        font-size: 14px;
+      }
+
     }
 
-    @keyframes home-hero-fade {
-      to { opacity: 1; }
-    }
+    @media (max-height: 520px) {
+      .home-content {
+        padding-top: 52px;
+        padding-bottom: 34px;
+      }
 
-    @keyframes home-hero-rise {
-      to { transform: translateY(0); }
+      .site-logo {
+        top: 16px;
+        font-size: 22px;
+      }
+
+      .hero-title {
+        font-size: clamp(38px, 10vw, 54px);
+      }
+
+      .hero-subtitle {
+        font-size: clamp(18px, 5vw, 24px);
+      }
+
+      .mission-text {
+        font-size: clamp(17px, 4.4vw, 22px);
+      }
+
+      .mission-label {
+        font-size: 10px;
+      }
+
+      .contact-prompt {
+        font-size: 13px;
+      }
+
+      .education-loan-button {
+        bottom: 10px;
+        padding: 8px 11px;
+      }
+
     }
   </style>
 </head>
 <body>
-  <div class="globalnav-veil" id="globalnav-veil" hidden></div>
-  <nav class="globalnav" id="globalnav" aria-label="Global">
-    <div class="globalnav-content">
-      <ul class="globalnav-list">
-        <li class="globalnav-item globalnav-item-brand">
-          <a class="globalnav-link globalnav-link-brand" href="index.html" aria-label="Shroffin Home">
-            <img
-              class="globalnav-logo"
-              src="images/logos/logo-h-light-clear-781x173.png"
-              alt="Shroffin"
-              width="99"
-              height="22"
-            >
-          </a>
-        </li>
-        <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/compare.html">Compare</a>
-        </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/quick-overview.html">Overview</a>
-        </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/schemes.html">Schemes</a>
-        </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/faq.html">FAQ</a>
-        </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/document-checklist.html">Documents</a>
-        </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/about.html">About</a>
-        </li>
-        -->
-        <!-- EDUCATION_LOAN_PRODUCT: kept in code, hidden from UI until re-enabled
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="education-loan.html">Education</a>
-        </li>
-        -->
-        <li class="globalnav-item globalnav-item-about">
-          <a class="globalnav-link" href="pages/guide.html">Guide</a>
-        </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/about.html?v=apple1">About</a>
-        </li>
-        <li class="globalnav-item globalnav-item-support" id="nav-support">
-          <button
-            type="button"
-            class="globalnav-support-trigger"
-            id="nav-support-trigger"
-            aria-expanded="false"
-            aria-controls="nav-support-flyout"
-          >
-            Support
-          </button>
-        </li>
-      </ul>
-    </div>
-
-    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
-      <div class="globalnav-flyout-content">
-        <h2 class="globalnav-submenu-header">Get Help</h2>
-        <ul class="globalnav-submenu-list">
-          <li>
-            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
-              <span class="globalnav-submenu-label">Email</span>
-              <span class="globalnav-submenu-value">support@shroffin.com</span>
-            </a>
-          </li>
-          <li>
-            <a class="globalnav-submenu-link" href="tel:+919112334367">
-              <span class="globalnav-submenu-label">Call</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-          <li>
-            <a
-              class="globalnav-submenu-link"
-              href="https://wa.me/919112334367"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span class="globalnav-submenu-label">Chat on WhatsApp ↗</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
+  <div class="site-logo">ApplyOnlyOnce</div>
   <main class="home-content">
-    <section class="home-hero" aria-labelledby="home-hero-title">
-      <picture class="home-hero-picture">
-        <!-- Phone: tall crop so the scene + headline stay framed -->
-        <source
-          media="(max-width: 833px)"
-          srcset="images/hero/home-hero-mobile.jpg?v=live-type2"
-          width="1170"
-          height="2080"
-        >
-        <!-- Tablet / mid screens -->
-        <source
-          media="(max-width: 1440px)"
-          srcset="images/hero/home-hero-2048.jpg?v=live-type2 1x, images/hero/home-hero.jpg?v=live-type2 2x"
-          width="2048"
-          height="1020"
-        >
-        <!-- Desktop -->
-        <img
-          class="home-hero-media"
-          src="images/hero/home-hero.jpg?v=live-type2"
-          srcset="images/hero/home-hero-2048.jpg?v=live-type2 2048w, images/hero/home-hero.jpg?v=live-type2 3840w"
-          sizes="100vw"
-          alt="City skyline through tall glass, with mist below the towers"
-          width="3840"
-          height="1914"
-          decoding="async"
-          fetchpriority="high"
-        >
-      </picture>
-      <div class="home-hero-copy">
-        <h1 class="home-hero-title" id="home-hero-title">See everything.</h1>
-        <p class="home-hero-sub">Get a fair view of home loans and<br>apply to your chosen banks in one go.</p>
-        <div class="home-hero-ctas">
-          <a class="home-hero-cta home-hero-cta-primary" href="pages/learn-more.html">Learn more</a>
-          <a class="home-hero-cta home-hero-cta-secondary" href="pages/compare.html">Explore banks</a>
-        </div>
-      </div>
+    <section class="hero-copy" aria-labelledby="home-loan-title">
+      <h1 class="hero-title" id="home-loan-title">Home Loan</h1>
+      <p class="hero-subtitle">Unbiased help. No fees.</p>
     </section>
-
-    <section class="fundamentals" aria-labelledby="fundamentals-title">
-      <div class="fundamentals-inner">
-        <h2 class="fundamentals-title home-moment" id="fundamentals-title">What we stand on.</h2>
-      </div>
-      <div class="fundamentals-gallery home-moment">
-        <div class="fundamentals-scroll" id="fundamentals-scroll">
-          <ul class="fundamentals-grid" id="fundamentals-grid">
-            <li class="fundamentals-card">
-              <span class="fundamentals-icon" aria-hidden="true">
-                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 4.5c-2.4 3.6-6.8 6-11.5 6v9.2c0 7.6 5.1 14.6 11.5 16.3 6.4-1.7 11.5-8.7 11.5-16.3V10.5C26.8 10.5 22.4 8.1 20 4.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                  <path d="M14.5 20.2l3.6 3.6 7.4-7.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              <h3 class="fundamentals-card-title">Independent. On your side.</h3>
-              <p class="fundamentals-card-body">We do not take commissions from banks, so our advice and what we show cannot be bought.</p>
-            </li>
-            <li class="fundamentals-card">
-              <span class="fundamentals-icon" aria-hidden="true">
-                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M11 8.5h18a2 2 0 0 1 2 2v19a2 2 0 0 1-2 2H11a2 2 0 0 1-2-2v-19a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="1.8"/>
-                  <path d="M14 15.5h12M14 20.5h12M14 25.5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <h3 class="fundamentals-card-title">Transparent. Nothing hidden.</h3>
-              <p class="fundamentals-card-body">None of the information is left out, so you can choose what fits you.</p>
-            </li>
-            <li class="fundamentals-card">
-              <span class="fundamentals-icon" aria-hidden="true">
-                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 10.5v10.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                  <circle cx="20" cy="26.5" r="1.4" fill="currentColor"/>
-                  <circle cx="20" cy="20" r="12.5" stroke="currentColor" stroke-width="1.8"/>
-                </svg>
-              </span>
-              <h3 class="fundamentals-card-title">Quiet. At your pace.</h3>
-              <p class="fundamentals-card-body">No spam. No gimmicks. No sales calls that chase you. Explore at your pace, the way you like.</p>
-            </li>
-            <li class="fundamentals-card">
-              <span class="fundamentals-icon" aria-hidden="true">
-                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="20" cy="14" r="5.2" stroke="currentColor" stroke-width="1.8"/>
-                  <path d="M9.5 31.5c1.8-5.2 5.6-8 10.5-8s8.7 2.8 10.5 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <h3 class="fundamentals-card-title">You decide. Always.</h3>
-              <p class="fundamentals-card-body">We show every home loan bank and guide you when you ask. The final pick is yours.</p>
-            </li>
-          </ul>
-        </div>
-        <div class="fundamentals-paddles" aria-label="Card controls">
-          <button
-            type="button"
-            class="fundamentals-paddle"
-            id="fundamentals-prev"
-            aria-label="Previous card"
-            disabled
-          >
-            <svg viewBox="0 0 10 18" fill="none" aria-hidden="true">
-              <path d="M9 1L1 9l8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <button
-            type="button"
-            class="fundamentals-paddle"
-            id="fundamentals-next"
-            aria-label="Next card"
-          >
-            <svg viewBox="0 0 10 18" fill="none" aria-hidden="true">
-              <path d="M1 1l8 8-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
-      </div>
+    <section class="mission-copy" aria-label="Our Mission">
+      <p class="mission-label">OUR MISSION</p>
+      <p class="mission-text"><strong>Save every single rupee</strong> <br class="mobile-mission-break">in your home loan journey,<br class="mission-break"><span class="mission-last-line">Across interest, bank charges &amp; EMIs</span></p>
+    </section>
+    <section class="contact-copy" aria-label="Contact">
+      <p class="contact-prompt">New loan or paying a loan? Ask me anything.</p>
+      <p class="contact-line">
+        <a class="contact-phone" href="tel:+919112334367">Call Yash</a>
+        <a class="contact-whatsapp" href="https://wa.me/919112334367?text=Hi" target="_blank" rel="noopener">WhatsApp Yash</a>
+      </p>
     </section>
   </main>
-
-  <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
-    <div class="site-footer-inner">
-      <div class="site-footer-brand">
-        <a href="index.html" aria-label="Shroffin Home">
-          <img
-            class="site-footer-logo"
-            src="images/logos/logo-h-light-clear-781x173.png"
-            alt="Shroffin"
-            width="99"
-            height="22"
-          >
-        </a>
-        <p class="site-footer-tagline">An Independent and transparent banking.</p>
-      </div>
-    </div>
-
-    <hr class="site-footer-rule" aria-hidden="true">
-
-    <div class="site-footer-inner site-footer-legal">
-      <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
-      <div class="site-footer-disclaimer">
-        <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-        <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-        <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-        <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-        <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
-      </div>
-    </div>
-
-    <hr class="site-footer-rule" aria-hidden="true">
-
-    <div class="site-footer-inner">
-      <p class="site-footer-copy">
-        <a href="privacy-policy.html">Privacy Policy</a>
-        <span aria-hidden="true"> · </span>
-        Copyright © 2026 Shroffin. All rights reserved.
-      </p>
-    </div>
-  </footer>
-
-  <script>
-    (function () {
-      var moments = document.querySelectorAll('.home-moment');
-      if (!moments.length) return;
-
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-      if (reduce.matches) {
-        moments.forEach(function (node) {
-          node.classList.add('is-in');
-        });
-        return;
-      }
-
-      if (!('IntersectionObserver' in window)) {
-        moments.forEach(function (node) {
-          node.classList.add('is-in');
-        });
-        return;
-      }
-
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add('is-in');
-            observer.unobserve(entry.target);
-          });
-        },
-        { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
-      );
-
-      moments.forEach(function (node) {
-        observer.observe(node);
-      });
-    })();
-
-    (function () {
-      var nav = document.getElementById('globalnav');
-      var support = document.getElementById('nav-support');
-      var trigger = document.getElementById('nav-support-trigger');
-      var flyout = document.getElementById('nav-support-flyout');
-      var veil = document.getElementById('globalnav-veil');
-      if (!nav || !support || !trigger || !flyout || !veil) return;
-
-      var closeTimer = null;
-      var canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
-
-      function setFlyoutOpen(open) {
-        nav.classList.toggle('flyout-open', open);
-        document.body.classList.toggle('gn-locked', open);
-        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-        flyout.setAttribute('aria-hidden', open ? 'false' : 'true');
-        veil.classList.toggle('is-visible', open);
-        if (open) veil.removeAttribute('hidden');
-        else veil.setAttribute('hidden', '');
-      }
-
-      function openFlyout() {
-        if (closeTimer) {
-          clearTimeout(closeTimer);
-          closeTimer = null;
-        }
-        setFlyoutOpen(true);
-      }
-
-      function closeFlyoutSoon() {
-        if (closeTimer) clearTimeout(closeTimer);
-        closeTimer = setTimeout(function () {
-          setFlyoutOpen(false);
-          closeTimer = null;
-        }, 220);
-      }
-
-      function closeFlyoutNow() {
-        if (closeTimer) {
-          clearTimeout(closeTimer);
-          closeTimer = null;
-        }
-        setFlyoutOpen(false);
-      }
-
-      trigger.addEventListener('click', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        setFlyoutOpen(!nav.classList.contains('flyout-open'));
-      });
-
-      support.addEventListener('mouseenter', function () {
-        if (canHover.matches) openFlyout();
-      });
-
-      support.addEventListener('mouseleave', function (event) {
-        if (!canHover.matches) return;
-        var next = event.relatedTarget;
-        if (next && (flyout.contains(next) || support.contains(next))) return;
-        closeFlyoutSoon();
-      });
-
-      flyout.addEventListener('mouseenter', function () {
-        if (canHover.matches) openFlyout();
-      });
-
-      flyout.addEventListener('mouseleave', function (event) {
-        if (!canHover.matches) return;
-        var next = event.relatedTarget;
-        if (next && (flyout.contains(next) || support.contains(next))) return;
-        closeFlyoutSoon();
-      });
-
-      veil.addEventListener('click', closeFlyoutNow);
-
-      flyout.querySelectorAll('a').forEach(function (link) {
-        link.addEventListener('click', closeFlyoutNow);
-      });
-
-      window.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeFlyoutNow();
-      });
-
-      window.addEventListener('resize', function () {
-        if (!canHover.matches) closeFlyoutNow();
-      });
-    })();
-
-    (function () {
-      var scroll = document.getElementById('fundamentals-scroll');
-      var prev = document.getElementById('fundamentals-prev');
-      var next = document.getElementById('fundamentals-next');
-      if (!scroll || !prev || !next) return;
-
-      var mobileQuery = window.matchMedia('(max-width: 733px)');
-      var animating = false;
-      var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-      /* ScrollGallery duration — calm Move band (~0.9s), soft easeOutQuint */
-      var DURATION = 900;
-
-      function cards() {
-        return Array.prototype.slice.call(scroll.querySelectorAll('.fundamentals-card'));
-      }
-
-      function paddingStart() {
-        var cs = getComputedStyle(scroll);
-        return parseFloat(cs.scrollPaddingInlineStart) || parseFloat(cs.scrollPaddingLeft) || 0;
-      }
-
-      function paddingEnd() {
-        var cs = getComputedStyle(scroll);
-        return parseFloat(cs.scrollPaddingInlineEnd) || parseFloat(cs.scrollPaddingRight) || 0;
-      }
-
-      function maxScrollLeft() {
-        return Math.max(0, scroll.scrollWidth - scroll.clientWidth);
-      }
-
-      /* scrollLeft that matches CSS scroll-snap for each card (incl. padding + last-card end align) */
-      function targetForIndex(idx) {
-        var list = cards();
-        var card = list[idx];
-        if (!card) return 0;
-
-        var scrollRect = scroll.getBoundingClientRect();
-        var cardRect = card.getBoundingClientRect();
-        var cardLeft = cardRect.left - scrollRect.left + scroll.scrollLeft;
-        var max = maxScrollLeft();
-        var target;
-
-        if (idx === list.length - 1) {
-          target = cardLeft + card.offsetWidth - scroll.clientWidth + paddingEnd();
-        } else {
-          target = cardLeft - paddingStart();
-        }
-
-        return Math.max(0, Math.min(max, target));
-      }
-
-      function currentIndex() {
-        var list = cards();
-        var left = scroll.scrollLeft;
-        var best = 0;
-        var bestDist = Infinity;
-        for (var i = 0; i < list.length; i++) {
-          var d = Math.abs(targetForIndex(i) - left);
-          if (d < bestDist) {
-            bestDist = d;
-            best = i;
-          }
-        }
-        return best;
-      }
-
-      function updatePaddles() {
-        if (!mobileQuery.matches) {
-          prev.disabled = true;
-          next.disabled = true;
-          return;
-        }
-        var idx = currentIndex();
-        var max = cards().length - 1;
-        prev.disabled = idx <= 0 || animating;
-        next.disabled = idx >= max || animating;
-      }
-
-      function easeOutQuint(t) {
-        return 1 - Math.pow(1 - t, 5);
-      }
-
-      function finishAnimation(targetLeft) {
-        scroll.scrollLeft = targetLeft;
-        /* Re-enable snap only after layout has settled on the snap target,
-           or mandatory snap yanks the strip and it looks stuck then “comes back”. */
-        requestAnimationFrame(function () {
-          scroll.scrollLeft = targetLeft;
-          scroll.classList.remove('is-animating');
-          animating = false;
-          updatePaddles();
-        });
-      }
-
-      function animateTo(targetLeft) {
-        if (animating) return;
-        var startLeft = scroll.scrollLeft;
-        var delta = targetLeft - startLeft;
-        if (Math.abs(delta) < 1) {
-          updatePaddles();
-          return;
-        }
-
-        if (prefersReduced.matches) {
-          scroll.classList.add('is-animating');
-          scroll.scrollTo({ left: targetLeft, behavior: 'instant' });
-          finishAnimation(targetLeft);
-          return;
-        }
-
-        animating = true;
-        scroll.classList.add('is-animating');
-        updatePaddles();
-        var start = performance.now();
-
-        function frame(now) {
-          var t = Math.min(1, (now - start) / DURATION);
-          scroll.scrollLeft = startLeft + delta * easeOutQuint(t);
-          if (t < 1) {
-            requestAnimationFrame(frame);
-            return;
-          }
-          finishAnimation(targetLeft);
-        }
-
-        requestAnimationFrame(frame);
-      }
-
-      function go(dir) {
-        if (!mobileQuery.matches || animating) return;
-        var idx = currentIndex() + dir;
-        var max = cards().length - 1;
-        if (idx < 0 || idx > max) return;
-        animateTo(targetForIndex(idx));
-      }
-
-      prev.addEventListener('click', function () { go(-1); });
-      next.addEventListener('click', function () { go(1); });
-      scroll.addEventListener('scroll', function () {
-        if (!animating) updatePaddles();
-      }, { passive: true });
-      window.addEventListener('resize', updatePaddles);
-      if (mobileQuery.addEventListener) {
-        mobileQuery.addEventListener('change', updatePaddles);
-      } else if (mobileQuery.addListener) {
-        mobileQuery.addListener(updatePaddles);
-      }
-      updatePaddles();
-    })();
-  </script>
+  <a class="education-loan-button" href="education-loan.html">Education Loan</a>
 </body>
 </html>

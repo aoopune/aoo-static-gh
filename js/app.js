@@ -145,10 +145,9 @@
     { path: 'pro-tips.html', label: 'Pro tips before you apply' },
     { path: 'quick-overview.html', label: 'Quick overview' },
     { path: 'government-schemes.html', label: 'Government schemes' },
-    { path: 'home-loan-insurance.html', label: 'Home loan insurance' },
     { path: 'faq.html', label: 'FAQ' },
     { path: 'document-checklist.html', label: 'Standardised document list' },
-    { path: 'about.html?v=apple1', label: 'About us' }
+    { path: 'about.html', label: 'About us' }
   ];
 
   function inPagesDir() {
