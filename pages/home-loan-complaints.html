@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script>document.documentElement.classList.add('js');</script>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Home loan complaints – Shroffin</title>
-  <meta name="description" content="Home loan complaint steps from your bank to the RBI Ombudsman. Timelines, documents, housing finance company path, and other forums — plain guide.">
+  <title>Grievance redressal – Home loan – Shroffin</title>
+  <meta name="description" content="Home loan grievance redressal: lodge a complaint with the lender, escalate internally, then approach the RBI Ombudsman or NHB as applicable.">
   <link rel="icon" href="../favicon.ico?v=6" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../images/logos/favicon-32.png?v=6">
   <link rel="icon" type="image/png" sizes="16x16" href="../images/logos/favicon-16.png?v=6">
@@ -103,6 +104,7 @@
       --guide-tile: #fff;
       /* Apple Card–style tile radii (mobile-first ladder) */
       --guide-radius: 10px;
+      --guide-type-micro: 12px;   /* legal / micro labels */
     }
 
     @media (min-width: 735px) {
@@ -126,7 +128,6 @@
 
     html {
       scrollbar-gutter: stable;
-      scroll-padding-top: calc(var(--gn-height) + var(--ln-height) + 20px);
     }
 
     body {
@@ -134,230 +135,8 @@
       color: #1d1d1f;
     }
 
-    body.gn-locked {
-      overflow: hidden;
-    }
 
-    /* ——— Apple globalnav ——— */
-    .globalnav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 9999;
-      height: var(--gn-height);
-      background: var(--gn-bg);
-      transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
 
-    .globalnav.flyout-open {
-      background: #fafafc;
-    }
-
-    .globalnav-content {
-      position: relative;
-      z-index: 3;
-      max-width: var(--gn-max);
-      height: var(--gn-height);
-      margin: 0 auto;
-      padding: 0 22px;
-      box-sizing: border-box;
-    }
-
-    .globalnav-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      min-width: 0;
-    }
-
-    .globalnav-item {
-      display: flex;
-      align-items: center;
-      height: 100%;
-    }
-
-    .globalnav-link,
-    .globalnav-support-trigger {
-      display: inline-flex;
-      align-items: center;
-      height: 100%;
-      min-height: 44px;
-      padding: 0 8px;
-      border: 0;
-      background: transparent;
-      color: var(--gn-text);
-      font-family: var(--font-brand);
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 1;
-      text-decoration: none;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .globalnav-link:hover,
-    .globalnav-support-trigger:hover,
-    .globalnav.flyout-open .globalnav-support-trigger,
-    .globalnav-link[aria-current="page"] {
-      color: var(--gn-text-hover);
-    }
-
-    .globalnav-link:focus-visible,
-    .globalnav-support-trigger:focus-visible {
-      outline: 2px solid rgba(29, 29, 31, 0.45);
-      outline-offset: -4px;
-      border-radius: 4px;
-    }
-
-    .globalnav-link-brand {
-      padding-left: 0;
-      padding-right: 4px;
-    }
-
-    .globalnav-logo {
-      display: block;
-      height: 22px;
-      width: auto;
-      max-width: 100%;
-    }
-
-    .globalnav-item-about {
-      margin-left: auto;
-    }
-
-    .globalnav-flyout {
-      position: absolute;
-      top: var(--gn-height);
-      left: 0;
-      right: 0;
-      z-index: 2;
-      overflow: hidden;
-      visibility: hidden;
-      pointer-events: none;
-      max-height: 0;
-      background: #fafafc;
-      transition:
-        max-height 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-flyout {
-      visibility: visible;
-      pointer-events: auto;
-      max-height: 320px;
-    }
-
-    .globalnav-flyout-content {
-      max-width: var(--gn-max);
-      margin: 0 auto;
-      padding: 40px 22px 52px;
-      box-sizing: border-box;
-      opacity: 0;
-      transform: translateY(-6px);
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-flyout-content {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .globalnav-submenu-header {
-      margin: 0 0 18px;
-      color: #6e6e73;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.33337;
-      text-transform: uppercase;
-    }
-
-    .globalnav-submenu-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .globalnav-submenu-list li {
-      opacity: 0;
-      transform: translateY(-6px);
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-submenu-list li {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-        .globalnav.flyout-open .globalnav-submenu-list li:nth-child(1) { transition-delay: 120ms; }
-    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(2) { transition-delay: 200ms; }
-    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(3) { transition-delay: 280ms; }
-
-    .globalnav-submenu-link {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding: 10px 0;
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .globalnav-submenu-link:hover,
-    .globalnav-submenu-link:hover .globalnav-submenu-value {
-      color: #0066cc;
-    }
-
-    .globalnav-submenu-link:focus-visible {
-      outline: 2px solid rgba(29, 29, 31, 0.45);
-      outline-offset: 2px;
-      border-radius: 4px;
-    }
-
-    .globalnav-submenu-label {
-      color: var(--gn-ink);
-      font-size: 24px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.16667;
-    }
-
-    .globalnav-submenu-value {
-      color: #6e6e73;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.42859;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .globalnav-veil {
-      position: fixed;
-      inset: 0;
-      z-index: 9998;
-      background: rgba(0, 0, 0, 0.4);
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav-veil.is-visible {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
 
     /* ——— Localnav (Guide sub-bar) ——— */
     .localnav {
@@ -398,7 +177,7 @@
     .localnav-menu {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: flex-start;
       gap: 20px;
       min-width: 0;
       flex: 1 1 auto;
@@ -407,19 +186,24 @@
 
     .localnav-list {
       list-style: none;
-      margin: 0;
+      margin: 0 0 0 auto;
       padding: 0;
       display: flex;
       align-items: stretch;
       align-self: stretch;
       height: 100%;
-      gap: 20px;
+      gap: 14px;
       min-width: 0;
+      max-width: 100%;
+      width: max-content;
       overflow-x: auto;
+      overscroll-behavior-x: contain;
       scrollbar-width: none;
       -ms-overflow-style: none;
       -webkit-overflow-scrolling: touch;
+      justify-content: flex-start;
     }
+
 
     .localnav-list::-webkit-scrollbar {
       display: none;
@@ -589,7 +373,6 @@
     .guide-moment {
       display: grid;
       gap: 20px;
-      scroll-margin-top: calc(var(--gn-height) + var(--ln-height) + 20px);
       opacity: 0;
       transform: translateY(14px);
       transition:
@@ -611,6 +394,8 @@
     }
 
     .guide-tile {
+      position: relative;
+      overflow: hidden;
       background: var(--guide-tile);
       border-radius: var(--guide-radius);
       padding: clamp(48px, 7vw, 72px) clamp(28px, 5vw, 52px);
@@ -621,37 +406,61 @@
       min-height: 0;
     }
 
+    .guide-tile-mark {
+      position: absolute;
+      top: clamp(28px, 4.5vw, 44px);
+      bottom: auto;
+      right: clamp(28px, 4.5vw, 44px);
+      width: clamp(56px, 9vw, 88px);
+      height: clamp(56px, 9vw, 88px);
+      color: rgba(0, 0, 0, 0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    .guide-tile-mark svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
     .guide-tile--hero {
       min-height: min(52vh, 420px);
       justify-content: center;
-      text-align: center;
-      align-items: center;
+      text-align: left;
+      align-items: flex-start;
       padding-top: clamp(56px, 10vw, 88px);
       padding-bottom: clamp(56px, 10vw, 88px);
     }
 
     .guide-tile--hero .guide-tile-copy {
       max-width: 26em;
-      margin-left: auto;
-      margin-right: auto;
+      margin-left: 0;
+      margin-right: 0;
     }
 
     .guide-tile--stage {
-      text-align: center;
-      align-items: center;
+      text-align: left;
+      align-items: flex-start;
       padding-top: clamp(48px, 8vw, 72px);
       padding-bottom: clamp(48px, 8vw, 72px);
+      padding-right: clamp(28px, 5vw, 52px);
     }
 
     .guide-tile--stage .guide-tile-copy,
     .guide-tile--stage .guide-tile-list,
     .guide-tile--stage .guide-bands,
     .guide-tile--stage .guide-flow,
-    .guide-tile--stage .guide-limits {
+    .guide-tile--stage .guide-limits,
+    .guide-tile--stage .guide-share-list {
       max-width: 40em;
       width: 100%;
-      margin-left: auto;
-      margin-right: auto;
+      margin-left: 0;
+      margin-right: 0;
     }
 
     .guide-tile--stage .guide-doc-rows,
@@ -660,12 +469,16 @@
     .guide-tile--stage .guide-callout,
     .guide-tile--stage .guide-doc-sub,
     .guide-tile--stage .guide-disclosure,
+    .guide-tile--stage .guide-climb,
     .guide-tile--stage .guide-seg,
+    .guide-tile--stage .guide-seg-panels,
     .guide-tile--stage .guide-seg-panel {
       align-self: stretch;
       width: 100%;
       max-width: none;
       box-sizing: border-box;
+      position: relative;
+      z-index: 1;
     }
 
     .guide-tile--stage .guide-doc-table,
@@ -679,15 +492,25 @@
     }
 
     .guide-tile--stage .guide-seg {
-      align-self: center;
+      align-self: flex-start;
       width: auto;
       max-width: 100%;
     }
 
     .guide-tile--stage .guide-tile-list,
     .guide-tile--stage .guide-flow,
-    .guide-tile--stage .guide-limits {
+    .guide-tile--stage .guide-limits,
+    .guide-tile--stage .guide-share-list {
       text-align: left;
+    }
+
+    .guide-tile--stage .guide-tile-title,
+    .guide-tile--stage .guide-tile-copy,
+    .guide-tile--stage .guide-share-list,
+    .guide-tile--stage .guide-limits,
+    .guide-tile--stage .guide-glance {
+      position: relative;
+      z-index: 1;
     }
 
     .guide-flip {
@@ -708,8 +531,12 @@
 
     .guide-flip-face {
       width: 100%;
+      height: 100%;
+      box-sizing: border-box;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .guide-flip-face--front {
@@ -720,10 +547,9 @@
       position: absolute;
       inset: 0;
       transform: rotateY(180deg);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
+      overflow: hidden;
       text-align: left;
-      align-items: stretch;
+      align-items: flex-start;
     }
 
     .guide-flip.is-flipped .guide-flip-face--front {
@@ -732,6 +558,16 @@
 
     .guide-flip:not(.is-flipped) .guide-flip-face--back {
       pointer-events: none;
+    }
+
+    .guide-flip-face .guide-flip-link {
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .guide-flip-face.guide-tile--stage {
+      padding-bottom: clamp(48px, 7vw, 72px);
     }
 
     .guide-limits {
@@ -813,7 +649,12 @@
 
     .guide-flip-link {
       appearance: none;
-      margin: 36px auto 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin: 0 auto;
+      align-self: center;
       padding: 0;
       border: 0;
       background: transparent;
@@ -828,8 +669,46 @@
       text-decoration: none;
     }
 
+    .guide-flip-face--front .guide-flip-link {
+      margin: auto auto 0;
+      padding-top: 64px;
+    }
+
+    .guide-flip-face--back .guide-flip-link {
+      margin-top: auto;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 0;
+      padding-top: 48px;
+      align-self: center;
+    }
+
+    #talk-flip .guide-flip-face--back .guide-climb {
+      flex: 1 1 auto;
+      min-height: 0;
+      margin-top: 20px;
+    }
+
+    #talk-flip .guide-flip-face--back .guide-tile-copy {
+      max-width: none;
+    }
+
+    .guide-flip-link-arrow {
+      display: block;
+      width: 0.55em;
+      height: 0.55em;
+      max-width: 12px;
+      max-height: 12px;
+      flex-shrink: 0;
+      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
     .guide-flip-link:hover {
       text-decoration: underline;
+    }
+
+    .guide-flip-link:hover .guide-flip-link-arrow {
+      transform: translateX(3px);
     }
 
     .guide-flip-link:focus-visible {
@@ -838,9 +717,12 @@
       border-radius: 4px;
     }
 
-    .guide-flip-link--back {
-      margin: 0;
-      font-size: 15px;
+    .guide-flip-link--back .guide-flip-link-arrow {
+      transform: scaleX(-1);
+    }
+
+    .guide-flip-link--back:hover .guide-flip-link-arrow {
+      transform: scaleX(-1) translateX(3px);
     }
 
     .guide-calc-top {
@@ -970,6 +852,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+
       .guide-flip-inner {
         transition: none;
       }
@@ -1036,7 +919,6 @@
     .guide-tile-list li {
       margin: 0;
       padding: 22px 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
       color: #1d1d1f;
       font-size: clamp(18px, 2.4vw, 21px);
       letter-spacing: -0.01em;
@@ -1044,7 +926,7 @@
     }
 
     .guide-tile-list li:first-child {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      padding-top: 0;
     }
 
     .guide-bands {
@@ -1094,6 +976,41 @@
       margin-right: auto;
     }
 
+    .guide-share-list {
+      list-style: none;
+      margin: 20px 0 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    .guide-share-list li {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 0;
+      padding: 16px 0;
+    }
+
+    .guide-share-list li:first-child {
+      padding-top: 0;
+    }
+
+    .guide-share-when {
+      color: #6e6e73;
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+    }
+
+    .guide-share-then {
+      color: #1d1d1f;
+      font-size: clamp(17px, 2.2vw, 19px);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+    }
+
     .guide-flow {
       list-style: none;
       margin: 36px 0 0;
@@ -1117,11 +1034,10 @@
       font-weight: 500;
       letter-spacing: -0.01em;
       line-height: 1.35;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
 
     .guide-flow li:first-child {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      padding-top: 0;
     }
 
     .guide-flow li::before {
@@ -1162,7 +1078,6 @@
     .guide-ask li {
       margin: 0;
       padding: 18px 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
       color: #1d1d1f;
       font-size: clamp(17px, 2.2vw, 19px);
       letter-spacing: -0.01em;
@@ -1170,8 +1085,8 @@
     }
 
     .guide-ask li:first-child {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
       margin-top: 14px;
+      padding-top: 0;
     }
 
     .guide-cost-rows {
@@ -1183,11 +1098,10 @@
 
     .guide-cost-row {
       padding: 24px 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
 
     .guide-cost-row:first-child {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      padding-top: 0;
     }
 
     .guide-cost-name {
@@ -1208,7 +1122,7 @@
     }
 
     .guide-fine-wrap {
-      max-width: 820px;
+      max-width: var(--guide-max);
       margin: 0 auto;
       padding: 0 22px clamp(48px, 8vw, 72px);
       box-sizing: border-box;
@@ -1217,10 +1131,10 @@
     .guide-fine {
       margin: 0;
       color: #6e6e73;
-      font-size: clamp(15px, 1.8vw, 17px);
+      font-size: var(--guide-type-micro);
       font-weight: 400;
       letter-spacing: -0.01em;
-      line-height: 1.47059;
+      line-height: 1.5;
       text-align: left;
     }
 
@@ -1300,13 +1214,76 @@
       text-align: left;
     }
 
+    @media (min-width: 700px) {
+      .guide-doc-rows--cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: clamp(28px, 4vw, 48px);
+        row-gap: 0;
+        align-items: start;
+      }
+
+      .guide-doc-rows--cols .guide-doc-row {
+        padding: 22px 0;
+      }
+
+      /* Top row of the 2-col grid — both cells, not only :first-child */
+      .guide-doc-rows--cols .guide-doc-row:nth-child(-n+2) {
+        padding-top: 0;
+      }
+    }
+
+    .guide-climb {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 36px;
+      width: 100%;
+      margin-top: 28px;
+      text-align: left;
+    }
+
+    @media (min-width: 700px) {
+      .guide-climb {
+        grid-template-columns: 1fr 1fr;
+        column-gap: clamp(28px, 4vw, 48px);
+        row-gap: 0;
+        align-items: start;
+      }
+    }
+
+    .guide-climb-col {
+      min-width: 0;
+    }
+
+    .guide-climb-label {
+      margin: 0 0 8px;
+      padding: 0 0 14px;
+      border-bottom: 1px solid #d2d2d7;
+      color: #1d1d1f;
+      font-size: clamp(21px, 2.6vw, 24px);
+      font-weight: 600;
+      letter-spacing: -0.022em;
+      line-height: 1.2;
+    }
+
+    .guide-climb-col .guide-doc-rows {
+      margin-top: 4px;
+    }
+
+    .guide-climb-col .guide-doc-row {
+      padding: 16px 0;
+    }
+
+    .guide-climb-col .guide-doc-row:first-child {
+      padding-top: 16px;
+    }
+
     .guide-doc-row {
       padding: 22px 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
 
     .guide-doc-row:first-child {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      padding-top: 0;
     }
 
     .guide-doc-name {
@@ -1341,6 +1318,23 @@
       letter-spacing: -0.01em;
     }
 
+    .guide-doc-note a {
+      color: #0066cc;
+      text-decoration: none;
+      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .guide-doc-note a:hover {
+      color: #004499;
+      text-decoration: underline;
+      text-underline-offset: 0.15em;
+    }
+
+    .guide-doc-note a .guide-section-link-arrow {
+      margin-left: 0.15em;
+      font-size: 0.9em;
+    }
+
     .guide-doc-table {
       width: 100%;
       margin-top: 28px;
@@ -1352,7 +1346,6 @@
     .guide-doc-table th,
     .guide-doc-table td {
       padding: 22px 16px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
       vertical-align: middle;
     }
 
@@ -1365,7 +1358,6 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
       line-height: 1.3;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     }
 
     .guide-doc-table th:first-child,
@@ -1492,6 +1484,34 @@
       display: none;
     }
 
+    /* Keep tabbed card height stable — tallest panel wins */
+    .guide-seg-panels {
+      display: grid;
+      width: 100%;
+    }
+
+    .guide-seg-panels > .guide-seg-panel {
+      grid-area: 1 / 1;
+      width: 100%;
+    }
+
+    .guide-seg-panels > .guide-seg-panel[hidden] {
+      display: block;
+      visibility: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .guide-seg-panels > .guide-seg-panel:not([hidden]) {
+      visibility: visible;
+      z-index: 1;
+    }
+
+    .guide-seg-panel .guide-doc-rows,
+    .guide-seg-panel .guide-doc-table {
+      margin-top: 20px;
+    }
+
     .guide-callout {
       margin: 28px 0 0;
       padding: 18px 20px;
@@ -1507,7 +1527,6 @@
     .guide-disclosure {
       margin-top: 36px;
       padding-top: 28px;
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
       text-align: left;
     }
 
@@ -1594,13 +1613,6 @@
       line-height: 1.33337;
     }
 
-    .site-footer-rule {
-      width: min(980px, calc(100% - 40px));
-      margin: 20px auto 0;
-      border: 0;
-      border-top: 1px solid #d2d2d7;
-    }
-
     .site-footer-copy {
       margin: 0;
       padding: 17px 0 40px;
@@ -1639,11 +1651,7 @@
       }
 
       .localnav-list {
-        gap: 16px;
-      }
-
-      .globalnav-content {
-        padding: 0 16px;
+        gap: 12px;
       }
     }
 
@@ -1664,30 +1672,16 @@
         padding-left: 16px;
         padding-right: 16px;
       }
-
-      .globalnav-submenu-label {
-        font-size: 21px;
-      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .globalnav,
-      .globalnav-flyout,
-      .globalnav-flyout-content,
-      .globalnav-submenu-list li,
-      .globalnav-veil,
-      .globalnav-link,
-      .globalnav-support-trigger,
       .localnav-cta {
         transition: none;
       }
-
-      .globalnav-flyout-content,
-      .globalnav-submenu-list li {
-        transform: none;
-      }
     }
   </style>
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=responsive-12">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=responsive-7">
 </head>
 <body>
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
@@ -1727,16 +1721,22 @@
           <a class="globalnav-link" href="../education-loan.html">Education</a>
         </li>
         -->
-        <li class="globalnav-item globalnav-item-about">
-          <a class="globalnav-link" href="guide.html" aria-current="page">Guide</a>
-        </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="about.html">About</a>
+        <li class="globalnav-item globalnav-item-about globalnav-item-flyout" id="nav-guide">
+          <a
+            class="globalnav-link globalnav-flyout-trigger"
+            href="guide.html"
+            id="nav-guide-trigger"
+            aria-expanded="false"
+            aria-controls="nav-guide-flyout"
+            aria-current="page"
+          >
+            Guide
+          </a>
         </li>
         <li class="globalnav-item globalnav-item-support" id="nav-support">
           <button
             type="button"
-            class="globalnav-support-trigger"
+            class="globalnav-flyout-trigger"
             id="nav-support-trigger"
             aria-expanded="false"
             aria-controls="nav-support-flyout"
@@ -1744,9 +1744,54 @@
             Support
           </button>
         </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="about.html">About</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="project-approvals.html">Project Bank Finder</a>
+        </li>
       </ul>
     </div>
 
+    <div class="globalnav-flyout" id="nav-guide-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore guide</h2>
+          <ul class="globalnav-submenu-list">
+            <li>
+              <a class="globalnav-submenu-link" href="guide.html">
+                <span class="globalnav-submenu-label">Overview</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="guide-documents.html">
+                <span class="globalnav-submenu-label">Documents</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="tax-benefits.html">
+                <span class="globalnav-submenu-label">Tax benefits</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="concessions.html">
+                <span class="globalnav-submenu-label">Concessions</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="home-loan-insurance.html">
+                <span class="globalnav-submenu-label">Insurance</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="home-loan-complaints.html" aria-current="page">
+                <span class="globalnav-submenu-label">Grievance redressal</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content">
         <h2 class="globalnav-submenu-header">Get Help</h2>
@@ -1784,24 +1829,24 @@
       <div class="localnav-content">
         <p class="localnav-title">Guide</p>
         <div class="localnav-menu">
-          <ul class="localnav-list">
+                    <ul class="localnav-list">
             <li>
               <a class="localnav-link" href="guide.html">Overview</a>
-            </li>
-            <li>
-              <a class="localnav-link" href="home-loan-insurance.html">Insurance</a>
-            </li>
-            <li>
-              <span class="localnav-link localnav-link-nolink">Prepayment</span>
-            </li>
-            <li>
-              <span class="localnav-link localnav-link-nolink">Charges</span>
             </li>
             <li>
               <a class="localnav-link" href="guide-documents.html">Documents</a>
             </li>
             <li>
-              <a class="localnav-link" href="home-loan-complaints.html" aria-current="page">Complaints</a>
+              <a class="localnav-link" href="tax-benefits.html">Tax benefits</a>
+            </li>
+            <li>
+              <a class="localnav-link" href="concessions.html">Concessions</a>
+            </li>
+            <li>
+              <a class="localnav-link" href="home-loan-insurance.html">Insurance</a>
+            </li>
+            <li>
+              <a class="localnav-link" href="home-loan-complaints.html" aria-current="page">Grievance redressal</a>
             </li>
           </ul>
           <a class="localnav-cta" href="learn-more.html">Explore banks</a>
@@ -1810,342 +1855,426 @@
     </nav>
 
     <header class="guide-hero">
-      <h1 class="guide-hero-title">Write first.<br>Then escalate.</h1>
-      <p class="guide-hero-lead">
-        If something goes wrong on your home loan, there is a fixed path from the lender to RBI. Wait the clock. Escalate with proof.
-      </p>
+      <h1 class="guide-hero-title">
+        Your home loan issue has a fair path.
+      </h1>
     </header>
 
-    <nav class="guide-jump-wrap" aria-label="Complaint sections">
+    <nav class="guide-jump-wrap" aria-label="Grievance redressal sections">
       <ul class="guide-jump">
-        <li><a href="#bank">Bank steps</a></li>
-        <li><a href="#rbi">RBI</a></li>
-        <li><a href="#hfc">Housing finance</a></li>
-        <li><a href="#ready">Before you file</a></li>
-        <li><a href="#links">Links</a></li>
+        <li><a href="#path">Process</a></li>
+        <li><a href="#talk">Complaint</a></li>
+        <li><a href="#write">Contents</a></li>
+        <li><a href="#stuck">Regulator</a></li>
+        <li><a href="#contacts">Contacts</a></li>
       </ul>
     </nav>
 
     <div class="guide-story">
-      <section class="guide-moment">
+
+      <section class="guide-moment" id="path">
         <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">Bank or housing finance company?</h2>
+          <span class="guide-tile-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" focusable="false">
+              <path d="M12.5 24h23" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+              <path d="M28.5 17.5 35 24l-6.5 6.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12.5" cy="24" r="2.25" fill="currentColor"/>
+            </svg>
+          </span>
+          <h2 class="guide-tile-title">Grievance redressal process</h2>
           <p class="guide-tile-copy guide-tile-copy--muted">
-            Open your sanction letter and EMI statement. Use the legal name of the lender, not the brand people use in conversation.
+            The stages from first complaint to the regulator.
           </p>
           <div class="guide-doc-rows">
             <div class="guide-doc-row">
-              <p class="guide-doc-name">Bank home loan</p>
-              <p class="guide-doc-note">Escalate to the RBI Ombudsman at cms.rbi.org.in after the bank stage.</p>
+              <p class="guide-doc-name">Lodging a complaint</p>
+              <p class="guide-doc-note">Many issues get fixed with the bank or HFC.</p>
             </div>
             <div class="guide-doc-row">
-              <p class="guide-doc-name">Housing finance company</p>
-              <p class="guide-doc-note">Escalate to NHB GRIDS at grids.nhbonline.org.in. Housing finance companies are outside the RBI Ombudsman scheme.</p>
+              <p class="guide-doc-name">Complaint in writing</p>
+              <p class="guide-doc-note">Put the same problem on record.</p>
             </div>
+            <div class="guide-doc-row">
+              <p class="guide-doc-name">Final reply</p>
+              <p class="guide-doc-note">About 30 days for a final reply.</p>
+            </div>
+            <div class="guide-doc-row">
+              <p class="guide-doc-name">Approach the regulator</p>
+              <p class="guide-doc-note">Bank → Reserve Bank of India (RBI). Housing finance company → National Housing Bank (NHB).</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="guide-moment" id="talk">
+        <div class="guide-flip" id="talk-flip">
+          <div class="guide-flip-inner">
+            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
+              <span class="guide-tile-mark" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" focusable="false">
+                  <circle cx="18" cy="18" r="5" stroke="currentColor" stroke-width="1.35"/>
+                  <circle cx="30" cy="18" r="5" stroke="currentColor" stroke-width="1.35"/>
+                  <path d="M8.5 34.5c1.8-5 5.2-7.5 9.5-7.5s7.7 2.5 9.5 7.5M20.5 34.5c1.8-5 5.2-7.5 9.5-7.5s7.7 2.5 9.5 7.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <h2 class="guide-tile-title">Lodging a complaint</h2>
+              <p class="guide-tile-copy guide-tile-copy--muted">
+                Register the issue with your bank or HFC first.
+              </p>
+              <div class="guide-doc-rows">
+                <div class="guide-doc-row">
+                  <p class="guide-doc-name">Talk first</p>
+                  <p class="guide-doc-note">Call or visit the loan team. Ask them to check the problem and tell you what they will do next.</p>
+                </div>
+                <div class="guide-doc-row">
+                  <p class="guide-doc-name">Ask for a ticket number</p>
+                  <p class="guide-doc-note">Note the date and what they said.</p>
+                </div>
+                <div class="guide-doc-row">
+                  <p class="guide-doc-name">If they fix it</p>
+                  <p class="guide-doc-note">Ask for written confirmation. You may not need the next steps.</p>
+                </div>
+                <div class="guide-doc-row">
+                  <p class="guide-doc-name">Then put it in writing</p>
+                  <p class="guide-doc-note">If there is no ticket, only vague promises, or the same problem again — write the same facts down next.</p>
+                </div>
+              </div>
+              <button type="button" class="guide-flip-link" data-flip="talk-flip" aria-controls="talk-inside" aria-expanded="false">
+                Escalation matrix
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </article>
+
+            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="talk-inside" aria-hidden="true">
+              <span class="guide-tile-mark" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" focusable="false">
+                  <path d="M9.5 36.5h29" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+                  <path d="M14.5 36.5V20.5l9.5-8 9.5 8v16" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M21.5 36.5v-8h5v8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <h2 class="guide-tile-title">Escalation matrix</h2>
+              <p class="guide-tile-copy guide-tile-copy--muted">
+                Internal levels at the bank or HFC. Contacts are on their website.
+              </p>
+              <div class="guide-climb">
+                <div class="guide-climb-col">
+                  <h3 class="guide-climb-label">Bank</h3>
+                  <div class="guide-doc-rows">
+                    <div class="guide-doc-row">
+                      <p class="guide-doc-name">Branch or customer care</p>
+                      <p class="guide-doc-note">Where your written complaint usually starts.</p>
+                    </div>
+                    <div class="guide-doc-row">
+                      <p class="guide-doc-name">Nodal officer</p>
+                      <p class="guide-doc-note">Next if nothing moves. Listed by zone, circle, or network.</p>
+                    </div>
+                    <div class="guide-doc-row">
+                      <p class="guide-doc-name">Principal Nodal Officer</p>
+                      <p class="guide-doc-note">The bank’s top grievance officer.</p>
+                    </div>
+                    <div class="guide-doc-row">
+                      <p class="guide-doc-name">Internal Ombudsman</p>
+                      <p class="guide-doc-note">Reviews rejected or partly fixed cases. You do not file here first.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="guide-climb-col">
+                  <h3 class="guide-climb-label">Housing finance</h3>
+                  <div class="guide-doc-rows">
+                    <div class="guide-doc-row">
+                      <p class="guide-doc-name">Branch or customer care</p>
+                      <p class="guide-doc-note">Where your written complaint usually starts.</p>
+                    </div>
+                    <div class="guide-doc-row">
+                      <p class="guide-doc-name">Nodal or regional officer</p>
+                      <p class="guide-doc-note">Next if nothing moves. Listed by region on their site.</p>
+                    </div>
+                    <div class="guide-doc-row">
+                      <p class="guide-doc-name">Grievance Redressal Officer</p>
+                      <p class="guide-doc-note">The HFC’s top complaint officer — sometimes head of CRM.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="guide-flip-link guide-flip-link--back" data-flip="talk-flip" aria-controls="talk-inside" aria-expanded="true">
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back
+              </button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="guide-moment" id="write">
+        <article class="guide-tile guide-tile--stage">
+          <span class="guide-tile-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" focusable="false">
+              <path d="M16.5 24.5 21 29l10.5-12" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="10.5" y="10.5" width="27" height="27" rx="4" stroke="currentColor" stroke-width="1.35"/>
+            </svg>
+          </span>
+          <h2 class="guide-tile-title">Complaint contents</h2>
+          <p class="guide-tile-copy guide-tile-copy--muted">
+            Particulars and documents required for a valid complaint.
+          </p>
+          <div class="guide-seg" role="tablist" aria-label="Complaint contents">
+            <button type="button" class="guide-seg-btn" role="tab" id="write-tab-letter" aria-selected="true" aria-controls="write-panel-letter">In the letter</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="write-tab-papers" aria-selected="false" aria-controls="write-panel-papers" tabindex="-1">Papers to keep</button>
+          </div>
+
+          <div class="guide-seg-panels">
+          <div class="guide-seg-panel" role="tabpanel" id="write-panel-letter" aria-labelledby="write-tab-letter">
+            <div class="guide-doc-rows guide-doc-rows--cols">
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Who you are</p>
+                <p class="guide-doc-note">Your full name, mobile, email, and address.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Your loan</p>
+                <p class="guide-doc-note">Loan account number and branch.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">What happened</p>
+                <p class="guide-doc-note">The facts with dates. Any money involved.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">What you want fixed</p>
+                <p class="guide-doc-note">A refund, a correction, your papers, written confirmation, or compensation you can show with papers.</p>
+              </div>
+            </div>
+            <p class="guide-callout">
+              Send it by email, app, website form, or a letter they acknowledge.
+            </p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="write-panel-papers" aria-labelledby="write-tab-papers" hidden>
+            <div class="guide-doc-rows guide-doc-rows--cols">
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Loan papers</p>
+                <p class="guide-doc-note">Sanction letter and Key Fact Statement.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Your complaint trail</p>
+                <p class="guide-doc-note">The written complaint and the acknowledgment or ticket.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Their reply, or silence</p>
+                <p class="guide-doc-note">The final reply, or proof that 30 days passed with no answer.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Evidence pack</p>
+                <p class="guide-doc-note">Statements, charge receipts, emails, SMS.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">If papers are delayed after closure</p>
+                <p class="guide-doc-note">Keep the loan-closed letter and proof you paid in full. Property papers should come back within 30 days. If the lender is late, RBI allows ₹5,000 a day. If papers are lost, the lender replaces them at its cost.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">If someone files for you</p>
+                <p class="guide-doc-note">You need an authorisation letter. An advocate can file with the Ombudsman only if that advocate is the person who was wronged.</p>
+              </div>
+            </div>
+          </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="guide-moment" id="stuck">
+        <article class="guide-tile guide-tile--stage">
+          <span class="guide-tile-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" focusable="false">
+              <path d="M12.5 34.5h23" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+              <path d="M16.5 34.5V22.5h15v12" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20.5 22.5V16.5h7v6" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22.5 28.5h3M22.5 32.5h3" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <h2 class="guide-tile-title">Approach the regulator</h2>
+          <p class="guide-tile-copy guide-tile-copy--muted">
+            When you can file, how to file, and what can be awarded.
+          </p>
+          <div class="guide-seg" role="tablist" aria-label="Ombudsman and NHB">
+            <button type="button" class="guide-seg-btn" role="tab" id="stuck-tab-when" aria-selected="true" aria-controls="stuck-panel-when">Time limits</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="stuck-tab-file" aria-selected="false" aria-controls="stuck-panel-file" tabindex="-1">Filing with RBI</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="stuck-tab-award" aria-selected="false" aria-controls="stuck-panel-award" tabindex="-1">Awards and limits</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="stuck-tab-hfc" aria-selected="false" aria-controls="stuck-panel-hfc" tabindex="-1">Filing with NHB</button>
+          </div>
+
+          <div class="guide-seg-panels">
+          <div class="guide-seg-panel" role="tabpanel" id="stuck-panel-when" aria-labelledby="stuck-tab-when">
+            <div class="guide-doc-rows">
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">When you may file with RBI</p>
+                <p class="guide-doc-note">After the 30-day wait with no final reply — or sooner, if the bank already gave a final reply and the issue is still not fixed.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Deadline to file</p>
+                <p class="guide-doc-note">Within 90 days of the bank’s last communication, or of the day the 30-day wait ended if there was no reply. Use the later of those two dates.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Before you file</p>
+                <p class="guide-doc-note">Incomplete, anonymous, or suggestion-only complaints are not accepted. A request beyond what the Ombudsman can grant may be rejected.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="stuck-panel-file" aria-labelledby="stuck-tab-file" hidden>
+            <div class="guide-doc-rows">
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Online</p>
+                <p class="guide-doc-note">File through RBI CMS. Keep the complaint number.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Email or post</p>
+                <p class="guide-doc-note">Send the complaint to CRPC by email or by post.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Helpline</p>
+                <p class="guide-doc-note">Explains the process. Does not register the complaint.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="stuck-panel-award" aria-labelledby="stuck-tab-award" hidden>
+            <div class="guide-doc-rows guide-doc-rows--cols">
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Size of the dispute</p>
+                <p class="guide-doc-note">No upper limit on the home loan dispute amount.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Consequential loss</p>
+                <p class="guide-doc-note">Proven consequential loss capped at ₹30 lakh.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Time, expense, harassment</p>
+                <p class="guide-doc-note">Additional compensation capped at ₹3 lakh.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">If you receive an Award</p>
+                <p class="guide-doc-note">Accept it in writing to the bank within 30 days, or it lapses.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Bank after an Award</p>
+                <p class="guide-doc-note">30 days to comply, or to appeal where the scheme allows.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Your appeal</p>
+                <p class="guide-doc-note">Certain Awards or rejections may go to the RBI Appellate Authority within 30 days, usually through CMS or the appellate email. Not every closure is appealable. Read the decision letter carefully.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="stuck-panel-hfc" aria-labelledby="stuck-tab-hfc" hidden>
+            <div class="guide-doc-rows">
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">File with NHB</p>
+                <p class="guide-doc-note">File through NHB GRIDS, or use the complaint cell form on nhb.org.in.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Appeal at NHB</p>
+                <p class="guide-doc-note">You may appeal to NHB’s Chief Grievance Redressal Officer within 30 days of the status intimation, as NHB states.</p>
+              </div>
+            </div>
+          </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="guide-moment" id="limits">
+        <article class="guide-tile guide-tile--stage">
+          <span class="guide-tile-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" focusable="false">
+              <rect x="11.5" y="12.5" width="25" height="23" rx="3" stroke="currentColor" stroke-width="1.35"/>
+              <path d="M17.5 20.5h13M17.5 25.5h13M17.5 30.5h8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <h2 class="guide-tile-title">Exclusions</h2>
+          <p class="guide-tile-copy guide-tile-copy--muted">
+            Matters outside this redressal path.
+          </p>
+          <div class="guide-doc-rows guide-doc-rows--cols">
             <div class="guide-doc-row">
               <p class="guide-doc-name">Wrong credit report</p>
-              <p class="guide-doc-note">Dispute with the credit bureau and the bank that sent the data. Then use RBI CMS against the bureau or the bank if needed.</p>
+              <p class="guide-doc-note">Start with the credit bureau and the bank that sent the data. Then RBI CMS if you still need help.</p>
+            </div>
+            <div class="guide-doc-row">
+              <p class="guide-doc-name">The bank refused the loan</p>
+              <p class="guide-doc-note">This path will not force them to sanction it.</p>
+            </div>
+            <div class="guide-doc-row">
+              <p class="guide-doc-name">You only want a better rate</p>
+              <p class="guide-doc-note">That is not a service complaint by itself. Compare and negotiate with lenders.</p>
+            </div>
+            <div class="guide-doc-row">
+              <p class="guide-doc-name">The same matter is already in court or a tribunal</p>
+              <p class="guide-doc-note">A later Ombudsman filing on the same matter normally closes. Pick one main track.</p>
+            </div>
+            <div class="guide-doc-row">
+              <p class="guide-doc-name">Loan-linked insurance feels mis-sold</p>
+              <p class="guide-doc-note">Take the policy side to the insurer and IRDAI. If the lender’s service around the sale is the problem, still write to the lender.</p>
+            </div>
+            <div class="guide-doc-row">
+              <p class="guide-doc-name">Fraud, bribery, or criminal harassment</p>
+              <p class="guide-doc-note">Go to the police for the crime. Use bank vigilance for staff bribery. You can still raise the loan service side with the lender.</p>
+            </div>
+            <div class="guide-doc-row">
+              <p class="guide-doc-name">Consumer Commission, civil court, or Lok Adalat</p>
+              <p class="guide-doc-note">Other legal tracks. National Consumer Helpline and CPGRAMS can sit beside this path.</p>
             </div>
           </div>
         </article>
       </section>
 
-      <section class="guide-moment">
+      <section class="guide-moment" id="contacts">
         <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">What you can complain about</h2>
-          <p class="guide-tile-copy">
-            The Ombudsman route covers deficiency in service. In plain words: the lender did not follow the rules, the contract, or fair service it was required to give.
-          </p>
-          <ul class="guide-tile-list">
-            <li>Wrong or unexplained charges</li>
-            <li>Foreclosure or closure fees that clash with RBI directions on floating-rate individual home loans</li>
-            <li>Delay in sanction or disbursement without clear reason</li>
-            <li>Interest reset or calculation errors tied to published rules or your sanction terms</li>
-            <li>Delay returning original property papers after full repayment</li>
-            <li>Delay in NOC, closure letter, or removal of registered charge</li>
-            <li>Recovery agent harassment</li>
-            <li>Wrong reporting of your loan to a credit bureau by the bank</li>
-          </ul>
-        </article>
-      </section>
-
-      <section class="guide-moment">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">What this path usually will not decide</h2>
-          <p class="guide-tile-copy">
-            The Ombudsman will not force a bank to approve a home loan it rejected. It will not decide a pure bargaining fight over the offered rate as if that alone were a service case.
-          </p>
+          <span class="guide-tile-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" focusable="false">
+              <path d="M18.5 29.5 29.5 18.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+              <path d="M22 16.5h9.5V26" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14.5 21.5v12a2 2 0 0 0 2 2h12" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <h2 class="guide-tile-title">Contacts</h2>
           <p class="guide-tile-copy guide-tile-copy--muted">
-            The same grievance already pending in a court or tribunal is normally closed as non-maintainable. Incomplete, anonymous, or suggestion-only filings fail. You must complain to the lender in writing before RBI.
+            Official addresses and numbers.
           </p>
-        </article>
-      </section>
-
-      <section class="guide-moment" id="bank">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">The path for a bank home loan</h2>
-          <div class="guide-doc-rows">
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">1. Written complaint to the bank</p>
-              <p class="guide-doc-note">Use email, app, website form, or a letter with acknowledgment. Name the loan account, dates, what went wrong, and the exact fix you want. Keep proof.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">2. Bank internal review</p>
-              <p class="guide-doc-note">Branch, customer care, then nodal officer if needed. If the bank rejects or only partly fixes the issue, it must send the case to its Internal Ombudsman before the final reply.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">3. Final bank reply within 30 days</p>
-              <p class="guide-doc-note">The bank must give a final decision within 30 days of receiving your complaint. You may escalate after 30 days of silence, or earlier if the reply is unsatisfactory.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">4. RBI Ombudsman</p>
-              <p class="guide-doc-note">File at cms.rbi.org.in, or email crpc@rbi.org.in, or post to the Centralised Receipt and Processing Centre in Chandigarh. No fee.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">5. Award or appeal</p>
-              <p class="guide-doc-note">If an Award is passed, accept it in writing to the bank within 30 days or it lapses. Some decisions can be appealed inside RBI within 30 days.</p>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section class="guide-moment">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">How to write the bank complaint</h2>
-          <p class="guide-tile-copy">
-            One clear letter beats many angry messages. Put everything that matters in a single thread you can attach later.
-          </p>
-          <ul class="guide-tile-list">
-            <li>Full name, mobile, email, address</li>
-            <li>Loan account number and branch</li>
-            <li>What happened, with dates</li>
-            <li>Money involved, if any</li>
-            <li>Exact relief sought — refund, correction, papers, written confirmation, compensation</li>
-            <li>Copies of sanction letter, statements, charge proofs, earlier emails or SMS</li>
-          </ul>
-          <p class="guide-callout">
-            Save the ticket number, sent-mail copy, courier receipt, or screen capture of the form submission.
-          </p>
-        </article>
-      </section>
-
-      <section class="guide-moment" id="rbi">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">RBI filing window under the 2026 scheme</h2>
-          <p class="guide-tile-copy guide-tile-copy--muted">
-            From 1 July 2026, complaints follow the Reserve Bank Integrated Ombudsman Scheme, 2026.
-          </p>
-          <div class="guide-doc-rows">
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Wait for the bank</p>
-              <p class="guide-doc-note">30 days from receipt of your written complaint, unless a special RBI timeline is longer.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">File with RBI</p>
-              <p class="guide-doc-note">Within 90 days of the bank’s last communication, or of the end of that 30-day wait. Use whichever date is later.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Do not delay</p>
-              <p class="guide-doc-note">Older practice allowed about 1 year. The 2026 window is shorter. Act when the bank stage ends.</p>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section class="guide-moment">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">Where and how to file with RBI</h2>
-          <div class="guide-doc-rows">
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Online</p>
-              <p class="guide-doc-note">https://cms.rbi.org.in — prefer this. Keep the complaint number.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Email</p>
-              <p class="guide-doc-note">crpc@rbi.org.in with the prescribed details and attachments.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Post</p>
-              <p class="guide-doc-note">Centralised Receipt and Processing Centre, Reserve Bank of India, Central Vista, Sector 17, Chandigarh 160017.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Helpline</p>
-              <p class="guide-doc-note">Toll-free 14448 can guide you. It does not register the complaint itself.</p>
-            </div>
-          </div>
-          <p class="guide-callout">
-            You may use an authorised representative. An advocate can file only if the advocate is the aggrieved customer.
-          </p>
-        </article>
-      </section>
-
-      <section class="guide-moment">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">What RBI can award</h2>
-          <p class="guide-tile-copy">
-            There is no upper limit on the size of the home loan dispute you can bring. Compensation for proven consequential loss is capped at ₹30 lakh. Extra compensation for time, expense, and harassment is capped at ₹3 lakh.
-          </p>
-          <p class="guide-tile-copy guide-tile-copy--muted">
-            Asking for more than the Ombudsman can grant can get the case rejected. Ask for what you can show with papers.
-          </p>
-        </article>
-      </section>
-
-      <section class="guide-moment">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">After an Award</h2>
-          <p class="guide-tile-copy">
-            Send a letter accepting the Award in full and final settlement to the bank within 30 days of receiving it. If you miss that, the Award can lapse.
-          </p>
-          <p class="guide-tile-copy guide-tile-copy--muted">
-            The bank then has 30 days to comply or to appeal where the scheme allows. You may also appeal certain Awards or rejections to the RBI Appellate Authority within 30 days, usually through CMS or aaos@rbi.org.in. Not every closure is appealable. Read the letter.
-          </p>
-        </article>
-      </section>
-
-      <section class="guide-moment" id="hfc">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">If your loan is with a housing finance company</h2>
-          <div class="guide-doc-rows">
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">1. Write to the HFC</p>
-              <p class="guide-doc-note">Use its published grievance or nodal contacts. Keep acknowledgment.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">2. Wait about 30 days</p>
-              <p class="guide-doc-note">Or escalate earlier if the reply is unsatisfactory.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">3. File with NHB</p>
-              <p class="guide-doc-note">Use grids.nhbonline.org.in or the NHB complaint cell form published on nhb.org.in.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">4. NHB appeal</p>
-              <p class="guide-doc-note">If still unhappy, prefer an appeal to NHB’s Chief Grievance Redressal Officer within the time stated on the status letter, often 30 days.</p>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section class="guide-moment">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">Property papers after you close the loan</h2>
-          <p class="guide-tile-copy">
-            After full repayment, the lender must return original property documents and remove the registered charge within 30 days. Delay attributable to the lender attracts compensation of ₹5,000 for each day of delay under RBI directions.
-          </p>
-          <p class="guide-tile-copy guide-tile-copy--muted">
-            If papers are lost or damaged, the lender must help obtain duplicates at its cost. An extra 30 days may apply before the daily compensation clock in those cases. Put the closure date and return request in writing.
-          </p>
-        </article>
-      </section>
-
-      <section class="guide-moment">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">Other forums around this path</h2>
-          <p class="guide-tile-copy guide-tile-copy--muted">
-            These do not replace the bank-to-RBI sequence for bank service cases. They sit beside it when the problem needs a different door.
-          </p>
-          <div class="guide-doc-rows">
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">National Consumer Helpline</p>
-              <p class="guide-doc-note">1915 or consumerhelpline.gov.in. Pre-litigation help.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">CPGRAMS</p>
-              <p class="guide-doc-note">pgportal.gov.in. Central public grievance portal. Sometimes used with public sector banks.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Consumer Commission</p>
-              <p class="guide-doc-note">Deficiency in service and unfair trade practice cases, with compensation.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Civil court</p>
-              <p class="guide-doc-note">Contract and larger disputes.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Lok Adalat</p>
-              <p class="guide-doc-note">Compromise settlement when both sides want closure.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Police</p>
-              <p class="guide-doc-note">Fraud, forged papers, or criminal recovery harassment.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Bank vigilance</p>
-              <p class="guide-doc-note">Staff corruption or bribery allegations, not ordinary EMI math.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Insurance regulator</p>
-              <p class="guide-doc-note">Mis-selling of loan-linked insurance can also go through IRDAI pathways.</p>
-            </div>
-          </div>
-          <p class="guide-callout">
-            Filing the same civil grievance in court before or while using the Ombudsman can block the Ombudsman case. Choose the main track with care.
-          </p>
-        </article>
-      </section>
-
-      <section class="guide-moment" id="ready">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">Documents to keep ready</h2>
-          <ul class="guide-tile-list">
-            <li>Loan account number and ID proof</li>
-            <li>Sanction letter and Key Fact Statement</li>
-            <li>Your written complaint to the lender and the acknowledgment</li>
-            <li>Lender’s final reply, or proof of 30 days of silence</li>
-            <li>Statements, charge receipts, emails, SMS</li>
-            <li>Foreclosure letter and payment proof if papers are delayed</li>
-            <li>Clear calculation of loss and compensation claimed</li>
-            <li>Authorisation letter if someone files for you</li>
-          </ul>
-        </article>
-      </section>
-
-      <section class="guide-moment">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">Before you escalate to RBI</h2>
-          <ul class="guide-tile-list">
-            <li>You already wrote to the bank and can prove it.</li>
-            <li>Thirty days have passed, or you have an unsatisfactory reply.</li>
-            <li>You are still inside the 90-day filing window.</li>
-            <li>The grievance is a service issue, not a pure loan refusal.</li>
-            <li>The same matter is not already pending in a court or tribunal.</li>
-            <li>Your attachments are complete and your relief ask is specific.</li>
-          </ul>
-        </article>
-      </section>
-
-      <section class="guide-moment" id="links">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">Official links</h2>
-          <div class="guide-doc-rows">
+          <div class="guide-doc-rows guide-doc-rows--cols">
             <div class="guide-doc-row">
               <p class="guide-doc-name">RBI CMS</p>
-              <p class="guide-doc-note">https://cms.rbi.org.in</p>
+              <p class="guide-doc-note"><a href="https://cms.rbi.org.in" target="_blank" rel="noopener noreferrer">cms.rbi.org.in<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI CMS page)</span></a></p>
             </div>
             <div class="guide-doc-row">
               <p class="guide-doc-name">RBI contact centre</p>
-              <p class="guide-doc-note">14448</p>
+              <p class="guide-doc-note"><a href="tel:14448">14448</a></p>
             </div>
             <div class="guide-doc-row">
               <p class="guide-doc-name">CRPC email</p>
-              <p class="guide-doc-note">crpc@rbi.org.in</p>
+              <p class="guide-doc-note"><a href="mailto:crpc@rbi.org.in">crpc@rbi.org.in</a></p>
+            </div>
+            <div class="guide-doc-row">
+              <p class="guide-doc-name">CRPC post</p>
+              <p class="guide-doc-note">Centralised Receipt and Processing Centre, Reserve Bank of India, Central Vista, Sector 17, Chandigarh 160017.</p>
             </div>
             <div class="guide-doc-row">
               <p class="guide-doc-name">Appellate email</p>
-              <p class="guide-doc-note">aaos@rbi.org.in</p>
+              <p class="guide-doc-note"><a href="mailto:aaos@rbi.org.in">aaos@rbi.org.in</a></p>
             </div>
             <div class="guide-doc-row">
               <p class="guide-doc-name">NHB GRIDS</p>
-              <p class="guide-doc-note">https://grids.nhbonline.org.in</p>
+              <p class="guide-doc-note"><a href="https://grids.nhbonline.org.in" target="_blank" rel="noopener noreferrer">grids.nhbonline.org.in<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB GRIDS page)</span></a></p>
             </div>
             <div class="guide-doc-row">
               <p class="guide-doc-name">National Consumer Helpline</p>
-              <p class="guide-doc-note">1915 · https://consumerhelpline.gov.in</p>
+              <p class="guide-doc-note"><a href="tel:1915">1915</a> · <a href="https://consumerhelpline.gov.in" target="_blank" rel="noopener noreferrer">consumerhelpline.gov.in<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></p>
             </div>
             <div class="guide-doc-row">
               <p class="guide-doc-name">CPGRAMS</p>
-              <p class="guide-doc-note">https://pgportal.gov.in</p>
+              <p class="guide-doc-note"><a href="https://pgportal.gov.in" target="_blank" rel="noopener noreferrer">pgportal.gov.in<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official CPGRAMS page)</span></a></p>
             </div>
           </div>
         </article>
@@ -2154,38 +2283,195 @@
 
     <div class="guide-fine-wrap">
       <p class="guide-fine">
-        Education only. Not legal advice. Shroffin is not a bank, NBFC, or lender. We do not approve loans and we do not file Ombudsman complaints for you. Timelines and compensation caps follow the Reserve Bank Integrated Ombudsman Scheme, 2026, in force from 1 July 2026, plus related RBI directions. Portals and circulars can change. Recheck before you file.
+        This page is education only, not legal advice. We do not file Ombudsman or NHB complaints for you. Timelines and compensation caps follow the Reserve Bank Integrated Ombudsman Scheme, 2026 (RB-IOS), in force from 1 July 2026, plus related RBI directions. Portals and circulars can change. Recheck official sources before you file.
       </p>
     </div>
   </main>
 
+  <!-- SHROFFIN_FOOTER_START -->
   <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
     <div class="site-footer-inner">
-      <div class="site-footer-brand">
-        <a href="../index.html" aria-label="Shroffin Home">
-          <img
-            class="site-footer-logo"
-            src="../images/logos/logo-h-light-clear-781x173.png"
-            alt="Shroffin"
-            width="99"
-            height="22"
-          >
-        </a>
-        <p class="site-footer-tagline">An Independent and transparent banking.</p>
+      <div class="site-footer-directory">
+        <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
+          <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/guide.html">Overview</a></li>
+            <li><a href="/pages/guide-documents.html">Documents</a></li>
+            <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
+            <li><a href="/pages/concessions.html">Concessions</a></li>
+            <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
+            <li><a href="/pages/home-loan-complaints.html">Grievance redressal</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-quick-title">
+          <h2 class="site-footer-heading" id="footer-quick-title">Quick links</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/learn-more.html">Explore banks</a></li>
+            <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-company-title">
+          <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/about.html">About</a></li>
+            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+          </ul>
+        </nav>
+
+        <section class="site-footer-group" aria-labelledby="footer-support-title">
+          <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
+          <ul class="site-footer-list">
+            <li><a href="mailto:support@shroffin.com">Email</a></li>
+            <li><a href="tel:+919112334367">Call</a></li>
+          </ul>
+        </section>
+
+        <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
+          <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
+          <ul class="site-footer-list">
+            <li>
+              <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
+        <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
+        <div class="site-footer-disclaimer">
+          <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+          <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+          <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+          <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+          <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+        </div>
+      </section>
+
+      <div class="site-footer-bottom">
+        <div class="site-footer-bottom-row">
+          <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
+          <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
+            <ul class="site-footer-legal-links">
+              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
+              <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
+              <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
-
-    <hr class="site-footer-rule" aria-hidden="true">
-
-    <div class="site-footer-inner">
-      <p class="site-footer-copy">
-        <a href="../privacy-policy.html">Privacy Policy</a>
-        <span aria-hidden="true"> · </span>
-        Copyright © 2026 Shroffin. All rights reserved.
-      </p>
-    </div>
   </footer>
+  <!-- SHROFFIN_FOOTER_END -->
 
+  <script>
+    (function () {
+      document.querySelectorAll('.guide-flip').forEach(function (flip) {
+        var inner = flip.querySelector('.guide-flip-inner');
+        var front = flip.querySelector('.guide-flip-face--front');
+        var back = flip.querySelector('.guide-flip-face--back');
+        if (!inner || !front) return;
+
+        var lockedHeight = 0;
+        var syncRaf = 0;
+
+        function applyHeight(px) {
+          if (!(px > 0)) return;
+          var current = parseFloat(inner.style.height) || 0;
+          if (Math.abs(current - px) > 1) inner.style.height = px + 'px';
+        }
+
+        function syncHeight() {
+          if (!flip.classList.contains('is-flipped')) {
+            inner.style.height = 'auto';
+            lockedHeight = front.offsetHeight;
+            applyHeight(lockedHeight);
+            return;
+          }
+          /* Keep the same card size as the front — like Guide EMI / charges flips. */
+          applyHeight(lockedHeight || front.offsetHeight);
+        }
+
+        function setFlipped(open) {
+          if (open) {
+            if (lockedHeight <= 0) lockedHeight = front.offsetHeight;
+            applyHeight(lockedHeight || front.offsetHeight);
+          }
+          flip.classList.toggle('is-flipped', open);
+          if (back) back.setAttribute('aria-hidden', open ? 'false' : 'true');
+          flip.querySelectorAll('[data-flip]').forEach(function (btn) {
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          });
+          window.requestAnimationFrame(function () {
+            syncHeight();
+          });
+        }
+
+        flip.querySelectorAll('[data-flip]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            setFlipped(!flip.classList.contains('is-flipped'));
+          });
+        });
+
+        window.addEventListener('resize', function () {
+          if (syncRaf) window.cancelAnimationFrame(syncRaf);
+          syncRaf = window.requestAnimationFrame(function () {
+            syncRaf = 0;
+            lockedHeight = 0;
+            syncHeight();
+          });
+        });
+
+        syncHeight();
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      document.querySelectorAll('.guide-seg[role="tablist"]').forEach(function (seg) {
+        var tabs = seg.querySelectorAll('[role="tab"]');
+        var panelIds = Array.prototype.map.call(tabs, function (tab) {
+          return tab.getAttribute('aria-controls');
+        });
+        var panels = panelIds.map(function (id) {
+          return document.getElementById(id);
+        }).filter(Boolean);
+
+        function activateTab(tab) {
+          tabs.forEach(function (btn) {
+            var selected = btn === tab;
+            btn.setAttribute('aria-selected', selected ? 'true' : 'false');
+            btn.tabIndex = selected ? 0 : -1;
+          });
+          panels.forEach(function (panel) {
+            panel.hidden = panel.id !== tab.getAttribute('aria-controls');
+          });
+        }
+
+        tabs.forEach(function (tab) {
+          tab.addEventListener('click', function () {
+            activateTab(tab);
+          });
+          tab.addEventListener('keydown', function (event) {
+            var index = Array.prototype.indexOf.call(tabs, tab);
+            var next = -1;
+            if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+            if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+            if (next >= 0) {
+              event.preventDefault();
+              activateTab(tabs[next]);
+              tabs[next].focus();
+            }
+          });
+        });
+      });
+    })();
+  </script>
   <script>
     (function () {
       var moments = document.querySelectorAll('.guide-moment');
@@ -2215,94 +2501,24 @@
       });
     })();
   </script>
+
   <script>
     (function () {
-      var nav = document.getElementById('globalnav');
-      var support = document.getElementById('nav-support');
-      var trigger = document.getElementById('nav-support-trigger');
-      var flyout = document.getElementById('nav-support-flyout');
-      var veil = document.getElementById('globalnav-veil');
-      if (!nav || !support || !trigger || !flyout || !veil) return;
-
-      var closeTimer = null;
-      var canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
-
-      function setFlyoutOpen(open) {
-        nav.classList.toggle('flyout-open', open);
-        document.body.classList.toggle('gn-locked', open);
-        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-        flyout.setAttribute('aria-hidden', open ? 'false' : 'true');
-        veil.classList.toggle('is-visible', open);
-        if (open) veil.removeAttribute('hidden');
-        else veil.setAttribute('hidden', '');
+      var list = document.querySelector('.localnav-list');
+      var current = list && list.querySelector('.localnav-link[aria-current="page"]');
+      if (!list || !current) return;
+      // Always start from the left so Overview + Tax Benefits stay reachable.
+      list.scrollLeft = 0;
+      if (list.scrollWidth <= list.clientWidth) return;
+      var listLeft = list.getBoundingClientRect().left;
+      var cur = current.getBoundingClientRect();
+      var pad = 12;
+      if (cur.right > listLeft + list.clientWidth - pad) {
+        list.scrollLeft = Math.max(0, current.offsetLeft + current.offsetWidth - list.clientWidth + pad);
       }
-
-      function openFlyout() {
-        if (closeTimer) {
-          clearTimeout(closeTimer);
-          closeTimer = null;
-        }
-        setFlyoutOpen(true);
-      }
-
-      function closeFlyoutSoon() {
-        if (closeTimer) clearTimeout(closeTimer);
-        closeTimer = setTimeout(function () {
-          setFlyoutOpen(false);
-          closeTimer = null;
-        }, 220);
-      }
-
-      function closeFlyoutNow() {
-        if (closeTimer) {
-          clearTimeout(closeTimer);
-          closeTimer = null;
-        }
-        setFlyoutOpen(false);
-      }
-
-      trigger.addEventListener('click', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        setFlyoutOpen(!nav.classList.contains('flyout-open'));
-      });
-
-      support.addEventListener('mouseenter', function () {
-        if (canHover.matches) openFlyout();
-      });
-
-      support.addEventListener('mouseleave', function (event) {
-        if (!canHover.matches) return;
-        var next = event.relatedTarget;
-        if (next && (flyout.contains(next) || support.contains(next))) return;
-        closeFlyoutSoon();
-      });
-
-      flyout.addEventListener('mouseenter', function () {
-        if (canHover.matches) openFlyout();
-      });
-
-      flyout.addEventListener('mouseleave', function (event) {
-        if (!canHover.matches) return;
-        var next = event.relatedTarget;
-        if (next && (flyout.contains(next) || support.contains(next))) return;
-        closeFlyoutSoon();
-      });
-
-      veil.addEventListener('click', closeFlyoutNow);
-
-      flyout.querySelectorAll('a').forEach(function (link) {
-        link.addEventListener('click', closeFlyoutNow);
-      });
-
-      window.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeFlyoutNow();
-      });
-
-      window.addEventListener('resize', function () {
-        if (!canHover.matches) closeFlyoutNow();
-      });
     })();
   </script>
+  <script src="../js/shroffin-nav.js?v=responsive-6"></script>
+  <script src="../js/shroffin-guide.js?v=responsive-5"></script>
 </body>
 </html>

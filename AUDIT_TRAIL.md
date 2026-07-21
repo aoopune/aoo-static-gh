@@ -57,7 +57,7 @@ This document is the comprehensive audit trail of requirements, implementation s
   1. **Compare on your own** – "Browse loan eligibility criteria, features, fees & charges, etc. across all banks in India at your own pace"
   2. **See what fits you** – "Takes 20 seconds. Answer 6 questions. No documents needed."
 - **4 links below cards** (homepage content, not navbar): Frequently Asked Questions | PM-Vidyalaxmi Scheme & Bank Interest rates | Government Schemes | Standardized Document list
-- **Footer**: "Let us know anything we should know by: Call / WhatsApp : +91 91123 34367, Mail: aoopune@gmail.com"
+- **Footer**: "Let us know anything we should know by: Call / WhatsApp : +91 91123 34367, Mail: support@shroffin.com"
 
 ### Page 2 – Compare on your own
 - Heading: "Compare on your own across all banks"

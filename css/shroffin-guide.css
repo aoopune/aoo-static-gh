@@ -1,0 +1,683 @@
+  :root {
+    --shroffin-ln-height: 52px;
+  }
+
+  .guide-content {
+    container-type: inline-size;
+  }
+
+  .localnav {
+    position: sticky;
+    inset-block-start: var(--shroffin-gn-height, 48px);
+    z-index: 9000;
+    block-size: var(--shroffin-ln-height);
+    background: rgba(255, 255, 255, 0.82);
+    border-block-end: 1px solid rgba(0, 0, 0, 0.16);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  .localnav-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    inline-size: min(var(--shroffin-content-max, 1068px), 100%);
+    block-size: 100%;
+    gap: 1rem;
+    margin-inline: auto;
+    padding-inline: max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right));
+    box-sizing: border-box;
+  }
+
+  .localnav-title {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: baseline;
+    gap: 0.375rem;
+    margin: 0;
+    font-size: 1.3125rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .localnav-current-label {
+    display: none;
+  }
+
+  .localnav-menu {
+    display: flex;
+    align-items: stretch;
+    min-inline-size: 0;
+    block-size: 100%;
+    margin-inline-start: auto;
+  }
+
+  .localnav-list {
+    display: flex;
+    align-items: stretch;
+    min-inline-size: 0;
+    block-size: 100%;
+    gap: clamp(0.75rem, 1.8vw, 1.25rem);
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    list-style: none;
+  }
+
+  .localnav-list li {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .localnav-link {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    min-block-size: 44px;
+    padding-inline: 0.125rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .localnav-link[aria-current="page"]::after {
+    inset-inline: 0;
+  }
+
+  .localnav-cta {
+    display: inline-flex;
+    position: relative;
+    isolation: isolate;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-block-size: var(--shroffin-btn-touch, 44px);
+    padding: 0 var(--shroffin-btn-compact-pad-inline, 0.75rem);
+    border-color: transparent;
+    background: transparent;
+    font-size: var(--shroffin-btn-compact-font, 12px);
+    line-height: 1;
+  }
+
+  .localnav-cta::before {
+    content: "";
+    position: absolute;
+    inset: 50% 0 auto;
+    z-index: -1;
+    block-size: var(--shroffin-btn-compact-visual, 32px);
+    border-radius: 999px;
+    background: #0071e3;
+    transform: translateY(-50%);
+  }
+
+  .localnav-cta:hover,
+  .localnav-cta:active {
+    border-color: transparent;
+    background: transparent;
+  }
+
+  .localnav-cta:hover::before {
+    background: #0076df;
+  }
+
+  .localnav-cta:active::before {
+    background: #006edb;
+  }
+
+  .localnav-toggle {
+    display: none;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    inline-size: 44px;
+    block-size: 44px;
+    margin-inline-start: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #1d1d1f;
+    cursor: pointer;
+  }
+
+  .localnav-toggle-icon {
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-inline-end: 1px solid currentColor;
+    border-block-end: 1px solid currentColor;
+    transform: rotate(45deg) translate(-2px, -2px);
+    transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .localnav.is-open .localnav-toggle-icon {
+    transform: rotate(225deg) translate(-2px, -2px);
+  }
+
+  .localnav-veil {
+    inset-block-start: calc(var(--shroffin-gn-height, 48px) + var(--shroffin-ln-height));
+    z-index: 8999;
+  }
+
+  .guide-jump-wrap {
+    position: relative;
+    max-inline-size: var(--guide-max, 980px);
+  }
+
+  .guide-jump a {
+    min-block-size: var(--shroffin-btn-touch, 44px);
+  }
+
+  @media (min-width: 834px) {
+    .guide-jump a {
+      min-block-size: var(--shroffin-btn-standard-min, 36px);
+      min-height: var(--shroffin-btn-standard-min, 36px);
+      padding: var(--shroffin-btn-standard-pad-block, 8px) var(--shroffin-btn-standard-pad-inline, 16px);
+      border-radius: var(--shroffin-btn-radius, 980px);
+      font-size: var(--shroffin-btn-standard-font, 14px);
+      line-height: var(--shroffin-btn-standard-lh, 1.23536);
+      box-sizing: border-box;
+    }
+  }
+
+  .guide-jump a.is-active,
+  .guide-jump a[aria-current="true"] {
+    border-color: transparent;
+    background: #0071e3;
+    color: #fff;
+  }
+
+  /*
+   * Fragment links use one clearance mechanism only. Keeping the offset on
+   * the intended destinations avoids doubling it with root scroll padding
+   * and prevents unrelated IDs (tabs, forms and card backs) inheriting it.
+   */
+  .guide-moment[id],
+  .guide-fine-notes [id] {
+    scroll-margin-block-start: calc(
+      var(--shroffin-gn-height, 48px) + var(--shroffin-ln-height) + 1.25rem
+    );
+  }
+
+  /* A reached card must already be settled when the browser aligns it. */
+  .guide-moment[id]:target {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .guide-tile,
+  .guide-panel,
+  .guide-card,
+  .guide-flip,
+  .guide-flip-inner,
+  .guide-flip-face {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+  }
+
+  .guide-tile--hero {
+    min-block-size: clamp(18rem, 45vw, 26.25rem);
+  }
+
+  .guide-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.375rem;
+  }
+
+  .guide-breadcrumb-segment {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    white-space: nowrap;
+  }
+
+  .guide-calc-grid,
+  .guide-compare,
+  .guide-pair,
+  .guide-split,
+  .guide-columns {
+    container-type: inline-size;
+  }
+
+  .guide-emi-chart,
+  .guide-emi-chart-bars {
+    max-inline-size: 100%;
+  }
+
+  .guide-seg {
+    max-inline-size: 100%;
+  }
+
+  .guide-flip-link,
+  .guide-disclosure summary {
+    min-block-size: var(--shroffin-btn-touch, 44px);
+  }
+
+  @media (min-width: 834px) {
+    .guide-seg-btn {
+      min-block-size: var(--shroffin-btn-standard-min, 36px);
+      min-height: var(--shroffin-btn-standard-min, 36px);
+      padding-block: var(--shroffin-btn-standard-pad-block, 8px);
+      padding-inline: var(--shroffin-btn-standard-pad-inline, 16px);
+      border-radius: var(--shroffin-btn-radius, 980px);
+      font-size: var(--shroffin-btn-standard-font, 14px);
+      line-height: var(--shroffin-btn-standard-lh, 1.23536);
+      box-sizing: border-box;
+    }
+  }
+
+  .guide-section-link,
+  .guide-source-link,
+  .guide-official-link {
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 833px) {
+    .localnav-content {
+      gap: 0.25rem;
+    }
+
+    .localnav-title {
+      flex: 1 1 auto;
+      min-inline-size: 0;
+      margin-inline-end: auto;
+      font-size: 1.1875rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .localnav-current-label {
+      display: inline-block;
+      max-inline-size: clamp(4.5rem, 24vw, 8rem);
+      overflow: hidden;
+      color: #6e6e73;
+      font-size: 0.8125rem;
+      font-weight: 400;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .localnav-current-label::before {
+      content: "·";
+      margin-inline-end: 0.375rem;
+    }
+
+    .localnav-toggle {
+      display: inline-flex;
+    }
+
+    .localnav-cta {
+      flex: 0 0 auto;
+      margin-inline-start: 0;
+      padding-inline: var(--shroffin-btn-compact-pad-inline, 0.625rem);
+    }
+
+    .localnav-cta:hover,
+    .localnav-cta:active {
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .localnav-menu {
+      position: absolute;
+      inset-block-start: 100%;
+      inset-inline: 0;
+      display: block;
+      block-size: auto;
+      max-block-size: 0;
+      margin: 0;
+      overflow: hidden;
+      visibility: hidden;
+      pointer-events: none;
+      background: #fafafc;
+      transition:
+        max-block-size 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .localnav.is-open .localnav-menu {
+      max-block-size: calc(100vh - var(--shroffin-gn-height, 48px) - var(--shroffin-ln-height));
+      max-block-size: calc(100dvh - var(--shroffin-gn-height, 48px) - var(--shroffin-ln-height));
+      overflow-y: auto;
+      visibility: visible;
+      pointer-events: auto;
+      overscroll-behavior: contain;
+    }
+
+    .localnav-list {
+      display: grid;
+      inline-size: 100%;
+      max-inline-size: none;
+      block-size: auto;
+      gap: 0;
+      padding:
+        0.75rem max(1rem, env(safe-area-inset-right))
+        max(1.5rem, env(safe-area-inset-bottom))
+        max(1rem, env(safe-area-inset-left));
+      box-sizing: border-box;
+    }
+
+    .localnav-list li {
+      display: block;
+    }
+
+    .localnav-link {
+      display: flex;
+      align-items: center;
+      inline-size: 100%;
+      min-block-size: 48px;
+      padding-inline: 2rem 1rem;
+      box-sizing: border-box;
+      font-size: 0.9375rem;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition:
+        color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .localnav.is-open .localnav-link {
+      opacity: 0.8;
+      transform: translateY(0);
+    }
+
+    .localnav.is-open .localnav-list li:nth-child(1) .localnav-link { transition-delay: 120ms; }
+    .localnav.is-open .localnav-list li:nth-child(2) .localnav-link { transition-delay: 200ms; }
+    .localnav.is-open .localnav-list li:nth-child(3) .localnav-link { transition-delay: 280ms; }
+    .localnav.is-open .localnav-list li:nth-child(4) .localnav-link { transition-delay: 360ms; }
+    .localnav.is-open .localnav-list li:nth-child(5) .localnav-link { transition-delay: 440ms; }
+    .localnav.is-open .localnav-list li:nth-child(6) .localnav-link { transition-delay: 520ms; }
+
+    .localnav.is-open .localnav-link[aria-current="page"] {
+      opacity: 1;
+      font-weight: 500;
+    }
+
+    .localnav-link[aria-current="page"]::after {
+      inset-block: 50% auto;
+      inset-inline: 1rem auto;
+      inline-size: 2px;
+      block-size: 1rem;
+      transform: translateY(-50%);
+    }
+
+    html:not(.js) .localnav {
+      position: relative;
+      inset-block-start: auto;
+      block-size: auto;
+    }
+
+    html:not(.js) .localnav-content {
+      flex-wrap: wrap;
+      block-size: auto;
+      min-block-size: var(--shroffin-ln-height);
+    }
+
+    html:not(.js) .localnav-toggle {
+      display: none;
+    }
+
+    html:not(.js) .localnav-menu {
+      position: static;
+      flex-basis: 100%;
+      max-block-size: none;
+      overflow: visible;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    html:not(.js) .localnav-link {
+      opacity: 0.8;
+      transform: none;
+    }
+
+    .guide-hero {
+      padding:
+        clamp(3.5rem, 15vw, 5.5rem) 1rem
+        clamp(2.5rem, 10vw, 4rem);
+    }
+
+    .guide-hero-title {
+      font-size: clamp(2rem, 10vw, 3rem);
+      line-height: 1.06;
+      text-wrap: balance;
+    }
+
+    .guide-tile {
+      padding: clamp(2rem, 10vw, 3rem) clamp(1.25rem, 6vw, 2rem);
+    }
+
+    .guide-tile--hero {
+      min-block-size: 0;
+    }
+
+    .guide-tile--stage {
+      padding-block-end: clamp(4.5rem, 18vw, 6.5rem);
+    }
+
+    .guide-limit-note,
+    .guide-source-note,
+    .guide-section-source {
+      display: block;
+      margin-block-start: 0.5rem;
+    }
+
+    .guide-story {
+      padding-inline: 1rem;
+      gap: clamp(3.5rem, 14vw, 5.5rem);
+    }
+
+    .guide-jump-wrap {
+      padding-inline: 1rem;
+      overflow: visible;
+    }
+
+    .guide-jump {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.25rem 1rem;
+      max-inline-size: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+    }
+
+    .guide-jump li {
+      min-inline-size: 0;
+    }
+
+    .guide-jump a {
+      display: flex;
+      align-items: center;
+      inline-size: 100%;
+      min-block-size: 44px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: #6e6e73;
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 1.25;
+      white-space: normal;
+      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .guide-jump a::after {
+      content: "›";
+      margin-inline-start: 0.375rem;
+      color: #0071e3;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    /* Black only while hovering / pressing — not while the section is current. */
+    .guide-jump a:hover,
+    .guide-jump a:active {
+      background: transparent;
+      color: #1d1d1f;
+    }
+
+    .guide-jump a.is-active,
+    .guide-jump a[aria-current="true"] {
+      background: transparent;
+      color: #6e6e73;
+      font-weight: 400;
+    }
+
+    .guide-jump a.is-active:hover,
+    .guide-jump a.is-active:active,
+    .guide-jump a[aria-current="true"]:hover,
+    .guide-jump a[aria-current="true"]:active {
+      color: #1d1d1f;
+    }
+
+    .guide-seg[role="tablist"] {
+      display: flex;
+      justify-content: flex-start;
+      max-inline-size: 100%;
+      gap: 0.5rem;
+      padding-block-end: 0.25rem;
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      scrollbar-width: none;
+      overscroll-behavior-inline: contain;
+    }
+
+    .guide-seg-panels > .guide-seg-panel[hidden] {
+      display: none !important;
+      visibility: hidden;
+    }
+
+    .guide-seg[role="tablist"]::-webkit-scrollbar {
+      display: none;
+    }
+
+    .guide-seg-btn {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      white-space: normal;
+    }
+
+    .guide-flip,
+    .guide-flip-inner {
+      min-block-size: 0;
+      block-size: auto;
+    }
+
+    /* Legacy page scripts write a fixed inline height; compact layouts must remain content-sized. */
+    .guide-flip-inner {
+      height: auto !important;
+    }
+
+    .guide-flip-inner,
+    .guide-flip.is-flipped .guide-flip-inner {
+      transform: none;
+    }
+
+    .guide-flip-face {
+      position: relative;
+      inset: auto;
+      block-size: auto;
+      min-block-size: 0;
+      transform: none;
+      backface-visibility: visible;
+    }
+
+    .guide-flip:not(.is-flipped) .guide-flip-face--back,
+    .guide-flip.is-flipped .guide-flip-face--front {
+      display: none;
+    }
+
+    .guide-flip.is-flipped .guide-flip-face--back {
+      display: flex;
+    }
+
+    .guide-flip-face--back,
+    #charges-flip .guide-flip-face--back {
+      overflow: visible;
+    }
+
+    .guide-calc-grid,
+    .guide-form-grid,
+    .guide-input-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .guide-emi-chart {
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+    }
+
+    .guide-fine-wrap {
+      padding-inline: 1rem;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .guide-calc-grid,
+    .guide-form-grid,
+    .guide-input-grid,
+    .guide-pair,
+    .guide-compare,
+    .guide-split,
+    .guide-columns {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-height: 500px) and (orientation: landscape) {
+    .guide-hero {
+      padding-block: 2.5rem;
+    }
+
+    .guide-flip,
+    .guide-flip-inner {
+      min-block-size: 0;
+      block-size: auto;
+    }
+
+    .guide-flip-inner {
+      height: auto !important;
+    }
+
+    .guide-flip-inner,
+    .guide-flip.is-flipped .guide-flip-inner {
+      transform: none;
+    }
+
+    .guide-flip-face {
+      position: relative;
+      transform: none;
+    }
+
+    .guide-flip:not(.is-flipped) .guide-flip-face--back,
+    .guide-flip.is-flipped .guide-flip-face--front {
+      display: none;
+    }
+  }
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-flip,
+  .guide-flip-inner {
+    min-block-size: 0 !important;
+    block-size: auto !important;
+  }
+
+  .guide-flip-inner,
+  .guide-flip.is-flipped .guide-flip-inner {
+    transform: none !important;
+  }
+
+  .guide-flip-face {
+    position: relative !important;
+    transform: none !important;
+  }
+
+  .guide-flip:not(.is-flipped) .guide-flip-face--back,
+  .guide-flip.is-flipped .guide-flip-face--front {
+    display: none !important;
+  }
+}

@@ -5,11 +5,11 @@ async function waitForLayout(page) {
   await page.waitForSelector('.site-header a', { state: 'visible', timeout: 10000 });
 }
 
-test.describe('Apply Only Once – UI', function () {
+test.describe('Shroffin – UI', function () {
   test('home loads with correct layout', async ({ page }) => {
     await page.goto('/');
     await waitForLayout(page);
-    await expect(page.locator('text=Apply Only Once').first()).toBeVisible();
+    await expect(page.locator('text=Shroffin').first()).toBeVisible();
     await expect(page.locator('text=Compare 35+ Education Loan Lenders & Apply in One Click | ₹99 Only | 48hrs Reply or Refund')).toBeVisible();
   });
 
@@ -161,12 +161,12 @@ test.describe('Apply Only Once – UI', function () {
     await expect(page.locator('h1:has-text("About Shroffin")')).toBeVisible();
   });
 
-  test('Navbar Apply Only Once logo is visible', async ({ page }) => {
+  test('Navbar Shroffin logo is visible', async ({ page }) => {
     await page.goto('/');
     await waitForLayout(page);
     const logo = page.locator('[data-testid="nav-logo"]');
     await expect(logo).toBeVisible();
-    await expect(logo).toHaveText('Apply Only Once');
+    await expect(logo).toHaveText('Shroffin');
     const color = await logo.evaluate(function (el) {
       return getComputedStyle(el).color;
     });

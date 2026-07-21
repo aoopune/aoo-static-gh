@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script>document.documentElement.classList.add('js');</script>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>Guide – Home loan overview – Shroffin</title>
-  <meta name="description" content="Home loan overview. How much you can borrow, EMI, fixed vs floating rates, and costs beyond the EMI.">
+  <meta name="description" content="Home loan overview. Loan amount, EMI, fixed vs floating rates, and costs beyond the EMI.">
   <link rel="icon" href="../favicon.ico?v=6" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../images/logos/favicon-32.png?v=6">
   <link rel="icon" type="image/png" sizes="16x16" href="../images/logos/favicon-16.png?v=6">
@@ -136,7 +137,6 @@
 
     html {
       scrollbar-gutter: stable;
-      scroll-padding-top: calc(var(--gn-height) + var(--ln-height) + 20px);
     }
 
     body {
@@ -144,230 +144,8 @@
       color: #1d1d1f;
     }
 
-    body.gn-locked {
-      overflow: hidden;
-    }
 
-    /* ——— Apple globalnav ——— */
-    .globalnav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 9999;
-      height: var(--gn-height);
-      background: var(--gn-bg);
-      transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
 
-    .globalnav.flyout-open {
-      background: #fafafc;
-    }
-
-    .globalnav-content {
-      position: relative;
-      z-index: 3;
-      max-width: var(--gn-max);
-      height: var(--gn-height);
-      margin: 0 auto;
-      padding: 0 22px;
-      box-sizing: border-box;
-    }
-
-    .globalnav-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      min-width: 0;
-    }
-
-    .globalnav-item {
-      display: flex;
-      align-items: center;
-      height: 100%;
-    }
-
-    .globalnav-link,
-    .globalnav-support-trigger {
-      display: inline-flex;
-      align-items: center;
-      height: 100%;
-      min-height: 44px;
-      padding: 0 8px;
-      border: 0;
-      background: transparent;
-      color: var(--gn-text);
-      font-family: var(--font-brand);
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 1;
-      text-decoration: none;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .globalnav-link:hover,
-    .globalnav-support-trigger:hover,
-    .globalnav.flyout-open .globalnav-support-trigger,
-    .globalnav-link[aria-current="page"] {
-      color: var(--gn-text-hover);
-    }
-
-    .globalnav-link:focus-visible,
-    .globalnav-support-trigger:focus-visible {
-      outline: 2px solid rgba(29, 29, 31, 0.45);
-      outline-offset: -4px;
-      border-radius: 4px;
-    }
-
-    .globalnav-link-brand {
-      padding-left: 0;
-      padding-right: 4px;
-    }
-
-    .globalnav-logo {
-      display: block;
-      height: 22px;
-      width: auto;
-      max-width: 100%;
-    }
-
-    .globalnav-item-about {
-      margin-left: auto;
-    }
-
-    .globalnav-flyout {
-      position: absolute;
-      top: var(--gn-height);
-      left: 0;
-      right: 0;
-      z-index: 2;
-      overflow: hidden;
-      visibility: hidden;
-      pointer-events: none;
-      max-height: 0;
-      background: #fafafc;
-      transition:
-        max-height 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-flyout {
-      visibility: visible;
-      pointer-events: auto;
-      max-height: 320px;
-    }
-
-    .globalnav-flyout-content {
-      max-width: var(--gn-max);
-      margin: 0 auto;
-      padding: 40px 22px 52px;
-      box-sizing: border-box;
-      opacity: 0;
-      transform: translateY(-6px);
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-flyout-content {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .globalnav-submenu-header {
-      margin: 0 0 18px;
-      color: #6e6e73;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.33337;
-      text-transform: uppercase;
-    }
-
-    .globalnav-submenu-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .globalnav-submenu-list li {
-      opacity: 0;
-      transform: translateY(-6px);
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-submenu-list li {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-        .globalnav.flyout-open .globalnav-submenu-list li:nth-child(1) { transition-delay: 120ms; }
-    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(2) { transition-delay: 200ms; }
-    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(3) { transition-delay: 280ms; }
-
-    .globalnav-submenu-link {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding: 10px 0;
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .globalnav-submenu-link:hover,
-    .globalnav-submenu-link:hover .globalnav-submenu-value {
-      color: #0066cc;
-    }
-
-    .globalnav-submenu-link:focus-visible {
-      outline: 2px solid rgba(29, 29, 31, 0.45);
-      outline-offset: 2px;
-      border-radius: 4px;
-    }
-
-    .globalnav-submenu-label {
-      color: var(--gn-ink);
-      font-size: 24px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.16667;
-    }
-
-    .globalnav-submenu-value {
-      color: #6e6e73;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.42859;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .globalnav-veil {
-      position: fixed;
-      inset: 0;
-      z-index: 9998;
-      background: rgba(0, 0, 0, 0.4);
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav-veil.is-visible {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
 
     /* ——— Localnav (Guide sub-bar) ——— */
     .localnav {
@@ -408,7 +186,7 @@
     .localnav-menu {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: flex-start;
       gap: 20px;
       min-width: 0;
       flex: 1 1 auto;
@@ -417,19 +195,24 @@
 
     .localnav-list {
       list-style: none;
-      margin: 0;
+      margin: 0 0 0 auto;
       padding: 0;
       display: flex;
       align-items: stretch;
       align-self: stretch;
       height: 100%;
-      gap: 20px;
+      gap: 14px;
       min-width: 0;
+      max-width: 100%;
+      width: max-content;
       overflow-x: auto;
+      overscroll-behavior-x: contain;
       scrollbar-width: none;
       -ms-overflow-style: none;
       -webkit-overflow-scrolling: touch;
+      justify-content: flex-start;
     }
+
 
     .localnav-list::-webkit-scrollbar {
       display: none;
@@ -579,7 +362,6 @@
     .guide-moment {
       display: grid;
       gap: 20px;
-      scroll-margin-top: calc(var(--gn-height) + var(--ln-height) + 20px);
       opacity: 0;
       transform: translateY(14px);
       transition:
@@ -622,8 +404,8 @@
 
     .guide-tile-mark {
       position: absolute;
-      top: auto;
-      bottom: clamp(24px, 4vw, 40px);
+      top: clamp(24px, 4vw, 40px);
+      bottom: auto;
       right: clamp(24px, 4vw, 40px);
       width: clamp(56px, 9vw, 88px);
       height: clamp(56px, 9vw, 88px);
@@ -654,24 +436,23 @@
     .guide-tile--hero {
       min-height: min(52vh, 420px);
       justify-content: center;
-      text-align: left;
-      align-items: flex-start;
+      text-align: center;
+      align-items: center;
       padding-top: clamp(56px, 10vw, 88px);
       padding-bottom: clamp(56px, 10vw, 88px);
     }
 
     .guide-tile--hero .guide-tile-copy {
       max-width: 26em;
-      margin-left: 0;
-      margin-right: 0;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .guide-tile--stage {
       text-align: left;
       align-items: flex-start;
       padding-top: clamp(48px, 8vw, 72px);
-      /* Room for the bottom-right mark so last content isn’t tight against it */
-      padding-bottom: clamp(96px, 14vw, 136px);
+      padding-bottom: clamp(48px, 8vw, 72px);
     }
 
     .guide-tile--stage .guide-tile-copy,
@@ -787,6 +568,23 @@
       overflow: hidden;
     }
 
+    /* Charges flip: match front height; fee list fills / scrolls inside. */
+    #charges-flip .guide-flip-face--back {
+      overflow: hidden;
+    }
+
+    #charges-flip .guide-flip-face--back .guide-calc-main {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    #charges-flip .guide-flip-face--back .guide-flip-link {
+      padding-top: 32px;
+      margin-top: auto;
+      flex-shrink: 0;
+    }
+
     .guide-limits {
       display: grid;
       gap: var(--guide-gap-block);
@@ -846,6 +644,209 @@
 
     .guide-share-list li:first-child {
       border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    /* Fee breakdown (flip): same card height, full guide type — amounts only */
+    #charges-breakdown .guide-calc-main {
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+      min-height: 0;
+    }
+
+    #charges-breakdown .guide-tile-title {
+      margin: 0;
+      flex: 0 0 auto;
+    }
+
+    #charges-breakdown .guide-calc-lead {
+      margin: var(--guide-gap-stack) 0 0;
+      flex: 0 0 auto;
+    }
+
+    #charges-breakdown .guide-fee-schedule {
+      display: grid;
+      gap: var(--guide-gap-block);
+      width: 100%;
+      margin-top: var(--guide-gap-block);
+      text-align: left;
+      flex: 1 1 auto;
+      min-height: 0;
+      align-content: stretch;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+
+    @media (min-width: 700px) {
+      #charges-breakdown .guide-fee-schedule {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--guide-gap-block) 40px;
+        align-items: stretch;
+      }
+    }
+
+    #charges-breakdown .guide-fee-col {
+      display: flex;
+      flex-direction: column;
+      gap: var(--guide-gap-block);
+      min-width: 0;
+      height: 100%;
+    }
+
+    #charges-breakdown .guide-fee-block {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    #charges-breakdown .guide-fee-schedule > .guide-fee-block {
+      height: 100%;
+    }
+
+    #charges-breakdown .guide-fee-col > .guide-fee-block:last-child {
+      flex: 1 1 auto;
+    }
+
+    #charges-breakdown .guide-fee-heading {
+      margin: 0 0 var(--guide-gap-related);
+      color: #6e6e73;
+      font-size: var(--guide-type-micro);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      line-height: 1.3;
+      text-transform: uppercase;
+    }
+
+    #charges-breakdown .guide-fee-rows {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    #charges-breakdown .guide-fee-rows > li {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px 20px;
+      margin: 0;
+      padding: 10px 0;
+      border: 0;
+    }
+
+    #charges-breakdown .guide-fee-rows > li:first-child {
+      padding-top: 0;
+    }
+
+    #charges-breakdown .guide-fee-cluster {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--guide-gap-pair);
+    }
+
+    #charges-breakdown .guide-fee-item {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--guide-gap-pair);
+    }
+
+    #charges-breakdown .guide-fee-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px 20px;
+      width: 100%;
+    }
+
+    #charges-breakdown .guide-fee-nested {
+      display: flex;
+      flex-direction: column;
+      gap: var(--guide-gap-pair);
+      width: 100%;
+      padding-left: 1em;
+      box-sizing: border-box;
+    }
+
+    #charges-breakdown .guide-fee-nested .guide-fee-name {
+      color: #6e6e73;
+      font-size: var(--guide-type-support);
+      font-weight: 400;
+      line-height: 1.35;
+    }
+
+    #charges-breakdown .guide-fee-nested .guide-fee-value {
+      font-size: var(--guide-type-support);
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    #charges-breakdown .guide-fee-detail {
+      color: #6e6e73;
+      font-size: var(--guide-type-support);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+    }
+
+    #charges-breakdown .guide-fee-block > .guide-fee-detail {
+      margin: 10px 0 0;
+    }
+
+    #charges-breakdown .guide-fee-name {
+      color: #1d1d1f;
+      font-size: var(--guide-type-row);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    #charges-breakdown .guide-fee-name .guide-limit-note {
+      margin-left: 0.4em;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      vertical-align: baseline;
+    }
+
+    #charges-breakdown .guide-fee-value {
+      color: #1d1d1f;
+      font-size: var(--guide-type-row);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+      text-align: right;
+      flex: 0 1 auto;
+      max-width: 52%;
+      white-space: nowrap;
+    }
+
+    #charges-breakdown .guide-glance {
+      margin-top: var(--guide-gap-block);
+      margin-bottom: 0;
+      flex: 0 0 auto;
+      position: relative;
+      z-index: 1;
+      max-width: none;
+    }
+
+    @media (max-width: 480px) {
+      #charges-breakdown .guide-fee-rows > li {
+        flex-wrap: wrap;
+        gap: var(--guide-gap-pair) 12px;
+      }
+
+      #charges-breakdown .guide-fee-value {
+        text-align: right;
+        max-width: none;
+        white-space: normal;
+      }
     }
 
     .guide-share-when {
@@ -1040,6 +1041,10 @@
       border-radius: 4px;
     }
 
+    .guide-project-link {
+      margin-top: clamp(40px, 6vw, 64px);
+    }
+
     .guide-flip-link--back .guide-flip-link-arrow {
       transform: scaleX(-1);
     }
@@ -1222,6 +1227,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+
       .guide-flip-inner {
         transition: none;
       }
@@ -1272,6 +1278,25 @@
 
     .guide-tile-copy--muted {
       color: #6e6e73;
+    }
+
+    .guide-rate-notes {
+      display: flex;
+      flex-direction: column;
+      gap: var(--guide-gap-item);
+      margin: var(--guide-gap-block) 0 0;
+      width: 100%;
+      max-width: none;
+      text-align: left;
+    }
+
+    .guide-rate-notes p {
+      margin: 0;
+      color: #1d1d1f;
+      font-size: clamp(17px, 2.2vw, 19px);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
     }
 
     .guide-tile-list {
@@ -1520,8 +1545,10 @@
       margin: 0;
       color: #6e6e73;
       font-size: var(--guide-type-micro);
+      font-weight: 400;
       letter-spacing: -0.01em;
       line-height: 1.5;
+      text-align: left;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1612,11 +1639,7 @@
       }
 
       .localnav-list {
-        gap: 16px;
-      }
-
-      .globalnav-content {
-        padding: 0 16px;
+        gap: 12px;
       }
     }
 
@@ -1637,30 +1660,16 @@
         padding-left: 16px;
         padding-right: 16px;
       }
-
-      .globalnav-submenu-label {
-        font-size: 21px;
-      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .globalnav,
-      .globalnav-flyout,
-      .globalnav-flyout-content,
-      .globalnav-submenu-list li,
-      .globalnav-veil,
-      .globalnav-link,
-      .globalnav-support-trigger,
       .localnav-cta {
         transition: none;
       }
-
-      .globalnav-flyout-content,
-      .globalnav-submenu-list li {
-        transform: none;
-      }
     }
   </style>
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=responsive-12">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=responsive-7">
 </head>
 <body>
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
@@ -1700,16 +1709,22 @@
           <a class="globalnav-link" href="../education-loan.html">Education</a>
         </li>
         -->
-        <li class="globalnav-item globalnav-item-about">
-          <a class="globalnav-link" href="guide.html" aria-current="page">Guide</a>
-        </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="about.html">About</a>
+        <li class="globalnav-item globalnav-item-about globalnav-item-flyout" id="nav-guide">
+          <a
+            class="globalnav-link globalnav-flyout-trigger"
+            href="guide.html"
+            id="nav-guide-trigger"
+            aria-expanded="false"
+            aria-controls="nav-guide-flyout"
+            aria-current="page"
+          >
+            Guide
+          </a>
         </li>
         <li class="globalnav-item globalnav-item-support" id="nav-support">
           <button
             type="button"
-            class="globalnav-support-trigger"
+            class="globalnav-flyout-trigger"
             id="nav-support-trigger"
             aria-expanded="false"
             aria-controls="nav-support-flyout"
@@ -1717,9 +1732,54 @@
             Support
           </button>
         </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="about.html">About</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="project-approvals.html">Project Bank Finder</a>
+        </li>
       </ul>
     </div>
 
+    <div class="globalnav-flyout" id="nav-guide-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore guide</h2>
+          <ul class="globalnav-submenu-list">
+            <li>
+              <a class="globalnav-submenu-link" href="guide.html" aria-current="page">
+                <span class="globalnav-submenu-label">Overview</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="guide-documents.html">
+                <span class="globalnav-submenu-label">Documents</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="tax-benefits.html">
+                <span class="globalnav-submenu-label">Tax benefits</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="concessions.html">
+                <span class="globalnav-submenu-label">Concessions</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="home-loan-insurance.html">
+                <span class="globalnav-submenu-label">Insurance</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="home-loan-complaints.html">
+                <span class="globalnav-submenu-label">Grievance redressal</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content">
         <h2 class="globalnav-submenu-header">Get Help</h2>
@@ -1757,24 +1817,24 @@
       <div class="localnav-content">
         <p class="localnav-title">Guide</p>
         <div class="localnav-menu">
-          <ul class="localnav-list">
+                    <ul class="localnav-list">
             <li>
               <a class="localnav-link" href="guide.html" aria-current="page">Overview</a>
-            </li>
-            <li>
-              <a class="localnav-link" href="home-loan-insurance.html">Insurance</a>
-            </li>
-            <li>
-              <span class="localnav-link localnav-link-nolink">Prepayment</span>
-            </li>
-            <li>
-              <span class="localnav-link localnav-link-nolink">Charges</span>
             </li>
             <li>
               <a class="localnav-link" href="guide-documents.html">Documents</a>
             </li>
             <li>
-              <a class="localnav-link" href="home-loan-complaints.html">Complaints</a>
+              <a class="localnav-link" href="tax-benefits.html">Tax benefits</a>
+            </li>
+            <li>
+              <a class="localnav-link" href="concessions.html">Concessions</a>
+            </li>
+            <li>
+              <a class="localnav-link" href="home-loan-insurance.html">Insurance</a>
+            </li>
+            <li>
+              <a class="localnav-link" href="home-loan-complaints.html">Grievance redressal</a>
             </li>
           </ul>
           <a class="localnav-cta" href="learn-more.html">Explore banks</a>
@@ -1792,13 +1852,16 @@
       <ul class="guide-jump">
         <li><a href="#loan-amount">Loan amount</a></li>
         <li><a href="#emi">EMI</a></li>
-        <li><a href="#rates">Rates</a></li>
         <li><a href="#tenure">Tenure</a></li>
+        <li><a href="#rates">Rates</a></li>
+        <li><a href="#loan-structure">Loan facility</a></li>
         <li><a href="#charges">Charges</a></li>
+        <li><a href="#project-bank-approval">Project approval</a></li>
       </ul>
     </nav>
 
     <div class="guide-story">
+
       <section class="guide-moment">
         <article class="guide-tile guide-tile--hero">
           <span class="guide-tile-mark" aria-hidden="true">
@@ -1808,12 +1871,9 @@
               <path d="M20.5 39V28.5h7V39" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </span>
-          <h2 class="guide-tile-title">A loan secured<br>by your home.</h2>
+          <h2 class="guide-tile-title">A loan backed<br>by your home.</h2>
           <p class="guide-tile-copy">
-            The lender advances the amount. You repay monthly. Until closure, they hold a claim on the property papers.
-          </p>
-          <p class="guide-tile-copy guide-tile-copy--muted">
-            Lender means a bank or housing finance company.
+            A bank or housing finance company (the lender) gives you the money. You repay it every month. Until the loan is closed, the lender holds a claim on your property papers.
           </p>
         </article>
       </section>
@@ -1823,7 +1883,7 @@
           <div class="guide-flip-inner">
             <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
               <span class="guide-tile-mark guide-tile-mark--glyph" aria-hidden="true">₹</span>
-              <h2 class="guide-tile-title">How much you can borrow</h2>
+              <h2 class="guide-tile-title">Loan amount</h2>
               <p class="guide-tile-copy">
                 Two limits apply. You receive roughly the lower one.
               </p>
@@ -1977,11 +2037,16 @@
                 <div class="guide-limit">
                   <h3 class="guide-limit-title">When it starts</h3>
                   <p class="guide-limit-copy">
-                    Typically starts one month after first disbursement.
+                    Depends on whether the home is ready or under construction.
                   </p>
                   <ul class="guide-share-list guide-share-list--plain">
-                    <li>Ready home: full EMI after disbursement</li>
+                    <li>Ready home: full EMI about one month after first disbursement</li>
+                    <li>Under construction: pre-EMI (interest only) on the amount already disbursed</li>
+                    <li>Under construction: full EMI usually starts around possession</li>
                   </ul>
+                  <p class="guide-glance">
+                    Some lenders let you pay more than interest during construction. Ask if that option exists.
+                  </p>
                 </div>
               </div>
               <button type="button" class="guide-flip-link" data-flip="emi-flip" aria-controls="emi-calc" aria-expanded="false">
@@ -2078,7 +2143,7 @@
                   </p>
                   <ul class="guide-share-list guide-share-list--plain">
                     <li>External benchmark (often the repo rate) + the bank’s spread</li>
-                    <li>Reset at least once every 3 months as per RBI</li>
+                    <li>Repo rate resets at least once every 3 months</li>
                     <li>If the rate rises, choose how the extra cost hits you: pay a lump sum, raise EMI, extend tenure, or mix these</li>
                     <li>Prepayment / foreclosure charges: None</li>
                   </ul>
@@ -2096,11 +2161,8 @@
                   </ul>
                 </div>
               </div>
-              <p class="guide-glance guide-glance--center">
-                Switching fixed ↔ floating is available based on the lender’s policy, at applicable cost.
-              </p>
               <button type="button" class="guide-flip-link" data-flip="rate-flip" aria-controls="rate-ask" aria-expanded="false">
-                Before you commit
+                After disbursement
                 <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                   <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -2109,18 +2171,17 @@
 
             <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="rate-ask" aria-hidden="true">
               <div class="guide-calc-main">
-                <h2 class="guide-tile-title">Before you commit</h2>
+                <h2 class="guide-tile-title">After disbursement</h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
-                  Ask the lender these before you sign.
+                  After you take the loan, you still have choices.
                 </p>
-                <ul class="guide-ask">
-                  <li>Floating, or fixed for a set period then reset?</li>
-                  <li>How long is the fixed period, and what happens after the rate resets?</li>
-                  <li>Which external benchmark, and how often does it reset?</li>
-                  <li>Can the bank’s spread change later?</li>
-                  <li>What charges apply if you switch or prepay?</li>
-                  <li>If the rate rises, what are your options?</li>
-                </ul>
+                <div class="guide-rate-notes">
+                  <p>You can switch between fixed and floating rates as per the bank’s policy, at the applicable cost.</p>
+                  <p>You can switch between benchmark rates as per the bank’s policy, at the applicable cost.</p>
+                  <p>If your credit score improves, you can ask to lower your rate as per the bank’s policy, at the applicable cost.</p>
+                  <p>When the repo rate changes, an existing interest rate usually updates within about a month.</p>
+                  <p>A newly sanctioned loan can take about 90 days for the first change.</p>
+                </div>
               </div>
               <button type="button" class="guide-flip-link guide-flip-link--back" data-flip="rate-flip" aria-controls="rate-ask" aria-expanded="true">
                 <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
@@ -2133,97 +2194,398 @@
         </div>
       </section>
 
+      <section class="guide-moment" id="loan-structure">
+        <div class="guide-flip" id="structure-flip">
+          <div class="guide-flip-inner">
+            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
+              <span class="guide-tile-mark" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" focusable="false">
+                  <path d="M10.5 14.5h27v22H10.5z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
+                  <path d="M14.5 20.5h19M14.5 26.5h13M14.5 32.5h9" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+                  <path d="M32.5 10.5v6M28.5 13.5h8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <h2 class="guide-tile-title">Loan facility</h2>
+              <p class="guide-tile-copy">
+                Spare cash either cuts interest, or it does not.
+              </p>
+              <div class="guide-limits">
+                <div class="guide-limit">
+                  <h3 class="guide-limit-title">Term loan <span class="guide-limit-note">Regular</span></h3>
+                  <p class="guide-limit-copy">
+                    Fixed EMI loan. Interest on the full leftover amount.
+                  </p>
+                  <ul class="guide-share-list guide-share-list--plain">
+                    <li>Money in your normal savings does not lower interest</li>
+                    <li>To cut interest early, you have to prepay</li>
+                    <li>Rate is usually 0.15% to 1% lower than the same bank’s overdraft</li>
+                    <li>Fits if you will not keep large surplus parked for months</li>
+                    <li>You win on rate if surplus will sit unused anyway</li>
+                  </ul>
+                </div>
+                <div class="guide-limit">
+                  <h3 class="guide-limit-title">Overdraft</h3>
+                  <p class="guide-limit-copy">
+                    Home loan linked to an account. Interest drops when spare cash sits there.
+                  </p>
+                  <ul class="guide-share-list guide-share-list--plain">
+                    <li>Money lowers interest only if it sits in the linked account</li>
+                    <li>You can withdraw that parked money when you need it</li>
+                    <li>Rate is usually 0.15% to 1% higher than the same bank’s term loan</li>
+                    <li>Fits only if you will actually keep surplus parked often enough</li>
+                    <li>You win only if parked surplus saves more interest than the higher rate costs</li>
+                  </ul>
+                </div>
+              </div>
+              <button type="button" class="guide-flip-link" data-flip="structure-flip" aria-controls="structure-ask" aria-expanded="false">
+                After you choose
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </article>
+
+            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="structure-ask" aria-hidden="true">
+              <div class="guide-calc-main">
+                <h2 class="guide-tile-title">After you choose</h2>
+                <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
+                  After the structure is set, these still matter.
+                </p>
+                <div class="guide-rate-notes">
+                  <p>You can switch between term loan and overdraft later as per the bank’s policy, at the applicable cost.</p>
+                  <p>On overdraft, interest on the linked account is counted as per the bank’s policy.</p>
+                  <p>On overdraft, you can withdraw parked money as per the bank’s limit and rules.</p>
+                  <p>On overdraft, the usable limit may fall over the years (dropline), as per the lender.</p>
+                  <p>If surplus rarely sits in the linked account, overdraft usually costs more than a term loan for no extra benefit.</p>
+                  <p>The linked account is usually with the same lender.</p>
+                  <p>On a term loan, spare cash still does not cut interest until you prepay.</p>
+                </div>
+              </div>
+              <button type="button" class="guide-flip-link guide-flip-link--back" data-flip="structure-flip" aria-controls="structure-ask" aria-expanded="true">
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back to overview
+              </button>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section class="guide-moment" id="charges">
+        <div class="guide-flip" id="charges-flip">
+          <div class="guide-flip-inner">
+            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
+              <span class="guide-tile-mark" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" focusable="false">
+                  <path d="M14.5 9.5h19a2 2 0 0 1 2 2v25.2l-3.1-2.1-3.1 2.1-3.1-2.1-3.1 2.1-3.1-2.1-3.1 2.1-3.1-2.1-3.1 2.1V11.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
+                  <path d="M18.5 18.5h11M18.5 24.5h11M18.5 30.5h7" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <h2 class="guide-tile-title">Charges</h2>
+              <p class="guide-tile-copy">
+                Fees tied to getting the loan sanctioned and disbursed.
+              </p>
+              <div class="guide-limits">
+                <div class="guide-limit">
+                  <h3 class="guide-limit-title">Bank fees</h3>
+                  <p class="guide-limit-copy">
+                    Fee the lender charges to process your case.
+                  </p>
+                  <ul class="guide-share-list guide-share-list--plain">
+                    <li>
+                      <span class="guide-share-then">Processing fee</span>
+                      <span class="guide-share-when">Fee the lender charges to process your case. Part may be taken upfront as a login fee; the rest at final sanction.</span>
+                    </li>
+                    <li>
+                      <span class="guide-share-then">Others</span>
+                      <span class="guide-share-when">Account handling fees or any other as per lender.</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="guide-limit">
+                  <h3 class="guide-limit-title">Other fees</h3>
+                  <p class="guide-limit-copy">
+                    Fees for checks and for registering the loan and security.
+                  </p>
+                  <ul class="guide-share-list guide-share-list--plain">
+                    <li>
+                      <span class="guide-share-then">Legal and technical fees</span>
+                      <span class="guide-share-when">Fee to check legal papers and the property.</span>
+                    </li>
+                    <li>
+                      <span class="guide-share-then">Title search report fees</span>
+                      <span class="guide-share-when">Fee to check the property title.</span>
+                    </li>
+                    <li>
+                      <span class="guide-share-then">Valuation fees</span>
+                      <span class="guide-share-when">Fee to value the property.</span>
+                    </li>
+                    <li>
+                      <span class="guide-share-then">Government charges</span>
+                      <span class="guide-share-when">Government fees to register the loan security.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <p class="guide-glance">
+                Note — Lenders may bundle these charges, use different names, or charge them as one unified fee.
+              </p>
+              <button type="button" class="guide-flip-link" data-flip="charges-flip" aria-controls="charges-breakdown" aria-expanded="false">
+                Fee breakdown
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </article>
+
+            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="charges-breakdown" aria-hidden="true">
+              <div class="guide-calc-main">
+                <h2 class="guide-tile-title">Fee breakdown</h2>
+                <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
+                  Typical one-time fees at sanction and disbursement.
+                </p>
+                <div class="guide-fee-schedule">
+                  <div class="guide-fee-col">
+                    <div class="guide-fee-block">
+                      <p class="guide-fee-heading">Lender</p>
+                      <ul class="guide-fee-rows">
+                        <li class="guide-fee-cluster">
+                          <div class="guide-fee-row">
+                            <span class="guide-fee-name">Processing fee <span class="guide-limit-note">Non-refundable</span></span>
+                            <span class="guide-fee-value">Up to 2%–3%*</span>
+                          </div>
+                          <div class="guide-fee-nested">
+                            <div class="guide-fee-row">
+                              <span class="guide-fee-name">Login fee</span>
+                              <span class="guide-fee-value">₹5,000*</span>
+                            </div>
+                            <span class="guide-fee-detail">Included in the processing fee. Taken upfront to log in your application.</span>
+                          </div>
+                        </li>
+                        <li>
+                          <span class="guide-fee-name">Others</span>
+                          <span class="guide-fee-value">As per lender*</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="guide-fee-block">
+                      <p class="guide-fee-heading">Property checks</p>
+                      <ul class="guide-fee-rows">
+                        <li>
+                          <span class="guide-fee-name">Legal and technical</span>
+                          <span class="guide-fee-value">₹4,500*</span>
+                        </li>
+                        <li>
+                          <span class="guide-fee-name">Title search report</span>
+                          <span class="guide-fee-value">₹4,500*</span>
+                        </li>
+                        <li>
+                          <span class="guide-fee-name">Valuation</span>
+                          <span class="guide-fee-value">₹4,500*</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="guide-fee-block">
+                    <p class="guide-fee-heading">Government#</p>
+                    <ul class="guide-fee-rows">
+                      <li class="guide-fee-item">
+                        <div class="guide-fee-row">
+                          <span class="guide-fee-name">MODT</span>
+                          <span class="guide-fee-value">0.3% of loan amount#</span>
+                        </div>
+                        <span class="guide-fee-detail">Stamp duty when you give property papers to the bank as security.</span>
+                      </li>
+                      <li class="guide-fee-item">
+                        <div class="guide-fee-row">
+                          <span class="guide-fee-name">NOI registration</span>
+                          <span class="guide-fee-value">0.5%, max ₹15,000#</span>
+                        </div>
+                        <span class="guide-fee-detail">Fee to register the loan agreement with the government.</span>
+                      </li>
+                      <li class="guide-fee-item">
+                        <div class="guide-fee-row">
+                          <span class="guide-fee-name">NOI filing</span>
+                          <span class="guide-fee-value">₹1,000 + ₹300#</span>
+                        </div>
+                        <span class="guide-fee-detail">To file the NOI. ₹300 extra if done in person.</span>
+                      </li>
+                      <li class="guide-fee-item">
+                        <div class="guide-fee-row">
+                          <span class="guide-fee-name">NOI stamp duty</span>
+                          <span class="guide-fee-value">₹100#</span>
+                        </div>
+                        <span class="guide-fee-detail">Small stamp duty if MODT stamp duty is already paid.</span>
+                      </li>
+                      <li class="guide-fee-item">
+                        <div class="guide-fee-row">
+                          <span class="guide-fee-name">Stamp, franking and notary</span>
+                          <span class="guide-fee-value">₹6,000*</span>
+                        </div>
+                        <span class="guide-fee-detail">Stamp paper, franking, and notary for loan and security papers.</span>
+                      </li>
+                      <li class="guide-fee-item">
+                        <div class="guide-fee-row">
+                          <span class="guide-fee-name">CERSAI</span>
+                        </div>
+                        <span class="guide-fee-detail">Helps stop the same property from being used for more than one loan.</span>
+                        <div class="guide-fee-nested">
+                          <div class="guide-fee-row">
+                            <span class="guide-fee-name">Up to ₹5 lakh loan</span>
+                            <span class="guide-fee-value">₹50*</span>
+                          </div>
+                          <div class="guide-fee-row">
+                            <span class="guide-fee-name">Above ₹5 lakh loan</span>
+                            <span class="guide-fee-value">₹100*</span>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <p class="guide-glance">
+                  * Excluding GST.<br>
+                  # Only in Maharashtra. Differs from state to state as per state laws.<br>
+                  Figures above are typical industry averages. Exact fees may differ by lender and as per your profile.
+                </p>
+              </div>
+              <button type="button" class="guide-flip-link guide-flip-link--back" data-flip="charges-flip" aria-controls="charges-breakdown" aria-expanded="true">
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back to overview
+              </button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="guide-moment" id="project-bank-approval">
         <article class="guide-tile guide-tile--stage">
           <span class="guide-tile-mark" aria-hidden="true">
             <svg viewBox="0 0 48 48" fill="none" focusable="false">
-              <path d="M14.5 9.5h19a2 2 0 0 1 2 2v25.2l-3.1-2.1-3.1 2.1-3.1-2.1-3.1 2.1-3.1-2.1-3.1 2.1-3.1-2.1-3.1 2.1V11.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
-              <path d="M18.5 18.5h11M18.5 24.5h11M18.5 30.5h7" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+              <path d="M9.5 39.5h29M13.5 39.5V18.5h21v21M18 23.5h4M26 23.5h4M18 29.5h4M26 29.5h4" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="m12 18.5 12-9 12 9" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 39.5v-5h6v5" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
             </svg>
           </span>
-          <h2 class="guide-tile-title">Charges</h2>
+          <h2 class="guide-tile-title">Project approval</h2>
           <p class="guide-tile-copy">
-            Fees tied to getting the loan sanctioned and disbursed.
+            Banks check the project once instead of repeating the same checks for every buyer.
           </p>
           <div class="guide-limits">
             <div class="guide-limit">
-              <h3 class="guide-limit-title">Bank fees</h3>
-              <p class="guide-limit-copy">
-                Fee the lender charges to process your case.
-              </p>
-              <ul class="guide-share-list guide-share-list--plain">
-                <li>
-                  <span class="guide-share-then">Processing fee</span>
-                  <span class="guide-share-when">A small amount taken upfront to log in your application.</span>
-                </li>
-                <li>
-                  <span class="guide-share-then">Others</span>
-                  <span class="guide-share-when">Account handling fees or any other as per lender.</span>
-                </li>
-              </ul>
+              <h3 class="guide-limit-title">New or under-construction home</h3>
+              <p class="guide-limit-copy">If a bank has already approved the project, phase, tower or wing, your home loan may move faster and reduce repeated legal, technical and search-report charges.</p>
             </div>
             <div class="guide-limit">
-              <h3 class="guide-limit-title">Other fees</h3>
-              <p class="guide-limit-copy">
-                Fees for checks and for registering the loan and security.
-              </p>
-              <ul class="guide-share-list guide-share-list--plain">
-                <li>
-                  <span class="guide-share-then">Legal and technical fees</span>
-                  <span class="guide-share-when">Fee to check legal papers and the property.</span>
-                </li>
-                <li>
-                  <span class="guide-share-then">Title search report fees</span>
-                  <span class="guide-share-when">Fee to check the property title.</span>
-                </li>
-                <li>
-                  <span class="guide-share-then">Valuation fees</span>
-                  <span class="guide-share-when">Fee to value the property.</span>
-                </li>
-                <li>
-                  <span class="guide-share-then">Government charges</span>
-                  <span class="guide-share-when">Government fees to register the loan security.</span>
-                </li>
-              </ul>
+              <h3 class="guide-limit-title">Resale home</h3>
+              <p class="guide-limit-copy">For a resale home, the individual property is usually checked instead of the whole project. This may take additional time and include legal, technical and search-report charges.</p>
             </div>
           </div>
+          <p class="guide-glance">
+            Required before release: the property checks must be completed before the home loan is released.
+          </p>
+          <a class="guide-flip-link guide-project-link" href="project-approvals.html">
+            Find banks for your project
+            <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+              <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
         </article>
       </section>
     </div>
 
     <div class="guide-fine-wrap">
       <p class="guide-fine">
-        This guide is for education and comparison. It is indicative. Final rates, charges, eligibility, insurance, and approval depend on your profile, the property, and the lender. Your sanction letter, loan agreement, and policy papers prevail over any general summary. Shroffin / Apply Only Once is not a bank, NBFC, or lender.
+        This guide is for education and comparison. Figures and summaries here are indicative. Final rates, charges, eligibility, insurance, and approval depend on your profile, the property, and the lender. Your sanction letter, loan agreement, and policy papers prevail.
       </p>
     </div>
   </main>
 
+  <!-- SHROFFIN_FOOTER_START -->
   <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
     <div class="site-footer-inner">
-      <div class="site-footer-brand">
-        <a href="../index.html" aria-label="Shroffin Home">
-          <img
-            class="site-footer-logo"
-            src="../images/logos/logo-h-light-clear-781x173.png"
-            alt="Shroffin"
-            width="99"
-            height="22"
-          >
-        </a>
-        <p class="site-footer-tagline">An Independent and transparent banking.</p>
+      <div class="site-footer-directory">
+        <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
+          <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/guide.html">Overview</a></li>
+            <li><a href="/pages/guide-documents.html">Documents</a></li>
+            <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
+            <li><a href="/pages/concessions.html">Concessions</a></li>
+            <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
+            <li><a href="/pages/home-loan-complaints.html">Grievance redressal</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-quick-title">
+          <h2 class="site-footer-heading" id="footer-quick-title">Quick links</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/learn-more.html">Explore banks</a></li>
+            <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-company-title">
+          <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/about.html">About</a></li>
+            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+          </ul>
+        </nav>
+
+        <section class="site-footer-group" aria-labelledby="footer-support-title">
+          <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
+          <ul class="site-footer-list">
+            <li><a href="mailto:support@shroffin.com">Email</a></li>
+            <li><a href="tel:+919112334367">Call</a></li>
+          </ul>
+        </section>
+
+        <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
+          <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
+          <ul class="site-footer-list">
+            <li>
+              <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
+        <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
+        <div class="site-footer-disclaimer">
+          <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+          <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+          <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+          <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+          <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+        </div>
+      </section>
+
+      <div class="site-footer-bottom">
+        <div class="site-footer-bottom-row">
+          <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
+          <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
+            <ul class="site-footer-legal-links">
+              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
+              <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
+              <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
-
-    <hr class="site-footer-rule" aria-hidden="true">
-
-    <div class="site-footer-inner">
-      <p class="site-footer-copy">
-        <a href="../privacy-policy.html">Privacy Policy</a>
-        <span aria-hidden="true"> · </span>
-        Copyright © 2026 Shroffin. All rights reserved.
-      </p>
-    </div>
   </footer>
+  <!-- SHROFFIN_FOOTER_END -->
 
   <script>
     (function () {
@@ -2307,7 +2669,7 @@
         var form = formId ? document.getElementById(formId) : null;
         var lockedHeight = 0;
         var syncRaf = 0;
-        var keepFrontHeight = flipId === 'emi-flip';
+        var keepFrontHeight = flipId === 'emi-flip' || flipId === 'charges-flip';
 
         function measureBackHeight() {
           if (!back) return 0;
@@ -2575,8 +2937,14 @@
       });
       if (emi) flips.push(emi);
 
+      var structure = setupFlip('structure-flip');
+      if (structure) flips.push(structure);
+
       var rate = setupFlip('rate-flip');
       if (rate) flips.push(rate);
+
+      var charges = setupFlip('charges-flip');
+      if (charges) flips.push(charges);
 
       window.addEventListener('keydown', function (event) {
         if (event.key !== 'Escape') return;
@@ -2615,94 +2983,24 @@
       });
     })();
   </script>
+
   <script>
     (function () {
-      var nav = document.getElementById('globalnav');
-      var support = document.getElementById('nav-support');
-      var trigger = document.getElementById('nav-support-trigger');
-      var flyout = document.getElementById('nav-support-flyout');
-      var veil = document.getElementById('globalnav-veil');
-      if (!nav || !support || !trigger || !flyout || !veil) return;
-
-      var closeTimer = null;
-      var canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
-
-      function setFlyoutOpen(open) {
-        nav.classList.toggle('flyout-open', open);
-        document.body.classList.toggle('gn-locked', open);
-        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-        flyout.setAttribute('aria-hidden', open ? 'false' : 'true');
-        veil.classList.toggle('is-visible', open);
-        if (open) veil.removeAttribute('hidden');
-        else veil.setAttribute('hidden', '');
+      var list = document.querySelector('.localnav-list');
+      var current = list && list.querySelector('.localnav-link[aria-current="page"]');
+      if (!list || !current) return;
+      // Always start from the left so Overview + Tax Benefits stay reachable.
+      list.scrollLeft = 0;
+      if (list.scrollWidth <= list.clientWidth) return;
+      var listLeft = list.getBoundingClientRect().left;
+      var cur = current.getBoundingClientRect();
+      var pad = 12;
+      if (cur.right > listLeft + list.clientWidth - pad) {
+        list.scrollLeft = Math.max(0, current.offsetLeft + current.offsetWidth - list.clientWidth + pad);
       }
-
-      function openFlyout() {
-        if (closeTimer) {
-          clearTimeout(closeTimer);
-          closeTimer = null;
-        }
-        setFlyoutOpen(true);
-      }
-
-      function closeFlyoutSoon() {
-        if (closeTimer) clearTimeout(closeTimer);
-        closeTimer = setTimeout(function () {
-          setFlyoutOpen(false);
-          closeTimer = null;
-        }, 220);
-      }
-
-      function closeFlyoutNow() {
-        if (closeTimer) {
-          clearTimeout(closeTimer);
-          closeTimer = null;
-        }
-        setFlyoutOpen(false);
-      }
-
-      trigger.addEventListener('click', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        setFlyoutOpen(!nav.classList.contains('flyout-open'));
-      });
-
-      support.addEventListener('mouseenter', function () {
-        if (canHover.matches) openFlyout();
-      });
-
-      support.addEventListener('mouseleave', function (event) {
-        if (!canHover.matches) return;
-        var next = event.relatedTarget;
-        if (next && (flyout.contains(next) || support.contains(next))) return;
-        closeFlyoutSoon();
-      });
-
-      flyout.addEventListener('mouseenter', function () {
-        if (canHover.matches) openFlyout();
-      });
-
-      flyout.addEventListener('mouseleave', function (event) {
-        if (!canHover.matches) return;
-        var next = event.relatedTarget;
-        if (next && (flyout.contains(next) || support.contains(next))) return;
-        closeFlyoutSoon();
-      });
-
-      veil.addEventListener('click', closeFlyoutNow);
-
-      flyout.querySelectorAll('a').forEach(function (link) {
-        link.addEventListener('click', closeFlyoutNow);
-      });
-
-      window.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeFlyoutNow();
-      });
-
-      window.addEventListener('resize', function () {
-        if (!canHover.matches) closeFlyoutNow();
-      });
     })();
   </script>
+  <script src="../js/shroffin-nav.js?v=responsive-6"></script>
+  <script src="../js/shroffin-guide.js?v=responsive-5"></script>
 </body>
 </html>

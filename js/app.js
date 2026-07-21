@@ -170,7 +170,7 @@
   window.renderHeaderFooter = function (cfg) {
     cfg = cfg || window.__aooConfig || {};
     const contactPhone = (cfg.contact_phone || '+91 91123 34367').trim();
-    const contactEmail = (cfg.contact_email || 'aoopune@gmail.com').trim();
+    const contactEmail = (cfg.contact_email || 'support@shroffin.com').trim();
     const telHref = 'tel:' + contactPhone.replace(/\s/g, '');
 
     const cur = currentPage();
@@ -187,7 +187,7 @@
       var drawerNavLinksHtml = homeLinkHtml + navLinksHtml;
       header.innerHTML =
         '<div class="site-header-inner">' +
-        '<div class="site-logo"><a href="' + homeHref + '" data-testid="nav-logo">Apply Only Once</a></div>' +
+        '<div class="site-logo"><a href="' + homeHref + '" data-testid="nav-logo">Shroffin</a></div>' +
         '<nav class="site-nav" aria-label="Main">' + navLinksHtml + '</nav>' +
         '<button type="button" class="nav-hamburger" aria-label="Open menu" aria-expanded="false" data-testid="nav-hamburger">' +
         '<span class="nav-hamburger-bar"></span><span class="nav-hamburger-bar"></span><span class="nav-hamburger-bar"></span></button>' +

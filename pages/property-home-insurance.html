@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script>document.documentElement.classList.add('js');</script>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>Property cover – Shroffin</title>
-  <meta name="description" content="Property cover with a home loan — the few things that matter before you buy: rebuild amount, what is covered, lender on the paper, and your Policy Schedule.">
+  <meta name="description" content="See what property cover pays for. Rebuild amount, what is covered, lender on the paper, and your Policy Schedule.">
   <link rel="icon" href="../favicon.ico?v=6" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="../images/logos/favicon-32.png?v=6">
   <link rel="icon" type="image/png" sizes="16x16" href="../images/logos/favicon-16.png?v=6">
@@ -103,6 +104,16 @@
       --guide-tile: #fff;
       /* Apple Card–style tile radii (mobile-first ladder) */
       --guide-radius: 10px;
+      /* Proximity + type scale (shared with guide.html) */
+      --guide-gap-pair: 4px;      /* label ↔ supporting line */
+      --guide-gap-related: 10px;  /* h3 ↔ body */
+      --guide-gap-stack: 16px;    /* title ↔ lead */
+      --guide-gap-block: 36px;    /* lead ↔ content module */
+      --guide-gap-item: 18px;     /* list-row vertical pad */
+      --guide-type-row: 17px;     /* row primary */
+      --guide-type-support: 14px; /* row secondary / captions in lists */
+      --guide-type-body: 16px;    /* limit body */
+      --guide-type-micro: 12px;   /* legal / micro labels */
     }
 
     @media (min-width: 735px) {
@@ -126,7 +137,6 @@
 
     html {
       scrollbar-gutter: stable;
-      scroll-padding-top: calc(var(--gn-height) + var(--ln-height) + 20px);
     }
 
     body {
@@ -134,230 +144,8 @@
       color: #1d1d1f;
     }
 
-    body.gn-locked {
-      overflow: hidden;
-    }
 
-    /* ——— Apple globalnav ——— */
-    .globalnav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 9999;
-      height: var(--gn-height);
-      background: var(--gn-bg);
-      transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
 
-    .globalnav.flyout-open {
-      background: #fafafc;
-    }
-
-    .globalnav-content {
-      position: relative;
-      z-index: 3;
-      max-width: var(--gn-max);
-      height: var(--gn-height);
-      margin: 0 auto;
-      padding: 0 22px;
-      box-sizing: border-box;
-    }
-
-    .globalnav-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      min-width: 0;
-    }
-
-    .globalnav-item {
-      display: flex;
-      align-items: center;
-      height: 100%;
-    }
-
-    .globalnav-link,
-    .globalnav-support-trigger {
-      display: inline-flex;
-      align-items: center;
-      height: 100%;
-      min-height: 44px;
-      padding: 0 8px;
-      border: 0;
-      background: transparent;
-      color: var(--gn-text);
-      font-family: var(--font-brand);
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 1;
-      text-decoration: none;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .globalnav-link:hover,
-    .globalnav-support-trigger:hover,
-    .globalnav.flyout-open .globalnav-support-trigger,
-    .globalnav-link[aria-current="page"] {
-      color: var(--gn-text-hover);
-    }
-
-    .globalnav-link:focus-visible,
-    .globalnav-support-trigger:focus-visible {
-      outline: 2px solid rgba(29, 29, 31, 0.45);
-      outline-offset: -4px;
-      border-radius: 4px;
-    }
-
-    .globalnav-link-brand {
-      padding-left: 0;
-      padding-right: 4px;
-    }
-
-    .globalnav-logo {
-      display: block;
-      height: 22px;
-      width: auto;
-      max-width: 100%;
-    }
-
-    .globalnav-item-about {
-      margin-left: auto;
-    }
-
-    .globalnav-flyout {
-      position: absolute;
-      top: var(--gn-height);
-      left: 0;
-      right: 0;
-      z-index: 2;
-      overflow: hidden;
-      visibility: hidden;
-      pointer-events: none;
-      max-height: 0;
-      background: #fafafc;
-      transition:
-        max-height 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-flyout {
-      visibility: visible;
-      pointer-events: auto;
-      max-height: 320px;
-    }
-
-    .globalnav-flyout-content {
-      max-width: var(--gn-max);
-      margin: 0 auto;
-      padding: 40px 22px 52px;
-      box-sizing: border-box;
-      opacity: 0;
-      transform: translateY(-6px);
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-flyout-content {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .globalnav-submenu-header {
-      margin: 0 0 18px;
-      color: #6e6e73;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.33337;
-      text-transform: uppercase;
-    }
-
-    .globalnav-submenu-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .globalnav-submenu-list li {
-      opacity: 0;
-      transform: translateY(-6px);
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-submenu-list li {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-        .globalnav.flyout-open .globalnav-submenu-list li:nth-child(1) { transition-delay: 120ms; }
-    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(2) { transition-delay: 200ms; }
-    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(3) { transition-delay: 280ms; }
-
-    .globalnav-submenu-link {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding: 10px 0;
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .globalnav-submenu-link:hover,
-    .globalnav-submenu-link:hover .globalnav-submenu-value {
-      color: #0066cc;
-    }
-
-    .globalnav-submenu-link:focus-visible {
-      outline: 2px solid rgba(29, 29, 31, 0.45);
-      outline-offset: 2px;
-      border-radius: 4px;
-    }
-
-    .globalnav-submenu-label {
-      color: var(--gn-ink);
-      font-size: 24px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.16667;
-    }
-
-    .globalnav-submenu-value {
-      color: #6e6e73;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.42859;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .globalnav-veil {
-      position: fixed;
-      inset: 0;
-      z-index: 9998;
-      background: rgba(0, 0, 0, 0.4);
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav-veil.is-visible {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
 
     /* ——— Localnav (Guide sub-bar) ——— */
     .localnav {
@@ -398,7 +186,7 @@
     .localnav-menu {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: flex-start;
       gap: 20px;
       min-width: 0;
       flex: 1 1 auto;
@@ -407,19 +195,24 @@
 
     .localnav-list {
       list-style: none;
-      margin: 0;
+      margin: 0 0 0 auto;
       padding: 0;
       display: flex;
       align-items: stretch;
       align-self: stretch;
       height: 100%;
-      gap: 20px;
+      gap: 14px;
       min-width: 0;
+      max-width: 100%;
+      width: max-content;
       overflow-x: auto;
+      overscroll-behavior-x: contain;
       scrollbar-width: none;
       -ms-overflow-style: none;
       -webkit-overflow-scrolling: touch;
+      justify-content: flex-start;
     }
+
 
     .localnav-list::-webkit-scrollbar {
       display: none;
@@ -589,7 +382,6 @@
     .guide-moment {
       display: grid;
       gap: 20px;
-      scroll-margin-top: calc(var(--gn-height) + var(--ln-height) + 20px);
       opacity: 0;
       transform: translateY(14px);
       transition:
@@ -611,6 +403,8 @@
     }
 
     .guide-tile {
+      position: relative;
+      overflow: hidden;
       background: var(--guide-tile);
       border-radius: var(--guide-radius);
       padding: clamp(48px, 7vw, 72px) clamp(28px, 5vw, 52px);
@@ -621,37 +415,67 @@
       min-height: 0;
     }
 
+    .guide-tile-mark {
+      position: absolute;
+      top: clamp(28px, 4.5vw, 44px);
+      bottom: auto;
+      right: clamp(28px, 4.5vw, 44px);
+      width: clamp(56px, 9vw, 88px);
+      height: clamp(56px, 9vw, 88px);
+      color: rgba(0, 0, 0, 0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    .guide-tile-mark svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
     .guide-tile--hero {
       min-height: min(52vh, 420px);
       justify-content: center;
-      text-align: center;
-      align-items: center;
+      text-align: left;
+      align-items: flex-start;
       padding-top: clamp(56px, 10vw, 88px);
       padding-bottom: clamp(56px, 10vw, 88px);
     }
 
     .guide-tile--hero .guide-tile-copy {
       max-width: 26em;
-      margin-left: auto;
-      margin-right: auto;
+      margin-left: 0;
+      margin-right: 0;
     }
 
     .guide-tile--stage {
-      text-align: center;
-      align-items: center;
+      text-align: left;
+      align-items: flex-start;
       padding-top: clamp(48px, 8vw, 72px);
       padding-bottom: clamp(48px, 8vw, 72px);
+      padding-right: clamp(28px, 5vw, 52px);
     }
 
     .guide-tile--stage .guide-tile-copy,
     .guide-tile--stage .guide-tile-list,
     .guide-tile--stage .guide-bands,
     .guide-tile--stage .guide-flow,
-    .guide-tile--stage .guide-limits {
+    .guide-tile--stage .guide-limits,
+    .guide-tile--stage .guide-share-list {
       max-width: 40em;
       width: 100%;
-      margin-left: auto;
-      margin-right: auto;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    @media (min-width: 834px) {
+      .guide-tile--stage .guide-share-list {
+        max-width: min(52em, 100%);
+      }
     }
 
     .guide-tile--stage .guide-doc-rows,
@@ -666,6 +490,8 @@
       width: 100%;
       max-width: none;
       box-sizing: border-box;
+      position: relative;
+      z-index: 1;
     }
 
     .guide-tile--stage .guide-doc-table,
@@ -679,7 +505,7 @@
     }
 
     .guide-tile--stage .guide-seg {
-      align-self: center;
+      align-self: flex-start;
       width: auto;
       max-width: 100%;
     }
@@ -688,6 +514,12 @@
     .guide-tile--stage .guide-flow,
     .guide-tile--stage .guide-limits {
       text-align: left;
+    }
+
+    .guide-tile--stage .guide-tile-title,
+    .guide-tile--stage .guide-tile-copy {
+      position: relative;
+      z-index: 1;
     }
 
     .guide-flip {
@@ -813,7 +645,12 @@
 
     .guide-flip-link {
       appearance: none;
-      margin: 36px auto 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin: 0 auto;
+      align-self: center;
       padding: 0;
       border: 0;
       background: transparent;
@@ -828,8 +665,32 @@
       text-decoration: none;
     }
 
+    .guide-flip-face--front .guide-flip-link {
+      margin: auto auto 0;
+      padding-top: 64px;
+    }
+
+    .guide-flip-face--back .guide-flip-link {
+      margin-top: auto;
+      padding-top: 48px;
+    }
+
+    .guide-flip-link-arrow {
+      display: block;
+      width: 0.55em;
+      height: 0.55em;
+      max-width: 12px;
+      max-height: 12px;
+      flex-shrink: 0;
+      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
     .guide-flip-link:hover {
       text-decoration: underline;
+    }
+
+    .guide-flip-link:hover .guide-flip-link-arrow {
+      transform: translateX(3px);
     }
 
     .guide-flip-link:focus-visible {
@@ -838,9 +699,12 @@
       border-radius: 4px;
     }
 
-    .guide-flip-link--back {
-      margin: 0;
-      font-size: 15px;
+    .guide-flip-link--back .guide-flip-link-arrow {
+      transform: scaleX(-1);
+    }
+
+    .guide-flip-link--back:hover .guide-flip-link-arrow {
+      transform: scaleX(-1) translateX(3px);
     }
 
     .guide-calc-top {
@@ -970,6 +834,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+
       .guide-flip-inner {
         transition: none;
       }
@@ -1015,7 +880,7 @@
     }
 
     .guide-tile-copy {
-      margin: 16px 0 0;
+      margin: var(--guide-gap-stack) 0 0;
       color: #1d1d1f;
       font-size: clamp(17px, 2.2vw, 21px);
       font-weight: 400;
@@ -1092,6 +957,57 @@
       max-width: 28em;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    .guide-share-list {
+      list-style: none;
+      margin: var(--guide-gap-stack) 0 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    .guide-share-list li {
+      display: flex;
+      flex-direction: column;
+      gap: var(--guide-gap-pair);
+      margin: 0;
+      padding: var(--guide-gap-item) 0;
+    }
+
+    .guide-share-list li:first-child {
+      padding-top: 0;
+    }
+
+    .guide-share-when {
+      color: #6e6e73;
+      font-size: var(--guide-type-support);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+    }
+
+    .guide-share-then {
+      color: #1d1d1f;
+      font-size: var(--guide-type-row);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+    }
+
+    .guide-share-list--plain li {
+      color: #1d1d1f;
+      font-size: var(--guide-type-row);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+      border: 0;
+      padding-top: var(--guide-gap-item);
+      padding-bottom: var(--guide-gap-item);
+    }
+
+    .guide-share-list--plain li:first-child {
+      border: 0;
+      padding-top: 0;
     }
 
     .guide-flow {
@@ -1208,7 +1124,7 @@
     }
 
     .guide-fine-wrap {
-      max-width: 820px;
+      max-width: var(--guide-max);
       margin: 0 auto;
       padding: 0 22px clamp(48px, 8vw, 72px);
       box-sizing: border-box;
@@ -1217,11 +1133,46 @@
     .guide-fine {
       margin: 0;
       color: #6e6e73;
-      font-size: clamp(15px, 1.8vw, 17px);
+      font-size: var(--guide-type-micro);
       font-weight: 400;
       letter-spacing: -0.01em;
-      line-height: 1.47059;
+      line-height: 1.5;
       text-align: left;
+    }
+
+    .guide-fine-notes {
+      list-style: decimal;
+      margin: 12px 0 0;
+      padding: 0 0 0 1.25em;
+      color: #6e6e73;
+      font-size: var(--guide-type-micro);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    .guide-fine-notes li {
+      margin: 0 0 6px;
+      padding: 0;
+    }
+
+    .guide-fine-notes li:last-child {
+      margin-bottom: 0;
+    }
+
+    .guide-share-then a.guide-note-ref {
+      color: #6e6e73;
+      font-size: 0.75em;
+      font-weight: 600;
+      text-decoration: none;
+      vertical-align: super;
+      line-height: 0;
+    }
+
+    .guide-share-then a.guide-note-ref:hover {
+      color: #0066cc;
+      text-decoration: underline;
     }
 
     .guide-jump-wrap {
@@ -1559,8 +1510,98 @@
       margin-top: 8px;
     }
 
+    .guide-tile-title + .guide-callout {
+      margin-top: var(--guide-gap-stack);
+    }
+
+    .guide-callout + .guide-tile-copy {
+      margin-top: var(--guide-gap-related);
+    }
+
     .guide-callout--tight {
       margin-top: 20px;
+    }
+
+    .guide-breadcrumb {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 20px 22px 0;
+      box-sizing: border-box;
+      color: #6e6e73;
+      font-size: 13px;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+    }
+
+    .guide-breadcrumb a {
+      color: #6e6e73;
+      text-decoration: none;
+    }
+
+    .guide-breadcrumb a:hover {
+      color: #0066cc;
+      text-decoration: underline;
+    }
+
+    .guide-breadcrumb-sep {
+      margin: 0 0.35em;
+      color: rgba(110, 110, 115, 0.6);
+    }
+
+    .guide-related-wrap {
+      max-width: var(--guide-max);
+      margin: 0 auto;
+      padding: 0 22px clamp(32px, 6vw, 48px);
+      box-sizing: border-box;
+    }
+
+    .guide-related-links {
+      margin: 0;
+      padding: 20px 0 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      color: #6e6e73;
+      font-size: 14px;
+      letter-spacing: -0.01em;
+      line-height: 1.45;
+    }
+
+    .guide-related-links a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    .guide-related-links a:hover {
+      text-decoration: underline;
+    }
+
+    .guide-section-sub {
+      margin: 36px 0 0;
+      color: #1d1d1f;
+      font-size: clamp(22px, 3vw, 26px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .guide-section-sub:first-of-type {
+      margin-top: 0;
+    }
+
+    .guide-tile--stage.guide-tile--secondary {
+      padding-top: clamp(36px, 6vw, 52px);
+      padding-bottom: clamp(36px, 6vw, 52px);
+    }
+
+    .guide-tile--stage.guide-tile--secondary .guide-tile-mark {
+      width: clamp(44px, 7vw, 64px);
+      height: clamp(44px, 7vw, 64px);
+      opacity: 0.85;
+    }
+
+    @media (min-width: 834px) {
+      .guide-breadcrumb {
+        max-width: 1080px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1651,11 +1692,7 @@
       }
 
       .localnav-list {
-        gap: 16px;
-      }
-
-      .globalnav-content {
-        padding: 0 16px;
+        gap: 12px;
       }
     }
 
@@ -1676,30 +1713,16 @@
         padding-left: 16px;
         padding-right: 16px;
       }
-
-      .globalnav-submenu-label {
-        font-size: 21px;
-      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .globalnav,
-      .globalnav-flyout,
-      .globalnav-flyout-content,
-      .globalnav-submenu-list li,
-      .globalnav-veil,
-      .globalnav-link,
-      .globalnav-support-trigger,
       .localnav-cta {
         transition: none;
       }
-
-      .globalnav-flyout-content,
-      .globalnav-submenu-list li {
-        transform: none;
-      }
     }
   </style>
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=responsive-12">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=responsive-7">
 </head>
 <body>
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
@@ -1739,16 +1762,22 @@
           <a class="globalnav-link" href="../education-loan.html">Education</a>
         </li>
         -->
-        <li class="globalnav-item globalnav-item-about">
-          <a class="globalnav-link" href="guide.html" aria-current="page">Guide</a>
-        </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="about.html">About</a>
+        <li class="globalnav-item globalnav-item-about globalnav-item-flyout" id="nav-guide">
+          <a
+            class="globalnav-link globalnav-flyout-trigger"
+            href="guide.html"
+            id="nav-guide-trigger"
+            aria-expanded="false"
+            aria-controls="nav-guide-flyout"
+            aria-current="page"
+          >
+            Guide
+          </a>
         </li>
         <li class="globalnav-item globalnav-item-support" id="nav-support">
           <button
             type="button"
-            class="globalnav-support-trigger"
+            class="globalnav-flyout-trigger"
             id="nav-support-trigger"
             aria-expanded="false"
             aria-controls="nav-support-flyout"
@@ -1756,9 +1785,54 @@
             Support
           </button>
         </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="about.html">About</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="project-approvals.html">Project Bank Finder</a>
+        </li>
       </ul>
     </div>
 
+    <div class="globalnav-flyout" id="nav-guide-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore guide</h2>
+          <ul class="globalnav-submenu-list">
+            <li>
+              <a class="globalnav-submenu-link" href="guide.html">
+                <span class="globalnav-submenu-label">Overview</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="guide-documents.html">
+                <span class="globalnav-submenu-label">Documents</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="tax-benefits.html">
+                <span class="globalnav-submenu-label">Tax benefits</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="concessions.html">
+                <span class="globalnav-submenu-label">Concessions</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="home-loan-insurance.html" aria-current="page">
+                <span class="globalnav-submenu-label">Insurance</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="home-loan-complaints.html">
+                <span class="globalnav-submenu-label">Grievance redressal</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content">
         <h2 class="globalnav-submenu-header">Get Help</h2>
@@ -1796,24 +1870,24 @@
       <div class="localnav-content">
         <p class="localnav-title">Guide</p>
         <div class="localnav-menu">
-          <ul class="localnav-list">
+                    <ul class="localnav-list">
             <li>
               <a class="localnav-link" href="guide.html">Overview</a>
-            </li>
-            <li>
-              <a class="localnav-link" href="home-loan-insurance.html" aria-current="page">Insurance</a>
-            </li>
-            <li>
-              <span class="localnav-link localnav-link-nolink">Prepayment</span>
-            </li>
-            <li>
-              <span class="localnav-link localnav-link-nolink">Charges</span>
             </li>
             <li>
               <a class="localnav-link" href="guide-documents.html">Documents</a>
             </li>
             <li>
-              <a class="localnav-link" href="home-loan-complaints.html">Complaints</a>
+              <a class="localnav-link" href="tax-benefits.html">Tax benefits</a>
+            </li>
+            <li>
+              <a class="localnav-link" href="concessions.html">Concessions</a>
+            </li>
+            <li>
+              <a class="localnav-link" href="home-loan-insurance.html" aria-current="page">Insurance</a>
+            </li>
+            <li>
+              <a class="localnav-link" href="home-loan-complaints.html">Grievance redressal</a>
             </li>
           </ul>
           <a class="localnav-cta" href="learn-more.html">Explore banks</a>
@@ -1821,170 +1895,260 @@
       </div>
     </nav>
 
+    <nav class="guide-breadcrumb" aria-label="Breadcrumb">
+      <a href="guide.html">Guide</a><span class="guide-breadcrumb-sep" aria-hidden="true">›</span><a href="home-loan-insurance.html">Insurance</a><span class="guide-breadcrumb-sep" aria-hidden="true">›</span><span aria-current="page">Property cover</span>
+    </nav>
     <header class="guide-hero">
-      <h1 class="guide-hero-title">Property cover</h1>
-      <p class="guide-hero-lead">
-        Without it, a fire or flood can leave you paying the EMI and rebuilding at the same time.
-      </p>
+      <h1 class="guide-hero-title">See what property cover pays for.</h1>
     </header>
 
     <nav class="guide-jump-wrap" aria-label="Property cover sections">
       <ul class="guide-jump">
-        <li><a href="#what">What it does</a></li>
-        <li><a href="#when">When</a></li>
-        <li><a href="#decisions">Decisions</a></li>
-        <li><a href="#check">Before you pay</a></li>
+        <li><a href="#coverage">Coverage</a></li>
+        <li><a href="#setup">Cover setup</a></li>
+        <li><a href="#pay">Premium</a></li>
+        <li><a href="#claim">Claim</a></li>
       </ul>
     </nav>
 
     <div class="guide-story">
-      <section class="guide-moment" id="what">
+      <section class="guide-moment" id="coverage">
         <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">The one thing this does</h2>
+          <span class="guide-tile-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" focusable="false">
+              <path d="M9.5 36.5h29" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+              <path d="M14.5 36.5V22.5l9.5-7 9.5 7v14" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21.5 36.5v-8h5v8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <h2 class="guide-tile-title">Coverage</h2>
+          <p class="guide-callout guide-callout--tight">Take cover at possession of a finished house. Until handover, risk for the unfinished house usually sits with the seller or builder.</p>
           <p class="guide-tile-copy">
-            It pays to repair or rebuild the house after listed events — fire, flood, earthquake, storm, and similar. Contents only if you add them.
+            It pays to repair or rebuild the house after covered damage.
           </p>
-          <p class="guide-tile-copy guide-tile-copy--muted">
-            It does not clear the loan if you die. That is loan cover. If you only buy the wrong product, the house can still be gone and the EMI still due.
-          </p>
-        </article>
-      </section>
-
-      <section class="guide-moment" id="when">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">When you take it</h2>
-          <p class="guide-tile-copy">
-            Property cover is for a house that is already built and in your hands. Take it when you get possession — not while the building is still under construction.
-          </p>
-          <p class="guide-tile-copy">
-            Until handover is complete, risk for the unfinished house usually sits with the seller or builder. That is typically written in the sale agreement. Buying dwelling property cover early does not fix that stage.
-          </p>
-          <p class="guide-callout">
-            Ready-to-move or resale with possession now: insure then. Under construction: wait for possession, then insure.
-          </p>
-        </article>
-      </section>
-
-      <section class="guide-moment">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">Why you need to care</h2>
-          <p class="guide-tile-copy">
-            The home is usually your largest purchase. Damage without insurance means a double burden: the loan continues, and repair money has to come from somewhere else.
-          </p>
-          <p class="guide-tile-copy guide-tile-copy--muted">
-            Many loan agreements require the house to stay insured while the loan runs. That protects you and the lender’s security. It does not mean you must buy only their partner brand — any authorised insurer that meets the agreement is usually fine.
-          </p>
-        </article>
-      </section>
-
-      <section class="guide-moment" id="decisions">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">The decisions that change everything</h2>
-          <div class="guide-doc-rows">
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Is this the right moment?</p>
-              <p class="guide-doc-note">Only after possession of a finished house. Under construction is not what this policy is for.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">How large is the cover?</p>
-              <p class="guide-doc-note">Use rebuild cost of the structure — not market price of flat plus land. Too low and the lender may reject the policy. Land is not insured.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Building, contents, or both?</p>
-              <p class="guide-doc-note">Ask what your agreement expects. Jewellery and art are usually separate choices, not in the default contents pot.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Is the lender named?</p>
-              <p class="guide-doc-note">On a mortgaged home, wrong or missing bank naming is a common reason papers bounce — at disbursement or at claim time.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Will this last as long as the loan?</p>
-              <p class="guide-doc-note">Standard dwelling cover is often up to about ten years. Longer loans need renewals with the lender still named.<sup>1</sup></p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Rebuild cover or loan-linked package?</p>
-              <p class="guide-doc-note">Some packages pay toward outstanding loan, not full rebuild. Know which promise you are buying.<sup>2</sup></p>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section class="guide-moment">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">What usually pays — and what does not</h2>
-          <p class="guide-tile-copy">
-            Typical covered events: fire, lightning, earthquake, storm, flood, and other listed perils. Theft is usually only shortly after another covered event — not ordinary burglary alone.
-          </p>
-          <p class="guide-tile-copy guide-tile-copy--muted">
-            Typical gaps: deliberate damage, war and nuclear risks, items taken out of the home, drop in market value, and using the home as something other than a residence.
-          </p>
-        </article>
-      </section>
-
-      <section class="guide-moment">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">If something happens</h2>
-          <p class="guide-tile-copy">
-            Make safe. Tell the insurer quickly. Keep damaged property for survey if asked. When the lender is named, expect them on the building settlement. Payout follows rebuild rules — not land-inclusive market price.
-          </p>
-        </article>
-      </section>
-
-      <section class="guide-moment" id="check">
-        <article class="guide-tile guide-tile--stage">
-          <h2 class="guide-tile-title">Before you pay</h2>
-          <p class="guide-tile-copy guide-tile-copy--muted">
-            Open the Policy Schedule. If these are wrong, stop.
-          </p>
-          <ul class="guide-tile-list">
-            <li>Possession of a finished house (not under construction)</li>
-            <li>Address of the house</li>
-            <li>Sum insured on a rebuild basis</li>
-            <li>Building and/or contents — as you intended</li>
-            <li>Lender named correctly</li>
-            <li>Period of cover and renewal plan</li>
-            <li>Premium</li>
+          <ul class="guide-share-list">
+            <li>
+              <span class="guide-share-when">Building and contents</span>
+              <span class="guide-share-then">Building is the structure. Land is not insured. Contents are the things inside, and only if you add contents cover.</span>
+            </li>
+            <li>
+              <span class="guide-share-when">Often covered</span>
+              <span class="guide-share-then">Fire, lightning, earthquake, storm, flood, and other events listed on the policy. Theft or burglary can vary by policy.</span>
+            </li>
+            <li>
+              <span class="guide-share-when">Usually not covered</span>
+              <span class="guide-share-then">Intentional damage, war, nuclear risks, and losses the policy does not cover. A drop in market value is usually not covered.</span>
+            </li>
           </ul>
-          <p class="guide-callout">
-            Also see <a href="credit-life-insurance.html">loan cover</a> and <a href="home-loan-insurance.html">both products</a>.
-          </p>
         </article>
       </section>
+
+      <section class="guide-moment" id="setup">
+        <article class="guide-tile guide-tile--stage">
+          <span class="guide-tile-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" focusable="false">
+              <path d="M16.5 24.5 21 29l10.5-12" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="10.5" y="10.5" width="27" height="27" rx="4" stroke="currentColor" stroke-width="1.35"/>
+            </svg>
+          </span>
+          <h2 class="guide-tile-title">Cover setup</h2>
+          <p class="guide-tile-copy">
+            Your Policy Schedule holds these details.
+          </p>
+          <ul class="guide-share-list">
+            <li>
+              <span class="guide-share-when">When cover starts</span>
+              <span class="guide-share-then">Take it when you get possession of a finished house. Until handover, risk for the unfinished house usually sits with the seller or builder.</span>
+            </li>
+            <li>
+              <span class="guide-share-when">House address</span>
+              <span class="guide-share-then">The address on the policy must match the house.</span>
+            </li>
+            <li>
+              <span class="guide-share-when">Cover amount</span>
+              <span class="guide-share-then">Check the cover amount before you sign. It should match rebuild cost of the structure, not market price of flat plus land. Too low and the lender may reject the policy, and a claim can be scaled down by the same shortfall.<a class="guide-note-ref" href="#note-3">3</a></span>
+            </li>
+            <li>
+              <span class="guide-share-when">Cover period</span>
+              <span class="guide-share-then">Many home policies last about 10 years. If your loan is longer, renew on time and keep the bank named on each renewal.<a class="guide-note-ref" href="#note-1">1</a></span>
+            </li>
+            <li>
+              <span class="guide-share-when">Rebuild or loan-only</span>
+              <span class="guide-share-then">Some policies pay to rebuild the home. Others only clear what you still owe the bank. Ask which one you are buying.<a class="guide-note-ref" href="#note-2">2</a></span>
+            </li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="guide-moment" id="pay">
+        <article class="guide-tile guide-tile--stage">
+          <span class="guide-tile-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" focusable="false">
+              <path d="M9.5 36.5h29" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+              <path d="M14.5 36.5V22.5l9.5-7 9.5 7v14" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21.5 36.5v-8h5v8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <h2 class="guide-tile-title">Premium</h2>
+          <p class="guide-tile-copy">
+            These premiums are usually smaller.
+          </p>
+          <ul class="guide-share-list">
+            <li>
+              <span class="guide-share-when">When you pay</span>
+              <span class="guide-share-then">Most policies renew yearly — you pay the insurer and keep the receipt. Some packs cover several years in one premium, often about 10. If your home loan runs longer, plan the next renewal before cover ends.</span>
+            </li>
+            <li>
+              <span class="guide-share-when">Premium inside the home loan</span>
+              <span class="guide-share-then">Less common than for loan cover, but some offers still club a property premium into the loan. If that happens, you pay interest on that premium too.</span>
+            </li>
+            <li>
+              <span class="guide-share-when">Missed renewal</span>
+              <span class="guide-share-then">A lapsed policy leaves the house uninsured. The bank may also flag the loan if the agreement required continuous cover with the lender named.</span>
+            </li>
+            <li>
+              <span class="guide-share-when">GST on the premium</span>
+              <span class="guide-share-then">Property cover is general insurance and currently carries 18% GST. It shows on your premium receipt.</span>
+            </li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="guide-moment" id="claim">
+        <article class="guide-tile guide-tile--stage">
+          <span class="guide-tile-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" focusable="false">
+              <circle cx="18" cy="18" r="5" stroke="currentColor" stroke-width="1.35"/>
+              <circle cx="30" cy="18" r="5" stroke="currentColor" stroke-width="1.35"/>
+              <path d="M8.5 34.5c1.8-5 5.2-7.5 9.5-7.5s7.7 2.5 9.5 7.5M20.5 34.5c1.8-5 5.2-7.5 9.5-7.5s7.7 2.5 9.5 7.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <h2 class="guide-tile-title">Claim</h2>
+          <p class="guide-tile-copy">
+            What to do after damage, and who is on the payout.
+          </p>
+          <ul class="guide-share-list">
+            <li>
+              <span class="guide-share-when">First steps</span>
+              <span class="guide-share-then">Make the property safe. Tell the insurer soon — many policies want notice within about 30 days. Keep damaged items for survey unless you must move them for safety.</span>
+            </li>
+            <li>
+              <span class="guide-share-when">What to keep</span>
+              <span class="guide-share-then">Policy number, photos, and any police or fire report if they apply. Do not discard debris or start non-urgent repairs before the survey unless the insurer agrees.</span>
+            </li>
+            <li>
+              <span class="guide-share-when">How payout works</span>
+              <span class="guide-share-then">Partial damage usually pays repair cost. Total loss pays up to the cover amount on your schedule. Rebuild policies aim to restore the home; loan-only packages may pay the bank up to what you still owe.<a class="guide-note-ref" href="#note-2">2</a></span>
+            </li>
+            <li>
+              <span class="guide-share-when">If the bank is named</span>
+              <span class="guide-share-then">The bank is usually on the building policy as loss payee or under an Agreed Bank Clause. How money flows depends on your policy and that clause — especially on a total loss. On partial damage, many rebuild policies reimburse repair cost to you, but the bank may still need to be told and may need to approve release of funds.</span>
+            </li>
+            <li>
+              <span class="guide-share-when">Building vs contents</span>
+              <span class="guide-share-then">Contents claims are often separate from the building. Contents payout may go to you even when the bank is named on the building cover.</span>
+            </li>
+          </ul>
+        </article>
+      </section>
+    </div>
+
+    <div class="guide-related-wrap">
+      <p class="guide-related-links">Property cover and loan cover are separate products. One does not replace the other. <a href="home-loan-insurance.html">Both covers overview</a><span aria-hidden="true"> · </span><a href="credit-life-insurance.html">Loan cover</a></p>
     </div>
 
     <div class="guide-fine-wrap">
       <p class="guide-fine">
-        Education only. Your Policy Schedule wins. Shroffin is not a bank or an insurer. <sup>1</sup> Longer brand packages exist — useful only if amount, perils, and lender naming still match your agreement. <sup>2</sup> Outstanding-loan packages and full rebuild policies are different products.
+        Education only. Your Policy Schedule wins.
       </p>
+      <ol class="guide-fine-notes" start="1">
+        <li id="note-1">Longer brand packages exist. They help only if amount, perils, and lender naming still match your agreement.</li>
+        <li id="note-2">Outstanding-loan packages and full rebuild policies are different products.</li>
+        <li id="note-3">Insuring for less than rebuild cost is under-insurance. Many policies then pay a claim only in the same proportion.</li>
+      </ol>
     </div>
   </main>
 
+  <!-- SHROFFIN_FOOTER_START -->
   <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
     <div class="site-footer-inner">
-      <div class="site-footer-brand">
-        <a href="../index.html" aria-label="Shroffin Home">
-          <img
-            class="site-footer-logo"
-            src="../images/logos/logo-h-light-clear-781x173.png"
-            alt="Shroffin"
-            width="99"
-            height="22"
-          >
-        </a>
-        <p class="site-footer-tagline">An Independent and transparent banking.</p>
+      <div class="site-footer-directory">
+        <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
+          <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/guide.html">Overview</a></li>
+            <li><a href="/pages/guide-documents.html">Documents</a></li>
+            <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
+            <li><a href="/pages/concessions.html">Concessions</a></li>
+            <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
+            <li><a href="/pages/home-loan-complaints.html">Grievance redressal</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-quick-title">
+          <h2 class="site-footer-heading" id="footer-quick-title">Quick links</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/learn-more.html">Explore banks</a></li>
+            <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-company-title">
+          <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/about.html">About</a></li>
+            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+          </ul>
+        </nav>
+
+        <section class="site-footer-group" aria-labelledby="footer-support-title">
+          <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
+          <ul class="site-footer-list">
+            <li><a href="mailto:support@shroffin.com">Email</a></li>
+            <li><a href="tel:+919112334367">Call</a></li>
+          </ul>
+        </section>
+
+        <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
+          <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
+          <ul class="site-footer-list">
+            <li>
+              <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
+        <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
+        <div class="site-footer-disclaimer">
+          <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+          <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+          <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+          <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+          <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+        </div>
+      </section>
+
+      <div class="site-footer-bottom">
+        <div class="site-footer-bottom-row">
+          <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
+          <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
+            <ul class="site-footer-legal-links">
+              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
+              <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
+              <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
-
-    <hr class="site-footer-rule" aria-hidden="true">
-
-    <div class="site-footer-inner">
-      <p class="site-footer-copy">
-        <a href="../privacy-policy.html">Privacy Policy</a>
-        <span aria-hidden="true"> · </span>
-        Copyright © 2026 Shroffin. All rights reserved.
-      </p>
-    </div>
   </footer>
+  <!-- SHROFFIN_FOOTER_END -->
 
   <script>
     (function () {
@@ -2015,94 +2179,24 @@
       });
     })();
   </script>
+
   <script>
     (function () {
-      var nav = document.getElementById('globalnav');
-      var support = document.getElementById('nav-support');
-      var trigger = document.getElementById('nav-support-trigger');
-      var flyout = document.getElementById('nav-support-flyout');
-      var veil = document.getElementById('globalnav-veil');
-      if (!nav || !support || !trigger || !flyout || !veil) return;
-
-      var closeTimer = null;
-      var canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
-
-      function setFlyoutOpen(open) {
-        nav.classList.toggle('flyout-open', open);
-        document.body.classList.toggle('gn-locked', open);
-        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-        flyout.setAttribute('aria-hidden', open ? 'false' : 'true');
-        veil.classList.toggle('is-visible', open);
-        if (open) veil.removeAttribute('hidden');
-        else veil.setAttribute('hidden', '');
+      var list = document.querySelector('.localnav-list');
+      var current = list && list.querySelector('.localnav-link[aria-current="page"]');
+      if (!list || !current) return;
+      // Always start from the left so Overview + Tax Benefits stay reachable.
+      list.scrollLeft = 0;
+      if (list.scrollWidth <= list.clientWidth) return;
+      var listLeft = list.getBoundingClientRect().left;
+      var cur = current.getBoundingClientRect();
+      var pad = 12;
+      if (cur.right > listLeft + list.clientWidth - pad) {
+        list.scrollLeft = Math.max(0, current.offsetLeft + current.offsetWidth - list.clientWidth + pad);
       }
-
-      function openFlyout() {
-        if (closeTimer) {
-          clearTimeout(closeTimer);
-          closeTimer = null;
-        }
-        setFlyoutOpen(true);
-      }
-
-      function closeFlyoutSoon() {
-        if (closeTimer) clearTimeout(closeTimer);
-        closeTimer = setTimeout(function () {
-          setFlyoutOpen(false);
-          closeTimer = null;
-        }, 220);
-      }
-
-      function closeFlyoutNow() {
-        if (closeTimer) {
-          clearTimeout(closeTimer);
-          closeTimer = null;
-        }
-        setFlyoutOpen(false);
-      }
-
-      trigger.addEventListener('click', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        setFlyoutOpen(!nav.classList.contains('flyout-open'));
-      });
-
-      support.addEventListener('mouseenter', function () {
-        if (canHover.matches) openFlyout();
-      });
-
-      support.addEventListener('mouseleave', function (event) {
-        if (!canHover.matches) return;
-        var next = event.relatedTarget;
-        if (next && (flyout.contains(next) || support.contains(next))) return;
-        closeFlyoutSoon();
-      });
-
-      flyout.addEventListener('mouseenter', function () {
-        if (canHover.matches) openFlyout();
-      });
-
-      flyout.addEventListener('mouseleave', function (event) {
-        if (!canHover.matches) return;
-        var next = event.relatedTarget;
-        if (next && (flyout.contains(next) || support.contains(next))) return;
-        closeFlyoutSoon();
-      });
-
-      veil.addEventListener('click', closeFlyoutNow);
-
-      flyout.querySelectorAll('a').forEach(function (link) {
-        link.addEventListener('click', closeFlyoutNow);
-      });
-
-      window.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeFlyoutNow();
-      });
-
-      window.addEventListener('resize', function () {
-        if (!canHover.matches) closeFlyoutNow();
-      });
     })();
   </script>
+  <script src="../js/shroffin-nav.js?v=responsive-6"></script>
+  <script src="../js/shroffin-guide.js?v=responsive-5"></script>
 </body>
 </html>

@@ -324,7 +324,7 @@
       '<h2 id="payment-success-title">Payment Successful</h2>' +
       '<div class="payment-success-body">' +
       '<p>We\'ve received your application for the selected offers/lenders. We\'ll contact you in the next 48 hours at <span id="payment-success-user-email"></span>.</p>' +
-      '<p>Even if you missed selecting an offer or want to correct the information, let us know at 91123 34367 or <a href="mailto:aoopune@gmail.com">aoopune@gmail.com</a>.</p>' +
+      '<p>Even if you missed selecting an offer or want to correct the information, let us know at 91123 34367 or <a href="mailto:support@shroffin.com">support@shroffin.com</a>.</p>' +
       '</div><div class="payment-success-actions"><button type="button" class="apply-flow-btn-got-it">Got It</button></div></div>';
     var emailEl = overlay.querySelector('#payment-success-user-email');
     if (emailEl) emailEl.textContent = userEmail && String(userEmail).trim() ? userEmail : 'your registered email';
@@ -419,7 +419,7 @@
       setButtonEnabled(true);
       var origin = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : '';
       var qrUrl = origin + '/payment-qr.html?id=' + encodeURIComponent(applicationId);
-      var homeUrl = origin ? origin + '/' : 'https://applyonlyonce.com/';
+      var homeUrl = origin ? origin + '/' : 'https://shroffin.com/';
       showOpenPaymentModal(qrUrl, homeUrl);
     }
     var insertPromise = db.runTransaction(function (transaction) {
@@ -472,13 +472,13 @@
         var msg = raw;
         var code = (err && err.code) ? String(err.code) : '';
         if (/popup-blocked|auth\/cancelled|cancelled-popup|popup-closed/.test(code)) {
-          msg = 'Sign-in window was blocked. Please allow popups for this site and click Continue & Pay again. Need help? Call 91123 34367 or aoopune@gmail.com.';
+          msg = 'Sign-in window was blocked. Please allow popups for this site and click Continue & Pay again. Need help? Call 91123 34367 or support@shroffin.com.';
         } else if (/Firebase not configured|failed to load|SDK|Not in a browser/i.test(msg)) {
-          msg = 'Sign-in could not load. Please refresh the page, check your connection, or try disabling ad blockers. Need help? Call 91123 34367 or aoopune@gmail.com.';
+          msg = 'Sign-in could not load. Please refresh the page, check your connection, or try disabling ad blockers. Need help? Call 91123 34367 or support@shroffin.com.';
         } else if (/SSL|525|handshake failed|unreachable|failed to fetch|network|load failed|connection|reset|pr_connect|authenticity|cors/i.test(msg) || (err && err.name === 'TypeError')) {
-          msg = 'Our servers are temporarily unreachable. Please try again in a few minutes. If it persists, try another network (e.g. mobile data) or turn off VPN. Need help? Call 91123 34367 or aoopune@gmail.com.';
+          msg = 'Our servers are temporarily unreachable. Please try again in a few minutes. If it persists, try another network (e.g. mobile data) or turn off VPN. Need help? Call 91123 34367 or support@shroffin.com.';
         } else if (/permission|firestore|unavailable|applications|auth/i.test(msg)) {
-          msg = "Firebase setup needed: In Firebase Console → Firestore → Rules, allow 'applications' and '_counters' for signed-in users. See firestore.rules in the repo. Need help? Call 91123 34367 or aoopune@gmail.com";
+          msg = "Firebase setup needed: In Firebase Console → Firestore → Rules, allow 'applications' and '_counters' for signed-in users. See firestore.rules in the repo. Need help? Call 91123 34367 or support@shroffin.com";
         }
         showToast(msg, true);
         clearPendingApplication();

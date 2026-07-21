@@ -1,0 +1,49 @@
+---
+description: Off-site links must use the guide-section-link ↗ pattern (Section 22 style)
+globs: "**/*.{html,css}"
+alwaysApply: true
+---
+
+# Website external links (off-site)
+
+Any link that takes the user **off shroffin.com** (RBI, Income Tax, NHB, WhatsApp web destinations in guide body, government portals, insurer sites, etc.) must use the **exact** `guide-section-link` pattern from `pages/tax-benefits.html` (Section 22↗). Do not invent a new look each time.
+
+## Always
+
+1. Use class `guide-section-link` on the `<a>`.
+2. Open in a new tab: `target="_blank"` + `rel="noopener noreferrer"`.
+3. Visible off-site cue: `<span class="guide-section-link-arrow" aria-hidden="true">↗</span>`.
+4. Screen-reader purpose: `<span class="visually-hidden"> (opens official [Site] page)</span>` — name the destination (RBI, Income Tax, NHB, etc.).
+5. Visible label = the real thing (Section 22, RBI Master Directions, cms.rbi.org.in) — not “click here” or “learn more”.
+6. If the page is missing styles, copy the CSS block for `.guide-section-link` / `.guide-section-link-arrow` (and `.visually-hidden` if absent) from `pages/tax-benefits.html`.
+
+## Markup (copy this shape)
+
+```html
+<a
+  class="guide-section-link"
+  href="https://example.gov.in/..."
+  target="_blank"
+  rel="noopener noreferrer"
+>Label<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Example page)</span></a>
+```
+
+Title-adjacent small note (optional wrapper): wrap in `<span class="guide-limit-note">…</span>` like Section 22 on tax benefits.
+
+Inline in body: same `<a class="guide-section-link">` inside `.guide-share-then` (CSS already targets that).
+
+## Never
+
+- Plain blue `<a href="https://…">` without `guide-section-link`, ↗, and visually-hidden text.
+- ↗ only as loose text with no classes.
+- Off-site links without `target="_blank"` / `rel="noopener noreferrer"`.
+- Using this pattern for **same-site** links (other Shroffin pages, in-page `#anchors`).
+
+## Exceptions
+
+- **Global nav WhatsApp** may keep `Chat on WhatsApp ↗` in the submenu label (existing `globalnav-submenu-link` pattern). Do not convert nav to `guide-section-link`.
+- Mailto / tel links stay as normal contacts — no ↗ unless they open an external web app in a new tab by design.
+
+## Quick self-check
+
+Off-site? → `guide-section-link` + ↗ + visually-hidden + blank tab. Same site? → normal internal link, no ↗.

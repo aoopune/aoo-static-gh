@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Generate Config CSV for the Apply Only Once Config sheet.
+ * Generate Config CSV for the Shroffin Config sheet.
  * Run: node scripts/generate-config.js
  * Output: config/config.csv - paste this into the Config sheet in Google Sheets.
  *
@@ -47,7 +47,7 @@ async function main() {
   config.push({ key: 'key', value: 'value' });
   config.push({ key: 'cache_minutes', value: '5' });
   config.push({ key: 'contact_phone', value: '+91 91123 34367' });
-  config.push({ key: 'contact_email', value: 'aoopune@gmail.com' });
+  config.push({ key: 'contact_email', value: 'support@shroffin.com' });
   config.push({ key: 'default_compare_tab', value: 'india' });
   config.push({ key: 'faq.expand_default', value: 'true' });
   config.push({ key: 'document_checklist.group_by', value: 'category' });

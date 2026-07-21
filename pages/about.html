@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script>document.documentElement.classList.add('js');</script>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -116,234 +117,8 @@
       color: #1d1d1f;
     }
 
-    body.gn-locked {
-      overflow: hidden;
-    }
 
-    /* ——— Apple globalnav ——— */
-    .globalnav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 9999;
-      height: var(--gn-height);
-      background: var(--gn-bg);
-      transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
 
-    .globalnav.flyout-open {
-      background: #fafafc;
-    }
-
-    .globalnav-content {
-      position: relative;
-      z-index: 3;
-      max-width: var(--gn-max);
-      height: var(--gn-height);
-      margin: 0 auto;
-      padding: 0 22px;
-      box-sizing: border-box;
-    }
-
-    .globalnav-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      min-width: 0;
-    }
-
-    .globalnav-item {
-      display: flex;
-      align-items: center;
-      height: 100%;
-    }
-
-    .globalnav-link,
-    .globalnav-support-trigger {
-      display: inline-flex;
-      align-items: center;
-      height: 100%;
-      min-height: 44px;
-      padding: 0 8px;
-      border: 0;
-      background: transparent;
-      color: var(--gn-text);
-      font-family: var(--font-brand);
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 1;
-      text-decoration: none;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .globalnav-link:hover,
-    .globalnav-support-trigger:hover,
-    .globalnav.flyout-open .globalnav-support-trigger,
-    .globalnav-link[aria-current="page"] {
-      color: var(--gn-text-hover);
-    }
-
-    .globalnav-link:focus-visible,
-    .globalnav-support-trigger:focus-visible {
-      outline: 2px solid rgba(29, 29, 31, 0.45);
-      outline-offset: -4px;
-      border-radius: 4px;
-    }
-
-    .globalnav-link-brand {
-      padding-left: 0;
-      padding-right: 4px;
-    }
-
-    .globalnav-logo {
-      display: block;
-      height: 22px;
-      width: auto;
-      max-width: 100%;
-    }
-
-    .globalnav-item-about {
-      margin-left: auto;
-    }
-
-    .globalnav-flyout {
-      position: absolute;
-      top: var(--gn-height);
-      left: 0;
-      right: 0;
-      z-index: 2;
-      overflow: hidden;
-      visibility: hidden;
-      pointer-events: none;
-      max-height: 0;
-      background: #fafafc;
-      transition:
-        max-height 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-flyout {
-      visibility: visible;
-      pointer-events: auto;
-      max-height: 320px;
-    }
-
-    .globalnav-flyout-content {
-      max-width: var(--gn-max);
-      margin: 0 auto;
-      padding: 40px 22px 52px;
-      box-sizing: border-box;
-      opacity: 0;
-      transform: translateY(-6px);
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-flyout-content {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .globalnav-submenu-header {
-      margin: 0 0 16px;
-      color: #6e6e73;
-      font-family: var(--font-brand);
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 1.33337;
-    }
-
-    .globalnav-submenu-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .globalnav-submenu-list li {
-      opacity: 0;
-      transform: translateY(-6px);
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav.flyout-open .globalnav-submenu-list li {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-        .globalnav.flyout-open .globalnav-submenu-list li:nth-child(1) { transition-delay: 120ms; }
-    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(2) { transition-delay: 200ms; }
-    .globalnav.flyout-open .globalnav-submenu-list li:nth-child(3) { transition-delay: 280ms; }
-
-    .globalnav-submenu-link {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 2px;
-      padding: 8px 0;
-      min-height: 44px;
-      color: var(--gn-ink);
-      font-family: var(--font-brand);
-      text-decoration: none;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .globalnav-submenu-link:hover,
-    .globalnav-submenu-link:hover .globalnav-submenu-value {
-      color: #06c;
-    }
-
-    .globalnav-submenu-link:focus-visible {
-      outline: 2px solid rgba(29, 29, 31, 0.35);
-      outline-offset: 2px;
-      border-radius: 4px;
-    }
-
-    .globalnav-submenu-label {
-      font-size: 24px;
-      font-weight: 600;
-      line-height: 1.16667;
-    }
-
-    .globalnav-submenu-value {
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 1.33337;
-      color: #6e6e73;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .globalnav-veil {
-      position: fixed;
-      top: var(--gn-height);
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 9998;
-      background: rgba(0, 0, 0, 0.4);
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .globalnav-veil.is-visible {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
 
     /* ——— About page ——— */
     .about-content {
@@ -547,27 +322,9 @@
       .about-sections {
         width: min(var(--about-max), calc(100% - 32px));
       }
-
-      .globalnav-submenu-label {
-        font-size: 21px;
-      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .globalnav,
-      .globalnav-flyout,
-      .globalnav-flyout-content,
-      .globalnav-submenu-list li,
-      .globalnav-veil,
-      .globalnav-link,
-      .globalnav-support-trigger {
-        transition: none;
-      }
-
-      .globalnav-flyout-content,
-      .globalnav-submenu-list li {
-        transform: none;
-      }
 
       .about-hero,
       .about-section {
@@ -577,6 +334,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=responsive-12">
 </head>
 <body>
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
@@ -616,16 +374,21 @@
           <a class="globalnav-link" href="../education-loan.html">Education</a>
         </li>
         -->
-        <li class="globalnav-item globalnav-item-about">
-          <a class="globalnav-link" href="guide.html">Guide</a>
-        </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="about.html" aria-current="page">About</a>
+        <li class="globalnav-item globalnav-item-about globalnav-item-flyout" id="nav-guide">
+          <a
+            class="globalnav-link globalnav-flyout-trigger"
+            href="guide.html"
+            id="nav-guide-trigger"
+            aria-expanded="false"
+            aria-controls="nav-guide-flyout"
+          >
+            Guide
+          </a>
         </li>
         <li class="globalnav-item globalnav-item-support" id="nav-support">
           <button
             type="button"
-            class="globalnav-support-trigger"
+            class="globalnav-flyout-trigger"
             id="nav-support-trigger"
             aria-expanded="false"
             aria-controls="nav-support-flyout"
@@ -633,9 +396,54 @@
             Support
           </button>
         </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="about.html" aria-current="page">About</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="project-approvals.html">Project Bank Finder</a>
+        </li>
       </ul>
     </div>
 
+    <div class="globalnav-flyout" id="nav-guide-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore guide</h2>
+          <ul class="globalnav-submenu-list">
+            <li>
+              <a class="globalnav-submenu-link" href="guide.html">
+                <span class="globalnav-submenu-label">Overview</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="guide-documents.html">
+                <span class="globalnav-submenu-label">Documents</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="tax-benefits.html">
+                <span class="globalnav-submenu-label">Tax benefits</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="concessions.html">
+                <span class="globalnav-submenu-label">Concessions</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="home-loan-insurance.html">
+                <span class="globalnav-submenu-label">Insurance</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="home-loan-complaints.html">
+                <span class="globalnav-submenu-label">Grievance redressal</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content">
         <h2 class="globalnav-submenu-header">Get Help</h2>
@@ -678,123 +486,90 @@
     </div>
   </main>
 
+  <!-- SHROFFIN_FOOTER_START -->
   <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
     <div class="site-footer-inner">
-      <div class="site-footer-brand">
-        <a href="../index.html" aria-label="Shroffin Home">
-          <img
-            class="site-footer-logo"
-            src="../images/logos/logo-h-light-clear-781x173.png"
-            alt="Shroffin"
-            width="99"
-            height="22"
-          >
-        </a>
-        <p class="site-footer-tagline">An Independent and transparent banking.</p>
+      <div class="site-footer-directory">
+        <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
+          <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/guide.html">Overview</a></li>
+            <li><a href="/pages/guide-documents.html">Documents</a></li>
+            <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
+            <li><a href="/pages/concessions.html">Concessions</a></li>
+            <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
+            <li><a href="/pages/home-loan-complaints.html">Grievance redressal</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-quick-title">
+          <h2 class="site-footer-heading" id="footer-quick-title">Quick links</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/learn-more.html">Explore banks</a></li>
+            <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-company-title">
+          <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/about.html">About</a></li>
+            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+          </ul>
+        </nav>
+
+        <section class="site-footer-group" aria-labelledby="footer-support-title">
+          <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
+          <ul class="site-footer-list">
+            <li><a href="mailto:support@shroffin.com">Email</a></li>
+            <li><a href="tel:+919112334367">Call</a></li>
+          </ul>
+        </section>
+
+        <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
+          <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
+          <ul class="site-footer-list">
+            <li>
+              <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
+        <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
+        <div class="site-footer-disclaimer">
+          <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+          <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+          <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+          <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+          <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+        </div>
+      </section>
+
+      <div class="site-footer-bottom">
+        <div class="site-footer-bottom-row">
+          <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
+          <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
+            <ul class="site-footer-legal-links">
+              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
+              <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
+              <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
-
-    <hr class="site-footer-rule" aria-hidden="true">
-
-    <div class="site-footer-inner">
-      <p class="site-footer-copy">
-        <a href="../privacy-policy.html">Privacy Policy</a>
-        <span aria-hidden="true"> · </span>
-        Copyright © 2026 Shroffin. All rights reserved.
-      </p>
-    </div>
   </footer>
+  <!-- SHROFFIN_FOOTER_END -->
 
   <script src="../js/app.js?v=about-apple-1"></script>
   <script src="../js/about.js?v=about-apple-1"></script>
-  <script>
-    (function () {
-      var nav = document.getElementById('globalnav');
-      var support = document.getElementById('nav-support');
-      var trigger = document.getElementById('nav-support-trigger');
-      var flyout = document.getElementById('nav-support-flyout');
-      var veil = document.getElementById('globalnav-veil');
-      if (!nav || !support || !trigger || !flyout || !veil) return;
-
-      var closeTimer = null;
-      var canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
-
-      function setFlyoutOpen(open) {
-        nav.classList.toggle('flyout-open', open);
-        document.body.classList.toggle('gn-locked', open);
-        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-        flyout.setAttribute('aria-hidden', open ? 'false' : 'true');
-        veil.classList.toggle('is-visible', open);
-        if (open) veil.removeAttribute('hidden');
-        else veil.setAttribute('hidden', '');
-      }
-
-      function openFlyout() {
-        if (closeTimer) {
-          clearTimeout(closeTimer);
-          closeTimer = null;
-        }
-        setFlyoutOpen(true);
-      }
-
-      function closeFlyoutSoon() {
-        if (closeTimer) clearTimeout(closeTimer);
-        closeTimer = setTimeout(function () {
-          setFlyoutOpen(false);
-          closeTimer = null;
-        }, 220);
-      }
-
-      function closeFlyoutNow() {
-        if (closeTimer) {
-          clearTimeout(closeTimer);
-          closeTimer = null;
-        }
-        setFlyoutOpen(false);
-      }
-
-      trigger.addEventListener('click', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        setFlyoutOpen(!nav.classList.contains('flyout-open'));
-      });
-
-      support.addEventListener('mouseenter', function () {
-        if (canHover.matches) openFlyout();
-      });
-
-      support.addEventListener('mouseleave', function (event) {
-        if (!canHover.matches) return;
-        var next = event.relatedTarget;
-        if (next && (flyout.contains(next) || support.contains(next))) return;
-        closeFlyoutSoon();
-      });
-
-      flyout.addEventListener('mouseenter', function () {
-        if (canHover.matches) openFlyout();
-      });
-
-      flyout.addEventListener('mouseleave', function (event) {
-        if (!canHover.matches) return;
-        var next = event.relatedTarget;
-        if (next && (flyout.contains(next) || support.contains(next))) return;
-        closeFlyoutSoon();
-      });
-
-      veil.addEventListener('click', closeFlyoutNow);
-
-      flyout.querySelectorAll('a').forEach(function (link) {
-        link.addEventListener('click', closeFlyoutNow);
-      });
-
-      window.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeFlyoutNow();
-      });
-
-      window.addEventListener('resize', function () {
-        if (!canHover.matches) closeFlyoutNow();
-      });
-    })();
-  </script>
+  <script src="../js/shroffin-nav.js?v=responsive-6"></script>
+  <script src="../js/shroffin-guide.js?v=responsive-5"></script>
 </body>
 </html>

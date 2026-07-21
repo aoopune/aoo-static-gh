@@ -37,7 +37,8 @@
         var t = line.trim();
         if (t) bits.push(escAndBold(t));
       });
-      if (bits.length > 0) out += '<p class="about-block">' + bits.join('<br>') + '</p>';
+      /* Sheet line breaks are editorial wrapping, not hard layout instructions. */
+      if (bits.length > 0) out += '<p class="about-block">' + bits.join(' ') + '</p>';
     });
     return out || '<p class="about-block">' + escAndBold(s) + '</p>';
   }

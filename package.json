@@ -1,18 +1,31 @@
 {
-  "name": "applyonlyonce",
+  "name": "shroffin",
   "version": "1.0.0",
-  "description": "Education loan comparison - Apply Only Once",
+  "description": "Shroffin home loan comparison website",
   "private": true,
   "scripts": {
     "start": "python3 -m http.server 8765",
     "serve": "node scripts/serve.js",
-    "test": "node tests/run-unit.js 2>/dev/null || true",
-    "test:ui": "npx playwright test",
-    "test:deployed": "BASE_URL=${BASE_URL:-https://YOUR_USERNAME.github.io/applyonlyonce/} npx playwright test",
+    "build:footer": "node scripts/sync-site-footer.js",
+    "check:footer": "node scripts/sync-site-footer.js --check",
+    "build:apf-data": "python3 scripts/generate-apf-data.py",
+    "validate:apf-data": "node scripts/validate-apf-data.js",
+    "lint:responsive": "npm run check:footer && node scripts/check-responsive-contracts.js",
+    "build:apf": "npm run build:apf-data && npm run validate:apf-data && esbuild src/apf-project-search.js --bundle --minify --sourcemap --outfile=js/apf-project-search.bundle.js",
+    "test": "node tests/run-unit.js",
+    "test:responsive": "bash scripts/run-playwright.sh --project=chromium-responsive",
+    "test:responsive:all": "bash scripts/run-playwright.sh",
+    "test:quality": "npm run lint:responsive && npm test && npm run test:responsive",
+    "test:ui": "LEGACY_TESTS=1 playwright test --project=chromium-responsive",
+    "test:deployed": "BASE_URL=${BASE_URL:-https://shroffin.com/} playwright test",
     "deploy": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy.ps1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.58.1",
-    "playwright": "^1.40.0"
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.61.1",
+    "esbuild": "^0.28.1"
+  },
+  "dependencies": {
+    "json-rules-engine": "^7.3.1"
   }
 }

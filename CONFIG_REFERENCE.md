@@ -39,7 +39,7 @@
 |-----|-------|---------|-------------|
 | cache_minutes | number | 5 | Minutes to cache sheet data in browser |
 | contact_phone | string | +91 91123 34367 | Phone/WhatsApp in footer |
-| contact_email | string | aoopune@gmail.com | Email in footer |
+| contact_email | string | support@shroffin.com | Email in footer |
 
 ### Compare table (Page 2)
 | key | value | default | description |
