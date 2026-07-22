@@ -6,7 +6,7 @@ Public fetch URL pattern: `https://docs.google.com/spreadsheets/d/1eaYl0tfAiTR4A
 
 | Sheet | Columns | Row count | Notes |
 |-------|---------|-----------|--------|
-| About_Us | 3 (section, heading, content) | 4 | About content |
+| About_Us | 3 (section, heading, content) | — | Obsolete — About is static; sheet unused |
 | Attribute_Info | 2 (attribute_name, info_text) | 2 | Row metadata for compare table |
 | Banks | 4 (bank_id, bank_name, page_link, sector) | 157 | Bank lookup |
 | Config | 2 (key, value) | 3 | Website config, constants, column visibility |

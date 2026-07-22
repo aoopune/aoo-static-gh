@@ -8,11 +8,11 @@
 
   .localnav {
     position: sticky;
-    inset-block-start: var(--shroffin-gn-height, 48px);
+    inset-block-start: var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px));
     z-index: 9000;
     block-size: var(--shroffin-ln-height);
-    background: rgba(255, 255, 255, 0.82);
-    border-block-end: 1px solid rgba(0, 0, 0, 0.16);
+    background: rgba(250, 249, 246, 0.82);
+    border-block-end: 1px solid rgba(0, 0, 0, 0.08);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     backdrop-filter: saturate(180%) blur(20px);
   }
@@ -75,7 +75,7 @@
     align-items: center;
     min-block-size: 44px;
     padding-inline: 0.125rem;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     white-space: nowrap;
   }
 
@@ -94,8 +94,19 @@
     padding: 0 var(--shroffin-btn-compact-pad-inline, 0.75rem);
     border-color: transparent;
     background: transparent;
+    color: #fff;
     font-size: var(--shroffin-btn-compact-font, 12px);
     line-height: 1;
+    text-decoration: none;
+  }
+
+  .localnav-cta:link,
+  .localnav-cta:visited,
+  .localnav-cta:hover,
+  .localnav-cta:focus-visible,
+  .localnav-cta:active {
+    color: #fff;
+    text-decoration: none;
   }
 
   .localnav-cta::before {
@@ -152,13 +163,13 @@
   }
 
   .localnav-veil {
-    inset-block-start: calc(var(--shroffin-gn-height, 48px) + var(--shroffin-ln-height));
+    inset-block-start: calc(var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height));
     z-index: 8999;
   }
 
   .guide-jump-wrap {
     position: relative;
-    max-inline-size: var(--guide-max, 980px);
+    max-inline-size: var(--shroffin-content-max, 1068px);
   }
 
   .guide-jump a {
@@ -192,7 +203,7 @@
   .guide-moment[id],
   .guide-fine-notes [id] {
     scroll-margin-block-start: calc(
-      var(--shroffin-gn-height, 48px) + var(--shroffin-ln-height) + 1.25rem
+      var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height) + 1.25rem
     );
   }
 
@@ -236,11 +247,6 @@
   .guide-split,
   .guide-columns {
     container-type: inline-size;
-  }
-
-  .guide-emi-chart,
-  .guide-emi-chart-bars {
-    max-inline-size: 100%;
   }
 
   .guide-seg {
@@ -318,30 +324,67 @@
       background: transparent;
     }
 
+    /*
+     * Open Guide menu: pin the sub-bar to the viewport top so sticky +
+     * scroll-lock cannot leave a giant empty panel under the links.
+     * Sit above the main bar (z-nav) while open.
+     */
+    .localnav.is-open {
+      position: fixed;
+      inset-block-start: 0;
+      inset-inline: 0;
+      inline-size: 100%;
+      z-index: calc(var(--shroffin-z-nav, 9999) + 1);
+    }
+
     .localnav-menu {
       position: absolute;
       inset-block-start: 100%;
       inset-inline: 0;
       display: block;
-      block-size: auto;
+      block-size: fit-content;
       max-block-size: 0;
       margin: 0;
       overflow: hidden;
       visibility: hidden;
       pointer-events: none;
       background: #fafafc;
+      border-block-end: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
       transition:
         max-block-size 0.85s cubic-bezier(0.22, 1, 0.36, 1),
         visibility 0.85s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .localnav.is-open .localnav-menu {
-      max-block-size: calc(100vh - var(--shroffin-gn-height, 48px) - var(--shroffin-ln-height));
-      max-block-size: calc(100dvh - var(--shroffin-gn-height, 48px) - var(--shroffin-ln-height));
+      /* Cap only — height stays content-sized via fit-content. */
+      max-block-size: min(
+        28rem,
+        calc(100dvh - var(--shroffin-ln-height) - env(safe-area-inset-bottom, 0px))
+      );
       overflow-y: auto;
       visibility: visible;
       pointer-events: auto;
       overscroll-behavior: contain;
+    }
+
+    /* Veil starts under the pinned Guide bar, not under a phantom main-nav offset. */
+    body:has(.localnav.is-open) .localnav-veil {
+      inset-block-start: var(--shroffin-ln-height);
+      z-index: var(--shroffin-z-nav, 9999);
+      /* Clearer than the menu paper so the list doesn’t look endlessly tall. */
+      background: rgba(29, 29, 31, 0.28);
+    }
+
+    body:has(.localnav.is-open) .globalnav,
+    body:has(.localnav.is-open) .globalnav-veil {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    body:has(.localnav.is-open) .mag-toc-compact {
+      visibility: hidden;
+      pointer-events: none;
     }
 
     .localnav-list {
@@ -425,6 +468,8 @@
       overflow: visible;
       visibility: visible;
       pointer-events: auto;
+      box-shadow: none;
+      border-block-end: 0;
     }
 
     html:not(.js) .localnav-link {
@@ -566,48 +611,17 @@
       block-size: auto;
     }
 
-    /* Legacy page scripts write a fixed inline height; compact layouts must remain content-sized. */
-    .guide-flip-inner {
-      height: auto !important;
-    }
-
-    .guide-flip-inner,
-    .guide-flip.is-flipped .guide-flip-inner {
-      transform: none;
-    }
-
     .guide-flip-face {
       position: relative;
       inset: auto;
       block-size: auto;
       min-block-size: 0;
-      transform: none;
-      backface-visibility: visible;
-    }
-
-    .guide-flip:not(.is-flipped) .guide-flip-face--back,
-    .guide-flip.is-flipped .guide-flip-face--front {
-      display: none;
-    }
-
-    .guide-flip.is-flipped .guide-flip-face--back {
-      display: flex;
-    }
-
-    .guide-flip-face--back,
-    #charges-flip .guide-flip-face--back {
-      overflow: visible;
     }
 
     .guide-calc-grid,
     .guide-form-grid,
     .guide-input-grid {
       grid-template-columns: minmax(0, 1fr);
-    }
-
-    .guide-emi-chart {
-      overflow-x: auto;
-      overscroll-behavior-inline: contain;
     }
 
     .guide-fine-wrap {
@@ -639,23 +653,9 @@
       block-size: auto;
     }
 
-    .guide-flip-inner {
-      height: auto !important;
-    }
-
-    .guide-flip-inner,
-    .guide-flip.is-flipped .guide-flip-inner {
-      transform: none;
-    }
-
     .guide-flip-face {
       position: relative;
       transform: none;
-    }
-
-    .guide-flip:not(.is-flipped) .guide-flip-face--back,
-    .guide-flip.is-flipped .guide-flip-face--front {
-      display: none;
     }
   }
 
@@ -666,18 +666,8 @@
     block-size: auto !important;
   }
 
-  .guide-flip-inner,
-  .guide-flip.is-flipped .guide-flip-inner {
-    transform: none !important;
-  }
-
   .guide-flip-face {
     position: relative !important;
     transform: none !important;
-  }
-
-  .guide-flip:not(.is-flipped) .guide-flip-face--back,
-  .guide-flip.is-flipped .guide-flip-face--front {
-    display: none !important;
   }
 }

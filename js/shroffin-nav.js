@@ -177,6 +177,7 @@
     var brand = list && list.querySelector(".globalnav-item-brand");
     var guideItem = nav.querySelector("#nav-guide");
     var supportItem = nav.querySelector("#nav-support");
+    var utilitiesItem = nav.querySelector("#nav-utilities");
     var aboutLink = Array.prototype.find.call(
       nav.querySelectorAll(".globalnav-content .globalnav-link"),
       function (link) {
@@ -185,24 +186,26 @@
     );
     var aboutItem = aboutLink && aboutLink.closest(".globalnav-item");
 
-    if (!list || !brand || !guideItem || !supportItem || !aboutItem) return;
+    if (!list || !brand || !guideItem || !supportItem || !utilitiesItem || !aboutItem) return;
 
-    // Keep Guide → Support → About first after the logo. Only move nodes when
-    // markup is out of order so the bar does not visibly reshuffle on load.
-    var primaryOrder = [guideItem, supportItem, aboutItem];
+    // Keep Guide → Support → Utilities → About first after the logo. Only move
+    // nodes when markup is out of order so the bar does not visibly reshuffle.
+    var primaryOrder = [guideItem, supportItem, utilitiesItem, aboutItem];
     var needsReorder = primaryOrder.some(function (item, index) {
       return list.children[index + 1] !== item;
     });
     if (needsReorder) {
-      brand.after(guideItem, supportItem, aboutItem);
+      brand.after(guideItem, supportItem, utilitiesItem, aboutItem);
     }
 
     if (isCurrentHref(aboutLink.href)) aboutLink.setAttribute("aria-current", "page");
 
     var guideTrigger = nav.querySelector("#nav-guide-trigger");
     var supportTrigger = nav.querySelector("#nav-support-trigger");
+    var utilitiesTrigger = nav.querySelector("#nav-utilities-trigger");
     var guideFlyout = nav.querySelector("#nav-guide-flyout");
     var supportFlyout = nav.querySelector("#nav-support-flyout");
+    var utilitiesFlyout = nav.querySelector("#nav-utilities-flyout");
     var content = nav.querySelector(".globalnav-content");
 
     // Drop any leftover compact chrome (e.g. stale markup) before rebuilding.
@@ -249,12 +252,14 @@
     rootList.className = "globalnav-compact-list";
     rootList.appendChild(buildCompactRootItem("Guide", "guide"));
     rootList.appendChild(buildCompactRootItem("Support", "support"));
+    rootList.appendChild(buildCompactRootItem("Utilities", "utilities"));
     appendCompactLink(rootList, aboutLink.getAttribute("href"), "About", false);
     Array.prototype.forEach.call(list.children, function (item) {
       if (
         item === brand ||
         item === guideItem ||
         item === supportItem ||
+        item === utilitiesItem ||
         item === aboutItem
       ) {
         return;
@@ -277,17 +282,24 @@
       "Support",
       getUniqueLinks(supportFlyout)
     );
+    var utilitiesPanel = buildCompactSubPanel(
+      "utilities",
+      "Utilities",
+      getUniqueLinks(utilitiesFlyout)
+    );
 
     panels.appendChild(rootPanel);
     panels.appendChild(guidePanel);
     panels.appendChild(supportPanel);
+    panels.appendChild(utilitiesPanel);
     viewport.appendChild(panels);
     compactTray.appendChild(viewport);
     nav.insertBefore(compactTray, guideFlyout);
 
     var menus = [
       { item: guideItem, trigger: guideTrigger, flyout: guideFlyout },
-      { item: supportItem, trigger: supportTrigger, flyout: supportFlyout }
+      { item: supportItem, trigger: supportTrigger, flyout: supportFlyout },
+      { item: utilitiesItem, trigger: utilitiesTrigger, flyout: utilitiesFlyout }
     ];
     var activeDesktopMenu = null;
     var closeTimer = null;
@@ -593,9 +605,91 @@
     applyMode();
   }
 
+  function prefersReducedMotion() {
+    return (
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }
+
+  function softScrollToTop() {
+    var startY = window.pageYOffset || document.documentElement.scrollTop || 0;
+    if (startY < 2) return;
+
+    if (prefersReducedMotion()) {
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    var duration = 1000;
+    var startTime = null;
+
+    function easeOutSoft(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    function step(now) {
+      if (startTime == null) startTime = now;
+      var progress = Math.min(1, (now - startTime) / duration);
+      window.scrollTo(0, startY * (1 - easeOutSoft(progress)));
+      if (progress < 1) window.requestAnimationFrame(step);
+    }
+
+    window.requestAnimationFrame(step);
+  }
+
+  /**
+   * Industry pattern for long pages: a quiet “back to top” control that only
+   * appears after the reader has scrolled, then soft-scrolls to the masthead.
+   */
+  function initBackToTop() {
+    if (document.querySelector(".shroffin-to-top")) return;
+
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "shroffin-to-top";
+    button.setAttribute("aria-label", "Back to top");
+    button.hidden = true;
+    button.innerHTML =
+      '<span class="shroffin-to-top-icon" aria-hidden="true"></span>';
+    document.body.appendChild(button);
+
+    var threshold = Math.max(480, Math.round(window.innerHeight * 0.7));
+    var visible = false;
+    var ticking = false;
+
+    function setVisible(next) {
+      if (visible === next) return;
+      visible = next;
+      button.hidden = !next;
+      button.classList.toggle("is-visible", next);
+    }
+
+    function update() {
+      ticking = false;
+      threshold = Math.max(480, Math.round(window.innerHeight * 0.7));
+      setVisible(window.pageYOffset > threshold);
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    button.addEventListener("click", function () {
+      softScrollToTop();
+      button.blur();
+    });
+    update();
+  }
+
   function init() {
     initGlobalNav();
     initFooterAccordion();
+    initBackToTop();
   }
 
   if (document.readyState === "loading") {

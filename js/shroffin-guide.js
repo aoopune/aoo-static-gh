@@ -24,12 +24,12 @@
         return /home-loan-insurance\.html$/.test(link.getAttribute("href") || "");
       });
     }
-    if (title && currentLink) {
-      var currentLabel = document.createElement("span");
-      currentLabel.className = "localnav-current-label";
-      currentLabel.textContent = currentLink.textContent.trim();
-      title.appendChild(currentLabel);
-    }
+    /*
+     * Localnav title stays "Guide" only. The current page is signalled by the
+     * aria-current underline in the link row (desktop) / menu list (mobile),
+     * so we no longer append the page name onto the title.
+     */
+    void title;
 
     content.appendChild(cta);
 
@@ -49,9 +49,22 @@
 
     var compactQuery = window.matchMedia("(max-width: 833px)");
     var open = false;
+    var openSpacer = null;
 
     function setOpen(next) {
       open = Boolean(next && compactQuery.matches);
+      if (open) {
+        if (!openSpacer) {
+          openSpacer = document.createElement("div");
+          openSpacer.className = "localnav-open-spacer";
+          openSpacer.setAttribute("aria-hidden", "true");
+        }
+        openSpacer.style.blockSize = localnav.offsetHeight + "px";
+        if (!openSpacer.parentNode) {
+          localnav.parentNode.insertBefore(openSpacer, localnav);
+        }
+      }
+
       localnav.classList.toggle("is-open", open);
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
       toggle.setAttribute("aria-label", open ? "Close Guide pages" : "Open Guide pages");
@@ -65,6 +78,9 @@
         }
       } else {
         veil.hidden = true;
+        if (openSpacer && openSpacer.parentNode) {
+          openSpacer.parentNode.removeChild(openSpacer);
+        }
         if (window.ShroffinMenus) {
           window.ShroffinMenus.release("guide-local");
           window.ShroffinMenus.unlock();
@@ -135,12 +151,19 @@
     var styles = window.getComputedStyle(destination);
     var marginTop =
       parseFloat(styles.scrollMarginBlockStart || styles.scrollMarginTop) || 0;
-    var targetY = Math.max(
-      0,
-      Math.round(
-        destination.getBoundingClientRect().top + window.pageYOffset - marginTop
-      )
-    );
+    /* getBoundingClientRect includes CSS transforms (e.g. reveal translateY).
+       Soft-scroll to the layout position so sticky offset lands correctly. */
+    var layoutTop =
+      destination.getBoundingClientRect().top + window.pageYOffset;
+    var transform = styles.transform;
+    if (transform && transform !== "none") {
+      try {
+        layoutTop -= new DOMMatrixReadOnly(transform).m42;
+      } catch (error) {
+        /* Older engines without DOMMatrixReadOnly — keep transformed top. */
+      }
+    }
+    var targetY = Math.max(0, Math.round(layoutTop - marginTop));
     var startY = window.pageYOffset;
     var distance = targetY - startY;
 
@@ -200,12 +223,29 @@
   }
 
   function initSectionNav() {
-    document.querySelectorAll(".guide-jump-wrap").forEach(function (wrap) {
-      var rail = wrap.querySelector(".guide-jump");
-      if (!rail) return;
+    var wideQuery = window.matchMedia("(min-width: 1200px)");
+    var rails = [];
+    document.querySelectorAll(".guide-jump-wrap .guide-jump").forEach(function (rail) {
+      rails.push(rail);
+    });
+    document.querySelectorAll(".mag-index").forEach(function (rail) {
+      rails.push(rail);
+    });
+
+    rails.forEach(function (rail) {
+      if (!rail || rail.dataset.shroffinTocReady === "true") return;
+      rail.dataset.shroffinTocReady = "true";
 
       var links = Array.prototype.slice.call(rail.querySelectorAll('a[href^="#"]'));
       var destinations = new Map();
+      var jumping = false;
+      var activeId = "";
+      var compact = null;
+      var compactToggle = null;
+      var compactLabel = null;
+      var compactPanel = null;
+      var compactOpen = false;
+      var spyFrame = 0;
 
       links = links.filter(function (link) {
         var id = link.getAttribute("href").slice(1);
@@ -217,6 +257,43 @@
       });
       if (links.length < 2) return;
 
+      /* Pair Contents with the story so the rail can stick beside long pages.
+         Lead/opener copy stays above — Contents starts with the first section. */
+      if (rail.classList.contains("mag-index")) {
+        var story = rail.nextElementSibling;
+        if (
+          story &&
+          story.classList.contains("guide-story") &&
+          !rail.parentElement.classList.contains("mag-toc-shell")
+        ) {
+          var parent = rail.parentNode;
+          var firstId = links[0] && links[0].getAttribute("href").slice(1);
+          var firstSection = firstId && document.getElementById(firstId);
+
+          if (firstSection && story.contains(firstSection)) {
+            while (
+              story.firstElementChild &&
+              story.firstElementChild !== firstSection
+            ) {
+              parent.insertBefore(story.firstElementChild, rail);
+            }
+          }
+
+          var shell = document.createElement("div");
+          shell.className = "mag-toc-shell";
+          parent.insertBefore(shell, rail);
+          shell.appendChild(rail);
+          shell.appendChild(story);
+        }
+      }
+
+      function linkLabel(link) {
+        var label = link.querySelector(".mag-index-label");
+        return ((label && label.textContent) || link.textContent || "")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
       function getLocationId() {
         if (!location.hash) return "";
         try {
@@ -226,12 +303,125 @@
         }
       }
 
+      function stickyOffset() {
+        var root = document.documentElement;
+        var styles = window.getComputedStyle(root);
+        var gnOffset = parseFloat(styles.getPropertyValue("--shroffin-gn-offset"));
+        var gn = Number.isFinite(gnOffset)
+          ? gnOffset
+          : parseFloat(styles.getPropertyValue("--shroffin-gn-height")) ||
+            parseFloat(styles.getPropertyValue("--gn-height")) ||
+            48;
+        var ln =
+          parseFloat(styles.getPropertyValue("--shroffin-ln-height")) ||
+          parseFloat(styles.getPropertyValue("--ln-height")) ||
+          52;
+        var compactExtra =
+          !wideQuery.matches && document.body.classList.contains("mag-toc-compact-on")
+            ? 46
+            : 0;
+        return gn + ln + compactExtra + 24;
+      }
+
+      function setCompactOpen(next) {
+        if (!compact || !compactToggle || !compactPanel) return;
+        compactOpen = Boolean(next);
+        compact.classList.toggle("is-open", compactOpen);
+        compactToggle.setAttribute("aria-expanded", compactOpen ? "true" : "false");
+        compactPanel.hidden = !compactOpen;
+        if (compactOpen) {
+          document.addEventListener("keydown", onCompactKey);
+        } else {
+          document.removeEventListener("keydown", onCompactKey);
+        }
+      }
+
+      function onCompactKey(event) {
+        if (event.key !== "Escape" || !compactOpen) return;
+        setCompactOpen(false);
+        if (compactToggle) compactToggle.focus({ preventScroll: true });
+      }
+
+      function syncCompactVisibility() {
+        if (!compact || !rail.classList.contains("mag-index")) return;
+        if (wideQuery.matches) {
+          document.body.classList.remove("mag-toc-compact-on");
+          compact.hidden = true;
+          setCompactOpen(false);
+          return;
+        }
+        var rect = rail.getBoundingClientRect();
+        var localnav = document.querySelector(".localnav");
+        var localBottom = localnav ? localnav.getBoundingClientRect().bottom : 100;
+        var pastContents = rect.bottom < localBottom + 8;
+
+        /* Hide once the last section has scrolled away — otherwise the bar
+           (e.g. “Other”) sticks through the disclaimer and footer. */
+        var pastEnd = false;
+        var lastLink = links[links.length - 1];
+        var lastId = lastLink && lastLink.getAttribute("href").slice(1);
+        var lastSection = lastId && destinations.get(lastId);
+        if (lastSection) {
+          pastEnd = lastSection.getBoundingClientRect().bottom <= localBottom + 8;
+        }
+
+        var show = pastContents && !pastEnd;
+        document.body.classList.toggle("mag-toc-compact-on", show);
+        compact.hidden = !show;
+        if (!show) setCompactOpen(false);
+      }
+
       function setActive(id) {
+        activeId = id || "";
         links.forEach(function (item) {
-          var isActive = item.getAttribute("href").slice(1) === id;
+          var isActive = activeId && item.getAttribute("href").slice(1) === activeId;
           item.classList.toggle("is-active", isActive);
           if (isActive) item.setAttribute("aria-current", "true");
           else item.removeAttribute("aria-current");
+        });
+        if (compact && compactLabel) {
+          var activeLink =
+            (activeId &&
+              links.find(function (item) {
+                return item.getAttribute("href").slice(1) === activeId;
+              })) ||
+            links[0];
+          compactLabel.textContent = linkLabel(activeLink);
+        }
+        if (compactPanel) {
+          compactPanel.querySelectorAll("a[href^='#']").forEach(function (item) {
+            var isActive = activeId && item.getAttribute("href").slice(1) === activeId;
+            item.classList.toggle("is-active", isActive);
+            if (isActive) item.setAttribute("aria-current", "true");
+            else item.removeAttribute("aria-current");
+          });
+        }
+      }
+
+      function activeFromScroll() {
+        var offset = stickyOffset();
+        var current = "";
+        links.forEach(function (link) {
+          var id = link.getAttribute("href").slice(1);
+          var destination = destinations.get(id);
+          if (!destination) return;
+          if (destination.getBoundingClientRect().top <= offset) current = id;
+        });
+        return current;
+      }
+
+      function syncFromScroll() {
+        if (jumping) return;
+        var id = activeFromScroll();
+        if (id !== activeId) setActive(id);
+        syncCompactVisibility();
+      }
+
+      function requestScrollSync() {
+        if (spyFrame) return;
+        spyFrame = window.requestAnimationFrame(function () {
+          spyFrame = 0;
+          syncFromScroll();
         });
       }
 
@@ -246,67 +436,187 @@
         destination.focus({ preventScroll: true });
       }
 
-      function syncFromHash(moveFocus) {
-        var id = getLocationId();
+      function jumpTo(id) {
+        var destination = destinations.get(id);
+        if (!destination) return;
+        jumping = true;
         setActive(id);
-        if (!moveFocus || !destinations.has(id)) return;
-
-        window.requestAnimationFrame(function () {
-          destinations.get(id).focus({ preventScroll: true });
+        setCompactOpen(false);
+        softScrollTo(destination, function () {
+          finishJump(id);
+          jumping = false;
+          syncFromScroll();
         });
       }
+
+      function syncFromHash(moveFocus) {
+        var id = getLocationId();
+        if (id && destinations.has(id)) {
+          setActive(id);
+          if (moveFocus) {
+            window.requestAnimationFrame(function () {
+              destinations.get(id).focus({ preventScroll: true });
+            });
+          }
+        } else if (!jumping) {
+          setActive(activeFromScroll());
+        }
+        syncCompactVisibility();
+      }
+
+      function buildCompact() {
+        if (!rail.classList.contains("mag-index") || compact) return;
+
+        compact = document.createElement("div");
+        compact.className = "mag-toc-compact";
+        compact.hidden = true;
+
+        compactToggle = document.createElement("button");
+        compactToggle.type = "button";
+        compactToggle.className = "mag-toc-compact-toggle";
+        compactToggle.setAttribute("aria-expanded", "false");
+        compactToggle.setAttribute("aria-controls", "mag-toc-compact-panel");
+
+        compactLabel = document.createElement("span");
+        compactLabel.className = "mag-toc-compact-label";
+        compactLabel.textContent = linkLabel(links[0]);
+
+        var chevron = document.createElement("span");
+        chevron.className = "mag-toc-compact-chevron";
+        chevron.setAttribute("aria-hidden", "true");
+
+        compactToggle.appendChild(compactLabel);
+        compactToggle.appendChild(chevron);
+
+        compactPanel = document.createElement("div");
+        compactPanel.className = "mag-toc-compact-panel";
+        compactPanel.id = "mag-toc-compact-panel";
+        compactPanel.hidden = true;
+
+        var list = document.createElement("ul");
+        list.className = "mag-toc-compact-list";
+        links.forEach(function (link) {
+          var item = document.createElement("li");
+          var clone = document.createElement("a");
+          clone.className = "mag-toc-compact-link";
+          clone.href = link.getAttribute("href");
+          clone.textContent = linkLabel(link);
+          clone.addEventListener("click", function (event) {
+            event.preventDefault();
+            jumpTo(link.getAttribute("href").slice(1));
+          });
+          item.appendChild(clone);
+          list.appendChild(item);
+        });
+        compactPanel.appendChild(list);
+
+        compactToggle.addEventListener("click", function () {
+          setCompactOpen(!compactOpen);
+        });
+
+        compact.appendChild(compactToggle);
+        compact.appendChild(compactPanel);
+        document.body.appendChild(compact);
+
+        document.addEventListener("click", function (event) {
+          if (!compactOpen || !compact) return;
+          if (compact.contains(event.target)) return;
+          setCompactOpen(false);
+        });
+      }
+
+      buildCompact();
 
       links.forEach(function (link) {
         link.addEventListener("click", function (event) {
           var id = link.getAttribute("href").slice(1);
-          var destination = destinations.get(id);
-          if (!destination) return;
-
+          if (!destinations.get(id)) return;
           event.preventDefault();
-          setActive(id);
-          softScrollTo(destination, function () {
-            finishJump(id);
-          });
+          jumpTo(id);
         });
       });
 
       window.addEventListener("hashchange", function () {
         syncFromHash(true);
       });
+      window.addEventListener("popstate", function () {
+        syncFromHash(true);
+      });
       window.addEventListener("pageshow", function () {
         syncFromHash(false);
       });
+      window.addEventListener("scroll", requestScrollSync, { passive: true });
+      window.addEventListener("resize", requestScrollSync);
+      if (wideQuery.addEventListener) {
+        wideQuery.addEventListener("change", function () {
+          syncCompactVisibility();
+          requestScrollSync();
+        });
+      } else if (wideQuery.addListener) {
+        wideQuery.addListener(function () {
+          syncCompactVisibility();
+          requestScrollSync();
+        });
+      }
+
       syncFromHash(false);
+      requestScrollSync();
     });
   }
 
   function initFlipAccessibility() {
-    var compact = window.matchMedia(
-      "(max-width: 833px), (max-height: 500px) and (orientation: landscape), (prefers-reduced-motion: reduce)"
-    );
+    function closedLabel(btn) {
+      if (!btn.dataset.closedLabel) {
+        var text = "";
+        Array.prototype.forEach.call(btn.childNodes, function (node) {
+          if (node.nodeType === 3) text += node.textContent;
+        });
+        btn.dataset.closedLabel = text.replace(/\s+/g, " ").trim() || "Open";
+      }
+      return btn.dataset.closedLabel;
+    }
+
+    function setToggleLabel(btn, open) {
+      var label = open ? "Close" : closedLabel(btn);
+      Array.prototype.slice.call(btn.childNodes).forEach(function (node) {
+        if (node.nodeType === 3) btn.removeChild(node);
+      });
+      var svg = btn.querySelector("svg");
+      btn.insertBefore(document.createTextNode(label + (svg ? " " : "")), svg || null);
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    }
 
     document.querySelectorAll(".guide-flip").forEach(function (flip) {
       var front = flip.querySelector(".guide-flip-face--front");
       var back = flip.querySelector(".guide-flip-face--back");
-      var inner = flip.querySelector(".guide-flip-inner");
-      if (!front || !back || !inner) return;
+      if (!front || !back) return;
+      var wasOpen = flip.classList.contains("is-flipped");
+      var toggles = flip.querySelectorAll(".guide-flip-face--front [data-flip]");
+
+      function scrollToOpened() {
+        var target = toggles[0] || back;
+        /* Same soft ~1s ease as Contents section jumps. */
+        window.requestAnimationFrame(function () {
+          softScrollTo(target);
+        });
+      }
 
       function sync() {
-        var flipped = flip.classList.contains("is-flipped");
-        front.setAttribute("aria-hidden", flipped ? "true" : "false");
-        back.setAttribute("aria-hidden", flipped ? "false" : "true");
-        front.inert = flipped;
-        back.inert = !flipped;
-        if (compact.matches) inner.style.removeProperty("height");
+        var open = flip.classList.contains("is-flipped");
+        front.setAttribute("aria-hidden", "false");
+        front.inert = false;
+        back.setAttribute("aria-hidden", open ? "false" : "true");
+        back.inert = !open;
+        toggles.forEach(function (btn) {
+          setToggleLabel(btn, open);
+        });
+        if (open && !wasOpen) scrollToOpened();
+        wasOpen = open;
       }
 
       new MutationObserver(sync).observe(flip, {
         attributes: true,
         attributeFilter: ["class"]
-      });
-      if (compact.addEventListener) compact.addEventListener("change", sync);
-      window.addEventListener("resize", function () {
-        window.requestAnimationFrame(sync);
       });
       sync();
     });
@@ -390,11 +700,11 @@
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     function settle() {
       if (!reduce.matches) return;
-      document.querySelectorAll(".guide-moment, .home-moment, .learn-card").forEach(
-        function (node) {
-          node.classList.add("is-in", "is-visible");
-        }
-      );
+      document.querySelectorAll(
+        ".guide-moment, .mag-reveal, .home-moment, .learn-card"
+      ).forEach(function (node) {
+        node.classList.add("is-in", "is-visible");
+      });
     }
     if (reduce.addEventListener) reduce.addEventListener("change", settle);
     settle();

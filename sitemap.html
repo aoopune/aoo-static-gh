@@ -45,7 +45,7 @@
 
     body {
       margin: 0;
-      background: #fff;
+      background: #faf9f6;
       color: #1d1d1f;
       font-family: "Google Sans Flex", sans-serif;
     }
@@ -105,6 +105,7 @@
       display: inline-flex;
       align-items: center;
       min-block-size: 44px;
+      min-inline-size: 44px;
       color: rgba(0, 0, 0, 0.64);
       font-size: 0.95rem;
       line-height: 1.35;
@@ -114,9 +115,7 @@
 
     .sitemap-group a:hover,
     .sitemap-group a:focus-visible {
-      color: #0066cc;
-      text-decoration: underline;
-      text-underline-offset: 0.18em;
+      color: #005bb5;
     }
 
     @media (min-width: 560px) {
@@ -145,7 +144,7 @@
       }
     }
   </style>
-  <link rel="stylesheet" href="/css/shroffin-shell.css?v=responsive-12">
+  <link rel="stylesheet" href="/css/shroffin-shell.css?v=editorial-24">
 </head>
 <body>
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
@@ -163,11 +162,17 @@
         <li class="globalnav-item globalnav-item-support" id="nav-support">
           <button type="button" class="globalnav-flyout-trigger" id="nav-support-trigger" aria-expanded="false" aria-controls="nav-support-flyout">Support</button>
         </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="/pages/about.html">About</a>
+        <li class="globalnav-item globalnav-item-flyout" id="nav-utilities">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-utilities-trigger"
+            aria-expanded="false"
+            aria-controls="nav-utilities-flyout"
+          >Utilities</button>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="/pages/project-approvals.html">Project Bank Finder</a>
+          <a class="globalnav-link" href="/pages/about.html">About</a>
         </li>
       </ul>
     </div>
@@ -214,7 +219,7 @@
 
     <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content">
-        <h2 class="globalnav-submenu-header">Get Help</h2>
+        <h2 class="globalnav-submenu-header">Get support</h2>
         <ul class="globalnav-submenu-list">
           <li><a class="globalnav-submenu-link" href="mailto:support@shroffin.com"><span class="globalnav-submenu-label">Email</span><span class="globalnav-submenu-value">support@shroffin.com</span></a></li>
           <li><a class="globalnav-submenu-link" href="tel:+919112334367"><span class="globalnav-submenu-label">Call</span><span class="globalnav-submenu-value">+91 91123 34367</span></a></li>
@@ -222,6 +227,26 @@
         </ul>
       </div>
     </div>
+    <div class="globalnav-flyout" id="nav-utilities-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore utilities</h2>
+          <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="/pages/calculators.html">
+              <span class="globalnav-submenu-label">Calculators</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="/pages/project-approvals.html">
+              <span class="globalnav-submenu-label">Project Bank Finder</span>
+            </a>
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </nav>
 
   <main class="sitemap-main">
@@ -261,6 +286,7 @@
         <h2 id="sitemap-quick-title">Quick links</h2>
         <ul>
           <li><a href="/pages/learn-more.html">Explore banks</a></li>
+          <li><a href="/pages/calculators.html">Calculators</a></li>
           <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
         </ul>
       </nav>
@@ -280,6 +306,21 @@
           <li><a href="tel:+919112334367">Call</a></li>
         </ul>
       </section>
+      <section class="sitemap-group" aria-labelledby="sitemap-calc-title">
+        <h2 id="sitemap-calc-title">Calculators</h2>
+        <ul>
+          <li><a href="/pages/calculators.html">Calculators hub</a></li>
+          <li><a href="/pages/calculators/emi.html">Equated Monthly Instalment (EMI)</a></li>
+          <li><a href="/pages/calculators/how-much-loan.html">Eligibility</a></li>
+          <li><a href="/pages/calculators/loan-amount.html">Loan from EMI</a></li>
+          <li><a href="/pages/calculators/prepayment.html">Prepayment</a></li>
+          <li><a href="/pages/calculators/balance-transfer.html">Balance transfer</a></li>
+          <li><a href="/pages/calculators/tenure.html">Tenure</a></li>
+          <li><a href="/pages/calculators/down-payment.html">Down payment</a></li>
+          <li><a href="/pages/calculators/tax-savings.html">Tax claims</a></li>
+        </ul>
+      </section>
+
     </div>
   </main>
 
@@ -303,6 +344,7 @@
           <h2 class="site-footer-heading" id="footer-quick-title">Quick links</h2>
           <ul class="site-footer-list">
             <li><a href="/pages/learn-more.html">Explore banks</a></li>
+            <li><a href="/pages/calculators.html">Calculators</a></li>
             <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
           </ul>
         </nav>
@@ -364,6 +406,6 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="/js/shroffin-nav.js?v=responsive-6"></script>
+  <script src="/js/shroffin-nav.js?v=editorial-14"></script>
 </body>
 </html>

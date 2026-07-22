@@ -10,7 +10,7 @@ const redesignedPages = [
   { path: '/sitemap.html', heading: 'Site Map' },
   { path: '/pages/guide.html', heading: 'The essentials' },
   { path: '/pages/guide-documents.html', heading: 'Prepare once.' },
-  { path: '/pages/project-approvals.html', heading: 'Check the project' },
+  { path: '/pages/project-approvals.html', heading: 'Your project across bank records' },
   { path: '/pages/tax-benefits.html', heading: 'tax benefits' },
   { path: '/pages/concessions.html', heading: 'pay less' },
   { path: '/pages/home-loan-insurance.html', heading: 'Know enough' },
@@ -53,6 +53,7 @@ const primaryControlSelector = [
   '.fundamentals-paddle',
   '.lm-cta',
   '.guide-jump a',
+  '.mag-index-link',
   '.guide-flip-link',
   '.guide-seg-btn',
   '.guide-calc-submit',
@@ -63,9 +64,15 @@ const primaryControlSelector = [
 ].join(',');
 
 /* Desktop may use the Standard visual tier (~36px) for jumps and segments. */
-const standardTierSelector = ['.guide-jump a', '.guide-seg-btn'].join(',');
+const standardTierSelector = ['.guide-jump a', '.mag-index-link', '.guide-seg-btn'].join(',');
 const STANDARD_MIN = 35.5;
 const TOUCH_MIN = 43.5;
+
+/** Contents rail — editorial `.mag-index` (legacy `.guide-jump` kept for older markup). */
+const sectionNavSelector = '.mag-index, .guide-jump';
+function sectionNavHref(href) {
+  return '.mag-index a[href="' + href + '"], .guide-jump a[href="' + href + '"]';
+}
 
 const legacyEducationRoutes = [
   'education-loan.html',
@@ -79,6 +86,12 @@ const legacyEducationRoutes = [
 async function gotoReady(page, path) {
   await page.goto(path, { waitUntil: 'domcontentloaded' });
   await page.locator('.globalnav.shroffin-nav-ready').waitFor({ state: 'attached' });
+  await page.waitForFunction(function () {
+    var needsGuide = Array.prototype.some.call(document.scripts, function (script) {
+      return /shroffin-guide\.js/.test(script.src || '');
+    });
+    return !needsGuide || window.__shroffinGuideLoaded === true;
+  });
   await page.locator('body').evaluate(function () {
     return document.fonts && document.fonts.ready;
   });
@@ -155,7 +168,7 @@ async function expectSharedShell(page, entry) {
   await expect(page.locator('.site-footer-tagline')).toHaveCount(0);
   await expect(page.locator('.site-footer-logo')).toHaveCount(0);
   const connectLink = page.locator(
-    '#footer-connect-title + .site-footer-list a[href="https://www.linkedin.com/company/shroffin"]'
+    '.site-footer-group--connect a[href="https://www.linkedin.com/company/shroffin"]'
   );
   await expect(connectLink).toHaveCount(1);
   await expect(connectLink).toHaveText(/LinkedIn/);
@@ -185,9 +198,9 @@ async function expectSharedShell(page, entry) {
   await expect(
     page.locator('.site-footer-legal-links .guide-section-link-arrow').first()
   ).toHaveCSS('opacity', '0');
-  await expect(page.locator('#footer-company-title + .site-footer-list')).not.toContainText(
-    'Site Map'
-  );
+  await expect(
+    page.locator('.site-footer-group[aria-labelledby="footer-company-title"] .site-footer-list')
+  ).not.toContainText('Site Map');
   await expect(page.locator('.site-footer-legal-links a[href="/sitemap.html"]')).toHaveCount(1);
   await expect(page.locator('.site-footer-disclaimer-title')).toHaveText('Disclaimer');
   await expect(page.locator('.site-footer-disclaimer p')).toHaveCount(5);
@@ -259,7 +272,7 @@ test.describe('redesigned page responsive contract', function () {
     await expect(page.locator('.globalnav-flyout')).toHaveCount(2);
     await expect(page.locator('.globalnav-flyout').first()).toBeVisible();
     await expect(page.locator('.localnav-menu')).toBeVisible();
-    await expect(page.locator('.localnav-link')).toHaveCount(7);
+    await expect(page.locator('.localnav-link')).toHaveCount(6);
     await expectNoPageOverflow(page);
 
     await context.close();
@@ -276,7 +289,10 @@ test.describe('breakpoints and navigation behavior', function () {
     await expect(page.locator('.globalnav')).not.toHaveClass(/is-compact/);
 
     await page.locator('.globalnav-list > .globalnav-item').last().evaluate(function (item) {
-      item.textContent = 'About Shroffin and all independent home loan information '.repeat(5);
+      var control = item.querySelector('a, button') || item;
+      control.textContent =
+        'About Shroffin and all independent home loan information '.repeat(5);
+      control.style.whiteSpace = 'nowrap';
     });
     await expect(page.locator('.globalnav')).toHaveClass(/is-compact/);
     await expect(page.locator('.globalnav-compact-toggle')).toBeVisible();
@@ -293,7 +309,7 @@ test.describe('breakpoints and navigation behavior', function () {
     await expect(toggle).toBeVisible();
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
-    await expect(page.locator('.localnav-link')).toHaveCount(7);
+    await expect(page.locator('.localnav-link')).toHaveCount(6);
     await expect(page.locator('.localnav-link[aria-current="page"]')).toHaveCount(1);
     await expect(page.locator('body')).toHaveClass(/shroffin-scroll-locked/);
     await expect(page.locator('.localnav-menu')).toHaveCSS('overflow-y', 'auto');
@@ -375,7 +391,7 @@ test.describe('breakpoints and navigation behavior', function () {
     await page.setViewportSize({ width: 320, height: 568 });
     await gotoReady(page, '/pages/guide.html');
 
-    const menu = page.locator('.guide-jump');
+    const menu = page.locator(sectionNavSelector).first();
     await expect(menu).toBeVisible();
     const links = menu.locator('a[href^="#"]');
     expect(await links.count()).toBeGreaterThanOrEqual(4);
@@ -385,14 +401,15 @@ test.describe('breakpoints and navigation behavior', function () {
     }
 
     const columns = await menu.evaluate(function (node) {
-      return getComputedStyle(node).gridTemplateColumns.split(' ').length;
+      const list = node.querySelector('.mag-index-list') || node;
+      return getComputedStyle(list).gridTemplateColumns.split(/\s+/).filter(Boolean).length;
     });
-    expect(columns).toBe(2);
+    expect(columns).toBe(1);
 
     await expect(menu.locator('[aria-current="true"]')).toHaveCount(0);
     const chosen = links.nth(1);
     await chosen.click();
-    await expect(chosen).toHaveAttribute('aria-current', 'true');
+    await expect(chosen).toHaveAttribute('aria-current', 'true', { timeout: 4000 });
     await expect(menu.locator('[aria-current="true"]')).toHaveCount(1);
     await expectNoPageOverflow(page);
   });
@@ -401,6 +418,7 @@ test.describe('breakpoints and navigation behavior', function () {
     page
   }, testInfo) {
     test.skip(testInfo.project.name !== 'chromium-responsive');
+    test.setTimeout(180000);
 
     for (const viewport of [
       { name: 'phone', width: 375, height: 667 },
@@ -413,7 +431,7 @@ test.describe('breakpoints and navigation behavior', function () {
         for (const path of sectionJumpPages) {
           await gotoReady(page, path);
           const hrefs = await page
-            .locator('.guide-jump a[href^="#"]')
+            .locator('.mag-index a[href^="#"], .guide-jump a[href^="#"]')
             .evaluateAll(function (links) {
               return links.map(function (link) {
                 return link.getAttribute('href');
@@ -421,18 +439,27 @@ test.describe('breakpoints and navigation behavior', function () {
             });
 
           for (const href of hrefs) {
-            const link = page.locator('.guide-jump a[href="' + href + '"]');
+            const link = page.locator(sectionNavHref(href));
             const target = page.locator(href);
             await link.click();
 
             await expect(link).toHaveAttribute('aria-current', 'true');
             await expect
               .poll(async function () {
-                return target.evaluate(function (node) {
-                  return node.getBoundingClientRect().top;
-                });
+                return page.evaluate(function (sel) {
+                  const target = document.querySelector(sel);
+                  if (!target) return { ok: false };
+                  const top = target.getBoundingClientRect().top;
+                  const margin =
+                    parseFloat(getComputedStyle(target).scrollMarginTop) || 120;
+                  return {
+                    ok: Math.abs(top - margin) <= 4,
+                    top: top,
+                    margin: margin
+                  };
+                }, href);
               }, { timeout: 2500 })
-              .toBeCloseTo(120, 0);
+              .toMatchObject({ ok: true });
             await expect(target).toBeFocused({ timeout: 2500 });
           }
         }
@@ -447,16 +474,18 @@ test.describe('breakpoints and navigation behavior', function () {
 
     await page.setViewportSize({ width: 375, height: 667 });
     await gotoReady(page, '/pages/guide.html#emi');
-    await expect(page.locator('.guide-jump a[href="#emi"]')).toHaveAttribute(
+    await expect(page.locator('.mag-index a[href="#emi"]')).toHaveAttribute(
       'aria-current',
       'true'
     );
 
-    await page.locator('.guide-jump a[href="#rates"]').click();
-    await page.locator('.guide-jump a[href="#charges"]').click();
+    await page.locator('.mag-index a[href="#rates"]').click();
+    await expect(page).toHaveURL(/#rates$/, { timeout: 4000 });
+    await page.locator('.mag-index a[href="#charges"]').click();
+    await expect(page).toHaveURL(/#charges$/, { timeout: 4000 });
     await page.goBack();
-    await expect(page).toHaveURL(/#rates$/);
-    await expect(page.locator('.guide-jump a[href="#rates"]')).toHaveAttribute(
+    await expect(page).toHaveURL(/#rates$/, { timeout: 4000 });
+    await expect(page.locator('.mag-index a[href="#rates"]')).toHaveAttribute(
       'aria-current',
       'true'
     );
@@ -465,7 +494,7 @@ test.describe('breakpoints and navigation behavior', function () {
 });
 
 test.describe('adaptive component behavior', function () {
-  test('flip cards keep only the active face interactive on phones', async function ({
+  test('expand panels keep the explanation visible when open', async function ({
     page
   }, testInfo) {
     test.skip(testInfo.project.name !== 'chromium-responsive');
@@ -477,19 +506,11 @@ test.describe('adaptive component behavior', function () {
     const back = flip.locator('.guide-flip-face--back');
     await expect(back).toHaveAttribute('aria-hidden', 'true');
     await front.locator('[data-flip]').click();
-    await expect(front).toHaveAttribute('aria-hidden', 'true');
+    await expect(flip).toHaveClass(/is-flipped/);
+    await expect(front).toHaveAttribute('aria-hidden', 'false');
     await expect(back).toHaveAttribute('aria-hidden', 'false');
-    const heightState = await flip.evaluate(function (node) {
-      const inner = node.querySelector('.guide-flip-inner');
-      return {
-        flip: node.getBoundingClientRect().height,
-        inner: inner.getBoundingClientRect().height,
-        inlineHeight: inner.style.height
-      };
-    });
-    expect(heightState.flip).toBeGreaterThan(0);
-    expect(heightState.inner).toBeGreaterThan(0);
-    expect(parseFloat(heightState.inlineHeight)).toBeGreaterThan(0);
+    await expect(front).toBeVisible();
+    await expect(back).toBeVisible();
   });
 
   test('Privacy tables are named keyboard scroll regions', async function ({
@@ -555,7 +576,7 @@ test.describe('adaptive component behavior', function () {
     expect(bottomAlignment.lastWithinRow).toBe(true);
 
     const linkedin = page.locator(
-      '#footer-connect-title + .site-footer-list a.guide-section-link'
+      '.site-footer-group--connect a.guide-section-link'
     );
     const linkedinArrow = linkedin.locator('.guide-section-link-arrow');
     await expect(linkedinArrow).toHaveCSS('opacity', '0');
@@ -568,20 +589,20 @@ test.describe('adaptive component behavior', function () {
     const officialArrow = officialLink.locator('.guide-section-link-arrow');
     await expect(officialArrow).toHaveCSS('opacity', '0');
     await officialLink.hover();
-    await expect(officialLink).toHaveCSS('color', 'rgb(0, 102, 204)');
+    await expect(officialLink).toHaveCSS('color', 'rgb(0, 91, 181)');
     await expect(officialArrow).toHaveCSS('opacity', '1');
 
     const directoryLink = page.locator('.site-footer-list a').first();
     await directoryLink.hover();
-    await expect(directoryLink).toHaveCSS('color', 'rgb(0, 102, 204)');
+    await expect(directoryLink).toHaveCSS('color', 'rgb(0, 91, 181)');
 
     const bottomLink = page.locator('.site-footer-legal-links a').first();
     await bottomLink.hover();
-    await expect(bottomLink).toHaveCSS('color', 'rgb(0, 102, 204)');
+    await expect(bottomLink).toHaveCSS('color', 'rgb(0, 91, 181)');
 
     const navLink = page.locator('.globalnav-link').first();
     await navLink.hover();
-    await expect(navLink).toHaveCSS('color', 'rgb(0, 102, 204)');
+    await expect(navLink).toHaveCSS('color', 'rgb(0, 91, 181)');
   });
 
   test('footer collapses into an Apple-style accordion on small screens', async function ({

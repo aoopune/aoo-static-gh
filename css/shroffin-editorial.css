@@ -1,0 +1,2123 @@
+/* ==========================================================================
+   Shroffin editorial system — shared magazine layer for the redesigned site.
+   Warm paper, one ink, sentence-case labels, few hairlines, calm motion.
+   Pages link this file; interactive markup keeps its .guide-* hooks + IDs + JS.
+   ========================================================================== */
+
+:root {
+  --font-brand: "Google Sans Flex", Arial, sans-serif;
+  --gn-height: 48px;
+  --ln-height: 52px;
+
+  /* Paper shades — section separation without a grid of lines */
+  --mag-paper: #faf9f6;       /* default page canvas */
+  --mag-paper-deep: #f3f1eb;  /* alternating band / flip back */
+  --mag-paper-note: #eceae3;  /* glance / note panels */
+
+  /* Ink */
+  --mag-ink: #1d1d1f;         /* headlines, body facts */
+  --mag-ink-soft: #3a3a3d;    /* leads, captions on deep panels */
+  --mag-muted: #6e6e73;       /* kickers, terms, fine print (on light paper) */
+  --mag-ghost: #c8c5bc;       /* large decorative section numbers */
+
+  /* Blue */
+  --mag-accent: #0066cc;         /* text / off-site links on paper */
+  --mag-accent-hover: #005bb5;   /* link hover / press */
+  --mag-accent-button: #0071e3;  /* solid pill fill */
+
+  --mag-hair: rgba(0, 0, 0, 0.12);
+  --mag-hair-soft: rgba(0, 0, 0, 0.08);
+  /* Same invisible rail as globalnav / footer (logo → right chrome). */
+  --mag-wrap: var(--shroffin-content-max, 1068px);
+  --mag-inline: max(1rem, env(safe-area-inset-left));
+  --mag-inline-end: max(1rem, env(safe-area-inset-right));
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-color: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Full-bleed section bands use 100vw math; clip so they never widen the page. */
+html {
+  overflow-x: clip;
+}
+
+/* ---- Base -------------------------------------------------------------- */
+
+body {
+  background: var(--mag-paper);
+  color: var(--mag-ink);
+  font-family: var(--font-brand);
+  -webkit-font-smoothing: antialiased;
+}
+
+.guide-content,
+.mag {
+  padding-top: var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px));
+  box-sizing: border-box;
+  min-height: 60vh;
+}
+
+/* Fragment targets clear the sticky global + local bars. */
+.guide-moment[id],
+.mag-section[id],
+.guide-fine-notes [id] {
+  scroll-margin-block-start: calc(
+    var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height, 52px) + 1.25rem
+  );
+}
+
+/* ---- Localnav (warm harmony; base structure lives in shroffin-guide.css) - */
+
+.localnav {
+  background: rgba(250, 249, 246, 0.78);
+}
+
+.localnav-title {
+  color: var(--mag-ink);
+  letter-spacing: -0.01em;
+}
+
+/* Filled blue pill in the Guide bar — label stays white (never link purple). */
+.localnav-cta,
+.localnav-cta:link,
+.localnav-cta:visited,
+.localnav-cta:hover,
+.localnav-cta:focus-visible,
+.localnav-cta:active {
+  color: #fff;
+  text-decoration: none;
+}
+
+.localnav-link {
+  color: var(--mag-ink);
+  text-decoration: none;
+  transition: color var(--mag-micro, 0.5s) var(--ease-color);
+}
+
+.localnav-link:hover {
+  color: var(--mag-accent);
+}
+
+.localnav-link[aria-current="page"] {
+  color: var(--mag-ink);
+  cursor: default;
+}
+
+/* Current-page marker is a control indicator (chrome), not a link underline. */
+.localnav-link[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--mag-ink);
+}
+
+/* ---- Off-site + inline links: colour + cursor, never an underline ------- */
+
+.guide-section-link,
+.mag-link,
+.guide-share-then a,
+.guide-doc-note a,
+.mag-p a,
+.mag-def-desc a,
+.mag-lede a {
+  color: var(--mag-accent);
+  text-decoration: none;
+  border-bottom: 0;
+  transition: color var(--mag-micro, 0.5s) var(--ease-color);
+}
+
+.guide-section-link:hover,
+.guide-section-link:focus-visible,
+.guide-section-link:active,
+.mag-link:hover,
+.guide-share-then a:hover,
+.guide-doc-note a:hover,
+.mag-p a:hover,
+.mag-def-desc a:hover,
+.mag-lede a:hover {
+  color: var(--mag-accent-hover);
+  text-decoration: none;
+}
+
+.guide-section-link-arrow {
+  margin-left: 0.15em;
+  font-size: 0.9em;
+}
+
+/* ---- Masthead (restyled guide-hero — left, editorial, verbatim copy) ---- */
+
+.guide-hero,
+.mag-masthead {
+  max-width: var(--mag-wrap);
+  margin: 0 auto;
+  padding-inline: var(--mag-inline) var(--mag-inline-end);
+  /* Tall open field: room to land, then breathe before the long read. */
+  padding-block: clamp(64px, 12vw, 128px) clamp(72px, 14vw, 160px);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.guide-hero-title,
+.mag-title {
+  margin: 0 auto;
+  max-width: 16em;
+  color: var(--mag-ink);
+  font-size: clamp(40px, 8vw, 72px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+/* Support line under the hero — softer weight, never competes with h1. */
+.guide-hero-lead,
+.mag-standfirst,
+h2.guide-hero-lead {
+  margin: clamp(28px, 5vw, 44px) auto 0;
+  max-width: 34em;
+  color: var(--mag-muted);
+  font-family: inherit;
+  font-size: clamp(17px, 2.1vw, 20px);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* Extra pause before Contents / first section after the masthead. */
+.guide-hero + .mag-index,
+.guide-hero + .mag-toc-shell,
+.guide-hero + .mag-section,
+.guide-hero + .guide-story {
+  margin-block-start: clamp(24px, 5vw, 56px);
+}
+
+/* ---- Contents index ---------------------------------------------------- */
+
+.mag-index {
+  max-width: var(--mag-wrap);
+  margin: 0 auto;
+  padding: clamp(8px, 2vw, 20px) var(--mag-inline-end) clamp(28px, 5vw, 48px) var(--mag-inline);
+  padding-inline: var(--mag-inline) var(--mag-inline-end);
+  padding-block: clamp(8px, 2vw, 20px) clamp(28px, 5vw, 48px);
+  box-sizing: border-box;
+}
+
+.mag-index-title {
+  display: none;
+}
+
+.mag-index-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/* Hairline between items — equal air above and below; none on the last. */
+.mag-index-list > li {
+  border-bottom: 1px solid var(--mag-hair-soft);
+}
+
+.mag-index-list > li:last-child {
+  border-bottom: 0;
+}
+
+.mag-index-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 44px;
+  padding: 16px 0;
+  border: 0;
+  color: var(--mag-ink);
+  text-decoration: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: color var(--mag-micro, 0.5s) var(--ease-color);
+}
+
+.mag-index-link:link,
+.mag-index-link:visited {
+  color: var(--mag-ink);
+}
+
+/* Jump cue — right chevron beside the label (“go to this section”). */
+.mag-index-link::after {
+  content: "";
+  flex: 0 0 auto;
+  inline-size: 0.4rem;
+  block-size: 0.4rem;
+  margin-inline-start: 0.55rem;
+  border-inline-end: 1.5px solid currentColor;
+  border-block-end: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  opacity: 0.45;
+  transition:
+    opacity var(--mag-micro, 0.5s) var(--ease-color),
+    transform var(--mag-micro, 0.5s) var(--ease);
+}
+
+.mag-index-link:hover,
+.mag-index-link:active,
+.mag-index-link:focus-visible {
+  color: var(--mag-accent);
+}
+
+.mag-index-link:hover::after,
+.mag-index-link:active::after,
+.mag-index-link:focus-visible::after {
+  opacity: 1;
+  transform: translateX(3px) rotate(-45deg);
+}
+
+/* Numbers removed — labels use the full Contents row; story gets the width back. */
+.mag-index-num {
+  display: none !important;
+}
+
+.mag-index-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.mag-index-link.is-active,
+.mag-index-link[aria-current="true"] {
+  color: var(--mag-ink);
+}
+
+.mag-index-link.is-active .mag-index-label,
+.mag-index-link[aria-current="true"] .mag-index-label {
+  font-weight: 600;
+}
+
+.mag-index-link.is-active:hover,
+.mag-index-link[aria-current="true"]:hover,
+.mag-index-link.is-active:focus-visible,
+.mag-index-link[aria-current="true"]:focus-visible {
+  color: var(--mag-accent);
+}
+
+/* Shell pairs Contents + story for the sticky side rail on wide screens. */
+.mag-toc-shell {
+  box-sizing: border-box;
+}
+
+/* Compact “current section” bar — phone/tablet while reading. */
+.mag-toc-compact {
+  position: fixed;
+  inset-inline: 0;
+  top: calc(var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height, 52px));
+  z-index: 8500;
+  max-height: calc(
+    100dvh - (var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height, 52px))
+  );
+  display: flex;
+  flex-direction: column;
+  background: rgba(250, 249, 246, 0.92);
+  border-block-end: 1px solid var(--mag-hair-soft);
+  backdrop-filter: saturate(140%) blur(16px);
+  -webkit-backdrop-filter: saturate(140%) blur(16px);
+  box-sizing: border-box;
+}
+
+.mag-toc-compact[hidden] {
+  display: none !important;
+}
+
+.mag-toc-compact-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  flex: 0 0 auto;
+  min-height: 46px;
+  margin: 0;
+  padding: 0.65rem max(1rem, env(safe-area-inset-right)) 0.65rem
+    max(1rem, env(safe-area-inset-left));
+  border: 0;
+  background: transparent;
+  color: var(--mag-ink);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: start;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.mag-toc-compact-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mag-toc-compact-chevron {
+  flex: 0 0 auto;
+  inline-size: 0.45rem;
+  block-size: 0.45rem;
+  border-inline-end: 1.5px solid currentColor;
+  border-block-end: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  opacity: 0.55;
+  transition: transform var(--mag-ui, 0.85s) var(--ease);
+}
+
+.mag-toc-compact.is-open .mag-toc-compact-chevron {
+  transform: rotate(225deg);
+}
+
+.mag-toc-compact-panel {
+  flex: 0 1 auto;
+  min-height: 0;
+  block-size: fit-content;
+  max-height: min(70vh, 28rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 0 max(1rem, env(safe-area-inset-right)) 0.75rem
+    max(1rem, env(safe-area-inset-left));
+  border-block-start: 1px solid var(--mag-hair-soft);
+  background: var(--mag-paper);
+  box-sizing: border-box;
+}
+
+.mag-toc-compact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mag-toc-compact-link {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.75rem 0;
+  border-block-end: 1px solid var(--mag-hair-soft);
+  color: var(--mag-muted);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: color var(--mag-micro, 0.5s) var(--ease-color);
+}
+
+.mag-toc-compact-list li:last-child .mag-toc-compact-link {
+  border-block-end: 0;
+}
+
+.mag-toc-compact-link:hover,
+.mag-toc-compact-link:focus-visible {
+  color: var(--mag-accent);
+}
+
+.mag-toc-compact-link.is-active,
+.mag-toc-compact-link[aria-current="true"] {
+  color: var(--mag-ink);
+  font-weight: 600;
+}
+
+/* Phone/tablet: leave room for the compact bar under the Guide bars. */
+@media (max-width: 1199px) {
+  .guide-moment[id],
+  .mag-section[id],
+  .guide-fine-notes [id],
+  .guide-flip-face--back,
+  .guide-flip-link[data-flip] {
+    scroll-margin-block-start: calc(
+      var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height, 52px) + 2.875rem + 1.25rem
+    );
+  }
+}
+
+@media (min-width: 1200px) {
+  .mag-toc-compact {
+    display: none !important;
+  }
+
+  .mag-toc-shell {
+    display: grid;
+    grid-template-columns: minmax(9.5rem, 12rem) minmax(0, 1fr);
+    column-gap: clamp(1.25rem, 2.5vw, 2.5rem);
+    align-items: start;
+    max-width: var(--mag-wrap);
+    margin-inline: auto;
+    padding-inline: var(--mag-inline) var(--mag-inline-end);
+    box-sizing: border-box;
+  }
+
+  .mag-toc-shell .mag-index {
+    position: sticky;
+    /* Match the sticky Guide bars exactly — no extra drop when stuck. */
+    top: calc(
+      var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height, 52px)
+    );
+    max-width: none;
+    margin: 0;
+    padding: 0 0 1.5rem;
+    align-self: start;
+  }
+
+  .mag-toc-shell .mag-index-title {
+    display: none;
+  }
+
+  .mag-toc-shell .mag-index-link {
+    gap: 0;
+    min-height: 0;
+    /* Same padding on every row — even when the rail is sticky. */
+    padding: 0.7rem 0;
+    border: 0;
+    color: var(--mag-muted);
+  }
+
+  .mag-toc-shell .mag-index-link:link,
+  .mag-toc-shell .mag-index-link:visited {
+    color: var(--mag-muted);
+  }
+
+  .mag-toc-shell .mag-index-link::after {
+    display: none;
+  }
+
+  .mag-toc-shell .mag-index-label {
+    /* Same size as Guide bar links (Overview, Documents, …). */
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .mag-toc-shell .mag-index-link.is-active .mag-index-label,
+  .mag-toc-shell .mag-index-link[aria-current="true"] .mag-index-label {
+    font-weight: 500;
+  }
+
+  .mag-toc-shell .mag-index-link.is-active,
+  .mag-toc-shell .mag-index-link[aria-current="true"],
+  .mag-toc-shell .mag-index-link.is-active:link,
+  .mag-toc-shell .mag-index-link[aria-current="true"]:link,
+  .mag-toc-shell .mag-index-link.is-active:visited,
+  .mag-toc-shell .mag-index-link[aria-current="true"]:visited {
+    color: var(--mag-ink);
+  }
+
+  .mag-toc-shell .mag-index-link:hover,
+  .mag-toc-shell .mag-index-link:focus-visible {
+    color: var(--mag-accent);
+  }
+
+  .mag-toc-shell .guide-story,
+  .mag-toc-shell .mag-wrap {
+    max-width: none;
+    margin: 0;
+    padding-inline: 0;
+  }
+
+  /* Same top padding as every Contents row — keeps both columns even when sticky. */
+  .mag-toc-shell .guide-story > .mag-section:first-child {
+    padding-block-start: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mag-toc-compact-chevron {
+    transition: none;
+  }
+}
+
+/* ---- Story wrapper + numbered sections --------------------------------- */
+
+.guide-story,
+.mag-wrap {
+  max-width: var(--mag-wrap);
+  margin: 0 auto;
+  padding-inline: var(--mag-inline) var(--mag-inline-end);
+  box-sizing: border-box;
+  display: block;
+}
+
+.mag-section {
+  position: relative;
+  padding: clamp(40px, 7vw, 80px) 0;
+  /* Prefer paper shade rhythm over a hairline grid between sections. */
+  border-top: 0;
+}
+
+.mag-section:first-child,
+.mag-section.mag-section--intro {
+  border-top: 0;
+}
+
+/* Overview opener — title + lead sit in the middle of the page. */
+.mag-section--intro {
+  text-align: center;
+}
+
+/* When JS lifts the opener above Contents, keep the same page rail. */
+.guide-content > .mag-section,
+.guide-content > .guide-breadcrumb {
+  max-width: var(--mag-wrap);
+  margin-inline: auto;
+  padding-inline: var(--mag-inline) var(--mag-inline-end);
+  box-sizing: border-box;
+}
+
+.mag-section--intro .guide-tile--hero,
+.mag-section--intro .mag-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mag-section--intro .guide-tile-title {
+  text-wrap: balance;
+}
+
+.mag-section--intro .guide-tile-copy {
+  margin-inline: auto;
+  max-width: 32em;
+}
+
+/* Reveal — fade settles slightly ahead of the move. */
+.guide-moment,
+.mag-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 1.1s var(--ease),
+    transform 1.5s var(--ease);
+}
+
+.guide-moment.is-in,
+.mag-reveal.is-in,
+.guide-moment[id]:target {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mag-rail {
+  display: none !important;
+}
+
+.mag-num {
+  display: none !important;
+}
+
+.mag-kicker {
+  margin: 0;
+  color: var(--mag-muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+
+.mag-content {
+  min-width: 0;
+}
+
+/* ---- Neutralise the old white card; keep content flowing on paper ------ */
+
+.guide-tile,
+.guide-tile--stage,
+.guide-tile--hero {
+  position: static;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  min-height: 0;
+  display: block;
+}
+
+/* The decorative corner glyphs belong to the card era. */
+.guide-tile-mark {
+  display: none !important;
+}
+
+/* Section headings / copy inside content */
+.guide-tile-title,
+.mag-h {
+  margin: 0;
+  color: var(--mag-ink);
+  font-size: clamp(26px, 3.6vw, 38px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.guide-tile-kicker {
+  margin: 0 0 10px;
+  color: var(--mag-muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+
+.guide-tile-copy,
+.mag-lede {
+  margin: 14px 0 0;
+  max-width: 34em;
+  color: var(--mag-ink);
+  font-size: clamp(17px, 2.1vw, 20px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+}
+
+.guide-tile-copy--muted {
+  color: var(--mag-muted);
+}
+
+.mag-p {
+  margin: 14px 0 0;
+  max-width: 34em;
+  color: var(--mag-ink);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.guide-tile-list {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+}
+
+.guide-tile-list li {
+  margin: 0;
+  padding: 18px 0;
+  border-top: 1px solid var(--mag-hair-soft);
+  color: var(--mag-ink);
+  font-size: clamp(17px, 2.2vw, 20px);
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+/* ---- Compare spread (guide-limits) ------------------------------------- */
+
+.guide-limits {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(28px, 5vw, 40px);
+  margin-top: clamp(24px, 4vw, 36px);
+  width: 100%;
+}
+
+.guide-limit {
+  min-width: 0;
+}
+
+.guide-limit-kicker {
+  margin: 0 0 8px;
+  color: var(--mag-muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+
+.guide-limit-title,
+.mag-compare-title {
+  margin: 0 0 6px;
+  color: var(--mag-ink);
+  font-size: clamp(20px, 2.6vw, 24px);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.18;
+}
+
+.guide-limit-note,
+.mag-tag {
+  margin-left: 0.4em;
+  color: var(--mag-muted);
+  font-size: 0.62em;
+  font-weight: 500;
+  letter-spacing: 0;
+  vertical-align: middle;
+}
+
+.mag-tag {
+  font-size: 13px;
+}
+
+.guide-limit-copy {
+  margin: 0;
+  color: var(--mag-ink);
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+}
+
+/* ---- Definition ledgers (guide-share-list, when / then) ---------------- */
+
+.guide-share-list,
+.mag-defs {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  width: 100%;
+}
+
+.guide-share-list li,
+.mag-def {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--mag-hair-soft);
+}
+
+.guide-share-list li:first-child,
+.mag-defs > *:first-child,
+.mag-def:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.guide-share-when,
+.mag-def-term {
+  margin: 0;
+  color: var(--mag-muted);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.guide-share-then,
+.mag-def-desc {
+  margin: 0;
+  color: var(--mag-ink);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+.mag-def-desc {
+  font-weight: 400;
+}
+
+/* Run-in list (plain) — dense facts, hanging indent feel, no boxes */
+.guide-share-list--plain li {
+  display: block;
+  color: var(--mag-ink);
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+  padding: 10px 0;
+  border-top: 1px solid var(--mag-hair-soft);
+}
+
+.guide-share-list--plain li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* Charges front: then-label above a muted note */
+.guide-share-list--plain .guide-share-then {
+  display: block;
+  font-weight: 600;
+}
+
+.guide-share-list--plain .guide-share-when {
+  display: block;
+  margin-top: 2px;
+}
+
+/* ---- Glance / callout → margin notes ----------------------------------- */
+
+.guide-glance {
+  margin: 22px 0 0;
+  color: var(--mag-ink-soft);
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+}
+
+.guide-glance--center {
+  max-width: 34em;
+}
+
+.guide-callout,
+.mag-note {
+  margin: clamp(22px, 4vw, 30px) 0 0;
+  padding: 14px 0 0;
+  border-block-start: 1px solid var(--mag-hair-soft);
+  background: transparent;
+  border-radius: 0;
+  color: var(--mag-ink-soft);
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+}
+
+.guide-callout--tight {
+  margin-top: 16px;
+}
+
+/* ---- Directory / checklist ledgers (documents) ------------------------- */
+
+.guide-doc-sub,
+.mag-subhead {
+  margin: clamp(28px, 4vw, 40px) 0 0;
+  color: var(--mag-muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+
+.guide-doc-sub:first-of-type {
+  margin-top: 8px;
+}
+
+.guide-doc-rows,
+.mag-docs {
+  width: 100%;
+  margin-top: clamp(16px, 3vw, 24px);
+}
+
+.guide-doc-row,
+.mag-doc {
+  padding: 14px 0;
+  border-top: 1px solid var(--mag-hair-soft);
+}
+
+.guide-doc-rows .guide-doc-row:first-child,
+.mag-docs .mag-doc:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.guide-doc-name,
+.mag-doc-name {
+  margin: 0 0 3px;
+  color: var(--mag-ink);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+
+.guide-doc-req {
+  margin-left: 6px;
+  color: var(--mag-muted);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.guide-doc-note,
+.mag-doc-note {
+  margin: 0;
+  color: var(--mag-muted);
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+.guide-doc-legend {
+  margin: 18px 0 0;
+  color: var(--mag-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* Tabular document tables (deemed-valid etc.) */
+.guide-doc-table {
+  width: 100%;
+  margin-top: clamp(16px, 3vw, 24px);
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: left;
+}
+
+.guide-doc-table th,
+.guide-doc-table td {
+  padding: 14px 16px;
+  vertical-align: middle;
+}
+
+.guide-doc-table thead th {
+  padding-top: 0;
+  padding-bottom: 12px;
+  color: var(--mag-muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  border-bottom: 1px solid var(--mag-hair);
+}
+
+.guide-doc-table tbody tr + tr td {
+  border-top: 1px solid var(--mag-hair-soft);
+}
+
+.guide-doc-table th:first-child,
+.guide-doc-table td:first-child {
+  padding-left: 0;
+}
+
+.guide-doc-table th:last-child,
+.guide-doc-table td:last-child {
+  padding-right: 0;
+}
+
+.guide-doc-table .guide-doc-col-check {
+  width: 18%;
+  text-align: center;
+}
+
+.guide-doc-table .guide-doc-name {
+  margin: 0;
+}
+
+.guide-doc-table .guide-doc-note {
+  margin-top: 4px;
+}
+
+.guide-doc-tick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  color: var(--mag-ink);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* ---- Numbered flow (process steps) ------------------------------------- */
+
+.guide-flow {
+  list-style: none;
+  margin: clamp(24px, 4vw, 32px) 0 0;
+  padding: 0;
+  width: 100%;
+}
+
+.guide-flow--center {
+  max-width: 30em;
+}
+
+.guide-flow li {
+  position: relative;
+  margin: 0;
+  padding: 18px 0 18px 44px;
+  border-top: 1px solid var(--mag-hair-soft);
+  color: var(--mag-ink);
+  font-size: clamp(16px, 2vw, 18px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+.guide-flow li:first-child {
+  border-top: 0;
+}
+
+.guide-flow li::before {
+  content: attr(data-step);
+  position: absolute;
+  left: 0;
+  top: 18px;
+  color: var(--mag-ghost);
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Breadcrumb (insurance sub-pages) ---------------------------------- */
+
+.guide-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.4rem;
+  max-width: var(--mag-wrap);
+  margin: 0 auto;
+  padding: clamp(48px, 9vw, 88px) var(--mag-inline-end) 0 var(--mag-inline);
+  padding-inline: var(--mag-inline) var(--mag-inline-end);
+  padding-block: clamp(48px, 9vw, 88px) 0;
+  box-sizing: border-box;
+  color: var(--mag-muted);
+  font-size: 14px;
+  letter-spacing: -0.01em;
+}
+
+/* When the breadcrumb leads, the title tucks in just below it. */
+.guide-breadcrumb + .guide-hero {
+  padding-top: clamp(12px, 2vw, 20px);
+}
+
+.guide-breadcrumb a {
+  color: var(--mag-accent);
+  text-decoration: none;
+}
+
+.guide-breadcrumb a:hover {
+  color: var(--mag-accent-hover);
+}
+
+.guide-breadcrumb-current {
+  color: var(--mag-ink);
+}
+
+.guide-breadcrumb-sep {
+  color: var(--mag-ghost);
+}
+
+/* ---- Expand panels (explanation stays; detail opens under it) ---------- */
+
+.guide-flip {
+  width: 100%;
+}
+
+.guide-flip-inner {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.guide-flip-face {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.guide-flip-face--front {
+  position: relative;
+  background: transparent;
+}
+
+.guide-flip-face--back {
+  position: relative;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  visibility: hidden;
+  margin-block-start: 0;
+  padding-block-start: 0;
+  pointer-events: none;
+  background: transparent;
+  text-align: left;
+  align-items: stretch;
+  scroll-margin-block-start: calc(
+    var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height, 52px) + 1.25rem
+  );
+  transition:
+    max-height 1.5s var(--ease),
+    opacity 1.1s var(--ease),
+    margin-block-start 1.5s var(--ease),
+    padding-block-start 1.5s var(--ease),
+    visibility 0s linear 1.5s;
+}
+
+.guide-flip.is-flipped .guide-flip-face--back {
+  max-height: 200rem;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  margin-block-start: clamp(20px, 3vw, 36px);
+  padding-block-start: clamp(28px, 4vw, 48px);
+  transition:
+    max-height 1.5s var(--ease),
+    opacity 1.1s var(--ease),
+    margin-block-start 1.5s var(--ease),
+    padding-block-start 1.5s var(--ease),
+    visibility 0s;
+}
+
+/* ---- Flip / return control — shared on-panel slot (bottom, left) ------- */
+
+.guide-flip-link {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--mag-accent);
+  font-family: var(--font-brand);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  min-height: 44px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color var(--mag-micro, 0.5s) var(--ease-color);
+}
+
+.guide-flip-face--front .guide-flip-link[data-flip] {
+  margin: 0;
+  padding-top: clamp(28px, 4vw, 48px);
+  scroll-margin-block-start: calc(
+    var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height, 52px) + 1.25rem
+  );
+}
+
+.guide-flip-link:hover {
+  color: var(--mag-accent-hover);
+  text-decoration: none;
+}
+
+.guide-flip-link:focus-visible {
+  outline: 2px solid var(--mag-accent-button);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.guide-flip-link-arrow {
+  display: block;
+  width: 0.55em;
+  height: 0.55em;
+  max-width: 12px;
+  max-height: 12px;
+  flex-shrink: 0;
+  transition: transform 0.75s var(--ease);
+}
+
+/* Same button: arrow down when closed, up when open. */
+.guide-flip-link[data-flip] .guide-flip-link-arrow {
+  transform: rotate(90deg);
+}
+
+.guide-flip-link[data-flip]:hover .guide-flip-link-arrow {
+  transform: rotate(90deg) translateY(2px);
+}
+
+.guide-flip.is-flipped .guide-flip-link[data-flip] .guide-flip-link-arrow {
+  transform: rotate(-90deg);
+}
+
+.guide-flip.is-flipped .guide-flip-link[data-flip]:hover .guide-flip-link-arrow {
+  transform: rotate(-90deg) translateY(-2px);
+}
+
+/* Department openers / cross-page CTAs (insurance hub, project link) */
+.guide-flip-link.guide-project-link,
+.guide-flip-link.guide-open-link {
+  align-self: flex-start;
+  margin-top: clamp(20px, 3vw, 28px);
+}
+
+/* ---- Calculator worksheet ---------------------------------------------- */
+
+.guide-calc-main {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  max-width: 52em;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  overflow: visible;
+}
+
+.guide-flip-face--back .guide-calc-main {
+  flex: 0 0 auto;
+  min-height: auto;
+}
+
+#emi-flip .guide-flip-face--back .guide-calc-main,
+#charges-breakdown.guide-calc-main {
+  overflow: visible;
+}
+
+.guide-calc-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 20px;
+  width: 100%;
+}
+
+.guide-calc-lead {
+  margin: 10px 0 0;
+  max-width: 30em;
+}
+
+.guide-calc-body {
+  width: 100%;
+}
+
+.guide-calc {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  max-width: 30em;
+  margin-top: 24px;
+}
+
+.guide-calc-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Calculator worksheets: fields left, result right; reserve both columns from the start. */
+#borrow-calc .guide-calc-main,
+#emi-calc .guide-calc-main {
+  max-width: none;
+}
+
+.guide-calc-body--split .guide-calc {
+  max-width: none;
+}
+
+@media (min-width: 834px) {
+  .guide-calc-body--split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(14rem, 0.8fr);
+    column-gap: 32px;
+    row-gap: 16px;
+    align-items: start;
+  }
+
+  .guide-calc-body--split .guide-calc-result {
+    margin-top: 24px;
+    max-width: none;
+    position: sticky;
+    top: calc(var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height, 52px) + 1rem);
+  }
+}
+
+.guide-calc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.guide-calc-label {
+  color: var(--mag-muted);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.guide-calc-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 2px;
+  border: 0;
+  border-bottom: 1px solid var(--mag-hair);
+  border-radius: 0;
+  background: transparent;
+  color: var(--mag-ink);
+  font-family: var(--font-brand);
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  transition: border-color var(--mag-micro, 0.5s) var(--ease-color);
+}
+
+.guide-calc-input:focus {
+  outline: none;
+  border-bottom-color: var(--mag-accent-button);
+  box-shadow: 0 1px 0 0 var(--mag-accent-button);
+}
+
+.guide-calc-select {
+  appearance: none;
+  padding-right: 1.5em;
+}
+
+.guide-calc-submit {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: start;
+  box-sizing: border-box;
+  margin-top: 8px;
+  min-height: var(--shroffin-btn-touch, 44px);
+  min-block-size: var(--shroffin-btn-touch, 44px);
+  padding: var(--shroffin-btn-standard-pad-block, 8px) var(--shroffin-btn-standard-pad-inline, 15px);
+  border: 0;
+  border-radius: var(--shroffin-btn-radius, 980px);
+  background: var(--mag-accent-button);
+  color: #fff;
+  font-family: var(--font-brand);
+  font-size: var(--shroffin-btn-standard-font, 14px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: var(--shroffin-btn-standard-lh, 1.28571);
+  cursor: pointer;
+  transition: background-color var(--mag-micro, 0.5s) var(--ease-color);
+}
+
+@media (min-width: 834px) {
+  .guide-calc-submit {
+    min-height: var(--shroffin-btn-standard-min, 36px);
+    min-block-size: var(--shroffin-btn-standard-min, 36px);
+  }
+}
+
+.guide-calc-submit:hover {
+  background: #0076df;
+}
+
+.guide-calc-submit:focus-visible {
+  outline: 2px solid var(--mag-accent-button);
+  outline-offset: 3px;
+}
+
+.guide-calc-result {
+  margin-top: 26px;
+  max-width: 34em;
+  text-align: left;
+}
+
+.guide-calc-result-kicker {
+  margin: 0;
+  color: var(--mag-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* The one earned big number on the site. */
+.guide-calc-result-num {
+  margin: 6px 0 0;
+  color: var(--mag-ink);
+  font-size: clamp(34px, 6vw, 46px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.guide-calc-split {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  color: var(--mag-ink);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.guide-calc-split li {
+  margin: 0 0 6px;
+}
+
+.guide-calc-split strong {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.guide-rate-notes > p {
+  margin: 0;
+  padding: 12px 0;
+  border-top: 1px solid var(--mag-hair-soft);
+  color: var(--mag-ink);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.guide-rate-notes > p:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* ---- Fee schedule → price list / statement ----------------------------- */
+
+.guide-fee-schedule {
+  display: grid;
+  gap: clamp(28px, 4vw, 36px);
+  width: 100%;
+  margin-top: clamp(24px, 4vw, 32px);
+  text-align: left;
+}
+
+.guide-fee-col {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 4vw, 36px);
+  min-width: 0;
+}
+
+.guide-fee-block {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.guide-fee-heading {
+  margin: 0 0 10px;
+  color: var(--mag-muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+
+.guide-fee-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.guide-fee-rows > li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 20px;
+  margin: 0;
+  padding: 10px 0;
+  border-top: 1px solid var(--mag-hair-soft);
+}
+
+.guide-fee-rows > li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.guide-fee-cluster,
+.guide-fee-item {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.guide-fee-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 20px;
+  width: 100%;
+}
+
+.guide-fee-nested {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding-left: 1em;
+  box-sizing: border-box;
+}
+
+.guide-fee-nested .guide-fee-name {
+  color: var(--mag-muted);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.guide-fee-nested .guide-fee-value {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.guide-fee-detail {
+  color: var(--mag-muted);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.guide-fee-block > .guide-fee-detail {
+  margin: 8px 0 0;
+}
+
+.guide-fee-name {
+  color: var(--mag-ink);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.guide-fee-name .guide-limit-note {
+  margin-left: 0.4em;
+  font-size: 13px;
+  font-weight: 500;
+  vertical-align: baseline;
+}
+
+.guide-fee-value {
+  color: var(--mag-ink);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  text-align: right;
+  flex: 0 1 auto;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Dossier tabs (guide-seg) ------------------------------------------ */
+
+.guide-seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin-top: clamp(24px, 4vw, 32px);
+  padding: 0;
+  border-bottom: 1px solid var(--mag-hair);
+  background: transparent;
+  max-width: 100%;
+}
+
+.guide-seg-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 44px;
+  padding: 8px 4px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--mag-muted);
+  font-family: var(--font-brand);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: color var(--mag-micro, 0.5s) var(--ease-color);
+}
+
+.guide-seg-btn:hover {
+  color: var(--mag-ink);
+}
+
+.guide-seg-btn[aria-selected="true"] {
+  color: var(--mag-ink);
+  font-weight: 600;
+}
+
+/* Selected tab marker is a control indicator, not a link underline. */
+.guide-seg-btn[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: -1px;
+  height: 2px;
+  background: var(--mag-ink);
+}
+
+.guide-seg-btn:focus-visible {
+  outline: 2px solid var(--mag-accent-button);
+  outline-offset: 2px;
+}
+
+.guide-seg-panel[hidden] {
+  display: none;
+}
+
+.guide-seg-panel .guide-doc-rows,
+.guide-seg-panel .guide-doc-table {
+  margin-top: 18px;
+}
+
+/* ---- Source note (RBI disclosure) — industry quote pattern ------------- */
+/*
+ * Title (summary) → source line → one continuous left-ruled blockquote.
+ * Caption sits above the bar so “Quoted from…” is not inside the quote.
+ */
+
+.guide-disclosure {
+  margin-top: clamp(28px, 4vw, 36px);
+  padding-top: 24px;
+  border-top: 1px solid var(--mag-hair-soft);
+  text-align: left;
+}
+
+.guide-disclosure summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  color: var(--mag-ink);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  cursor: pointer;
+  list-style: none;
+}
+
+.guide-disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.guide-disclosure summary::after {
+  content: "+";
+  flex: 0 0 auto;
+  color: var(--mag-muted);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.guide-disclosure[open] summary::after {
+  content: "\2212";
+}
+
+.guide-source {
+  margin: 14px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.guide-source-cite,
+.guide-source-caption {
+  display: block;
+  margin: 0 0 14px;
+  padding: 0;
+  color: var(--mag-muted);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.45;
+}
+
+.guide-source-body {
+  margin: 0;
+  padding: 4px 0 4px 18px;
+  border: 0;
+  border-left: 3px solid var(--mag-ink);
+  color: var(--mag-ink-soft);
+}
+
+.guide-source-quote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--mag-ink-soft);
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.55;
+}
+
+.guide-source-quote + .guide-source-quote {
+  margin-top: 14px;
+}
+
+.guide-disclosure .guide-doc-rows {
+  margin-top: 8px;
+}
+
+/* ---- See-also cross links (insurance sub-pages) — a note, not chips ----- */
+
+.guide-related-wrap {
+  max-width: var(--mag-wrap);
+  margin: 0 auto;
+  padding-inline: var(--mag-inline) var(--mag-inline-end);
+  box-sizing: border-box;
+}
+
+.guide-related-links {
+  max-width: 44em;
+  margin: 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--mag-hair);
+  color: var(--mag-muted);
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+}
+
+.guide-related-links a {
+  color: var(--mag-accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.guide-related-links a:hover {
+  color: var(--mag-accent-hover);
+}
+
+/* ---- Escalation ladder / climb (complaints) ---------------------------- */
+
+.guide-climb {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(28px, 5vw, 40px);
+  margin-top: clamp(24px, 4vw, 36px);
+}
+
+.guide-climb-col {
+  min-width: 0;
+}
+
+.guide-climb-label {
+  margin: 0 0 8px;
+  padding: 0 0 14px;
+  border-bottom: 1px solid var(--mag-hair);
+  color: var(--mag-ink);
+  font-size: clamp(20px, 2.6vw, 24px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* ---- Cover pair (insurance hub — two parallel covers, no card chrome) --- */
+
+.mag-pair {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(28px, 5vw, 40px);
+  margin-top: clamp(8px, 2vw, 16px);
+  width: 100%;
+}
+
+.mag-pair .guide-tile-title {
+  font-size: clamp(22px, 2.8vw, 28px);
+}
+
+.guide-tile-note {
+  margin: 14px 0 0;
+  color: var(--mag-muted);
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+.mag-pair .guide-flip-link {
+  margin-top: clamp(18px, 3vw, 24px);
+}
+
+/* ---- Compare strip (must-you-buy) -------------------------------------- */
+
+.guide-compare-strip {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  margin-top: clamp(24px, 4vw, 32px);
+  width: 100%;
+}
+
+.guide-compare-col {
+  min-width: 0;
+}
+
+.guide-compare-body {
+  margin: 0;
+  color: var(--mag-ink);
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+.guide-compare-shared {
+  margin: 24px 0 0;
+  color: var(--mag-muted);
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+}
+
+/* ---- Footnote refs + endnote list -------------------------------------- */
+
+.guide-share-then a.guide-note-ref,
+a.guide-note-ref {
+  color: var(--mag-muted);
+  font-size: 0.72em;
+  font-weight: 600;
+  text-decoration: none;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.guide-share-then a.guide-note-ref:hover,
+a.guide-note-ref:hover {
+  color: var(--mag-accent);
+}
+
+/* ---- Tab panels: stack so the tallest panel keeps height stable -------- */
+
+.guide-seg-panels {
+  display: grid;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.guide-seg-panels > .guide-seg-panel {
+  grid-area: 1 / 1;
+  width: 100%;
+}
+
+.guide-seg-panels > .guide-seg-panel[hidden] {
+  display: block;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.guide-seg-panels > .guide-seg-panel:not([hidden]) {
+  visibility: visible;
+}
+
+/* ---- Endnotes / colophon ----------------------------------------------- */
+
+.guide-fine-wrap,
+.mag-fine-wrap {
+  max-width: var(--mag-wrap);
+  margin: 0 auto;
+  padding: clamp(32px, 6vw, 56px) var(--mag-inline-end) clamp(56px, 10vw, 96px) var(--mag-inline);
+  padding-inline: var(--mag-inline) var(--mag-inline-end);
+  padding-block: clamp(32px, 6vw, 56px) clamp(56px, 10vw, 96px);
+  box-sizing: border-box;
+}
+
+.guide-fine,
+.mag-fine,
+.guide-fine-notes {
+  max-width: 44em;
+  margin: 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--mag-hair);
+  color: var(--mag-muted);
+  font-size: 13px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+/* Numbered endnotes sit under the colophon line, without a second rule. */
+.guide-fine + .guide-fine-notes {
+  margin-top: 16px;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.guide-fine-notes {
+  list-style: decimal;
+  padding-left: 1.4em;
+}
+
+.guide-fine-notes li {
+  margin: 0 0 6px;
+  padding-left: 4px;
+}
+
+.guide-fine-notes li:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- Tablet / desktop -------------------------------------------------- */
+
+@media (min-width: 734px) {
+  .mag-index-list {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+
+  .guide-limits {
+    grid-template-columns: 1fr 1fr;
+    gap: 44px;
+    align-items: start;
+    position: relative;
+  }
+
+  .guide-limits > .guide-limit:first-child {
+    position: relative;
+  }
+
+  /* one thin rule between the two compare columns */
+  .guide-limits::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
+    left: 50%;
+    width: 1px;
+    background: var(--mag-hair-soft);
+  }
+
+  .guide-doc-rows--cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(28px, 4vw, 48px);
+  }
+
+  /* Top of each column — no hairline (first-child alone only clears the left). */
+  .guide-doc-rows--cols > .guide-doc-row:nth-child(-n + 2),
+  .guide-doc-rows--cols > .mag-doc:nth-child(-n + 2) {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .mag-pair,
+  .guide-compare-strip {
+    grid-template-columns: 1fr 1fr;
+    gap: 44px;
+  }
+
+  .guide-fee-schedule {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(28px, 4vw, 36px) 44px;
+    align-items: start;
+  }
+
+  .guide-climb {
+    grid-template-columns: 1fr 1fr;
+    gap: 44px;
+  }
+}
+
+@media (min-width: 834px) {
+  .mag-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    align-items: start;
+  }
+
+  .mag-section--intro {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+
+  .mag-section--intro .mag-content {
+    width: 100%;
+    max-width: 36em;
+  }
+
+  .mag-content {
+    max-width: none; /* fill the nav rail; reading measure stays on paragraphs */
+  }
+}
+
+@media (min-width: 1069px) {
+  .mag-section {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Keep the opener full-width centred. */
+  .mag-section--intro {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+}
+
+/* ---- Narrow ------------------------------------------------------------ */
+
+@media (max-width: 733px) {
+  .guide-hero,
+  .mag-masthead,
+  .mag-index,
+  .guide-story,
+  .mag-wrap,
+  .guide-breadcrumb,
+  .guide-related-wrap,
+  .guide-fine-wrap,
+  .mag-fine-wrap {
+    padding-inline: var(--mag-inline) var(--mag-inline-end);
+  }
+
+  .guide-calc-row {
+    grid-template-columns: 1fr;
+  }
+
+  .guide-doc-table {
+    table-layout: auto;
+  }
+}
+
+/* ---- Expand: compact viewport tweaks ----------------------------------- */
+
+@media (max-width: 833px), (max-height: 500px) and (orientation: landscape) {
+  .guide-flip,
+  .guide-flip-inner {
+    min-height: 0;
+    height: auto;
+  }
+
+  .guide-tile,
+  .guide-tile--stage,
+  .guide-tile--hero,
+  .guide-flip-face {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .guide-flip-face {
+    position: relative;
+    inset: auto;
+    height: auto;
+    min-height: 0;
+  }
+}
+
+/* ---- Reduced motion ---------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-flip-face--back {
+    transition: none !important;
+  }
+
+  .guide-flip:not(.is-flipped) .guide-flip-face--back {
+    max-height: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    margin-block-start: 0 !important;
+    padding-block-start: 0 !important;
+  }
+
+  .guide-flip.is-flipped .guide-flip-face--back {
+    max-height: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .guide-moment,
+  .mag-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .guide-flip-face--back,
+  .guide-flip-link,
+  .guide-flip-link-arrow,
+  .guide-section-link,
+  .localnav-link,
+  .guide-calc-input,
+  .guide-calc-submit,
+  .guide-seg-btn {
+    transition: none;
+  }
+}

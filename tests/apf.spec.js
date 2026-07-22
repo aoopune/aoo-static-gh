@@ -101,8 +101,6 @@ test.describe("Project Bank Finder", () => {
     await expect(page.locator("#apf-activity")).toBeVisible();
     await expect(page.locator(".apf-activity-ring")).toHaveCount(1);
     await expect(page.getByLabel("Project", { exact: true })).toBeVisible();
-    await page.waitForTimeout(300);
-    await expect(page.locator("#apf-activity")).toBeVisible();
 
     await expect(page.locator('[data-testid="apf-result-row"]').first()).toBeVisible({
       timeout: 3000

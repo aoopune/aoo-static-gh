@@ -88,11 +88,11 @@
 
     :root {
       --gn-height: 48px;
-      --gn-bg: #fbfbfd;
+      --gn-bg: #faf9f6;
       --gn-text: rgba(29, 29, 31, 0.8);
       --gn-text-hover: #1d1d1f;
       --gn-ink: #1d1d1f;
-      --gn-max: 980px;
+      --gn-max: 1068px;
       --font-brand: 'Google Sans Flex', sans-serif;
     }
 
@@ -111,7 +111,7 @@
 
     body {
       background:
-        radial-gradient(circle at 50% 0%, #fff 0%, #fbfbfd 42%, #f5f5f7 100%);
+        radial-gradient(circle at 50% 0%, #fffefb 0%, #faf9f6 42%, #f3f1eb 100%);
       color: #1d1d1f;
     }
 
@@ -121,6 +121,12 @@
     .home-content {
       padding-top: var(--gn-height);
       box-sizing: border-box;
+    }
+
+    @media (max-width: 833px) {
+      .home-content {
+        padding-top: 0;
+      }
     }
 
     /* ——— Hero ——— */
@@ -137,7 +143,7 @@
       box-sizing: border-box;
       overflow: hidden;
       text-align: center;
-      background: #e8eef3;
+      background: #f3f1eb;
     }
 
     .home-hero-picture {
@@ -163,7 +169,7 @@
     .home-hero-copy {
       position: relative;
       z-index: 1;
-      width: min(920px, calc(100% - 48px));
+      width: min(1068px, calc(100% - 48px));
       margin: 0 auto;
       padding: clamp(56px, 12vh, 120px) 0 0;
       pointer-events: none;
@@ -273,7 +279,7 @@
       }
 
       .home-hero-copy {
-        width: min(920px, calc(100% - 32px));
+        width: min(1068px, calc(100% - 32px));
         padding-top: clamp(48px, 10vh, 88px);
       }
 
@@ -298,278 +304,16 @@
       }
     }
 
-    /* ——— Our fundamentals (Apple values-style cards) ——— */
-    .fundamentals {
-      background: rgb(245, 245, 247);
-      color: #1d1d1f;
-      padding: 72px 0 88px;
-      overflow-x: clip;
-    }
-
-    .fundamentals-inner {
-      width: min(980px, calc(100% - 48px));
-      margin: 0 auto;
-    }
-
-    .fundamentals-title {
-      margin: 0 0 50px;
-      font-size: clamp(32px, 4.5vw, 48px);
-      font-weight: 600;
-      line-height: 1.08349;
-    }
-
-    .home-moment {
-      opacity: 0;
-      transform: translateY(14px);
-      transition:
-        opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 1.45s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .home-moment.is-in {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .fundamentals-gallery {
-      position: relative;
-    }
-
-    .fundamentals-scroll {
-      overflow: visible;
-    }
-
-    .fundamentals-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .fundamentals-card {
-      display: flex;
-      flex-direction: column;
-      box-sizing: border-box;
-      min-height: 100%;
-      padding: 36px 32px 40px;
-      background: #fff;
-      border-radius: 28px;
-      corner-shape: squircle;
-      /* Apple Card tile lift — soft, 9% black, light from upper-left */
-      box-shadow: 4px 12px 40px 6px rgba(0, 0, 0, 0.09);
-      transform: scale(1);
-      transform-origin: center center;
-      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-      will-change: transform;
-    }
-
-    /* Apple resources-card hover: subtle scale, devices with real hover only */
-    @media (hover: hover) and (pointer: fine) {
-      .fundamentals-card:hover {
-        transform: scale(1.02);
-      }
-    }
-
-    .fundamentals-icon {
-      display: block;
-      width: 40px;
-      height: 40px;
-      margin: 0 0 18px;
-      color: #1d1d1f;
-    }
-
-    .fundamentals-icon svg {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .fundamentals-card-title {
-      margin: 0;
-      font-size: clamp(21px, 2.4vw, 28px);
-      font-weight: 600;
-      line-height: 1.14286;
-    }
-
-    .fundamentals-card-body {
-      margin: 12px 0 0;
-      font-size: 17px;
-      font-weight: 400;
-      line-height: 1.47059;
-      color: #1d1d1f;
-    }
-
-    .fundamentals-paddles {
-      display: none;
-    }
-
-    .fundamentals-paddle {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      padding: 0;
-      border: 0;
-      border-radius: 50%;
-      background: #d2d2d7;
-      color: #1d1d1f;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .fundamentals-paddle:hover:not(:disabled) {
-      background: #c7c7cc;
-    }
-
-    .fundamentals-paddle:disabled {
-      opacity: 0.32;
-      cursor: default;
-    }
-
-    .fundamentals-paddle:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 3px;
-    }
-
-    .fundamentals-paddle svg {
-      display: block;
-      width: 10px;
-      height: 18px;
-    }
-
-    @media (min-width: 734px) {
-      .fundamentals-inner {
-        width: min(980px, calc(100% - 48px));
-      }
-
-      .fundamentals-gallery {
-        width: min(980px, calc(100% - 48px));
-        margin: 0 auto;
-      }
-
-      .fundamentals-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        /* Room for soft tile shadow + hover scale */
-        padding: 28px 12px;
-        margin: -28px -12px;
-      }
-    }
-
-    @media (min-width: 1068px) {
-      .fundamentals {
-        padding: 88px 0 110px;
-      }
-
-      .fundamentals-inner,
-      .fundamentals-gallery {
-        width: min(1068px, calc(100% - 48px));
-      }
-
-      .fundamentals-title {
-        margin-bottom: 50px;
-      }
-
-      .fundamentals-card {
-        padding: 40px 36px 44px;
-        border-radius: 32px;
-        corner-shape: squircle;
-      }
-    }
-
-    /* Phone: Apple-style horizontal gallery with peek + paddles */
-    @media (max-width: 733px) {
-      .fundamentals {
-        padding: 56px 0 72px;
-      }
-
-      .fundamentals-inner {
-        width: auto;
-        margin: 0;
-        padding: 0 max(16px, 6.25vw);
-      }
-
-      .fundamentals-title {
-        margin-bottom: 40px;
-      }
-
-      .fundamentals-gallery {
-        width: 100%;
-        margin: 0;
-      }
-
-      .fundamentals-scroll {
-        overflow-x: scroll;
-        overflow-y: hidden;
-        scroll-snap-type: x mandatory;
-        scroll-padding-inline: max(16px, 6.25vw);
-        -webkit-overflow-scrolling: touch;
-        touch-action: pan-x;
-        scrollbar-width: none;
-        overscroll-behavior-x: contain;
-        /* Room for soft tile shadow under / beside cards */
-        padding-block: 28px;
-        margin-block: -28px;
-      }
-
-      .fundamentals-scroll.is-animating {
-        scroll-snap-type: none;
-      }
-
-      .fundamentals-scroll::-webkit-scrollbar {
-        display: none;
-      }
-
-      .fundamentals-grid {
-        display: flex;
-        gap: 14px;
-        width: max-content;
-        padding-inline: max(16px, 6.25vw);
-        box-sizing: border-box;
-      }
-
-      .fundamentals-card {
-        flex: 0 0 calc(100vw - max(16px, 6.25vw) - 40px);
-        width: calc(100vw - max(16px, 6.25vw) - 40px);
-        max-width: 350px;
-        min-height: 280px;
-        padding: 28px 24px 32px;
-        border-radius: 22px;
-        corner-shape: squircle;
-        scroll-snap-align: start;
-      }
-
-      .fundamentals-card:last-child {
-        scroll-snap-align: end;
-      }
-
-      .fundamentals-card-body {
-        font-size: 16px;
-      }
-
-      .fundamentals-paddles {
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-        width: auto;
-        margin: 40px max(16px, 6.25vw) 0;
-      }
-    }
-
     /* ——— Apple-like global footer ——— */
     .site-footer {
-      background: rgb(245, 245, 247);
+      background: #f3f1eb;
       color: rgba(0, 0, 0, 0.56);
       font-size: 12px;
       line-height: 1.33337;
     }
 
     .site-footer-inner {
-      width: min(980px, calc(100% - 48px));
+      width: min(1068px, calc(100% - 48px));
       margin: 0 auto;
       padding: 28px 0 0;
       box-sizing: border-box;
@@ -655,7 +399,7 @@
 
     @media (max-width: 733px) {
       .site-footer-inner {
-        width: min(980px, calc(100% - 32px));
+        width: min(1068px, calc(100% - 32px));
         padding-top: 24px;
       }
 
@@ -665,25 +409,14 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-
-      .home-hero-cta,
-.fundamentals-card,
-.home-moment {
+      .home-hero-cta {
         transition: none;
-      }
-
-      .home-moment {
-        transform: none;
       }
 
       .home-hero-copy {
         opacity: 1;
         transform: none;
         animation: none;
-      }
-
-      .home-moment {
-        opacity: 1;
       }
     }
 
@@ -695,7 +428,8 @@
       to { transform: translateY(0); }
     }
   </style>
-  <link rel="stylesheet" href="css/shroffin-shell.css?v=responsive-12">
+  <link rel="stylesheet" href="css/shroffin-shell.css?v=editorial-24">
+  <link rel="stylesheet" href="css/shroffin-home.css?v=stance-20">
 </head>
 <body>
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
@@ -760,11 +494,17 @@
             Support
           </button>
         </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/about.html?v=apple1">About</a>
+        <li class="globalnav-item globalnav-item-flyout" id="nav-utilities">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-utilities-trigger"
+            aria-expanded="false"
+            aria-controls="nav-utilities-flyout"
+          >Utilities</button>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/project-approvals.html">Project Bank Finder</a>
+          <a class="globalnav-link" href="pages/about.html?v=apple1">About</a>
         </li>
       </ul>
     </div>
@@ -810,7 +550,7 @@
     </div>
     <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content">
-        <h2 class="globalnav-submenu-header">Get Help</h2>
+        <h2 class="globalnav-submenu-header">Get support</h2>
         <ul class="globalnav-submenu-list">
           <li>
             <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
@@ -838,6 +578,26 @@
         </ul>
       </div>
     </div>
+    <div class="globalnav-flyout" id="nav-utilities-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore utilities</h2>
+          <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="pages/calculators.html">
+              <span class="globalnav-submenu-label">Calculators</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="pages/project-approvals.html">
+              <span class="globalnav-submenu-label">Project Bank Finder</span>
+            </a>
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </nav>
 
   <main class="home-content">
@@ -880,85 +640,82 @@
       </div>
     </section>
 
-    <section class="fundamentals" aria-labelledby="fundamentals-title">
-      <div class="fundamentals-inner">
-        <h2 class="fundamentals-title home-moment" id="fundamentals-title">What we stand on.</h2>
-      </div>
-      <div class="fundamentals-gallery home-moment">
-        <div
-          class="fundamentals-scroll"
-          id="fundamentals-scroll"
-          role="region"
-          aria-label="Home loan principles"
-          tabindex="0"
-        >
-          <ul class="fundamentals-grid" id="fundamentals-grid">
-            <li class="fundamentals-card">
-              <span class="fundamentals-icon" aria-hidden="true">
-                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 4.5c-2.4 3.6-6.8 6-11.5 6v9.2c0 7.6 5.1 14.6 11.5 16.3 6.4-1.7 11.5-8.7 11.5-16.3V10.5C26.8 10.5 22.4 8.1 20 4.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                  <path d="M14.5 20.2l3.6 3.6 7.4-7.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              <h3 class="fundamentals-card-title">Independent. On your side.</h3>
-              <p class="fundamentals-card-body">We do not take commissions from banks, so our advice and what we show cannot be bought.</p>
-            </li>
-            <li class="fundamentals-card">
-              <span class="fundamentals-icon" aria-hidden="true">
-                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M11 8.5h18a2 2 0 0 1 2 2v19a2 2 0 0 1-2 2H11a2 2 0 0 1-2-2v-19a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="1.8"/>
-                  <path d="M14 15.5h12M14 20.5h12M14 25.5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <h3 class="fundamentals-card-title">Transparent. Nothing hidden.</h3>
-              <p class="fundamentals-card-body">None of the information is left out, so you can choose what fits you.</p>
-            </li>
-            <li class="fundamentals-card">
-              <span class="fundamentals-icon" aria-hidden="true">
-                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 10.5v10.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                  <circle cx="20" cy="26.5" r="1.4" fill="currentColor"/>
-                  <circle cx="20" cy="20" r="12.5" stroke="currentColor" stroke-width="1.8"/>
-                </svg>
-              </span>
-              <h3 class="fundamentals-card-title">Quiet. At your pace.</h3>
-              <p class="fundamentals-card-body">No spam. No gimmicks. No sales calls that chase you. Explore at your pace, the way you like.</p>
-            </li>
-            <li class="fundamentals-card">
-              <span class="fundamentals-icon" aria-hidden="true">
-                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="20" cy="14" r="5.2" stroke="currentColor" stroke-width="1.8"/>
-                  <path d="M9.5 31.5c1.8-5.2 5.6-8 10.5-8s8.7 2.8 10.5 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <h3 class="fundamentals-card-title">You decide. Always.</h3>
-              <p class="fundamentals-card-body">We show every home loan bank and guide you when you ask. The final pick is yours.</p>
-            </li>
-          </ul>
+    <section class="stance" aria-labelledby="stance-title">
+      <header class="stance-intro">
+        <div class="stance-intro-inner stance-settle">
+          <h2 class="stance-title" id="stance-title">What we stand on.</h2>
         </div>
-        <div class="fundamentals-paddles" aria-label="Card controls">
-          <button
-            type="button"
-            class="fundamentals-paddle"
-            id="fundamentals-prev"
-            aria-label="Previous card"
-            disabled
-          >
-            <svg viewBox="0 0 10 18" fill="none" aria-hidden="true">
-              <path d="M9 1L1 9l8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <button
-            type="button"
-            class="fundamentals-paddle"
-            id="fundamentals-next"
-            aria-label="Next card"
-          >
-            <svg viewBox="0 0 10 18" fill="none" aria-hidden="true">
-              <path d="M1 1l8 8-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
+      </header>
+
+      <div class="stance-rail">
+        <article class="stance-chapter" aria-labelledby="stance-independent-title">
+          <div class="stance-stage">
+            <div class="stance-copy stance-settle">
+              <h3 class="stance-copy-title" id="stance-independent-title">Independent. On your side.</h3>
+              <p class="stance-copy-body">No commission from any bank. What you see is not for sale.</p>
+            </div>
+            <div class="stance-proof stance-settle stance-settle-delay-1" aria-hidden="true">
+              <div class="stance-banks">
+                <ul>
+                  <li>Bank A</li>
+                  <li>Bank B</li>
+                  <li>Bank C</li>
+                </ul>
+                <p class="stance-banks-foot">No commission</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="stance-chapter" aria-labelledby="stance-transparent-title">
+          <div class="stance-stage">
+            <div class="stance-copy stance-settle">
+              <h3 class="stance-copy-title" id="stance-transparent-title">Transparent. Nothing hidden.</h3>
+              <p class="stance-copy-body">Everything that matters is on the page. You choose what fits.</p>
+            </div>
+            <div class="stance-proof stance-settle stance-settle-delay-1" aria-hidden="true">
+              <ul class="stance-sheet">
+                <li>Rate</li>
+                <li>Charges</li>
+                <li>Prepayment</li>
+                <li>Insurance</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="stance-chapter" aria-labelledby="stance-quiet-title">
+          <div class="stance-stage">
+            <div class="stance-copy stance-settle">
+              <h3 class="stance-copy-title" id="stance-quiet-title">Quiet. At your pace.</h3>
+              <p class="stance-copy-body">No spam. No chase. Explore in your own time.</p>
+            </div>
+            <div class="stance-proof stance-settle stance-settle-delay-1" aria-hidden="true">
+              <div class="stance-inbox">
+                <div class="stance-inbox-row">
+                  <span>Follow-ups</span>
+                  <span class="stance-inbox-badge">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="stance-chapter" aria-labelledby="stance-decide-title">
+          <div class="stance-stage">
+            <div class="stance-copy stance-settle">
+              <h3 class="stance-copy-title" id="stance-decide-title">You decide. Always.</h3>
+              <p class="stance-copy-body">Every home loan bank is shown. The choice is yours.</p>
+            </div>
+            <div class="stance-proof stance-settle stance-settle-delay-1" aria-hidden="true">
+              <ul class="stance-choices">
+                <li>Bank A</li>
+                <li class="is-yours">Bank B</li>
+                <li>Bank C</li>
+              </ul>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
   </main>
@@ -983,6 +740,7 @@
           <h2 class="site-footer-heading" id="footer-quick-title">Quick links</h2>
           <ul class="site-footer-list">
             <li><a href="/pages/learn-more.html">Explore banks</a></li>
+            <li><a href="/pages/calculators.html">Calculators</a></li>
             <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
           </ul>
         </nav>
@@ -1044,194 +802,8 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script>
-    (function () {
-      var moments = document.querySelectorAll('.home-moment');
-      if (!moments.length) return;
-
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-      if (reduce.matches) {
-        moments.forEach(function (node) {
-          node.classList.add('is-in');
-        });
-        return;
-      }
-
-      if (!('IntersectionObserver' in window)) {
-        moments.forEach(function (node) {
-          node.classList.add('is-in');
-        });
-        return;
-      }
-
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add('is-in');
-            observer.unobserve(entry.target);
-          });
-        },
-        { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
-      );
-
-      moments.forEach(function (node) {
-        observer.observe(node);
-      });
-    })();
-
-
-    (function () {
-      var scroll = document.getElementById('fundamentals-scroll');
-      var prev = document.getElementById('fundamentals-prev');
-      var next = document.getElementById('fundamentals-next');
-      if (!scroll || !prev || !next) return;
-
-      var mobileQuery = window.matchMedia('(max-width: 733px)');
-      var animating = false;
-      var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-      /* ScrollGallery duration — calm Move band (~0.9s), soft easeOutQuint */
-      var DURATION = 900;
-
-      function cards() {
-        return Array.prototype.slice.call(scroll.querySelectorAll('.fundamentals-card'));
-      }
-
-      function paddingStart() {
-        var cs = getComputedStyle(scroll);
-        return parseFloat(cs.scrollPaddingInlineStart) || parseFloat(cs.scrollPaddingLeft) || 0;
-      }
-
-      function paddingEnd() {
-        var cs = getComputedStyle(scroll);
-        return parseFloat(cs.scrollPaddingInlineEnd) || parseFloat(cs.scrollPaddingRight) || 0;
-      }
-
-      function maxScrollLeft() {
-        return Math.max(0, scroll.scrollWidth - scroll.clientWidth);
-      }
-
-      /* scrollLeft that matches CSS scroll-snap for each card (incl. padding + last-card end align) */
-      function targetForIndex(idx) {
-        var list = cards();
-        var card = list[idx];
-        if (!card) return 0;
-
-        var scrollRect = scroll.getBoundingClientRect();
-        var cardRect = card.getBoundingClientRect();
-        var cardLeft = cardRect.left - scrollRect.left + scroll.scrollLeft;
-        var max = maxScrollLeft();
-        var target;
-
-        if (idx === list.length - 1) {
-          target = cardLeft + card.offsetWidth - scroll.clientWidth + paddingEnd();
-        } else {
-          target = cardLeft - paddingStart();
-        }
-
-        return Math.max(0, Math.min(max, target));
-      }
-
-      function currentIndex() {
-        var list = cards();
-        var left = scroll.scrollLeft;
-        var best = 0;
-        var bestDist = Infinity;
-        for (var i = 0; i < list.length; i++) {
-          var d = Math.abs(targetForIndex(i) - left);
-          if (d < bestDist) {
-            bestDist = d;
-            best = i;
-          }
-        }
-        return best;
-      }
-
-      function updatePaddles() {
-        if (!mobileQuery.matches) {
-          prev.disabled = true;
-          next.disabled = true;
-          return;
-        }
-        var idx = currentIndex();
-        var max = cards().length - 1;
-        prev.disabled = idx <= 0 || animating;
-        next.disabled = idx >= max || animating;
-      }
-
-      function easeOutQuint(t) {
-        return 1 - Math.pow(1 - t, 5);
-      }
-
-      function finishAnimation(targetLeft) {
-        scroll.scrollLeft = targetLeft;
-        /* Re-enable snap only after layout has settled on the snap target,
-           or mandatory snap yanks the strip and it looks stuck then “comes back”. */
-        requestAnimationFrame(function () {
-          scroll.scrollLeft = targetLeft;
-          scroll.classList.remove('is-animating');
-          animating = false;
-          updatePaddles();
-        });
-      }
-
-      function animateTo(targetLeft) {
-        if (animating) return;
-        var startLeft = scroll.scrollLeft;
-        var delta = targetLeft - startLeft;
-        if (Math.abs(delta) < 1) {
-          updatePaddles();
-          return;
-        }
-
-        if (prefersReduced.matches) {
-          scroll.classList.add('is-animating');
-          scroll.scrollTo({ left: targetLeft, behavior: 'instant' });
-          finishAnimation(targetLeft);
-          return;
-        }
-
-        animating = true;
-        scroll.classList.add('is-animating');
-        updatePaddles();
-        var start = performance.now();
-
-        function frame(now) {
-          var t = Math.min(1, (now - start) / DURATION);
-          scroll.scrollLeft = startLeft + delta * easeOutQuint(t);
-          if (t < 1) {
-            requestAnimationFrame(frame);
-            return;
-          }
-          finishAnimation(targetLeft);
-        }
-
-        requestAnimationFrame(frame);
-      }
-
-      function go(dir) {
-        if (!mobileQuery.matches || animating) return;
-        var idx = currentIndex() + dir;
-        var max = cards().length - 1;
-        if (idx < 0 || idx > max) return;
-        animateTo(targetForIndex(idx));
-      }
-
-      prev.addEventListener('click', function () { go(-1); });
-      next.addEventListener('click', function () { go(1); });
-      scroll.addEventListener('scroll', function () {
-        if (!animating) updatePaddles();
-      }, { passive: true });
-      window.addEventListener('resize', updatePaddles);
-      if (mobileQuery.addEventListener) {
-        mobileQuery.addEventListener('change', updatePaddles);
-      } else if (mobileQuery.addListener) {
-        mobileQuery.addListener(updatePaddles);
-      }
-      updatePaddles();
-    })();
-  </script>
-  <script src="js/shroffin-nav.js?v=responsive-6"></script>
-  <script src="js/shroffin-guide.js?v=responsive-5"></script>
+  <script src="js/shroffin-home-stance.js?v=stance-14"></script>
+  <script src="js/shroffin-nav.js?v=editorial-14"></script>
+  <script src="js/shroffin-guide.js?v=editorial-15"></script>
 </body>
 </html>

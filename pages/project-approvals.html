@@ -11,11 +11,11 @@
   <link rel="icon" type="image/png" sizes="16x16" href="../images/logos/favicon-16.png?v=6">
   <link rel="apple-touch-icon" href="../apple-touch-icon.png?v=6">
   <link rel="manifest" href="../site.webmanifest?v=6">
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=responsive-12">
-  <link rel="stylesheet" href="../css/shroffin-guide.css?v=responsive-7">
-  <link rel="stylesheet" href="../css/project-approvals.css?v=7">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=editorial-24">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=editorial-24">
+  <link rel="stylesheet" href="../css/project-approvals.css?v=editorial-21">
 </head>
-<body>
+<body class="apf-page">
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
   <nav class="globalnav" id="globalnav" aria-label="Global">
     <div class="globalnav-content">
@@ -49,11 +49,17 @@
             aria-controls="nav-support-flyout"
           >Support</button>
         </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="about.html">About</a>
+        <li class="globalnav-item globalnav-item-flyout" id="nav-utilities">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-utilities-trigger"
+            aria-expanded="false"
+            aria-controls="nav-utilities-flyout"
+          >Utilities</button>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="project-approvals.html" aria-current="page">Project Bank Finder</a>
+          <a class="globalnav-link" href="about.html">About</a>
         </li>
       </ul>
     </div>
@@ -100,7 +106,7 @@
 
     <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content">
-        <h2 class="globalnav-submenu-header">Get help</h2>
+        <h2 class="globalnav-submenu-header">Get support</h2>
         <ul class="globalnav-submenu-list">
           <li>
             <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
@@ -128,6 +134,26 @@
         </ul>
       </div>
     </div>
+    <div class="globalnav-flyout" id="nav-utilities-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore utilities</h2>
+          <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="calculators.html">
+              <span class="globalnav-submenu-label">Calculators</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="project-approvals.html" aria-current="page">
+              <span class="globalnav-submenu-label">Project Bank Finder</span>
+            </a>
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </nav>
 
   <main class="apf-main">
@@ -139,8 +165,7 @@
 
       <section class="apf-search-panel" aria-labelledby="apf-search-heading">
         <h2 class="apf-section-title apf-search-title" id="apf-search-heading">
-          Find banks for projects in
-          <span class="apf-search-place">Pune district.</span>
+          Find banks for projects in <span class="apf-search-place">Pune district</span>.
         </h2>
         <p class="apf-search-help">Enter any detail. More details narrow the results.</p>
         <form class="apf-form" id="apf-search-form">
@@ -250,6 +275,7 @@
           <h2 class="site-footer-heading" id="footer-quick-title">Quick links</h2>
           <ul class="site-footer-list">
             <li><a href="/pages/learn-more.html">Explore banks</a></li>
+            <li><a href="/pages/calculators.html">Calculators</a></li>
             <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
           </ul>
         </nav>
@@ -311,8 +337,8 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/shroffin-nav.js?v=responsive-6"></script>
-  <script src="../js/shroffin-guide.js?v=responsive-5"></script>
+  <script src="../js/shroffin-nav.js?v=editorial-14"></script>
+  <script src="../js/shroffin-guide.js?v=editorial-15"></script>
   <script src="../js/apf-project-search.bundle.js?v=4"></script>
 </body>
 </html>

@@ -17,1671 +17,9 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <style>
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Thin.ttf') format('truetype');
-      font-weight: 100;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraLight.ttf') format('truetype');
-      font-weight: 200;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Light.ttf') format('truetype');
-      font-weight: 300;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf') format('truetype');
-      font-weight: 400;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf') format('truetype');
-      font-weight: 500;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf') format('truetype');
-      font-weight: 600;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Bold.ttf') format('truetype');
-      font-weight: 700;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraBold.ttf') format('truetype');
-      font-weight: 800;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Black.ttf') format('truetype');
-      font-weight: 900;
-      font-style: normal;
-      font-display: block;
-    }
-
-    :root {
-      --gn-height: 48px;
-      --ln-height: 52px;
-      --gn-bg: #fbfbfd;
-      --gn-text: rgba(29, 29, 31, 0.8);
-      --gn-text-hover: #1d1d1f;
-      --gn-ink: #1d1d1f;
-      --gn-max: 980px;
-      --font-brand: 'Google Sans Flex', sans-serif;
-      --guide-max: 980px;
-      --guide-band: #f5f5f7;
-      --guide-tile: #fff;
-      /* Apple Card–style tile radii (mobile-first ladder) */
-      --guide-radius: 10px;
-      --guide-type-micro: 12px;   /* legal / micro labels */
-    }
-
-    @media (min-width: 735px) {
-      :root {
-        --guide-radius: 30px;
-      }
-    }
-
-    @media (min-width: 1069px) {
-      :root {
-        --guide-radius: 40px;
-      }
-    }
-
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-      font-family: var(--font-brand);
-    }
-
-    html {
-      scrollbar-gutter: stable;
-    }
-
-    body {
-      background: var(--guide-band);
-      color: #1d1d1f;
-    }
-
-
-
-
-    /* ——— Localnav (Guide sub-bar) ——— */
-    .localnav {
-      position: sticky;
-      top: var(--gn-height);
-      z-index: 9000;
-      height: var(--ln-height);
-      background: rgba(255, 255, 255, 0.72);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.16);
-    }
-
-    .localnav-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      max-width: var(--gn-max);
-      height: 100%;
-      margin: 0 auto;
-      padding: 0 22px;
-      box-sizing: border-box;
-      min-width: 0;
-    }
-
-    .localnav-title {
-      flex: 0 0 auto;
-      margin: 0;
-      color: #1d1d1f;
-      font-size: 21px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-      white-space: nowrap;
-    }
-
-    .localnav-menu {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 20px;
-      min-width: 0;
-      flex: 1 1 auto;
-      align-self: stretch;
-    }
-
-    .localnav-list {
-      list-style: none;
-      margin: 0 0 0 auto;
-      padding: 0;
-      display: flex;
-      align-items: stretch;
-      align-self: stretch;
-      height: 100%;
-      gap: 14px;
-      min-width: 0;
-      max-width: 100%;
-      width: max-content;
-      overflow-x: auto;
-      overscroll-behavior-x: contain;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      -webkit-overflow-scrolling: touch;
-      justify-content: flex-start;
-    }
-
-
-    .localnav-list::-webkit-scrollbar {
-      display: none;
-    }
-
-    .localnav-list li {
-      display: flex;
-      align-items: stretch;
-      flex: 0 0 auto;
-    }
-
-    .localnav-link {
-      display: inline-flex;
-      align-items: center;
-      position: relative;
-      height: 100%;
-      min-height: 44px;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      color: #1d1d1f;
-      font-family: var(--font-brand);
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 1;
-      text-decoration: none;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-
-    .localnav-link:hover {
-      color: #0066cc;
-    }
-
-    .localnav-link:focus-visible {
-      outline: 2px solid rgba(29, 29, 31, 0.45);
-      outline-offset: 4px;
-      border-radius: 4px;
-    }
-
-    .localnav-link[aria-current="page"] {
-      color: #1d1d1f;
-      cursor: default;
-    }
-
-    .localnav-link[aria-current="page"]::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 1px;
-      background: #1d1d1f;
-    }
-
-    .localnav-link-nolink {
-      cursor: default;
-      color: rgba(29, 29, 31, 0.56);
-    }
-
-    .localnav-link-nolink:hover {
-      color: rgba(29, 29, 31, 0.56);
-    }
-
-    .localnav-cta {
-      flex: 0 0 auto;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 22px;
-      padding: 3px 10px;
-      border: 1px solid transparent;
-      border-radius: 980px;
-      background: #0071e3;
-      color: #fff;
-      font-family: var(--font-brand);
-      font-size: 11px;
-      font-weight: 400;
-      line-height: 1.2;
-      text-decoration: none;
-      white-space: nowrap;
-      box-sizing: border-box;
-      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .localnav-cta:hover {
-      background: #0076df;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .localnav-cta:active {
-      background: #006edb;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .localnav-cta:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 2px;
-    }
-
-    /* ——— Guide page (spaced story moments) ——— */
-    .guide-content {
-      padding-top: var(--gn-height);
-      box-sizing: border-box;
-      min-height: 60vh;
-    }
-
-    .guide-hero {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: clamp(72px, 14vw, 120px) 22px clamp(48px, 9vw, 72px);
-      text-align: center;
-      box-sizing: border-box;
-    }
-
-    .guide-hero-title {
-      margin: 0 0 12px;
-      color: #1d1d1f;
-      font-size: clamp(44px, 8vw, 64px);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      line-height: 1.02;
-    }
-
-    .guide-hero-lead {
-      margin: 0 auto;
-      max-width: 18em;
-      color: #6e6e73;
-      font-size: clamp(19px, 3vw, 24px);
-      font-weight: 400;
-      letter-spacing: -0.012em;
-      line-height: 1.33337;
-    }
-
-    .guide-story {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 0 22px clamp(88px, 14vw, 140px);
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      gap: clamp(64px, 12vw, 120px);
-    }
-
-    @media (min-width: 834px) {
-      .guide-story {
-        max-width: 1080px;
-      }
-
-      .guide-fine-wrap,
-      .guide-jump-wrap {
-        max-width: 1080px;
-      }
-
-      .guide-tile--stage .guide-doc-table,
-      .guide-tile--stage .guide-doc-rows {
-        max-width: none;
-      }
-
-      .guide-tile--stage .guide-tile-copy {
-        max-width: 36em;
-      }
-    }
-
-    .guide-moment {
-      display: grid;
-      gap: 20px;
-      opacity: 0;
-      transform: translateY(14px);
-      transition:
-        opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 1.45s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .guide-moment.is-in {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (min-width: 834px) {
-      .guide-moment--pair {
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
-        align-items: stretch;
-      }
-    }
-
-    .guide-tile {
-      position: relative;
-      overflow: hidden;
-      background: var(--guide-tile);
-      border-radius: var(--guide-radius);
-      padding: clamp(48px, 7vw, 72px) clamp(28px, 5vw, 52px);
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      text-align: left;
-      min-height: 0;
-    }
-
-    .guide-tile-mark {
-      position: absolute;
-      top: clamp(28px, 4.5vw, 44px);
-      bottom: auto;
-      right: clamp(28px, 4.5vw, 44px);
-      width: clamp(56px, 9vw, 88px);
-      height: clamp(56px, 9vw, 88px);
-      color: rgba(0, 0, 0, 0.07);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
-    }
-
-    .guide-tile-mark svg {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .guide-tile--hero {
-      min-height: min(52vh, 420px);
-      justify-content: center;
-      text-align: left;
-      align-items: flex-start;
-      padding-top: clamp(56px, 10vw, 88px);
-      padding-bottom: clamp(56px, 10vw, 88px);
-    }
-
-    .guide-tile--hero .guide-tile-copy {
-      max-width: 26em;
-      margin-left: 0;
-      margin-right: 0;
-    }
-
-    .guide-tile--stage {
-      text-align: left;
-      align-items: flex-start;
-      padding-top: clamp(48px, 8vw, 72px);
-      padding-bottom: clamp(48px, 8vw, 72px);
-      padding-right: clamp(28px, 5vw, 52px);
-    }
-
-    .guide-tile--stage .guide-tile-copy,
-    .guide-tile--stage .guide-tile-list,
-    .guide-tile--stage .guide-bands,
-    .guide-tile--stage .guide-flow,
-    .guide-tile--stage .guide-limits,
-    .guide-tile--stage .guide-share-list {
-      max-width: 40em;
-      width: 100%;
-      margin-left: 0;
-      margin-right: 0;
-    }
-
-    .guide-tile--stage .guide-doc-rows,
-    .guide-tile--stage .guide-doc-table,
-    .guide-tile--stage .guide-doc-legend,
-    .guide-tile--stage .guide-callout,
-    .guide-tile--stage .guide-doc-sub,
-    .guide-tile--stage .guide-disclosure,
-    .guide-tile--stage .guide-climb,
-    .guide-tile--stage .guide-seg,
-    .guide-tile--stage .guide-seg-panels,
-    .guide-tile--stage .guide-seg-panel {
-      align-self: stretch;
-      width: 100%;
-      max-width: none;
-      box-sizing: border-box;
-      position: relative;
-      z-index: 1;
-    }
-
-    .guide-tile--stage .guide-doc-table,
-    .guide-tile--stage .guide-doc-rows,
-    .guide-tile--stage .guide-doc-legend,
-    .guide-tile--stage .guide-callout,
-    .guide-tile--stage .guide-doc-sub,
-    .guide-tile--stage .guide-disclosure,
-    .guide-tile--stage .guide-seg-panel {
-      text-align: left;
-    }
-
-    .guide-tile--stage .guide-seg {
-      align-self: flex-start;
-      width: auto;
-      max-width: 100%;
-    }
-
-    .guide-tile--stage .guide-tile-list,
-    .guide-tile--stage .guide-flow,
-    .guide-tile--stage .guide-limits,
-    .guide-tile--stage .guide-share-list {
-      text-align: left;
-    }
-
-    .guide-tile--stage .guide-tile-title,
-    .guide-tile--stage .guide-tile-copy,
-    .guide-tile--stage .guide-share-list,
-    .guide-tile--stage .guide-limits,
-    .guide-tile--stage .guide-glance {
-      position: relative;
-      z-index: 1;
-    }
-
-    .guide-flip {
-      perspective: 1600px;
-      width: 100%;
-    }
-
-    .guide-flip-inner {
-      position: relative;
-      width: 100%;
-      transform-style: preserve-3d;
-      transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .guide-flip.is-flipped .guide-flip-inner {
-      transform: rotateY(180deg);
-    }
-
-    .guide-flip-face {
-      width: 100%;
-      height: 100%;
-      box-sizing: border-box;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .guide-flip-face--front {
-      position: relative;
-    }
-
-    .guide-flip-face--back {
-      position: absolute;
-      inset: 0;
-      transform: rotateY(180deg);
-      overflow: hidden;
-      text-align: left;
-      align-items: flex-start;
-    }
-
-    .guide-flip.is-flipped .guide-flip-face--front {
-      pointer-events: none;
-    }
-
-    .guide-flip:not(.is-flipped) .guide-flip-face--back {
-      pointer-events: none;
-    }
-
-    .guide-flip-face .guide-flip-link {
-      flex-shrink: 0;
-      position: relative;
-      z-index: 1;
-    }
-
-    .guide-flip-face.guide-tile--stage {
-      padding-bottom: clamp(48px, 7vw, 72px);
-    }
-
-    .guide-limits {
-      display: grid;
-      gap: 36px;
-      margin-top: 36px;
-      width: 100%;
-    }
-
-    @media (min-width: 700px) {
-      .guide-limits {
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-        align-items: start;
-      }
-    }
-
-    .guide-limit-kicker {
-      margin: 0 0 8px;
-      color: #6e6e73;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      line-height: 1.3;
-    }
-
-    .guide-limit-title {
-      margin: 0 0 8px;
-      color: #1d1d1f;
-      font-size: clamp(22px, 3vw, 26px);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-    }
-
-    .guide-limit-copy {
-      margin: 0;
-      color: #1d1d1f;
-      font-size: 16px;
-      letter-spacing: -0.01em;
-      line-height: 1.4;
-    }
-
-    .guide-limit .guide-bands,
-    .guide-limit .guide-flow {
-      margin-top: 20px;
-    }
-
-    .guide-limit .guide-band {
-      padding: 14px 6px;
-    }
-
-    .guide-limit .guide-band-num {
-      font-size: clamp(22px, 3.2vw, 28px);
-    }
-
-    .guide-limit .guide-flow {
-      margin-top: 20px;
-    }
-
-    .guide-limit .guide-flow li {
-      padding: 14px 0 14px 36px;
-      font-size: 16px;
-    }
-
-    .guide-limit .guide-flow li::before {
-      top: 14px;
-      width: 24px;
-      height: 24px;
-      font-size: 12px;
-      line-height: 24px;
-    }
-
-    .guide-limit .guide-glance {
-      margin-top: 14px;
-      font-size: 14px;
-    }
-
-    .guide-flip-link {
-      appearance: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin: 0 auto;
-      align-self: center;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      color: #0066cc;
-      font-family: var(--font-brand);
-      font-size: 17px;
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.3;
-      min-height: 44px;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .guide-flip-face--front .guide-flip-link {
-      margin: auto auto 0;
-      padding-top: 64px;
-    }
-
-    .guide-flip-face--back .guide-flip-link {
-      margin-top: auto;
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 0;
-      padding-top: 48px;
-      align-self: center;
-    }
-
-    #talk-flip .guide-flip-face--back .guide-climb {
-      flex: 1 1 auto;
-      min-height: 0;
-      margin-top: 20px;
-    }
-
-    #talk-flip .guide-flip-face--back .guide-tile-copy {
-      max-width: none;
-    }
-
-    .guide-flip-link-arrow {
-      display: block;
-      width: 0.55em;
-      height: 0.55em;
-      max-width: 12px;
-      max-height: 12px;
-      flex-shrink: 0;
-      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .guide-flip-link:hover {
-      text-decoration: underline;
-    }
-
-    .guide-flip-link:hover .guide-flip-link-arrow {
-      transform: translateX(3px);
-    }
-
-    .guide-flip-link:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
-
-    .guide-flip-link--back .guide-flip-link-arrow {
-      transform: scaleX(-1);
-    }
-
-    .guide-flip-link--back:hover .guide-flip-link-arrow {
-      transform: scaleX(-1) translateX(3px);
-    }
-
-    .guide-calc-top {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px 20px;
-      width: 100%;
-    }
-
-    .guide-calc-lead {
-      margin-top: 8px;
-      max-width: 28em;
-    }
-
-    .guide-calc {
-      display: grid;
-      gap: 16px;
-      width: 100%;
-      max-width: 28em;
-      margin-top: 28px;
-    }
-
-    .guide-calc-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .guide-calc-field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      text-align: left;
-    }
-
-    .guide-calc-label {
-      color: #6e6e73;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-    }
-
-    .guide-calc-input {
-      box-sizing: border-box;
-      width: 100%;
-      min-height: 48px;
-      padding: 12px 14px;
-      border: 1px solid #d2d2d7;
-      border-radius: 12px;
-      background: #fff;
-      color: #1d1d1f;
-      font-family: var(--font-brand);
-      font-size: 17px;
-      letter-spacing: -0.01em;
-    }
-
-    .guide-calc-input:focus {
-      outline: none;
-      border-color: #0071e3;
-      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2);
-    }
-
-    .guide-calc-submit {
-      appearance: none;
-      margin-top: 8px;
-      min-height: 48px;
-      padding: 12px 20px;
-      border: 0;
-      border-radius: 980px;
-      background: #0071e3;
-      color: #fff;
-      font-family: var(--font-brand);
-      font-size: 17px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      cursor: pointer;
-    }
-
-    .guide-calc-submit:hover {
-      background: #0076df;
-    }
-
-    .guide-calc-submit:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 3px;
-    }
-
-    .guide-calc-result {
-      margin-top: 28px;
-      max-width: 28em;
-      text-align: left;
-    }
-
-    .guide-calc-result-kicker {
-      margin: 0;
-      color: #6e6e73;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .guide-calc-result-num {
-      margin: 6px 0 0;
-      color: #1d1d1f;
-      font-size: clamp(32px, 5vw, 40px);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-
-    .guide-calc-split {
-      list-style: none;
-      margin: 16px 0 0;
-      padding: 0;
-      color: #1d1d1f;
-      font-size: 15px;
-      line-height: 1.45;
-    }
-
-    .guide-calc-split li {
-      margin: 0 0 6px;
-    }
-
-    .guide-calc-split strong {
-      font-weight: 600;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-
-      .guide-flip-inner {
-        transition: none;
-      }
-
-      .guide-flip.is-flipped .guide-flip-inner {
-        transform: none;
-      }
-
-      .guide-flip-face--back {
-        transform: none;
-      }
-
-      .guide-flip:not(.is-flipped) .guide-flip-face--back {
-        display: none;
-      }
-
-      .guide-flip.is-flipped .guide-flip-face--front {
-        display: none;
-      }
-
-      .guide-flip.is-flipped .guide-flip-face--back {
-        position: relative;
-        inset: auto;
-      }
-    }
-
-    .guide-tile-kicker {
-      margin: 0 0 12px;
-      color: #6e6e73;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.3;
-    }
-
-    .guide-tile-title {
-      margin: 0;
-      color: #1d1d1f;
-      font-size: clamp(28px, 4.8vw, 44px);
-      font-weight: 600;
-      letter-spacing: -0.025em;
-      line-height: 1.06;
-    }
-
-    .guide-tile-copy {
-      margin: 16px 0 0;
-      color: #1d1d1f;
-      font-size: clamp(17px, 2.2vw, 21px);
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.381;
-    }
-
-    .guide-tile-copy--muted {
-      color: #6e6e73;
-    }
-
-    .guide-tile-list {
-      list-style: none;
-      margin: 36px 0 0;
-      padding: 0;
-    }
-
-    .guide-tile-list li {
-      margin: 0;
-      padding: 22px 0;
-      color: #1d1d1f;
-      font-size: clamp(18px, 2.4vw, 21px);
-      letter-spacing: -0.01em;
-      line-height: 1.35;
-    }
-
-    .guide-tile-list li:first-child {
-      padding-top: 0;
-    }
-
-    .guide-bands {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 36px;
-      width: 100%;
-    }
-
-    .guide-band {
-      text-align: center;
-      padding: 22px 10px;
-      border-radius: 18px;
-      background: #f5f5f7;
-    }
-
-    .guide-band-num {
-      margin: 0;
-      color: #1d1d1f;
-      font-size: clamp(28px, 4vw, 36px);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-
-    .guide-band-cap {
-      margin: 6px 0 0;
-      color: #6e6e73;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      line-height: 1.25;
-    }
-
-    .guide-glance {
-      margin: 28px 0 0;
-      color: #6e6e73;
-      font-size: 15px;
-      letter-spacing: -0.01em;
-      line-height: 1.5;
-    }
-
-    .guide-glance--center {
-      max-width: 28em;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .guide-share-list {
-      list-style: none;
-      margin: 20px 0 0;
-      padding: 0;
-      width: 100%;
-    }
-
-    .guide-share-list li {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin: 0;
-      padding: 16px 0;
-    }
-
-    .guide-share-list li:first-child {
-      padding-top: 0;
-    }
-
-    .guide-share-when {
-      color: #6e6e73;
-      font-size: 15px;
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.35;
-    }
-
-    .guide-share-then {
-      color: #1d1d1f;
-      font-size: clamp(17px, 2.2vw, 19px);
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.35;
-    }
-
-    .guide-flow {
-      list-style: none;
-      margin: 36px 0 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      width: 100%;
-    }
-
-    .guide-flow--center {
-      max-width: 22em;
-    }
-
-    .guide-flow li {
-      position: relative;
-      margin: 0;
-      padding: 20px 0 20px 40px;
-      color: #1d1d1f;
-      font-size: clamp(17px, 2.2vw, 19px);
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      line-height: 1.35;
-    }
-
-    .guide-flow li:first-child {
-      padding-top: 0;
-    }
-
-    .guide-flow li::before {
-      content: attr(data-step);
-      position: absolute;
-      left: 0;
-      top: 20px;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: #1d1d1f;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 26px;
-      text-align: center;
-    }
-
-    .guide-ask {
-      list-style: none;
-      margin: 20px auto 0;
-      padding: 0;
-      max-width: 22em;
-      width: 100%;
-      text-align: left;
-    }
-
-    .guide-ask-label {
-      margin: 40px 0 0;
-      color: #6e6e73;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      line-height: 1.3;
-    }
-
-    .guide-ask li {
-      margin: 0;
-      padding: 18px 0;
-      color: #1d1d1f;
-      font-size: clamp(17px, 2.2vw, 19px);
-      letter-spacing: -0.01em;
-      line-height: 1.35;
-    }
-
-    .guide-ask li:first-child {
-      margin-top: 14px;
-      padding-top: 0;
-    }
-
-    .guide-cost-rows {
-      width: 100%;
-      max-width: 22em;
-      margin: 36px auto 0;
-      text-align: left;
-    }
-
-    .guide-cost-row {
-      padding: 24px 0;
-    }
-
-    .guide-cost-row:first-child {
-      padding-top: 0;
-    }
-
-    .guide-cost-name {
-      margin: 0 0 4px;
-      color: #1d1d1f;
-      font-size: 19px;
-      font-weight: 600;
-      letter-spacing: -0.015em;
-      line-height: 1.25;
-    }
-
-    .guide-cost-why {
-      margin: 0;
-      color: #6e6e73;
-      font-size: 15px;
-      line-height: 1.45;
-      letter-spacing: -0.01em;
-    }
-
-    .guide-fine-wrap {
-      max-width: var(--guide-max);
-      margin: 0 auto;
-      padding: 0 22px clamp(48px, 8vw, 72px);
-      box-sizing: border-box;
-    }
-
-    .guide-fine {
-      margin: 0;
-      color: #6e6e73;
-      font-size: var(--guide-type-micro);
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.5;
-      text-align: left;
-    }
-
-    .guide-jump-wrap {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 0 22px clamp(24px, 5vw, 40px);
-      box-sizing: border-box;
-    }
-
-    .guide-jump {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 17px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    /* Exact mirror of .home-hero-cta + .home-hero-cta-secondary on index.html */
-    .guide-jump a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 28px;
-      padding: 11px 22px;
-      border: 1px solid #0066cc;
-      border-radius: 980px;
-      background: transparent;
-      color: #0066cc;
-      font-family: inherit;
-      font-size: 17px;
-      font-weight: 400;
-      line-height: 1.23536;
-      text-decoration: none;
-      cursor: pointer;
-      box-sizing: border-box;
-      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .guide-jump a:hover {
-      background: #0076df;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .guide-jump a:active {
-      background: #006edb;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .guide-jump a:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 3px;
-    }
-
-    @media (max-width: 833px) {
-      .guide-jump {
-        gap: 14px;
-      }
-
-      .guide-jump a {
-        font-size: 16px;
-        padding: 10px 20px;
-      }
-    }
-
-    .guide-doc-rows {
-      width: 100%;
-      margin-top: 28px;
-      text-align: left;
-    }
-
-    @media (min-width: 700px) {
-      .guide-doc-rows--cols {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: clamp(28px, 4vw, 48px);
-        row-gap: 0;
-        align-items: start;
-      }
-
-      .guide-doc-rows--cols .guide-doc-row {
-        padding: 22px 0;
-      }
-
-      /* Top row of the 2-col grid — both cells, not only :first-child */
-      .guide-doc-rows--cols .guide-doc-row:nth-child(-n+2) {
-        padding-top: 0;
-      }
-    }
-
-    .guide-climb {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 36px;
-      width: 100%;
-      margin-top: 28px;
-      text-align: left;
-    }
-
-    @media (min-width: 700px) {
-      .guide-climb {
-        grid-template-columns: 1fr 1fr;
-        column-gap: clamp(28px, 4vw, 48px);
-        row-gap: 0;
-        align-items: start;
-      }
-    }
-
-    .guide-climb-col {
-      min-width: 0;
-    }
-
-    .guide-climb-label {
-      margin: 0 0 8px;
-      padding: 0 0 14px;
-      border-bottom: 1px solid #d2d2d7;
-      color: #1d1d1f;
-      font-size: clamp(21px, 2.6vw, 24px);
-      font-weight: 600;
-      letter-spacing: -0.022em;
-      line-height: 1.2;
-    }
-
-    .guide-climb-col .guide-doc-rows {
-      margin-top: 4px;
-    }
-
-    .guide-climb-col .guide-doc-row {
-      padding: 16px 0;
-    }
-
-    .guide-climb-col .guide-doc-row:first-child {
-      padding-top: 16px;
-    }
-
-    .guide-doc-row {
-      padding: 22px 0;
-    }
-
-    .guide-doc-row:first-child {
-      padding-top: 0;
-    }
-
-    .guide-doc-name {
-      margin: 0 0 4px;
-      color: #1d1d1f;
-      font-size: clamp(17px, 2.2vw, 19px);
-      font-weight: 600;
-      letter-spacing: -0.015em;
-      line-height: 1.3;
-    }
-
-    .guide-doc-req {
-      margin-left: 2px;
-      color: #6e6e73;
-      font-weight: 400;
-    }
-
-    .guide-doc-legend {
-      margin: 20px 0 0;
-      color: #6e6e73;
-      font-size: 13px;
-      letter-spacing: -0.01em;
-      line-height: 1.4;
-      text-align: left;
-    }
-
-    .guide-doc-note {
-      margin: 0;
-      color: #6e6e73;
-      font-size: 15px;
-      line-height: 1.45;
-      letter-spacing: -0.01em;
-    }
-
-    .guide-doc-note a {
-      color: #0066cc;
-      text-decoration: none;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .guide-doc-note a:hover {
-      color: #004499;
-      text-decoration: underline;
-      text-underline-offset: 0.15em;
-    }
-
-    .guide-doc-note a .guide-section-link-arrow {
-      margin-left: 0.15em;
-      font-size: 0.9em;
-    }
-
-    .guide-doc-table {
-      width: 100%;
-      margin-top: 28px;
-      border-collapse: collapse;
-      table-layout: fixed;
-      text-align: left;
-    }
-
-    .guide-doc-table th,
-    .guide-doc-table td {
-      padding: 22px 16px;
-      vertical-align: middle;
-    }
-
-    .guide-doc-table thead th {
-      padding-top: 0;
-      padding-bottom: 14px;
-      color: #6e6e73;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      line-height: 1.3;
-    }
-
-    .guide-doc-table th:first-child,
-    .guide-doc-table td:first-child {
-      padding-left: 0;
-      width: auto;
-    }
-
-    .guide-doc-table th:last-child,
-    .guide-doc-table td:last-child {
-      padding-right: 0;
-    }
-
-    .guide-doc-table .guide-doc-col-check {
-      width: 18%;
-      text-align: center;
-    }
-
-    .guide-doc-table .guide-doc-name {
-      margin: 0;
-    }
-
-    .guide-doc-table .guide-doc-note {
-      margin-top: 4px;
-    }
-
-    .guide-doc-tick {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      color: #1d1d1f;
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 1;
-    }
-
-    .visually-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    @media (max-width: 733px) {
-      .guide-doc-table {
-        table-layout: auto;
-      }
-
-      .guide-doc-table .guide-doc-col-check {
-        width: 4.5em;
-      }
-
-      .guide-doc-table th,
-      .guide-doc-table td {
-        padding: 16px 8px;
-      }
-    }
-
-    .guide-doc-sub {
-      margin: 36px 0 0;
-      color: #6e6e73;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      line-height: 1.3;
-    }
-
-    .guide-doc-sub:first-of-type {
-      margin-top: 8px;
-    }
-
-    .guide-seg {
-      display: inline-flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 4px;
-      margin-top: 28px;
-      padding: 4px;
-      border-radius: 980px;
-      background: #f5f5f7;
-      max-width: 100%;
-    }
-
-    .guide-seg-btn {
-      appearance: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 8px 16px;
-      border: 0;
-      border-radius: 980px;
-      background: transparent;
-      color: #1d1d1f;
-      font-family: var(--font-brand);
-      font-size: 14px;
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-      cursor: pointer;
-      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .guide-seg-btn[aria-selected="true"] {
-      background: #fff;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-      font-weight: 600;
-    }
-
-    .guide-seg-btn:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 2px;
-    }
-
-    .guide-seg-panel[hidden] {
-      display: none;
-    }
-
-    /* Keep tabbed card height stable — tallest panel wins */
-    .guide-seg-panels {
-      display: grid;
-      width: 100%;
-    }
-
-    .guide-seg-panels > .guide-seg-panel {
-      grid-area: 1 / 1;
-      width: 100%;
-    }
-
-    .guide-seg-panels > .guide-seg-panel[hidden] {
-      display: block;
-      visibility: hidden;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .guide-seg-panels > .guide-seg-panel:not([hidden]) {
-      visibility: visible;
-      z-index: 1;
-    }
-
-    .guide-seg-panel .guide-doc-rows,
-    .guide-seg-panel .guide-doc-table {
-      margin-top: 20px;
-    }
-
-    .guide-callout {
-      margin: 28px 0 0;
-      padding: 18px 20px;
-      border-radius: 18px;
-      background: #f5f5f7;
-      color: #6e6e73;
-      font-size: 15px;
-      letter-spacing: -0.01em;
-      line-height: 1.45;
-      text-align: left;
-    }
-
-    .guide-disclosure {
-      margin-top: 36px;
-      padding-top: 28px;
-      text-align: left;
-    }
-
-    .guide-disclosure summary {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      min-height: 44px;
-      color: #1d1d1f;
-      font-size: 19px;
-      font-weight: 600;
-      letter-spacing: -0.015em;
-      line-height: 1.25;
-      cursor: pointer;
-      list-style: none;
-    }
-
-    .guide-disclosure summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .guide-disclosure summary::after {
-      content: '+';
-      flex: 0 0 auto;
-      color: #6e6e73;
-      font-size: 22px;
-      font-weight: 400;
-      line-height: 1;
-    }
-
-    .guide-disclosure[open] summary::after {
-      content: '−';
-    }
-
-    .guide-disclosure .guide-doc-rows {
-      margin-top: 8px;
-    }
-
-    .guide-callout--tight {
-      margin-top: 20px;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .guide-moment {
-        opacity: 1;
-        transform: none;
-        transition: none;
-      }
-    }
-
-    /* ——— Footer ——— */
-    .site-footer {
-      margin-top: clamp(48px, 10vw, 96px);
-      background: #f5f5f7;
-      color: #6e6e73;
-    }
-
-    .site-footer-inner {
-      width: min(980px, calc(100% - 40px));
-      margin: 0 auto;
-      padding-top: 40px;
-      box-sizing: border-box;
-    }
-
-    .site-footer-brand {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .site-footer-logo {
-      display: block;
-      height: 22px;
-      width: auto;
-      max-width: 100%;
-    }
-
-    .site-footer-tagline {
-      margin: 0;
-      color: #6e6e73;
-      font-size: 12px;
-      line-height: 1.33337;
-    }
-
-    .site-footer-copy {
-      margin: 0;
-      padding: 17px 0 40px;
-      color: #6e6e73;
-      font-size: 12px;
-      line-height: 1.33337;
-    }
-
-    .site-footer-copy a {
-      color: #424245;
-      text-decoration: none;
-    }
-
-    .site-footer-copy a:hover {
-      text-decoration: underline;
-    }
-
-    @media (min-width: 834px) {
-      .localnav-content {
-        padding: 0 22px;
-      }
-    }
-
-    @media (max-width: 833px) {
-      .localnav-content {
-        padding: 0 16px;
-        gap: 12px;
-      }
-
-      .localnav-title {
-        font-size: 19px;
-      }
-
-      .localnav-menu {
-        gap: 14px;
-      }
-
-      .localnav-list {
-        gap: 12px;
-      }
-    }
-
-    @media (max-width: 733px) {
-      .site-footer-inner {
-        width: min(980px, calc(100% - 32px));
-        padding-top: 24px;
-      }
-
-      .site-footer-copy {
-        padding-bottom: 32px;
-      }
-
-      .guide-hero,
-      .guide-story,
-      .guide-fine-wrap,
-      .guide-jump-wrap {
-        padding-left: 16px;
-        padding-right: 16px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .localnav-cta {
-        transition: none;
-      }
-    }
-  </style>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=responsive-12">
-  <link rel="stylesheet" href="../css/shroffin-guide.css?v=responsive-7">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=editorial-24">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=editorial-24">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=editorial-44">
 </head>
 <body>
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
@@ -1744,11 +82,17 @@
             Support
           </button>
         </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="about.html">About</a>
+        <li class="globalnav-item globalnav-item-flyout" id="nav-utilities">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-utilities-trigger"
+            aria-expanded="false"
+            aria-controls="nav-utilities-flyout"
+          >Utilities</button>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="project-approvals.html">Project Bank Finder</a>
+          <a class="globalnav-link" href="about.html">About</a>
         </li>
       </ul>
     </div>
@@ -1794,7 +138,7 @@
     </div>
     <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content">
-        <h2 class="globalnav-submenu-header">Get Help</h2>
+        <h2 class="globalnav-submenu-header">Get support</h2>
         <ul class="globalnav-submenu-list">
           <li>
             <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
@@ -1822,14 +166,34 @@
         </ul>
       </div>
     </div>
+    <div class="globalnav-flyout" id="nav-utilities-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore utilities</h2>
+          <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="calculators.html">
+              <span class="globalnav-submenu-label">Calculators</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="project-approvals.html">
+              <span class="globalnav-submenu-label">Project Bank Finder</span>
+            </a>
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </nav>
 
-  <main class="guide-content">
+  <main class="guide-content mag">
     <nav class="localnav" aria-label="Guide">
       <div class="localnav-content">
         <p class="localnav-title">Guide</p>
         <div class="localnav-menu">
-                    <ul class="localnav-list">
+          <ul class="localnav-list">
             <li>
               <a class="localnav-link" href="guide.html">Overview</a>
             </li>
@@ -1858,29 +222,60 @@
       <h1 class="guide-hero-title">
         Your home loan issue has a fair path.
       </h1>
+      <h2 class="guide-hero-lead">
+        After you sign, you still deserve a straight reply. Here is how that conversation is meant to move.
+      </h2>
     </header>
 
-    <nav class="guide-jump-wrap" aria-label="Grievance redressal sections">
-      <ul class="guide-jump">
-        <li><a href="#path">Process</a></li>
-        <li><a href="#talk">Complaint</a></li>
-        <li><a href="#write">Contents</a></li>
-        <li><a href="#stuck">Regulator</a></li>
-        <li><a href="#contacts">Contacts</a></li>
+    <nav class="mag-index" aria-label="Grievance redressal sections">
+      <p class="mag-index-title">Contents</p>
+      <ul class="mag-index-list">
+        <li>
+          <a class="mag-index-link" href="#path">
+            <span class="mag-index-num" aria-hidden="true">01</span>
+            <span class="mag-index-label">Process</span>
+          </a>
+        </li>
+        <li>
+          <a class="mag-index-link" href="#talk">
+            <span class="mag-index-num" aria-hidden="true">02</span>
+            <span class="mag-index-label">Complaint</span>
+          </a>
+        </li>
+        <li>
+          <a class="mag-index-link" href="#write">
+            <span class="mag-index-num" aria-hidden="true">03</span>
+            <span class="mag-index-label">Contents</span>
+          </a>
+        </li>
+        <li>
+          <a class="mag-index-link" href="#stuck">
+            <span class="mag-index-num" aria-hidden="true">04</span>
+            <span class="mag-index-label">Regulator</span>
+          </a>
+        </li>
+        <li>
+          <a class="mag-index-link" href="#limits">
+            <span class="mag-index-num" aria-hidden="true">05</span>
+            <span class="mag-index-label">Exclusions</span>
+          </a>
+        </li>
+        <li>
+          <a class="mag-index-link" href="#contacts">
+            <span class="mag-index-num" aria-hidden="true">06</span>
+            <span class="mag-index-label">Contacts</span>
+          </a>
+        </li>
       </ul>
     </nav>
 
     <div class="guide-story">
-
-      <section class="guide-moment" id="path">
-        <article class="guide-tile guide-tile--stage">
-          <span class="guide-tile-mark" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none" focusable="false">
-              <path d="M12.5 24h23" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-              <path d="M28.5 17.5 35 24l-6.5 6.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="12.5" cy="24" r="2.25" fill="currentColor"/>
-            </svg>
-          </span>
+      <section class="mag-section guide-moment" id="path">
+        <div class="mag-rail">
+          <span class="mag-num" aria-hidden="true">01</span>
+          <p class="mag-kicker">Process</p>
+        </div>
+        <div class="mag-content">
           <h2 class="guide-tile-title">Grievance redressal process</h2>
           <p class="guide-tile-copy guide-tile-copy--muted">
             The stages from first complaint to the regulator.
@@ -1903,121 +298,105 @@
               <p class="guide-doc-note">Bank → Reserve Bank of India (RBI). Housing finance company → National Housing Bank (NHB).</p>
             </div>
           </div>
-        </article>
+        </div>
       </section>
 
-      <section class="guide-moment" id="talk">
-        <div class="guide-flip" id="talk-flip">
-          <div class="guide-flip-inner">
-            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
-              <span class="guide-tile-mark" aria-hidden="true">
-                <svg viewBox="0 0 48 48" fill="none" focusable="false">
-                  <circle cx="18" cy="18" r="5" stroke="currentColor" stroke-width="1.35"/>
-                  <circle cx="30" cy="18" r="5" stroke="currentColor" stroke-width="1.35"/>
-                  <path d="M8.5 34.5c1.8-5 5.2-7.5 9.5-7.5s7.7 2.5 9.5 7.5M20.5 34.5c1.8-5 5.2-7.5 9.5-7.5s7.7 2.5 9.5 7.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <h2 class="guide-tile-title">Lodging a complaint</h2>
-              <p class="guide-tile-copy guide-tile-copy--muted">
-                Register the issue with your bank or HFC first.
-              </p>
-              <div class="guide-doc-rows">
-                <div class="guide-doc-row">
-                  <p class="guide-doc-name">Talk first</p>
-                  <p class="guide-doc-note">Call or visit the loan team. Ask them to check the problem and tell you what they will do next.</p>
+      <section class="mag-section guide-moment" id="talk">
+        <div class="mag-rail">
+          <span class="mag-num" aria-hidden="true">02</span>
+          <p class="mag-kicker">Complaint</p>
+        </div>
+        <div class="mag-content">
+          <div class="guide-flip" id="talk-flip">
+            <div class="guide-flip-inner">
+              <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
+                <h2 class="guide-tile-title">Lodging a complaint</h2>
+                <p class="guide-tile-copy guide-tile-copy--muted">
+                  Register the issue with your bank or HFC first.
+                </p>
+                <div class="guide-doc-rows">
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Talk first</p>
+                    <p class="guide-doc-note">Call or visit the loan team. Ask them to check the problem and tell you what they will do next.</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Ask for a ticket number</p>
+                    <p class="guide-doc-note">Note the date and what they said.</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">If they fix it</p>
+                    <p class="guide-doc-note">Ask for written confirmation. You may not need the next steps.</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Then put it in writing</p>
+                    <p class="guide-doc-note">If there is no ticket, only vague promises, or the same problem again — write the same facts down next.</p>
+                  </div>
                 </div>
-                <div class="guide-doc-row">
-                  <p class="guide-doc-name">Ask for a ticket number</p>
-                  <p class="guide-doc-note">Note the date and what they said.</p>
-                </div>
-                <div class="guide-doc-row">
-                  <p class="guide-doc-name">If they fix it</p>
-                  <p class="guide-doc-note">Ask for written confirmation. You may not need the next steps.</p>
-                </div>
-                <div class="guide-doc-row">
-                  <p class="guide-doc-name">Then put it in writing</p>
-                  <p class="guide-doc-note">If there is no ticket, only vague promises, or the same problem again — write the same facts down next.</p>
-                </div>
-              </div>
-              <button type="button" class="guide-flip-link" data-flip="talk-flip" aria-controls="talk-inside" aria-expanded="false">
-                Escalation matrix
-                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </article>
+                <button type="button" class="guide-flip-link" data-flip="talk-flip" aria-controls="talk-inside" aria-expanded="false">
+                  Escalation matrix
+                  <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                    <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </article>
 
-            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="talk-inside" aria-hidden="true">
-              <span class="guide-tile-mark" aria-hidden="true">
-                <svg viewBox="0 0 48 48" fill="none" focusable="false">
-                  <path d="M9.5 36.5h29" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-                  <path d="M14.5 36.5V20.5l9.5-8 9.5 8v16" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M21.5 36.5v-8h5v8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              <h2 class="guide-tile-title">Escalation matrix</h2>
-              <p class="guide-tile-copy guide-tile-copy--muted">
-                Internal levels at the bank or HFC. Contacts are on their website.
-              </p>
-              <div class="guide-climb">
-                <div class="guide-climb-col">
-                  <h3 class="guide-climb-label">Bank</h3>
-                  <div class="guide-doc-rows">
-                    <div class="guide-doc-row">
-                      <p class="guide-doc-name">Branch or customer care</p>
-                      <p class="guide-doc-note">Where your written complaint usually starts.</p>
+              <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="talk-inside" aria-hidden="true">
+                <h2 class="guide-tile-title">Escalation matrix</h2>
+                <p class="guide-tile-copy guide-tile-copy--muted">
+                  Internal levels at the bank or HFC. Contacts are on their website.
+                </p>
+                <div class="guide-climb">
+                  <div class="guide-climb-col">
+                    <h3 class="guide-climb-label">Bank</h3>
+                    <div class="guide-doc-rows">
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Branch or customer care</p>
+                        <p class="guide-doc-note">Where your written complaint usually starts.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Nodal officer</p>
+                        <p class="guide-doc-note">Next if nothing moves. Listed by zone, circle, or network.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Principal Nodal Officer</p>
+                        <p class="guide-doc-note">The bank’s top grievance officer.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Internal Ombudsman</p>
+                        <p class="guide-doc-note">Reviews rejected or partly fixed cases. You do not file here first.</p>
+                      </div>
                     </div>
-                    <div class="guide-doc-row">
-                      <p class="guide-doc-name">Nodal officer</p>
-                      <p class="guide-doc-note">Next if nothing moves. Listed by zone, circle, or network.</p>
-                    </div>
-                    <div class="guide-doc-row">
-                      <p class="guide-doc-name">Principal Nodal Officer</p>
-                      <p class="guide-doc-note">The bank’s top grievance officer.</p>
-                    </div>
-                    <div class="guide-doc-row">
-                      <p class="guide-doc-name">Internal Ombudsman</p>
-                      <p class="guide-doc-note">Reviews rejected or partly fixed cases. You do not file here first.</p>
+                  </div>
+                  <div class="guide-climb-col">
+                    <h3 class="guide-climb-label">Housing finance</h3>
+                    <div class="guide-doc-rows">
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Branch or customer care</p>
+                        <p class="guide-doc-note">Where your written complaint usually starts.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Nodal or regional officer</p>
+                        <p class="guide-doc-note">Next if nothing moves. Listed by region on their site.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Grievance Redressal Officer</p>
+                        <p class="guide-doc-note">The HFC’s top complaint officer — sometimes head of CRM.</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="guide-climb-col">
-                  <h3 class="guide-climb-label">Housing finance</h3>
-                  <div class="guide-doc-rows">
-                    <div class="guide-doc-row">
-                      <p class="guide-doc-name">Branch or customer care</p>
-                      <p class="guide-doc-note">Where your written complaint usually starts.</p>
-                    </div>
-                    <div class="guide-doc-row">
-                      <p class="guide-doc-name">Nodal or regional officer</p>
-                      <p class="guide-doc-note">Next if nothing moves. Listed by region on their site.</p>
-                    </div>
-                    <div class="guide-doc-row">
-                      <p class="guide-doc-name">Grievance Redressal Officer</p>
-                      <p class="guide-doc-note">The HFC’s top complaint officer — sometimes head of CRM.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <button type="button" class="guide-flip-link guide-flip-link--back" data-flip="talk-flip" aria-controls="talk-inside" aria-expanded="true">
-                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                Back
-              </button>
-            </article>
+              </article>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="guide-moment" id="write">
-        <article class="guide-tile guide-tile--stage">
-          <span class="guide-tile-mark" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none" focusable="false">
-              <path d="M16.5 24.5 21 29l10.5-12" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
-              <rect x="10.5" y="10.5" width="27" height="27" rx="4" stroke="currentColor" stroke-width="1.35"/>
-            </svg>
-          </span>
+      <section class="mag-section guide-moment" id="write">
+        <div class="mag-rail">
+          <span class="mag-num" aria-hidden="true">03</span>
+          <p class="mag-kicker">Contents</p>
+        </div>
+        <div class="mag-content">
           <h2 class="guide-tile-title">Complaint contents</h2>
           <p class="guide-tile-copy guide-tile-copy--muted">
             Particulars and documents required for a valid complaint.
@@ -2081,19 +460,15 @@
             </div>
           </div>
           </div>
-        </article>
+        </div>
       </section>
 
-      <section class="guide-moment" id="stuck">
-        <article class="guide-tile guide-tile--stage">
-          <span class="guide-tile-mark" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none" focusable="false">
-              <path d="M12.5 34.5h23" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-              <path d="M16.5 34.5V22.5h15v12" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M20.5 22.5V16.5h7v6" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M22.5 28.5h3M22.5 32.5h3" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-            </svg>
-          </span>
+      <section class="mag-section guide-moment" id="stuck">
+        <div class="mag-rail">
+          <span class="mag-num" aria-hidden="true">04</span>
+          <p class="mag-kicker">Regulator</p>
+        </div>
+        <div class="mag-content">
           <h2 class="guide-tile-title">Approach the regulator</h2>
           <p class="guide-tile-copy guide-tile-copy--muted">
             When you can file, how to file, and what can be awarded.
@@ -2182,17 +557,15 @@
             </div>
           </div>
           </div>
-        </article>
+        </div>
       </section>
 
-      <section class="guide-moment" id="limits">
-        <article class="guide-tile guide-tile--stage">
-          <span class="guide-tile-mark" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none" focusable="false">
-              <rect x="11.5" y="12.5" width="25" height="23" rx="3" stroke="currentColor" stroke-width="1.35"/>
-              <path d="M17.5 20.5h13M17.5 25.5h13M17.5 30.5h8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-            </svg>
-          </span>
+      <section class="mag-section guide-moment" id="limits">
+        <div class="mag-rail">
+          <span class="mag-num" aria-hidden="true">05</span>
+          <p class="mag-kicker">Exclusions</p>
+        </div>
+        <div class="mag-content">
           <h2 class="guide-tile-title">Exclusions</h2>
           <p class="guide-tile-copy guide-tile-copy--muted">
             Matters outside this redressal path.
@@ -2227,18 +600,15 @@
               <p class="guide-doc-note">Other legal tracks. National Consumer Helpline and CPGRAMS can sit beside this path.</p>
             </div>
           </div>
-        </article>
+        </div>
       </section>
 
-      <section class="guide-moment" id="contacts">
-        <article class="guide-tile guide-tile--stage">
-          <span class="guide-tile-mark" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none" focusable="false">
-              <path d="M18.5 29.5 29.5 18.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-              <path d="M22 16.5h9.5V26" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M14.5 21.5v12a2 2 0 0 0 2 2h12" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+      <section class="mag-section guide-moment" id="contacts">
+        <div class="mag-rail">
+          <span class="mag-num" aria-hidden="true">06</span>
+          <p class="mag-kicker">Contacts</p>
+        </div>
+        <div class="mag-content">
           <h2 class="guide-tile-title">Contacts</h2>
           <p class="guide-tile-copy guide-tile-copy--muted">
             Official addresses and numbers.
@@ -2277,7 +647,7 @@
               <p class="guide-doc-note"><a href="https://pgportal.gov.in" target="_blank" rel="noopener noreferrer">pgportal.gov.in<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official CPGRAMS page)</span></a></p>
             </div>
           </div>
-        </article>
+        </div>
       </section>
     </div>
 
@@ -2308,6 +678,7 @@
           <h2 class="site-footer-heading" id="footer-quick-title">Quick links</h2>
           <ul class="site-footer-list">
             <li><a href="/pages/learn-more.html">Explore banks</a></li>
+            <li><a href="/pages/calculators.html">Calculators</a></li>
             <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
           </ul>
         </nav>
@@ -2372,43 +743,13 @@
   <script>
     (function () {
       document.querySelectorAll('.guide-flip').forEach(function (flip) {
-        var inner = flip.querySelector('.guide-flip-inner');
-        var front = flip.querySelector('.guide-flip-face--front');
         var back = flip.querySelector('.guide-flip-face--back');
-        if (!inner || !front) return;
-
-        var lockedHeight = 0;
-        var syncRaf = 0;
-
-        function applyHeight(px) {
-          if (!(px > 0)) return;
-          var current = parseFloat(inner.style.height) || 0;
-          if (Math.abs(current - px) > 1) inner.style.height = px + 'px';
-        }
-
-        function syncHeight() {
-          if (!flip.classList.contains('is-flipped')) {
-            inner.style.height = 'auto';
-            lockedHeight = front.offsetHeight;
-            applyHeight(lockedHeight);
-            return;
-          }
-          /* Keep the same card size as the front — like Guide EMI / charges flips. */
-          applyHeight(lockedHeight || front.offsetHeight);
-        }
 
         function setFlipped(open) {
-          if (open) {
-            if (lockedHeight <= 0) lockedHeight = front.offsetHeight;
-            applyHeight(lockedHeight || front.offsetHeight);
-          }
           flip.classList.toggle('is-flipped', open);
           if (back) back.setAttribute('aria-hidden', open ? 'false' : 'true');
           flip.querySelectorAll('[data-flip]').forEach(function (btn) {
             btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-          });
-          window.requestAnimationFrame(function () {
-            syncHeight();
           });
         }
 
@@ -2417,17 +758,6 @@
             setFlipped(!flip.classList.contains('is-flipped'));
           });
         });
-
-        window.addEventListener('resize', function () {
-          if (syncRaf) window.cancelAnimationFrame(syncRaf);
-          syncRaf = window.requestAnimationFrame(function () {
-            syncRaf = 0;
-            lockedHeight = 0;
-            syncHeight();
-          });
-        });
-
-        syncHeight();
       });
     })();
   </script>
@@ -2518,7 +848,7 @@
       }
     })();
   </script>
-  <script src="../js/shroffin-nav.js?v=responsive-6"></script>
-  <script src="../js/shroffin-guide.js?v=responsive-5"></script>
+  <script src="../js/shroffin-nav.js?v=editorial-14"></script>
+  <script src="../js/shroffin-guide.js?v=editorial-15"></script>
 </body>
 </html>

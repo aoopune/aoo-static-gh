@@ -3,11 +3,13 @@
     --shroffin-ink: #1d1d1f;
     --shroffin-muted: #6e6e73;
     --shroffin-blue: #0071e3;
-    --shroffin-surface: #fbfbfd;
-    --shroffin-footer: #f5f5f7;
+    --shroffin-surface: #faf9f6;
+    --shroffin-footer: #f3f1eb;
     --shroffin-rule: rgba(0, 0, 0, 0.16);
     --shroffin-focus: #0071e3;
     --shroffin-gn-height: 48px;
+    /* How much of the main bar stays pinned — full on desktop, none on compact. */
+    --shroffin-gn-offset: var(--shroffin-gn-height);
     --shroffin-content-max: 1068px;
     --shroffin-flyout-max: 1024px;
     --shroffin-flyout-gutter: 22px;
@@ -47,8 +49,14 @@
     --shroffin-btn-compact-pad-inline: 0.75rem;
   }
 
+  /* Guard against rare full-bleed math (e.g. 100vw bands) widening the page. */
+  html {
+    overflow-x: clip;
+  }
+
   @media (max-width: 833px) {
     :root {
+      --shroffin-gn-offset: 0px;
       --shroffin-btn-elevated-band: 4px;
       --shroffin-btn-elevated-pad-block: 8px;
       --shroffin-btn-elevated-pad-inline: 15px;
@@ -138,6 +146,7 @@
   }
 
   body {
+    margin: 0;
     min-inline-size: 0;
     overflow-wrap: break-word;
   }
@@ -180,23 +189,39 @@
     inset-inline: 0;
     z-index: var(--shroffin-z-nav);
     block-size: var(--shroffin-gn-height);
-    background: rgba(251, 251, 253, 0.8);
+    background: rgba(250, 249, 246, 0.8);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     backdrop-filter: saturate(180%) blur(20px);
     font-family: var(--shroffin-font);
     transition: background-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
   }
 
+  /* Phone / tablet: main bar scrolls away; only the Guide sub-bar stays pinned. */
+  @media (max-width: 833px) {
+    .globalnav {
+      position: relative;
+      inset: auto;
+    }
+
+    /* Keep the hamburger menu usable after scroll — pin while open. */
+    .globalnav.compact-open {
+      position: fixed;
+      inset-block-start: 0;
+      inset-inline: 0;
+      inline-size: 100%;
+    }
+  }
+
   /* Browsers without backdrop-filter: fall back to a near-solid bar so text stays legible. */
   @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
     .globalnav {
-      background: rgba(251, 251, 253, 0.96);
+      background: rgba(250, 249, 246, 0.96);
     }
   }
 
   .globalnav.flyout-open,
   .globalnav.compact-open {
-    background: rgba(250, 250, 252, 0.92);
+    background: rgba(250, 249, 246, 0.92);
   }
 
   .globalnav-content {
@@ -242,6 +267,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.35rem;
     min-block-size: 44px;
     min-inline-size: 44px;
     padding-inline: 0.5rem;
@@ -258,6 +284,27 @@
     transition: color var(--shroffin-micro-duration) var(--shroffin-color-ease);
   }
 
+  /*
+   * Dropdown cue — small chevron after Guide / Support (industry menu affordance).
+   * Points down at rest; flips up while the flyout is open.
+   */
+  .globalnav-flyout-trigger::after {
+    content: "";
+    flex: 0 0 auto;
+    inline-size: 0.4rem;
+    block-size: 0.4rem;
+    margin-block-start: -0.1rem;
+    border-inline-end: 1.5px solid currentColor;
+    border-block-end: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform var(--shroffin-micro-duration) var(--shroffin-ease);
+  }
+
+  .globalnav-flyout-trigger[aria-expanded="true"]::after {
+    margin-block-start: 0.15rem;
+    transform: rotate(-135deg);
+  }
+
   .globalnav-link:hover,
   .globalnav-link:focus-visible,
   .globalnav-link:active,
@@ -265,7 +312,7 @@
   .globalnav-flyout-trigger:focus-visible,
   .globalnav-flyout-trigger:active,
   .globalnav-flyout-trigger[aria-expanded="true"] {
-    color: #0066cc;
+    color: #005bb5;
   }
 
   .globalnav-link[aria-current="page"] {
@@ -310,7 +357,8 @@
   }
 
   .globalnav.flyout-open #nav-guide-flyout.globalnav-flyout.is-open,
-  .globalnav.flyout-open #nav-support-flyout.globalnav-flyout.is-open {
+  .globalnav.flyout-open #nav-support-flyout.globalnav-flyout.is-open,
+  .globalnav.flyout-open #nav-utilities-flyout.globalnav-flyout.is-open {
     max-height: calc(100vh - var(--shroffin-gn-height));
     max-height: calc(100dvh - var(--shroffin-gn-height));
     max-block-size: calc(100dvh - var(--shroffin-gn-height));
@@ -413,23 +461,20 @@
     min-inline-size: 0;
   }
 
-  /* Guide flyout: one list under Explore guide */
-  #nav-guide-flyout .globalnav-submenu-header {
+  /* Guide + Support + Utilities flyouts share the same type scale */
+  #nav-guide-flyout .globalnav-submenu-header,
+  #nav-support-flyout .globalnav-submenu-header,
+  #nav-utilities-flyout .globalnav-submenu-header {
     font-size: 0.9375rem;
     font-weight: 600;
   }
 
-  #nav-guide-flyout .globalnav-submenu-label {
+  #nav-guide-flyout .globalnav-submenu-label,
+  #nav-support-flyout .globalnav-submenu-label,
+  #nav-utilities-flyout .globalnav-submenu-label {
     font-size: 1.1875rem;
     font-weight: 600;
     line-height: 1.25;
-  }
-
-  /* Support flyout keeps large labels */
-  #nav-support-flyout .globalnav-submenu-label {
-    font-size: 1.5rem;
-    font-weight: 600;
-    line-height: 1.16667;
   }
 
   .globalnav-submenu-column--elevated .globalnav-submenu-link--elevated {
@@ -437,7 +482,7 @@
   }
 
   .privacy-main {
-    padding-block-start: calc(var(--shroffin-gn-height) + 2.5rem);
+    padding-block-start: calc(var(--shroffin-gn-offset) + 2.5rem);
   }
 
   .globalnav-veil,
@@ -684,7 +729,6 @@
     font-weight: 600;
     line-height: 1.3334;
     letter-spacing: 0.02em;
-    text-transform: uppercase;
   }
 
   .globalnav.compact-open .globalnav-compact-panel--root .globalnav-compact-list > li {
@@ -709,6 +753,19 @@
 
   .globalnav.is-compact .globalnav-list > :not(.globalnav-item-brand) {
     display: none;
+  }
+
+  /* Open compact menu: hide logo — top bar keeps only close (and back when drilled). */
+  .globalnav.is-compact.compact-open .globalnav-item-brand {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .globalnav.is-compact .globalnav-item-brand {
+    transition:
+      opacity var(--shroffin-ui-duration) var(--shroffin-ease),
+      visibility var(--shroffin-ui-duration) var(--shroffin-ease);
   }
 
   .globalnav.is-compact .globalnav-compact-toggle {
@@ -774,8 +831,10 @@
   }
 
   .site-footer-inner {
-    inline-size: min(var(--shroffin-content-max), calc(100% - (2 * var(--shroffin-gutter))));
+    /* Same invisible rail as globalnav (logo → right chrome). */
+    inline-size: min(var(--shroffin-content-max), 100%);
     margin-inline: auto;
+    padding-inline: max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right));
     padding-block-start: clamp(2rem, 5vw, 3.5rem);
     box-sizing: border-box;
   }
@@ -829,7 +888,7 @@
   .site-footer-list a:hover,
   .site-footer-list a:focus-visible,
   .site-footer-list a:active {
-    color: #0066cc;
+    color: #005bb5;
   }
 
   .site-footer-list a.guide-section-link .guide-section-link-arrow {
@@ -1021,7 +1080,7 @@
   .site-footer-legal-links a:hover,
   .site-footer-legal-links a:focus-visible,
   .site-footer-legal-links a:active {
-    color: #0066cc;
+    color: #005bb5;
   }
 
   .site-footer-legal-links a.guide-section-link .guide-section-link-arrow {
@@ -1065,8 +1124,7 @@
    * Phone: 36px visible fill inside a 44px tap box.
    */
   .home-hero-cta,
-  .lm-cta,
-  .guide-calc-submit {
+  .lm-cta {
     display: inline-flex;
     position: relative;
     isolation: isolate;
@@ -1088,9 +1146,29 @@
 
   .home-hero-cta-primary,
   .lm-cta,
-  .lm-cta-light,
-  .guide-calc-submit {
+  .lm-cta-light {
     background-clip: border-box;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .home-hero-cta-primary:link,
+  .home-hero-cta-primary:visited,
+  .home-hero-cta-primary:hover,
+  .home-hero-cta-primary:focus-visible,
+  .home-hero-cta-primary:active,
+  .lm-cta:link,
+  .lm-cta:visited,
+  .lm-cta:hover,
+  .lm-cta:focus-visible,
+  .lm-cta:active,
+  .lm-cta-light:link,
+  .lm-cta-light:visited,
+  .lm-cta-light:hover,
+  .lm-cta-light:focus-visible,
+  .lm-cta-light:active {
+    color: #fff;
+    text-decoration: none;
   }
 
   .home-hero-cta-secondary {
@@ -1105,8 +1183,7 @@
 
   @media (max-width: 833px) {
     .home-hero-cta,
-    .lm-cta,
-    .guide-calc-submit {
+    .lm-cta {
       box-sizing: border-box;
       min-block-size: var(--shroffin-btn-elevated-min);
       min-height: var(--shroffin-btn-elevated-min);
@@ -1115,8 +1192,7 @@
 
     .home-hero-cta-primary,
     .lm-cta,
-    .lm-cta-light,
-    .guide-calc-submit {
+    .lm-cta-light {
       border-block-color: transparent;
       background-clip: padding-box;
     }
@@ -1310,7 +1386,7 @@
   @media (max-width: 600px) {
     .privacy-main {
       inline-size: min(100% - 2rem, var(--max, 720px));
-      padding-block-start: calc(var(--shroffin-gn-height) + 2rem);
+      padding-block-start: calc(var(--shroffin-gn-offset) + 2rem);
     }
 
     .privacy-page .toc {
@@ -1366,6 +1442,69 @@
     border: 0 !important;
   }
 
+  /*
+   * Back to top — industry pattern for long pages:
+   * quiet floating control, bottom-right, only after the reader has scrolled.
+   */
+  .shroffin-to-top {
+    position: fixed;
+    inset-block-end: max(1.25rem, env(safe-area-inset-bottom, 0px));
+    inset-inline-end: max(1.25rem, env(safe-area-inset-right, 0px));
+    z-index: 8800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 44px;
+    block-size: 44px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 50%;
+    background: rgba(250, 249, 246, 0.92);
+    color: var(--shroffin-ink);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    backdrop-filter: saturate(180%) blur(16px);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition:
+      opacity var(--shroffin-micro-duration) var(--shroffin-ease),
+      transform var(--shroffin-ui-duration) var(--shroffin-ease),
+      background-color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+      border-color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+      color var(--shroffin-micro-duration) var(--shroffin-color-ease);
+  }
+
+  .shroffin-to-top.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .shroffin-to-top:hover,
+  .shroffin-to-top:focus-visible {
+    color: #005bb5;
+    border-color: rgba(0, 91, 181, 0.28);
+    background: rgba(250, 249, 246, 0.98);
+  }
+
+  .shroffin-to-top:focus-visible {
+    outline: 2px solid var(--shroffin-focus);
+    outline-offset: 3px;
+  }
+
+  .shroffin-to-top-icon {
+    display: block;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    margin-block-start: 0.15rem;
+    border-inline-end: 1.5px solid currentColor;
+    border-block-end: 1.5px solid currentColor;
+    transform: rotate(-135deg);
+  }
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1376,5 +1515,13 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;
+  }
+
+  .shroffin-to-top {
+    transform: none;
+  }
+
+  .shroffin-to-top.is-visible {
+    transform: none;
   }
 }

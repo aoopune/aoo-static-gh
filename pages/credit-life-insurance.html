@@ -17,1708 +17,9 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <style>
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Thin.ttf') format('truetype');
-      font-weight: 100;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraLight.ttf') format('truetype');
-      font-weight: 200;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Light.ttf') format('truetype');
-      font-weight: 300;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf') format('truetype');
-      font-weight: 400;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf') format('truetype');
-      font-weight: 500;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf') format('truetype');
-      font-weight: 600;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Bold.ttf') format('truetype');
-      font-weight: 700;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraBold.ttf') format('truetype');
-      font-weight: 800;
-      font-style: normal;
-      font-display: block;
-    }
-
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Black.ttf') format('truetype');
-      font-weight: 900;
-      font-style: normal;
-      font-display: block;
-    }
-
-    :root {
-      --gn-height: 48px;
-      --ln-height: 52px;
-      --gn-bg: #fbfbfd;
-      --gn-text: rgba(29, 29, 31, 0.8);
-      --gn-text-hover: #1d1d1f;
-      --gn-ink: #1d1d1f;
-      --gn-max: 980px;
-      --font-brand: 'Google Sans Flex', sans-serif;
-      --guide-max: 980px;
-      --guide-band: #f5f5f7;
-      --guide-tile: #fff;
-      /* Apple Card–style tile radii (mobile-first ladder) */
-      --guide-radius: 10px;
-      /* Proximity + type scale (shared with guide.html) */
-      --guide-gap-pair: 4px;      /* label ↔ supporting line */
-      --guide-gap-related: 10px;  /* h3 ↔ body */
-      --guide-gap-stack: 16px;    /* title ↔ lead */
-      --guide-gap-block: 36px;    /* lead ↔ content module */
-      --guide-gap-item: 18px;     /* list-row vertical pad */
-      --guide-type-row: 17px;     /* row primary */
-      --guide-type-support: 14px; /* row secondary / captions in lists */
-      --guide-type-body: 16px;    /* limit body */
-      --guide-type-micro: 12px;   /* legal / micro labels */
-    }
-
-    @media (min-width: 735px) {
-      :root {
-        --guide-radius: 30px;
-      }
-    }
-
-    @media (min-width: 1069px) {
-      :root {
-        --guide-radius: 40px;
-      }
-    }
-
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-      font-family: var(--font-brand);
-    }
-
-    html {
-      scrollbar-gutter: stable;
-    }
-
-    body {
-      background: var(--guide-band);
-      color: #1d1d1f;
-    }
-
-
-
-
-    /* ——— Localnav (Guide sub-bar) ——— */
-    .localnav {
-      position: sticky;
-      top: var(--gn-height);
-      z-index: 9000;
-      height: var(--ln-height);
-      background: rgba(255, 255, 255, 0.72);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.16);
-    }
-
-    .localnav-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      max-width: var(--gn-max);
-      height: 100%;
-      margin: 0 auto;
-      padding: 0 22px;
-      box-sizing: border-box;
-      min-width: 0;
-    }
-
-    .localnav-title {
-      flex: 0 0 auto;
-      margin: 0;
-      color: #1d1d1f;
-      font-size: 21px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-      white-space: nowrap;
-    }
-
-    .localnav-menu {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 20px;
-      min-width: 0;
-      flex: 1 1 auto;
-      align-self: stretch;
-    }
-
-    .localnav-list {
-      list-style: none;
-      margin: 0 0 0 auto;
-      padding: 0;
-      display: flex;
-      align-items: stretch;
-      align-self: stretch;
-      height: 100%;
-      gap: 14px;
-      min-width: 0;
-      max-width: 100%;
-      width: max-content;
-      overflow-x: auto;
-      overscroll-behavior-x: contain;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      -webkit-overflow-scrolling: touch;
-      justify-content: flex-start;
-    }
-
-
-    .localnav-list::-webkit-scrollbar {
-      display: none;
-    }
-
-    .localnav-list li {
-      display: flex;
-      align-items: stretch;
-      flex: 0 0 auto;
-    }
-
-    .localnav-link {
-      display: inline-flex;
-      align-items: center;
-      position: relative;
-      height: 100%;
-      min-height: 44px;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      color: #1d1d1f;
-      font-family: var(--font-brand);
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 1;
-      text-decoration: none;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-
-    .localnav-link:hover {
-      color: #0066cc;
-    }
-
-    .localnav-link:focus-visible {
-      outline: 2px solid rgba(29, 29, 31, 0.45);
-      outline-offset: 4px;
-      border-radius: 4px;
-    }
-
-    .localnav-link[aria-current="page"] {
-      color: #1d1d1f;
-      cursor: default;
-    }
-
-    .localnav-link[aria-current="page"]::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 1px;
-      background: #1d1d1f;
-    }
-
-    .localnav-link-nolink {
-      cursor: default;
-      color: rgba(29, 29, 31, 0.56);
-    }
-
-    .localnav-link-nolink:hover {
-      color: rgba(29, 29, 31, 0.56);
-    }
-
-    .localnav-cta {
-      flex: 0 0 auto;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 22px;
-      padding: 3px 10px;
-      border: 1px solid transparent;
-      border-radius: 980px;
-      background: #0071e3;
-      color: #fff;
-      font-family: var(--font-brand);
-      font-size: 11px;
-      font-weight: 400;
-      line-height: 1.2;
-      text-decoration: none;
-      white-space: nowrap;
-      box-sizing: border-box;
-      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .localnav-cta:hover {
-      background: #0076df;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .localnav-cta:active {
-      background: #006edb;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .localnav-cta:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 2px;
-    }
-
-    /* ——— Guide page (spaced story moments) ——— */
-    .guide-content {
-      padding-top: var(--gn-height);
-      box-sizing: border-box;
-      min-height: 60vh;
-    }
-
-    .guide-hero {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: clamp(72px, 14vw, 120px) 22px clamp(48px, 9vw, 72px);
-      text-align: center;
-      box-sizing: border-box;
-    }
-
-    .guide-hero-title {
-      margin: 0 0 12px;
-      color: #1d1d1f;
-      font-size: clamp(44px, 8vw, 64px);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      line-height: 1.02;
-    }
-
-    .guide-hero-lead {
-      margin: 0 auto;
-      max-width: 18em;
-      color: #6e6e73;
-      font-size: clamp(19px, 3vw, 24px);
-      font-weight: 400;
-      letter-spacing: -0.012em;
-      line-height: 1.33337;
-    }
-
-    .guide-story {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 0 22px clamp(88px, 14vw, 140px);
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      gap: clamp(64px, 12vw, 120px);
-    }
-
-    @media (min-width: 834px) {
-      .guide-story {
-        max-width: 1080px;
-      }
-
-      .guide-fine-wrap,
-      .guide-jump-wrap {
-        max-width: 1080px;
-      }
-
-      .guide-tile--stage .guide-doc-table,
-      .guide-tile--stage .guide-doc-rows {
-        max-width: none;
-      }
-
-      .guide-tile--stage .guide-tile-copy {
-        max-width: 36em;
-      }
-    }
-
-    .guide-moment {
-      display: grid;
-      gap: 20px;
-      opacity: 0;
-      transform: translateY(14px);
-      transition:
-        opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 1.45s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .guide-moment.is-in {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (min-width: 834px) {
-      .guide-moment--pair {
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
-        align-items: stretch;
-      }
-    }
-
-    .guide-tile {
-      position: relative;
-      overflow: hidden;
-      background: var(--guide-tile);
-      border-radius: var(--guide-radius);
-      padding: clamp(48px, 7vw, 72px) clamp(28px, 5vw, 52px);
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      text-align: left;
-      min-height: 0;
-    }
-
-    .guide-tile-mark {
-      position: absolute;
-      top: clamp(28px, 4.5vw, 44px);
-      bottom: auto;
-      right: clamp(28px, 4.5vw, 44px);
-      width: clamp(56px, 9vw, 88px);
-      height: clamp(56px, 9vw, 88px);
-      color: rgba(0, 0, 0, 0.07);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
-    }
-
-    .guide-tile-mark svg {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .guide-tile--hero {
-      min-height: min(52vh, 420px);
-      justify-content: center;
-      text-align: left;
-      align-items: flex-start;
-      padding-top: clamp(56px, 10vw, 88px);
-      padding-bottom: clamp(56px, 10vw, 88px);
-    }
-
-    .guide-tile--hero .guide-tile-copy {
-      max-width: 26em;
-      margin-left: 0;
-      margin-right: 0;
-    }
-
-    .guide-tile--stage {
-      text-align: left;
-      align-items: flex-start;
-      padding-top: clamp(48px, 8vw, 72px);
-      padding-bottom: clamp(48px, 8vw, 72px);
-      padding-right: clamp(28px, 5vw, 52px);
-    }
-
-    .guide-tile--stage .guide-tile-copy,
-    .guide-tile--stage .guide-tile-list,
-    .guide-tile--stage .guide-bands,
-    .guide-tile--stage .guide-flow,
-    .guide-tile--stage .guide-limits,
-    .guide-tile--stage .guide-share-list {
-      max-width: 40em;
-      width: 100%;
-      margin-left: 0;
-      margin-right: 0;
-    }
-
-    .guide-tile--stage .guide-doc-rows,
-    .guide-tile--stage .guide-doc-table,
-    .guide-tile--stage .guide-doc-legend,
-    .guide-tile--stage .guide-callout,
-    .guide-tile--stage .guide-doc-sub,
-    .guide-tile--stage .guide-disclosure,
-    .guide-tile--stage .guide-seg,
-    .guide-tile--stage .guide-seg-panel,
-    .guide-tile--stage .guide-share-list {
-      align-self: stretch;
-      width: 100%;
-      max-width: none;
-      box-sizing: border-box;
-      position: relative;
-      z-index: 1;
-    }
-
-    .guide-tile--stage .guide-doc-table,
-    .guide-tile--stage .guide-doc-rows,
-    .guide-tile--stage .guide-doc-legend,
-    .guide-tile--stage .guide-callout,
-    .guide-tile--stage .guide-doc-sub,
-    .guide-tile--stage .guide-disclosure,
-    .guide-tile--stage .guide-seg-panel {
-      text-align: left;
-    }
-
-    .guide-tile--stage .guide-seg {
-      align-self: flex-start;
-      width: auto;
-      max-width: 100%;
-    }
-
-    .guide-tile--stage .guide-tile-list,
-    .guide-tile--stage .guide-flow,
-    .guide-tile--stage .guide-limits {
-      text-align: left;
-    }
-
-    .guide-tile--stage .guide-tile-title,
-    .guide-tile--stage .guide-tile-copy {
-      position: relative;
-      z-index: 1;
-    }
-
-    .guide-flip {
-      perspective: 1600px;
-      width: 100%;
-    }
-
-    .guide-flip-inner {
-      position: relative;
-      width: 100%;
-      transform-style: preserve-3d;
-      transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .guide-flip.is-flipped .guide-flip-inner {
-      transform: rotateY(180deg);
-    }
-
-    .guide-flip-face {
-      width: 100%;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-
-    .guide-flip-face--front {
-      position: relative;
-    }
-
-    .guide-flip-face--back {
-      position: absolute;
-      inset: 0;
-      transform: rotateY(180deg);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      text-align: left;
-      align-items: stretch;
-    }
-
-    .guide-flip.is-flipped .guide-flip-face--front {
-      pointer-events: none;
-    }
-
-    .guide-flip:not(.is-flipped) .guide-flip-face--back {
-      pointer-events: none;
-    }
-
-    .guide-limits {
-      display: grid;
-      gap: 36px;
-      margin-top: 36px;
-      width: 100%;
-    }
-
-    @media (min-width: 700px) {
-      .guide-limits {
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-        align-items: start;
-      }
-    }
-
-    .guide-limit-kicker {
-      margin: 0 0 8px;
-      color: #6e6e73;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      line-height: 1.3;
-    }
-
-    .guide-limit-title {
-      margin: 0 0 8px;
-      color: #1d1d1f;
-      font-size: clamp(22px, 3vw, 26px);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-    }
-
-    .guide-limit-copy {
-      margin: 0;
-      color: #1d1d1f;
-      font-size: 16px;
-      letter-spacing: -0.01em;
-      line-height: 1.4;
-    }
-
-    .guide-limit .guide-bands,
-    .guide-limit .guide-flow {
-      margin-top: 20px;
-    }
-
-    .guide-limit .guide-band {
-      padding: 14px 6px;
-    }
-
-    .guide-limit .guide-band-num {
-      font-size: clamp(22px, 3.2vw, 28px);
-    }
-
-    .guide-limit .guide-flow {
-      margin-top: 20px;
-    }
-
-    .guide-limit .guide-flow li {
-      padding: 14px 0 14px 36px;
-      font-size: 16px;
-    }
-
-    .guide-limit .guide-flow li::before {
-      top: 14px;
-      width: 24px;
-      height: 24px;
-      font-size: 12px;
-      line-height: 24px;
-    }
-
-    .guide-limit .guide-glance {
-      margin-top: 14px;
-      font-size: 14px;
-    }
-
-    .guide-flip-link {
-      appearance: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin: 0 auto;
-      align-self: center;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      color: #0066cc;
-      font-family: var(--font-brand);
-      font-size: 17px;
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.3;
-      min-height: 44px;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .guide-flip-face--front .guide-flip-link {
-      margin: auto auto 0;
-      padding-top: 64px;
-    }
-
-    .guide-flip-face--back .guide-flip-link {
-      margin-top: auto;
-      padding-top: 48px;
-    }
-
-    .guide-flip-link-arrow {
-      display: block;
-      width: 0.55em;
-      height: 0.55em;
-      max-width: 12px;
-      max-height: 12px;
-      flex-shrink: 0;
-      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .guide-flip-link:hover {
-      text-decoration: underline;
-    }
-
-    .guide-flip-link:hover .guide-flip-link-arrow {
-      transform: translateX(3px);
-    }
-
-    .guide-flip-link:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
-
-    .guide-flip-link--back .guide-flip-link-arrow {
-      transform: scaleX(-1);
-    }
-
-    .guide-flip-link--back:hover .guide-flip-link-arrow {
-      transform: scaleX(-1) translateX(3px);
-    }
-
-    .guide-calc-top {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px 20px;
-      width: 100%;
-    }
-
-    .guide-calc-lead {
-      margin-top: 8px;
-      max-width: 28em;
-    }
-
-    .guide-calc {
-      display: grid;
-      gap: 16px;
-      width: 100%;
-      max-width: 28em;
-      margin-top: 28px;
-    }
-
-    .guide-calc-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .guide-calc-field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      text-align: left;
-    }
-
-    .guide-calc-label {
-      color: #6e6e73;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-    }
-
-    .guide-calc-input {
-      box-sizing: border-box;
-      width: 100%;
-      min-height: 48px;
-      padding: 12px 14px;
-      border: 1px solid #d2d2d7;
-      border-radius: 12px;
-      background: #fff;
-      color: #1d1d1f;
-      font-family: var(--font-brand);
-      font-size: 17px;
-      letter-spacing: -0.01em;
-    }
-
-    .guide-calc-input:focus {
-      outline: none;
-      border-color: #0071e3;
-      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2);
-    }
-
-    .guide-calc-submit {
-      appearance: none;
-      margin-top: 8px;
-      min-height: 48px;
-      padding: 12px 20px;
-      border: 0;
-      border-radius: 980px;
-      background: #0071e3;
-      color: #fff;
-      font-family: var(--font-brand);
-      font-size: 17px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      cursor: pointer;
-    }
-
-    .guide-calc-submit:hover {
-      background: #0076df;
-    }
-
-    .guide-calc-submit:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 3px;
-    }
-
-    .guide-calc-result {
-      margin-top: 28px;
-      max-width: 28em;
-      text-align: left;
-    }
-
-    .guide-calc-result-kicker {
-      margin: 0;
-      color: #6e6e73;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .guide-calc-result-num {
-      margin: 6px 0 0;
-      color: #1d1d1f;
-      font-size: clamp(32px, 5vw, 40px);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-
-    .guide-calc-split {
-      list-style: none;
-      margin: 16px 0 0;
-      padding: 0;
-      color: #1d1d1f;
-      font-size: 15px;
-      line-height: 1.45;
-    }
-
-    .guide-calc-split li {
-      margin: 0 0 6px;
-    }
-
-    .guide-calc-split strong {
-      font-weight: 600;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-
-      .guide-flip-inner {
-        transition: none;
-      }
-
-      .guide-flip.is-flipped .guide-flip-inner {
-        transform: none;
-      }
-
-      .guide-flip-face--back {
-        transform: none;
-      }
-
-      .guide-flip:not(.is-flipped) .guide-flip-face--back {
-        display: none;
-      }
-
-      .guide-flip.is-flipped .guide-flip-face--front {
-        display: none;
-      }
-
-      .guide-flip.is-flipped .guide-flip-face--back {
-        position: relative;
-        inset: auto;
-      }
-    }
-
-    .guide-tile-kicker {
-      margin: 0 0 12px;
-      color: #6e6e73;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.3;
-    }
-
-    .guide-tile-title {
-      margin: 0;
-      color: #1d1d1f;
-      font-size: clamp(28px, 4.8vw, 44px);
-      font-weight: 600;
-      letter-spacing: -0.025em;
-      line-height: 1.06;
-    }
-
-    .guide-tile-copy {
-      margin: var(--guide-gap-stack) 0 0;
-      color: #1d1d1f;
-      font-size: clamp(17px, 2.2vw, 21px);
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.381;
-    }
-
-    .guide-tile-copy--muted {
-      color: #6e6e73;
-    }
-
-    .guide-tile-list {
-      list-style: none;
-      margin: 36px 0 0;
-      padding: 0;
-    }
-
-    .guide-tile-list li {
-      margin: 0;
-      padding: 22px 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      color: #1d1d1f;
-      font-size: clamp(18px, 2.4vw, 21px);
-      letter-spacing: -0.01em;
-      line-height: 1.35;
-    }
-
-    .guide-tile-list li:first-child {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-    .guide-bands {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 36px;
-      width: 100%;
-    }
-
-    .guide-band {
-      text-align: center;
-      padding: 22px 10px;
-      border-radius: 18px;
-      background: #f5f5f7;
-    }
-
-    .guide-band-num {
-      margin: 0;
-      color: #1d1d1f;
-      font-size: clamp(28px, 4vw, 36px);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-
-    .guide-band-cap {
-      margin: 6px 0 0;
-      color: #6e6e73;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      line-height: 1.25;
-    }
-
-    .guide-glance {
-      margin: 28px 0 0;
-      color: #6e6e73;
-      font-size: 15px;
-      letter-spacing: -0.01em;
-      line-height: 1.5;
-    }
-
-    .guide-glance--center {
-      max-width: 28em;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .guide-share-list {
-      list-style: none;
-      margin: 20px 0 0;
-      padding: 0;
-      width: 100%;
-    }
-
-    .guide-share-list li {
-      display: flex;
-      flex-direction: column;
-      gap: var(--guide-gap-pair);
-      margin: 0;
-      padding: var(--guide-gap-item) 0;
-    }
-
-    .guide-share-list li:first-child {
-      padding-top: 0;
-    }
-
-    .guide-share-when {
-      color: #6e6e73;
-      font-size: var(--guide-type-support);
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.35;
-    }
-
-    .guide-share-then {
-      color: #1d1d1f;
-      font-size: var(--guide-type-row);
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.35;
-    }
-
-    .guide-share-list--plain li {
-      color: #1d1d1f;
-      font-size: var(--guide-type-row);
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.4;
-      border: 0;
-      padding-top: var(--guide-gap-item);
-      padding-bottom: var(--guide-gap-item);
-    }
-
-    .guide-share-list--plain li:first-child {
-      border: 0;
-      padding-top: 0;
-    }
-
-    .guide-flow {
-      list-style: none;
-      margin: 36px 0 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      width: 100%;
-    }
-
-    .guide-flow--center {
-      max-width: 22em;
-    }
-
-    .guide-flow li {
-      position: relative;
-      margin: 0;
-      padding: 20px 0 20px 40px;
-      color: #1d1d1f;
-      font-size: clamp(17px, 2.2vw, 19px);
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      line-height: 1.35;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-    .guide-flow li:first-child {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-    .guide-flow li::before {
-      content: attr(data-step);
-      position: absolute;
-      left: 0;
-      top: 20px;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: #1d1d1f;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 26px;
-      text-align: center;
-    }
-
-    .guide-ask {
-      list-style: none;
-      margin: 20px auto 0;
-      padding: 0;
-      max-width: 22em;
-      width: 100%;
-      text-align: left;
-    }
-
-    .guide-ask-label {
-      margin: 40px 0 0;
-      color: #6e6e73;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      line-height: 1.3;
-    }
-
-    .guide-ask li {
-      margin: 0;
-      padding: 18px 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      color: #1d1d1f;
-      font-size: clamp(17px, 2.2vw, 19px);
-      letter-spacing: -0.01em;
-      line-height: 1.35;
-    }
-
-    .guide-ask li:first-child {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
-      margin-top: 14px;
-    }
-
-    .guide-cost-rows {
-      width: 100%;
-      max-width: 22em;
-      margin: 36px auto 0;
-      text-align: left;
-    }
-
-    .guide-cost-row {
-      padding: 24px 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-    .guide-cost-row:first-child {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-    .guide-cost-name {
-      margin: 0 0 4px;
-      color: #1d1d1f;
-      font-size: 19px;
-      font-weight: 600;
-      letter-spacing: -0.015em;
-      line-height: 1.25;
-    }
-
-    .guide-cost-why {
-      margin: 0;
-      color: #6e6e73;
-      font-size: 15px;
-      line-height: 1.45;
-      letter-spacing: -0.01em;
-    }
-
-    .guide-fine-wrap {
-      max-width: var(--guide-max);
-      margin: 0 auto;
-      padding: 0 22px clamp(48px, 8vw, 72px);
-      box-sizing: border-box;
-    }
-
-    .guide-fine {
-      margin: 0;
-      color: #6e6e73;
-      font-size: var(--guide-type-micro);
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.5;
-      text-align: left;
-    }
-
-    .guide-fine-notes {
-      list-style: decimal;
-      margin: 12px 0 0;
-      padding: 0 0 0 1.25em;
-      color: #6e6e73;
-      font-size: var(--guide-type-micro);
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.5;
-      text-align: left;
-    }
-
-    .guide-fine-notes li {
-      margin: 0 0 6px;
-      padding: 0;
-    }
-
-    .guide-fine-notes li:last-child {
-      margin-bottom: 0;
-    }
-
-    .guide-share-then a.guide-note-ref {
-      color: #6e6e73;
-      font-size: 0.75em;
-      font-weight: 600;
-      text-decoration: none;
-      vertical-align: super;
-      line-height: 0;
-    }
-
-    .guide-share-then a.guide-note-ref:hover {
-      color: #0066cc;
-      text-decoration: underline;
-    }
-
-    .guide-jump-wrap {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 0 22px clamp(24px, 5vw, 40px);
-      box-sizing: border-box;
-    }
-
-    .guide-jump {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 17px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    /* Exact mirror of .home-hero-cta + .home-hero-cta-secondary on index.html */
-    .guide-jump a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 28px;
-      padding: 11px 22px;
-      border: 1px solid #0066cc;
-      border-radius: 980px;
-      background: transparent;
-      color: #0066cc;
-      font-family: inherit;
-      font-size: 17px;
-      font-weight: 400;
-      line-height: 1.23536;
-      text-decoration: none;
-      cursor: pointer;
-      box-sizing: border-box;
-      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .guide-jump a:hover {
-      background: #0076df;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .guide-jump a:active {
-      background: #006edb;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .guide-jump a:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 3px;
-    }
-
-    @media (max-width: 833px) {
-      .guide-jump {
-        gap: 14px;
-      }
-
-      .guide-jump a {
-        font-size: 16px;
-        padding: 10px 20px;
-      }
-    }
-
-    .guide-doc-rows {
-      width: 100%;
-      margin-top: 28px;
-      text-align: left;
-    }
-
-    .guide-doc-row {
-      padding: 22px 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-    .guide-doc-row:first-child {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-
-    .guide-doc-name a,
-    .guide-callout a {
-      color: #0066cc;
-      text-decoration: none;
-    }
-
-    .guide-doc-name a:hover,
-    .guide-callout a:hover {
-      text-decoration: underline;
-    }
-
-    .guide-doc-name {
-      margin: 0 0 4px;
-      color: #1d1d1f;
-      font-size: clamp(17px, 2.2vw, 19px);
-      font-weight: 600;
-      letter-spacing: -0.015em;
-      line-height: 1.3;
-    }
-
-    .guide-doc-req {
-      margin-left: 2px;
-      color: #6e6e73;
-      font-weight: 400;
-    }
-
-    .guide-doc-legend {
-      margin: 20px 0 0;
-      color: #6e6e73;
-      font-size: 13px;
-      letter-spacing: -0.01em;
-      line-height: 1.4;
-      text-align: left;
-    }
-
-    .guide-doc-note {
-      margin: 0;
-      color: #6e6e73;
-      font-size: 15px;
-      line-height: 1.45;
-      letter-spacing: -0.01em;
-    }
-
-    .guide-doc-table {
-      width: 100%;
-      margin-top: 28px;
-      border-collapse: collapse;
-      table-layout: fixed;
-      text-align: left;
-    }
-
-    .guide-doc-table th,
-    .guide-doc-table td {
-      padding: 22px 16px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      vertical-align: middle;
-    }
-
-    .guide-doc-table thead th {
-      padding-top: 0;
-      padding-bottom: 14px;
-      color: #6e6e73;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      line-height: 1.3;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    }
-
-    .guide-doc-table th:first-child,
-    .guide-doc-table td:first-child {
-      padding-left: 0;
-      width: auto;
-    }
-
-    .guide-doc-table th:last-child,
-    .guide-doc-table td:last-child {
-      padding-right: 0;
-    }
-
-    .guide-doc-table .guide-doc-col-check {
-      width: 18%;
-      text-align: center;
-    }
-
-    .guide-doc-table .guide-doc-name {
-      margin: 0;
-    }
-
-    .guide-doc-table .guide-doc-note {
-      margin-top: 4px;
-    }
-
-    .guide-doc-tick {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      color: #1d1d1f;
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 1;
-    }
-
-    .visually-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    @media (max-width: 733px) {
-      .guide-doc-table {
-        table-layout: auto;
-      }
-
-      .guide-doc-table .guide-doc-col-check {
-        width: 4.5em;
-      }
-
-      .guide-doc-table th,
-      .guide-doc-table td {
-        padding: 16px 8px;
-      }
-    }
-
-    .guide-doc-sub {
-      margin: 36px 0 0;
-      color: #6e6e73;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      line-height: 1.3;
-    }
-
-    .guide-doc-sub:first-of-type {
-      margin-top: 8px;
-    }
-
-    .guide-seg {
-      display: inline-flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 4px;
-      margin-top: 28px;
-      padding: 4px;
-      border-radius: 980px;
-      background: #f5f5f7;
-      max-width: 100%;
-    }
-
-    .guide-seg-btn {
-      appearance: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 8px 16px;
-      border: 0;
-      border-radius: 980px;
-      background: transparent;
-      color: #1d1d1f;
-      font-family: var(--font-brand);
-      font-size: 14px;
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-      cursor: pointer;
-      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .guide-seg-btn[aria-selected="true"] {
-      background: #fff;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-      font-weight: 600;
-    }
-
-    .guide-seg-btn:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 2px;
-    }
-
-    .guide-seg-panel[hidden] {
-      display: none;
-    }
-
-    .guide-callout {
-      margin: 28px 0 0;
-      padding: 18px 20px;
-      border-radius: 18px;
-      background: #f5f5f7;
-      color: #6e6e73;
-      font-size: 15px;
-      letter-spacing: -0.01em;
-      line-height: 1.45;
-      text-align: left;
-    }
-
-    .guide-disclosure {
-      margin-top: 36px;
-      padding-top: 28px;
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
-      text-align: left;
-    }
-
-    .guide-disclosure summary {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      min-height: 44px;
-      color: #1d1d1f;
-      font-size: 19px;
-      font-weight: 600;
-      letter-spacing: -0.015em;
-      line-height: 1.25;
-      cursor: pointer;
-      list-style: none;
-    }
-
-    .guide-disclosure summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .guide-disclosure summary::after {
-      content: '+';
-      flex: 0 0 auto;
-      color: #6e6e73;
-      font-size: 22px;
-      font-weight: 400;
-      line-height: 1;
-    }
-
-    .guide-disclosure[open] summary::after {
-      content: '−';
-    }
-
-    .guide-disclosure .guide-doc-rows {
-      margin-top: 8px;
-    }
-
-    .guide-tile-title + .guide-callout {
-      margin-top: var(--guide-gap-stack);
-    }
-
-    .guide-callout + .guide-tile-copy,
-    .guide-callout + .guide-share-list {
-      margin-top: var(--guide-gap-related);
-    }
-
-    .guide-callout--tight {
-      margin-top: 20px;
-    }
-
-    .guide-breadcrumb {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 20px 22px 0;
-      box-sizing: border-box;
-      color: #6e6e73;
-      font-size: 13px;
-      letter-spacing: -0.01em;
-      line-height: 1.35;
-    }
-
-    .guide-breadcrumb a {
-      color: #6e6e73;
-      text-decoration: none;
-    }
-
-    .guide-breadcrumb a:hover {
-      color: #0066cc;
-      text-decoration: underline;
-    }
-
-    .guide-breadcrumb-sep {
-      margin: 0 0.35em;
-      color: rgba(110, 110, 115, 0.6);
-    }
-
-    .guide-related-wrap {
-      max-width: var(--guide-max);
-      margin: 0 auto;
-      padding: 0 22px clamp(32px, 6vw, 48px);
-      box-sizing: border-box;
-    }
-
-    .guide-related-links {
-      margin: 0;
-      padding: 20px 0 0;
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
-      color: #6e6e73;
-      font-size: 14px;
-      letter-spacing: -0.01em;
-      line-height: 1.45;
-    }
-
-    .guide-related-links a {
-      color: #0066cc;
-      text-decoration: none;
-    }
-
-    .guide-related-links a:hover {
-      text-decoration: underline;
-    }
-
-    .guide-section-sub {
-      margin: 36px 0 0;
-      color: #1d1d1f;
-      font-size: clamp(22px, 3vw, 26px);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-    }
-
-    .guide-section-sub:first-of-type {
-      margin-top: 0;
-    }
-
-    .guide-tile--stage.guide-tile--secondary {
-      padding-top: clamp(36px, 6vw, 52px);
-      padding-bottom: clamp(36px, 6vw, 52px);
-    }
-
-    .guide-tile--stage.guide-tile--secondary .guide-tile-mark {
-      width: clamp(44px, 7vw, 64px);
-      height: clamp(44px, 7vw, 64px);
-      opacity: 0.85;
-    }
-
-    @media (min-width: 834px) {
-      .guide-breadcrumb {
-        max-width: 1080px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .guide-moment {
-        opacity: 1;
-        transform: none;
-        transition: none;
-      }
-    }
-
-    /* ——— Footer ——— */
-    .site-footer {
-      margin-top: clamp(48px, 10vw, 96px);
-      background: #f5f5f7;
-      color: #6e6e73;
-    }
-
-    .site-footer-inner {
-      width: min(980px, calc(100% - 40px));
-      margin: 0 auto;
-      padding-top: 40px;
-      box-sizing: border-box;
-    }
-
-    .site-footer-brand {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .site-footer-logo {
-      display: block;
-      height: 22px;
-      width: auto;
-      max-width: 100%;
-    }
-
-    .site-footer-tagline {
-      margin: 0;
-      color: #6e6e73;
-      font-size: 12px;
-      line-height: 1.33337;
-    }
-
-    .site-footer-rule {
-      width: min(980px, calc(100% - 40px));
-      margin: 20px auto 0;
-      border: 0;
-      border-top: 1px solid #d2d2d7;
-    }
-
-    .site-footer-copy {
-      margin: 0;
-      padding: 17px 0 40px;
-      color: #6e6e73;
-      font-size: 12px;
-      line-height: 1.33337;
-    }
-
-    .site-footer-copy a {
-      color: #424245;
-      text-decoration: none;
-    }
-
-    .site-footer-copy a:hover {
-      text-decoration: underline;
-    }
-
-    @media (min-width: 834px) {
-      .localnav-content {
-        padding: 0 22px;
-      }
-    }
-
-    @media (max-width: 833px) {
-      .localnav-content {
-        padding: 0 16px;
-        gap: 12px;
-      }
-
-      .localnav-title {
-        font-size: 19px;
-      }
-
-      .localnav-menu {
-        gap: 14px;
-      }
-
-      .localnav-list {
-        gap: 12px;
-      }
-    }
-
-    @media (max-width: 733px) {
-      .site-footer-inner {
-        width: min(980px, calc(100% - 32px));
-        padding-top: 24px;
-      }
-
-      .site-footer-copy {
-        padding-bottom: 32px;
-      }
-
-      .guide-hero,
-      .guide-story,
-      .guide-fine-wrap,
-      .guide-jump-wrap {
-        padding-left: 16px;
-        padding-right: 16px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .localnav-cta {
-        transition: none;
-      }
-    }
-  </style>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=responsive-12">
-  <link rel="stylesheet" href="../css/shroffin-guide.css?v=responsive-7">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=editorial-24">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=editorial-24">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=editorial-44">
 </head>
 <body>
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
@@ -1781,11 +82,17 @@
             Support
           </button>
         </li>
-        <li class="globalnav-item">
-          <a class="globalnav-link" href="about.html">About</a>
+        <li class="globalnav-item globalnav-item-flyout" id="nav-utilities">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-utilities-trigger"
+            aria-expanded="false"
+            aria-controls="nav-utilities-flyout"
+          >Utilities</button>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="project-approvals.html">Project Bank Finder</a>
+          <a class="globalnav-link" href="about.html">About</a>
         </li>
       </ul>
     </div>
@@ -1831,7 +138,7 @@
     </div>
     <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content">
-        <h2 class="globalnav-submenu-header">Get Help</h2>
+        <h2 class="globalnav-submenu-header">Get support</h2>
         <ul class="globalnav-submenu-list">
           <li>
             <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
@@ -1859,14 +166,34 @@
         </ul>
       </div>
     </div>
+    <div class="globalnav-flyout" id="nav-utilities-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore utilities</h2>
+          <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="calculators.html">
+              <span class="globalnav-submenu-label">Calculators</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="project-approvals.html">
+              <span class="globalnav-submenu-label">Project Bank Finder</span>
+            </a>
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </nav>
 
-  <main class="guide-content">
-        <nav class="localnav" aria-label="Guide">
+  <main class="guide-content mag">
+    <nav class="localnav" aria-label="Guide">
       <div class="localnav-content">
         <p class="localnav-title">Guide</p>
         <div class="localnav-menu">
-                    <ul class="localnav-list">
+          <ul class="localnav-list">
             <li>
               <a class="localnav-link" href="guide.html">Overview</a>
             </li>
@@ -1896,27 +223,54 @@
     </nav>
     <header class="guide-hero">
       <h1 class="guide-hero-title">See what loan cover pays for.</h1>
+      <h2 class="guide-hero-lead">
+        Some families want the outstanding loan settled if life changes. Clear terms help you decide with a cool head.
+      </h2>
     </header>
 
-    <nav class="guide-jump-wrap" aria-label="Loan cover sections">
-      <ul class="guide-jump">
-        <li><a href="#coverage">Coverage</a></li>
-        <li><a href="#setup">Cover setup</a></li>
-        <li><a href="#pay">Premium</a></li>
-        <li><a href="#claim">Claim</a></li>
-        <li><a href="#compare">Compare</a></li>
+    <nav class="mag-index" aria-label="Loan cover sections">
+      <p class="mag-index-title">Contents</p>
+      <ul class="mag-index-list">
+        <li>
+          <a class="mag-index-link" href="#coverage">
+            <span class="mag-index-num" aria-hidden="true">01</span>
+            <span class="mag-index-label">Coverage</span>
+          </a>
+        </li>
+        <li>
+          <a class="mag-index-link" href="#setup">
+            <span class="mag-index-num" aria-hidden="true">02</span>
+            <span class="mag-index-label">Cover setup</span>
+          </a>
+        </li>
+        <li>
+          <a class="mag-index-link" href="#pay">
+            <span class="mag-index-num" aria-hidden="true">03</span>
+            <span class="mag-index-label">Premium</span>
+          </a>
+        </li>
+        <li>
+          <a class="mag-index-link" href="#claim">
+            <span class="mag-index-num" aria-hidden="true">04</span>
+            <span class="mag-index-label">Claim</span>
+          </a>
+        </li>
+        <li>
+          <a class="mag-index-link" href="#compare">
+            <span class="mag-index-num" aria-hidden="true">05</span>
+            <span class="mag-index-label">Compare</span>
+          </a>
+        </li>
       </ul>
     </nav>
 
     <div class="guide-story">
-      <section class="guide-moment" id="coverage">
-        <article class="guide-tile guide-tile--stage">
-          <span class="guide-tile-mark" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none" focusable="false">
-              <path d="M24 10.5v27" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-              <path d="M18.5 15.5c1.2-2 3.2-3 5.5-3 3.3 0 5.5 1.8 5.5 4.4 0 2.4-1.6 3.7-5.2 4.8l-1.3.4c-3.8 1.2-5.8 2.8-5.8 5.8 0 3.2 2.6 5.1 6.4 5.1 2.6 0 4.7-1 6-2.8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-            </svg>
-          </span>
+      <section class="mag-section guide-moment" id="coverage">
+        <div class="mag-rail">
+          <span class="mag-num" aria-hidden="true">01</span>
+          <p class="mag-kicker">Coverage</p>
+        </div>
+        <div class="mag-content">
           <h2 class="guide-tile-title">Coverage</h2>
           <p class="guide-tile-copy">
             On death of the Life Assured while cover is active, the benefit pays toward the outstanding home loan.
@@ -1938,17 +292,15 @@
           <p class="guide-callout">
             Already have term insurance? The bank may accept assignment of that cover to the loan instead of new loan cover.
           </p>
-        </article>
+        </div>
       </section>
 
-      <section class="guide-moment" id="setup">
-        <article class="guide-tile guide-tile--stage">
-          <span class="guide-tile-mark" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none" focusable="false">
-              <path d="M16.5 24.5 21 29l10.5-12" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
-              <rect x="10.5" y="10.5" width="27" height="27" rx="4" stroke="currentColor" stroke-width="1.35"/>
-            </svg>
-          </span>
+      <section class="mag-section guide-moment" id="setup">
+        <div class="mag-rail">
+          <span class="mag-num" aria-hidden="true">02</span>
+          <p class="mag-kicker">Setup</p>
+        </div>
+        <div class="mag-content">
           <h2 class="guide-tile-title">Cover setup</h2>
           <p class="guide-tile-copy">
             The Certificate of Insurance holds these details.
@@ -1971,17 +323,15 @@
               <span class="guide-share-then">Should match the loan term. Some plans renew every year instead.<a class="guide-note-ref" href="#note-2">2</a></span>
             </li>
           </ul>
-        </article>
+        </div>
       </section>
 
-      <section class="guide-moment" id="pay">
-        <article class="guide-tile guide-tile--stage">
-          <span class="guide-tile-mark" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none" focusable="false">
-              <path d="M24 10.5v27" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-              <path d="M18.5 15.5c1.2-2 3.2-3 5.5-3 3.3 0 5.5 1.8 5.5 4.4 0 2.4-1.6 3.7-5.2 4.8l-1.3.4c-3.8 1.2-5.8 2.8-5.8 5.8 0 3.2 2.6 5.1 6.4 5.1 2.6 0 4.7-1 6-2.8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-            </svg>
-          </span>
+      <section class="mag-section guide-moment" id="pay">
+        <div class="mag-rail">
+          <span class="mag-num" aria-hidden="true">03</span>
+          <p class="mag-kicker">Premium</p>
+        </div>
+        <div class="mag-content">
           <h2 class="guide-tile-title">Premium</h2>
           <p class="guide-tile-copy">
             These premiums are usually larger.
@@ -2012,18 +362,15 @@
               <span class="guide-share-then">Individual life cover premiums are currently exempt from GST. Confirm what shows on your premium receipt.</span>
             </li>
           </ul>
-        </article>
+        </div>
       </section>
 
-      <section class="guide-moment" id="claim">
-        <article class="guide-tile guide-tile--stage">
-          <span class="guide-tile-mark" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none" focusable="false">
-              <circle cx="18" cy="18" r="5" stroke="currentColor" stroke-width="1.35"/>
-              <circle cx="30" cy="18" r="5" stroke="currentColor" stroke-width="1.35"/>
-              <path d="M8.5 34.5c1.8-5 5.2-7.5 9.5-7.5s7.7 2.5 9.5 7.5M20.5 34.5c1.8-5 5.2-7.5 9.5-7.5s7.7 2.5 9.5 7.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-            </svg>
-          </span>
+      <section class="mag-section guide-moment" id="claim">
+        <div class="mag-rail">
+          <span class="mag-num" aria-hidden="true">04</span>
+          <p class="mag-kicker">Claim</p>
+        </div>
+        <div class="mag-content">
           <h2 class="guide-tile-title">Claim</h2>
           <p class="guide-tile-copy">
             How the payout works, and who is on it.
@@ -2046,20 +393,15 @@
               <span class="guide-share-then">If you close the loan early or move it to another bank, cover does not always end. This cover often cannot come with you, and you may get only some of the premium back — some plans return nothing. Ask for the refund and cover status in writing.<a class="guide-note-ref" href="#note-3">3</a></span>
             </li>
           </ul>
-        </article>
+        </div>
       </section>
 
-      <section class="guide-moment" id="compare">
-        <article class="guide-tile guide-tile--stage">
-          <span class="guide-tile-mark" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none" focusable="false">
-              <path d="M24 11v26" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-              <path d="M13 15h22" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-              <path d="M13 15l-4.5 9h9L13 15z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
-              <path d="M35 15l-4.5 9h9L35 15z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
-              <path d="M19 37h10" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-            </svg>
-          </span>
+      <section class="mag-section guide-moment" id="compare">
+        <div class="mag-rail">
+          <span class="mag-num" aria-hidden="true">05</span>
+          <p class="mag-kicker">Compare</p>
+        </div>
+        <div class="mag-content">
           <h2 class="guide-tile-title">Term plan or loan cover</h2>
           <p class="guide-tile-copy">
             Two ways to clear the loan on death of the Life Assured. They price and behave differently.
@@ -2111,7 +453,7 @@
           <p class="guide-glance">
             If age or health makes a term plan hard to get, loan cover can be easier to buy, and can be paid through the loan.
           </p>
-        </article>
+        </div>
       </section>
     </div>
 
@@ -2151,6 +493,7 @@
           <h2 class="site-footer-heading" id="footer-quick-title">Quick links</h2>
           <ul class="site-footer-list">
             <li><a href="/pages/learn-more.html">Explore banks</a></li>
+            <li><a href="/pages/calculators.html">Calculators</a></li>
             <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
           </ul>
         </nav>
@@ -2247,7 +590,6 @@
       var list = document.querySelector('.localnav-list');
       var current = list && list.querySelector('.localnav-link[aria-current="page"]');
       if (!list || !current) return;
-      // Always start from the left so Overview + Tax Benefits stay reachable.
       list.scrollLeft = 0;
       if (list.scrollWidth <= list.clientWidth) return;
       var listLeft = list.getBoundingClientRect().left;
@@ -2258,7 +600,7 @@
       }
     })();
   </script>
-  <script src="../js/shroffin-nav.js?v=responsive-6"></script>
-  <script src="../js/shroffin-guide.js?v=responsive-5"></script>
+  <script src="../js/shroffin-nav.js?v=editorial-14"></script>
+  <script src="../js/shroffin-guide.js?v=editorial-15"></script>
 </body>
 </html>
