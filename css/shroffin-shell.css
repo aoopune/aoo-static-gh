@@ -47,11 +47,92 @@
     --shroffin-btn-compact-visual: 32px;
     --shroffin-btn-compact-font: 12px;
     --shroffin-btn-compact-pad-inline: 0.75rem;
+
+  /*
+   * Density scale — phone default, then laptop (834+), then wide (1440+).
+   * Wide bands match the previous large-monitor look; smaller bands keep
+   * tasks usable without oversized titles and empty height. 1440px keeps
+   * typical laptop widths (1366) in the medium band.
+   */
+    --shroffin-type-display: clamp(1.75rem, 7vw, 2.25rem);
+    --shroffin-type-display-xl: clamp(2rem, 8vw, 2.5rem);
+    --shroffin-type-title: clamp(1.25rem, 4.2vw, 1.5rem);
+    --shroffin-type-support: clamp(1.125rem, 4.2vw, 1.375rem);
+    --shroffin-type-lead: clamp(1rem, 2.8vw, 1.125rem);
+    --shroffin-type-body: clamp(0.9375rem, 2.4vw, 1rem);
+    --shroffin-type-tool-input: clamp(1.15rem, 3.5vw, 1.35rem);
+    --shroffin-type-tool-result: clamp(1.75rem, 6vw, 2.25rem);
+    --shroffin-space-page-top: clamp(1.5rem, 5vw, 2.25rem);
+    --shroffin-space-page-bottom: clamp(2rem, 6vw, 3rem);
+    --shroffin-space-section: clamp(1.5rem, 4vw, 2.25rem);
+    --shroffin-space-stack: clamp(1rem, 3vw, 1.35rem);
+    --shroffin-space-control-pad-block: 0.45rem;
+    --shroffin-space-control-pad-inline: 0.75rem;
+    --shroffin-space-masthead-start: clamp(2.5rem, 8vw, 3.5rem);
+    --shroffin-space-masthead-end: clamp(2.75rem, 9vw, 4rem);
+    --shroffin-space-hero-pad: clamp(2.5rem, 8vh, 4rem);
   }
 
   /* Guard against rare full-bleed math (e.g. 100vw bands) widening the page. */
   html {
     overflow-x: clip;
+  }
+
+  @media (min-width: 834px) {
+    :root {
+      --shroffin-type-display: clamp(2rem, 3.2vw, 2.75rem);
+      --shroffin-type-display-xl: clamp(2.25rem, 3.8vw, 3rem);
+      --shroffin-type-title: clamp(1.35rem, 2.4vw, 1.75rem);
+      --shroffin-type-support: clamp(1.2rem, 2vw, 1.45rem);
+      --shroffin-type-lead: clamp(1.05rem, 1.6vw, 1.15rem);
+      --shroffin-type-body: clamp(0.9375rem, 1.4vw, 1.0625rem);
+      --shroffin-type-tool-input: clamp(1.25rem, 1.8vw, 1.5rem);
+      --shroffin-type-tool-result: clamp(2rem, 3.2vw, 2.65rem);
+      --shroffin-space-page-top: clamp(2rem, 3.5vw, 3rem);
+      --shroffin-space-page-bottom: clamp(2.5rem, 4vw, 3.5rem);
+      --shroffin-space-section: clamp(1.75rem, 3vw, 2.75rem);
+      --shroffin-space-stack: clamp(1.15rem, 2.2vw, 1.65rem);
+      --shroffin-space-control-pad-block: 0.5rem;
+      --shroffin-space-control-pad-inline: 0.85rem;
+      --shroffin-space-masthead-start: clamp(3rem, 5vw, 4.5rem);
+      --shroffin-space-masthead-end: clamp(3.25rem, 5.5vw, 5rem);
+      --shroffin-space-hero-pad: clamp(3rem, 8vh, 5rem);
+    }
+  }
+
+  @media (min-width: 1440px) {
+    :root {
+      --shroffin-type-display: clamp(2.5rem, 4vw, 4rem);
+      --shroffin-type-display-xl: clamp(2.5rem, 5vw, 4.5rem);
+      --shroffin-type-title: clamp(1.625rem, 2.4vw, 2.375rem);
+      --shroffin-type-support: clamp(1.25rem, 1.8vw, 1.75rem);
+      --shroffin-type-lead: clamp(1.05rem, 1.5vw, 1.25rem);
+      --shroffin-type-body: clamp(1rem, 1.2vw, 1.125rem);
+      --shroffin-type-tool-input: clamp(1.35rem, 2vw, 1.75rem);
+      --shroffin-type-tool-result: clamp(2.4rem, 4vw, 3.35rem);
+      --shroffin-space-page-top: clamp(4.75rem, 8vw, 7rem);
+      --shroffin-space-page-bottom: clamp(3.5rem, 6vw, 6rem);
+      --shroffin-space-section: clamp(2.75rem, 5vw, 4.25rem);
+      --shroffin-space-stack: clamp(1.5rem, 3vw, 2rem);
+      --shroffin-space-control-pad-block: 0.55rem;
+      --shroffin-space-control-pad-inline: 0.85rem;
+      --shroffin-space-masthead-start: clamp(4rem, 8vw, 8rem);
+      --shroffin-space-masthead-end: clamp(4.5rem, 10vw, 10rem);
+      --shroffin-space-hero-pad: clamp(3.5rem, 12vh, 7.5rem);
+    }
+  }
+
+  /* Short viewports: keep type at the width band; tighten vertical gaps only. */
+  @media (max-height: 900px) {
+    :root {
+      --shroffin-space-page-top: clamp(1.25rem, 4vh, 2.25rem);
+      --shroffin-space-page-bottom: clamp(1.75rem, 5vh, 3rem);
+      --shroffin-space-section: clamp(1.25rem, 3.5vh, 2.25rem);
+      --shroffin-space-stack: clamp(0.85rem, 2.5vh, 1.35rem);
+      --shroffin-space-masthead-start: clamp(2rem, 6vh, 3.5rem);
+      --shroffin-space-masthead-end: clamp(2.25rem, 7vh, 4rem);
+      --shroffin-space-hero-pad: clamp(2rem, 6vh, 3.5rem);
+    }
   }
 
   @media (max-width: 833px) {
@@ -358,7 +439,7 @@
 
   .globalnav.flyout-open #nav-guide-flyout.globalnav-flyout.is-open,
   .globalnav.flyout-open #nav-support-flyout.globalnav-flyout.is-open,
-  .globalnav.flyout-open #nav-utilities-flyout.globalnav-flyout.is-open {
+  .globalnav.flyout-open #nav-tools-flyout.globalnav-flyout.is-open {
     max-height: calc(100vh - var(--shroffin-gn-height));
     max-height: calc(100dvh - var(--shroffin-gn-height));
     max-block-size: calc(100dvh - var(--shroffin-gn-height));
@@ -461,17 +542,17 @@
     min-inline-size: 0;
   }
 
-  /* Guide + Support + Utilities flyouts share the same type scale */
+  /* Guide + Support + Tools flyouts share the same type scale */
   #nav-guide-flyout .globalnav-submenu-header,
   #nav-support-flyout .globalnav-submenu-header,
-  #nav-utilities-flyout .globalnav-submenu-header {
+  #nav-tools-flyout .globalnav-submenu-header {
     font-size: 0.9375rem;
     font-weight: 600;
   }
 
   #nav-guide-flyout .globalnav-submenu-label,
   #nav-support-flyout .globalnav-submenu-label,
-  #nav-utilities-flyout .globalnav-submenu-label {
+  #nav-tools-flyout .globalnav-submenu-label {
     font-size: 1.1875rem;
     font-weight: 600;
     line-height: 1.25;
@@ -872,7 +953,8 @@
     margin-block-end: 0;
   }
 
-  .site-footer-list a {
+  .site-footer-list a,
+  .site-footer-list a.guide-section-link {
     display: inline-flex;
     align-items: center;
     min-block-size: 44px;
@@ -880,14 +962,19 @@
     color: rgba(0, 0, 0, 0.72);
     font-weight: 400;
     letter-spacing: -0.01em;
-    overflow-wrap: anywhere;
+    /* Wrap between words only — never mid-label (e.g. LinkedIn → LinkedI / n). */
+    overflow-wrap: normal;
+    word-break: normal;
     text-decoration: none;
     transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .site-footer-list a:hover,
   .site-footer-list a:focus-visible,
-  .site-footer-list a:active {
+  .site-footer-list a:active,
+  .site-footer-list a.guide-section-link:hover,
+  .site-footer-list a.guide-section-link:focus-visible,
+  .site-footer-list a.guide-section-link:active {
     color: #005bb5;
   }
 
@@ -1027,26 +1114,39 @@
     padding: 1.5rem 0 max(2rem, env(safe-area-inset-bottom));
   }
 
+  /*
+   * Bottom legal strip — progressive layout (not “wrap and hope”).
+   * Uses the same viewport bands as the rest of the shell (mobile → 834px+).
+   * 1. Copyright and link strip each own a full row (stable vertical structure).
+   * 2. Each link is an atomic unit (no mid-label / mid-acronym breaks).
+   * 3. Phone: stack as a list (clear structure).
+   * 4. Tablet/desktop: wrap with even gap — no pipes while multi-line wrap is likely.
+   * 5. Wide: trailing separators (::after) only when one row usually fits, so a
+   *    wrap line never starts with a pipe if space still runs short.
+   */
   .site-footer-bottom-row {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.5rem 1.875rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
     inline-size: 100%;
   }
 
   .site-footer-copy {
     margin: 0;
+    padding: 0;
   }
 
   .site-footer-legal-nav {
+    inline-size: 100%;
     min-inline-size: 0;
   }
 
   .site-footer-legal-links {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -1054,32 +1154,30 @@
 
   .site-footer-legal-links li {
     display: flex;
-    align-items: baseline;
+    align-items: center;
+    max-inline-size: 100%;
   }
 
-  .site-footer-legal-links li:not(:first-child)::before {
-    content: "";
-    align-self: center;
-    inline-size: 1px;
-    block-size: 0.85em;
-    margin-inline: 0.75rem;
-    background: var(--shroffin-rule);
-  }
-
-  .site-footer-legal-links a {
+  .site-footer-legal-links a,
+  .site-footer-legal-links a.guide-section-link {
     display: inline-flex;
     align-items: center;
-    padding-block: 0.25rem;
+    max-inline-size: 100%;
+    padding-block: 0.35rem;
     color: rgba(0, 0, 0, 0.72);
     font-weight: 400;
     letter-spacing: -0.01em;
     text-decoration: none;
+    white-space: nowrap;
     transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .site-footer-legal-links a:hover,
   .site-footer-legal-links a:focus-visible,
-  .site-footer-legal-links a:active {
+  .site-footer-legal-links a:active,
+  .site-footer-legal-links a.guide-section-link:hover,
+  .site-footer-legal-links a.guide-section-link:focus-visible,
+  .site-footer-legal-links a.guide-section-link:active {
     color: #005bb5;
   }
 
@@ -1115,6 +1213,36 @@
 
     .site-footer-list li {
       margin-block-end: 0.6rem;
+    }
+
+    .site-footer-legal-links {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      column-gap: 1.25rem;
+      row-gap: 0.375rem;
+    }
+
+    .site-footer-legal-links a {
+      padding-block: 0.25rem;
+    }
+  }
+
+  /* Near-full content rail (~1068px): one-row pipes are usually safe. */
+  @media (min-width: 1100px) {
+    .site-footer-legal-links {
+      column-gap: 0;
+      row-gap: 0.5rem;
+    }
+
+    .site-footer-legal-links li:not(:last-child)::after {
+      content: "";
+      flex: none;
+      align-self: center;
+      inline-size: 1px;
+      block-size: 0.85em;
+      margin-inline: 0.75rem;
+      background: var(--shroffin-rule);
     }
   }
 
@@ -1238,7 +1366,6 @@
     }
   }
 
-  .fundamentals-paddle,
   .guide-flip-link,
   .guide-disclosure summary {
     min-block-size: var(--shroffin-btn-touch);
@@ -1261,19 +1388,6 @@
       font-size: var(--shroffin-btn-standard-font);
       line-height: var(--shroffin-btn-standard-lh);
     }
-  }
-
-  .fundamentals-paddle {
-    inline-size: var(--shroffin-btn-icon);
-    block-size: var(--shroffin-btn-icon);
-  }
-
-  .fundamentals-card {
-    scroll-snap-stop: always;
-  }
-
-  .home-hero-sub br {
-    display: none;
   }
 
   .about-section-title,
@@ -1308,12 +1422,6 @@
   .lm-card-media img {
     max-inline-size: 100%;
     max-block-size: 100%;
-  }
-
-  @media (min-width: 48rem) {
-    .home-hero-sub br {
-      display: initial;
-    }
   }
 
   @media (max-height: 31.25rem) and (orientation: landscape) {

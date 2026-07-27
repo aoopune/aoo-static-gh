@@ -17,8 +17,8 @@
 }
 
 .calc-main {
-  padding-top: calc(var(--shroffin-gn-offset) + clamp(4.75rem, 11vw, 7rem));
-  padding-bottom: clamp(3.5rem, 8vw, 6rem);
+  padding-top: calc(var(--shroffin-gn-offset) + var(--shroffin-space-page-top));
+  padding-bottom: var(--shroffin-space-page-bottom);
 }
 
 /* Same content rail as guide / globalnav / footer: 1068px + 1rem inset. */
@@ -37,7 +37,7 @@
   align-items: center;
   font-size: 0.8125rem;
   color: var(--calc-muted);
-  margin: 0 0 1.75rem;
+  margin: 0 0 var(--shroffin-space-stack);
 }
 
 .calc-crumb a {
@@ -58,7 +58,7 @@
 }
 
 .calc-hero {
-  margin-bottom: clamp(2.75rem, 6vw, 4.25rem);
+  margin-bottom: var(--shroffin-space-section);
   max-width: 40rem;
 }
 
@@ -72,8 +72,8 @@
 }
 
 .calc-hero-title {
-  margin: 0 0 1rem;
-  font-size: clamp(2.5rem, 7vw, 4rem);
+  margin: 0 0 0.75rem;
+  font-size: var(--shroffin-type-display);
   font-weight: 600;
   letter-spacing: -0.035em;
   line-height: 1.05;
@@ -81,7 +81,7 @@
 
 .calc-hero-lead {
   margin: 0;
-  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  font-size: var(--shroffin-type-lead);
   line-height: 1.5;
   color: var(--calc-muted);
   font-weight: 400;
@@ -162,7 +162,7 @@
 
 .calc-hub-name {
   grid-column: 1;
-  font-size: clamp(1.4rem, 3vw, 1.85rem);
+  font-size: var(--shroffin-type-title);
   font-weight: 500;
   letter-spacing: -0.025em;
   color: var(--calc-ink);
@@ -194,7 +194,7 @@
 @media (min-width: 834px) {
   .calc-hub-link {
     grid-template-columns: minmax(12rem, 17rem) minmax(0, 1fr) auto;
-    align-items: baseline;
+    align-items: center;
     column-gap: 2rem;
     row-gap: 0;
     padding-block: 1.75rem;
@@ -218,7 +218,7 @@
 /* Tool workspace */
 .calc-workspace {
   display: grid;
-  gap: clamp(2rem, 5vw, 3rem);
+  gap: var(--shroffin-space-section);
   padding-block: clamp(0.5rem, 2vw, 1rem);
   border-block: 1px solid var(--calc-line);
 }
@@ -230,7 +230,7 @@
   }
 
   .calc-page.calc-dock-ready .calc-main {
-    padding-bottom: calc(clamp(3.5rem, 8vw, 6rem) + var(--calc-dock-space));
+    padding-bottom: calc(var(--shroffin-space-page-bottom) + var(--calc-dock-space));
   }
 
   .calc-readout {
@@ -241,7 +241,7 @@
 @media (min-width: 900px) {
   .calc-workspace {
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    gap: clamp(2.5rem, 5vw, 4rem);
+    gap: var(--shroffin-space-section);
     align-items: start;
   }
 
@@ -362,7 +362,7 @@
 
 .calc-controls-title,
 .calc-readout-title {
-  margin: 0 0 1.35rem;
+  margin: 0 0 var(--shroffin-space-stack);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -371,7 +371,7 @@
 }
 
 .calc-field {
-  margin: 0 0 1.85rem;
+  margin: 0 0 var(--shroffin-space-stack);
   padding-bottom: 0;
   border-bottom: 0;
 }
@@ -405,8 +405,8 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  min-height: 52px;
-  padding: 0.55rem 0.85rem;
+  min-height: 48px;
+  padding: var(--shroffin-space-control-pad-block) var(--shroffin-space-control-pad-inline);
   border: 1px solid var(--calc-line);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.72);
@@ -438,7 +438,7 @@
   border: 0;
   border-radius: 0;
   font: inherit;
-  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  font-size: var(--shroffin-type-tool-input);
   font-weight: 500;
   letter-spacing: -0.025em;
   color: var(--calc-ink);
@@ -546,12 +546,12 @@
 }
 
 .calc-readout-hero {
-  margin-bottom: 1.75rem;
+  margin-bottom: var(--shroffin-space-stack);
 }
 
 .calc-result-num {
   margin: 0 0 0.35rem;
-  font-size: clamp(2.4rem, 6vw, 3.35rem);
+  font-size: var(--shroffin-type-tool-result);
   font-weight: 600;
   letter-spacing: -0.04em;
   line-height: 1.05;
@@ -579,7 +579,7 @@
   align-items: baseline;
   gap: 1.25rem;
   font-size: 0.9375rem;
-  padding-block: 0.9rem;
+  padding-block: 0.65rem;
   border-top: 1px solid var(--calc-line-soft);
   font-variant-numeric: tabular-nums;
 }
@@ -605,13 +605,13 @@
 
 /* Assumptions */
 .calc-assumptions {
-  margin-top: clamp(2.75rem, 6vw, 4rem);
+  margin-top: var(--shroffin-space-section);
   max-width: 40rem;
 }
 
 .calc-assumptions-title {
   margin: 0 0 0.85rem;
-  font-size: clamp(1.35rem, 3vw, 1.65rem);
+  font-size: var(--shroffin-type-title);
   font-weight: 600;
   letter-spacing: -0.02em;
 }
@@ -641,7 +641,7 @@
 
 .calc-formula-eq {
   margin: 0 0 0.85rem;
-  font-size: clamp(1rem, 2.4vw, 1.15rem);
+  font-size: var(--shroffin-type-body);
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.45;
@@ -699,8 +699,8 @@
 
 /* Amortisation — optional panel (Guide estimate open/close feel) */
 .calc-amort {
-  margin-top: clamp(2.5rem, 5vw, 3.5rem);
-  padding-top: clamp(1.75rem, 4vw, 2.25rem);
+  margin-top: var(--shroffin-space-section);
+  padding-top: var(--shroffin-space-stack);
   border-top: 1px solid var(--calc-line);
 }
 
@@ -792,7 +792,7 @@
 
 .calc-amort-title {
   margin: 0 0 0.35rem;
-  font-size: clamp(1.35rem, 3vw, 1.65rem);
+  font-size: var(--shroffin-type-title);
   font-weight: 600;
   letter-spacing: -0.02em;
 }
@@ -941,13 +941,37 @@
   margin-bottom: 0;
 }
 
+/* Hint sits tight under the inputs it explains; next control keeps field rhythm */
+.calc-field-group .calc-field-grid:has(+ .calc-hint),
+.calc-field-group .calc-field:has(+ .calc-hint) {
+  margin-bottom: 0;
+}
+
 .calc-field-group .calc-hint {
   margin-top: 0.55rem;
+  margin-bottom: 0;
 }
 
 .calc-field-group .calc-field-grid + .calc-hint,
 .calc-field-group .calc-field + .calc-hint {
-  margin-top: 0;
+  margin-top: 0.55rem;
+}
+
+.calc-field-group > .calc-hint + .calc-field,
+.calc-field-group > .calc-hint + .calc-field-grid {
+  margin-top: 1.15rem;
+}
+
+#co-applicant-fields {
+  margin-top: 1.15rem;
+}
+
+#co-applicant-fields .calc-field-grid {
+  margin-bottom: 1.15rem;
+}
+
+#co-applicant-fields .calc-field-grid:last-child {
+  margin-bottom: 0;
 }
 
 .calc-field-grid {
@@ -1047,7 +1071,7 @@
 }
 
 .calc-related {
-  margin-top: clamp(2.75rem, 6vw, 3.75rem);
+  margin-top: var(--shroffin-space-section);
   padding-top: 1.5rem;
   border-top: 1px solid var(--calc-line);
 }
@@ -1112,7 +1136,7 @@
 }
 
 .calc-guide-links {
-  margin-top: clamp(2rem, 4vw, 2.75rem);
+  margin-top: var(--shroffin-space-section);
   padding-top: 1.5rem;
   border-top: 1px solid var(--calc-line);
   max-width: 40rem;

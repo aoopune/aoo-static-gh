@@ -177,7 +177,7 @@
     var brand = list && list.querySelector(".globalnav-item-brand");
     var guideItem = nav.querySelector("#nav-guide");
     var supportItem = nav.querySelector("#nav-support");
-    var utilitiesItem = nav.querySelector("#nav-utilities");
+    var toolsItem = nav.querySelector("#nav-tools");
     var aboutLink = Array.prototype.find.call(
       nav.querySelectorAll(".globalnav-content .globalnav-link"),
       function (link) {
@@ -186,26 +186,26 @@
     );
     var aboutItem = aboutLink && aboutLink.closest(".globalnav-item");
 
-    if (!list || !brand || !guideItem || !supportItem || !utilitiesItem || !aboutItem) return;
+    if (!list || !brand || !guideItem || !supportItem || !toolsItem || !aboutItem) return;
 
-    // Keep Guide → Support → Utilities → About first after the logo. Only move
+    // Keep Guide → Support → Tools → About first after the logo. Only move
     // nodes when markup is out of order so the bar does not visibly reshuffle.
-    var primaryOrder = [guideItem, supportItem, utilitiesItem, aboutItem];
+    var primaryOrder = [guideItem, supportItem, toolsItem, aboutItem];
     var needsReorder = primaryOrder.some(function (item, index) {
       return list.children[index + 1] !== item;
     });
     if (needsReorder) {
-      brand.after(guideItem, supportItem, utilitiesItem, aboutItem);
+      brand.after(guideItem, supportItem, toolsItem, aboutItem);
     }
 
     if (isCurrentHref(aboutLink.href)) aboutLink.setAttribute("aria-current", "page");
 
     var guideTrigger = nav.querySelector("#nav-guide-trigger");
     var supportTrigger = nav.querySelector("#nav-support-trigger");
-    var utilitiesTrigger = nav.querySelector("#nav-utilities-trigger");
+    var toolsTrigger = nav.querySelector("#nav-tools-trigger");
     var guideFlyout = nav.querySelector("#nav-guide-flyout");
     var supportFlyout = nav.querySelector("#nav-support-flyout");
-    var utilitiesFlyout = nav.querySelector("#nav-utilities-flyout");
+    var toolsFlyout = nav.querySelector("#nav-tools-flyout");
     var content = nav.querySelector(".globalnav-content");
 
     // Drop any leftover compact chrome (e.g. stale markup) before rebuilding.
@@ -252,14 +252,14 @@
     rootList.className = "globalnav-compact-list";
     rootList.appendChild(buildCompactRootItem("Guide", "guide"));
     rootList.appendChild(buildCompactRootItem("Support", "support"));
-    rootList.appendChild(buildCompactRootItem("Utilities", "utilities"));
+    rootList.appendChild(buildCompactRootItem("Tools", "tools"));
     appendCompactLink(rootList, aboutLink.getAttribute("href"), "About", false);
     Array.prototype.forEach.call(list.children, function (item) {
       if (
         item === brand ||
         item === guideItem ||
         item === supportItem ||
-        item === utilitiesItem ||
+        item === toolsItem ||
         item === aboutItem
       ) {
         return;
@@ -282,16 +282,16 @@
       "Support",
       getUniqueLinks(supportFlyout)
     );
-    var utilitiesPanel = buildCompactSubPanel(
-      "utilities",
-      "Utilities",
-      getUniqueLinks(utilitiesFlyout)
+    var toolsPanel = buildCompactSubPanel(
+      "tools",
+      "Tools",
+      getUniqueLinks(toolsFlyout)
     );
 
     panels.appendChild(rootPanel);
     panels.appendChild(guidePanel);
     panels.appendChild(supportPanel);
-    panels.appendChild(utilitiesPanel);
+    panels.appendChild(toolsPanel);
     viewport.appendChild(panels);
     compactTray.appendChild(viewport);
     nav.insertBefore(compactTray, guideFlyout);
@@ -299,7 +299,7 @@
     var menus = [
       { item: guideItem, trigger: guideTrigger, flyout: guideFlyout },
       { item: supportItem, trigger: supportTrigger, flyout: supportFlyout },
-      { item: utilitiesItem, trigger: utilitiesTrigger, flyout: utilitiesFlyout }
+      { item: toolsItem, trigger: toolsTrigger, flyout: toolsFlyout }
     ];
     var activeDesktopMenu = null;
     var closeTimer = null;

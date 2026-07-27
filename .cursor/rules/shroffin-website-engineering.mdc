@@ -1,0 +1,68 @@
+---
+description: Apply standard software engineering principles on the Shroffin website — no hacky or patchwork fixes
+globs: "**/*.{html,css,js}"
+alwaysApply: true
+---
+
+# Website engineering (no hacky work)
+
+**Use standard software engineering principles and fundamentals** for every website change — HTML, CSS, and JS. Prefer a clean, lasting solution over a quick patch that “works for now.” The site owner is not an engineer — do not leave fragile shortcuts that only make sense in the moment.
+
+## Principles to apply (required)
+
+Apply these fundamentals whenever they fit the task. Do not ignore them for speed.
+
+| Principle | Meaning here |
+|---|---|
+| **DRY** (Don’t Repeat Yourself) | One shared pattern; do not copy-paste and diverge |
+| **KISS** (Keep It Simple) | Simplest clear solution that is correct — not clever tricks |
+| **YAGNI** | Do not build extra systems “just in case” |
+| **Separation of concerns** | HTML = structure, CSS = look/layout, JS = behavior |
+| **Single source of truth** | Shared look/behavior lives in one place, not many copies |
+| **Root-cause fixes** | Fix why it broke; do not only hide the symptom |
+| **Consistency** | Match existing site patterns, naming, and architecture |
+| **Readable & maintainable** | Clear names; another person can understand the change |
+| **Least surprise** | Behavior should match what similar pages already do |
+| **Minimal, complete change** | Touch only what is needed; finish related states (mobile, focus, etc.) |
+
+If a change fights these principles, redesign the approach before shipping.
+
+## Core idea
+
+Find the real cause. Fix it once, in the right place, using the same patterns the rest of the site already uses. If a shortcut would only paper over the problem, do not ship it.
+
+## Always
+
+1. **Apply the principles above** — Treat them as the default bar for quality, not optional advice.
+2. **Fix the root cause** — If something looks wrong (layout, nav, motion, links), change the shared style, script, or markup that owns that behavior — not a one-off override on a single page unless that page is truly unique.
+3. **Reuse before inventing** — Check how similar UI already works (home nav, guide pages, CTAs, off-site links, motion). Extend that pattern. Do not create a second way to do the same job.
+4. **One source of truth** — Shared look and behavior live in shared CSS/JS (or one clear template pattern). Do not copy-paste large blocks across pages and then tweak each copy differently.
+5. **Match existing structure** — Keep HTML for structure, CSS for look/layout, JS for behavior. Prefer classes and existing hooks over inline styles, inline scripts, or one-off IDs used only to force a fix.
+6. **Name things clearly** — Class and file names should say what the thing is for. Avoid cryptic or throwaway names (`fix2`, `temp`, `new-new`).
+7. **Small, complete change** — Touch only what the task needs, but finish the job: related states (hover, focus, mobile, reduced motion), same-site vs off-site links, and consistency with neighboring pages.
+8. **Leave the site healthier** — Prefer deleting dead/duplicate code you replaced over commenting out “just in case” piles — except where a project rule says to preserve gated product code (e.g. education loan).
+9. **Say when it is messy** — If the only options are a proper refactor or a fragile patch, say so in plain language and recommend the proper path. Do not silently ship the patch unless the user explicitly accepts a temporary fix.
+
+## Never
+
+- Do not skip standard engineering principles to go faster.
+- Do not use “just make it work” patches: random `!important`, unexplained magic numbers, empty `catch`, hiding bugs with `display: none`, or stacking overrides until the symptom disappears.
+- Do not fork a parallel nav, button, link, or motion system when one already exists.
+- Do not copy a whole page/section and slightly rename it when a shared partial/pattern or existing page structure should be extended instead.
+- Do not leave TODO/FIXME/HACK comments as the plan without telling the user what is unfinished.
+- Do not “clean up” unrelated architecture, rewrite working systems, or delete preserved legacy code unless asked.
+- Do not invent a new design or engineering approach that fights the current site — follow established Shroffin website rules (responsive, motion, external links, brand font, product visibility).
+
+## How to decide (quick)
+
+| Situation | Do this |
+|---|---|
+| Same bug on many pages | Fix shared CSS/JS or the shared pattern |
+| One page truly special | Local change is fine — keep it minimal and named clearly |
+| Existing pattern almost fits | Extend it; do not invent a twin |
+| Proper fix is larger than the ask | Explain the tradeoff; ask before a big refactor |
+| Tempted by a shortcut | Stop — choose the root-cause fix or ask |
+
+## Quick self-check
+
+Before finishing: Did this follow standard software engineering principles (DRY, KISS, separation of concerns, root-cause fix, one source of truth)? Would another person understand it? Is there only one way this behavior works on the site? Did you fix the cause, or only the symptom? If it feels hacky, redo it the clean way.

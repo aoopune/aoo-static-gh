@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shroffin — Home loan compare (sandbox preview)</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    :root {
+      --ink: #1d1d1f;
+      --muted: #6e6e73;
+      --blue: #0071e3;
+      --blue-soft: rgba(0, 113, 227, 0.08);
+      --surface: #faf9f6;
+      --wash: #f3f1eb;
+      --line: rgba(29, 29, 31, 0.12);
+      --line-soft: rgba(29, 29, 31, 0.06);
+      --diff: rgba(0, 113, 227, 0.12);
+      --same: transparent;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --micro: 0.5s;
+      --ui: 0.85s;
+      --reveal: 1.45s;
+      --font: "Google Sans Flex", "Segoe UI", Arial, sans-serif;
+      --content: 1068px;
+      --sticky-w: 11.5rem;
+      --apply-h: 4.25rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100%;
+      color: var(--ink);
+      font-family: var(--font);
+      background:
+        radial-gradient(120% 80% at 10% -10%, rgba(0, 113, 227, 0.06), transparent 55%),
+        radial-gradient(90% 70% at 100% 0%, rgba(243, 241, 235, 0.9), transparent 50%),
+        var(--surface);
+      padding-bottom: calc(var(--apply-h) + 1.5rem);
+    }
+
+    .banner {
+      background: #1d1d1f;
+      color: #f5f5f7;
+      font-size: 0.8125rem;
+      letter-spacing: -0.01em;
+      padding: 0.65rem 1rem;
+      text-align: center;
+    }
+
+    .banner strong { font-weight: 600; }
+
+    .shell {
+      max-width: var(--content);
+      margin: 0 auto;
+      padding: 2rem max(1rem, env(safe-area-inset-left)) 3rem max(1rem, env(safe-area-inset-right));
+    }
+
+    .hero {
+      max-width: 40rem;
+      margin: 0 auto 2.5rem;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(16px);
+      animation:
+        fade-in 1.05s var(--ease) 0.1s forwards,
+        rise 1.45s var(--ease) 0.1s forwards;
+    }
+
+    @keyframes fade-in { to { opacity: 1; } }
+    @keyframes rise { to { transform: translateY(0); } }
+
+    .eyebrow {
+      margin: 0 0 0.75rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 0 0 0.85rem;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.08;
+      text-wrap: balance;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+
+    .jump {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 1.25rem;
+    }
+
+    .jump a {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 0.875rem;
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--line);
+      border-radius: 980px;
+      background: rgba(255, 255, 255, 0.55);
+      transition: background var(--micro) var(--ease), border-color var(--micro) var(--ease);
+    }
+
+    .jump a:hover { background: #fff; border-color: rgba(0, 113, 227, 0.35); }
+
+    section.block {
+      margin-bottom: 3rem;
+      scroll-margin-top: 1rem;
+    }
+
+    .block-head {
+      margin-bottom: 1rem;
+    }
+
+    .block-head h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+
+    .block-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.45;
+      max-width: 42rem;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line-soft);
+      border-radius: 1rem;
+      padding: 1.15rem 1.15rem 1.25rem;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 0.85rem;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 834px) {
+      .form-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    label.field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    label.field input,
+    label.field select {
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      text-transform: none;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 0.65rem;
+      padding: 0.7rem 0.8rem;
+      background: #fff;
+      min-height: 44px;
+      transition: border-color var(--micro) var(--ease);
+    }
+
+    label.field input:focus,
+    label.field select:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-soft);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 1rem;
+    }
+
+    .chip {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.875rem;
+      padding: 0.45rem 0.85rem;
+      min-height: 44px;
+      border-radius: 980px;
+      cursor: pointer;
+      transition: background var(--micro) var(--ease), border-color var(--micro) var(--ease), color var(--micro) var(--ease);
+    }
+
+    .chip[aria-pressed="true"] {
+      background: var(--blue-soft);
+      border-color: rgba(0, 113, 227, 0.4);
+      color: var(--blue);
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin: 1.25rem 0 0.75rem;
+    }
+
+    .toolbar-meta {
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+
+    .group-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .group-tab {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.55rem 0.85rem;
+      min-height: 44px;
+      border-radius: 980px;
+      cursor: pointer;
+      transition: background var(--micro) var(--ease), color var(--micro) var(--ease);
+    }
+
+    .group-tab[aria-selected="true"] {
+      background: var(--wash);
+      color: var(--ink);
+    }
+
+    .table-wrap {
+      position: relative;
+      border: 1px solid var(--line-soft);
+      border-radius: 0.85rem;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .table-scroll {
+      overflow: auto;
+      max-height: min(28rem, 70vh);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .table-scroll::after {
+      content: "";
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 2.5rem;
+      background: linear-gradient(to left, #fff, transparent);
+      opacity: 0.9;
+    }
+
+    @media (min-width: 834px) {
+      .table-scroll::after { display: none; }
+    }
+
+    table.compare {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.9375rem;
+      letter-spacing: -0.01em;
+    }
+
+    table.compare th,
+    table.compare td {
+      padding: 0.75rem 0.85rem;
+      border-bottom: 1px solid var(--line-soft);
+      white-space: nowrap;
+      vertical-align: middle;
+      text-align: left;
+    }
+
+    table.compare th {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: #fff;
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    table.compare th.sortable {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    table.compare th.sortable:hover { color: var(--ink); }
+
+    table.compare th .sort-ind {
+      margin-left: 0.25rem;
+      opacity: 0.45;
+    }
+
+    table.compare th[aria-sort="ascending"] .sort-ind,
+    table.compare th[aria-sort="descending"] .sort-ind {
+      opacity: 1;
+      color: var(--blue);
+    }
+
+    table.compare .sticky-col {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: #fff;
+      min-width: var(--sticky-w);
+      max-width: var(--sticky-w);
+      box-shadow: 1px 0 0 var(--line-soft);
+    }
+
+    table.compare th.sticky-col { z-index: 4; }
+
+    table.compare tbody tr {
+      transition: background var(--micro) var(--ease);
+    }
+
+    table.compare tbody tr:hover td { background: rgba(243, 241, 235, 0.45); }
+    table.compare tbody tr:hover td.sticky-col { background: #faf9f6; }
+
+    table.compare tbody tr.is-selected td { background: var(--blue-soft); }
+    table.compare tbody tr.is-selected td.sticky-col { background: #eef5fc; }
+
+    table.compare td.diff-cell { background: var(--diff) !important; }
+
+    .bank-cell {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+    }
+
+    .bank-check {
+      width: 1.15rem;
+      height: 1.15rem;
+      margin-top: 0.2rem;
+      accent-color: var(--blue);
+      flex-shrink: 0;
+    }
+
+    .bank-mark {
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 0.4rem;
+      background: var(--wash);
+      color: var(--ink);
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .bank-name {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+
+    .bank-sub {
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-top: 0.15rem;
+      white-space: normal;
+      max-width: 9rem;
+    }
+
+    .num { font-variant-numeric: tabular-nums; }
+
+    .linkish {
+      appearance: none;
+      border: none;
+      background: none;
+      color: var(--blue);
+      font: inherit;
+      font-size: 0.875rem;
+      cursor: pointer;
+      padding: 0.25rem 0;
+      min-height: 44px;
+      text-align: left;
+    }
+
+    .paddles {
+      display: flex;
+      gap: 0.35rem;
+      margin-top: 0.65rem;
+    }
+
+    @media (min-width: 834px) {
+      .paddles { display: none; }
+    }
+
+    .paddle {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 980px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--ink);
+      transition: opacity var(--micro) var(--ease);
+    }
+
+    .paddle:disabled { opacity: 0.35; cursor: default; }
+
+    .note {
+      margin: 0.75rem 0 0;
+      color: var(--muted);
+      font-size: 0.8125rem;
+      line-height: 1.45;
+    }
+
+    /* Drawer */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(29, 29, 31, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--ui) var(--ease);
+      z-index: 40;
+    }
+
+    .drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer {
+      position: fixed;
+      z-index: 41;
+      background: #fff;
+      box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.12);
+      display: flex;
+      flex-direction: column;
+      max-height: min(88vh, 40rem);
+      transform: translateY(110%);
+      transition: transform var(--ui) var(--ease);
+      inset: auto 0 0 0;
+      border-radius: 1rem 1rem 0 0;
+      padding: 1rem 1.15rem calc(1.25rem + env(safe-area-inset-bottom));
+    }
+
+    @media (min-width: 834px) {
+      .drawer {
+        inset: 0 0 0 auto;
+        width: min(26rem, 100%);
+        max-height: none;
+        height: 100%;
+        border-radius: 0;
+        transform: translateX(110%);
+        box-shadow: -8px 0 40px rgba(0, 0, 0, 0.1);
+        padding: 1.35rem 1.35rem 1.5rem;
+      }
+      .drawer.open { transform: translateX(0); }
+    }
+
+    .drawer.open { transform: translateY(0); }
+
+    .drawer-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .drawer-top h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      letter-spacing: -0.025em;
+    }
+
+    .drawer-top p {
+      margin: 0.25rem 0 0;
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+
+    .icon-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 980px;
+      cursor: pointer;
+      font-size: 1.25rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .drawer-body {
+      overflow: auto;
+      flex: 1;
+      padding-right: 0.25rem;
+    }
+
+    .drawer-section {
+      margin-bottom: 1.15rem;
+    }
+
+    .drawer-section h4 {
+      margin: 0 0 0.45rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.35rem 1rem;
+      font-size: 0.9375rem;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .kv span:last-child {
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+    }
+
+    /* Apply bar */
+    .apply-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 30;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      min-height: var(--apply-h);
+      transform: translateY(110%);
+      transition: transform var(--ui) var(--ease);
+    }
+
+    .apply-bar.visible { transform: translateY(0); }
+
+    .apply-bar .count {
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .apply-bar .count span { color: var(--blue); font-weight: 600; }
+
+    .btn-primary {
+      appearance: none;
+      border: none;
+      background: var(--blue);
+      color: #fff;
+      font: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.7rem 1.25rem;
+      min-height: 44px;
+      border-radius: 980px;
+      cursor: pointer;
+      transition: opacity var(--micro) var(--ease);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .btn-ghost {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.875rem;
+      padding: 0.55rem 1rem;
+      min-height: 44px;
+      border-radius: 980px;
+      cursor: pointer;
+    }
+
+    /* Cards alternate */
+    .cards {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 600px) {
+      .cards { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 900px) {
+      .cards { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .card {
+      border: 1px solid var(--line-soft);
+      border-radius: 0.85rem;
+      background: #fff;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .card-rate {
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .card-meta {
+      color: var(--muted);
+      font-size: 0.8125rem;
+      line-height: 1.4;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: auto;
+      padding-top: 0.35rem;
+    }
+
+    /* Diff / transpose */
+    .diff-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.9rem;
+      background: #fff;
+      border: 1px solid var(--line-soft);
+      border-radius: 0.85rem;
+      overflow: hidden;
+    }
+
+    .diff-table th,
+    .diff-table td {
+      padding: 0.7rem 0.85rem;
+      border-bottom: 1px solid var(--line-soft);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .diff-table th {
+      background: var(--wash);
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .diff-table th:first-child,
+    .diff-table td:first-child {
+      position: sticky;
+      left: 0;
+      background: #fff;
+      font-weight: 500;
+      z-index: 1;
+      box-shadow: 1px 0 0 var(--line-soft);
+      min-width: 7.5rem;
+    }
+
+    .diff-table th:first-child { background: var(--wash); z-index: 2; }
+
+    .diff-table td.is-diff {
+      background: var(--diff);
+      font-weight: 600;
+    }
+
+    .diff-empty {
+      color: var(--muted);
+      font-size: 0.95rem;
+      padding: 1.25rem;
+      border: 1px dashed var(--line);
+      border-radius: 0.85rem;
+      text-align: center;
+    }
+
+    /* Spec tables (essentials lock + presentation map) */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      background: #fff;
+      border: 1px solid var(--line-soft);
+      border-radius: 0.85rem;
+      overflow: hidden;
+    }
+
+    .spec-table th,
+    .spec-table td {
+      padding: 0.65rem 0.8rem;
+      border-bottom: 1px solid var(--line-soft);
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.4;
+    }
+
+    .spec-table th {
+      background: var(--wash);
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .spec-table tr:last-child td { border-bottom: none; }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.45rem;
+      border-radius: 0.35rem;
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .tag.drawer {
+      background: var(--wash);
+      color: var(--muted);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(var(--apply-h) + 1rem);
+      transform: translateX(-50%) translateY(1rem);
+      background: var(--ink);
+      color: #fff;
+      font-size: 0.875rem;
+      padding: 0.65rem 1rem;
+      border-radius: 980px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--ui) var(--ease), transform var(--ui) var(--ease);
+      z-index: 50;
+      max-width: min(90vw, 24rem);
+      text-align: center;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .hero { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <strong>Sandbox preview only</strong> — not linked from shroffin.com · fake sample data · Apply does nothing real
+  </div>
+
+  <div class="shell">
+    <header class="hero">
+      <p class="eyebrow">Shroffin · UX prototype</p>
+      <h1>Home loan compare</h1>
+      <p>Enter a few facts, scan the essentials, open full rules when you need them, pick several banks, apply once. This page is for design review — not live matching.</p>
+      <nav class="jump" aria-label="Jump to sections">
+        <a href="#main-compare">Recommended hybrid</a>
+        <a href="#cards-alt">Cards alternate</a>
+        <a href="#diff-mode">Selected diff</a>
+        <a href="#essentials-lock">Essentials lock</a>
+        <a href="#presentation-map">Presentation map</a>
+      </nav>
+    </header>
+
+    <!-- ========== PATTERN B + E + I + H ========== -->
+    <section class="block" id="main-compare">
+      <div class="block-head">
+        <h2>Recommended hybrid</h2>
+        <p>Patterns B (essentials + groups), H (rupee columns), E (selection bar), I (detail drawer). Sort any essentials column. On phone, bank stays sticky; swipe for more metrics.</p>
+      </div>
+
+      <div class="panel">
+        <form class="form-grid" id="inputs" autocomplete="off">
+          <label class="field">Loan amount (₹)
+            <input type="number" id="loanAmount" name="loanAmount" value="5000000" min="100000" step="100000">
+          </label>
+          <label class="field">Tenure (years)
+            <input type="number" id="tenureYears" name="tenureYears" value="20" min="1" max="30">
+          </label>
+          <label class="field">Occupation
+            <select id="occupation" name="occupation">
+              <option value="Salaried" selected>Salaried</option>
+              <option value="Self-Employed">Self-employed</option>
+            </select>
+          </label>
+          <label class="field">Purpose
+            <select id="purpose" name="purpose">
+              <option value="Regular Home Loan" selected>New home loan</option>
+              <option value="Top-up Loan">Top-up</option>
+            </select>
+          </label>
+          <label class="field">CIBIL band (optional)
+            <select id="cibil" name="cibil">
+              <option value="750+" selected>750+</option>
+              <option value="700-749">700–749</option>
+              <option value="600-699">600–699</option>
+            </select>
+          </label>
+          <label class="field">City / project (APF)
+            <input type="text" id="project" name="project" value="Pune — sample project" readonly>
+          </label>
+        </form>
+
+        <div class="chips" role="group" aria-label="Static filters">
+          <button type="button" class="chip" data-filter="floating" aria-pressed="false">Floating only</button>
+          <button type="button" class="chip" data-filter="prepay0" aria-pressed="false">Prepay 0%</button>
+          <button type="button" class="chip" data-filter="women" aria-pressed="false">Women benefit</button>
+          <button type="button" class="chip" data-filter="green" aria-pressed="false">Green home</button>
+        </div>
+
+        <div class="toolbar">
+          <p class="toolbar-meta" id="matchMeta">Showing 8 matching banks · indicative for your inputs</p>
+          <div class="group-tabs" role="tablist" aria-label="Column groups">
+            <button type="button" class="group-tab" role="tab" data-group="essentials" aria-selected="true">Essentials</button>
+            <button type="button" class="group-tab" role="tab" data-group="rate" aria-selected="false">Rate</button>
+            <button type="button" class="group-tab" role="tab" data-group="fees" aria-selected="false">Fees</button>
+            <button type="button" class="group-tab" role="tab" data-group="eligibility" aria-selected="false">Eligibility</button>
+            <button type="button" class="group-tab" role="tab" data-group="prepay" aria-selected="false">Prepayment</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-scroll" id="tableScroll">
+            <table class="compare" id="compareTable">
+              <thead id="compareHead"></thead>
+              <tbody id="compareBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="paddles">
+          <button type="button" class="paddle" id="paddleLeft" aria-label="Scroll columns left">‹</button>
+          <button type="button" class="paddle" id="paddleRight" aria-label="Scroll columns right">›</button>
+        </div>
+        <p class="note">Figures are sample / indicative. Banks decide final terms. Comparison platform — not a lender. Data version: preview-sandbox.</p>
+      </div>
+    </section>
+
+    <!-- ========== PATTERN D ========== -->
+    <section class="block" id="cards-alt">
+      <div class="block-head">
+        <h2>Alternate — card gallery</h2>
+        <p>Pattern D: softer entry for first-time borrowers. Cards do not replace the table — always one tap back to side-by-side.</p>
+      </div>
+      <div class="cards" id="cardGallery"></div>
+      <p style="margin-top: 0.85rem;">
+        <button type="button" class="btn-ghost" id="jumpToTable">Compare as table ↑</button>
+      </p>
+    </section>
+
+    <!-- ========== PATTERN C + J ========== -->
+    <section class="block" id="diff-mode">
+      <div class="block-head">
+        <h2>Selected banks — side-by-side diff</h2>
+        <p>Patterns C + J: after you tick 2–4 banks above, differences highlight softly. Identical cells stay quiet. Best for deep decide before Apply once.</p>
+      </div>
+      <div id="diffMount"></div>
+    </section>
+
+    <!-- ========== ESSENTIALS LOCK ========== -->
+    <section class="block" id="essentials-lock">
+      <div class="block-head">
+        <h2>v1 essentials lock</h2>
+        <p>Decision columns shown by default vs fields that stay in the bank detail drawer. Locked for this prototype; refine later with real JSON.</p>
+      </div>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th>Decision job</th>
+            <th>UI column</th>
+            <th>Where</th>
+            <th>Source idea (Offers sheet)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>What do I pay monthly?</td>
+            <td>Indicative EMI</td>
+            <td><span class="tag">Essentials</span></td>
+            <td>User amount + tenure + matched ROI</td>
+          </tr>
+          <tr>
+            <td>What’s the rate?</td>
+            <td>ROI % + Floating / Fixed</td>
+            <td><span class="tag">Essentials</span></td>
+            <td><code>roi</code>, <code>rate_type</code> (+ women / green ROI when flags on)</td>
+          </tr>
+          <tr>
+            <td>Upfront to bank?</td>
+            <td>Processing fee ₹</td>
+            <td><span class="tag">Essentials</span></td>
+            <td>fee % / flat / min / max + amount</td>
+          </tr>
+          <tr>
+            <td>Can I exit early?</td>
+            <td>Prepay</td>
+            <td><span class="tag">Essentials</span></td>
+            <td><code>prepayment_applicable</code> + %</td>
+          </tr>
+          <tr>
+            <td>Who is this offer?</td>
+            <td>Scheme line under bank name</td>
+            <td><span class="tag">Essentials</span></td>
+            <td><code>scheme</code>, <code>purpose</code></td>
+          </tr>
+          <tr>
+            <td>Rate build-up</td>
+            <td>Benchmark, markup, discounts</td>
+            <td><span class="tag drawer">Drawer / Rate group</span></td>
+            <td><code>benchmark_*</code>, premiums, <code>discount</code></td>
+          </tr>
+          <tr>
+            <td>Age / amount / tenure caps</td>
+            <td>Eligibility band that matched</td>
+            <td><span class="tag drawer">Drawer / Eligibility</span></td>
+            <td><code>age_*</code>, <code>req_*</code>, CIBIL bands</td>
+          </tr>
+          <tr>
+            <td>Late payment rules</td>
+            <td>Overdue charges</td>
+            <td><span class="tag drawer">Drawer</span></td>
+            <td><code>overdue_*</code> + Slab_Table</td>
+          </tr>
+          <tr>
+            <td>Other bank charges</td>
+            <td>Admin, docs, CIC, etc.</td>
+            <td><span class="tag drawer">Drawer</span></td>
+            <td>Other charges sheet</td>
+          </tr>
+          <tr>
+            <td>Project approved?</td>
+            <td>APF signal</td>
+            <td><span class="tag drawer">Drawer</span></td>
+            <td>APF as per Banks</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ========== PRESENTATION MAP ========== -->
+    <section class="block" id="presentation-map">
+      <div class="block-head">
+        <h2>Presentation map</h2>
+        <p>How Excel layers map to UI groups — for a future JSON publish script. Not wired in this sandbox.</p>
+      </div>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th>UI group</th>
+            <th>Customer sees</th>
+            <th>Excel / sheet source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Essentials</strong></td>
+            <td>EMI, ROI, rate type, processing fee ₹, prepay summary</td>
+            <td>Offers (computed + key fields)</td>
+          </tr>
+          <tr>
+            <td><strong>Rate</strong></td>
+            <td>Floating/fixed, ROI, women/green ROI, benchmark stack</td>
+            <td>Offers rate columns; Master_data interest rate link</td>
+          </tr>
+          <tr>
+            <td><strong>Fees</strong></td>
+            <td>Processing fee breakdown; sample other charges</td>
+            <td>Offers fee_* ; Other charges</td>
+          </tr>
+          <tr>
+            <td><strong>Eligibility</strong></td>
+            <td>Occupation, CIBIL band matched, age, amount/tenure limits</td>
+            <td>Offers bands + req_* + age_*</td>
+          </tr>
+          <tr>
+            <td><strong>Prepayment</strong></td>
+            <td>Self vs takeover %, charge base</td>
+            <td>Offers prepayment_*</td>
+          </tr>
+          <tr>
+            <td><strong>Other</strong> (drawer)</td>
+            <td>Overdue, govt stamp notes, APF project hit</td>
+            <td>Offers overdue_* ; Govt. Charges ; APF ; Slab_Table</td>
+          </tr>
+          <tr>
+            <td><strong>Inputs → match</strong></td>
+            <td>Collapse many band rows → one decision row per bank</td>
+            <td>Client rules on Offers (v1 in-browser; not in this file)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- Drawer -->
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+  <aside class="drawer" id="drawer" aria-hidden="true" role="dialog" aria-labelledby="drawerTitle">
+    <div class="drawer-top">
+      <div>
+        <h3 id="drawerTitle">Bank</h3>
+        <p id="drawerSub"></p>
+      </div>
+      <button type="button" class="icon-btn" id="drawerClose" aria-label="Close details">×</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </aside>
+
+  <!-- Apply bar (Pattern E) -->
+  <div class="apply-bar" id="applyBar" aria-live="polite">
+    <p class="count"><span id="selectedCount">0</span> selected</p>
+    <button type="button" class="btn-ghost" id="compareSelectedBtn">Compare selected</button>
+    <button type="button" class="btn-primary" id="applyBtn" disabled>Apply once</button>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+(function () {
+  "use strict";
+
+  /** Fake matched banks — illustrative only */
+  const BANKS = [
+    { id: "sbi", name: "State Bank of India", short: "SBI", scheme: "Home Loan", rateType: "Floating", roi: 8.40, feePct: 0.35, feeMin: 2000, feeMax: 10000, prepay: 0, women: false, green: false, cibil: "750+", ageMin: 21, ageMax: 70, benchmark: "Repo + markup", markup: "2.90%", overdue: "2% p.a. on overdue", otherCharge: "CIC ₹50 + GST" },
+    { id: "hdfc", name: "HDFC Bank", short: "HDFC", scheme: "Home Loan", rateType: "Floating", roi: 8.70, feePct: 0.50, feeMin: 3000, feeMax: 15000, prepay: 0, women: true, green: false, cibil: "750+", ageMin: 21, ageMax: 65, benchmark: "Repo + markup", markup: "3.15%", overdue: "18% p.a. on overdue EMI", otherCharge: "Admin ₹0 (waived campaign)" },
+    { id: "axis", name: "Axis Bank", short: "AXIS", scheme: "Home Loan", rateType: "Floating", roi: 8.75, feePct: 1.00, feeMin: 10000, feeMax: 25000, prepay: 0, women: false, green: true, cibil: "750+", ageMin: 21, ageMax: 70, benchmark: "Repo + markup", markup: "3.25%", overdue: "24% p.a.", otherCharge: "Document retrieval ₹500" },
+    { id: "bob", name: "Bank of Baroda", short: "BOB", scheme: "Home Loan", rateType: "Floating", roi: 8.40, feePct: 0.50, feeMin: 2500, feeMax: 15000, prepay: 0, women: false, green: false, cibil: "750+", ageMin: 21, ageMax: 70, benchmark: "Repo + markup", markup: "2.85%", overdue: "2% p.a.", otherCharge: "Statement duplicate ₹250" },
+    { id: "pnb", name: "Punjab National Bank", short: "PNB", scheme: "Housing Loan For Public", rateType: "Floating", roi: 8.35, feePct: 0.35, feeMin: 2500, feeMax: 15000, prepay: 0, women: false, green: false, cibil: "750+", ageMin: 21, ageMax: 70, benchmark: "Repo + markup + BSP", markup: "2.75%", overdue: "2% p.a.", otherCharge: "Nil processing for some categories" },
+    { id: "canara", name: "Canara Bank", short: "CAN", scheme: "Home Loan", rateType: "Floating", roi: 8.45, feePct: 0.50, feeMin: 1500, feeMax: 10000, prepay: 0, women: false, green: false, cibil: "750+", ageMin: 21, ageMax: 70, benchmark: "Repo + markup", markup: "2.95%", overdue: "2% p.a.", otherCharge: "Property valuation as applicable" },
+    { id: "ubi", name: "Union Bank of India", short: "UBI", scheme: "Home Loan", rateType: "Floating", roi: 8.35, feePct: 0.50, feeMin: 2500, feeMax: 15000, prepay: 0, women: true, green: true, cibil: "750+", ageMin: 21, ageMax: 70, benchmark: "Repo + markup", markup: "2.80%", overdue: "2% p.a.", otherCharge: "Green discount sample −0.05%" },
+    { id: "bom", name: "Bank of Maharashtra", short: "BOM", scheme: "Home Loan", rateType: "Fixed", roi: 8.90, feePct: 0.50, feeMin: 2000, feeMax: 12000, prepay: 2, women: true, green: true, cibil: "750+", ageMin: 21, ageMax: 70, benchmark: "Fixed premium", markup: "—", overdue: "2% p.a.", otherCharge: "Fixed-rate prepay 2% sample" }
+  ];
+
+  const GROUPS = {
+    essentials: [
+      { key: "roi", label: "ROI", type: "pct", sort: "num" },
+      { key: "emi", label: "Indicative EMI", type: "inr", sort: "num" },
+      { key: "fee", label: "Processing fee", type: "inr", sort: "num" },
+      { key: "prepayLabel", label: "Prepay", type: "text", sort: "text" },
+      { key: "rateType", label: "Rate type", type: "text", sort: "text" }
+    ],
+    rate: [
+      { key: "roi", label: "ROI", type: "pct", sort: "num" },
+      { key: "rateType", label: "Rate type", type: "text", sort: "text" },
+      { key: "benchmark", label: "Benchmark", type: "text", sort: "text" },
+      { key: "markup", label: "Markup", type: "text", sort: "text" },
+      { key: "womenLabel", label: "Women", type: "text", sort: "text" },
+      { key: "greenLabel", label: "Green", type: "text", sort: "text" }
+    ],
+    fees: [
+      { key: "fee", label: "Processing fee", type: "inr", sort: "num" },
+      { key: "feePct", label: "Fee %", type: "pct", sort: "num" },
+      { key: "otherCharge", label: "Other (sample)", type: "text", sort: "text" }
+    ],
+    eligibility: [
+      { key: "cibil", label: "CIBIL band", type: "text", sort: "text" },
+      { key: "ageRange", label: "Age", type: "text", sort: "text" },
+      { key: "occupationNote", label: "Occupation fit", type: "text", sort: "text" }
+    ],
+    prepay: [
+      { key: "prepayLabel", label: "Prepay", type: "text", sort: "text" },
+      { key: "prepay", label: "Prepay %", type: "num", sort: "num" },
+      { key: "rateType", label: "Rate type", type: "text", sort: "text" }
+    ]
+  };
+
+  const state = {
+    group: "essentials",
+    filters: { floating: false, prepay0: false, women: false, green: false },
+    selected: new Set(),
+    sortKey: "roi",
+    sortDir: "asc",
+    rows: []
+  };
+
+  const el = {
+    amount: document.getElementById("loanAmount"),
+    tenure: document.getElementById("tenureYears"),
+    occupation: document.getElementById("occupation"),
+    head: document.getElementById("compareHead"),
+    body: document.getElementById("compareBody"),
+    meta: document.getElementById("matchMeta"),
+    scroll: document.getElementById("tableScroll"),
+    applyBar: document.getElementById("applyBar"),
+    selectedCount: document.getElementById("selectedCount"),
+    applyBtn: document.getElementById("applyBtn"),
+    compareSelectedBtn: document.getElementById("compareSelectedBtn"),
+    drawer: document.getElementById("drawer"),
+    drawerBackdrop: document.getElementById("drawerBackdrop"),
+    drawerTitle: document.getElementById("drawerTitle"),
+    drawerSub: document.getElementById("drawerSub"),
+    drawerBody: document.getElementById("drawerBody"),
+    drawerClose: document.getElementById("drawerClose"),
+    cards: document.getElementById("cardGallery"),
+    diffMount: document.getElementById("diffMount"),
+    toast: document.getElementById("toast"),
+    paddleLeft: document.getElementById("paddleLeft"),
+    paddleRight: document.getElementById("paddleRight")
+  };
+
+  function formatInr(n) {
+    return "₹" + Math.round(n).toLocaleString("en-IN");
+  }
+
+  function formatPct(n) {
+    return n.toFixed(2) + "%";
+  }
+
+  function emi(principal, annualPct, years) {
+    const r = annualPct / 12 / 100;
+    const n = years * 12;
+    if (r === 0) return principal / n;
+    return (principal * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  }
+
+  function feeAmount(bank, principal) {
+    const raw = principal * (bank.feePct / 100);
+    return Math.min(bank.feeMax, Math.max(bank.feeMin, raw));
+  }
+
+  function enrich(bank) {
+    const principal = Number(el.amount.value) || 5000000;
+    const years = Number(el.tenure.value) || 20;
+    const occ = el.occupation.value;
+    return {
+      ...bank,
+      emi: emi(principal, bank.roi, years),
+      fee: feeAmount(bank, principal),
+      prepayLabel: bank.prepay === 0 ? "0% (floating)" : bank.prepay + "%",
+      womenLabel: bank.women ? "Yes" : "—",
+      greenLabel: bank.green ? "Yes" : "—",
+      ageRange: bank.ageMin + "–" + bank.ageMax,
+      occupationNote: "Fits " + occ + " (sample)"
+    };
+  }
+
+  function filteredBanks() {
+    return BANKS.filter(function (b) {
+      if (state.filters.floating && b.rateType !== "Floating") return false;
+      if (state.filters.prepay0 && b.prepay !== 0) return false;
+      if (state.filters.women && !b.women) return false;
+      if (state.filters.green && !b.green) return false;
+      return true;
+    }).map(enrich);
+  }
+
+  function sortRows(rows) {
+    const key = state.sortKey;
+    const dir = state.sortDir === "asc" ? 1 : -1;
+    return rows.slice().sort(function (a, b) {
+      const av = a[key];
+      const bv = b[key];
+      if (typeof av === "number" && typeof bv === "number") return (av - bv) * dir;
+      return String(av).localeCompare(String(bv), "en", { sensitivity: "base" }) * dir;
+    });
+  }
+
+  function cellValue(row, col) {
+    const v = row[col.key];
+    if (col.type === "pct" && typeof v === "number") return formatPct(v);
+    if (col.type === "inr" && typeof v === "number") return formatInr(v);
+    if (col.type === "num" && typeof v === "number") return String(v);
+    return v == null ? "—" : String(v);
+  }
+
+  function renderTable() {
+    const cols = GROUPS[state.group];
+    state.rows = sortRows(filteredBanks());
+    el.meta.textContent =
+      "Showing " + state.rows.length + " matching banks · indicative for your inputs";
+
+    let headHtml = "<tr>";
+    headHtml += '<th class="sticky-col" scope="col">Bank</th>';
+    cols.forEach(function (col) {
+      const aria =
+        state.sortKey === col.key
+          ? state.sortDir === "asc"
+            ? ' aria-sort="ascending"'
+            : ' aria-sort="descending"'
+          : ' aria-sort="none"';
+      const ind =
+        state.sortKey === col.key ? (state.sortDir === "asc" ? " ↑" : " ↓") : " ↕";
+      headHtml +=
+        '<th class="sortable" scope="col" data-sort="' +
+        col.key +
+        '"' +
+        aria +
+        ">" +
+        col.label +
+        '<span class="sort-ind">' +
+        ind +
+        "</span></th>";
+    });
+    headHtml += '<th scope="col">Details</th></tr>';
+    el.head.innerHTML = headHtml;
+
+    const selectedIds = Array.from(state.selected);
+    const diffKeys =
+      selectedIds.length >= 2 && selectedIds.length <= 4
+        ? essentialsDiffKeys(selectedIds)
+        : new Set();
+
+    el.body.innerHTML = state.rows
+      .map(function (row) {
+        const checked = state.selected.has(row.id) ? " checked" : "";
+        const selClass = state.selected.has(row.id) ? " is-selected" : "";
+        let cells = cols
+          .map(function (col) {
+            const diff =
+              state.group === "essentials" &&
+              state.selected.has(row.id) &&
+              diffKeys.has(col.key)
+                ? " diff-cell"
+                : "";
+            return (
+              '<td class="num' +
+              diff +
+              '">' +
+              cellValue(row, col) +
+              "</td>"
+            );
+          })
+          .join("");
+        return (
+          '<tr class="' +
+          selClass.trim() +
+          '" data-id="' +
+          row.id +
+          '">' +
+          '<td class="sticky-col">' +
+          '<div class="bank-cell">' +
+          '<input class="bank-check" type="checkbox" data-id="' +
+          row.id +
+          '" aria-label="Select ' +
+          row.name +
+          '"' +
+          checked +
+          ">" +
+          '<span class="bank-mark" aria-hidden="true">' +
+          row.short.slice(0, 3) +
+          "</span>" +
+          "<div>" +
+          '<div class="bank-name">' +
+          row.name +
+          "</div>" +
+          '<div class="bank-sub">' +
+          row.scheme +
+          "</div>" +
+          "</div></div></td>" +
+          cells +
+          '<td><button type="button" class="linkish" data-detail="' +
+          row.id +
+          '">Full rules</button></td>' +
+          "</tr>"
+        );
+      })
+      .join("");
+
+    renderCards();
+    renderDiff();
+    updateApplyBar();
+  }
+
+  function essentialsDiffKeys(ids) {
+    const subset = BANKS.filter(function (b) {
+      return ids.indexOf(b.id) !== -1;
+    }).map(enrich);
+    const keys = ["roi", "emi", "fee", "prepayLabel", "rateType"];
+    const differing = new Set();
+    keys.forEach(function (k) {
+      const vals = subset.map(function (r) {
+        return String(r[k]);
+      });
+      if (new Set(vals).size > 1) differing.add(k);
+    });
+    return differing;
+  }
+
+  function renderCards() {
+    el.cards.innerHTML = state.rows
+      .map(function (row) {
+        const checked = state.selected.has(row.id);
+        return (
+          '<article class="card">' +
+          '<div class="card-top">' +
+          '<span class="bank-mark">' +
+          row.short.slice(0, 3) +
+          "</span>" +
+          "<div><div class=\"bank-name\">" +
+          row.name +
+          '</div><div class="card-meta">' +
+          row.rateType +
+          " · " +
+          row.prepayLabel +
+          "</div></div></div>" +
+          '<div class="card-rate">' +
+          formatPct(row.roi) +
+          "</div>" +
+          '<div class="card-meta">EMI ' +
+          formatInr(row.emi) +
+          " · Fee " +
+          formatInr(row.fee) +
+          "</div>" +
+          '<div class="card-actions">' +
+          '<button type="button" class="chip" data-card-select="' +
+          row.id +
+          '" aria-pressed="' +
+          checked +
+          '">' +
+          (checked ? "Selected" : "Select") +
+          "</button>" +
+          '<button type="button" class="linkish" data-detail="' +
+          row.id +
+          '">Full rules</button>' +
+          "</div></article>"
+        );
+      })
+      .join("");
+  }
+
+  function renderDiff() {
+    const ids = Array.from(state.selected);
+    if (ids.length < 2) {
+      el.diffMount.innerHTML =
+        '<p class="diff-empty">Select 2–4 banks in the table (or cards) to see a side-by-side diff here.</p>';
+      return;
+    }
+    if (ids.length > 4) {
+      el.diffMount.innerHTML =
+        '<p class="diff-empty">You have ' +
+        ids.length +
+        " banks selected. Diff works best with 2–4 — deselect a few, or keep going to Apply once.</p>";
+      return;
+    }
+
+    const subset = ids
+      .map(function (id) {
+        return state.rows.find(function (r) {
+          return r.id === id;
+        }) || enrich(BANKS.find(function (b) { return b.id === id; }));
+      })
+      .filter(Boolean);
+
+    const attrs = [
+      { key: "roi", label: "ROI", format: function (r) { return formatPct(r.roi); } },
+      { key: "emi", label: "Indicative EMI", format: function (r) { return formatInr(r.emi); } },
+      { key: "fee", label: "Processing fee", format: function (r) { return formatInr(r.fee); } },
+      { key: "prepayLabel", label: "Prepay", format: function (r) { return r.prepayLabel; } },
+      { key: "rateType", label: "Rate type", format: function (r) { return r.rateType; } },
+      { key: "womenLabel", label: "Women benefit", format: function (r) { return r.womenLabel; } },
+      { key: "greenLabel", label: "Green home", format: function (r) { return r.greenLabel; } }
+    ];
+
+    let html = '<div style="overflow:auto"><table class="diff-table"><thead><tr><th>Attribute</th>';
+    subset.forEach(function (r) {
+      html += "<th>" + r.name + "</th>";
+    });
+    html += "</tr></thead><tbody>";
+
+    attrs.forEach(function (attr) {
+      const vals = subset.map(function (r) {
+        return attr.format(r);
+      });
+      const differs = new Set(vals).size > 1;
+      html += "<tr><td>" + attr.label + "</td>";
+      vals.forEach(function (v) {
+        html +=
+          '<td class="' +
+          (differs ? "is-diff" : "") +
+          '">' +
+          v +
+          "</td>";
+      });
+      html += "</tr>";
+    });
+    html += "</tbody></table></div>";
+    el.diffMount.innerHTML = html;
+  }
+
+  function updateApplyBar() {
+    const n = state.selected.size;
+    el.selectedCount.textContent = String(n);
+    el.applyBtn.disabled = n === 0;
+    if (n > 0) el.applyBar.classList.add("visible");
+    else el.applyBar.classList.remove("visible");
+  }
+
+  function openDrawer(id) {
+    const row =
+      state.rows.find(function (r) {
+        return r.id === id;
+      }) || enrich(BANKS.find(function (b) { return b.id === id; }));
+    if (!row) return;
+
+    el.drawerTitle.textContent = row.name;
+    el.drawerSub.textContent = row.scheme + " · matched sample band · indicative";
+    el.drawerBody.innerHTML =
+      sectionHtml("Rate", [
+        ["ROI", formatPct(row.roi)],
+        ["Rate type", row.rateType],
+        ["Benchmark", row.benchmark],
+        ["Markup (sample)", row.markup],
+        ["Women benefit", row.womenLabel],
+        ["Green home", row.greenLabel]
+      ]) +
+      sectionHtml("Fees", [
+        ["Processing fee", formatInr(row.fee)],
+        ["Fee %", formatPct(row.feePct)],
+        ["Other charges (sample)", row.otherCharge]
+      ]) +
+      sectionHtml("Eligibility", [
+        ["CIBIL band matched", row.cibil],
+        ["Age", row.ageRange],
+        ["Occupation", row.occupationNote]
+      ]) +
+      sectionHtml("Prepayment", [
+        ["Summary", row.prepayLabel],
+        ["Self prepay %", String(row.prepay)]
+      ]) +
+      sectionHtml("Other", [
+        ["Overdue (sample)", row.overdue],
+        ["APF", "Sample project listed for this bank (demo)"],
+        ["Official rates", "Would link off-site with ↗ pattern on live site"]
+      ]);
+
+    el.drawerBackdrop.hidden = false;
+    requestAnimationFrame(function () {
+      el.drawerBackdrop.classList.add("open");
+      el.drawer.classList.add("open");
+      el.drawer.setAttribute("aria-hidden", "false");
+    });
+  }
+
+  function sectionHtml(title, pairs) {
+    return (
+      '<div class="drawer-section"><h4>' +
+      title +
+      "</h4>" +
+      pairs
+        .map(function (p) {
+          return (
+            '<div class="kv"><span>' +
+            p[0] +
+            "</span><span>" +
+            p[1] +
+            "</span></div>"
+          );
+        })
+        .join("") +
+      "</div>"
+    );
+  }
+
+  function closeDrawer() {
+    el.drawer.classList.remove("open");
+    el.drawerBackdrop.classList.remove("open");
+    el.drawer.setAttribute("aria-hidden", "true");
+    setTimeout(function () {
+      if (!el.drawer.classList.contains("open")) el.drawerBackdrop.hidden = true;
+    }, 900);
+  }
+
+  function showToast(msg) {
+    el.toast.textContent = msg;
+    el.toast.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(function () {
+      el.toast.classList.remove("show");
+    }, 2800);
+  }
+
+  function toggleSelect(id) {
+    if (state.selected.has(id)) state.selected.delete(id);
+    else state.selected.add(id);
+    if (state.selected.size > 6) {
+      showToast("You selected " + state.selected.size + " banks. During a real apply, CIBIL may be checked at each lender.");
+    }
+    renderTable();
+  }
+
+  /* Events */
+  document.querySelectorAll(".group-tab").forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      state.group = tab.getAttribute("data-group");
+      document.querySelectorAll(".group-tab").forEach(function (t) {
+        t.setAttribute("aria-selected", String(t === tab));
+      });
+      state.sortKey = GROUPS[state.group][0].key;
+      state.sortDir = "asc";
+      renderTable();
+    });
+  });
+
+  document.querySelectorAll(".chip[data-filter]").forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      const key = chip.getAttribute("data-filter");
+      state.filters[key] = !state.filters[key];
+      chip.setAttribute("aria-pressed", String(state.filters[key]));
+      renderTable();
+    });
+  });
+
+  ["loanAmount", "tenureYears", "occupation", "purpose", "cibil"].forEach(function (id) {
+    const node = document.getElementById(id);
+    if (node) node.addEventListener("change", renderTable);
+    if (node) node.addEventListener("input", renderTable);
+  });
+
+  el.head.addEventListener("click", function (e) {
+    const th = e.target.closest("th.sortable");
+    if (!th) return;
+    const key = th.getAttribute("data-sort");
+    if (state.sortKey === key) state.sortDir = state.sortDir === "asc" ? "desc" : "asc";
+    else {
+      state.sortKey = key;
+      state.sortDir = "asc";
+    }
+    renderTable();
+  });
+
+  document.body.addEventListener("click", function (e) {
+    const check = e.target.closest(".bank-check");
+    if (check) {
+      toggleSelect(check.getAttribute("data-id"));
+      return;
+    }
+    const cardSel = e.target.closest("[data-card-select]");
+    if (cardSel) {
+      toggleSelect(cardSel.getAttribute("data-card-select"));
+      return;
+    }
+    const detail = e.target.closest("[data-detail]");
+    if (detail) {
+      openDrawer(detail.getAttribute("data-detail"));
+    }
+  });
+
+  el.drawerClose.addEventListener("click", closeDrawer);
+  el.drawerBackdrop.addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeDrawer();
+  });
+
+  el.applyBtn.addEventListener("click", function () {
+    showToast("Sandbox only — Apply once would verify & send your packet on the live product.");
+  });
+
+  el.compareSelectedBtn.addEventListener("click", function () {
+    document.getElementById("diff-mode").scrollIntoView({ behavior: "smooth" });
+  });
+
+  document.getElementById("jumpToTable").addEventListener("click", function () {
+    document.getElementById("main-compare").scrollIntoView({ behavior: "smooth" });
+  });
+
+  el.paddleLeft.addEventListener("click", function () {
+    el.scroll.scrollBy({ left: -200, behavior: "smooth" });
+  });
+  el.paddleRight.addEventListener("click", function () {
+    el.scroll.scrollBy({ left: 200, behavior: "smooth" });
+  });
+
+  renderTable();
+})();
+  </script>
+</body>
+</html>

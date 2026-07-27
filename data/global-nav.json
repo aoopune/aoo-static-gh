@@ -1,0 +1,15 @@
+{
+  "primaryLabels": ["Guide", "Support", "Tools", "About"],
+  "flyoutIds": [
+    "nav-guide-flyout",
+    "nav-support-flyout",
+    "nav-tools-flyout"
+  ],
+  "compactRootLabels": ["Guide", "Support", "Tools", "About"],
+  "sourceOfTruth": "partials/global-nav.html",
+  "syncScript": "scripts/sync-site-nav.js",
+  "notes": {
+    "localnavExclusive": "While Guide localnav is open, globalnav is hidden (localnav z-index above shell nav).",
+    "editRule": "Edit partials/global-nav.html then run npm run build:nav. Do not hand-edit nav blocks in page HTML."
+  }
+}

@@ -53,7 +53,7 @@
   box-sizing: border-box;
   min-height: calc(100svh - var(--about-nav-bar));
   min-height: calc(100dvh - var(--about-nav-bar));
-  padding: clamp(48px, 8vw, 80px) 0;
+  padding: var(--shroffin-space-section) 0;
   text-align: center;
 }
 
@@ -69,7 +69,7 @@
   margin: 0 auto;
   max-width: 14em;
   color: var(--about-ink);
-  font-size: clamp(32px, 6.5vw, 56px);
+  font-size: var(--shroffin-type-display-xl);
   font-weight: 600;
   line-height: 1.12;
 }
@@ -78,7 +78,7 @@
   margin: 0 auto;
   max-width: 28em;
   color: var(--about-muted);
-  font-size: clamp(17px, 2.4vw, 21px);
+  font-size: var(--shroffin-type-lead);
   font-weight: 400;
   line-height: 1.4;
 }
@@ -109,11 +109,11 @@
    Keep one paper surface through the story. Space separates sections.
    Use a tinted band only for the close CTA — not every block. */
 .about-band {
-  padding: clamp(64px, 11vw, 112px) 0;
+  padding: var(--shroffin-space-section) 0;
 }
 
 .about-band--statement {
-  padding: clamp(40px, 8vw, 72px) 0 clamp(64px, 11vw, 112px);
+  padding: var(--shroffin-space-stack) 0 var(--shroffin-space-section);
 }
 
 .about-band--deep {
@@ -127,7 +127,7 @@
 .about-section-title {
   margin: 0 0 24px;
   color: var(--about-ink);
-  font-size: clamp(28px, 4.5vw, 40px);
+  font-size: var(--shroffin-type-title);
   font-weight: 600;
   line-height: 1.12;
 }
@@ -135,7 +135,7 @@
 .about-section-title--lone {
   margin: 0;
   max-width: 16em;
-  font-size: clamp(32px, 5.5vw, 48px);
+  font-size: var(--shroffin-type-display);
   line-height: 1.1;
 }
 
@@ -143,7 +143,7 @@
   margin: 0 0 20px;
   max-width: var(--about-read);
   color: var(--about-ink-soft);
-  font-size: clamp(17px, 2.2vw, 19px);
+  font-size: var(--shroffin-type-lead);
   font-weight: 400;
   line-height: 1.47059;
 }
@@ -152,31 +152,64 @@
   margin-bottom: 0;
 }
 
-/* ——— Gap beats ——— */
-.about-gap-list {
-  list-style: none;
-  margin: 28px 0 0;
-  padding: 0;
-  max-width: 40em;
+.about-band--center {
+  text-align: center;
 }
 
-.about-gap-list li {
-  position: relative;
+.about-band--center .about-section-title {
+  margin: 0 auto 28px;
+  max-width: 12em;
+  font-size: var(--shroffin-type-display);
+  line-height: 1.1;
+}
+
+.about-roots-cols {
+  display: grid;
+  gap: 24px;
+  margin: 0 auto;
+  max-width: 28em;
+  text-align: left;
+}
+
+.about-roots-cols .about-section-body {
   margin: 0;
-  padding: 16px 0 16px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  color: var(--about-ink);
-  font-size: clamp(17px, 2.2vw, 19px);
-  line-height: 1.45;
+  max-width: none;
+  color: var(--about-muted);
+  font-size: var(--shroffin-type-body);
+  line-height: 1.52947;
 }
 
-.about-gap-list li:last-child {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  color: var(--about-ink-soft);
-  font-weight: 500;
+.about-roots-cols .about-section-body strong {
+  color: var(--about-ink);
+  font-weight: 600;
+}
+
+.about-roots-more {
+  margin: 28px 0 0;
+  text-align: center;
+}
+
+/* Story body only — do not paint shared footer off-site links blue. */
+.about-page main .guide-section-link {
+  color: var(--about-blue);
+  text-decoration: none;
+  border-bottom: 0;
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.about-page main .guide-section-link:hover,
+.about-page main .guide-section-link:focus-visible,
+.about-page main .guide-section-link:active {
+  color: #0076df;
+  text-decoration: none;
 }
 
 /* ——— Founder ——— */
+.about-band--founder {
+  text-align: center;
+  padding-top: var(--shroffin-space-masthead-start);
+}
+
 .about-founder-role {
   margin: 0 0 12px;
   color: var(--about-muted);
@@ -186,131 +219,20 @@
 }
 
 .about-founder-name {
-  margin: 0 0 22px;
+  margin: 0 auto 22px;
+  max-width: 12em;
   color: var(--about-ink);
-  font-size: clamp(36px, 7vw, 56px);
+  font-size: var(--shroffin-type-display);
   font-weight: 600;
-  line-height: 1.05;
+  line-height: 1.1;
 }
 
 .about-founder-copy {
-  margin: 0;
-  max-width: 32em;
-  color: var(--about-ink-soft);
-  font-size: clamp(17px, 2.2vw, 19px);
-  line-height: 1.47059;
-}
-
-/* ——— Power flip sticky scrub ——— */
-.about-flip {
-  --progress: 0;
-  position: relative;
-  min-height: 140vh;
-  background: var(--about-paper);
-}
-
-.about-flip-sticky {
-  position: sticky;
-  top: var(--about-nav);
-  display: flex;
-  align-items: center;
-  min-height: calc(100svh - var(--about-nav));
-  min-height: calc(100dvh - var(--about-nav));
-  box-sizing: border-box;
-  padding: clamp(32px, 5vw, 56px) 0;
-  overflow: hidden;
-}
-
-.about-flip-stage {
-  width: min(var(--about-max), calc(100% - 2 * var(--about-gutter)));
-  margin-inline: auto;
-  display: grid;
-  gap: clamp(28px, 5vw, 48px);
-}
-
-.about-flip-copy {
-  max-width: 22em;
-}
-
-.about-flip-title {
-  margin: 0 0 12px;
-  color: var(--about-ink);
-  font-size: clamp(28px, 4.5vw, 40px);
-  font-weight: 600;
-  line-height: 1.12;
-}
-
-.about-flip-body {
-  margin: 0;
+  margin: 0 auto;
+  max-width: 28em;
   color: var(--about-muted);
-  font-size: clamp(17px, 2.2vw, 19px);
-  line-height: 1.4;
-}
-
-.about-flip-proof {
-  position: relative;
-  min-height: 220px;
-  display: grid;
-}
-
-.about-flip-panel {
-  grid-area: 1 / 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px;
-  border-radius: 10px;
-  background: var(--about-paper-deep);
-  box-sizing: border-box;
-}
-
-.about-flip-panel--chase {
-  opacity: calc(1 - var(--progress));
-  transform: translateY(calc(var(--progress) * -12px));
-}
-
-.about-flip-panel--pick {
-  opacity: var(--progress);
-  transform: translateY(calc((1 - var(--progress)) * 16px));
-}
-
-.about-flip-label {
-  margin: 0 0 8px;
-  color: var(--about-muted);
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.33337;
-}
-
-.about-flip-panel--pick .about-flip-label {
-  color: var(--about-ink);
-}
-
-.about-flip-row {
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  background: var(--about-paper);
-  color: var(--about-ink-soft);
-  font-size: 15px;
-  line-height: 1.3;
-  box-sizing: border-box;
-}
-
-.about-flip-row--yours {
-  background: var(--about-ink);
-  color: #faf9f6;
-  font-weight: 500;
-}
-
-.about-flip-end {
-  margin: 8px 0 0;
-  color: var(--about-ink);
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.3;
+  font-size: var(--shroffin-type-body);
+  line-height: 1.52947;
 }
 
 /* ——— How we work ——— */
@@ -336,7 +258,7 @@
 
 .about-step-num {
   color: var(--about-ghost);
-  font-size: clamp(22px, 3vw, 28px);
+  font-size: var(--shroffin-type-title);
   font-weight: 600;
   line-height: 1.1;
 }
@@ -344,7 +266,7 @@
 .about-step-title {
   margin: 0 0 6px;
   color: var(--about-ink);
-  font-size: clamp(20px, 2.8vw, 24px);
+  font-size: var(--shroffin-type-body);
   font-weight: 600;
   line-height: 1.2;
 }
@@ -369,7 +291,7 @@
   padding: 14px 0;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
   color: var(--about-ink);
-  font-size: clamp(17px, 2.2vw, 19px);
+  font-size: var(--shroffin-type-lead);
   line-height: 1.45;
 }
 
@@ -379,7 +301,7 @@
 
 /* ——— Close CTA ——— */
 .about-close {
-  padding: clamp(72px, 12vw, 128px) 0;
+  padding: var(--shroffin-space-masthead-start) 0;
   text-align: center;
   background: var(--about-paper-deep);
 }
@@ -387,7 +309,7 @@
 .about-close-title {
   margin: 0 0 28px;
   color: var(--about-ink);
-  font-size: clamp(28px, 4.5vw, 40px);
+  font-size: var(--shroffin-type-title);
   font-weight: 600;
   line-height: 1.12;
 }
@@ -451,33 +373,14 @@
 
 /* ——— Tablet / desktop ——— */
 @media (min-width: 834px) {
-  .about-flip {
-    min-height: 180vh;
-  }
-
-  .about-flip-stage {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    align-items: center;
-    gap: clamp(40px, 6vw, 72px);
-  }
-
-  .about-flip-proof {
-    min-height: 280px;
-  }
-
-  .about-flip-panel {
-    padding: 28px;
-    border-radius: 16px;
+  .about-roots-cols {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 4vw, 56px);
+    max-width: none;
   }
 
   .about-steps {
     max-width: 40em;
-  }
-}
-
-@media (min-width: 1068px) {
-  .about-flip-panel {
-    border-radius: 20px;
   }
 }
 
@@ -494,23 +397,184 @@
     opacity: 1;
     transform: none;
   }
+}
 
-  .about-flip {
-    min-height: 0;
+/* ——— Stance — "Our principles" (moved from home) ——— */
+
+.stance {
+  --stance-paper: var(--shroffin-surface, #faf9f6);
+  --stance-ink: var(--shroffin-ink, #1d1d1f);
+  --stance-ink-soft: #3a3a3d;
+  --stance-line: rgba(0, 0, 0, 0.1);
+  --stance-ease: var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  --stance-max: 980px;
+  --stance-inline: max(1.25rem, env(safe-area-inset-left));
+  --stance-inline-end: max(1.25rem, env(safe-area-inset-right));
+
+  position: relative;
+  background: var(--stance-paper);
+  color: var(--stance-ink);
+  overflow-x: clip;
+}
+
+.stance-inner {
+  max-width: var(--stance-max);
+  width: 100%;
+  margin: 0 auto;
+  padding:
+    clamp(3.5rem, 9vw, 5.5rem)
+    var(--stance-inline-end)
+    clamp(4rem, 10vw, 6rem)
+    var(--stance-inline);
+  box-sizing: border-box;
+}
+
+.stance-intro {
+  margin: 0 0 clamp(2rem, 5vw, 2.75rem);
+  text-align: center;
+}
+
+.stance-title {
+  margin: 0 auto;
+  max-width: 9em;
+  font-size: clamp(2.35rem, 8.5vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.stance-list {
+  display: grid;
+  gap: 0;
+}
+
+.stance-item {
+  display: grid;
+  gap: 0.55rem;
+  padding: clamp(1.35rem, 3.5vw, 1.75rem) 0;
+  border-top: 1px solid var(--stance-line);
+  border-radius: 12px;
+}
+
+.stance-item:last-child {
+  border-bottom: 1px solid var(--stance-line);
+}
+
+.stance-item-title {
+  margin: 0;
+  max-width: 14em;
+  font-size: clamp(1.35rem, 4.8vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.028em;
+  color: var(--stance-ink);
+}
+
+.stance-item-body {
+  margin: 0;
+  max-width: 34em;
+  font-size: clamp(1.05rem, 3.3vw, 1.2rem);
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.014em;
+  color: var(--stance-ink-soft);
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .stance-item {
+    margin-inline: -0.85rem;
+    padding-inline: 0.85rem;
+    transition:
+      background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .about-flip-sticky {
-    position: relative;
-    top: auto;
-    min-height: 0;
+  .stance-item:hover {
+    background-color: rgba(255, 254, 251, 0.92);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
   }
 
-  .about-flip-panel--chase {
-    display: none;
+  .stance-item:hover .stance-item-body {
+    color: var(--stance-ink);
   }
 
-  .about-flip-panel--pick {
+  .stance-item:focus-visible {
+    background-color: rgba(255, 254, 251, 0.92);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+    outline: none;
+  }
+
+  .stance-item:focus-visible .stance-item-body {
+    color: var(--stance-ink);
+  }
+}
+
+.stance-settle {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition:
+    opacity 1.05s var(--stance-ease),
+    transform 1.4s var(--stance-ease);
+}
+
+.stance-settle.is-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.stance-settle-delay-1 {
+  transition-delay: 0.12s;
+}
+
+.stance-settle-delay-2 {
+  transition-delay: 0.2s;
+}
+
+.stance-settle-delay-3 {
+  transition-delay: 0.28s;
+}
+
+@media (min-width: 834px) {
+  .stance {
+    --stance-max: 1068px;
+  }
+
+  .stance-inner {
+    padding-top: clamp(4.5rem, 7vw, 6.5rem);
+    padding-bottom: clamp(5rem, 8vw, 7rem);
+  }
+
+  .stance-title {
+    font-size: clamp(3.25rem, 4.5vw, 4.25rem);
+  }
+
+  .stance-item {
+    grid-template-columns: minmax(14rem, 0.95fr) minmax(0, 1.15fr);
+    gap: clamp(1.5rem, 3vw, 2.75rem);
+    align-items: baseline;
+    padding: clamp(1.6rem, 2.4vw, 2rem) 0;
+  }
+
+  .stance-item-title {
+    max-width: none;
+    font-size: clamp(1.65rem, 2.2vw, 2rem);
+    line-height: 1.12;
+  }
+
+  .stance-item-body {
+    max-width: 28em;
+    margin: 0;
+    font-size: clamp(1.15rem, 1.35vw, 1.3rem);
+    line-height: 1.42;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stance-settle,
+  .stance-settle.is-in {
     opacity: 1;
     transform: none;
+    transition: none;
   }
 }

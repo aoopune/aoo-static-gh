@@ -154,7 +154,7 @@ body {
   margin: 0 auto;
   padding-inline: var(--mag-inline) var(--mag-inline-end);
   /* Tall open field: room to land, then breathe before the long read. */
-  padding-block: clamp(64px, 12vw, 128px) clamp(72px, 14vw, 160px);
+  padding-block: var(--shroffin-space-masthead-start) var(--shroffin-space-masthead-end);
   text-align: center;
   box-sizing: border-box;
 }
@@ -163,23 +163,37 @@ body {
 .mag-title {
   margin: 0 auto;
   max-width: 16em;
-  color: var(--mag-ink);
-  font-size: clamp(40px, 8vw, 72px);
+  font-size: var(--shroffin-type-display-xl);
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.02;
   text-wrap: balance;
+  /* Paper-complement steel — cool charcoal → soft steel */
+  background-image: linear-gradient(90deg, #202027 0%, #485879 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (forced-colors: active) {
+  .guide-hero-title,
+  .mag-title {
+    background-image: none;
+    color: CanvasText;
+    -webkit-text-fill-color: CanvasText;
+  }
 }
 
 /* Support line under the hero — softer weight, never competes with h1. */
 .guide-hero-lead,
 .mag-standfirst,
 h2.guide-hero-lead {
-  margin: clamp(28px, 5vw, 44px) auto 0;
+  margin: var(--shroffin-space-stack) auto 0;
   max-width: 34em;
   color: var(--mag-muted);
   font-family: inherit;
-  font-size: clamp(17px, 2.1vw, 20px);
+  font-size: var(--shroffin-type-lead);
   font-weight: 400;
   letter-spacing: -0.015em;
   line-height: 1.5;
@@ -191,7 +205,7 @@ h2.guide-hero-lead {
 .guide-hero + .mag-toc-shell,
 .guide-hero + .mag-section,
 .guide-hero + .guide-story {
-  margin-block-start: clamp(24px, 5vw, 56px);
+  margin-block-start: var(--shroffin-space-section);
 }
 
 /* ---- Contents index ---------------------------------------------------- */
@@ -534,6 +548,175 @@ h2.guide-hero-lead {
   }
 }
 
+/* ---- Guide reading pages: design says “guide” without extra copy --------
+   Title field owns the first screen. Quiet numbered chapters (not a menu).
+   Shared by Overview, Documents, Tax, Concessions, Insurance, Complaints. */
+
+body.guide-reading .guide-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Title page with air — leave room so the chapter strip is fully visible. */
+  min-height: clamp(16rem, 52svh, 28rem);
+  padding-block-start: clamp(2.75rem, 9vw, 5.5rem);
+  padding-block-end: clamp(1.75rem, 5vw, 3rem);
+  box-sizing: border-box;
+}
+
+body.guide-reading .guide-hero + .mag-index,
+body.guide-reading .guide-hero + .mag-toc-shell {
+  /* Chapters sit in the same breath as the title — not a new “app” block. */
+  margin-block-start: 0;
+}
+
+body.guide-reading .mag-index {
+  padding-block-start: 0;
+  padding-block-end: clamp(2rem, 6vw, 3.5rem);
+}
+
+/* Bring chapter numbers back — the quiet “this is a guide” signal. */
+body.guide-reading .mag-index-num {
+  display: block !important;
+  flex: 0 0 auto;
+  color: var(--mag-ghost);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+/* Not a settings menu: no jump chevrons on the chapter map. */
+body.guide-reading .mag-index-link::after {
+  display: none;
+}
+
+body.guide-reading .mag-index-link {
+  color: var(--mag-muted);
+}
+
+body.guide-reading .mag-index-link:link,
+body.guide-reading .mag-index-link:visited {
+  color: var(--mag-muted);
+}
+
+body.guide-reading .mag-index-link:hover,
+body.guide-reading .mag-index-link:active,
+body.guide-reading .mag-index-link:focus-visible {
+  color: var(--mag-ink);
+}
+
+body.guide-reading .mag-index-label {
+  font-weight: 500;
+}
+
+/* Phone / tablet: horizontal chapter strip — magazine, not a tall menu. */
+@media (max-width: 1199px) {
+  body.guide-reading .mag-index {
+    padding-inline: 0;
+    max-width: none;
+  }
+
+  body.guide-reading .mag-index-list {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+    padding-inline: var(--mag-inline) var(--mag-inline-end);
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body.guide-reading .mag-index-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  body.guide-reading .mag-index-list > li {
+    flex: 0 0 auto;
+    border-bottom: 0;
+    scroll-snap-align: start;
+  }
+
+  body.guide-reading .mag-index-link {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.45rem;
+    min-width: 7.25rem;
+    min-height: 44px;
+    padding: 0.85rem 1rem 0.85rem 0;
+    box-sizing: border-box;
+  }
+
+  body.guide-reading .mag-index-label {
+    font-size: 0.9375rem;
+    line-height: 1.25;
+    white-space: nowrap;
+  }
+
+  /* Soft edge fade so the strip reads as “more chapters this way.” */
+  body.guide-reading .mag-index {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 max(1rem, env(safe-area-inset-left)),
+      #000 calc(100% - 1.75rem),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 max(1rem, env(safe-area-inset-left)),
+      #000 calc(100% - 1.75rem),
+      transparent 100%
+    );
+  }
+
+  body.guide-reading .mag-toc-shell .guide-story > .mag-section:first-child,
+  body.guide-reading .guide-story > .mag-section:first-child {
+    padding-block-start: clamp(1.25rem, 4vw, 2rem);
+  }
+}
+
+/* Wide: sticky chapter rail keeps numbers; same quiet voice as the strip. */
+@media (min-width: 1200px) {
+  body.guide-reading .mag-toc-shell .mag-index-link {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.65rem;
+    padding-block: 0.65rem;
+  }
+
+  body.guide-reading .mag-toc-shell .mag-index-num {
+    font-size: 0.75rem;
+    min-width: 1.35rem;
+  }
+
+  body.guide-reading .mag-toc-shell .mag-index-label {
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+
+  body.guide-reading .mag-toc-shell .guide-story > .mag-section:first-child {
+    padding-block-start: 0.65rem;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  body.guide-reading .guide-hero {
+    min-height: 0;
+    padding-block: 2.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.guide-reading .mag-index-list {
+    scroll-snap-type: none;
+  }
+}
+
 /* ---- Story wrapper + numbered sections --------------------------------- */
 
 .guide-story,
@@ -547,7 +730,7 @@ h2.guide-hero-lead {
 
 .mag-section {
   position: relative;
-  padding: clamp(40px, 7vw, 80px) 0;
+  padding: var(--shroffin-space-section) 0;
   /* Prefer paper shade rhythm over a hairline grid between sections. */
   border-top: 0;
 }
@@ -651,7 +834,7 @@ h2.guide-hero-lead {
 .mag-h {
   margin: 0;
   color: var(--mag-ink);
-  font-size: clamp(26px, 3.6vw, 38px);
+  font-size: var(--shroffin-type-title);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.1;
@@ -671,7 +854,7 @@ h2.guide-hero-lead {
   margin: 14px 0 0;
   max-width: 34em;
   color: var(--mag-ink);
-  font-size: clamp(17px, 2.1vw, 20px);
+  font-size: var(--shroffin-type-lead);
   font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.5;
@@ -700,7 +883,7 @@ h2.guide-hero-lead {
   padding: 18px 0;
   border-top: 1px solid var(--mag-hair-soft);
   color: var(--mag-ink);
-  font-size: clamp(17px, 2.2vw, 20px);
+  font-size: var(--shroffin-type-lead);
   letter-spacing: -0.01em;
   line-height: 1.4;
 }
@@ -1052,18 +1235,18 @@ h2.guide-hero-lead {
   gap: 0.25rem 0.4rem;
   max-width: var(--mag-wrap);
   margin: 0 auto;
-  padding: clamp(48px, 9vw, 88px) var(--mag-inline-end) 0 var(--mag-inline);
   padding-inline: var(--mag-inline) var(--mag-inline-end);
-  padding-block: clamp(48px, 9vw, 88px) 0;
+  /* Sit under the Guide bar; keep the masthead field for the title below. */
+  padding-block: var(--shroffin-space-stack) 0;
   box-sizing: border-box;
   color: var(--mag-muted);
   font-size: 14px;
   letter-spacing: -0.01em;
 }
 
-/* When the breadcrumb leads, the title tucks in just below it. */
+/* When the breadcrumb leads, keep clear air above the title. */
 .guide-breadcrumb + .guide-hero {
-  padding-top: clamp(12px, 2vw, 20px);
+  padding-top: var(--shroffin-space-masthead-start);
 }
 
 .guide-breadcrumb a {
@@ -1407,7 +1590,7 @@ h2.guide-hero-lead {
 .guide-calc-result-num {
   margin: 6px 0 0;
   color: var(--mag-ink);
-  font-size: clamp(34px, 6vw, 46px);
+  font-size: var(--shroffin-type-tool-result);
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.05;
@@ -1786,7 +1969,7 @@ h2.guide-hero-lead {
   padding: 0 0 14px;
   border-bottom: 1px solid var(--mag-hair);
   color: var(--mag-ink);
-  font-size: clamp(20px, 2.6vw, 24px);
+  font-size: var(--shroffin-type-title);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -1803,7 +1986,7 @@ h2.guide-hero-lead {
 }
 
 .mag-pair .guide-tile-title {
-  font-size: clamp(22px, 2.8vw, 28px);
+  font-size: var(--shroffin-type-title);
 }
 
 .guide-tile-note {
@@ -1894,9 +2077,9 @@ a.guide-note-ref:hover {
 .mag-fine-wrap {
   max-width: var(--mag-wrap);
   margin: 0 auto;
-  padding: clamp(32px, 6vw, 56px) var(--mag-inline-end) clamp(56px, 10vw, 96px) var(--mag-inline);
+  padding: var(--shroffin-space-section) var(--mag-inline-end) var(--shroffin-space-page-bottom) var(--mag-inline);
   padding-inline: var(--mag-inline) var(--mag-inline-end);
-  padding-block: clamp(32px, 6vw, 56px) clamp(56px, 10vw, 96px);
+  padding-block: var(--shroffin-space-section) var(--shroffin-space-page-bottom);
   box-sizing: border-box;
 }
 

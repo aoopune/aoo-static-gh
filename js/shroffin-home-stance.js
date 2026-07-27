@@ -1,5 +1,5 @@
 /**
- * Home stance — settle into view once. No scroll theater.
+ * Home stance — soft settle only. No scroll theater.
  */
 (function () {
   var root = document.querySelector('.stance');
@@ -29,7 +29,7 @@
         observer.unobserve(entry.target);
       });
     },
-    { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
+    { rootMargin: '0px 0px -8% 0px', threshold: 0.15 }
   );
 
   nodes.forEach(function (node) {

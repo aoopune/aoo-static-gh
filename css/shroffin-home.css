@@ -1,18 +1,17 @@
 /**
- * Home — “What we stand on”
- * Plain vertical list. Each graphic must match its principle.
+ * Home — “Our principles”
+ * Short. Tight. Premium type. Strong reading. No scroll theater.
  */
 
 .stance {
   --stance-paper: var(--shroffin-surface, #faf9f6);
-  --stance-paper-deep: var(--shroffin-footer, #f3f1eb);
   --stance-ink: var(--shroffin-ink, #1d1d1f);
-  --stance-muted: var(--shroffin-muted, #6e6e73);
+  --stance-ink-soft: #3a3a3d;
+  --stance-line: rgba(0, 0, 0, 0.1);
   --stance-ease: var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
-  /* Same rail as guide / editorial pages */
-  --stance-max: var(--shroffin-content-max, 1068px);
-  --stance-inline: max(1rem, env(safe-area-inset-left));
-  --stance-inline-end: max(1rem, env(safe-area-inset-right));
+  --stance-max: 980px;
+  --stance-inline: max(1.25rem, env(safe-area-inset-left));
+  --stance-inline-end: max(1.25rem, env(safe-area-inset-right));
 
   position: relative;
   background: var(--stance-paper);
@@ -20,71 +19,98 @@
   overflow-x: clip;
 }
 
-.stance-spine {
-  display: none;
-}
-
-.stance-intro {
-  padding: clamp(2.5rem, 5vw, 3.5rem) 0 1rem;
-}
-
-.stance-intro-inner,
-.stance-rail {
+.stance-inner {
   max-width: var(--stance-max);
   width: 100%;
   margin: 0 auto;
-  padding-inline: var(--stance-inline) var(--stance-inline-end);
+  padding:
+    clamp(3.5rem, 9vw, 5.5rem)
+    var(--stance-inline-end)
+    clamp(4rem, 10vw, 6rem)
+    var(--stance-inline);
   box-sizing: border-box;
 }
 
+.stance-intro {
+  margin: 0 0 clamp(2rem, 5vw, 2.75rem);
+  text-align: center;
+}
+
 .stance-title {
-  margin: 0;
-  max-width: none;
-  white-space: nowrap;
-  font-size: clamp(28px, 5vw, 52px);
+  margin: 0 auto;
+  max-width: 9em;
+  font-size: clamp(2.35rem, 8.5vw, 3.5rem);
   font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.032em;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
 }
 
-.stance-rail {
-  padding-bottom: clamp(2.25rem, 5vw, 3.25rem);
-}
-
-.stance-chapter {
-  padding: 1.25rem 0;
-}
-
-.stance-chapter + .stance-chapter {
-  border-top: 1px solid rgba(0, 0, 0, 0.07);
-}
-
-.stance-stage {
+.stance-list {
   display: grid;
-  gap: 0.85rem;
+  gap: 0;
 }
 
-.stance-copy-title {
-  margin: 0.15rem 0 0;
-  max-width: none;
-  white-space: nowrap;
-  font-size: clamp(20px, 3.2vw, 30px);
+.stance-item {
+  display: grid;
+  gap: 0.55rem;
+  padding: clamp(1.35rem, 3.5vw, 1.75rem) 0;
+  border-top: 1px solid var(--stance-line);
+  border-radius: 12px;
+}
+
+.stance-item:last-child {
+  border-bottom: 1px solid var(--stance-line);
+}
+
+.stance-item-title {
+  margin: 0;
+  max-width: 14em;
+  font-size: clamp(1.35rem, 4.8vw, 1.75rem);
   font-weight: 600;
-  line-height: 1.12;
+  line-height: 1.15;
   letter-spacing: -0.028em;
+  color: var(--stance-ink);
 }
 
-.stance-copy-body {
-  margin: 0.35rem 0 0;
-  max-width: 32em;
-  font-size: clamp(14px, 1.35vw, 16px);
-  line-height: 1.4;
-  color: var(--stance-muted);
+.stance-item-body {
+  margin: 0;
+  max-width: 34em;
+  font-size: clamp(1.05rem, 3.3vw, 1.2rem);
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.014em;
+  color: var(--stance-ink-soft);
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.stance-proof {
-  width: 100%;
-  max-width: 22rem;
+/* Quiet hover — laptop/pointer only; phones skip this */
+@media (hover: hover) and (pointer: fine) {
+  .stance-item {
+    margin-inline: -0.85rem;
+    padding-inline: 0.85rem;
+    transition:
+      background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .stance-item:hover {
+    background-color: rgba(255, 254, 251, 0.92);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+  }
+
+  .stance-item:hover .stance-item-body {
+    color: var(--stance-ink);
+  }
+
+  .stance-item:focus-visible {
+    background-color: rgba(255, 254, 251, 0.92);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+    outline: none;
+  }
+
+  .stance-item:focus-visible .stance-item-body {
+    color: var(--stance-ink);
+  }
 }
 
 .stance-settle {
@@ -104,145 +130,47 @@
   transition-delay: 0.12s;
 }
 
-/* 01 — banks treated the same; no commission */
-.stance-banks {
-  padding: 0.85rem 1rem;
-  border-radius: 14px;
-  background: var(--stance-paper-deep);
+.stance-settle-delay-2 {
+  transition-delay: 0.2s;
 }
 
-.stance-banks ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.stance-banks li {
-  padding: 0.45rem 0;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  color: var(--stance-ink);
-}
-
-.stance-banks li + li {
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.stance-banks-foot {
-  margin: 0.55rem 0 0;
-  padding-top: 0.55rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  color: var(--stance-ink);
-}
-
-/* 02 — loan facts shown openly */
-.stance-sheet {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 14px;
-  overflow: hidden;
-  background: #fffefb;
-}
-
-.stance-sheet li {
-  padding: 0.55rem 0.9rem;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  color: var(--stance-ink);
-}
-
-.stance-sheet li + li {
-  border-top: 1px solid rgba(0, 0, 0, 0.07);
-}
-
-/* 03 — no follow-ups */
-.stance-inbox {
-  padding: 0.9rem 1rem;
-  border-radius: 14px;
-  background: var(--stance-paper-deep);
-}
-
-.stance-inbox-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--stance-ink);
-}
-
-.stance-inbox-badge {
-  min-width: 1.5rem;
-  height: 1.5rem;
-  padding: 0 0.35rem;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  color: var(--stance-muted);
-  background: rgba(0, 0, 0, 0.05);
-}
-
-/* 04 — every bank listed; one selected */
-.stance-choices {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 0.4rem;
-}
-
-.stance-choices li {
-  padding: 0.55rem 0.85rem;
-  border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: #fffefb;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--stance-ink);
-}
-
-.stance-choices li.is-yours {
-  border-color: var(--stance-ink);
-  box-shadow: inset 0 0 0 1px var(--stance-ink);
+.stance-settle-delay-3 {
+  transition-delay: 0.28s;
 }
 
 @media (min-width: 834px) {
-  .stance-chapter {
-    padding: 1.4rem 0;
+  .stance {
+    --stance-max: 1068px;
   }
 
-  .stance-stage {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    align-items: center;
-    column-gap: clamp(1.75rem, 4vw, 3rem);
+  .stance-inner {
+    padding-top: clamp(4.5rem, 7vw, 6.5rem);
+    padding-bottom: clamp(5rem, 8vw, 7rem);
   }
 
-  .stance-proof {
-    max-width: none;
-    justify-self: end;
-    width: min(100%, 20rem);
-  }
-}
-
-@media (min-width: 1068px) {
   .stance-title {
-    font-size: 56px;
+    font-size: clamp(3.25rem, 4.5vw, 4.25rem);
   }
 
-  .stance-copy-title {
-    font-size: 32px;
+  /* Title left, sentence right — one glance, strong read */
+  .stance-item {
+    grid-template-columns: minmax(14rem, 0.95fr) minmax(0, 1.15fr);
+    gap: clamp(1.5rem, 3vw, 2.75rem);
+    align-items: baseline;
+    padding: clamp(1.6rem, 2.4vw, 2rem) 0;
+  }
+
+  .stance-item-title {
+    max-width: none;
+    font-size: clamp(1.65rem, 2.2vw, 2rem);
+    line-height: 1.12;
+  }
+
+  .stance-item-body {
+    max-width: 28em;
+    margin: 0;
+    font-size: clamp(1.15rem, 1.35vw, 1.3rem);
+    line-height: 1.42;
   }
 }
 

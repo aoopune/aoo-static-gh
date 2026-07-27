@@ -111,6 +111,7 @@
   /**
    * Guide · Loan amount: lower of property LTV cap and income EMI capacity.
    * FOIR bands and card-limits treatment match guide.html borrow estimate.
+   * Optional co-applicant income/EMIs/card limits are added into the same FOIR math.
    */
   function guideLoanAmount(opts) {
     var price = Math.max(0, Number(opts.propertyValue) || 0);
@@ -118,24 +119,51 @@
     var existingEmis = Math.max(0, Number(opts.existingEmis) || 0);
     var cardLimits = Math.max(0, Number(opts.cardLimits) || 0);
     var foirPct = Number(opts.foirPct);
-    if (![55, 60, 65, 70].includes(foirPct)) foirPct = 55;
+    if (![50, 55, 60, 65, 70].includes(foirPct)) foirPct = 55;
     var rate = Number(opts.rate) || 0;
     var years = Number(opts.years) || 0;
+    var includeCo = !!opts.includeCoApplicant;
+    var coIncome = includeCo ? Math.max(0, Number(opts.coIncome) || 0) : 0;
+    var coExistingEmis = includeCo ? Math.max(0, Number(opts.coExistingEmis) || 0) : 0;
+    var coCardLimits = includeCo ? Math.max(0, Number(opts.coCardLimits) || 0) : 0;
 
     var fromProperty = maxLoanForProperty(price);
-    var maxAllEmis = income * (foirPct / 100);
-    var cardLoad = cardLimits * 0.1;
-    var homeEmiRoom = Math.max(0, maxAllEmis - existingEmis - cardLoad);
-    var fromIncome = loanFromEmi(homeEmiRoom, rate, years);
+
+    function incomeSide(totalIncome, totalEmis, totalCards) {
+      var maxAllEmis = totalIncome * (foirPct / 100);
+      var cardLoad = totalCards * 0.1;
+      var homeEmiRoom = Math.max(0, maxAllEmis - totalEmis - cardLoad);
+      return {
+        maxAllEmis: maxAllEmis,
+        homeEmiRoom: homeEmiRoom,
+        fromIncome: loanFromEmi(homeEmiRoom, rate, years)
+      };
+    }
+
+    var alone = incomeSide(income, existingEmis, cardLimits);
+    var combined = incomeSide(
+      income + coIncome,
+      existingEmis + coExistingEmis,
+      cardLimits + coCardLimits
+    );
+    var fromIncome = combined.fromIncome;
     var estimate = Math.min(fromProperty, fromIncome);
+    var estimateAlone = Math.min(fromProperty, alone.fromIncome);
+    var addedByCoApplicant = Math.max(0, fromIncome - alone.fromIncome);
+    var addedToIndicative = Math.max(0, estimate - estimateAlone);
 
     return {
       foirPct: foirPct,
       fromProperty: fromProperty,
       fromIncome: fromIncome,
+      fromIncomeAlone: alone.fromIncome,
       estimate: estimate,
-      homeEmiRoom: homeEmiRoom,
-      maxAllEmis: maxAllEmis,
+      estimateAlone: estimateAlone,
+      homeEmiRoom: combined.homeEmiRoom,
+      maxAllEmis: combined.maxAllEmis,
+      includeCoApplicant: includeCo,
+      addedByCoApplicant: addedByCoApplicant,
+      addedToIndicative: addedToIndicative,
       limiting: fromProperty <= fromIncome ? "property" : "income"
     };
   }

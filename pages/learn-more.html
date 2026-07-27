@@ -252,23 +252,25 @@
       text-align: center;
     }
 
-    .lm-band-lead .lm-lead {
-      text-align: center;
-    }
-
-    .lm-steps {
-      width: 100%;
-      padding: clamp(32px, 5vw, 56px) 22px clamp(88px, 12vw, 140px);
-      box-sizing: border-box;
-      background: transparent;
-    }
-
-    .lm-steps-inner {
+    .lm-band-lead .lm-lead-stack {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      width: min(1068px, 100%);
+      align-items: center;
+      gap: clamp(28px, 4vw, 40px);
+      width: 100%;
+      max-width: 46rem;
       margin: 0 auto;
+      text-align: left;
+    }
+
+    .lm-band-lead .lm-lead {
+      text-align: left;
+      margin: 0;
+      max-width: none;
+    }
+
+    .lm-band-lead .lm-lead + .lm-lead {
+      margin-top: 0;
     }
 
     .lm-reveal {
@@ -282,73 +284,6 @@
     .lm-reveal.is-in {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    /* Scroll-paced product tiles — modest rise, settle soft */
-    .lm-card.lm-reveal {
-      opacity: 1;
-      transform: translateY(56px);
-      transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-      will-change: transform;
-    }
-
-    .lm-card.lm-reveal.is-in {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .lm-card.lm-reveal.lm-card-scroll {
-      transition: none;
-    }
-
-    /* Apple-style product tile — bigger, calmer */
-    .lm-card {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0;
-      width: 100%;
-      margin: 0;
-      overflow: hidden;
-      border-radius: 36px;
-      background: #fffefb;
-      text-align: left;
-      box-sizing: border-box;
-    }
-
-    .lm-card-copy {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      order: 1;
-      padding: clamp(56px, 8vw, 96px) clamp(40px, 6vw, 88px);
-      box-sizing: border-box;
-    }
-
-    .lm-card-media {
-      position: relative;
-      order: 2;
-      width: auto;
-      min-height: 320px;
-      margin: 8px 32px 32px;
-      border-radius: 28px;
-      background: #f3f1eb;
-      box-sizing: border-box;
-    }
-
-    .lm-card-media-frame {
-      position: absolute;
-      inset: 0;
-    }
-
-    .lm-card-media img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      object-position: center;
-      padding: clamp(28px, 4vw, 48px);
-      box-sizing: border-box;
     }
 
     .lm-kicker {
@@ -373,37 +308,305 @@
       display: block;
     }
 
-    /* Card type scale: label → hero → support */
-    .lm-card .lm-kicker {
-      margin: 0 0 28px;
+    /* Sticky product story — one stage, scroll advances steps */
+    .lm-story {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background: transparent;
+    }
+
+    .lm-story-track {
+      position: relative;
+      /* Extra height so each step can dwell before the next */
+      height: 300vh;
+      margin: 0;
+    }
+
+    .lm-story-sticky {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 28px 16px;
+    }
+
+    .lm-story-stage {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(32px, 6vw, 48px);
+      width: min(var(--lm-max), 100%);
+      margin: 0 auto;
+      max-height: calc(100svh - 56px);
+    }
+
+    .lm-story-copy-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      flex: 0 0 auto;
+      width: 100%;
+    }
+
+    .lm-story-panels {
+      position: relative;
+      width: 100%;
+      min-height: 10em;
+    }
+
+    .lm-story-panel {
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      margin: 0;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(16px);
+      transition:
+        opacity 1.05s var(--ease),
+        transform 1.4s var(--ease),
+        visibility 1.05s var(--ease);
+    }
+
+    .lm-story-panel.is-active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      position: relative;
+      transform: translateY(0);
+    }
+
+    .lm-story-panel .lm-kicker {
+      margin: 0 0 14px;
       color: #86868b;
       font-size: 12px;
       font-weight: 400;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.04em;
       line-height: 1.2;
+      text-transform: none;
     }
 
-    .lm-card .lm-title {
+    .lm-story-panel .lm-title {
       margin: 0;
-      color: #1d1d1f;
-      font-size: clamp(34px, 4.8vw, 52px);
+      max-width: 14em;
+      color: var(--lm-ink);
+      font-size: clamp(30px, 8.5vw, 40px);
       font-weight: 600;
       letter-spacing: -0.03em;
-      line-height: 1.1;
+      line-height: 1.08;
     }
 
-    .lm-card .lm-title .lm-line + .lm-line {
+    .lm-story-panel .lm-title .lm-line + .lm-line {
       margin-top: 0.06em;
     }
 
-    .lm-card .lm-body {
-      margin: 28px 0 0;
-      max-width: 20em;
-      color: #1d1d1f;
-      font-size: 21px;
+    .lm-story-panel .lm-body {
+      margin: 16px 0 0;
+      max-width: 22em;
+      color: #6e6e73;
+      font-size: clamp(17px, 2.2vw, 21px);
       font-weight: 400;
       letter-spacing: -0.01em;
-      line-height: 1.5;
+      line-height: 1.45;
+    }
+
+    /* Quiet progress rail — not generic step dots */
+    .lm-story-progress {
+      width: min(100%, 11rem);
+      margin: 28px 0 0;
+    }
+
+    .lm-story-progress-track {
+      position: relative;
+      width: 100%;
+      height: 1px;
+      background: rgba(29, 29, 31, 0.12);
+      overflow: hidden;
+    }
+
+    .lm-story-progress-fill {
+      display: block;
+      height: 100%;
+      width: 100%;
+      background: var(--lm-ink);
+      transform-origin: left center;
+      transform: scaleX(0.125);
+      transition: transform 1.05s var(--ease);
+    }
+
+    .lm-story-marks {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .lm-story-marks li {
+      color: rgba(29, 29, 31, 0.28);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+      transition: color 0.55s var(--ease);
+    }
+
+    .lm-story-marks li.is-active {
+      color: var(--lm-ink);
+    }
+
+    .lm-story-media-col {
+      flex: 1 1 auto;
+      width: 100%;
+      min-height: 0;
+      display: flex;
+    }
+
+    .lm-story-frame {
+      position: relative;
+      width: 100%;
+      flex: 1 1 auto;
+      min-height: clamp(240px, 50vw, 380px);
+      border-radius: 10px;
+      overflow: hidden;
+      background:
+        linear-gradient(165deg, #f8f6f1 0%, #efebe3 48%, #e8e3da 100%);
+      box-shadow:
+        inset 0 0 0 1px rgba(29, 29, 31, 0.06);
+      box-sizing: border-box;
+    }
+
+    .lm-story-shot {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(18px);
+      transition:
+        opacity 1.1s var(--ease),
+        transform 1.45s var(--ease),
+        visibility 1.1s var(--ease);
+    }
+
+    .lm-story-shot.is-active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .lm-story-shot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .lm-story-placeholder {
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      padding: 28px 30px;
+      box-sizing: border-box;
+      background: transparent;
+      color: rgba(29, 29, 31, 0.22);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+    }
+
+    /* Static fallback — no-JS / reduced motion */
+    .lm-story-fallback {
+      display: none;
+      flex-direction: column;
+      gap: clamp(72px, 18vw, 112px);
+      width: 100%;
+      padding: clamp(48px, 8vw, 80px) 0 clamp(72px, 12vw, 120px);
+      box-sizing: border-box;
+    }
+
+    .lm-story-fallback-item {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin: 0;
+      text-align: left;
+    }
+
+    .lm-story-fallback-copy {
+      width: min(var(--lm-max), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 0 0 clamp(28px, 5vw, 44px);
+      box-sizing: border-box;
+    }
+
+    .lm-story-fallback-copy .lm-kicker {
+      margin: 0 0 16px;
+      color: #86868b;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+    }
+
+    .lm-story-fallback-copy .lm-title {
+      margin: 0;
+      color: var(--lm-ink);
+      font-size: clamp(30px, 8.5vw, 40px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+    }
+
+    .lm-story-fallback-copy .lm-title .lm-line + .lm-line {
+      margin-top: 0.06em;
+    }
+
+    .lm-story-fallback-copy .lm-body {
+      margin: 18px 0 0;
+      max-width: none;
+      color: #6e6e73;
+      font-size: clamp(17px, 2.2vw, 21px);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.45;
+    }
+
+    .lm-story-fallback-media {
+      position: relative;
+      width: 100%;
+      min-height: clamp(240px, 68vw, 420px);
+      background:
+        linear-gradient(165deg, #f8f6f1 0%, #efebe3 48%, #e8e3da 100%);
+      box-shadow: inset 0 0 0 1px rgba(29, 29, 31, 0.06);
+      overflow: hidden;
+    }
+
+    .lm-story-fallback-media .lm-story-placeholder,
+    .lm-story-fallback-media img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: clamp(240px, 68vw, 420px);
+      object-fit: cover;
+    }
+
+    html:not(.js) .lm-story-track {
+      display: none;
+    }
+
+    html:not(.js) .lm-story-fallback {
+      display: flex;
     }
 
     .lm-body {
@@ -427,9 +630,8 @@
       line-height: 1.25;
     }
 
-    .lm-lead-end {
-      display: block;
-      margin-top: 0.5em;
+    .lm-lead-soft {
+      color: #86868b;
     }
 
     @media only screen and (max-width: 1068px) {
@@ -446,8 +648,12 @@
         text-align: left;
       }
 
+      .lm-band-lead .lm-lead-stack {
+        max-width: none;
+        gap: 24px;
+      }
+
       .lm-band-lead .lm-lead {
-        text-align: left;
         max-width: none;
         font-size: 21px;
         letter-spacing: 0.011em;
@@ -544,7 +750,7 @@
 
     .site-footer-copy {
       margin: 0;
-      padding: 16px 0 36px;
+      padding: 0;
     }
 
     .site-footer-copy a {
@@ -569,28 +775,81 @@
         padding-right: 24px;
       }
 
-      .lm-card {
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-        align-items: stretch;
-        min-height: 680px;
+      .lm-story-track {
+        height: 360vh;
       }
 
-      .lm-card-copy {
-        order: 1;
-        padding: 96px 48px 96px 96px;
+      .lm-story-sticky {
+        top: var(--gn-height);
+        height: calc(100svh - var(--gn-height));
+        padding: 40px 24px;
       }
 
-      .lm-card-media {
-        order: 2;
-        min-height: 0;
-        height: auto;
-        margin: 48px 48px 48px 16px;
-        align-self: stretch;
+      .lm-story-stage {
+        flex-direction: row;
+        align-items: center;
+        gap: clamp(48px, 6vw, 72px);
+        max-height: calc(100svh - var(--gn-height) - 80px);
       }
 
-      .lm-steps {
-        padding-left: 24px;
-        padding-right: 24px;
+      .lm-story-copy-col {
+        flex: 0 1 36%;
+        max-width: 22rem;
+      }
+
+      .lm-story-panels {
+        min-height: 12em;
+      }
+
+      .lm-story-panel .lm-title {
+        font-size: clamp(36px, 4.2vw, 52px);
+      }
+
+      .lm-story-progress {
+        width: min(100%, 13rem);
+        margin-top: 36px;
+      }
+
+      .lm-story-media-col {
+        flex: 1 1 64%;
+      }
+
+      .lm-story-frame {
+        min-height: clamp(380px, 52vh, 580px);
+        border-radius: 30px;
+      }
+
+      .lm-story-fallback {
+        gap: clamp(96px, 14vw, 140px);
+      }
+
+      .lm-story-fallback-copy {
+        width: min(var(--lm-max), calc(100% - 48px));
+        text-align: center;
+        align-items: center;
+      }
+
+      .lm-story-fallback-copy .lm-title {
+        max-width: 14em;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: clamp(34px, 5.2vw, 56px);
+      }
+
+      .lm-story-fallback-copy .lm-body {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 22em;
+        text-align: center;
+      }
+
+      .lm-story-fallback-media {
+        min-height: clamp(420px, 48vw, 640px);
+      }
+
+      .lm-story-fallback-media .lm-story-placeholder,
+      .lm-story-fallback-media img {
+        min-height: clamp(420px, 48vw, 640px);
       }
     }
 
@@ -598,62 +857,13 @@
       .site-footer-inner {
         width: min(1068px, calc(100% - 48px));
       }
-    }
 
-    @media (max-width: 833px) {
-      .lm-steps {
-        padding: 12px 12px clamp(40px, 8vw, 72px);
+      .lm-story-frame {
+        border-radius: 40px;
       }
 
-      .lm-steps-inner {
-        width: 100%;
-        gap: 10px;
-      }
-
-      .lm-card {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        min-height: calc(100svh - var(--gn-height) - 28px);
-        min-height: calc(100dvh - var(--gn-height) - 28px);
-        border-radius: 28px;
-        overflow: hidden;
-      }
-
-      .lm-card.lm-reveal,
-      .lm-card.lm-reveal.lm-card-scroll {
-        /* Shorter rise on phone so cards aren’t clipped off-screen */
-        transform: translateY(40px);
-      }
-
-      .lm-card-copy {
-        flex: 0 0 auto;
-        order: 1;
-        padding: 40px 28px 16px;
-      }
-
-      .lm-card-media {
-        flex: 1 1 auto;
-        order: 2;
-        width: auto;
-        min-height: 0;
-        margin: 8px 16px 16px;
-        border-radius: 22px;
-      }
-
-      .lm-card .lm-kicker {
-        margin: 0 0 18px;
-      }
-
-      .lm-card .lm-title {
-        font-size: clamp(30px, 8.5vw, 40px);
-        line-height: 1.08;
-      }
-
-      .lm-card .lm-body {
-        margin-top: 18px;
-        max-width: none;
-        font-size: 19px;
+      .lm-story-track {
+        height: 380vh;
       }
     }
 
@@ -661,10 +871,6 @@
       .site-footer-inner {
         width: min(1068px, calc(100% - 32px));
         padding-top: 24px;
-      }
-
-      .site-footer-copy {
-        padding-bottom: 32px;
       }
 
       .lm-hero {
@@ -682,12 +888,16 @@
       .lm-footnote {
         width: min(1068px, calc(100% - 32px));
       }
+
+      .lm-story-sticky {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-
       .lm-reveal,
-.lm-cta {
+      .lm-cta {
         transition: none;
       }
 
@@ -704,28 +914,40 @@
         will-change: auto;
       }
 
-      .lm-card.lm-reveal,
-      .lm-card.lm-reveal.is-in,
-      .lm-card.lm-reveal.lm-card-scroll {
-        opacity: 1;
-        transform: none;
+      .lm-story-track {
+        display: none;
+      }
+
+      .lm-story-fallback {
+        display: flex;
+      }
+
+      .lm-story-panel,
+      .lm-story-shot,
+      .lm-story-progress-fill,
+      .lm-story-marks li {
         transition: none;
-        will-change: auto;
+      }
+
+      .lm-story-panel,
+      .lm-story-shot {
+        transform: none;
       }
     }
   </style>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=editorial-24">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=footer-1">
 </head>
 <body>
+  <!-- SHROFFIN_NAV_START -->
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
   <nav class="globalnav" id="globalnav" aria-label="Global">
     <div class="globalnav-content">
       <ul class="globalnav-list">
         <li class="globalnav-item globalnav-item-brand">
-          <a class="globalnav-link globalnav-link-brand" href="../index.html" aria-label="Shroffin Home">
+          <a class="globalnav-link globalnav-link-brand" href="/" aria-label="Shroffin Home">
             <img
               class="globalnav-logo"
-              src="../images/logos/logo-h-light-clear-781x173.png"
+              src="/images/logos/logo-h-light-clear-781x173.png"
               alt="Shroffin"
               width="99"
               height="22"
@@ -734,36 +956,37 @@
         </li>
         <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled
         <li class="globalnav-item">
-          <a class="globalnav-link" href="compare.html">Compare</a>
+          <a class="globalnav-link" href="/pages/compare.html">Compare</a>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="quick-overview.html">Overview</a>
+          <a class="globalnav-link" href="/pages/quick-overview.html">Overview</a>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="schemes.html">Schemes</a>
+          <a class="globalnav-link" href="/pages/schemes.html">Schemes</a>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="faq.html">FAQ</a>
+          <a class="globalnav-link" href="/pages/faq.html">FAQ</a>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="document-checklist.html">Documents</a>
+          <a class="globalnav-link" href="/pages/document-checklist.html">Documents</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/about.html">About</a>
         </li>
         -->
         <!-- EDUCATION_LOAN_PRODUCT: kept in code, hidden from UI until re-enabled
         <li class="globalnav-item">
-          <a class="globalnav-link" href="../education-loan.html">Education</a>
+          <a class="globalnav-link" href="/education-loan.html">Education</a>
         </li>
         -->
         <li class="globalnav-item globalnav-item-about globalnav-item-flyout" id="nav-guide">
           <a
             class="globalnav-link globalnav-flyout-trigger"
-            href="guide.html"
+            href="/pages/guide.html"
             id="nav-guide-trigger"
             aria-expanded="false"
             aria-controls="nav-guide-flyout"
-          >
-            Guide
-          </a>
+          >Guide</a>
         </li>
         <li class="globalnav-item globalnav-item-support" id="nav-support">
           <button
@@ -772,21 +995,19 @@
             id="nav-support-trigger"
             aria-expanded="false"
             aria-controls="nav-support-flyout"
-          >
-            Support
-          </button>
+          >Support</button>
         </li>
-        <li class="globalnav-item globalnav-item-flyout" id="nav-utilities">
+        <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
           <button
             type="button"
             class="globalnav-flyout-trigger"
-            id="nav-utilities-trigger"
+            id="nav-tools-trigger"
             aria-expanded="false"
-            aria-controls="nav-utilities-flyout"
-          >Utilities</button>
+            aria-controls="nav-tools-flyout"
+          >Tools</button>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="about.html">About</a>
+          <a class="globalnav-link" href="/pages/about.html">About</a>
         </li>
       </ul>
     </div>
@@ -797,39 +1018,40 @@
           <h2 class="globalnav-submenu-header">Explore guide</h2>
           <ul class="globalnav-submenu-list">
             <li>
-              <a class="globalnav-submenu-link" href="guide.html">
+              <a class="globalnav-submenu-link" href="/pages/guide.html">
                 <span class="globalnav-submenu-label">Overview</span>
               </a>
             </li>
             <li>
-              <a class="globalnav-submenu-link" href="guide-documents.html">
+              <a class="globalnav-submenu-link" href="/pages/guide-documents.html">
                 <span class="globalnav-submenu-label">Documents</span>
               </a>
             </li>
             <li>
-              <a class="globalnav-submenu-link" href="tax-benefits.html">
+              <a class="globalnav-submenu-link" href="/pages/tax-benefits.html">
                 <span class="globalnav-submenu-label">Tax benefits</span>
               </a>
             </li>
             <li>
-              <a class="globalnav-submenu-link" href="concessions.html">
+              <a class="globalnav-submenu-link" href="/pages/concessions.html">
                 <span class="globalnav-submenu-label">Concessions</span>
               </a>
             </li>
             <li>
-              <a class="globalnav-submenu-link" href="home-loan-insurance.html">
+              <a class="globalnav-submenu-link" href="/pages/home-loan-insurance.html">
                 <span class="globalnav-submenu-label">Insurance</span>
               </a>
             </li>
             <li>
-              <a class="globalnav-submenu-link" href="home-loan-complaints.html">
-                <span class="globalnav-submenu-label">Grievance redressal</span>
+              <a class="globalnav-submenu-link" href="/pages/home-loan-complaints.html">
+                <span class="globalnav-submenu-label">Grievance redressal mechanism</span>
               </a>
             </li>
           </ul>
         </div>
       </div>
     </div>
+
     <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content">
         <h2 class="globalnav-submenu-header">Get support</h2>
@@ -860,27 +1082,28 @@
         </ul>
       </div>
     </div>
-    <div class="globalnav-flyout" id="nav-utilities-flyout" aria-hidden="true">
+
+    <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content globalnav-flyout-content--guide">
         <div class="globalnav-submenu-column">
-          <h2 class="globalnav-submenu-header">Explore utilities</h2>
+          <h2 class="globalnav-submenu-header">Explore tools</h2>
           <ul class="globalnav-submenu-list">
-          <li>
-            <a class="globalnav-submenu-link" href="calculators.html">
-              <span class="globalnav-submenu-label">Calculators</span>
-            </a>
-          </li>
-          <li>
-            <a class="globalnav-submenu-link" href="project-approvals.html">
-              <span class="globalnav-submenu-label">Project Bank Finder</span>
-            </a>
-          </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/calculators.html">
+                <span class="globalnav-submenu-label">Calculators</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/project-approvals.html">
+                <span class="globalnav-submenu-label">Project Bank Finder</span>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
     </div>
-
   </nav>
+  <!-- SHROFFIN_NAV_END -->
 
   <main class="lm-page">
     <section class="lm-hero" aria-labelledby="lm-hero-title">
@@ -889,68 +1112,137 @@
           <span class="lm-line">See every bank.</span>
           <span class="lm-line">Before you apply.</span>
         </h1>
-        <a class="lm-cta" href="project-approvals.html">Check projects</a>
+        <a class="lm-cta" href="explore-banks.html">Explore banks</a>
       </div>
     </section>
 
     <section class="lm-band lm-band-lead lm-band-white" aria-label="About Shroffin">
       <div class="lm-band-inner lm-reveal">
-        <p class="lm-body lm-lead">We completely engineered your home loan journey. The entire market lives in a single, standardized matrix, designed so you can cross-examine rates, rules, and fine print at a glance. We stripped away the traditional traps by letting you explore every lender without surrendering your phone number or email upfront. From there, you are in control: pick your banks, send a single application to all of them at once.<span class="lm-lead-end">And let them compete for you.</span></p>
+        <div class="lm-lead-stack">
+          <p class="lm-body lm-lead">We completely engineered your home loan journey.</p>
+          <p class="lm-body lm-lead lm-lead-soft">The entire market sits in one standardized view, built so you can cross-examine rates, rules, and fine print at a glance.</p>
+          <p class="lm-body lm-lead lm-lead-soft">You can explore every lender without surrendering your phone number or email upfront.</p>
+          <p class="lm-body lm-lead">You pick your banks, send one application to all of them at once, and let them compete for you.</p>
+        </div>
       </div>
     </section>
 
-    <section class="lm-steps" aria-label="How Shroffin works">
-      <div class="lm-steps-inner">
-        <article class="lm-card lm-reveal">
-          <div class="lm-card-copy">
+    <section class="lm-story" id="lm-story" aria-label="How Shroffin works" data-lm-story>
+      <div class="lm-story-track" data-lm-story-track>
+        <div class="lm-story-sticky">
+          <div class="lm-story-stage">
+            <div class="lm-story-copy-col">
+              <div class="lm-story-panels" aria-live="polite">
+                <div class="lm-story-panel is-active" data-step="0" aria-hidden="false">
+                  <p class="lm-kicker">Compare</p>
+                  <h2 class="lm-title">
+                    <span class="lm-line">Every bank.</span>
+                    <span class="lm-line">One view.</span>
+                  </h2>
+                  <p class="lm-body">See the full picture before you apply. Not after.</p>
+                </div>
+                <div class="lm-story-panel" data-step="1" aria-hidden="true">
+                  <p class="lm-kicker">Pick</p>
+                  <h2 class="lm-title">You choose the banks.</h2>
+                  <p class="lm-body">You decide which banks see your application.</p>
+                </div>
+                <div class="lm-story-panel" data-step="2" aria-hidden="true">
+                  <p class="lm-kicker">Apply</p>
+                  <h2 class="lm-title">
+                    <span class="lm-line">One application.</span>
+                    <span class="lm-line">Many offers.</span>
+                  </h2>
+                  <p class="lm-body">Send once. Offers come back.</p>
+                </div>
+                <div class="lm-story-panel" data-step="3" aria-hidden="true">
+                  <p class="lm-kicker">Decide</p>
+                  <h2 class="lm-title">
+                    <span class="lm-line">Banks compete.</span>
+                    <span class="lm-line">You decide.</span>
+                  </h2>
+                  <p class="lm-body">They offer. You choose the loan that fits.</p>
+                </div>
+              </div>
+              <div class="lm-story-progress" aria-hidden="true">
+                <div class="lm-story-progress-track">
+                  <span class="lm-story-progress-fill" data-lm-story-fill></span>
+                </div>
+                <ol class="lm-story-marks">
+                  <li class="is-active" data-step="0">Compare</li>
+                  <li data-step="1">Pick</li>
+                  <li data-step="2">Apply</li>
+                  <li data-step="3">Decide</li>
+                </ol>
+              </div>
+            </div>
+            <div class="lm-story-media-col">
+              <div class="lm-story-frame" aria-hidden="true">
+                <div class="lm-story-shot is-active" data-step="0">
+                  <div class="lm-story-placeholder">Compare</div>
+                </div>
+                <div class="lm-story-shot" data-step="1">
+                  <div class="lm-story-placeholder">Pick</div>
+                </div>
+                <div class="lm-story-shot" data-step="2">
+                  <div class="lm-story-placeholder">Apply</div>
+                </div>
+                <div class="lm-story-shot" data-step="3">
+                  <div class="lm-story-placeholder">Decide</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lm-story-fallback">
+        <article class="lm-story-fallback-item">
+          <div class="lm-story-fallback-copy">
             <p class="lm-kicker">Compare</p>
-            <h2 class="lm-title" id="lm-s1-title">
+            <h2 class="lm-title">
               <span class="lm-line">Every bank.</span>
               <span class="lm-line">One view.</span>
             </h2>
             <p class="lm-body">See the full picture before you apply. Not after.</p>
           </div>
-          <div class="lm-card-media" aria-hidden="true">
-            <div class="lm-card-media-frame"></div>
+          <div class="lm-story-fallback-media" aria-hidden="true">
+            <div class="lm-story-placeholder">Compare</div>
           </div>
         </article>
-
-        <article class="lm-card lm-reveal">
-          <div class="lm-card-copy">
+        <article class="lm-story-fallback-item">
+          <div class="lm-story-fallback-copy">
             <p class="lm-kicker">Pick</p>
-            <h2 class="lm-title" id="lm-s2-title">You choose the banks.</h2>
+            <h2 class="lm-title">You choose the banks.</h2>
             <p class="lm-body">You decide which banks see your application.</p>
           </div>
-          <div class="lm-card-media" aria-hidden="true">
-            <div class="lm-card-media-frame"></div>
+          <div class="lm-story-fallback-media" aria-hidden="true">
+            <div class="lm-story-placeholder">Pick</div>
           </div>
         </article>
-
-        <article class="lm-card lm-reveal">
-          <div class="lm-card-copy">
+        <article class="lm-story-fallback-item">
+          <div class="lm-story-fallback-copy">
             <p class="lm-kicker">Apply</p>
-            <h2 class="lm-title" id="lm-s3-title">
+            <h2 class="lm-title">
               <span class="lm-line">One application.</span>
               <span class="lm-line">Many offers.</span>
             </h2>
             <p class="lm-body">Send once. Offers come back.</p>
           </div>
-          <div class="lm-card-media" aria-hidden="true">
-            <div class="lm-card-media-frame"></div>
+          <div class="lm-story-fallback-media" aria-hidden="true">
+            <div class="lm-story-placeholder">Apply</div>
           </div>
         </article>
-
-        <article class="lm-card lm-reveal">
-          <div class="lm-card-copy">
+        <article class="lm-story-fallback-item">
+          <div class="lm-story-fallback-copy">
             <p class="lm-kicker">Decide</p>
-            <h2 class="lm-title" id="lm-s4-title">
+            <h2 class="lm-title">
               <span class="lm-line">Banks compete.</span>
               <span class="lm-line">You decide.</span>
             </h2>
             <p class="lm-body">They offer. You choose the loan that fits.</p>
           </div>
-          <div class="lm-card-media" aria-hidden="true">
-            <div class="lm-card-media-frame"></div>
+          <div class="lm-story-fallback-media" aria-hidden="true">
+            <div class="lm-story-placeholder">Decide</div>
           </div>
         </article>
       </div>
@@ -959,7 +1251,7 @@
     <section class="lm-band lm-close" aria-labelledby="lm-close-title">
       <div class="lm-band-inner lm-reveal">
         <h2 class="lm-title" id="lm-close-title">Ready when you are.</h2>
-        <a class="lm-cta lm-cta-light" href="project-approvals.html">Check projects</a>
+        <a class="lm-cta lm-cta-light" href="explore-banks.html">Explore banks</a>
       </div>
     </section>
 
@@ -977,14 +1269,14 @@
             <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
             <li><a href="/pages/concessions.html">Concessions</a></li>
             <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
-            <li><a href="/pages/home-loan-complaints.html">Grievance redressal</a></li>
+            <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
           </ul>
         </nav>
 
         <nav class="site-footer-group" aria-labelledby="footer-quick-title">
           <h2 class="site-footer-heading" id="footer-quick-title">Quick links</h2>
           <ul class="site-footer-list">
-            <li><a href="/pages/learn-more.html">Explore banks</a></li>
+            <li><a href="/pages/explore-banks.html">Explore banks</a></li>
             <li><a href="/pages/calculators.html">Calculators</a></li>
             <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
           </ul>
@@ -1048,90 +1340,163 @@
   <!-- SHROFFIN_FOOTER_END -->
 
   <script>
-
     (function () {
       var nodes = document.querySelectorAll('.lm-reveal');
-      if (!nodes.length) return;
-
       var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-      if (reduce.matches) {
-        nodes.forEach(function (node) {
-          node.classList.add('is-in');
-        });
-        return;
+
+      if (nodes.length) {
+        if (reduce.matches) {
+          nodes.forEach(function (node) {
+            node.classList.add('is-in');
+          });
+        } else if ('IntersectionObserver' in window) {
+          var softObserver = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-in');
+                softObserver.unobserve(entry.target);
+              });
+            },
+            { rootMargin: '0px 0px -10% 0px', threshold: 0.12 }
+          );
+          nodes.forEach(function (node) {
+            softObserver.observe(node);
+          });
+        } else {
+          nodes.forEach(function (node) {
+            node.classList.add('is-in');
+          });
+        }
       }
+    })();
 
-      var cards = Array.prototype.slice.call(
-        document.querySelectorAll('.lm-card.lm-reveal')
-      );
-      var other = Array.prototype.slice.call(nodes).filter(function (node) {
-        return !node.classList.contains('lm-card');
-      });
+    (function () {
+      var root = document.querySelector('[data-lm-story]');
+      if (!root) return;
 
-      /* Soft fade for lead / close — Apple intro style */
-      if ('IntersectionObserver' in window) {
-        var softObserver = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (!entry.isIntersecting) return;
-              entry.target.classList.add('is-in');
-              softObserver.unobserve(entry.target);
-            });
-          },
-          { rootMargin: '0px 0px -10% 0px', threshold: 0.12 }
-        );
-        other.forEach(function (node) {
-          softObserver.observe(node);
-        });
-      } else {
-        other.forEach(function (node) {
-          node.classList.add('is-in');
-        });
-      }
-
-      /*
-        Product tiles: scroll-scrubbed rise — modest travel, paced by scroll.
-        Desktop ~56px; phone ~40px. Fade is already settled (opacity: 1).
-      */
-      if (!cards.length) return;
-
-      cards.forEach(function (card) {
-        card.classList.add('lm-card-scroll');
-      });
-
+      var track = root.querySelector('[data-lm-story-track]');
+      var sticky = root.querySelector('.lm-story-sticky');
+      var panels = root.querySelectorAll('.lm-story-panel');
+      var shots = root.querySelectorAll('.lm-story-shot');
+      var marks = root.querySelectorAll('.lm-story-marks li');
+      var fill = root.querySelector('[data-lm-story-fill]');
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var stepCount = panels.length;
+      var current = -1;
       var ticking = false;
+      /* Hold each beat; only commit after scrolling clearly into the next/previous. */
+      var commitPad = 0.28;
 
-      function updateCards() {
-        ticking = false;
-        var vh = window.innerHeight || 1;
-        var isPhone = window.matchMedia('(max-width: 833px)').matches;
-        var risePx = isPhone ? 40 : 56;
-        var start = isPhone ? vh * 0.85 : vh * 0.7;
-        var end = isPhone ? vh * 0.12 : vh * 0.2;
+      function setStep(index) {
+        if (index === current) return;
+        current = index;
 
-        cards.forEach(function (card) {
-          var rect = card.getBoundingClientRect();
-          var p = (start - rect.top) / (start - end);
-          if (p < 0) p = 0;
-          if (p > 1) p = 1;
-          var y = (1 - p) * risePx;
-          card.style.transform = 'translate3d(0,' + y + 'px,0)';
-          if (p > 0.02) card.classList.add('is-in');
+        panels.forEach(function (panel, i) {
+          var on = i === index;
+          panel.classList.toggle('is-active', on);
+          panel.setAttribute('aria-hidden', on ? 'false' : 'true');
         });
+
+        shots.forEach(function (shot, i) {
+          shot.classList.toggle('is-active', i === index);
+        });
+
+        marks.forEach(function (mark, i) {
+          mark.classList.toggle('is-active', i === index);
+        });
+      }
+
+      function setFill(progress) {
+        if (!fill) return;
+        var amount = 0.08 + progress * 0.92;
+        if (amount < 0.08) amount = 0.08;
+        if (amount > 1) amount = 1;
+        fill.style.transform = 'scaleX(' + amount + ')';
+      }
+
+      function progressToStep(progress) {
+        if (progress <= 0) return 0;
+        if (progress >= 1) return stepCount - 1;
+
+        var ideal = Math.min(stepCount - 1, Math.floor(progress * stepCount));
+        if (current < 0) return ideal;
+
+        var advanceGate = (current + 1 + commitPad) / stepCount;
+        var retreatGate = (current - commitPad) / stepCount;
+
+        if (progress >= advanceGate && current < stepCount - 1) {
+          return Math.min(stepCount - 1, Math.floor(progress * stepCount));
+        }
+        if (progress <= retreatGate && current > 0) {
+          return Math.max(0, Math.floor(progress * stepCount));
+        }
+        return current;
+      }
+
+      function update() {
+        ticking = false;
+        if (!track || !sticky || reduce.matches) return;
+
+        var rect = track.getBoundingClientRect();
+        var range = track.offsetHeight - sticky.offsetHeight;
+        if (range <= 0) {
+          setStep(0);
+          setFill(0);
+          return;
+        }
+
+        var progress = (-rect.top) / range;
+        if (progress < 0) progress = 0;
+        if (progress > 1) progress = 1;
+        setFill(progress);
+        setStep(progressToStep(progress));
       }
 
       function onScroll() {
         if (ticking) return;
         ticking = true;
-        window.requestAnimationFrame(updateCards);
+        window.requestAnimationFrame(update);
       }
 
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll, { passive: true });
-      updateCards();
+      function enableScrub() {
+        track.removeAttribute('aria-hidden');
+        var fallback = root.querySelector('.lm-story-fallback');
+        if (fallback) fallback.setAttribute('aria-hidden', 'true');
+        setStep(0);
+        setFill(0);
+        update();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+      }
+
+      function disableScrub() {
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onScroll);
+        if (track) track.setAttribute('aria-hidden', 'true');
+        var fallback = root.querySelector('.lm-story-fallback');
+        if (fallback) fallback.removeAttribute('aria-hidden');
+      }
+
+      if (reduce.matches) {
+        disableScrub();
+        return;
+      }
+
+      enableScrub();
+
+      if (typeof reduce.addEventListener === 'function') {
+        reduce.addEventListener('change', function (event) {
+          if (event.matches) {
+            disableScrub();
+          } else {
+            enableScrub();
+          }
+        });
+      }
     })();
   </script>
-  <script src="../js/shroffin-nav.js?v=editorial-14"></script>
+  <script src="../js/shroffin-nav.js?v=tools-1"></script>
   <script src="../js/shroffin-guide.js?v=editorial-15"></script>
 </body>
 </html>

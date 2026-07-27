@@ -106,6 +106,35 @@
     );
   }
 
+  /** Indian grouping while typing (e.g. 12,00,000). */
+  function formatIndianAmountDigits(raw, maxDigits) {
+    var digits = String(raw == null ? "" : raw).replace(/\D/g, "").slice(
+      0,
+      maxDigits == null ? MAX_DIGITS : maxDigits
+    );
+    if (!digits) return "";
+    return Number(digits).toLocaleString("en-IN");
+  }
+
+  function applyIndianMoneyFormat(input, digitLimit) {
+    var start = input.selectionStart;
+    var oldValue = input.value;
+    var digitsBefore =
+      typeof start === "number"
+        ? (oldValue.slice(0, start).match(/\d/g) || []).length
+        : digitCount(oldValue);
+    var formatted = formatIndianAmountDigits(oldValue, digitLimit);
+    if (input.value !== formatted) input.value = formatted;
+    if (typeof start !== "number" || typeof input.setSelectionRange !== "function") return;
+    var newPos = 0;
+    var count = 0;
+    for (var i = 0; i < formatted.length && count < digitsBefore; i++) {
+      if (/\d/.test(formatted.charAt(i))) count++;
+      newPos = i + 1;
+    }
+    input.setSelectionRange(newPos, newPos);
+  }
+
   function formatMonths(m) {
     if (!Number.isFinite(m) || m === Infinity) return "—";
     var years = Math.floor(m / 12);
@@ -121,14 +150,28 @@
     var rateField = isRateField(input);
     var tenureField = isTenureField(input);
     var digitLimit = maxDigitsFor(input);
+    var keepCommas = !plain && !rateField && !tenureField;
 
     function enforceLimits() {
+      if (keepCommas) {
+        applyIndianMoneyFormat(input, digitLimit);
+        return;
+      }
       var next = truncateToMaxDigits(input.value, digitLimit);
       if (rateField) next = truncateToDecimals(next, RATE_DECIMALS);
       if (next !== input.value) input.value = next;
     }
 
     function pretty() {
+      if (keepCommas) {
+        var moneyN = parseMoney(input.value);
+        if (!Number.isFinite(moneyN)) {
+          input.value = formatIndianAmountDigits(input.value, digitLimit);
+          return;
+        }
+        input.value = Math.trunc(moneyN).toLocaleString("en-IN");
+        return;
+      }
       enforceLimits();
       var n = parseMoney(input.value);
       if (!Number.isFinite(n)) return;
@@ -169,21 +212,23 @@
     input.addEventListener("input", enforceLimits);
     input.addEventListener("blur", pretty);
     input.addEventListener("change", pretty);
-    input.addEventListener("focus", function () {
-      var n = parseMoney(input.value);
-      if (Number.isFinite(n)) {
-        var raw = rateField
-          ? formatRate(n)
-          : tenureField
-            ? String(parseYears(n))
-            : plain
-              ? String(n)
-              : String(Math.trunc(n) === n ? Math.trunc(n) : n);
-        input.value = rateField
-          ? truncateToDecimals(truncateToMaxDigits(raw, digitLimit), RATE_DECIMALS)
-          : truncateToMaxDigits(raw, digitLimit);
-      }
-    });
+    if (!keepCommas) {
+      input.addEventListener("focus", function () {
+        var n = parseMoney(input.value);
+        if (Number.isFinite(n)) {
+          var raw = rateField
+            ? formatRate(n)
+            : tenureField
+              ? String(parseYears(n))
+              : plain
+                ? String(n)
+                : String(Math.trunc(n) === n ? Math.trunc(n) : n);
+          input.value = rateField
+            ? truncateToDecimals(truncateToMaxDigits(raw, digitLimit), RATE_DECIMALS)
+            : truncateToMaxDigits(raw, digitLimit);
+        }
+      });
+    }
   }
 
   function syncRange(numberInput, rangeInput) {
@@ -423,13 +468,45 @@
   }
 
   function bindHowMuchLoan(form) {
+    var coFields = document.getElementById("co-applicant-fields");
+    var coRow = document.getElementById("out-co-row");
+    var coGroup = form.elements.coApplicant;
+
+    function coApplicantOn() {
+      if (!coGroup) return false;
+      var value = coGroup.value;
+      if (value == null || value === "") {
+        var checked = form.querySelector('input[name="coApplicant"]:checked');
+        value = checked ? checked.value : "no";
+      }
+      return String(value).toLowerCase() === "yes";
+    }
+
+    function syncCoApplicantPanel() {
+      var on = coApplicantOn();
+      if (coFields) {
+        if (on) coFields.removeAttribute("hidden");
+        else coFields.setAttribute("hidden", "");
+      }
+      if (coRow) {
+        if (on) coRow.removeAttribute("hidden");
+        else coRow.setAttribute("hidden", "");
+      }
+      return on;
+    }
+
     function run() {
       var d = readForm(form);
+      var includeCo = syncCoApplicantPanel();
       var result = MathLib.guideLoanAmount({
         propertyValue: parseMoney(d.price),
         income: parseMoney(d.income),
         existingEmis: parseMoney(d.existingEmis) || 0,
         cardLimits: parseMoney(d.cardLimits) || 0,
+        includeCoApplicant: includeCo,
+        coIncome: parseMoney(d.coIncome) || 0,
+        coExistingEmis: parseMoney(d.coExistingEmis) || 0,
+        coCardLimits: parseMoney(d.coCardLimits) || 0,
         foirPct: parseMoney(d.foir),
         rate: parseRate(d.rate),
         years: parseMoney(d.years)
@@ -437,17 +514,26 @@
       setText("out-loan", formatINR(result.estimate));
       setText("out-prop", formatINR(result.fromProperty));
       setText("out-inc", formatINR(result.fromIncome));
+      setText("out-co-add", formatINR(result.addedByCoApplicant || 0));
       setText("out-emi-room", formatINR(result.homeEmiRoom));
       setText(
         "out-bind",
         result.limiting === "property" ? "Property" : "Income"
       );
     }
-    ["price", "income", "existingEmis", "cardLimits", "rate", "years"].forEach(
-      function (name) {
-        if (form.elements[name]) bindMoneyInput(form.elements[name]);
-      }
-    );
+    [
+      "price",
+      "income",
+      "existingEmis",
+      "cardLimits",
+      "coIncome",
+      "coExistingEmis",
+      "coCardLimits",
+      "rate",
+      "years"
+    ].forEach(function (name) {
+      if (form.elements[name]) bindMoneyInput(form.elements[name]);
+    });
     syncRange(form.elements.price, form.elements.priceRange);
     syncRange(form.elements.rate, form.elements.rateRange);
     syncRange(form.elements.years, form.elements.yearsRange);

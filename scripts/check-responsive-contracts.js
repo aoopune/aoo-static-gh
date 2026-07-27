@@ -3,6 +3,7 @@ const path = require('path');
 
 const root = path.resolve(__dirname, '..');
 const pageRegistry = require(path.join(root, 'data', 'redesigned-pages.json'));
+const globalNav = require(path.join(root, 'data', 'global-nav.json'));
 const pages = pageRegistry.map(function (entry) {
   return entry.path;
 });
@@ -45,9 +46,68 @@ function fail(file, message) {
   failures.push(file + ': ' + message);
 }
 
-for (const file of pages) {
+function extractVisibleH1(activeSource) {
+  const match = activeSource.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i);
+  if (!match) return '';
+  return match[1]
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractPrimaryNavLabels(activeSource) {
+  const listMatch = activeSource.match(
+    /<ul class="globalnav-list">([\s\S]*?)<\/ul>/
+  );
+  if (!listMatch) return [];
+  return Array.from(
+    listMatch[1].matchAll(
+      /<(?:a|button)\b[^>]*class="[^"]*(?:globalnav-link|globalnav-flyout-trigger)[^"]*"[^>]*>([\s\S]*?)<\/(?:a|button)>/g
+    )
+  )
+    .map(function (match) {
+      return match[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    })
+    .filter(function (label) {
+      return label && label !== 'Shroffin';
+    });
+}
+
+for (const entry of pageRegistry) {
+  const file = entry.path;
   const source = fs.readFileSync(path.join(root, file), 'utf8');
   const activeSource = source.replace(/<!--[\s\S]*?-->/g, '');
+
+  if (!entry.heading) {
+    fail(file, 'registry entry missing heading');
+  } else {
+    const h1 = extractVisibleH1(activeSource);
+    if (!h1) {
+      fail(file, 'missing visible h1');
+    } else if (!h1.toLowerCase().includes(String(entry.heading).toLowerCase())) {
+      fail(
+        file,
+        'h1 "' + h1 + '" does not include registry heading "' + entry.heading + '"'
+      );
+    }
+  }
+
+  const navLabels = extractPrimaryNavLabels(activeSource);
+  if (JSON.stringify(navLabels) !== JSON.stringify(globalNav.primaryLabels)) {
+    fail(
+      file,
+      'global nav labels must be ' +
+        globalNav.primaryLabels.join(' → ') +
+        ' (found ' +
+        (navLabels.join(' → ') || 'none') +
+        ')'
+    );
+  }
+  globalNav.flyoutIds.forEach(function (id) {
+    if (!activeSource.includes('id="' + id + '"')) {
+      fail(file, 'missing flyout #' + id);
+    }
+  });
 
   if (!/name="viewport"[^>]+viewport-fit=cover/.test(activeSource)) {
     fail(file, 'missing viewport-fit=cover');
@@ -72,6 +132,18 @@ for (const file of pages) {
   }
   if ((source.match(/SHROFFIN_FOOTER_END/g) || []).length !== 1) {
     fail(file, 'missing canonical footer end marker');
+  }
+  if ((source.match(/SHROFFIN_NAV_START/g) || []).length !== 1) {
+    fail(file, 'missing canonical nav start marker');
+  }
+  if ((source.match(/SHROFFIN_NAV_END/g) || []).length !== 1) {
+    fail(file, 'missing canonical nav end marker');
+  }
+  if (!/href="\/pages\/guide\.html"/.test(activeSource)) {
+    fail(file, 'global nav must use root-absolute Guide links');
+  }
+  if (!/>Tools</.test(activeSource) || /Utilities/.test(activeSource)) {
+    fail(file, 'global nav Tools label must match the shared partial');
   }
   if ((activeSource.match(/class="site-footer-directory"/g) || []).length !== 1) {
     fail(file, 'footer must contain one link directory');
@@ -183,8 +255,11 @@ if (!/\.site-footer-list a\s*\{[\s\S]*?font-weight:\s*400/.test(shellCss)) {
 if (!/\.site-footer-legal-links a\s*\{[\s\S]*?text-decoration:\s*none/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'bottom legal links must not be underlined by default');
 }
-if (!/\.site-footer-legal-links li:not\(:first-child\)::before\s*\{[\s\S]*?background:\s*var\(--shroffin-rule\)/.test(shellCss)) {
-  fail('css/shroffin-shell.css', 'bottom legal links must be separated by Apple-style dividers');
+if (!/\.site-footer-legal-links li:not\(:last-child\)::after\s*\{[\s\S]*?background:\s*var\(--shroffin-rule\)/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'wide legal strip must use trailing Apple-style dividers');
+}
+if (!/@container footer-legal \(min-width:/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'legal strip must use progressive container queries');
 }
 if (!/\.site-footer-accordion \.site-footer-panel\s*\{[\s\S]*?grid-template-rows:\s*0fr/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'footer must collapse into accordion panels on small screens');
@@ -197,6 +272,18 @@ const navJs = fs.readFileSync(path.join(root, 'js', 'shroffin-nav.js'), 'utf8');
 if (!/initFooterAccordion/.test(navJs)) {
   fail('js/shroffin-nav.js', 'footer accordion controller must be wired into the shared nav script');
 }
+globalNav.compactRootLabels.forEach(function (label) {
+  const compactPattern = new RegExp(
+    'buildCompactRootItem\\("' + label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '"'
+  );
+  const aboutPattern = label === 'About' && /appendCompactLink\([\s\S]*?"About"/;
+  if (!compactPattern.test(navJs) && !(aboutPattern && aboutPattern.test(navJs))) {
+    fail(
+      'js/shroffin-nav.js',
+      'compact menu must include root item "' + label + '"'
+    );
+  }
+});
 
 const sitemapHtml = fs.readFileSync(path.join(root, 'sitemap.html'), 'utf8');
 pageRegistry

@@ -1,25 +1,34 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 const AxeBuilder = require('@axe-core/playwright').default;
+const pageRegistry = require('../data/redesigned-pages.json');
+const globalNav = require('../data/global-nav.json');
 
-const redesignedPages = [
-  { path: '/', heading: 'See everything.' },
-  { path: '/pages/learn-more.html', heading: 'See every bank.' },
-  { path: '/pages/about.html', heading: 'About Shroffin' },
-  { path: '/privacy-policy.html', heading: 'Privacy Policy' },
-  { path: '/sitemap.html', heading: 'Site Map' },
-  { path: '/pages/guide.html', heading: 'The essentials' },
-  { path: '/pages/guide-documents.html', heading: 'Prepare once.' },
-  { path: '/pages/project-approvals.html', heading: 'Your project across bank records' },
-  { path: '/pages/tax-benefits.html', heading: 'tax benefits' },
-  { path: '/pages/concessions.html', heading: 'pay less' },
-  { path: '/pages/home-loan-insurance.html', heading: 'Know enough' },
-  { path: '/pages/property-home-insurance.html', heading: 'property cover' },
-  { path: '/pages/credit-life-insurance.html', heading: 'loan cover' },
-  { path: '/pages/home-loan-complaints.html', heading: 'fair path' }
-];
+/** Full geometry matrix — keep cost bounded; calculators covered by contract lint. */
+const matrixPaths = new Set([
+  '/',
+  '/pages/learn-more.html',
+  '/pages/about.html',
+  '/privacy-policy.html',
+  '/sitemap.html',
+  '/pages/guide.html',
+  '/pages/guide-documents.html',
+  '/pages/project-approvals.html',
+  '/pages/tax-benefits.html',
+  '/pages/concessions.html',
+  '/pages/home-loan-insurance.html',
+  '/pages/property-home-insurance.html',
+  '/pages/credit-life-insurance.html',
+  '/pages/home-loan-complaints.html'
+]);
 
-const guidePages = redesignedPages.slice(5);
+const redesignedPages = pageRegistry
+  .filter(function (entry) {
+    return matrixPaths.has(entry.url);
+  })
+  .map(function (entry) {
+    return { path: entry.url, heading: entry.heading };
+  });
 
 const sectionJumpPages = [
   '/pages/guide.html',
@@ -50,7 +59,6 @@ const primaryControlSelector = [
   '.localnav-toggle',
   '.localnav-cta',
   '.home-hero-cta',
-  '.fundamentals-paddle',
   '.lm-cta',
   '.guide-jump a',
   '.mag-index-link',
@@ -223,7 +231,7 @@ async function expectSharedShell(page, entry) {
         });
     }
   );
-  expect(navOrder.slice(0, 3)).toEqual(['Guide', 'Support', 'About']);
+  expect(navOrder).toEqual(globalNav.primaryLabels);
 
   const exposedLegacy = await page.locator('a[href]').evaluateAll(function (links, routes) {
     return links
@@ -269,7 +277,7 @@ test.describe('redesigned page responsive contract', function () {
     const page = await context.newPage();
     await page.goto('/pages/guide.html', { waitUntil: 'domcontentloaded' });
 
-    await expect(page.locator('.globalnav-flyout')).toHaveCount(2);
+    await expect(page.locator('.globalnav-flyout')).toHaveCount(globalNav.flyoutIds.length);
     await expect(page.locator('.globalnav-flyout').first()).toBeVisible();
     await expect(page.locator('.localnav-menu')).toBeVisible();
     await expect(page.locator('.localnav-link')).toHaveCount(6);
@@ -332,9 +340,20 @@ test.describe('breakpoints and navigation behavior', function () {
     const localToggle = page.locator('.localnav-toggle');
     const globalToggle = page.locator('.globalnav-compact-toggle');
 
+    await expect(page.locator('.globalnav')).toHaveClass(/is-compact/);
+    await expect(globalToggle).toBeVisible();
+
+    // Guide localnav is an exclusive surface: while open it hides global chrome.
     await localToggle.click();
-    await globalToggle.click();
+    await expect(localToggle).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('.globalnav')).toHaveCSS('visibility', 'hidden');
+
+    await page.keyboard.press('Escape');
     await expect(localToggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(localToggle).toBeFocused();
+    await expect(globalToggle).toBeVisible();
+
+    await globalToggle.click();
     await expect(globalToggle).toHaveAttribute('aria-expanded', 'true');
     await expect(page.locator('.globalnav-compact-tray')).toHaveCSS(
       'block-size',
@@ -348,7 +367,9 @@ test.describe('breakpoints and navigation behavior', function () {
           return (item.querySelector('button, a') || item).textContent.trim();
         });
       });
-    expect(menuLabels.slice(0, 3)).toEqual(['Guide', 'Support', 'About']);
+    expect(menuLabels.slice(0, globalNav.compactRootLabels.length)).toEqual(
+      globalNav.compactRootLabels
+    );
 
     await page.locator('.globalnav-compact-item--drill[data-panel-target="guide"]').click();
     await expect(page.locator('.globalnav')).toHaveClass(/compact-drilled/);
@@ -542,11 +563,11 @@ test.describe('adaptive component behavior', function () {
       const groups = directory.children;
       const first = groups[0].getBoundingClientRect();
       const last = groups[groups.length - 1].getBoundingClientRect();
-      const inner = directory.parentElement.getBoundingClientRect();
+      const rail = directory.getBoundingClientRect();
       return {
         columnCount: groups.length,
-        firstAtLeft: Math.abs(first.left - inner.left),
-        lastAtRight: Math.abs(last.right - inner.right)
+        firstAtLeft: Math.abs(first.left - rail.left),
+        lastAtRight: Math.abs(last.right - rail.right)
       };
     });
     expect(directoryAlignment.columnCount).toBe(5);
@@ -645,22 +666,15 @@ test.describe('adaptive component behavior', function () {
     await expect(page.locator('.site-footer-list a', { hasText: 'Overview' })).toBeVisible();
   });
 
-  test('carousel controls expose disabled boundaries and 44px targets', async function ({
+  test('primary elevated CTAs keep a 44px touch floor on phones', async function ({
     page
   }, testInfo) {
     test.skip(testInfo.project.name !== 'chromium-responsive');
 
     await page.setViewportSize({ width: 375, height: 667 });
     await gotoReady(page, '/');
-    const previous = page.locator('#fundamentals-prev');
-    const next = page.locator('#fundamentals-next');
-    await expect(previous).toBeDisabled();
-    await expect(next).toBeEnabled();
+    await expect(page.locator('.home-hero-cta').first()).toBeVisible();
     await expectPrimaryTargets(page);
-    await expect(page.locator('.fundamentals-card').first()).toHaveCSS(
-      'scroll-snap-stop',
-      'always'
-    );
   });
 });
 
@@ -707,7 +721,12 @@ test('cross-browser responsive smoke', async function ({ page }, testInfo) {
     'Covered by the full Chromium matrix.'
   );
 
-  for (const entry of [redesignedPages[0], redesignedPages[4], redesignedPages[3]]) {
+  const smokePaths = new Set(['/', '/sitemap.html', '/privacy-policy.html']);
+  const smokePages = redesignedPages.filter(function (entry) {
+    return smokePaths.has(entry.path);
+  });
+
+  for (const entry of smokePages) {
     await gotoReady(page, entry.path);
     await expectSharedShell(page, entry);
     await expectNoPageOverflow(page);

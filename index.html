@@ -129,12 +129,14 @@
       }
     }
 
-    /* ——— Hero ——— */
+    /* ——— Hero ———
+       Apple-style unit: not full viewport — leave a strip of the next section. */
     .home-hero {
       position: relative;
       width: 100%;
-      min-height: calc(100svh - var(--gn-height));
-      min-height: calc(100dvh - var(--gn-height));
+      height: min(580px, calc(100svh - var(--gn-height) - 7.5rem));
+      height: min(580px, calc(100dvh - var(--gn-height) - 7.5rem));
+      min-height: 28rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -146,32 +148,12 @@
       background: #f3f1eb;
     }
 
-    .home-hero-picture {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      margin: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .home-hero-media {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 32%;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    /* Real HTML type (not baked into the photo) — stays sharp on zoom, like Apple */
     .home-hero-copy {
       position: relative;
       z-index: 1;
       width: min(1068px, calc(100% - 48px));
       margin: 0 auto;
-      padding: clamp(56px, 12vh, 120px) 0 0;
+      padding: 52px 0 0;
       pointer-events: none;
       opacity: 0;
       transform: translateY(14px);
@@ -184,7 +166,7 @@
       margin: 0;
       color: #1d1d1f;
       font-weight: 600;
-      font-size: clamp(32px, 4vw, 48px);
+      font-size: calc(var(--shroffin-type-display) - 3px);
       line-height: 1.05;
     }
 
@@ -193,7 +175,7 @@
       max-width: 34em;
       color: #1d1d1f;
       font-weight: 400;
-      font-size: clamp(20px, 2.2vw, 28px);
+      font-size: calc(var(--shroffin-type-support) - 3px);
       line-height: 1.35;
     }
 
@@ -218,7 +200,7 @@
       border: 1px solid transparent;
       border-radius: 980px;
       font-family: inherit;
-      font-size: 17px;
+      font-size: 14px;
       font-weight: 400;
       line-height: 1.17647;
       text-decoration: none;
@@ -273,22 +255,12 @@
     }
 
     @media (max-width: 833px) {
-
-      .home-hero-media {
-        object-position: center 28%;
-      }
-
       .home-hero-copy {
         width: min(1068px, calc(100% - 32px));
-        padding-top: clamp(48px, 10vh, 88px);
-      }
-
-      .home-hero-title {
-        font-size: clamp(28px, 7.5vw, 36px);
+        padding-top: 40px;
       }
 
       .home-hero-sub {
-        font-size: clamp(18px, 4.6vw, 22px);
         margin-top: 4px;
       }
 
@@ -299,8 +271,10 @@
     }
 
     @media (min-width: 834px) {
-      .home-hero-media {
-        object-position: center 36%;
+      .home-hero {
+        height: min(692px, calc(100svh - var(--gn-height) - 8.5rem));
+        height: min(692px, calc(100dvh - var(--gn-height) - 8.5rem));
+        min-height: 32rem;
       }
     }
 
@@ -378,7 +352,7 @@
 
     .site-footer-copy {
       margin: 0;
-      padding: 16px 0 36px;
+      padding: 0;
     }
 
     .site-footer-copy a {
@@ -402,10 +376,6 @@
         width: min(1068px, calc(100% - 32px));
         padding-top: 24px;
       }
-
-      .site-footer-copy {
-        padding-bottom: 32px;
-      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -428,19 +398,21 @@
       to { transform: translateY(0); }
     }
   </style>
-  <link rel="stylesheet" href="css/shroffin-shell.css?v=editorial-24">
-  <link rel="stylesheet" href="css/shroffin-home.css?v=stance-20">
+  <link rel="stylesheet" href="css/shroffin-shell.css?v=footer-1">
+  <!-- shroffin-home.css: stance styles moved to about; file kept for now -->
+  <!-- <link rel="stylesheet" href="css/shroffin-home.css?v=stance-34"> -->
 </head>
 <body>
+  <!-- SHROFFIN_NAV_START -->
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
   <nav class="globalnav" id="globalnav" aria-label="Global">
     <div class="globalnav-content">
       <ul class="globalnav-list">
         <li class="globalnav-item globalnav-item-brand">
-          <a class="globalnav-link globalnav-link-brand" href="index.html" aria-label="Shroffin Home">
+          <a class="globalnav-link globalnav-link-brand" href="/" aria-label="Shroffin Home">
             <img
               class="globalnav-logo"
-              src="images/logos/logo-h-light-clear-781x173.png"
+              src="/images/logos/logo-h-light-clear-781x173.png"
               alt="Shroffin"
               width="99"
               height="22"
@@ -449,39 +421,37 @@
         </li>
         <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled
         <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/compare.html">Compare</a>
+          <a class="globalnav-link" href="/pages/compare.html">Compare</a>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/quick-overview.html">Overview</a>
+          <a class="globalnav-link" href="/pages/quick-overview.html">Overview</a>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/schemes.html">Schemes</a>
+          <a class="globalnav-link" href="/pages/schemes.html">Schemes</a>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/faq.html">FAQ</a>
+          <a class="globalnav-link" href="/pages/faq.html">FAQ</a>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/document-checklist.html">Documents</a>
+          <a class="globalnav-link" href="/pages/document-checklist.html">Documents</a>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/about.html">About</a>
+          <a class="globalnav-link" href="/pages/about.html">About</a>
         </li>
         -->
         <!-- EDUCATION_LOAN_PRODUCT: kept in code, hidden from UI until re-enabled
         <li class="globalnav-item">
-          <a class="globalnav-link" href="education-loan.html">Education</a>
+          <a class="globalnav-link" href="/education-loan.html">Education</a>
         </li>
         -->
         <li class="globalnav-item globalnav-item-about globalnav-item-flyout" id="nav-guide">
           <a
             class="globalnav-link globalnav-flyout-trigger"
-            href="pages/guide.html"
+            href="/pages/guide.html"
             id="nav-guide-trigger"
             aria-expanded="false"
             aria-controls="nav-guide-flyout"
-          >
-            Guide
-          </a>
+          >Guide</a>
         </li>
         <li class="globalnav-item globalnav-item-support" id="nav-support">
           <button
@@ -490,21 +460,19 @@
             id="nav-support-trigger"
             aria-expanded="false"
             aria-controls="nav-support-flyout"
-          >
-            Support
-          </button>
+          >Support</button>
         </li>
-        <li class="globalnav-item globalnav-item-flyout" id="nav-utilities">
+        <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
           <button
             type="button"
             class="globalnav-flyout-trigger"
-            id="nav-utilities-trigger"
+            id="nav-tools-trigger"
             aria-expanded="false"
-            aria-controls="nav-utilities-flyout"
-          >Utilities</button>
+            aria-controls="nav-tools-flyout"
+          >Tools</button>
         </li>
         <li class="globalnav-item">
-          <a class="globalnav-link" href="pages/about.html?v=apple1">About</a>
+          <a class="globalnav-link" href="/pages/about.html">About</a>
         </li>
       </ul>
     </div>
@@ -515,39 +483,40 @@
           <h2 class="globalnav-submenu-header">Explore guide</h2>
           <ul class="globalnav-submenu-list">
             <li>
-              <a class="globalnav-submenu-link" href="pages/guide.html">
+              <a class="globalnav-submenu-link" href="/pages/guide.html">
                 <span class="globalnav-submenu-label">Overview</span>
               </a>
             </li>
             <li>
-              <a class="globalnav-submenu-link" href="pages/guide-documents.html">
+              <a class="globalnav-submenu-link" href="/pages/guide-documents.html">
                 <span class="globalnav-submenu-label">Documents</span>
               </a>
             </li>
             <li>
-              <a class="globalnav-submenu-link" href="pages/tax-benefits.html">
+              <a class="globalnav-submenu-link" href="/pages/tax-benefits.html">
                 <span class="globalnav-submenu-label">Tax benefits</span>
               </a>
             </li>
             <li>
-              <a class="globalnav-submenu-link" href="pages/concessions.html">
+              <a class="globalnav-submenu-link" href="/pages/concessions.html">
                 <span class="globalnav-submenu-label">Concessions</span>
               </a>
             </li>
             <li>
-              <a class="globalnav-submenu-link" href="pages/home-loan-insurance.html">
+              <a class="globalnav-submenu-link" href="/pages/home-loan-insurance.html">
                 <span class="globalnav-submenu-label">Insurance</span>
               </a>
             </li>
             <li>
-              <a class="globalnav-submenu-link" href="pages/home-loan-complaints.html">
-                <span class="globalnav-submenu-label">Grievance redressal</span>
+              <a class="globalnav-submenu-link" href="/pages/home-loan-complaints.html">
+                <span class="globalnav-submenu-label">Grievance redressal mechanism</span>
               </a>
             </li>
           </ul>
         </div>
       </div>
     </div>
+
     <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content">
         <h2 class="globalnav-submenu-header">Get support</h2>
@@ -578,146 +547,41 @@
         </ul>
       </div>
     </div>
-    <div class="globalnav-flyout" id="nav-utilities-flyout" aria-hidden="true">
+
+    <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content globalnav-flyout-content--guide">
         <div class="globalnav-submenu-column">
-          <h2 class="globalnav-submenu-header">Explore utilities</h2>
+          <h2 class="globalnav-submenu-header">Explore tools</h2>
           <ul class="globalnav-submenu-list">
-          <li>
-            <a class="globalnav-submenu-link" href="pages/calculators.html">
-              <span class="globalnav-submenu-label">Calculators</span>
-            </a>
-          </li>
-          <li>
-            <a class="globalnav-submenu-link" href="pages/project-approvals.html">
-              <span class="globalnav-submenu-label">Project Bank Finder</span>
-            </a>
-          </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/calculators.html">
+                <span class="globalnav-submenu-label">Calculators</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/project-approvals.html">
+                <span class="globalnav-submenu-label">Project Bank Finder</span>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
     </div>
-
   </nav>
+  <!-- SHROFFIN_NAV_END -->
 
   <main class="home-content">
     <section class="home-hero" aria-labelledby="home-hero-title">
-      <picture class="home-hero-picture">
-        <!-- Phone: tall crop so the scene + headline stay framed -->
-        <source
-          media="(max-width: 833px)"
-          srcset="images/hero/home-hero-mobile.jpg?v=live-type2"
-          width="1170"
-          height="2080"
-        >
-        <!-- Tablet / mid screens -->
-        <source
-          media="(max-width: 1440px)"
-          srcset="images/hero/home-hero-2048.jpg?v=live-type2 1x, images/hero/home-hero.jpg?v=live-type2 2x"
-          width="2048"
-          height="1020"
-        >
-        <!-- Desktop -->
-        <img
-          class="home-hero-media"
-          src="images/hero/home-hero.jpg?v=live-type2"
-          srcset="images/hero/home-hero-2048.jpg?v=live-type2 2048w, images/hero/home-hero.jpg?v=live-type2 3840w"
-          sizes="100vw"
-          alt="City skyline through tall glass, with mist below the towers"
-          width="3840"
-          height="1914"
-          decoding="async"
-          fetchpriority="high"
-        >
-      </picture>
       <div class="home-hero-copy">
         <h1 class="home-hero-title" id="home-hero-title">See everything.</h1>
         <p class="home-hero-sub">Get a fair view of home loans and<br>apply to your chosen banks in one go.</p>
         <div class="home-hero-ctas">
           <a class="home-hero-cta home-hero-cta-primary" href="pages/learn-more.html">Learn more</a>
-          <a class="home-hero-cta home-hero-cta-secondary" href="pages/project-approvals.html">Check projects</a>
+          <a class="home-hero-cta home-hero-cta-secondary" href="pages/explore-banks.html">Explore banks</a>
         </div>
       </div>
     </section>
 
-    <section class="stance" aria-labelledby="stance-title">
-      <header class="stance-intro">
-        <div class="stance-intro-inner stance-settle">
-          <h2 class="stance-title" id="stance-title">What we stand on.</h2>
-        </div>
-      </header>
-
-      <div class="stance-rail">
-        <article class="stance-chapter" aria-labelledby="stance-independent-title">
-          <div class="stance-stage">
-            <div class="stance-copy stance-settle">
-              <h3 class="stance-copy-title" id="stance-independent-title">Independent. On your side.</h3>
-              <p class="stance-copy-body">No commission from any bank. What you see is not for sale.</p>
-            </div>
-            <div class="stance-proof stance-settle stance-settle-delay-1" aria-hidden="true">
-              <div class="stance-banks">
-                <ul>
-                  <li>Bank A</li>
-                  <li>Bank B</li>
-                  <li>Bank C</li>
-                </ul>
-                <p class="stance-banks-foot">No commission</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="stance-chapter" aria-labelledby="stance-transparent-title">
-          <div class="stance-stage">
-            <div class="stance-copy stance-settle">
-              <h3 class="stance-copy-title" id="stance-transparent-title">Transparent. Nothing hidden.</h3>
-              <p class="stance-copy-body">Everything that matters is on the page. You choose what fits.</p>
-            </div>
-            <div class="stance-proof stance-settle stance-settle-delay-1" aria-hidden="true">
-              <ul class="stance-sheet">
-                <li>Rate</li>
-                <li>Charges</li>
-                <li>Prepayment</li>
-                <li>Insurance</li>
-              </ul>
-            </div>
-          </div>
-        </article>
-
-        <article class="stance-chapter" aria-labelledby="stance-quiet-title">
-          <div class="stance-stage">
-            <div class="stance-copy stance-settle">
-              <h3 class="stance-copy-title" id="stance-quiet-title">Quiet. At your pace.</h3>
-              <p class="stance-copy-body">No spam. No chase. Explore in your own time.</p>
-            </div>
-            <div class="stance-proof stance-settle stance-settle-delay-1" aria-hidden="true">
-              <div class="stance-inbox">
-                <div class="stance-inbox-row">
-                  <span>Follow-ups</span>
-                  <span class="stance-inbox-badge">0</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="stance-chapter" aria-labelledby="stance-decide-title">
-          <div class="stance-stage">
-            <div class="stance-copy stance-settle">
-              <h3 class="stance-copy-title" id="stance-decide-title">You decide. Always.</h3>
-              <p class="stance-copy-body">Every home loan bank is shown. The choice is yours.</p>
-            </div>
-            <div class="stance-proof stance-settle stance-settle-delay-1" aria-hidden="true">
-              <ul class="stance-choices">
-                <li>Bank A</li>
-                <li class="is-yours">Bank B</li>
-                <li>Bank C</li>
-              </ul>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
   </main>
 
   <!-- SHROFFIN_FOOTER_START -->
@@ -732,14 +596,14 @@
             <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
             <li><a href="/pages/concessions.html">Concessions</a></li>
             <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
-            <li><a href="/pages/home-loan-complaints.html">Grievance redressal</a></li>
+            <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
           </ul>
         </nav>
 
         <nav class="site-footer-group" aria-labelledby="footer-quick-title">
           <h2 class="site-footer-heading" id="footer-quick-title">Quick links</h2>
           <ul class="site-footer-list">
-            <li><a href="/pages/learn-more.html">Explore banks</a></li>
+            <li><a href="/pages/explore-banks.html">Explore banks</a></li>
             <li><a href="/pages/calculators.html">Calculators</a></li>
             <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
           </ul>
@@ -802,8 +666,7 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="js/shroffin-home-stance.js?v=stance-14"></script>
-  <script src="js/shroffin-nav.js?v=editorial-14"></script>
+  <script src="js/shroffin-nav.js?v=tools-1"></script>
   <script src="js/shroffin-guide.js?v=editorial-15"></script>
 </body>
 </html>

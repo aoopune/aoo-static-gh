@@ -42,16 +42,20 @@ test.describe("Project Bank Finder", () => {
       "GOLDLEAF REALETORS",
       "Warje"
     ]);
-    const borderWidths = await page.locator(".apf-table td").first().evaluate((cell) => {
+    const borders = await page.locator(".apf-table td").first().evaluate((cell) => {
       const style = getComputedStyle(cell);
-      return [
-        style.borderTopWidth,
-        style.borderRightWidth,
-        style.borderBottomWidth,
-        style.borderLeftWidth
-      ];
+      return {
+        top: style.borderTopWidth,
+        right: style.borderRightWidth,
+        bottom: style.borderBottomWidth,
+        left: style.borderLeftWidth
+      };
     });
-    expect(borderWidths).toEqual(["0px", "0px", "0px", "0px"]);
+    // Bank-first table: no cell box borders; soft row separators only.
+    expect(borders.top).toBe("0px");
+    expect(borders.right).toBe("0px");
+    expect(borders.left).toBe("0px");
+    expect(borders.bottom).toBe("1px");
   });
 
   test("finds matches with any one detail", async ({ page }) => {
