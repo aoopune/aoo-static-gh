@@ -96,7 +96,7 @@
       setOpen(!open);
     });
     veil.addEventListener("click", close);
-    list.querySelectorAll("a[href]").forEach(function (link) {
+    localnav.querySelectorAll("a[href]").forEach(function (link) {
       link.addEventListener("click", close);
     });
 

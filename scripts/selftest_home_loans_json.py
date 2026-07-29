@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "data" / "HOME_LOANS_COMPARE_v1.xlsx"
 JSON_PATH = ROOT / "data" / "home-loans-compare.json"
-LOCKED = {"offers": 1149, "bank_charges": 2281, "government_charges": 18}
+LOCKED = {"offers": 1149, "bank_charges": 2281, "government_charges": 15}
 
 
 def sha256_file(path: Path) -> str:
@@ -127,7 +127,7 @@ def main() -> int:
     t.check("no_purpose_home_loan", not any(r.get("purpose") == "Home Loan" for r in banks), "")
     t.check("no_needs_review", not any(r.get("when_it_matters") == "NEEDS_REVIEW" for r in banks), "")
     t.check("no_loan_agreement_stamp", not any(r.get("charge_name") == "Loan Agreement Stamp Duty" for r in govt), "")
-    t.check("govt_18", len(govt) == 18, str(len(govt)))
+    t.check("govt_count", len(govt) == LOCKED["government_charges"], str(len(govt)))
 
     print("\n" + "=" * 50)
     print(f"Passed: {t.passed}   Failed: {len(t.failed)}")

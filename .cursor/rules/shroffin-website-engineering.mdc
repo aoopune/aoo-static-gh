@@ -1,68 +1,38 @@
 ---
-description: Apply standard software engineering principles on the Shroffin website — no hacky or patchwork fixes
-globs: "**/*.{html,css,js}"
+description: Require permanent, standards-based engineering for every code change; forbid patchwork and temporary fixes
 alwaysApply: true
 ---
 
-# Website engineering (no hacky work)
+# Permanent engineering only
 
-**Use standard software engineering principles and fundamentals** for every website change — HTML, CSS, and JS. Prefer a clean, lasting solution over a quick patch that “works for now.” The site owner is not an engineer — do not leave fragile shortcuts that only make sense in the moment.
+Every code change in this repository must be a clean, lasting solution. Patchwork, temporary workarounds, and “just make it work” changes are forbidden, even when they would be faster.
 
-## Principles to apply (required)
+## Required engineering standard
 
-Apply these fundamentals whenever they fit the task. Do not ignore them for speed.
+1. **Find the root cause first.** Understand why the problem exists before changing code. Fix the cause in the component, shared style, script, data flow, or configuration that owns it.
+2. **Follow current stable standards.** Use established, actively supported practices appropriate to this repository and its technologies. “Latest” means current stable guidance—not experimental trends or unnecessary rewrites.
+3. **Preserve one source of truth.** Reuse or improve the existing shared pattern. Do not create parallel implementations or duplicate code.
+4. **Apply core principles.** Follow DRY, KISS, YAGNI, separation of concerns, clear ownership, least surprise, accessibility, security, performance, and progressive enhancement where relevant.
+5. **Keep the change minimal but complete.** Touch only what the request requires, while covering all affected states, devices, inputs, error paths, and supported browsers.
+6. **Keep code maintainable.** Use clear names, simple control flow, meaningful structure, and comments only where they explain why—not to excuse unclear code.
+7. **Verify the result.** Run the relevant checks and test the changed behavior. Confirm that existing behavior has not regressed.
+8. **Respect repository rules.** Follow the established architecture, conventions, responsive behavior, motion, accessibility, product visibility, and link rules.
+9. **Leave replaced code clean.** Remove obsolete or duplicate code unless another repository rule explicitly requires preserving it.
 
-| Principle | Meaning here |
-|---|---|
-| **DRY** (Don’t Repeat Yourself) | One shared pattern; do not copy-paste and diverge |
-| **KISS** (Keep It Simple) | Simplest clear solution that is correct — not clever tricks |
-| **YAGNI** | Do not build extra systems “just in case” |
-| **Separation of concerns** | HTML = structure, CSS = look/layout, JS = behavior |
-| **Single source of truth** | Shared look/behavior lives in one place, not many copies |
-| **Root-cause fixes** | Fix why it broke; do not only hide the symptom |
-| **Consistency** | Match existing site patterns, naming, and architecture |
-| **Readable & maintainable** | Clear names; another person can understand the change |
-| **Least surprise** | Behavior should match what similar pages already do |
-| **Minimal, complete change** | Touch only what is needed; finish related states (mobile, focus, etc.) |
+## Strictly forbidden
 
-If a change fights these principles, redesign the approach before shipping.
+- Temporary fixes, provisional implementations, throwaway code, or work intended to be replaced later.
+- Symptom-hiding overrides instead of root-cause fixes.
+- Random `!important`, unexplained magic numbers, arbitrary delays, empty error handling, or hiding broken behavior.
+- Stacked overrides, duplicated components, copied sections, or a second system for behavior that already has an owner.
+- Inline structure/style/behavior mixing when the repository already has the proper shared layer.
+- `TODO`, `FIXME`, `HACK`, disabled checks, skipped tests, or commented-out replacement code as a substitute for completing the work.
+- Choosing speed over correctness, maintainability, accessibility, security, or consistency.
 
-## Core idea
+## If a proper fix is larger
 
-Find the real cause. Fix it once, in the right place, using the same patterns the rest of the site already uses. If a shortcut would only paper over the problem, do not ship it.
+Do not ship a shortcut. Explain the required lasting solution and its scope in plain language, then ask before a large refactor when user approval is needed. If the full fix cannot be completed safely, stop and report the blocker; never leave a temporary patch behind.
 
-## Always
+## Before finishing
 
-1. **Apply the principles above** — Treat them as the default bar for quality, not optional advice.
-2. **Fix the root cause** — If something looks wrong (layout, nav, motion, links), change the shared style, script, or markup that owns that behavior — not a one-off override on a single page unless that page is truly unique.
-3. **Reuse before inventing** — Check how similar UI already works (home nav, guide pages, CTAs, off-site links, motion). Extend that pattern. Do not create a second way to do the same job.
-4. **One source of truth** — Shared look and behavior live in shared CSS/JS (or one clear template pattern). Do not copy-paste large blocks across pages and then tweak each copy differently.
-5. **Match existing structure** — Keep HTML for structure, CSS for look/layout, JS for behavior. Prefer classes and existing hooks over inline styles, inline scripts, or one-off IDs used only to force a fix.
-6. **Name things clearly** — Class and file names should say what the thing is for. Avoid cryptic or throwaway names (`fix2`, `temp`, `new-new`).
-7. **Small, complete change** — Touch only what the task needs, but finish the job: related states (hover, focus, mobile, reduced motion), same-site vs off-site links, and consistency with neighboring pages.
-8. **Leave the site healthier** — Prefer deleting dead/duplicate code you replaced over commenting out “just in case” piles — except where a project rule says to preserve gated product code (e.g. education loan).
-9. **Say when it is messy** — If the only options are a proper refactor or a fragile patch, say so in plain language and recommend the proper path. Do not silently ship the patch unless the user explicitly accepts a temporary fix.
-
-## Never
-
-- Do not skip standard engineering principles to go faster.
-- Do not use “just make it work” patches: random `!important`, unexplained magic numbers, empty `catch`, hiding bugs with `display: none`, or stacking overrides until the symptom disappears.
-- Do not fork a parallel nav, button, link, or motion system when one already exists.
-- Do not copy a whole page/section and slightly rename it when a shared partial/pattern or existing page structure should be extended instead.
-- Do not leave TODO/FIXME/HACK comments as the plan without telling the user what is unfinished.
-- Do not “clean up” unrelated architecture, rewrite working systems, or delete preserved legacy code unless asked.
-- Do not invent a new design or engineering approach that fights the current site — follow established Shroffin website rules (responsive, motion, external links, brand font, product visibility).
-
-## How to decide (quick)
-
-| Situation | Do this |
-|---|---|
-| Same bug on many pages | Fix shared CSS/JS or the shared pattern |
-| One page truly special | Local change is fine — keep it minimal and named clearly |
-| Existing pattern almost fits | Extend it; do not invent a twin |
-| Proper fix is larger than the ask | Explain the tradeoff; ask before a big refactor |
-| Tempted by a shortcut | Stop — choose the root-cause fix or ask |
-
-## Quick self-check
-
-Before finishing: Did this follow standard software engineering principles (DRY, KISS, separation of concerns, root-cause fix, one source of truth)? Would another person understand it? Is there only one way this behavior works on the site? Did you fix the cause, or only the symptom? If it feels hacky, redo it the clean way.
+Confirm: root cause fixed; current stable standards followed; no duplication or workaround added; relevant states covered; checks passed; no temporary code remains. If any answer is no, the change is not finished.

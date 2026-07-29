@@ -1265,11 +1265,30 @@
     padding: var(--shroffin-btn-elevated-pad-block) var(--shroffin-btn-elevated-pad-inline);
     border: 1px solid transparent;
     border-radius: var(--shroffin-btn-radius);
+    font-family: inherit;
     font-size: var(--shroffin-btn-elevated-font);
     font-weight: 400;
     line-height: var(--shroffin-btn-elevated-lh);
     text-decoration: none;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      background-color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+      color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+      border-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
+  }
+
+  button.home-hero-cta,
+  button.lm-cta {
+    margin: 0;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .home-hero-cta:focus-visible,
+  .lm-cta:focus-visible {
+    outline: 2px solid #0071e3;
+    outline-offset: 3px;
   }
 
   .home-hero-cta-primary,
@@ -1307,6 +1326,20 @@
 
   .home-hero-cta-secondary::before {
     content: none;
+  }
+
+  @media (min-width: 834px) {
+    .home-hero-cta-secondary:hover {
+      background: #0076df;
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .home-hero-cta-secondary:active {
+      background: #006edb;
+      color: #fff;
+      border-color: transparent;
+    }
   }
 
   @media (max-width: 833px) {

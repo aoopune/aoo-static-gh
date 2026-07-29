@@ -76,6 +76,15 @@ body {
   letter-spacing: -0.01em;
 }
 
+a.localnav-title {
+  text-decoration: none;
+  transition: color var(--mag-micro, 0.5s) var(--ease-color);
+}
+
+a.localnav-title:hover {
+  color: var(--mag-accent);
+}
+
 /* Filled blue pill in the Guide bar — label stays white (never link purple). */
 .localnav-cta,
 .localnav-cta:link,

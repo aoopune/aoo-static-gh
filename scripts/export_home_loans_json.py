@@ -33,7 +33,7 @@ SHEETS = {
     "Bank_charges": "bank_charges",
     "Government_charges": "government_charges",
 }
-LOCKED_COUNTS = {"offers": 1149, "bank_charges": 2281, "government_charges": 18}
+LOCKED_COUNTS = {"offers": 1149, "bank_charges": 2281, "government_charges": 15}
 HEADER_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_]*$")
 
 
