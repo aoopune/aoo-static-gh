@@ -312,7 +312,7 @@ async function testHomeLoanCompare() {
     topUpGovernmentNote.indexOf('specific to Maharashtra') >= 0,
     'top-up government charges retain a matching jurisdiction note'
   );
-  ok(compare.GROUPS.laterCharges.length === 3, 'compare has three later-charge columns');
+  ok(compare.GROUPS.laterCharges.length === 4, 'compare has four later-charge columns');
   ok(
     compare.GROUPS.laterCharges.every(function (column) {
       return column.sort === 'text';
@@ -335,8 +335,16 @@ async function testHomeLoanCompare() {
     'charge sorting uses the displayed values in natural numeric order'
   );
   ok(
-    compare.GROUPS.laterCharges[1].footnote === '‡',
+    compare.GROUPS.laterCharges[2].footnote === '‡',
     'overdue charge header uses its own footnote marker'
+  );
+  ok(
+    compare.GROUPS.laterCharges[1].key === 'rateChangeChargeDisplay',
+    'rate change charge sits after prepayment in later charges'
+  );
+  ok(
+    compare.GROUPS.laterCharges[1].footnote === '°',
+    'rate change charge header uses the degree footnote marker'
   );
   ok(
     compare.laterChargesColumns(false).every(function (column) {
@@ -345,20 +353,143 @@ async function testHomeLoanCompare() {
     'floating later-charges columns hide prepayment'
   );
   ok(
+    compare.laterChargesColumns(false).some(function (column) {
+      return column.key === 'rateChangeChargeDisplay';
+    }),
+    'floating later-charges columns still include rate change'
+  );
+  ok(
     compare.laterChargesColumns(true)[0].key ===
       'prepaymentChargeDisplay',
     'fixed later-charges columns include prepayment'
   );
   ok(
-    rows.every(function (row) {
-      return row.prepaymentChargeDisplay.main === 'Not charged';
+    compare.laterChargesColumns(true).some(function (column) {
+      return column.key === 'rateChangeChargeDisplay';
     }),
-    'compare lists floating-rate prepayment as not charged'
+    'fixed later-charges columns include rate change'
+  );
+  ok(
+    compare.RATE_CHANGE_FREQUENCY_NOTE ===
+      '° These fees are usually charged each time you switch rate type — not once for the whole loan.',
+    'rate change shared frequency note uses the locked copy'
+  );
+  ok(
+    compare.rateChangeFrequencyNoteForMethod(
+      compare.RATE_CHANGE_METHOD_TYPE
+    ) === compare.RATE_CHANGE_FREQUENCY_NOTE &&
+      compare.rateChangeFrequencyNoteForMethod(
+        compare.RATE_CHANGE_METHOD_REPRICE
+      ) === compare.RATE_CHANGE_FREQUENCY_NOTE_REPRICE &&
+      compare.rateChangeFrequencyNoteForMethod(
+        compare.RATE_CHANGE_METHOD_BENCHMARK
+      ) === compare.RATE_CHANGE_FREQUENCY_NOTE_BENCHMARK,
+    'rate change frequency note follows the selected method'
+  );
+  ok(
+    compare.RATE_CHANGE_BENCHMARK_MEANING_NOTE.indexOf(
+      'Marginal Cost of Funds based Lending Rate (MCLR)'
+    ) !== -1 &&
+      compare.RATE_CHANGE_BENCHMARK_MEANING_NOTE.indexOf(
+        'Repo Linked Lending Rate (RLLR)'
+      ) !== -1 &&
+      compare.RATE_CHANGE_BENCHMARK_MEANING_NOTE.indexOf(
+        'External Benchmark Lending Rate (EBLR)'
+      ) !== -1,
+    'benchmark meaning note spells out older and newer reference rates'
+  );
+  ok(
+    compare.RATE_CHANGE_REPRICING_MEANING_NOTE.indexOf('higher rate') !== -1 &&
+      compare.RATE_CHANGE_REPRICING_MEANING_NOTE.indexOf('lower rate') !== -1 &&
+      compare.RATE_CHANGE_REPRICING_MEANING_NOTE.indexOf('Floating') !== -1,
+    'repricing meaning note states higher-to-lower on the same rate type'
+  );
+  ok(
+    compare.expandBenchmarkSwitchSide('Base Rate / MCLR / BPLR') ===
+      'Base Rate / Marginal Cost of Funds based Lending Rate (MCLR) / Benchmark Prime Lending Rate (BPLR)' &&
+      compare.expandBenchmarkSwitchSide('External Benchmark Rate (Repo Rate)') ===
+        'External Benchmark Rate linked to the repo rate (EBR)',
+    'benchmark labels expand to long forms'
+  );
+  ok(
+    compare
+      .formatBenchmarkSwitchDetail({
+        fixed_amount: 5000,
+        benchmark_switch_from: 'MCLR',
+        benchmark_switch_to: 'EBR'
+      })
+      .indexOf(
+        'From Marginal Cost of Funds based Lending Rate (MCLR) to External Benchmark Rate (EBR)'
+      ) !== -1,
+    'benchmark panel detail uses expanded from/to labels'
+  );
+  ok(
+    compare.rateChangeTypeSwitchLabel('Floating') === 'Floating ➔ Fixed' &&
+      compare.rateChangeTypeSwitchLabel('Fixed') === 'Fixed ➔ Floating',
+    'rate change type-switch label follows the rate filter'
+  );
+  ok(
+    compare.formatRateChangeChargeDisplay(null).main === 'Not listed',
+    'missing rate change charge displays as not listed'
+  );
+  ok(
+    compare.formatRateChangeChargeDisplay({ fixed_amount: 0 }).main === '₹0',
+    'zero fixed rate-change amount displays as ₹0 not Nil'
+  );
+  ok(
+    rows.every(function (row) {
+      return row.prepaymentChargeDisplay.main === 'Nil (₹0)';
+    }),
+    'compare lists floating-rate prepayment as Nil (₹0)'
   );
   ok(
     compare.FLOATING_PREPAY_NOTE ===
-      'Floating-rate home loans shown here have no prepayment charge.',
-    'floating prepayment note states the shared rule'
+      'Floating-rate home loans to individuals have no prepayment or foreclosure charge. Under Reserve Bank of India (RBI) directions, Part E, paragraphs 352 and 353.',
+    'floating prepayment note states the RBI rule'
+  );
+  ok(
+    compare.FIXED_FORECLOSURE_NOTE ===
+      'Foreclosure means closing the full loan early. Lenders usually apply the same charge as prepayment, so foreclosure is not listed separately.',
+    'fixed-rate note explains foreclosure follows prepayment'
+  );
+  ok(
+    compare.PROCESSING_FEE_LOGIN_NOTE.indexOf('login fee') !== -1 &&
+      compare.PROCESSING_FEE_LOGIN_NOTE.indexOf('differs by bank') !== -1 &&
+      compare.PROCESSING_FEE_LOGIN_NOTE.indexOf("don't list it separately") ===
+        -1 &&
+      compare.PROCESSING_FEE_LOGIN_NOTE.indexOf('don’t list it separately yet') !==
+        -1,
+    'processing fee note explains login fee without inventing amounts'
+  );
+  ok(
+    compare.GROUPS.charges[0].key === 'processingFee' &&
+      compare.GROUPS.charges[0].footnote === '*',
+    'processing fees column carries the login-fee footnote marker'
+  );
+  ok(
+    compare.RBI_FLOATING_PREPAY_HREF ===
+      'https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13140&Mode=0',
+    'floating prepayment note uses the Guide RBI notification URL'
+  );
+  ok(
+    compare.floatingPrepayNoteHtml().indexOf('guide-section-link') !== -1 &&
+      compare.floatingPrepayNoteHtml().indexOf('Id=13140') !== -1 &&
+      compare.floatingPrepayNoteHtml().indexOf('target="_blank"') !== -1 &&
+      compare
+        .floatingPrepayNoteHtml()
+        .indexOf('Part E, paragraphs 352 and 353') !== -1,
+    'floating prepayment note links Part E to the RBI page'
+  );
+  ok(
+    compare.chargesNoteGroupHtml('Rate change charge', ['° Note one', '° Note two'])
+      .indexOf('hlc-charges-note-heading') !== -1 &&
+      compare.chargesNoteGroupHtml('Rate change charge', ['° Note one', '° Note two'])
+        .indexOf('Rate change charge') !== -1 &&
+      compare.chargesNoteGroupHtml('Rate change charge', []) === '' &&
+      compare.chargesNoteGroupHtml('Overdue charge', ['‡ Note']).indexOf(
+        'Overdue charge'
+      ) !== -1,
+    'charges footnotes group under the matching column charge name'
   );
   ok(
     compare.formatPrepaymentChargeDisplay(null).main === 'Not listed',
@@ -368,8 +499,15 @@ async function testHomeLoanCompare() {
     compare.formatPrepaymentChargeDisplay({
       fixed_amount: 0,
       note_1: 'Prepayment not charged (prepayment_applicable=No)'
-    }).main === 'Not charged',
-    'encoded no-charge prepayment displays as not charged'
+    }).main === 'Nil (₹0)',
+    'encoded no-charge prepayment displays as Nil (₹0)'
+  );
+  ok(
+    compare.formatPrepaymentChargeDisplay({
+      fixed_amount: 0,
+      note_1: 'Prepayment nil (CSV NIL)'
+    }).main === 'Nil (₹0)',
+    'CSV NIL prepayment displays as Nil (₹0)'
   );
   ok(
     compare.formatPrepaymentChargeDisplay({
@@ -409,11 +547,47 @@ async function testHomeLoanCompare() {
     'prepayment basis labels highest outstanding in 90 days'
   );
   ok(
+    compare.formatChargeBasis('Outstanding_Amount') === 'On outstanding amount',
+    'prepayment basis labels outstanding amount'
+  );
+  ok(
+    compare.formatChargeBasis(
+      'Outstanding_Loan_Amount_And_Undisbursed_Amount'
+    ) === 'On outstanding + undisbursed amount',
+    'basis uses + instead of plus'
+  );
+  ok(
     compare.formatPrepaymentChargeDisplay({
       percentage: 0.02,
-      has_slab_wise_charges: 'Yes'
-    }).main === 'See bank rules',
-    'complex prepayment slab falls back to see bank rules'
+      has_slab_wise_charges: 'Yes',
+      slab_from: 0,
+      slab_to: 10000000
+    }).main === '2.00%',
+    'slab prepayment with percentage shows the rate'
+  );
+  ok(
+    compare
+      .formatPrepaymentChargeDetail({
+        percentage: 0.01,
+        percentage_base_value: 'Outstanding_Amount',
+        percentage_applies_per: 'residual_year_to_original_maturity',
+        has_slab_wise_charges: 'No'
+      })
+      .indexOf('per residual year to original maturity') >= 0,
+    'Kotak-style residual-year detail is formatted'
+  );
+  ok(
+    compare
+      .formatPrepaymentChargeDetail({
+        percentage: 0.02,
+        percentage_base_value: 'Amount_Being_Paid',
+        months_from_event_min: 0,
+        months_from_event_max: 6,
+        months_from_event_basis: 'final_disbursement',
+        has_slab_wise_charges: 'No'
+      })
+      .indexOf('within 6 months of final disbursement') >= 0,
+    'IDBI-style months-from-event detail is formatted'
   );
   var syntheticPrepayRows = [
     {
@@ -459,7 +633,7 @@ async function testHomeLoanCompare() {
         return row.id;
       })
       .join(',') === 'free,half,listed,missing',
-    'prepayment sort places not charged first and not listed last'
+    'prepayment sort places Nil (₹0) first and not listed last'
   );
   compare.applyPrepaymentMethodToRows(
     syntheticPrepayRows,
@@ -469,6 +643,376 @@ async function testHomeLoanCompare() {
     syntheticPrepayRows[0].prepaymentChargeDisplay.main === 'Not listed' &&
       syntheticPrepayRows[3].prepaymentChargeDisplay.main === '2.00%',
     'prepayment method switch remaps display without rematching'
+  );
+
+  var syntheticRateRows = [
+    {
+      id: 'type',
+      bankName: 'A',
+      rateChangeTypeSwitchCharge: { percentage: 0.005 },
+      rateChangeRepricingCharge: { percentage: 0.01 },
+      rateChangeBenchmarkCharge: { fixed_amount: 5000 },
+      rateChangeTypeSwitchCandidates: [{ percentage: 0.005, charge_name: 'Interest Rate Type Switch Fees', charge_group_id: 'g1', has_slab_wise_charges: 'No' }],
+      rateChangeRepricingCandidates: [{ percentage: 0.01, charge_name: 'Interest Rate Repricing Fees', charge_group_id: 'g2', has_slab_wise_charges: 'No' }],
+      rateChangeBenchmarkCandidates: [{ fixed_amount: 5000, charge_name: 'Interest Rate Benchmark Switch Fees', charge_group_id: 'g3', has_slab_wise_charges: 'No' }]
+    },
+    {
+      id: 'slabs',
+      bankName: 'B',
+      rateChangeTypeSwitchCharge: {
+        fixed_amount: 1000,
+        charge_name: 'Interest Rate Type Switch Fees',
+        charge_group_id: 'g4',
+        has_slab_wise_charges: 'Yes',
+        slab_from: 0
+      },
+      rateChangeRepricingCharge: null,
+      rateChangeBenchmarkCharge: null,
+      rateChangeTypeSwitchCandidates: [
+        {
+          fixed_amount: 1000,
+          charge_name: 'Interest Rate Type Switch Fees',
+          charge_group_id: 'g4',
+          has_slab_wise_charges: 'Yes',
+          slab_from: 0,
+          slab_to: 5000000
+        },
+        {
+          fixed_amount: 2000,
+          charge_name: 'Interest Rate Type Switch Fees',
+          charge_group_id: 'g4',
+          has_slab_wise_charges: 'Yes',
+          slab_from: 5000001,
+          slab_to: 10000000
+        }
+      ],
+      rateChangeRepricingCandidates: [],
+      rateChangeBenchmarkCandidates: []
+    }
+  ];
+  compare.applyRateChangeMethodToRows(
+    syntheticRateRows,
+    compare.RATE_CHANGE_METHOD_TYPE
+  );
+  ok(
+    syntheticRateRows[0].rateChangeChargeDisplay.main === '0.50%',
+    'rate change defaults to type switch display'
+  );
+  ok(
+    syntheticRateRows[1].rateChangeChargeDisplay.action === 'rate-change-slabs' &&
+      syntheticRateRows[1].rateChangeChargeDisplay.main ===
+        'Fixed amount by loan amount range',
+    'multi-slab rate change uses loan-amount range action'
+  );
+  compare.applyRateChangeMethodToRows(
+    syntheticRateRows,
+    compare.RATE_CHANGE_METHOD_REPRICE
+  );
+  ok(
+    syntheticRateRows[0].rateChangeChargeDisplay.main === '1.00%',
+    'rate change method switch remaps to repricing'
+  );
+  compare.applyRateChangeMethodToRows(
+    syntheticRateRows,
+    compare.RATE_CHANGE_METHOD_BENCHMARK
+  );
+  ok(
+    syntheticRateRows[0].rateChangeChargeDisplay.main === '₹5,000',
+    'rate change method switch remaps to benchmark'
+  );
+  ok(
+    compare.rankRateChangeBenchmark({
+      charge_name: 'Interest Rate Benchmark Switch Fees',
+      percentage: 0.001,
+      note_1: 'Applies when conversion is to less than card rate.'
+    }) >
+      compare.rankRateChangeBenchmark({
+        charge_name: 'Interest Rate Benchmark Switch Fees',
+        fixed_amount: 0,
+        note_1: 'Nil if conversion to card rate.'
+      }),
+    'benchmark ranker prefers priced atom over conditional nil'
+  );
+  ok(
+    compare
+      .buildRateChangeExceptionNotes(
+        [
+          {
+            bankName: 'HDFC Bank',
+            rateChangeTypeSwitchCharge: {
+              charge_frequency_other: 'Once'
+            }
+          },
+          {
+            bankName: 'Yes Bank',
+            rateChangeTypeSwitchCharge: {
+              note_1: 'Only if permitted by the bank at the time of request'
+            }
+          }
+        ],
+        compare.RATE_CHANGE_METHOD_TYPE,
+        false
+      )
+      .join(' ')
+      .indexOf(
+        compare.RATE_CHANGE_BANK_MARKERS['hdfc bank'] +
+          ' This type switch fee applies only once.'
+      ) >= 0,
+    'rate change bank notes use a bank-specific marker without repeating the bank name'
+  );
+  ok(
+    compare.RATE_CHANGE_BANK_MARKERS['hdfc bank'] !==
+      compare.RATE_CHANGE_COMMON_MARKER &&
+      compare.RATE_CHANGE_BANK_MARKERS['yes bank'] !==
+        compare.RATE_CHANGE_BANK_MARKERS['hdfc bank'],
+    'each bank exception marker is distinct from the common ° mark'
+  );
+  var markedRateRows = [
+    {
+      id: 'hdfc',
+      bankName: 'HDFC Bank',
+      offer: { rate_type: 'Floating' },
+      rateChangeTypeSwitchCharge: { percentage: 0.005, charge_frequency_other: 'Once' },
+      rateChangeRepricingCharge: null,
+      rateChangeBenchmarkCharge: null,
+      rateChangeTypeSwitchCandidates: [],
+      rateChangeRepricingCandidates: [],
+      rateChangeBenchmarkCandidates: []
+    }
+  ];
+  compare.applyRateChangeMethodToRows(
+    markedRateRows,
+    compare.RATE_CHANGE_METHOD_TYPE
+  );
+  ok(
+    markedRateRows[0].rateChangeChargeDisplay.marker ===
+      compare.RATE_CHANGE_BANK_MARKERS['hdfc bank'],
+    'HDFC rate-change cell carries the bank-specific footnote marker'
+  );
+  ok(
+    compare
+      .buildRateChangeExceptionNotes(
+        [
+          {
+            bankName: 'Axis Bank',
+            rateChangeRepricingCharge: {
+              note_1:
+                'Lower Rate will be equal to the applicable carded interest rate only.'
+            },
+            rateChangeRepricingCandidates: []
+          },
+          {
+            bankName: 'Bank of Baroda',
+            rateChangeTypeSwitchCharge: {
+              note_1:
+                'Conversion charges will be applied after clubbing balance in all the linked account.'
+            },
+            rateChangeTypeSwitchCandidates: []
+          },
+          {
+            bankName: 'Dhanlaxmi Bank',
+            rateChangeRepricingCharge: {
+              note_1: 'Not applicable for new loans and roll over cases.'
+            },
+            rateChangeRepricingCandidates: []
+          },
+          {
+            bankName: 'Kotak Mahindra Bank',
+            rateChangeTypeSwitchCharge: {
+              charge_frequency_other:
+                'Each time (multiple switches allowed during tenure)'
+            },
+            rateChangeTypeSwitchCandidates: []
+          },
+          {
+            bankName: 'Indian Overseas Bank',
+            rateChangeTypeSwitchCharge: {
+              charge_frequency_other: 'At the time of exercising the option'
+            },
+            rateChangeTypeSwitchCandidates: []
+          }
+        ],
+        compare.RATE_CHANGE_METHOD_TYPE,
+        false
+      )
+      .join(' ')
+      .indexOf('Multiple switches are allowed during the loan.') >= 0 &&
+      compare
+        .buildRateChangeExceptionNotes(
+          [
+            {
+              bankName: 'Indian Overseas Bank',
+              rateChangeTypeSwitchCharge: {
+                charge_frequency_other: 'At the time of exercising the option'
+              },
+              rateChangeTypeSwitchCandidates: []
+            }
+          ],
+          compare.RATE_CHANGE_METHOD_TYPE,
+          false
+        )
+        .join(' ')
+        .indexOf('Charged when you exercise the option.') >= 0,
+    'exceptional type-switch frequency rules become bank notes'
+  );
+  ok(
+    compare
+      .buildRateChangeExceptionNotes(
+        [
+          {
+            bankName: 'Axis Bank',
+            rateChangeRepricingCharge: {
+              note_1:
+                'Lower Rate will be equal to the applicable carded interest rate only.'
+            },
+            rateChangeRepricingCandidates: []
+          },
+          {
+            bankName: 'Dhanlaxmi Bank',
+            rateChangeRepricingCharge: {
+              note_1: 'Not applicable for new loans and roll over cases.'
+            },
+            rateChangeRepricingCandidates: []
+          }
+        ],
+        compare.RATE_CHANGE_METHOD_REPRICE,
+        false
+      )
+      .join(' ')
+      .indexOf('Lower rate means the bank’s card rate only.') >= 0 &&
+      compare
+        .buildRateChangeExceptionNotes(
+          [
+            {
+              bankName: 'Dhanlaxmi Bank',
+              rateChangeRepricingCharge: {
+                note_1: 'Not applicable for new loans and roll over cases.'
+              },
+              rateChangeRepricingCandidates: []
+            }
+          ],
+          compare.RATE_CHANGE_METHOD_REPRICE,
+          false
+        )
+        .join(' ')
+        .indexOf('Not for new loans or rollover cases.') >= 0,
+    'repricing bank notes rewrite card-rate and new-loan limits'
+  );
+  ok(
+    compare
+      .buildRateChangeExceptionNotes(
+        [
+          {
+            bankName: 'Bank of Baroda',
+            rateChangeTypeSwitchCharge: {
+              note_1:
+                'Conversion charges will be applied after clubbing balance in all the linked account.'
+            },
+            rateChangeTypeSwitchCandidates: []
+          }
+        ],
+        compare.RATE_CHANGE_METHOD_TYPE,
+        false
+      )
+      .join(' ')
+      .indexOf(
+        'Fee is calculated after balances in linked accounts are clubbed.'
+      ) >= 0,
+    'Baroda type-switch note explains linked-account clubbing'
+  );
+  ok(
+    compare
+      .buildRateChangeExceptionNotes(
+        [
+          {
+            bankName: 'Axis Bank',
+            rateChangeRepricingCharge: {
+              note_1:
+                'Lower Rate will be equal to the applicable carded interest rate only.'
+            },
+            rateChangeRepricingCandidates: []
+          }
+        ],
+        compare.RATE_CHANGE_METHOD_TYPE,
+        false
+      )
+      .join(' ')
+      .indexOf('card rate') === -1 &&
+      compare
+        .buildRateChangeExceptionNotes(
+          [
+            {
+              bankName: 'Kotak Mahindra Bank',
+              rateChangeBenchmarkCharge: {
+                benchmark_switch_from: 'MCLR',
+                benchmark_switch_to: 'EBR'
+              },
+              rateChangeBenchmarkCandidates: []
+            }
+          ],
+          compare.RATE_CHANGE_METHOD_REPRICE,
+          false
+        )
+        .join(' ')
+        .indexOf('From MCLR') === -1,
+    'rate change bank notes stay off when the selected method does not use them'
+  );
+  ok(
+    compare
+      .buildRateChangeExceptionNotes(
+        [
+          {
+            bankName: 'Kotak Mahindra Bank',
+            rateChangeBenchmarkCharge: {
+              benchmark_switch_from: 'MCLR',
+              benchmark_switch_to: 'External Benchmark Rate (Repo Rate)'
+            },
+            rateChangeBenchmarkCandidates: []
+          },
+          {
+            bankName: 'IDBI Bank',
+            rateChangeBenchmarkCharge: {
+              customer_type: 'Individual',
+              fixed_amount: 5000,
+              benchmark_switch_from: 'Base Rate / MCLR / BPLR',
+              benchmark_switch_to: 'RLLR'
+            },
+            rateChangeBenchmarkCandidates: [
+              { customer_type: 'Individual', fixed_amount: 5000 },
+              { customer_type: 'Non-Individual', percentage: 0.0025 }
+            ]
+          }
+        ],
+        compare.RATE_CHANGE_METHOD_BENCHMARK,
+        false
+      )
+      .join(' ')
+      .indexOf('From MCLR to EBR (repo rate).') >= 0 &&
+      compare
+        .buildRateChangeExceptionNotes(
+          [
+            {
+              bankName: 'IDBI Bank',
+              rateChangeBenchmarkCharge: {
+                customer_type: 'Individual',
+                fixed_amount: 5000,
+                benchmark_switch_from: 'Base Rate / MCLR / BPLR',
+                benchmark_switch_to: 'RLLR'
+              },
+              rateChangeBenchmarkCandidates: [
+                { customer_type: 'Individual', fixed_amount: 5000 },
+                { customer_type: 'Non-Individual', percentage: 0.0025 }
+              ]
+            }
+          ],
+          compare.RATE_CHANGE_METHOD_BENCHMARK,
+          false
+        )
+        .join(' ')
+        .indexOf(
+          'Listed fee is for individuals; non-individual pricing differs.'
+        ) >= 0,
+    'benchmark notes include short from/to and IDBI customer-type limit'
   );
   ok(
     rows.every(function (row) {
@@ -485,9 +1029,10 @@ async function testHomeLoanCompare() {
   });
   ok(
     dcbRow &&
-      dcbRow.overdueChargeDisplay.main === 'As per slab' &&
+      dcbRow.overdueChargeDisplay.main ===
+        'Fixed amount by overdue range' &&
       dcbRow.overdueChargeDisplay.action === 'overdue-slabs',
-    'DCB Bank links its overdue cell to the slab details'
+    'DCB Bank links its overdue cell to the overdue range details'
   );
   ok(
     dcbRow &&
@@ -504,7 +1049,7 @@ async function testHomeLoanCompare() {
       centralBankOverdueRow.overdueChargeDisplay.main === '0%' &&
       centralBankOverdueRow.overdueChargeDisplay.marker === '◊' &&
       centralBankOverdueRow.overdueChargeDisplay.details[0] ===
-        'Up to ₹30,000 · Loan tenure up to 23 months',
+        'Up to ₹30,000 · Applies when loan tenure is up to 23 months.',
     'Central Bank of India shows its first overdue slab and condition'
   );
   ok(
@@ -514,7 +1059,7 @@ async function testHomeLoanCompare() {
     'Central Bank of India footnote names the slab basis and higher slab'
   );
   var idfcOverdueRow = rows.find(function (row) {
-    return row.bankName === 'IDFC First Bank';
+    return row.bankName === 'IDFC FIRST Bank';
   });
   ok(
     idfcOverdueRow &&
@@ -525,10 +1070,10 @@ async function testHomeLoanCompare() {
       idfcOverdueRow.overdueChargeDisplay.details.indexOf(
         'No charge up to 7 days late'
       ) >= 0,
-    'IDFC First Bank shows its percentage and 7-day grace period'
+    'IDFC FIRST Bank shows its percentage and 7-day grace period'
   );
   var indusindOverdueRow = rows.find(function (row) {
-    return row.bankName === 'Indusind Bank';
+    return row.bankName === 'IndusInd Bank';
   });
   ok(
     indusindOverdueRow &&
@@ -539,10 +1084,10 @@ async function testHomeLoanCompare() {
       indusindOverdueRow.overdueChargeDisplay.details.indexOf(
         'No charge up to 3 days late'
       ) >= 0,
-    'Indusind Bank shows its percentage and 3-day grace period'
+    'IndusInd Bank shows its percentage and 3-day grace period'
   );
   var jammuKashmirOverdueRow = rows.find(function (row) {
-    return row.bankName === 'Jammu & Kashmir Bank';
+    return row.bankName === 'Jammu and Kashmir Bank';
   });
   ok(
     jammuKashmirOverdueRow &&
@@ -554,6 +1099,15 @@ async function testHomeLoanCompare() {
         'No charge up to 15 days late'
       ) >= 0,
     'Jammu and Kashmir Bank shows the percentage first and the rest in small type'
+  );
+  var yesBankOverdueRow = rows.find(function (row) {
+    return row.bankName === 'Yes Bank';
+  });
+  ok(
+    yesBankOverdueRow &&
+      yesBankOverdueRow.overdueChargeDisplay.main ===
+        'At home loan interest rate',
+    'Yes Bank shows overdue charge as at home loan interest rate'
   );
   ok(
     rows.filter(function (row) {
@@ -625,12 +1179,12 @@ async function testHomeLoanCompare() {
     'South Indian Bank leaves the shared amount basis out of its comparison cell'
   );
   var idfcRow = rows.find(function (row) {
-    return row.bankName === 'IDFC First Bank';
+    return row.bankName === 'IDFC FIRST Bank';
   });
   ok(
     idfcRow &&
       idfcRow.emiBounceChargeDisplay.details.indexOf('On bounced EMI') < 0,
-    'IDFC First Bank leaves the shared amount basis out of its comparison cell'
+    'IDFC FIRST Bank leaves the shared amount basis out of its comparison cell'
   );
   var bankOfBarodaRow = rows.find(function (row) {
     return row.bankName === 'Bank of Baroda';
@@ -638,16 +1192,18 @@ async function testHomeLoanCompare() {
   ok(
     bankOfBarodaRow &&
       bankOfBarodaRow.emiBounceChargeDisplay.main === '₹125' &&
-      bankOfBarodaRow.emiBounceChargeDisplay.marker === '†' &&
+      bankOfBarodaRow.emiBounceChargeDisplay.marker === '§' &&
       bankOfBarodaRow.emiBounceChargeDisplay.details[0] ===
+        'ECS / cheque return' &&
+      bankOfBarodaRow.emiBounceChargeDisplay.details[1] ===
         'for a bounce amount up to ₹1 lakh in metro areas',
-    'Bank of Baroda shows its area and first slab on one detail line'
+    'Bank of Baroda shows ECS metro first slab with § marker'
   );
   ok(
     bankOfBarodaRow &&
       bankOfBarodaRow.emiBounceDetailFootnote ===
-        '† Bank of Baroda: The charge depends on the bounce amount. Metro (higher charges): ₹250 from ₹1,00,001 to ₹99,99,999; ₹500 from ₹1 crore. Rural / Semi-urban: ₹100 up to ₹1 lakh; ₹225 from ₹1,00,001 to ₹99,99,999; ₹450 from ₹1 crore.',
-    'Bank of Baroda footnote names the basis and lists every remaining slab'
+        '§ Bank of Baroda: The amount shown is the ECS / cheque return for a bounce amount up to ₹1 lakh in metro areas. Metro: ₹125 up to ₹1 lakh; ₹250 from ₹1,00,001 to ₹99,99,999; ₹500 from ₹1 crore. Rural / Semi-urban: ₹100 up to ₹1 lakh; ₹225 from ₹1,00,001 to ₹99,99,999; ₹450 from ₹1 crore. NACH return: ₹250. Auto debit / SI bounce: ₹500. Technical ECS / cheque return: ₹0.',
+    'Bank of Baroda § note states ECS shown and lists every bounce fact'
   );
   var canaraRow = rows.find(function (row) {
     return row.bankName === 'Canara Bank';
@@ -686,12 +1242,12 @@ async function testHomeLoanCompare() {
     'EMI bounce slabs show the published non-bounce calculation basis'
   );
   var indusindRow = rows.find(function (row) {
-    return row.bankName === 'Indusind Bank';
+    return row.bankName === 'IndusInd Bank';
   });
   ok(
     indusindRow &&
       indusindRow.emiBounceChargeDisplay.details.indexOf('+ Actual expenses') >= 0,
-    'Indusind Bank displays additional actual expenses'
+    'IndusInd Bank displays additional actual expenses'
   );
 
   var pnbRow = rows.find(function (row) {
@@ -887,8 +1443,8 @@ async function testHomeLoanCompare() {
   if (boiRow) {
     compare.applyPrepaymentMethodToRows(pnbFixed, compare.PREPAYMENT_METHOD_OWN);
     ok(
-      boiRow.prepaymentChargeDisplay.main === 'Not listed',
-      'Bank of India fixed own-funds prepayment is not listed when missing'
+      boiRow.prepaymentChargeDisplay.main === 'Nil (₹0)',
+      'Bank of India fixed own-funds prepayment is Nil (₹0)'
     );
     compare.applyPrepaymentMethodToRows(pnbFixed, compare.PREPAYMENT_METHOD_BT);
     ok(
@@ -903,13 +1459,13 @@ async function testHomeLoanCompare() {
   if (bomRow) {
     compare.applyPrepaymentMethodToRows(pnbFixed, compare.PREPAYMENT_METHOD_OWN);
     ok(
-      bomRow.prepaymentChargeDisplay.main === 'Not charged',
-      'Bank of Maharashtra fixed own-funds prepayment is not charged'
+      bomRow.prepaymentChargeDisplay.main === 'Not listed',
+      'Bank of Maharashtra fixed own-funds prepayment follows CSV NA as not listed'
     );
     compare.applyPrepaymentMethodToRows(pnbFixed, compare.PREPAYMENT_METHOD_BT);
     ok(
       bomRow.prepaymentChargeDisplay.main === 'Not listed',
-      'Bank of Maharashtra fixed balance-transfer prepayment is not listed'
+      'Bank of Maharashtra fixed balance-transfer prepayment follows CSV NA as not listed'
     );
   }
 }

@@ -62,7 +62,13 @@ const GROUPS = {
     { key: "emi", label: "EMI", type: "inr", sort: "num" }
   ],
   charges: [
-    { key: "processingFee", label: "Processing fees", type: "inr", sort: "num" },
+    {
+      key: "processingFee",
+      label: "Processing fees",
+      type: "inr",
+      sort: "num",
+      footnote: "*"
+    },
     {
       key: "governmentCharges",
       label: "Government charges",
@@ -77,6 +83,13 @@ const GROUPS = {
       label: "Prepayment charge",
       type: "charge",
       sort: "text"
+    },
+    {
+      key: "rateChangeChargeDisplay",
+      label: "Rate change charge",
+      type: "charge",
+      sort: "text",
+      footnote: "°"
     },
     {
       key: "overdueChargeDisplay",
@@ -97,8 +110,99 @@ const GROUPS = {
 
 const PREPAYMENT_METHOD_OWN = "ownFunds";
 const PREPAYMENT_METHOD_BT = "balanceTransfer";
+const RATE_CHANGE_METHOD_TYPE = "typeSwitch";
+const RATE_CHANGE_METHOD_REPRICE = "repricing";
+const RATE_CHANGE_METHOD_BENCHMARK = "benchmark";
+const RATE_CHANGE_CHARGE_TYPE_SWITCH = "Interest Rate Type Switch Fees";
+const RATE_CHANGE_CHARGE_REPRICING = "Interest Rate Repricing Fees";
+const RATE_CHANGE_CHARGE_BENCHMARK = "Interest Rate Benchmark Switch Fees";
+const RATE_CHANGE_FREQUENCY_NOTE =
+  "° These fees are usually charged each time you switch rate type — not once for the whole loan.";
+const RATE_CHANGE_FREQUENCY_NOTE_REPRICE =
+  "° These fees are usually charged each time you reprice — not once for the whole loan.";
+const RATE_CHANGE_FREQUENCY_NOTE_BENCHMARK =
+  "° These fees are usually charged each time you change the benchmark — not once for the whole loan.";
+/** Shown only when the Rate change dropdown is on Benchmark switch. */
+const RATE_CHANGE_BENCHMARK_MEANING_NOTE =
+  "° Benchmark switch means changing the reference rate your loan follows — usually from an older bank rate such as Base Rate, Marginal Cost of Funds based Lending Rate (MCLR), Benchmark Prime Lending Rate (BPLR), or State Bank Advance Rate (SBAR), to a newer external or repo-linked rate such as Repo Linked Lending Rate (RLLR), External Benchmark Lending Rate (EBLR), or External Benchmark Rate (EBR).";
+/** Shown only when the Rate change dropdown is on Repricing. */
+const RATE_CHANGE_REPRICING_MEANING_NOTE =
+  "° Repricing here means moving from a higher rate to a lower rate on the same rate type — not Floating ➔ Fixed.";
+/** Shared column notes (frequency / unit / basis / GST). Bank remarks use RATE_CHANGE_BANK_MARKERS. */
+const RATE_CHANGE_COMMON_MARKER = "°";
+/** One stable marker per bank — must not reuse * ‡ ^ † § ◊ °. */
+const RATE_CHANGE_BANK_MARKERS = {
+  "hdfc bank": "⁕",
+  "idfc first bank": "※",
+  "yes bank": "⁜",
+  "punjab national bank": "⁂",
+  "south indian bank": "⁑",
+  "bank of maharashtra": "¤",
+  "dhanlaxmi bank": "✦",
+  "axis bank": "✧",
+  "bank of baroda": "◆",
+  "kotak mahindra bank": "✶",
+  "indian overseas bank": "✹",
+  "idbi bank": "◈",
+  "karnataka bank": "▴",
+  "state bank of india": "⋆",
+  "union bank of india": "⊹"
+};
+const RBI_FLOATING_PREPAY_HREF =
+  "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13140&Mode=0";
 const FLOATING_PREPAY_NOTE =
-  "Floating-rate home loans shown here have no prepayment charge.";
+  "Floating-rate home loans to individuals have no prepayment or foreclosure charge. Under Reserve Bank of India (RBI) directions, Part E, paragraphs 352 and 353.";
+const FIXED_FORECLOSURE_NOTE =
+  "Foreclosure means closing the full loan early. Lenders usually apply the same charge as prepayment, so foreclosure is not listed separately.";
+const PROCESSING_FEE_LOGIN_NOTE =
+  "* Part of the processing fee is often taken upfront as a login fee to file the application. The amount differs by bank and is included in the processing fee shown — we don’t list it separately yet.";
+
+function rateChangeFrequencyNoteForMethod(method) {
+  if (method === RATE_CHANGE_METHOD_REPRICE) {
+    return RATE_CHANGE_FREQUENCY_NOTE_REPRICE;
+  }
+  if (method === RATE_CHANGE_METHOD_BENCHMARK) {
+    return RATE_CHANGE_FREQUENCY_NOTE_BENCHMARK;
+  }
+  return RATE_CHANGE_FREQUENCY_NOTE;
+}
+
+function floatingPrepayNoteHtml() {
+  return (
+    escapeHtml(
+      "Floating-rate home loans to individuals have no prepayment or foreclosure charge. Under Reserve Bank of India (RBI) directions, "
+    ) +
+    '<a class="guide-section-link" href="' +
+    escapeHtml(RBI_FLOATING_PREPAY_HREF) +
+    '" target="_blank" rel="noopener noreferrer">' +
+    "Part E, paragraphs 352 and 353" +
+    '<span class="guide-section-link-arrow" aria-hidden="true">↗</span>' +
+    '<span class="visually-hidden"> (opens official RBI page)</span></a>.'
+  );
+}
+
+/** Footnote block under the table — heading matches the column charge name. */
+function chargesNoteGroupHtml(heading, noteParts) {
+  if (!noteParts || !noteParts.length) return "";
+  return (
+    '<section class="hlc-charges-note-group">' +
+    '<h3 class="hlc-charges-note-heading">' +
+    escapeHtml(heading) +
+    "</h3>" +
+    '<div class="hlc-charges-note-body">' +
+    noteParts.join("<br><br>") +
+    "</div>" +
+    "</section>"
+  );
+}
+
+function columnLabelForKey(groupName, columnKey) {
+  const columns = GROUPS[groupName] || [];
+  for (let i = 0; i < columns.length; i++) {
+    if (columns[i].key === columnKey) return columns[i].label;
+  }
+  return columnKey;
+}
 
 function laterChargesColumns(showPrepayment) {
   if (showPrepayment) return GROUPS.laterCharges.slice();
@@ -681,49 +785,147 @@ function rankPrepaymentCharge(charge) {
 
 function isPrepaymentNotCharged(charge) {
   if (!charge) return false;
-  if (/prepayment not charged/i.test(String(charge.note_1 || ""))) return true;
+  const note = String(charge.note_1 || "");
+  if (/prepayment not charged/i.test(note)) return true;
+  if (/prepayment nil/i.test(note)) return true;
   return (
     charge.fixed_amount === 0 &&
     (charge.percentage == null || charge.percentage === 0)
   );
 }
 
+function rankFixedPrepayCharge(charge, expectedName) {
+  if (charge.charge_name !== expectedName) return -1;
+  let score = 1000;
+  if (isPrepaymentNotCharged(charge)) {
+    score -= 200;
+  } else if (
+    charge.percentage != null &&
+    Number.isFinite(Number(charge.percentage))
+  ) {
+    score += Math.round(Number(charge.percentage) * 10000);
+  }
+  if (
+    charge.months_from_event_min != null ||
+    charge.months_from_event_max != null
+  ) {
+    score += 20;
+    if (charge.months_from_event_max != null) {
+      score += Math.max(0, 12 - Number(charge.months_from_event_max));
+    }
+  }
+  return score;
+}
+
 function pickOwnFundsPrepayCharge(charges, query, offer) {
   return pickBestAfterOfferCharge(charges, query, offer, function (charge) {
-    return charge.charge_name === "Prepayment charges" ? 1 : -1;
+    return rankFixedPrepayCharge(charge, "Prepayment charges");
   });
 }
 
 function pickTakeoverPrepayCharge(charges, query, offer) {
   return pickBestAfterOfferCharge(charges, query, offer, function (charge) {
-    return charge.charge_name === "Prepayment charges (takeover)" ? 1 : -1;
+    return rankFixedPrepayCharge(charge, "Prepayment charges (takeover)");
   });
+}
+
+function formatMonthsFromEventDetail(charge) {
+  const min =
+    charge.months_from_event_min != null &&
+    Number.isFinite(Number(charge.months_from_event_min))
+      ? Number(charge.months_from_event_min)
+      : null;
+  const max =
+    charge.months_from_event_max != null &&
+    Number.isFinite(Number(charge.months_from_event_max))
+      ? Number(charge.months_from_event_max)
+      : null;
+  if (min == null && max == null) return "";
+
+  const basisKey = normalizeText(charge.months_from_event_basis).replace(
+    /[_\s-]+/g,
+    "_"
+  );
+  const basisLabels = {
+    final_disbursement: "final disbursement",
+    disbursement: "disbursement",
+    loan_start: "loan start"
+  };
+  const basis = basisLabels[basisKey] || (basisKey ? basisKey.replace(/_/g, " ") : "disbursement");
+
+  if (min != null && max != null) {
+    if (min === 0) {
+      return "within " + Math.round(max) + " months of " + basis;
+    }
+    return (
+      Math.round(min) +
+      "–" +
+      Math.round(max) +
+      " months from " +
+      basis
+    );
+  }
+  if (max != null) {
+    return "within " + Math.round(max) + " months of " + basis;
+  }
+  if (min === 0) return "from " + basis;
+  return Math.round(min) + "+ months from " + basis;
+}
+
+function formatPercentageAppliesPerDetail(charge) {
+  const key = normalizeText(charge.percentage_applies_per).replace(
+    /[_\s-]+/g,
+    "_"
+  );
+  if (!key || key === "once") return "";
+  if (key === "residual_year_to_original_maturity") {
+    return "per residual year to original maturity";
+  }
+  return "per " + key.replace(/_/g, " ");
+}
+
+function appendPrepaymentStructuredDetails(display, charge) {
+  if (!display || !charge) return display;
+  const details = (display.details || []).slice();
+  const monthsDetail = formatMonthsFromEventDetail(charge);
+  if (monthsDetail) details.push(monthsDetail);
+  const appliesPer = formatPercentageAppliesPerDetail(charge);
+  if (appliesPer) details.push(appliesPer);
+  if (normalizeText(charge.has_slab_wise_charges) === "yes") {
+    const slabBand = formatChargeSlabBand(charge);
+    if (slabBand) details.push(slabBand);
+  }
+  display.details = details;
+  return display;
 }
 
 function formatPrepaymentChargeDisplay(charge) {
   if (!charge) return { main: "Not listed", details: [], note: "" };
   if (isPrepaymentNotCharged(charge)) {
-    return { main: "Not charged", details: [], note: "" };
+    return {
+      main: "Nil (₹0)",
+      details: [],
+      note: ""
+    };
   }
-  if (normalizeText(charge.has_slab_wise_charges) === "yes") {
-    return { main: "See bank rules", details: [], note: "" };
-  }
-  return formatChargeDisplay(charge, {
+  const display = formatChargeDisplay(charge, {
     hideBasis: true,
     hideUnit: true,
     hideGst: true
   });
+  return appendPrepaymentStructuredDetails(display, charge);
 }
 
 function formatPrepaymentChargeDetail(charge) {
   if (!charge || isPrepaymentNotCharged(charge)) {
     return formatChargeDisplayText(formatPrepaymentChargeDisplay(charge));
   }
+  const display = formatChargeDisplay(charge, {
+    hideUnit: true,
+    hideGst: false
+  });
   return formatChargeDisplayText(
-    formatChargeDisplay(charge, {
-      hideUnit: true,
-      hideGst: true
-    })
+    appendPrepaymentStructuredDetails(display, charge)
   );
 }
 
@@ -735,7 +937,6 @@ function prepayChargeForMethod(row, method) {
 function prepaymentSortValue(charge) {
   if (!charge) return null;
   if (isPrepaymentNotCharged(charge)) return 0;
-  if (normalizeText(charge.has_slab_wise_charges) === "yes") return null;
   if (charge.percentage != null && Number.isFinite(Number(charge.percentage))) {
     return Number(charge.percentage) * 100;
   }
@@ -757,6 +958,439 @@ function applyPrepaymentMethodToRows(rows, method) {
   return rows;
 }
 
+function normalizeRateTypeToken(rateType) {
+  return normalizeText(rateType) === "fixed" ? "Fixed" : "Floating";
+}
+
+function rateChangeTypeSwitchLabel(rateType) {
+  return normalizeRateTypeToken(rateType) === "Fixed"
+    ? "Fixed ➔ Floating"
+    : "Floating ➔ Fixed";
+}
+
+function rateChangeTypeSwitchDirection(rateType) {
+  if (normalizeRateTypeToken(rateType) === "Fixed") {
+    return { from: "Fixed", to: "Floating" };
+  }
+  return { from: "Floating", to: "Fixed" };
+}
+
+function fieldsMatchLoose(actual, expected) {
+  return normalizeText(actual) === normalizeText(expected);
+}
+
+function rankRateChangeTypeSwitch(charge, rateType) {
+  if (charge.charge_name !== RATE_CHANGE_CHARGE_TYPE_SWITCH) return -1;
+  const dir = rateChangeTypeSwitchDirection(rateType);
+  if (
+    !fieldsMatchLoose(charge.interest_rate_type_switch_from, dir.from) ||
+    !fieldsMatchLoose(charge.interest_rate_type_switch_to, dir.to)
+  ) {
+    return -1;
+  }
+  return 1;
+}
+
+function rankRateChangeRepricing(charge, rateType) {
+  if (charge.charge_name !== RATE_CHANGE_CHARGE_REPRICING) return -1;
+  if (
+    !fieldsMatchLoose(
+      charge.interest_rate_repricing_type,
+      normalizeRateTypeToken(rateType)
+    )
+  ) {
+    return -1;
+  }
+  return 1;
+}
+
+function rankRateChangeBenchmark(charge) {
+  if (charge.charge_name !== RATE_CHANGE_CHARGE_BENCHMARK) return -1;
+  let score = 100;
+  const cust = normalizeText(charge.customer_type).replace(/-/g, "_");
+  if (!cust || cust === "individual") score += 50;
+  if (cust === "non_individual") score -= 50;
+  if (charge.percentage != null && Number(charge.percentage) > 0) score += 30;
+  if (charge.fixed_amount != null && Number(charge.fixed_amount) > 0) score += 20;
+  if (
+    charge.fixed_amount === 0 &&
+    /nil if conversion to card rate/i.test(String(charge.note_1 || ""))
+  ) {
+    score -= 40;
+  }
+  return score;
+}
+
+function pickRateChangeTypeSwitchCharge(charges, query, offer) {
+  return pickBestAfterOfferCharge(charges, query, offer, function (c) {
+    return rankRateChangeTypeSwitch(c, offer.rate_type);
+  });
+}
+
+function pickRateChangeRepricingCharge(charges, query, offer) {
+  return pickBestAfterOfferCharge(charges, query, offer, function (c) {
+    return rankRateChangeRepricing(c, offer.rate_type);
+  });
+}
+
+function pickRateChangeBenchmarkCharge(charges, query, offer) {
+  return pickBestAfterOfferCharge(charges, query, offer, rankRateChangeBenchmark);
+}
+
+function rateChangeChargeForMethod(row, method) {
+  if (method === RATE_CHANGE_METHOD_REPRICE) {
+    return row.rateChangeRepricingCharge || null;
+  }
+  if (method === RATE_CHANGE_METHOD_BENCHMARK) {
+    return row.rateChangeBenchmarkCharge || null;
+  }
+  return row.rateChangeTypeSwitchCharge || null;
+}
+
+function rateChangeCandidatesForMethod(row, method) {
+  if (method === RATE_CHANGE_METHOD_REPRICE) {
+    return row.rateChangeRepricingCandidates || [];
+  }
+  if (method === RATE_CHANGE_METHOD_BENCHMARK) {
+    return row.rateChangeBenchmarkCandidates || [];
+  }
+  return row.rateChangeTypeSwitchCandidates || [];
+}
+
+function rateChangeSortValue(charge, slabs) {
+  if (slabs && slabs.length > 1) {
+    let min = null;
+    slabs.forEach(function (s) {
+      if (s.fixed_amount != null && Number.isFinite(Number(s.fixed_amount))) {
+        const n = Number(s.fixed_amount);
+        if (min == null || n < min) min = n;
+      }
+    });
+    return min;
+  }
+  if (!charge) return null;
+  if (charge.percentage != null && Number.isFinite(Number(charge.percentage))) {
+    return Number(charge.percentage) * 100;
+  }
+  if (
+    charge.fixed_amount != null &&
+    Number.isFinite(Number(charge.fixed_amount))
+  ) {
+    return Number(charge.fixed_amount);
+  }
+  return null;
+}
+
+function formatRateChangeChargeDisplay(charge, slabs) {
+  if (slabs && slabs.length > 1) {
+    return {
+      main: "Fixed amount by loan amount range",
+      details: [],
+      note: "",
+      action: "rate-change-slabs"
+    };
+  }
+  const display = formatChargeDisplay(charge, {
+    // Basis differs by bank — show on the cell, not a clubbed footnote.
+    hideBasis: false,
+    hideUnit: true,
+    hideGst: true
+  });
+  // Exception / bank prose lives in footnotes, not the cell.
+  display.note = "";
+  return display;
+}
+
+function rateChangeBankKey(row, charge) {
+  return normalizeText(row && row.bankName) || normalizeText(charge && charge.bank_name);
+}
+
+function rateChangeMarkerForBankKey(bankKey) {
+  const key = normalizeText(bankKey);
+  if (RATE_CHANGE_BANK_MARKERS[key]) return RATE_CHANGE_BANK_MARKERS[key];
+  if (/hdfc/.test(key)) return RATE_CHANGE_BANK_MARKERS["hdfc bank"];
+  if (/idfc/.test(key)) return RATE_CHANGE_BANK_MARKERS["idfc first bank"];
+  if (/yes bank/.test(key)) return RATE_CHANGE_BANK_MARKERS["yes bank"];
+  if (/punjab national|\bpnb\b/.test(key)) {
+    return RATE_CHANGE_BANK_MARKERS["punjab national bank"];
+  }
+  if (/south indian/.test(key)) return RATE_CHANGE_BANK_MARKERS["south indian bank"];
+  if (/maharashtra/.test(key)) return RATE_CHANGE_BANK_MARKERS["bank of maharashtra"];
+  if (/dhanlaxmi/.test(key)) return RATE_CHANGE_BANK_MARKERS["dhanlaxmi bank"];
+  if (/axis/.test(key)) return RATE_CHANGE_BANK_MARKERS["axis bank"];
+  if (/baroda|\bbob\b/.test(key)) return RATE_CHANGE_BANK_MARKERS["bank of baroda"];
+  if (/kotak/.test(key)) return RATE_CHANGE_BANK_MARKERS["kotak mahindra bank"];
+  if (/indian overseas|\biob\b/.test(key)) {
+    return RATE_CHANGE_BANK_MARKERS["indian overseas bank"];
+  }
+  if (/idbi/.test(key)) return RATE_CHANGE_BANK_MARKERS["idbi bank"];
+  if (/karnataka/.test(key)) return RATE_CHANGE_BANK_MARKERS["karnataka bank"];
+  if (/state bank|\bsbi\b/.test(key)) {
+    return RATE_CHANGE_BANK_MARKERS["state bank of india"];
+  }
+  if (/union bank/.test(key)) return RATE_CHANGE_BANK_MARKERS["union bank of india"];
+  return "";
+}
+
+function shortenBenchmarkToken(token) {
+  const raw = String(token || "").trim();
+  if (!raw) return "";
+  const key = normalizeText(raw)
+    .replace(/[()]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const labels = {
+    "base rate": "Base Rate",
+    mclr: "MCLR",
+    bplr: "BPLR",
+    sbar: "SBAR",
+    rllr: "RLLR",
+    eblr: "EBLR",
+    ebr: "EBR",
+    "external benchmark rate": "EBR",
+    "external benchmark": "EBR",
+    "external benchmark rate repo rate": "EBR (repo rate)",
+    "repo rate": "repo rate"
+  };
+  if (labels[key]) return labels[key];
+  return raw;
+}
+
+function formatBenchmarkSwitchShortNote(charge) {
+  const from = charge && charge.benchmark_switch_from;
+  const to = charge && charge.benchmark_switch_to;
+  if (!from || !to) return "";
+  const fromShort = String(from)
+    .split(/\s*\/\s*/)
+    .map(shortenBenchmarkToken)
+    .filter(Boolean)
+    .join(" / ");
+  const toShort = String(to)
+    .split(/\s*\/\s*/)
+    .map(shortenBenchmarkToken)
+    .filter(Boolean)
+    .join(" / ");
+  if (!fromShort || !toShort) return "";
+  return "From " + fromShort + " to " + toShort + ".";
+}
+
+function collectRateChangeExceptionTexts(
+  charge,
+  bankKey,
+  method,
+  rateTypeIsFixed,
+  candidates
+) {
+  const texts = [];
+  if (!charge) return texts;
+  const freq = String(charge.charge_frequency_other || "");
+  const note1 = String(charge.note_1 || "");
+
+  if (method === RATE_CHANGE_METHOD_TYPE) {
+    if (
+      (/^once$/i.test(freq.trim()) || normalizeText(freq) === "once") &&
+      /hdfc/.test(bankKey)
+    ) {
+      texts.push("This type switch fee applies only once.");
+    }
+    if (/up to 2 times during loan tenure/i.test(freq) && /idfc/.test(bankKey)) {
+      texts.push("You can switch up to 2 times during the loan.");
+      if (!rateTypeIsFixed) {
+        texts.push(
+          "After switching to fixed, you cannot switch back to floating for at least 3 years."
+        );
+      } else {
+        texts.push(
+          "No fee to switch to floating at the end of the agreed fixed tenure."
+        );
+      }
+    }
+    if (/multiple switches allowed/i.test(freq)) {
+      texts.push("Multiple switches are allowed during the loan.");
+    }
+    if (/exercising the option/i.test(freq)) {
+      texts.push("Charged when you exercise the option.");
+    }
+    if (/yes bank/.test(bankKey) && /permitted/i.test(note1)) {
+      texts.push("Only if the bank permits the change when you ask.");
+    }
+    if (
+      (/as permitted by the mitc/i.test(freq) || /mitc/i.test(freq)) &&
+      /punjab national|\bpnb\b/.test(bankKey)
+    ) {
+      texts.push("Only as permitted in the bank’s MITC.");
+    }
+    if (/once exercised cannot be changed/i.test(note1) && /south indian/.test(bankKey)) {
+      texts.push("Once you switch, you cannot change again.");
+    }
+    if (/cic score/i.test(note1) && /maharashtra/.test(bankKey)) {
+      texts.push(
+        "Allowed only if CIBIL is above 700 and the bank’s guidelines are met."
+      );
+    }
+    if (/clubbing balance/i.test(note1)) {
+      texts.push(
+        "Fee is calculated after balances in linked accounts are clubbed."
+      );
+    }
+  }
+
+  if (method === RATE_CHANGE_METHOD_REPRICE) {
+    if (/carded interest rate only/i.test(note1)) {
+      texts.push("Lower rate means the bank’s card rate only.");
+    }
+    if (/not applicable for new loans/i.test(note1)) {
+      texts.push("Not for new loans or rollover cases.");
+    }
+  }
+
+  if (method === RATE_CHANGE_METHOD_BENCHMARK) {
+    const switchNote = formatBenchmarkSwitchShortNote(charge);
+    if (switchNote) texts.push(switchNote);
+    if (/dhanlaxmi/.test(bankKey)) {
+      texts.push(
+        "₹0 if converting to card rate; the listed fee applies when converting below card rate."
+      );
+    }
+    const cust = normalizeText(charge.customer_type).replace(/-/g, "_");
+    const showingIndividual = !cust || cust === "individual";
+    const hasNonIndividual = (candidates || []).some(function (entry) {
+      return (
+        normalizeText(entry && entry.customer_type).replace(/-/g, "_") ===
+        "non_individual"
+      );
+    });
+    if (showingIndividual && hasNonIndividual) {
+      texts.push(
+        "Listed fee is for individuals; non-individual pricing differs."
+      );
+    }
+  }
+  return texts;
+}
+
+function rateTypeIsFixedForRow(row) {
+  if (row && row.offer && row.offer.rate_type) {
+    return normalizeRateTypeToken(row.offer.rate_type) === "Fixed";
+  }
+  return normalizeRateTypeToken(row && row.rateType) === "Fixed";
+}
+
+function applyRateChangeMethodToRows(rows, method) {
+  rows.forEach(function (row) {
+    const charge = rateChangeChargeForMethod(row, method);
+    const candidates = rateChangeCandidatesForMethod(row, method);
+    const slabs = listMatchingChargeSlabs(candidates, charge);
+    row.rateChangeChargeSlabs = slabs;
+    const display = formatRateChangeChargeDisplay(charge, slabs);
+    const bankKey = rateChangeBankKey(row, charge);
+    const exceptionTexts = collectRateChangeExceptionTexts(
+      charge,
+      bankKey,
+      method,
+      rateTypeIsFixedForRow(row),
+      candidates
+    );
+    if (exceptionTexts.length) {
+      display.marker = rateChangeMarkerForBankKey(bankKey);
+    }
+    row.rateChangeChargeDisplay = display;
+    row.rateChangeChargeSortValue = rateChangeSortValue(charge, slabs);
+  });
+  return rows;
+}
+
+function formatRateChangePanelText(charge) {
+  if (!charge) return "Not listed";
+  const display = formatChargeDisplay(charge);
+  return [
+    display.main +
+      (display.mainSuffix ? " " + display.mainSuffix : "") +
+      (display.marker || "")
+  ]
+    .concat(display.details || [])
+    .filter(Boolean)
+    .join(" · ");
+}
+
+function expandBenchmarkToken(token) {
+  const raw = String(token || "").trim();
+  if (!raw) return "";
+  const key = normalizeText(raw)
+    .replace(/[()]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const labels = {
+    "base rate": "Base Rate",
+    mclr: "Marginal Cost of Funds based Lending Rate (MCLR)",
+    bplr: "Benchmark Prime Lending Rate (BPLR)",
+    sbar: "State Bank Advance Rate (SBAR)",
+    rllr: "Repo Linked Lending Rate (RLLR)",
+    eblr: "External Benchmark Lending Rate (EBLR)",
+    ebr: "External Benchmark Rate (EBR)",
+    "external benchmark rate": "External Benchmark Rate (EBR)",
+    "external benchmark": "External Benchmark Rate (EBR)",
+    "external benchmark rate repo rate":
+      "External Benchmark Rate linked to the repo rate (EBR)",
+    "repo rate": "repo rate"
+  };
+  if (labels[key]) return labels[key];
+  return raw;
+}
+
+function expandBenchmarkSwitchSide(value) {
+  return String(value || "")
+    .split(/\s*\/\s*/)
+    .map(expandBenchmarkToken)
+    .filter(Boolean)
+    .join(" / ");
+}
+
+function formatBenchmarkSwitchDetail(charge) {
+  if (!charge) return "Not listed";
+  let text = formatRateChangePanelText(charge);
+  const from = charge.benchmark_switch_from;
+  const to = charge.benchmark_switch_to;
+  if (from && to) {
+    text +=
+      " · From " +
+      expandBenchmarkSwitchSide(from) +
+      " to " +
+      expandBenchmarkSwitchSide(to);
+  }
+  return text;
+}
+
+function buildRateChangeExceptionNotes(visibleRows, method, rateTypeIsFixed) {
+  const lines = [];
+  const seen = Object.create(null);
+  function add(line) {
+    if (!line || seen[line]) return;
+    seen[line] = true;
+    lines.push(escapeHtml(line));
+  }
+
+  (visibleRows || []).forEach(function (row) {
+    const charge = rateChangeChargeForMethod(row, method);
+    if (!charge) return;
+    const bankKey = rateChangeBankKey(row, charge);
+    const marker = rateChangeMarkerForBankKey(bankKey);
+    if (!marker) return;
+    const texts = collectRateChangeExceptionTexts(
+      charge,
+      bankKey,
+      method,
+      rateTypeIsFixed,
+      rateChangeCandidatesForMethod(row, method)
+    );
+    texts.forEach(function (text) {
+      add(marker + " " + text);
+    });
+  });
+
+  return lines;
+}
+
 function rankOverdueCharge(charge) {
   return charge.charge_name === "Overdue charges" ? 1 : -1;
 }
@@ -772,7 +1406,63 @@ function rankEmiBounceCharge(charge) {
   }
   if (/(loan repayment|repayment instruction)/.test(name)) score += 15;
   if (/cheque/.test(name)) score += 5;
+  // Prefer the priced repayment-return schedule over technical/zero rows.
+  if (/technical/.test(name)) score -= 20;
   return score;
+}
+
+function formatEmiBounceMethodLabel(chargeName) {
+  const name = normalizeText(chargeName);
+  if (!name) return "";
+  if (/technical/.test(name)) return "Technical ECS / cheque return";
+  if (/nach/.test(name) && !/ecs/.test(name)) return "NACH return";
+  if (
+    /\bsi\b/.test(name) ||
+    /standing instruction/.test(name) ||
+    /auto debit/.test(name) ||
+    /\bddi\b/.test(name)
+  ) {
+    return "Auto debit / SI bounce";
+  }
+  if (/ecs/.test(name) && /nach/.test(name)) return "ECS / NACH return";
+  if (/ecs/.test(name)) return "ECS / cheque return";
+  if (/cheque/.test(name) && /return/.test(name)) return "Cheque return";
+  return String(chargeName).replace(/\s+/g, " ").trim();
+}
+
+function listAlternateEmiBounceMethodFacts(candidates, selectedChargeName) {
+  const selected = normalizeText(selectedChargeName);
+  const byName = Object.create(null);
+  candidates.forEach(function (charge) {
+    if (normalizeText(charge.charge_name) === selected) return;
+    if (charge.fixed_amount == null || !Number.isFinite(Number(charge.fixed_amount))) {
+      return;
+    }
+    const key = charge.charge_name;
+    if (!byName[key]) byName[key] = [];
+    byName[key].push(charge);
+  });
+  return Object.keys(byName)
+    .sort(function (a, b) {
+      return rankEmiBounceCharge(byName[b][0]) - rankEmiBounceCharge(byName[a][0]);
+    })
+    .map(function (name) {
+      const rows = byName[name]
+        .slice()
+        .sort(function (a, b) {
+          return chargeSlabStart(a) - chargeSlabStart(b);
+        });
+      const label = formatEmiBounceMethodLabel(name);
+      const amounts = Array.from(
+        new Set(
+          rows.map(function (charge) {
+            return formatInr(Number(charge.fixed_amount));
+          })
+        )
+      );
+      if (amounts.length === 1) return label + ": " + amounts[0];
+      return label + ": " + formatAreaSlabNotes(rows, false);
+    });
 }
 
 function specificityScore(record, fields) {
@@ -1129,7 +1819,7 @@ function computeGovernmentChargesTotal(governmentCharges, query, loanAmount, sta
 
 function formatPrepayLabel(charge) {
   if (!charge) return "—";
-  if (isPrepaymentNotCharged(charge)) return "Not charged";
+  if (isPrepaymentNotCharged(charge)) return "Nil (₹0)";
   if (charge.percentage != null && charge.percentage > 0) {
     return (charge.percentage * 100).toFixed(2) + "%";
   }
@@ -1138,6 +1828,9 @@ function formatPrepayLabel(charge) {
 }
 
 function formatChargeBasis(value) {
+  if (/residual tenure/i.test(String(value || ""))) {
+    return "On residual tenure (max 3%)";
+  }
   const key = normalizeText(value).replace(/[_\s-]+/g, "_");
   const labels = {
     default_amount: "On overdue amount",
@@ -1149,11 +1842,24 @@ function formatChargeBasis(value) {
     cheque_amount: "On cheque amount",
     outstanding_principal_loan_amount: "On outstanding principal",
     outstanding_loan_amount: "On outstanding loan amount",
-    balance_outstanding: "On outstanding balance"
+    outstanding_amount: "On outstanding amount",
+    balance_outstanding: "On outstanding balance",
+    drawing_power: "On drawing power",
+    outstanding_loan_amount_and_undisbursed_amount:
+      "On outstanding + undisbursed amount",
+    outstanding_principal_loan_amount_and_undisbursed_amount:
+      "On outstanding + undisbursed amount",
+    each_residual_tenure_maximum_cap_of_3: "On residual tenure (max 3%)"
   };
   if (labels[key]) return labels[key];
   if (!value) return "";
-  return "On " + String(value).replace(/_/g, " ").toLowerCase();
+  return (
+    "On " +
+    String(value)
+      .replace(/_/g, " ")
+      .toLowerCase()
+      .replace(/\bplus\b/g, "+")
+  );
 }
 
 function formatChargeUnit(value) {
@@ -1178,26 +1884,44 @@ function formatChargeUnit(value) {
 }
 
 function formatEncodedChargeNote(note) {
-  const text = String(note || "").trim();
+  let text = String(note || "").trim();
   if (!text || /^prepayment not charged/i.test(text)) return "";
+  if (/^prepayment nil/i.test(text)) return "";
 
   const dayMin = text.match(/overdue_days_min=([\d.]+)/);
   const dayMax = text.match(/overdue_days_max=([\d.]+)/);
   if (dayMin && dayMax) {
     return (
+      "Applies for " +
       Math.round(Number(dayMin[1])) +
       "–" +
       Math.round(Number(dayMax[1])) +
-      " days overdue"
+      " days overdue."
     );
   }
-  if (dayMin) return "From " + Math.round(Number(dayMin[1])) + " days overdue";
+  if (dayMin) {
+    return (
+      "Applies from " + Math.round(Number(dayMin[1])) + " days overdue."
+    );
+  }
 
   const tenureMax = text.match(/overdue_tenure_months_max=([\d.]+)/);
   if (tenureMax) {
-    return "Loan tenure up to " + Math.round(Number(tenureMax[1])) + " months";
+    return (
+      "Applies when loan tenure is up to " +
+      Math.round(Number(tenureMax[1])) +
+      " months."
+    );
   }
-  if (/overdue_whichever_higher=yes/i.test(text)) return "Higher applicable charge applies";
+  if (/overdue_whichever_higher=yes/i.test(text)) {
+    return "Higher applicable charge applies.";
+  }
+
+  // Drop machine tags left from sheet normalisation (not customer-facing).
+  text = text
+    .replace(/(?:^|[;\s])+[a-z0-9_]*_normalized_from=[^;]*/gi, "")
+    .replace(/^[\s;]+|[\s;]+$/g, "")
+    .trim();
   return text;
 }
 
@@ -1222,6 +1946,8 @@ function formatChargeDisplay(charge, options) {
       formatPct(percentage * 100) +
         (normalizeText(charge.percentage_per_annum) === "yes" ? " p.a." : "")
     );
+  } else if (normalizeText(charge.special_rule) === "as_per_roi") {
+    mainParts.push("At home loan interest rate");
   }
   let fixedLabel = "";
   let fixedBasisDetail = "";
@@ -1313,7 +2039,7 @@ function formatChargeDisplay(charge, options) {
       note &&
       !(
         hasWhicheverHigherAlternatives &&
-        note === "Higher applicable charge applies"
+        note === "Higher applicable charge applies."
       )
     );
   });
@@ -1483,8 +2209,19 @@ function buildAreaChargeSummary(candidates, preferredArea, bankDisplayName) {
   const otherArea = otherRows.length ? otherRows[0].charge_by_area : "";
   const primaryFirst = primaryRows[0];
   const primaryRest = primaryRows.slice(1);
+  const methodLabel = formatEmiBounceMethodLabel(selectedName);
+  const alternateFacts = listAlternateEmiBounceMethodFacts(
+    candidates,
+    selectedName
+  );
+  const useFullScheduleMarker = alternateFacts.length > 0;
+  const marker = useFullScheduleMarker ? "§" : "†";
   const footnoteParts = [];
-  if (primaryRest.length) {
+  if (useFullScheduleMarker) {
+    footnoteParts.push(
+      preferred + ": " + formatAreaSlabNotes(primaryRows, false)
+    );
+  } else if (primaryRest.length) {
     footnoteParts.push(
       preferred +
         " (higher charges): " +
@@ -1496,23 +2233,45 @@ function buildAreaChargeSummary(candidates, preferredArea, bankDisplayName) {
       otherArea + ": " + formatAreaSlabNotes(otherRows, false)
     );
   }
+  alternateFacts.forEach(function (fact) {
+    footnoteParts.push(fact);
+  });
   const primaryBand = formatEmiBounceSlabBand(primaryFirst);
-  const primaryDetail = primaryBand
-    ? primaryBand + (preferred ? " in " + preferred.toLowerCase() + " areas" : "")
-    : preferred;
+  const primaryDetailParts = [];
+  if (useFullScheduleMarker && methodLabel) primaryDetailParts.push(methodLabel);
+  if (primaryBand) {
+    primaryDetailParts.push(
+      primaryBand +
+        (preferred ? " in " + preferred.toLowerCase() + " areas" : "")
+    );
+  } else if (preferred) {
+    primaryDetailParts.push(preferred);
+  }
+
+  const shownSentence = useFullScheduleMarker
+    ? "The amount shown is the " +
+      methodLabel +
+      (primaryBand
+        ? " " +
+          primaryBand +
+          (preferred ? " in " + preferred.toLowerCase() + " areas" : "")
+        : "") +
+      "."
+    : formatSlabBasisSentence(primaryFirst, "bounce amount");
 
   return {
     display: {
       main: formatInr(Number(primaryFirst.fixed_amount)),
-      marker: "†",
-      details: [primaryDetail].filter(Boolean),
+      marker: marker,
+      details: primaryDetailParts.filter(Boolean),
       note: ""
     },
     footnote: footnoteParts.length
-      ? "† " +
+      ? marker +
+        " " +
         (bankDisplayName || primaryFirst.bank_name) +
         ": " +
-        formatSlabBasisSentence(primaryFirst, "bounce amount") +
+        shownSentence +
         " " +
         footnoteParts.join(". ") +
         "."
@@ -1827,6 +2586,121 @@ function formatChargeRule(charge) {
   return "See bank rules";
 }
 
+/** After-offer charge names that already have a table column (or EMI bounce slot). */
+const TABLE_AFTER_OFFER_CHARGE_NAMES = {
+  "Prepayment charges": true,
+  "Prepayment charges (takeover)": true,
+  "Interest Rate Type Switch Fees": true,
+  "Interest Rate Repricing Fees": true,
+  "Interest Rate Benchmark Switch Fees": true,
+  "Overdue charges": true
+};
+
+function isEmiBounceLikeChargeName(name) {
+  return /bounce|dishonour|return/i.test(String(name || ""));
+}
+
+/** True when this charge is already represented on the explore-banks table. */
+function isShownOnExploreTable(charge) {
+  if (!charge || !charge.charge_name) return false;
+  if (charge.charge_name === "Processing fee") return true;
+  if (charge.when_it_matters !== "After offer") return false;
+  if (TABLE_AFTER_OFFER_CHARGE_NAMES[charge.charge_name]) return true;
+  return isEmiBounceLikeChargeName(charge.charge_name);
+}
+
+/** Full published rule for the panel — amount, basis, unit, caps, GST, notes. */
+function formatAbsoluteChargeDetail(charge) {
+  if (!charge) return "Not listed";
+  return formatChargeDisplayText(formatChargeDisplay(charge));
+}
+
+/**
+ * Absolute detail for one charge name: all slabs in a group, or every distinct
+ * variant when the sheet stores multiple rules under the same label.
+ */
+function formatAbsoluteChargeRowsDetail(charges) {
+  if (!charges || !charges.length) return "Not listed";
+  if (charges.length === 1) return formatAbsoluteChargeDetail(charges[0]);
+
+  const slabSeed = charges.find(function (charge) {
+    return normalizeText(charge.has_slab_wise_charges) === "yes";
+  });
+  if (slabSeed) {
+    const slabs = charges
+      .filter(function (charge) {
+        return (
+          charge.charge_group_id === slabSeed.charge_group_id &&
+          normalizeText(charge.has_slab_wise_charges) === "yes"
+        );
+      })
+      .sort(function (a, b) {
+        return chargeSlabStart(a) - chargeSlabStart(b);
+      });
+    if (slabs.length > 1) {
+      const basis = formatSlabBasisSentence(slabs[0], "amount");
+      const parts = slabs.map(function (charge) {
+        const band = formatChargeSlabBand(charge);
+        const amountText = formatChargeDisplayText(
+          formatChargeDisplay(charge, { hideBasis: true })
+        );
+        return (band ? band + ": " : "") + amountText;
+      });
+      return [basis].concat(parts).filter(Boolean).join(" · ");
+    }
+  }
+
+  return charges
+    .map(function (charge) {
+      return formatAbsoluteChargeDetail(charge);
+    })
+    .join(" ··· ");
+}
+
+function collectMatchedChargesByName(charges) {
+  const byName = new Map();
+  charges.forEach(function (charge) {
+    if (!charge || !charge.charge_name) return;
+    if (!byName.has(charge.charge_name)) byName.set(charge.charge_name, []);
+    byName.get(charge.charge_name).push(charge);
+  });
+  return byName;
+}
+
+/** Build label/detail pairs from matched charge rows, keeping slabs and variants. */
+function panelRowsFromMatchedCharges(matchedCharges) {
+  const byName = collectMatchedChargesByName(matchedCharges);
+  const rows = [];
+  byName.forEach(function (list, name) {
+    rows.push([name, formatAbsoluteChargeRowsDetail(list)]);
+  });
+  rows.sort(function (a, b) {
+    return String(a[0]).localeCompare(String(b[0]), "en", { sensitivity: "base" });
+  });
+  return rows;
+}
+
+/** Before-offer scheme fees for the bank drawer — absolute published rules. */
+function listSchemeChargePanelRows(charges, offer) {
+  const matched = (charges || []).filter(function (charge) {
+    return prefilterChargeForScheme(charge, offer);
+  });
+  return panelRowsFromMatchedCharges(matched);
+}
+
+/**
+ * After-offer fees that are not on the table columns — absolute rules for the
+ * bank drawer (document copies, NOC, swaps, penal fees, etc.).
+ */
+function listAdditionalAfterOfferPanelRows(charges, query, offer) {
+  const matched = (charges || []).filter(function (charge) {
+    if (!prefilterAfterOfferCharge(charge, query, offer)) return false;
+    if (isShownOnExploreTable(charge)) return false;
+    return true;
+  });
+  return panelRowsFromMatchedCharges(matched);
+}
+
 function prefilterChargeForScheme(charge, offer) {
   if (charge.when_it_matters !== "Before offer") return false;
   if (normalizeText(charge.bank_key) !== normalizeText(offer.bank_key)) return false;
@@ -2001,6 +2875,41 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges) {
     offerQuery,
     offer
   );
+  const rateChangeTypeSwitchCandidates = listRankedAfterOfferCharges(
+    bankCharges,
+    offerQuery,
+    offer,
+    function (c) {
+      return rankRateChangeTypeSwitch(c, offer.rate_type);
+    }
+  );
+  const rateChangeTypeSwitchCharge = rateChangeTypeSwitchCandidates.length
+    ? rateChangeTypeSwitchCandidates[0]
+    : null;
+  const rateChangeRepricingCandidates = listRankedAfterOfferCharges(
+    bankCharges,
+    offerQuery,
+    offer,
+    function (c) {
+      return rankRateChangeRepricing(c, offer.rate_type);
+    }
+  );
+  const rateChangeRepricingCharge = rateChangeRepricingCandidates.length
+    ? rateChangeRepricingCandidates[0]
+    : null;
+  const rateChangeBenchmarkCandidates = listRankedAfterOfferCharges(
+    bankCharges,
+    offerQuery,
+    offer,
+    rankRateChangeBenchmark
+  );
+  const rateChangeBenchmarkCharge = rateChangeBenchmarkCandidates.length
+    ? rateChangeBenchmarkCandidates[0]
+    : null;
+  const rateChangeTypeSwitchSlabs = listMatchingChargeSlabs(
+    rateChangeTypeSwitchCandidates,
+    rateChangeTypeSwitchCharge
+  );
   const overdueCandidates = listRankedAfterOfferCharges(
     bankCharges,
     offerQuery,
@@ -2037,7 +2946,7 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges) {
   const overdueChargeDisplay =
     overdueChargeSlabs.length > 1
       ? {
-          main: "As per slab",
+          main: "Fixed amount by overdue range",
           details: [],
           note: "",
           action: "overdue-slabs"
@@ -2072,10 +2981,12 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges) {
       formatInr(computeGovernmentChargeAmount(charge, terms.loanAmount))
     ];
   });
-  const schemeCharges = listSchemeCharges(bankCharges, offer);
-  const feeRows = schemeCharges.map(function (charge) {
-    return [charge.charge_name, formatChargeRule(charge)];
-  });
+  const feeRows = listSchemeChargePanelRows(bankCharges, offer);
+  const additionalAfterOfferRows = listAdditionalAfterOfferPanelRows(
+    bankCharges,
+    offerQuery,
+    offer
+  );
 
   return {
     id: offer.offer_row_id,
@@ -2106,6 +3017,21 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges) {
         : null,
     prepaymentChargeDisplay: prepaymentChargeDisplay,
     prepaymentChargeSortValue: prepaymentSortValue(prepayOwnFundsCharge),
+    rateChangeChargeDisplay: formatRateChangeChargeDisplay(
+      rateChangeTypeSwitchCharge,
+      rateChangeTypeSwitchSlabs
+    ),
+    rateChangeChargeSortValue: rateChangeSortValue(
+      rateChangeTypeSwitchCharge,
+      rateChangeTypeSwitchSlabs
+    ),
+    rateChangeChargeSlabs: rateChangeTypeSwitchSlabs,
+    rateChangeTypeSwitchCharge: rateChangeTypeSwitchCharge,
+    rateChangeRepricingCharge: rateChangeRepricingCharge,
+    rateChangeBenchmarkCharge: rateChangeBenchmarkCharge,
+    rateChangeTypeSwitchCandidates: rateChangeTypeSwitchCandidates,
+    rateChangeRepricingCandidates: rateChangeRepricingCandidates,
+    rateChangeBenchmarkCandidates: rateChangeBenchmarkCandidates,
     overdueChargeDisplay: overdueChargeDisplay,
     overdueDetailFootnote: overdueSlabSummary
       ? overdueSlabSummary.footnote
@@ -2150,6 +3076,7 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges) {
         : "—",
     occupationLabel: formatOccupationLabel(offer.occupation),
     feeRows: feeRows,
+    additionalAfterOfferRows: additionalAfterOfferRows,
     otherChargeNote: (function () {
       const other = feeRows.find(function (pair) {
         return pair[0] !== "Processing fee";
@@ -2198,6 +3125,16 @@ function sortRows(rows, sortKey, sortDir) {
         const prepayCmp =
           a.prepaymentChargeSortValue - b.prepaymentChargeSortValue;
         if (prepayCmp !== 0) return prepayCmp * direction;
+      }
+    }
+    if (key === "rateChangeChargeDisplay") {
+      const leftMissing = a.rateChangeChargeSortValue == null;
+      const rightMissing = b.rateChangeChargeSortValue == null;
+      if (leftMissing !== rightMissing) return leftMissing ? 1 : -1;
+      if (!leftMissing) {
+        const cmp =
+          a.rateChangeChargeSortValue - b.rateChangeChargeSortValue;
+        if (cmp !== 0) return cmp * direction;
       }
     }
     const leftRaw = a[key];
@@ -2315,6 +3252,9 @@ function columnWidthClass(column) {
   if (column.key === "prepaymentChargeDisplay") {
     return "hlc-col-w-prepayment";
   }
+  if (column.key === "rateChangeChargeDisplay") {
+    return "hlc-col-w-rate-change";
+  }
   if (column.type === "pct") return "hlc-col-w-pct";
   if (column.type === "inr") return "hlc-col-w-inr";
   if (column.type === "charge") return "hlc-col-w-charge";
@@ -2336,9 +3276,10 @@ function initPage() {
     group: "essentials",
     productFilters: defaultProductFilters(),
     prepaymentMethod: PREPAYMENT_METHOD_OWN,
+    rateChangeMethod: RATE_CHANGE_METHOD_TYPE,
     selected: new Set(),
-    sortKey: null,
-    sortDir: null,
+    sortKey: DEFAULT_SORT_KEY,
+    sortDir: DEFAULT_SORT_DIR,
     rows: [],
     showAllBanks: false,
     matchTimer: null,
@@ -2642,8 +3583,8 @@ function initPage() {
       !state.productFilters.fixedRate &&
       state.sortKey === "prepaymentChargeDisplay"
     ) {
-      state.sortKey = null;
-      state.sortDir = null;
+      state.sortKey = DEFAULT_SORT_KEY;
+      state.sortDir = DEFAULT_SORT_DIR;
     }
     document.querySelectorAll(".hlc-rate-pills .hlc-chip[data-rate-type]").forEach(function (btn) {
       const selected = btn.getAttribute("data-rate-type") === rate;
@@ -2659,6 +3600,19 @@ function initPage() {
     if (state.prepaymentMethod === next) return;
     state.prepaymentMethod = next;
     applyPrepaymentMethodToRows(state.rows, state.prepaymentMethod);
+    renderTable();
+  }
+
+  function setRateChangeMethod(method) {
+    const next =
+      method === RATE_CHANGE_METHOD_REPRICE
+        ? RATE_CHANGE_METHOD_REPRICE
+        : method === RATE_CHANGE_METHOD_BENCHMARK
+          ? RATE_CHANGE_METHOD_BENCHMARK
+          : RATE_CHANGE_METHOD_TYPE;
+    if (state.rateChangeMethod === next) return;
+    state.rateChangeMethod = next;
+    applyRateChangeMethodToRows(state.rows, state.rateChangeMethod);
     renderTable();
   }
 
@@ -2826,8 +3780,11 @@ function initPage() {
     el.status.textContent = "";
 
     if (el.table) el.table.setAttribute("data-group", state.group);
+    const useFillCol = state.group === "laterCharges";
     if (el.cols) {
       let colHtml = '<col class="hlc-col-bank">';
+      /* Push charge columns to the right; fill sits between Bank and charges. */
+      if (useFillCol) colHtml += '<col class="hlc-col-fill">';
       columns.forEach(function (column) {
         colHtml += '<col class="' + columnWidthClass(column) + '">';
       });
@@ -2836,6 +3793,10 @@ function initPage() {
 
     let headHtml = "<tr>";
     headHtml += '<th class="hlc-sticky-col" scope="col">Bank</th>';
+    if (useFillCol) {
+      headHtml +=
+        '<th class="hlc-col-fill" scope="col" aria-hidden="true"></th>';
+    }
     columns.forEach(function (column) {
       const footnoteMarker = footnoteState.headerMarkers[column.key] || "";
       const canSort = Boolean(column.sort);
@@ -2860,6 +3821,7 @@ function initPage() {
           "</span>"
         : "";
       const isPrepayment = column.key === "prepaymentChargeDisplay";
+      const isRateChange = column.key === "rateChangeChargeDisplay";
       const footnoteHtml = footnoteMarker
         ? '<sup class="hlc-col-footnote" aria-hidden="true">' +
           escapeHtml(footnoteMarker) +
@@ -2867,7 +3829,7 @@ function initPage() {
         : "";
       const prepaymentMethods =
         isPrepayment
-          ? '<select class="hlc-prepay-header-select" data-prepay-method="' +
+          ? '<select class="hlc-header-select hlc-prepay-header-select" data-prepay-method="' +
             state.prepaymentMethod +
             '" aria-label="Prepayment method">' +
             '<option value="' +
@@ -2882,29 +3844,64 @@ function initPage() {
             ">Balance transfer</option>" +
             "</select>"
           : "";
+      const typeSwitchLabel = rateChangeTypeSwitchLabel(
+        state.productFilters.fixedRate ? "Fixed" : "Floating"
+      );
+      const rateChangeMethods =
+        isRateChange
+          ? '<select class="hlc-header-select hlc-rate-change-header-select" data-rate-change-method="' +
+            state.rateChangeMethod +
+            '" aria-label="Rate change type">' +
+            '<option value="' +
+            RATE_CHANGE_METHOD_TYPE +
+            '"' +
+            (state.rateChangeMethod === RATE_CHANGE_METHOD_TYPE
+              ? " selected"
+              : "") +
+            ">" +
+            escapeHtml(typeSwitchLabel) +
+            "</option>" +
+            '<option value="' +
+            RATE_CHANGE_METHOD_REPRICE +
+            '"' +
+            (state.rateChangeMethod === RATE_CHANGE_METHOD_REPRICE
+              ? " selected"
+              : "") +
+            ">Repricing</option>" +
+            '<option value="' +
+            RATE_CHANGE_METHOD_BENCHMARK +
+            '"' +
+            (state.rateChangeMethod === RATE_CHANGE_METHOD_BENCHMARK
+              ? " selected"
+              : "") +
+            ">Benchmark switch</option>" +
+            "</select>"
+          : "";
       const headerLabel =
-        isPrepayment
+        isPrepayment || isRateChange
           ? '<span class="hlc-column-label">' +
             '<span class="hlc-column-title">' +
             escapeHtml(column.label) +
             footnoteHtml +
             sortInd +
             "</span>" +
-            prepaymentMethods +
+            (isPrepayment ? prepaymentMethods : rateChangeMethods) +
             "</span>"
           : escapeHtml(column.label);
       headHtml +=
         '<th class="' +
         columnAlignClass(column) +
         sortClass +
-        '" scope="col"' +
+        '" scope="col" data-col="' +
+        column.key +
+        '"' +
         sortAttr +
         ariaSort +
         (footnoteMarker ? ' aria-describedby="hlc-charges-note"' : "") +
         ">" +
         headerLabel +
-        (isPrepayment ? "" : footnoteHtml) +
-        (isPrepayment ? "" : sortInd) +
+        (isPrepayment || isRateChange ? "" : footnoteHtml) +
+        (isPrepayment || isRateChange ? "" : sortInd) +
         "</th>";
     });
     headHtml += "</tr>";
@@ -2912,10 +3909,12 @@ function initPage() {
 
     updateChargesFootnote(footnoteState.text);
 
+    const colCount = columns.length + 1 + (useFillCol ? 1 : 0);
+
     if (!rows.length) {
       el.body.innerHTML =
         '<tr><td class="hlc-empty" colspan="' +
-        (columns.length + 1) +
+        colCount +
         '">No banks matched these inputs. Try a different income, property agreement value, age, CIBIL score, purpose, or filters.</td></tr>';
       state.cellSnapshot = nextSnapshot;
       updateShowMoreButton(0, 0);
@@ -3011,6 +4010,7 @@ function initPage() {
           '"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-arrow" aria-hidden="true">›</span></button>' +
           "</div>" +
           "</div></td>" +
+          (useFillCol ? '<td class="hlc-col-fill" aria-hidden="true"></td>' : "") +
           cells +
           "</tr>"
         );
@@ -3037,8 +4037,9 @@ function initPage() {
   function buildChargesFootnote(visibleRows) {
     const result = { text: "", headerMarkers: Object.create(null) };
     if (state.group === "laterCharges" && visibleRows.length > 0) {
-      const noteParts = [FLOATING_PREPAY_NOTE];
+      const prepaymentNotes = [floatingPrepayNoteHtml()];
       if (state.productFilters.fixedRate) {
+        prepaymentNotes.push(escapeHtml(FIXED_FORECLOSURE_NOTE));
         const activeCharges = visibleRows
           .map(function (row) {
             return prepayChargeForMethod(row, state.prepaymentMethod);
@@ -3073,25 +4074,89 @@ function initPage() {
           result.headerMarkers.prepaymentChargeDisplay = "*";
         }
         if (units.length) {
-          noteParts.push(
-            "* Charged " +
-              joinReadableList(units) +
-              ", depending on the lender’s schedule."
+          prepaymentNotes.push(
+            escapeHtml(
+              "* Charged " +
+                joinReadableList(units) +
+                ", depending on the lender’s schedule."
+            )
           );
         }
         if (bases.length) {
-          noteParts.push(
-            "* Calculated " +
-              joinReadableList(bases) +
-              ", depending on the lender’s schedule."
+          prepaymentNotes.push(
+            escapeHtml(
+              "* Calculated " +
+                joinReadableList(bases) +
+                ", depending on the lender’s schedule."
+            )
           );
         }
         if (hasGst) {
-          noteParts.push(
-            "* GST is added where the lender marks it as applicable."
+          prepaymentNotes.push(
+            escapeHtml(
+              "* GST is added where the lender marks it as applicable."
+            )
           );
         }
       }
+
+      const rateChangeNotes = [
+        escapeHtml(rateChangeFrequencyNoteForMethod(state.rateChangeMethod))
+      ];
+      if (state.rateChangeMethod === RATE_CHANGE_METHOD_BENCHMARK) {
+        rateChangeNotes.push(escapeHtml(RATE_CHANGE_BENCHMARK_MEANING_NOTE));
+      }
+      if (state.rateChangeMethod === RATE_CHANGE_METHOD_REPRICE) {
+        rateChangeNotes.push(escapeHtml(RATE_CHANGE_REPRICING_MEANING_NOTE));
+      }
+      Array.prototype.push.apply(
+        rateChangeNotes,
+        buildRateChangeExceptionNotes(
+          visibleRows,
+          state.rateChangeMethod,
+          state.productFilters.fixedRate
+        )
+      );
+      const activeRateChangeCharges = visibleRows
+        .map(function (row) {
+          return rateChangeChargeForMethod(row, state.rateChangeMethod);
+        })
+        .filter(Boolean);
+      const rateChangeUnits = Array.from(
+        new Set(
+          activeRateChangeCharges
+            .map(function (charge) {
+              return formatChargeUnit(charge.charge_unit);
+            })
+            .filter(Boolean)
+            .map(lowerFirst)
+        )
+      );
+      const hasRateChangeGst = activeRateChangeCharges.some(function (charge) {
+        return normalizeText(charge.gst_applicable) === "yes";
+      });
+      // Units are shared for the active method (per switch / per instance).
+      // Bases differ by bank — shown on each cell, never clubbed in footnotes.
+      if (rateChangeUnits.length === 1) {
+        rateChangeNotes.push(
+          escapeHtml(
+            RATE_CHANGE_COMMON_MARKER +
+              " Charged " +
+              rateChangeUnits[0] +
+              ", depending on the lender’s schedule."
+          )
+        );
+      }
+      if (hasRateChangeGst) {
+        rateChangeNotes.push(
+          escapeHtml(
+            RATE_CHANGE_COMMON_MARKER +
+              " GST is added where the lender marks it as applicable."
+          )
+        );
+      }
+      result.headerMarkers.rateChangeChargeDisplay = RATE_CHANGE_COMMON_MARKER;
+
       const overdueNotes = Array.from(
         new Set(
           visibleRows
@@ -3100,7 +4165,7 @@ function initPage() {
             })
             .filter(Boolean)
         )
-      );
+      ).map(escapeHtml);
       const emiNotes = Array.from(
         new Set(
           visibleRows
@@ -3109,7 +4174,7 @@ function initPage() {
             })
             .filter(Boolean)
         )
-      );
+      ).map(escapeHtml);
       const percentageOverdueRows = visibleRows.filter(function (row) {
         return (
           row.overdueCharge &&
@@ -3145,67 +4210,110 @@ function initPage() {
       const hasEmiGst = emiCharges.some(function (charge) {
         return normalizeText(charge.gst_applicable) === "yes";
       });
-      const overdueCommonNotes = percentageOverdueRows.length
-        ? ["‡ Percentage overdue charges are calculated on the overdue amount."]
-        : [];
-      const emiCommonNotes = [];
+      const overdueGroupNotes = percentageOverdueRows.length
+        ? [
+            escapeHtml(
+              "‡ Percentage overdue charges are calculated on the overdue amount for as long as the payment stays overdue."
+            )
+          ].concat(overdueNotes)
+        : overdueNotes.slice();
+      const emiGroupNotes = [];
       if (emiUnits.length) {
-        emiCommonNotes.push(
-          "^ Charged " +
-            joinReadableList(emiUnits) +
-            ", depending on the lender’s schedule."
+        emiGroupNotes.push(
+          escapeHtml(
+            "^ Charged " +
+              joinReadableList(emiUnits) +
+              ", depending on the lender’s schedule."
+          )
         );
       }
       if (emiBases.length) {
-        emiCommonNotes.push(
-          "^ Calculated " +
-            joinReadableList(emiBases) +
-            ", depending on the lender’s schedule."
+        emiGroupNotes.push(
+          escapeHtml(
+            "^ Calculated " +
+              joinReadableList(emiBases) +
+              ", depending on the lender’s schedule."
+          )
         );
       }
       if (hasEmiGst) {
-        emiCommonNotes.push("^ GST is added where the lender marks it as applicable.");
+        emiGroupNotes.push(
+          escapeHtml(
+            "^ GST is added where the lender marks it as applicable."
+          )
+        );
       }
-      if (overdueCommonNotes.length) {
+      emiGroupNotes.push.apply(emiGroupNotes, emiNotes);
+      if (percentageOverdueRows.length) {
         result.headerMarkers.overdueChargeDisplay = "‡";
       }
-      if (emiCommonNotes.length) {
+      if (emiUnits.length || emiBases.length || hasEmiGst) {
         result.headerMarkers.emiBounceChargeDisplay = "^";
       }
-      result.text = noteParts
-        .concat(overdueCommonNotes)
-        .concat(overdueNotes)
-        .concat(emiCommonNotes)
-        .concat(emiNotes)
-        .join("\n\n");
+      result.text = [
+        chargesNoteGroupHtml(
+          columnLabelForKey("laterCharges", "prepaymentChargeDisplay"),
+          prepaymentNotes
+        ),
+        chargesNoteGroupHtml(
+          columnLabelForKey("laterCharges", "rateChangeChargeDisplay"),
+          rateChangeNotes
+        ),
+        chargesNoteGroupHtml(
+          columnLabelForKey("laterCharges", "overdueChargeDisplay"),
+          overdueGroupNotes
+        ),
+        chargesNoteGroupHtml(
+          columnLabelForKey("laterCharges", "emiBounceChargeDisplay"),
+          emiGroupNotes
+        )
+      ]
+        .filter(Boolean)
+        .join("");
       return result;
     }
     const showCharges = state.group === "charges" && visibleRows.length > 0;
-    if (!showCharges || !state.dataset) {
+    if (!showCharges) {
       return result;
     }
-    const query = readQuery();
-    const loanAmount =
-      state.rows[0] && Number.isFinite(state.rows[0].loanAmount)
-        ? state.rows[0].loanAmount
-        : 0;
-    const note = formatOptionalGovernmentChargesNote(
-      state.dataset.government_charges || [],
-      query,
-      loanAmount,
-      DEFAULT_JURISDICTION_STATE
+    const groups = [];
+    result.headerMarkers.processingFee = "*";
+    groups.push(
+      chargesNoteGroupHtml(
+        columnLabelForKey("charges", "processingFee"),
+        [escapeHtml(PROCESSING_FEE_LOGIN_NOTE)]
+      )
     );
-    if (note) {
-      result.headerMarkers.governmentCharges = "^";
-      result.text = note;
+    if (state.dataset) {
+      const query = readQuery();
+      const loanAmount =
+        state.rows[0] && Number.isFinite(state.rows[0].loanAmount)
+          ? state.rows[0].loanAmount
+          : 0;
+      const note = formatOptionalGovernmentChargesNote(
+        state.dataset.government_charges || [],
+        query,
+        loanAmount,
+        DEFAULT_JURISDICTION_STATE
+      );
+      if (note) {
+        result.headerMarkers.governmentCharges = "^";
+        groups.push(
+          chargesNoteGroupHtml(
+            columnLabelForKey("charges", "governmentCharges"),
+            [escapeHtml(note)]
+          )
+        );
+      }
     }
+    result.text = groups.filter(Boolean).join("");
     return result;
   }
 
-  function updateChargesFootnote(note) {
+  function updateChargesFootnote(noteHtml) {
     if (!el.chargesNote) return;
-    el.chargesNote.hidden = !note;
-    el.chargesNote.textContent = note || "";
+    el.chargesNote.hidden = !noteHtml;
+    el.chargesNote.innerHTML = noteHtml || "";
   }
 
   function updateApplyBar() {
@@ -3228,11 +4336,42 @@ function initPage() {
   }
 
   function openChargeSlabs(id, detail) {
-    if (detail !== "overdue-slabs") return;
+    if (detail !== "overdue-slabs" && detail !== "rate-change-slabs") return;
     const row = state.rows.find(function (entry) {
       return entry.id === id;
     });
-    if (!row || !row.overdueChargeSlabs || !row.overdueChargeSlabs.length) return;
+    if (!row) return;
+
+    if (detail === "rate-change-slabs") {
+      if (!row.rateChangeChargeSlabs || !row.rateChangeChargeSlabs.length) return;
+      const slabRows = row.rateChangeChargeSlabs.map(function (charge) {
+        return [
+          formatChargeSlabBand(charge),
+          formatChargeDisplayText(
+            formatChargeDisplay(charge, {
+              hideBasis: true,
+              hideUnit: true,
+              hideGst: true
+            })
+          )
+        ];
+      });
+      const bodyHtml =
+        drawerSlabTable("Loan amount", "Charge", slabRows) +
+        '<p class="hlc-drawer-foot">' +
+        escapeHtml(
+          "Each listed charge applies per instance. Figures are indicative. The bank decides final terms."
+        ) +
+        "</p>";
+      showDrawer(
+        row.bankName,
+        "Rate change charge · Fixed amount by loan amount range",
+        bodyHtml
+      );
+      return;
+    }
+
+    if (!row.overdueChargeSlabs || !row.overdueChargeSlabs.length) return;
 
     const slabRows = row.overdueChargeSlabs.map(function (charge) {
       return [
@@ -3240,11 +4379,22 @@ function initPage() {
         formatInr(Number(charge.fixed_amount))
       ];
     });
+    const isDcbBank = normalizeText(row.bankName) === "dcb bank";
+    const chargeHeading = isDcbBank ? "Monthly charge" : "Charge";
+    const footNote = isDcbBank
+      ? "Each listed charge is applied every month, or for part of a month, while the amount stays overdue. Figures are indicative. The bank decides final terms."
+      : "Each listed charge applies per instance. Figures are indicative. The bank decides final terms.";
     const bodyHtml =
-      drawerSlabTable("Overdue amount", "Charge", slabRows) +
-      '<p class="hlc-drawer-foot">Each listed charge applies per instance. Figures are indicative. The bank decides final terms.</p>';
+      drawerSlabTable("Overdue amount", chargeHeading, slabRows) +
+      '<p class="hlc-drawer-foot">' +
+      footNote +
+      "</p>";
 
-    showDrawer(row.bankName, "Overdue charge · As per slab", bodyHtml);
+    showDrawer(
+      row.bankName,
+      "Overdue charge · Fixed amount by overdue range",
+      bodyHtml
+    );
   }
 
   function openDrawer(id) {
@@ -3253,6 +4403,9 @@ function initPage() {
     });
     if (!row) return;
 
+    const rateTypeForLabels = state.productFilters.fixedRate
+      ? "Fixed"
+      : "Floating";
     const laterChargeRows = [
       [
         "Prepayment · Own funds",
@@ -3262,6 +4415,18 @@ function initPage() {
         "Prepayment · Balance transfer",
         formatPrepaymentChargeDetail(row.prepayTakeoverCharge)
       ],
+      [
+        rateChangeTypeSwitchLabel(rateTypeForLabels),
+        formatRateChangePanelText(row.rateChangeTypeSwitchCharge)
+      ],
+      [
+        "Repricing",
+        formatRateChangePanelText(row.rateChangeRepricingCharge)
+      ],
+      [
+        "Benchmark switch",
+        formatBenchmarkSwitchDetail(row.rateChangeBenchmarkCharge)
+      ],
       ["Overdue", formatChargeDisplayText(row.overdueChargeDisplay)],
       ["EMI bounce", formatChargeDisplayText(row.emiBounceChargeDisplay)]
     ];
@@ -3270,6 +4435,11 @@ function initPage() {
     }
     if (row.emiBounceDetailFootnote) {
       laterChargeRows.push(["Charge details", row.emiBounceDetailFootnote]);
+    }
+    if (row.additionalAfterOfferRows && row.additionalAfterOfferRows.length) {
+      row.additionalAfterOfferRows.forEach(function (pair) {
+        laterChargeRows.push(pair);
+      });
     }
 
     const bodyHtml =
@@ -3296,7 +4466,7 @@ function initPage() {
           ? row.feeRows
           : [["Applicable charges", "None listed"]]
       ) +
-      drawerSection("Later charges", laterChargeRows) +
+      drawerSection("Other charges", laterChargeRows) +
       '<p class="hlc-drawer-foot">Published rules are shown without estimating an event-specific amount. Figures are indicative. The bank decides final terms.</p>';
 
     showDrawer(row.bankName, row.scheme || "", bodyHtml);
@@ -3749,7 +4919,7 @@ function initPage() {
         "Processing fee",
         row.bankName + " · " + (row.scheme || ""),
         processingFeeCalculationHtml(row) +
-          '<p class="hlc-drawer-foot">Calculated from the processing fee rule matched to your inputs. Final charges remain subject to the lender’s terms.</p>'
+          '<p class="hlc-drawer-foot">Calculated from the processing fee rule matched to your inputs. Banks often take part of this upfront as a login fee to file the application; that amount differs by bank and is not broken out separately yet. Final charges remain subject to the lender’s terms.</p>'
       );
       return;
     }
@@ -3841,6 +5011,7 @@ function initPage() {
     updateLoanHint(query);
     state.rows = await matchOffers(state.dataset, query, state.engine);
     applyPrepaymentMethodToRows(state.rows, state.prepaymentMethod);
+    applyRateChangeMethodToRows(state.rows, state.rateChangeMethod);
     if (HLC_TESTING) state.showAllBanks = true;
     root.setAttribute("aria-busy", "false");
     renderTable({ highlightDeltas: !HLC_TESTING });
@@ -3977,7 +5148,21 @@ function initPage() {
     return highlightMissingPrimaryFields();
   }
 
-  function scheduleMatch() {
+  function withResultsFade(updateFn, mode) {
+    const surface =
+      (el.scroll && el.scroll.closest(".hlc-table-wrap")) ||
+      document.querySelector(".hlc-table-wrap");
+    const className =
+      mode === "metrics" ? "is-sel-fading-metrics" : "is-sel-fading-rows";
+    if (window.ShroffinSelectionFade && window.ShroffinSelectionFade.run) {
+      return window.ShroffinSelectionFade.run(surface, updateFn, {
+        className: className,
+      });
+    }
+    return Promise.resolve(typeof updateFn === "function" ? updateFn() : undefined);
+  }
+
+  function scheduleMatch(options) {
     clearTimeout(state.matchTimer);
     clearResolvedPrimaryIssues();
     if (!primaryFieldsAreComplete()) {
@@ -3985,12 +5170,17 @@ function initPage() {
       return;
     }
     clearAllPrimaryIssues();
+    const fade = !!(options && options.fade);
     state.matchTimer = setTimeout(function () {
-      runMatch().catch(function (error) {
-        console.error(error);
-        showToast("Could not match banks. Refresh and try again.");
-        root.setAttribute("aria-busy", "false");
-      });
+      const run = function () {
+        return runMatch().catch(function (error) {
+          console.error(error);
+          showToast("Could not match banks. Refresh and try again.");
+          root.setAttribute("aria-busy", "false");
+        });
+      };
+      if (fade) withResultsFade(run, "rows");
+      else run();
     }, matchDebounceMs);
   }
 
@@ -4001,6 +5191,7 @@ function initPage() {
   }
 
   function setColumnGroup(group) {
+    if (state.group === group) return;
     state.group = group;
     document.querySelectorAll(".hlc-column-tab[data-group]").forEach(function (tab) {
       if (tab.getAttribute("data-group") === group) {
@@ -4011,7 +5202,9 @@ function initPage() {
         tab.setAttribute("aria-selected", "false");
       }
     });
-    renderTable();
+    withResultsFade(function () {
+      renderTable();
+    }, "metrics");
   }
 
   document.querySelectorAll(".hlc-column-tab[data-group]").forEach(function (tab) {
@@ -4036,7 +5229,7 @@ function initPage() {
       const next = btn.getAttribute("aria-pressed") !== "true";
       btn.setAttribute("aria-pressed", next ? "true" : "false");
       state.productFilters[key] = next;
-      scheduleMatch();
+      scheduleMatch({ fade: true });
     });
   });
 
@@ -4047,7 +5240,7 @@ function initPage() {
       if (!btn || !occupationPills.contains(btn)) return;
       event.preventDefault();
       setOccupation(btn.getAttribute("data-occupation"));
-      scheduleMatch();
+      scheduleMatch({ fade: true });
     });
   }
 
@@ -4058,7 +5251,7 @@ function initPage() {
       if (!btn || !purposePills.contains(btn)) return;
       event.preventDefault();
       setPurpose(btn.getAttribute("data-purpose"));
-      scheduleMatch();
+      scheduleMatch({ fade: true });
     });
   }
 
@@ -4069,7 +5262,7 @@ function initPage() {
       if (!btn || !coApplicantPills.contains(btn)) return;
       event.preventDefault();
       setCoApplicant(btn.getAttribute("data-coapplicant"));
-      scheduleMatch();
+      scheduleMatch({ fade: true });
     });
   }
 
@@ -4082,7 +5275,7 @@ function initPage() {
       if (!btn || !ratePills.contains(btn)) return;
       event.preventDefault();
       setRateType(btn.getAttribute("data-rate-type"));
-      scheduleMatch();
+      scheduleMatch({ fade: true });
     });
   }
 
@@ -4093,7 +5286,7 @@ function initPage() {
       if (!btn || !facilityPills.contains(btn)) return;
       event.preventDefault();
       setFacilityType(btn.getAttribute("data-facility-type"));
-      scheduleMatch();
+      scheduleMatch({ fade: true });
     });
   }
 
@@ -4104,7 +5297,7 @@ function initPage() {
       if (!btn || !bankTypePills.contains(btn)) return;
       event.preventDefault();
       setBankType(btn.getAttribute("data-bank-type"));
-      scheduleMatch();
+      scheduleMatch({ fade: true });
     });
   }
 
@@ -4117,13 +5310,19 @@ function initPage() {
   if (el.cardLoadPct) el.cardLoadPct.addEventListener("change", scheduleMatch);
 
   el.head.addEventListener("change", function (event) {
-    const method = event.target.closest(".hlc-prepay-header-select");
-    if (!method || !el.head.contains(method)) return;
-    setPrepaymentMethod(method.value);
+    const select = event.target.closest(".hlc-header-select");
+    if (!select || !el.head.contains(select)) return;
+    if (select.classList.contains("hlc-prepay-header-select")) {
+      setPrepaymentMethod(select.value);
+      return;
+    }
+    if (select.classList.contains("hlc-rate-change-header-select")) {
+      setRateChangeMethod(select.value);
+    }
   });
 
   el.head.addEventListener("click", function (event) {
-    if (event.target.closest(".hlc-prepay-header-select")) return;
+    if (event.target.closest(".hlc-header-select")) return;
     const header = event.target.closest("th.hlc-sortable");
     if (!header) return;
     const key = header.getAttribute("data-sort");
@@ -4238,7 +5437,30 @@ module.exports = {
   GROUPS,
   PREPAYMENT_METHOD_OWN,
   PREPAYMENT_METHOD_BT,
+  RATE_CHANGE_METHOD_TYPE,
+  RATE_CHANGE_METHOD_REPRICE,
+  RATE_CHANGE_METHOD_BENCHMARK,
+  RATE_CHANGE_CHARGE_TYPE_SWITCH,
+  RATE_CHANGE_CHARGE_REPRICING,
+  RATE_CHANGE_CHARGE_BENCHMARK,
+  RATE_CHANGE_FREQUENCY_NOTE,
+  RATE_CHANGE_FREQUENCY_NOTE_REPRICE,
+  RATE_CHANGE_FREQUENCY_NOTE_BENCHMARK,
+  rateChangeFrequencyNoteForMethod,
+  RATE_CHANGE_BENCHMARK_MEANING_NOTE,
+  RATE_CHANGE_REPRICING_MEANING_NOTE,
+  RATE_CHANGE_COMMON_MARKER,
+  expandBenchmarkToken,
+  expandBenchmarkSwitchSide,
+  shortenBenchmarkToken,
+  formatBenchmarkSwitchShortNote,
+  RATE_CHANGE_BANK_MARKERS,
+  RBI_FLOATING_PREPAY_HREF,
   FLOATING_PREPAY_NOTE,
+  FIXED_FORECLOSURE_NOTE,
+  PROCESSING_FEE_LOGIN_NOTE,
+  floatingPrepayNoteHtml,
+  chargesNoteGroupHtml,
   laterChargesColumns,
   columnsForGroup,
   DEFAULT_FOIR_PCT,
@@ -4327,9 +5549,29 @@ module.exports = {
   formatPrepaymentChargeDetail,
   applyPrepaymentMethodToRows,
   prepayChargeForMethod,
+  rateChangeTypeSwitchLabel,
+  rateChangeTypeSwitchDirection,
+  rankRateChangeTypeSwitch,
+  rankRateChangeRepricing,
+  rankRateChangeBenchmark,
+  pickRateChangeTypeSwitchCharge,
+  pickRateChangeRepricingCharge,
+  pickRateChangeBenchmarkCharge,
+  formatRateChangeChargeDisplay,
+  applyRateChangeMethodToRows,
+  rateChangeChargeForMethod,
+  rateChangeSortValue,
+  buildRateChangeExceptionNotes,
+  formatBenchmarkSwitchDetail,
+  formatRateChangePanelText,
   formatChargeDisplay,
   formatChargeDisplayText,
   formatChargeBasis,
+  formatAbsoluteChargeDetail,
+  formatAbsoluteChargeRowsDetail,
+  listSchemeChargePanelRows,
+  listAdditionalAfterOfferPanelRows,
+  isShownOnExploreTable,
   formatPct,
   formatTenureYears,
   initPage

@@ -23,7 +23,7 @@ SOURCE = ROOT / "HOME LOANS - OFFERS (5).xlsx"
 OUT_XLSX = ROOT / "data" / "HOME_LOANS_COMPARE_v1.xlsx"
 OUT_VAL = ROOT / "data" / "HOME_LOANS_COMPARE_v1_VALIDATION.md"
 
-LOCKED_SHA256 = "8fa44a675ea86d8549f46b4c10198b64e82af9de2a63b948afdec2fa23fd76fb"
+LOCKED_SHA256 = "ca920fd36e3a6f4053aea46ccd6161a771cfd4d61a6e5733a41d524fd2e7a843"
 LOCKED = {
     "filled_before_drop": 1505,
     "empty_skipped": 1000,

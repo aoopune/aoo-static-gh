@@ -1646,6 +1646,55 @@
     transform: rotate(-135deg);
   }
 
+/* Sliding selection thumb — exclusive pills / underline tabs */
+.shroffin-sel-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  box-sizing: border-box;
+  pointer-events: none;
+  transform: translate(0, 0);
+}
+
+.shroffin-sel-thumb.is-ready {
+  transition:
+    transform var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    width var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    height var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.shroffin-sel-thumb--pill {
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(29, 29, 31, 0.06);
+  border-radius: calc(var(--hlc-radius, 0.75rem) - 0.15rem);
+}
+
+.shroffin-sel-thumb--line {
+  border-radius: 1px 1px 0 0;
+  background: var(--shroffin-ink, #1d1d1f);
+}
+
+.has-sel-thumb {
+  position: relative;
+}
+
+.has-sel-thumb > :not(.shroffin-sel-thumb) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Soft content fade for guide tabs (full panel). Table fades are selective — see explore-banks.css. */
+.guide-seg-panel {
+  transition: opacity var(--shroffin-sel-content-fade, 0.28s)
+    var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.guide-seg-panel.is-sel-fading {
+  opacity: 0;
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1664,5 +1713,13 @@
 
   .shroffin-to-top.is-visible {
     transform: none;
+  }
+
+  .shroffin-sel-thumb.is-ready {
+    transition: none;
+  }
+
+  .guide-seg-panel {
+    transition: none;
   }
 }

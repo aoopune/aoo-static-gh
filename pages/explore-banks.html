@@ -17,8 +17,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=footer-2">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=charge-subnotes-1">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=sel-5">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=later-cols-35">
 </head>
 <!-- HLC_TESTING_MODE: temporary — pre-filled inputs, no UX delays. Ask to restore when testing is done. -->
 <body class="explore-banks-page hlc-testing-mode">
@@ -405,9 +405,9 @@
               </div>
               <div class="hlc-results-actions">
                 <div class="hlc-column-tabs" role="tablist" aria-label="Column groups">
-                  <button type="button" class="hlc-column-tab" role="tab" data-group="essentials" aria-current="page" aria-selected="true">Essentials</button>
+                  <button type="button" class="hlc-column-tab" role="tab" data-group="essentials" aria-current="page" aria-selected="true">Overview</button>
                   <button type="button" class="hlc-column-tab" role="tab" data-group="charges" aria-selected="false">Charges</button>
-                  <button type="button" class="hlc-column-tab" role="tab" data-group="laterCharges" aria-selected="false">Later charges</button>
+                  <button type="button" class="hlc-column-tab" role="tab" data-group="laterCharges" aria-selected="false">Other charges</button>
                 </div>
                 <div class="hlc-apply-bar" id="hlc-apply-bar" aria-live="polite">
                   <button type="button" class="hlc-btn-primary" id="hlc-apply-btn" disabled>Apply</button>
@@ -477,7 +477,7 @@
                       <tbody id="hlc-compare-body"></tbody>
                     </table>
                   </div>
-                  <p class="hlc-charges-note" id="hlc-charges-note" role="note" hidden></p>
+                  <div class="hlc-charges-note" id="hlc-charges-note" role="note" hidden></div>
                 </div>
 
                 <div class="hlc-show-more-wrap">
@@ -596,8 +596,8 @@
   <!-- SHROFFIN_FOOTER_END -->
 
   <script src="../js/shroffin-home-stance.js?v=stance-18"></script>
-  <script src="../js/shroffin-nav.js?v=tools-1"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=charge-subnotes-1"></script>
+  <script src="../js/shroffin-nav.js?v=sel-5"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=later-cols-36"></script>
   <script>
     (function () {
       var form = document.getElementById("hlc-inputs");

@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  var navScriptEl = document.currentScript;
+
   if (window.__shroffinNavLoaded) return;
   window.__shroffinNavLoaded = true;
   document.documentElement.classList.add("js");
@@ -686,10 +688,45 @@
     update();
   }
 
+  function initSelectionIndicators() {
+    function start() {
+      if (window.ShroffinSelectionIndicator) {
+        window.ShroffinSelectionIndicator.init();
+      }
+    }
+
+    if (window.ShroffinSelectionIndicator) {
+      start();
+      return;
+    }
+
+    var src = "/js/shroffin-selection-indicator.js?v=sel-5";
+    if (navScriptEl && navScriptEl.src) {
+      src = navScriptEl.src.replace(
+        /shroffin-nav\.js(\?[^#]*)?(#.*)?$/,
+        "shroffin-selection-indicator.js?v=sel-5"
+      );
+      if (src.indexOf("shroffin-selection-indicator.js") === -1) {
+        src = "/js/shroffin-selection-indicator.js?v=sel-5";
+      }
+    }
+
+    var script = document.createElement("script");
+    script.src = src;
+    script.onload = start;
+    var parent = (navScriptEl && navScriptEl.parentNode) || document.head;
+    if (navScriptEl && navScriptEl.nextSibling) {
+      parent.insertBefore(script, navScriptEl.nextSibling);
+    } else {
+      parent.appendChild(script);
+    }
+  }
+
   function init() {
     initGlobalNav();
     initFooterAccordion();
     initBackToTop();
+    initSelectionIndicators();
   }
 
   if (document.readyState === "loading") {

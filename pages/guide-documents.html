@@ -17,9 +17,9 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=footer-1">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=sel-5">
   <link rel="stylesheet" href="../css/shroffin-guide.css?v=editorial-24">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=editorial-55">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=sel-1">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -587,14 +587,55 @@
         }).filter(Boolean);
 
         function activateTab(tab) {
+          var nextId = tab.getAttribute('aria-controls');
+          var current = null;
+          var next = null;
+          panels.forEach(function (panel) {
+            if (!panel.hidden) current = panel;
+            if (panel.id === nextId) next = panel;
+          });
+
           tabs.forEach(function (btn) {
             var selected = btn === tab;
             btn.setAttribute('aria-selected', selected ? 'true' : 'false');
             btn.tabIndex = selected ? 0 : -1;
           });
-          panels.forEach(function (panel) {
-            panel.hidden = panel.id !== tab.getAttribute('aria-controls');
-          });
+
+          if (!next || next === current) {
+            panels.forEach(function (panel) {
+              panel.hidden = panel.id !== nextId;
+            });
+            return;
+          }
+
+          var reduce =
+            window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          var fadeMs =
+            (window.ShroffinSelectionFade && window.ShroffinSelectionFade.duration) ||
+            500;
+
+          if (reduce) {
+            panels.forEach(function (panel) {
+              panel.hidden = panel !== next;
+              panel.classList.remove('is-sel-fading');
+            });
+            return;
+          }
+
+          if (current) current.classList.add('is-sel-fading');
+          window.setTimeout(function () {
+            panels.forEach(function (panel) {
+              panel.hidden = panel !== next;
+              panel.classList.remove('is-sel-fading');
+            });
+            next.classList.add('is-sel-fading');
+            requestAnimationFrame(function () {
+              requestAnimationFrame(function () {
+                next.classList.remove('is-sel-fading');
+              });
+            });
+          }, fadeMs);
         }
 
         tabs.forEach(function (tab) {
@@ -662,7 +703,7 @@
       }
     })();
   </script>
-  <script src="../js/shroffin-nav.js?v=tools-1"></script>
+  <script src="../js/shroffin-nav.js?v=sel-5"></script>
   <script src="../js/shroffin-guide.js?v=editorial-15"></script>
 </body>
 </html>

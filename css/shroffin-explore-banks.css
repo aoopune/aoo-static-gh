@@ -836,6 +836,11 @@
   box-shadow: 0 1px 2px rgba(29, 29, 31, 0.06);
 }
 
+.hlc-segmented.has-sel-thumb .hlc-chip[aria-pressed="true"] {
+  background: transparent;
+  box-shadow: none;
+}
+
 .hlc-segmented .hlc-chip[aria-pressed="false"] {
   background: transparent;
   color: var(--shroffin-muted, #6e6e73);
@@ -1011,6 +1016,10 @@
   height: 2px;
   background: var(--shroffin-ink, #1d1d1f);
   border-radius: 1px 1px 0 0;
+}
+
+.hlc-column-tabs.has-sel-thumb .hlc-column-tab[aria-current="page"]::after {
+  content: none;
 }
 
 .hlc-status {
@@ -1381,12 +1390,49 @@
   overflow: visible;
 }
 
+/*
+ * Selective table fades — only soften what changes:
+ * metrics = section tabs (headers + value cells; bank column stays)
+ * rows    = filters rematch (bank rows + value headers that may change)
+ */
+.hlc-compare thead th:not(.hlc-sticky-col),
+.hlc-compare tbody td:not(.hlc-sticky-col),
+.hlc-compare tbody,
+.hlc-charges-note {
+  transition: opacity var(--shroffin-sel-content-fade, 0.28s)
+    var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.hlc-table-wrap.is-sel-fading-metrics .hlc-compare thead th:not(.hlc-sticky-col),
+.hlc-table-wrap.is-sel-fading-metrics .hlc-compare tbody td:not(.hlc-sticky-col),
+.hlc-table-wrap.is-sel-fading-metrics .hlc-charges-note {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hlc-table-wrap.is-sel-fading-rows .hlc-compare tbody,
+.hlc-table-wrap.is-sel-fading-rows .hlc-compare thead th:not(.hlc-sticky-col),
+.hlc-table-wrap.is-sel-fading-rows .hlc-charges-note {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hlc-compare thead th:not(.hlc-sticky-col),
+  .hlc-compare tbody td:not(.hlc-sticky-col),
+  .hlc-compare tbody,
+  .hlc-charges-note {
+    transition: none;
+  }
+}
+
 .hlc-column-label {
+  position: relative;
   display: inline-flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0;
   width: 100%;
   min-width: 0;
   vertical-align: middle;
@@ -1401,48 +1447,115 @@
   white-space: nowrap;
 }
 
+/* Sit under the title inside existing th padding — out of flow so row height stays put. */
+.hlc-header-select,
 .hlc-prepay-header-select {
-  display: inline-block;
-  flex: 0 0 auto;
-  width: 4.75rem;
-  max-width: none;
-  min-height: 1.25rem;
+  position: absolute;
+  top: calc(100% + 0.12rem);
+  left: 50%;
+  z-index: 1;
+  display: block;
+  width: 3.55rem;
+  max-width: calc(100% - 0.25rem);
+  min-height: 0;
   margin: 0;
-  padding: 0 0.15rem;
+  padding: 0 0.42rem 0 0;
   border: 0;
   border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
   background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M1 1 4 4 7 1' fill='none' stroke='%236e6e73' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0 center;
+  background-size: 0.4rem 0.28rem;
   color: var(--shroffin-muted, #6e6e73);
-  font-size: 0.6875rem;
+  font-size: 0.625rem;
   font-weight: 400;
   letter-spacing: -0.005em;
-  line-height: 1.35;
+  line-height: 1.2;
+  transform: translateX(-50%);
   cursor: pointer;
 }
 
 .hlc-prepay-header-select[data-prepay-method="balanceTransfer"] {
-  width: 6.75rem;
+  width: 5.25rem;
+}
+
+.hlc-rate-change-header-select {
+  width: 7rem;
+  max-width: calc(100% - 0.25rem);
+  padding-right: 0.58rem;
+  font-weight: 500;
+}
+
+.hlc-rate-change-header-select[data-rate-change-method="benchmark"] {
+  width: 7.5rem;
 }
 
 @supports (field-sizing: content) {
-  .hlc-prepay-header-select {
+  .hlc-header-select,
+  .hlc-prepay-header-select,
+  .hlc-rate-change-header-select {
     width: auto;
     field-sizing: content;
   }
 }
 
-.hlc-prepay-header-select:focus-visible {
+.hlc-header-select:focus-visible,
+.hlc-prepay-header-select:focus-visible,
+.hlc-rate-change-header-select:focus-visible {
   outline: 2px solid rgba(0, 113, 227, 0.35);
   outline-offset: 1px;
 }
 
+.hlc-compare th[data-col="prepaymentChargeDisplay"],
+.hlc-compare th[data-col="rateChangeChargeDisplay"] {
+  overflow: visible;
+}
+
 .hlc-charges-note {
   margin: 0.85rem 0 0;
-  max-width: 42rem;
+  max-width: none;
+  width: 100%;
   font-size: 0.8125rem;
   line-height: 1.55;
   color: #5c5c5c;
-  white-space: pre-line;
+}
+
+.hlc-charges-note-group + .hlc-charges-note-group {
+  margin-top: 1.1rem;
+}
+
+.hlc-charges-note-heading {
+  margin: 0 0 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #1d1d1f;
+}
+
+.hlc-charges-note-body {
+  margin: 0;
+}
+
+.hlc-charges-note .guide-section-link {
+  color: var(--shroffin-blue, #0071e3);
+  text-decoration: none;
+  border-bottom: 0;
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hlc-charges-note .guide-section-link:hover,
+.hlc-charges-note .guide-section-link:focus-visible,
+.hlc-charges-note .guide-section-link:active {
+  color: #005bb5;
+  text-decoration: none;
+}
+
+.hlc-charges-note .guide-section-link-arrow {
+  margin-left: 0.15em;
+  font-size: 0.9em;
 }
 
 .hlc-charges-note[hidden] {
@@ -1506,11 +1619,60 @@
 }
 
 .hlc-compare col.hlc-col-w-charge {
-  width: 11rem;
+  width: 13rem;
 }
 
 .hlc-compare col.hlc-col-w-prepayment {
-  width: 16.5rem;
+  width: 13rem;
+}
+
+.hlc-compare col.hlc-col-w-rate-change {
+  width: 13rem;
+}
+
+/* Absorbs leftover table width so charge columns stay 13rem and sit on the right. */
+.hlc-compare col.hlc-col-fill {
+  width: auto;
+}
+
+.hlc-compare th.hlc-col-fill,
+.hlc-compare td.hlc-col-fill {
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  padding: 0;
+  background: var(--hlc-page-bg);
+}
+
+/* Same header underline as every other th — do not zero borders here. */
+.hlc-compare thead th.hlc-col-fill {
+  border-bottom: 1px solid rgba(29, 29, 31, 0.18);
+}
+
+/*
+ * Later charges: keep Overdue / EMI bounce (and Prepayment when shown) at 13rem
+ * whether or not prepayment is present. Extra width goes into the fill column
+ * between Bank and the charge columns, so charges stay on the right.
+ */
+.hlc-compare[data-group="laterCharges"] col.hlc-col-w-charge,
+.hlc-compare[data-group="laterCharges"] col.hlc-col-w-prepayment,
+.hlc-compare[data-group="laterCharges"] col.hlc-col-w-rate-change {
+  width: 13rem;
+}
+
+.hlc-compare[data-group="laterCharges"] th[data-col="prepaymentChargeDisplay"],
+.hlc-compare[data-group="laterCharges"] td[data-col="prepaymentChargeDisplay"],
+.hlc-compare[data-group="laterCharges"] th[data-col="rateChangeChargeDisplay"],
+.hlc-compare[data-group="laterCharges"] td[data-col="rateChangeChargeDisplay"],
+.hlc-compare[data-group="laterCharges"] th[data-col="overdueChargeDisplay"],
+.hlc-compare[data-group="laterCharges"] td[data-col="overdueChargeDisplay"],
+.hlc-compare[data-group="laterCharges"] th[data-col="emiBounceChargeDisplay"],
+.hlc-compare[data-group="laterCharges"] td[data-col="emiBounceChargeDisplay"] {
+  width: 13rem;
+  min-width: 13rem;
+  max-width: 13rem;
+  box-sizing: border-box;
+  white-space: normal;
 }
 
 .hlc-compare col.hlc-col-w-tenure {

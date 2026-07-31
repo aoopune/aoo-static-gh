@@ -1826,6 +1826,14 @@ body.guide-reading .mag-index-label {
   background: var(--mag-ink);
 }
 
+.guide-seg.has-sel-thumb .guide-seg-btn[aria-selected="true"]::after {
+  content: none;
+}
+
+.guide-seg .shroffin-sel-thumb--line {
+  background: var(--mag-ink, var(--shroffin-ink, #1d1d1f));
+}
+
 .guide-seg-btn:focus-visible {
   outline: 2px solid var(--mag-accent-button);
   outline-offset: 2px;
@@ -2095,7 +2103,8 @@ a.guide-note-ref:hover {
 .guide-fine,
 .mag-fine,
 .guide-fine-notes {
-  max-width: 44em;
+  max-width: none;
+  width: 100%;
   margin: 0;
   padding-top: 22px;
   border-top: 1px solid var(--mag-hair);
