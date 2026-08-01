@@ -10,6 +10,7 @@ const matrixPaths = new Set([
   '/pages/learn-more.html',
   '/pages/about.html',
   '/privacy-policy.html',
+  '/terms-of-use.html',
   '/sitemap.html',
   '/pages/guide.html',
   '/pages/guide-documents.html',
@@ -164,12 +165,22 @@ async function expectSharedShell(page, entry) {
   expect((await h1.innerText()).toLowerCase()).toContain(entry.heading.toLowerCase());
   await expect(page.locator('main')).toHaveCount(1);
   await expect(page.locator('footer.site-footer')).toHaveCount(1);
+  await expect(page.locator('.site-help-strip')).toHaveCount(1);
+  await expect(page.locator('.site-help-strip')).toContainText('Need some help?');
+  await expect(
+    page.locator('.site-help-strip a.guide-section-link[href="https://wa.me/919112334367"]')
+  ).toHaveCount(1);
+  await expect(
+    page.locator('.site-help-strip a.site-help-strip-phone[href="tel:+919112334367"]')
+  ).toHaveText('91123 34367');
   await expect(page.locator('.site-footer-directory')).toHaveCount(1);
   await expect(page.locator('.site-footer-heading')).toHaveCount(5);
   await expect(page.locator('.site-footer')).not.toContainText(
     'Regulators and official resources'
   );
   await expect(page.locator('.site-footer-rule')).toHaveCount(0);
+  await expect(page.locator('.site-help-strip')).toHaveCSS('border-top-width', '1px');
+  await expect(page.locator('.site-help-strip')).toHaveCSS('border-bottom-width', '1px');
   await expect(page.locator('footer.site-footer')).toHaveCSS('border-top-width', '1px');
   await expect(page.locator('.site-footer-legal')).toHaveCSS('border-top-width', '0px');
   await expect(page.locator('.site-footer-legal')).toHaveCSS('border-bottom-width', '0px');
@@ -721,7 +732,7 @@ test('cross-browser responsive smoke', async function ({ page }, testInfo) {
     'Covered by the full Chromium matrix.'
   );
 
-  const smokePaths = new Set(['/', '/sitemap.html', '/privacy-policy.html']);
+  const smokePaths = new Set(['/', '/sitemap.html', '/privacy-policy.html', '/terms-of-use.html']);
   const smokePages = redesignedPages.filter(function (entry) {
     return smokePaths.has(entry.path);
   });

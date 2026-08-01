@@ -292,10 +292,10 @@
 
   /**
    * Option 1 content fade: dim → swap → settle.
-   * Shorter than the selection slide (0.85s) so new data is visible
-   * by the time the pill/line finishes moving.
+   * Matches --shroffin-sel-content-fade (micro band, 0.5s).
+   * Still finishes before / with the selection thumb (UI 0.85s).
    */
-  var FADE_MS = 280;
+  var FADE_MS = 500;
 
   function runContentFade(surface, updateFn, options) {
     if (!surface || prefersReducedMotion()) {

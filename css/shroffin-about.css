@@ -1,13 +1,13 @@
 /* About — scroll story on shell / editorial tokens. Page-only. */
 
 .about-page {
-  --about-paper: var(--shroffin-surface, #faf9f6);
-  --about-paper-deep: var(--shroffin-footer, #f3f1eb);
-  --about-paper-note: #eceae3;
+  --about-paper: var(--shroffin-surface, #fcfcfd);
+  --about-paper-deep: var(--shroffin-footer, #f5f7f9);
+  --about-paper-note: #eef1f4;
   --about-ink: var(--shroffin-ink, #1d1d1f);
   --about-ink-soft: #3a3a3d;
   --about-muted: var(--shroffin-muted, #6e6e73);
-  --about-ghost: #c8c5bc;
+  --about-ghost: #c5c9cf;
   --about-blue: var(--shroffin-blue, #0071e3);
   --about-ease: var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
   --about-gutter: var(--shroffin-gutter, clamp(1rem, 4vw, 2.5rem));
@@ -189,19 +189,39 @@
   text-align: center;
 }
 
-/* Story body only — do not paint shared footer off-site links blue. */
+/* Story body off-site links — same shared link colour as the rest of the site. */
 .about-page main .guide-section-link {
-  color: var(--about-blue);
+  color: var(--shroffin-link, #3f62c8);
   text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
   border-bottom: 0;
-  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    text-decoration-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.about-page main .guide-section-link:visited {
+  color: var(--shroffin-link-visited, #5a4fcf);
 }
 
 .about-page main .guide-section-link:hover,
-.about-page main .guide-section-link:focus-visible,
+.about-page main .guide-section-link:focus-visible {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link, #3f62c8);
+}
+
+.about-page main .guide-section-link:visited:hover,
+.about-page main .guide-section-link:visited:focus-visible {
+  color: var(--shroffin-link-visited, #5a4fcf);
+  text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
+}
+
 .about-page main .guide-section-link:active {
-  color: #0076df;
-  text-decoration: none;
+  color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
 }
 
 /* ——— Founder ——— */
@@ -321,39 +341,6 @@
   gap: 12px;
 }
 
-.about-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--shroffin-btn-touch, 44px);
-  padding: 11px 22px;
-  border-radius: 980px;
-  border: 1px solid transparent;
-  box-sizing: border-box;
-  font-family: inherit;
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 1.17647;
-  text-decoration: none;
-  transition:
-    background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.about-cta-primary {
-  background: var(--about-blue);
-  color: #fff;
-}
-
-.about-cta-primary:hover {
-  background: #0076df;
-}
-
-.about-cta-primary:active {
-  background: #006edb;
-}
-
 .about-cta-secondary {
   background: transparent;
   border-color: rgba(0, 0, 0, 0.2);
@@ -361,14 +348,21 @@
 }
 
 .about-cta-secondary:hover {
-  background: var(--about-blue);
-  border-color: var(--about-blue);
+  background: var(--shroffin-btn-primary, #0071e3);
+  border-color: var(--shroffin-btn-primary, #0071e3);
   color: #fff;
 }
 
-.about-cta:focus-visible {
-  outline: 2px solid var(--about-blue);
-  outline-offset: 3px;
+.about-cta-secondary:link,
+.about-cta-secondary:visited {
+  color: var(--about-ink);
+  text-decoration: none;
+}
+
+.about-cta-secondary:hover,
+.about-cta-secondary:focus-visible,
+.about-cta-secondary:active {
+  text-decoration: none;
 }
 
 /* ——— Tablet / desktop ——— */
@@ -402,7 +396,7 @@
 /* ——— Stance — "Our principles" (moved from home) ——— */
 
 .stance {
-  --stance-paper: var(--shroffin-surface, #faf9f6);
+  --stance-paper: var(--shroffin-surface, #fcfcfd);
   --stance-ink: var(--shroffin-ink, #1d1d1f);
   --stance-ink-soft: #3a3a3d;
   --stance-line: rgba(0, 0, 0, 0.1);
@@ -491,7 +485,7 @@
   }
 
   .stance-item:hover {
-    background-color: rgba(255, 254, 251, 0.92);
+    background-color: rgba(255, 255, 255, 0.92);
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
   }
 
@@ -500,9 +494,9 @@
   }
 
   .stance-item:focus-visible {
-    background-color: rgba(255, 254, 251, 0.92);
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
-    outline: none;
+    background-color: rgba(255, 255, 255, 0.92);
+    outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+    outline-offset: var(--shroffin-focus-offset, 3px);
   }
 
   .stance-item:focus-visible .stance-item-body {

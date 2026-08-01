@@ -17,8 +17,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=sel-5">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=later-cols-35">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=chevron-1">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=footer-1">
 </head>
 <!-- HLC_TESTING_MODE: temporary — pre-filled inputs, no UX delays. Ask to restore when testing is done. -->
 <body class="explore-banks-page hlc-testing-mode">
@@ -274,7 +274,9 @@
                   <span class="hlc-form-more-copy">
                     <span class="hlc-form-more-title">
                       <span class="hlc-form-more-label">More details</span>
-                      <span class="hlc-form-more-chevron" aria-hidden="true"></span>
+                      <svg class="hlc-form-more-chevron" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                        <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
                     </span>
                     <span class="hlc-form-more-hint">Existing EMIs, FOIR, tenure, co-applicant</span>
                   </span>
@@ -495,6 +497,7 @@
                 </div>
               </div>
             </div>
+
           </section>
       </div>
     </div>
@@ -515,6 +518,18 @@
   <div class="hlc-toast" id="hlc-toast" role="status"></div>
 
   <!-- SHROFFIN_FOOTER_START -->
+  <aside class="site-help-strip" aria-label="Get help">
+    <p class="site-help-strip-text">
+      Need some help?
+      <a
+        class="guide-section-link"
+        href="https://wa.me/919112334367"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Chat now<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new window)</span></a>
+      or call <a class="site-help-strip-phone" href="tel:+919112334367">91123 34367</a>
+    </p>
+  </aside>
   <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
     <div class="site-footer-inner">
       <div class="site-footer-directory">
@@ -543,6 +558,7 @@
           <ul class="site-footer-list">
             <li><a href="/pages/about.html">About</a></li>
             <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/terms-of-use.html">Terms of Use</a></li>
           </ul>
         </nav>
 
@@ -581,6 +597,7 @@
           <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
             <ul class="site-footer-legal-links">
               <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/terms-of-use.html">Terms of Use</a></li>
               <li><a href="/sitemap.html">Site Map</a></li>
               <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
               <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
@@ -596,8 +613,8 @@
   <!-- SHROFFIN_FOOTER_END -->
 
   <script src="../js/shroffin-home-stance.js?v=stance-18"></script>
-  <script src="../js/shroffin-nav.js?v=sel-5"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=later-cols-36"></script>
+  <script src="../js/shroffin-nav.js?v=sel-6"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=chevron-1"></script>
   <script>
     (function () {
       var form = document.getElementById("hlc-inputs");

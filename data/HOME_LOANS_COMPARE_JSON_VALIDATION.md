@@ -2,9 +2,9 @@
 
 **Result:** PASS (export completed)
 
-- data_version: `hlc-20260731-04b0e951`
-- source_sha256: `04b0e9513659ab6bf0fdc34fb4233d34c52aabab84593948d8492f17bbf5442e`
-- generated_at: `2026-07-31T14:23:58+00:00`
+- data_version: `hlc-20260801-a024dc1c`
+- source_sha256: `a024dc1c2b781c8fbca28b8d2e50d221fd3952b1e73223e32a1b3bcb76cebddc`
+- generated_at: `2026-08-01T13:19:38+00:00`
 - offers: 1149
 - bank_charges: 2337
 - government_charges: 18

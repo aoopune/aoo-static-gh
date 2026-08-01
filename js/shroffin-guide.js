@@ -481,9 +481,19 @@
         compactLabel.className = "mag-toc-compact-label";
         compactLabel.textContent = linkLabel(links[0]);
 
-        var chevron = document.createElement("span");
-        chevron.className = "mag-toc-compact-chevron";
+        var chevron = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        chevron.setAttribute("class", "mag-toc-compact-chevron");
+        chevron.setAttribute("viewBox", "0 0 10 10");
         chevron.setAttribute("aria-hidden", "true");
+        chevron.setAttribute("focusable", "false");
+        var chevronPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        chevronPath.setAttribute("d", "M2.2 1.2 6.8 5 2.2 8.8");
+        chevronPath.setAttribute("fill", "none");
+        chevronPath.setAttribute("stroke", "currentColor");
+        chevronPath.setAttribute("stroke-width", "1.6");
+        chevronPath.setAttribute("stroke-linecap", "round");
+        chevronPath.setAttribute("stroke-linejoin", "round");
+        chevron.appendChild(chevronPath);
 
         compactToggle.appendChild(compactLabel);
         compactToggle.appendChild(chevron);

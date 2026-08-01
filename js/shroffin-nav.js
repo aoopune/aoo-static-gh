@@ -700,14 +700,15 @@
       return;
     }
 
-    var src = "/js/shroffin-selection-indicator.js?v=sel-5";
+    var src = "/js/shroffin-selection-indicator.js?v=sel-6";
+
     if (navScriptEl && navScriptEl.src) {
       src = navScriptEl.src.replace(
         /shroffin-nav\.js(\?[^#]*)?(#.*)?$/,
-        "shroffin-selection-indicator.js?v=sel-5"
+        "shroffin-selection-indicator.js?v=sel-6"
       );
       if (src.indexOf("shroffin-selection-indicator.js") === -1) {
-        src = "/js/shroffin-selection-indicator.js?v=sel-5";
+        src = "/js/shroffin-selection-indicator.js?v=sel-6";
       }
     }
 

@@ -88,7 +88,8 @@
 
     :root {
       --gn-height: 48px;
-      --gn-bg: #faf9f6;
+      --gn-bg: #fcfcfd;
+      --gn-bg: color-mix(in srgb, #0071e3 0.75%, #ffffff);
       --gn-text: rgba(29, 29, 31, 0.8);
       --gn-text-hover: #1d1d1f;
       --gn-ink: #1d1d1f;
@@ -111,7 +112,7 @@
 
     body {
       background:
-        radial-gradient(circle at 50% 0%, #fffefb 0%, #faf9f6 42%, #f3f1eb 100%);
+        radial-gradient(circle at 50% 0%, #ffffff 0%, #fcfcfd 42%, #f5f7f9 100%);
       color: #1d1d1f;
     }
 
@@ -145,7 +146,7 @@
       box-sizing: border-box;
       overflow: hidden;
       text-align: center;
-      background: #f3f1eb;
+      background: #f5f7f9;
     }
 
     .home-hero-copy {
@@ -189,46 +190,7 @@
       pointer-events: auto;
     }
 
-    .home-hero-cta {
-      display: inline-flex;
-      position: relative;
-      isolation: isolate;
-      align-items: center;
-      justify-content: center;
-      min-width: 28px;
-      padding: 11px 21px;
-      border: 1px solid transparent;
-      border-radius: 980px;
-      font-family: inherit;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.17647;
-      text-decoration: none;
-      cursor: pointer;
-      box-sizing: content-box;
-      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .home-hero-cta-primary {
-      background: #0071e3;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .home-hero-cta-primary:hover {
-      background: #0076df;
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .home-hero-cta-primary:active {
-      background: #006edb;
-      color: #fff;
-      border-color: transparent;
-    }
+    /* Primary pill recipe lives in shroffin-shell.css (.home-hero-cta-primary). */
 
     /* Apple .button-secondary: outline at rest; fills blue + white text on hover */
     .home-hero-cta-secondary {
@@ -238,21 +200,18 @@
     }
 
     .home-hero-cta-secondary:hover {
-      background: #0076df;
+      background: var(--shroffin-btn-primary-hover, #0076df);
       color: #fff;
       border-color: transparent;
     }
 
     .home-hero-cta-secondary:active {
-      background: #006edb;
+      background: var(--shroffin-btn-primary-active, #006edb);
       color: #fff;
       border-color: transparent;
     }
 
-    .home-hero-cta:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 3px;
-    }
+    /* Primary pill focus lives in shroffin-shell.css */
 
     @media (max-width: 833px) {
       .home-hero-copy {
@@ -280,7 +239,7 @@
 
     /* ——— Apple-like global footer ——— */
     .site-footer {
-      background: #f3f1eb;
+      background: #f5f7f9;
       color: rgba(0, 0, 0, 0.56);
       font-size: 12px;
       line-height: 1.33337;
@@ -398,7 +357,7 @@
       to { transform: translateY(0); }
     }
   </style>
-  <link rel="stylesheet" href="css/shroffin-shell.css?v=sel-5">
+  <link rel="stylesheet" href="css/shroffin-shell.css?v=chevron-1">
   <!-- shroffin-home.css: stance styles moved to about; file kept for now -->
   <!-- <link rel="stylesheet" href="css/shroffin-home.css?v=stance-34"> -->
 </head>
@@ -585,6 +544,18 @@
   </main>
 
   <!-- SHROFFIN_FOOTER_START -->
+  <aside class="site-help-strip" aria-label="Get help">
+    <p class="site-help-strip-text">
+      Need some help?
+      <a
+        class="guide-section-link"
+        href="https://wa.me/919112334367"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Chat now<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new window)</span></a>
+      or call <a class="site-help-strip-phone" href="tel:+919112334367">91123 34367</a>
+    </p>
+  </aside>
   <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
     <div class="site-footer-inner">
       <div class="site-footer-directory">
@@ -613,6 +584,7 @@
           <ul class="site-footer-list">
             <li><a href="/pages/about.html">About</a></li>
             <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/terms-of-use.html">Terms of Use</a></li>
           </ul>
         </nav>
 
@@ -651,6 +623,7 @@
           <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
             <ul class="site-footer-legal-links">
               <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/terms-of-use.html">Terms of Use</a></li>
               <li><a href="/sitemap.html">Site Map</a></li>
               <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
               <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
@@ -665,7 +638,7 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="js/shroffin-nav.js?v=sel-5"></script>
-  <script src="js/shroffin-guide.js?v=editorial-15"></script>
+  <script src="js/shroffin-nav.js?v=sel-6"></script>
+  <script src="js/shroffin-guide.js?v=chevron-1"></script>
 </body>
 </html>

@@ -3,10 +3,26 @@
     --shroffin-ink: #1d1d1f;
     --shroffin-muted: #6e6e73;
     --shroffin-blue: #0071e3;
-    --shroffin-surface: #faf9f6;
-    --shroffin-footer: #f3f1eb;
+    --shroffin-btn-primary: #0071e3;
+    --shroffin-btn-primary-hover: #0076df;
+    --shroffin-btn-primary-active: #006edb;
+    /* Text links (on-site + off-site) — one colour, gap, and state system. */
+    --shroffin-link: #3f62c8;
+    --shroffin-link-active: #2f4ba0;
+    --shroffin-link-visited: #5a4fcf;
+    --shroffin-link-arrow-gap: 0.35em;
+    --shroffin-link-external: var(--shroffin-link);
+    --shroffin-link-external-active: var(--shroffin-link-active);
+    --shroffin-link-external-visited: var(--shroffin-link-visited);
+    /* Cool soft blue canvas — same family as Explore banks; no warm paper. */
+    --shroffin-surface: #fcfcfd;
+    --shroffin-surface: color-mix(in srgb, var(--shroffin-blue) 0.75%, #ffffff);
+    --shroffin-footer: #f5f7f9;
+    --shroffin-footer: color-mix(in srgb, var(--shroffin-blue) 1.5%, #f4f6f8);
     --shroffin-rule: rgba(0, 0, 0, 0.16);
     --shroffin-focus: #0071e3;
+    --shroffin-focus-width: 2px;
+    --shroffin-focus-offset: 3px;
     --shroffin-gn-height: 48px;
     /* How much of the main bar stays pinned — full on desktop, none on compact. */
     --shroffin-gn-offset: var(--shroffin-gn-height);
@@ -21,6 +37,8 @@
     --shroffin-ui-duration: 0.85s;
     --shroffin-move-duration: 1s;
     --shroffin-reveal-duration: 1.45s;
+    /* Content swap fades (guide tabs, explore table) — micro floor, soft ease. */
+    --shroffin-sel-content-fade: var(--shroffin-micro-duration);
     --shroffin-z-veil: 9998;
     --shroffin-z-nav: 9999;
 
@@ -47,6 +65,29 @@
     --shroffin-btn-compact-visual: 32px;
     --shroffin-btn-compact-font: 12px;
     --shroffin-btn-compact-pad-inline: 0.75rem;
+
+    /*
+     * Underline form fields — Apply page recipe, site-wide.
+     * Transparent fill, bottom hairline, focus paints the line solid blue.
+     */
+    --shroffin-field-line: rgba(0, 0, 0, 0.16);
+    --shroffin-field-line-focus: var(--shroffin-btn-primary, #0071e3);
+    --shroffin-field-line-invalid: rgba(176, 76, 76, 0.65);
+    --shroffin-field-line-valid: rgba(29, 122, 58, 0.45);
+    --shroffin-field-min-height: 48px;
+    --shroffin-field-pad-block-start: 0.65rem;
+    --shroffin-field-pad-block-end: 0.75rem;
+    --shroffin-field-font-size: 1.125rem;
+    --shroffin-field-label-size: 0.8125rem;
+    --shroffin-field-placeholder: rgba(110, 110, 115, 0.5);
+
+    /*
+     * Disclose chevron — Apply “Show more” SVG recipe, site-wide.
+     * 0.55em (cap 12px). Nav flyout cue stays smaller (0.4rem) by design.
+     */
+    --shroffin-disclose-size: 0.55em;
+    --shroffin-disclose-max: 12px;
+    --shroffin-disclose-nudge: 0.2em;
 
   /*
    * Density scale — phone default, then laptop (834+), then wide (1440+).
@@ -251,9 +292,167 @@
     block-size: auto;
   }
 
+  /*
+   * Keyboard focus — one solid ring site-wide.
+   * 2px / #0071e3 / 3px offset. Custom field underlines may suppress outline
+   * only when they provide their own clear focus paint.
+   */
   :where(a, button, input, select, textarea, summary):focus-visible {
-    outline: 2px solid var(--shroffin-focus);
-    outline-offset: 3px;
+    outline: var(--shroffin-focus-width) solid var(--shroffin-focus);
+    outline-offset: var(--shroffin-focus-offset);
+  }
+
+  /*
+   * Underline form fields — Apply recipe, one look site-wide.
+   * Transparent fill, bottom hairline; focus paints the line solid blue (no glow).
+   */
+  .hl-apply-field label,
+  .hlc-field-label,
+  .guide-calc-label,
+  .calc-label {
+    font-size: var(--shroffin-field-label-size);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--shroffin-muted);
+  }
+
+  .hl-apply-field input,
+  .guide-calc-input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: var(--shroffin-field-min-height);
+    padding: var(--shroffin-field-pad-block-start) 0 var(--shroffin-field-pad-block-end);
+    border: none;
+    border-bottom: 1px solid var(--shroffin-field-line);
+    border-radius: 0;
+    background: transparent;
+    color: var(--shroffin-ink);
+    font: inherit;
+    font-size: var(--shroffin-field-font-size);
+    letter-spacing: -0.01em;
+    transition: border-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
+  }
+
+  .hl-apply-field input::placeholder,
+  .guide-calc-input::placeholder,
+  .hlc-field input::placeholder,
+  .calc-input::placeholder {
+    color: var(--shroffin-field-placeholder);
+    opacity: 1;
+  }
+
+  .hl-apply-field input:focus,
+  .guide-calc-input:focus {
+    outline: none;
+    border-bottom-color: var(--shroffin-field-line-focus);
+    box-shadow: none;
+  }
+
+  .hl-apply-field input[aria-invalid="true"],
+  .guide-calc-input[aria-invalid="true"] {
+    border-bottom-color: var(--shroffin-field-line-invalid);
+  }
+
+  .hl-apply-field input.is-verified {
+    border-bottom-color: var(--shroffin-field-line-valid);
+  }
+
+  .hl-apply-phone-row,
+  .hlc-input-shell,
+  .calc-input-shell {
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid var(--shroffin-field-line);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    transition: border-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
+  }
+
+  .hl-apply-field--phone:focus-within .hl-apply-phone-row,
+  .hlc-input-shell:focus-within,
+  .calc-input-shell:focus-within {
+    border-bottom-color: var(--shroffin-field-line-focus);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .hl-apply-field--phone .hl-apply-phone-row.is-complete {
+    border-bottom-color: var(--shroffin-field-line-valid);
+  }
+
+  .hl-apply-field--phone:focus-within .hl-apply-phone-row.is-complete {
+    border-bottom-color: var(--shroffin-field-line-focus);
+  }
+
+  .hl-apply-field--phone:has(input[aria-invalid="true"]) .hl-apply-phone-row,
+  .hlc-input-shell.is-invalid,
+  .hlc-input-shell.is-soft-miss {
+    border-bottom-color: var(--shroffin-field-line-invalid);
+    box-shadow: none;
+  }
+
+  .hlc-field input,
+  .hlc-field select,
+  .calc-input,
+  .calc-select {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: var(--shroffin-ink);
+    font-size: var(--shroffin-field-font-size);
+  }
+
+  .hlc-field input:focus,
+  .hlc-field select:focus,
+  .calc-input:focus,
+  .calc-select:focus {
+    outline: none;
+    color: var(--shroffin-ink);
+  }
+
+  .hl-apply-field input:-webkit-autofill,
+  .hl-apply-field input:-webkit-autofill:hover,
+  .hl-apply-field input:-webkit-autofill:focus,
+  .hl-apply-field input:-webkit-autofill:active,
+  .guide-calc-input:-webkit-autofill,
+  .guide-calc-input:-webkit-autofill:hover,
+  .guide-calc-input:-webkit-autofill:focus,
+  .guide-calc-input:-webkit-autofill:active,
+  .hlc-field input:-webkit-autofill,
+  .hlc-field input:-webkit-autofill:hover,
+  .hlc-field input:-webkit-autofill:focus,
+  .hlc-field input:-webkit-autofill:active,
+  .calc-input:-webkit-autofill,
+  .calc-input:-webkit-autofill:hover,
+  .calc-input:-webkit-autofill:focus,
+  .calc-input:-webkit-autofill:active {
+    -webkit-text-fill-color: var(--shroffin-ink);
+    caret-color: var(--shroffin-ink);
+    box-shadow: 0 0 0 1000px #fff inset;
+    transition: background-color 99999s ease-out;
+  }
+
+  /*
+   * Disclose / “more” chevrons — same SVG mark and size everywhere panels open.
+   * (Nav Guide/Support flyout cue stays the smaller 0.4rem chrome chevron.)
+   */
+  .hl-apply-disclose-arrow,
+  .guide-flip-link-arrow,
+  .calc-amort-toggle-arrow,
+  .hlc-show-more-arrow,
+  .hlc-form-more-chevron,
+  .mag-toc-compact-chevron,
+  .hlc-charge-detail-arrow,
+  .hlc-bank-detail-arrow {
+    display: block;
+    box-sizing: border-box;
+    width: var(--shroffin-disclose-size);
+    height: var(--shroffin-disclose-size);
+    max-width: var(--shroffin-disclose-max);
+    max-height: var(--shroffin-disclose-max);
+    flex-shrink: 0;
+    overflow: visible;
   }
 
   :where(p, li, td, th, a, button, summary, h1, h2, h3, h4) {
@@ -270,7 +469,7 @@
     inset-inline: 0;
     z-index: var(--shroffin-z-nav);
     block-size: var(--shroffin-gn-height);
-    background: rgba(250, 249, 246, 0.8);
+    background: rgba(255, 255, 255, 0.8);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     backdrop-filter: saturate(180%) blur(20px);
     font-family: var(--shroffin-font);
@@ -296,13 +495,13 @@
   /* Browsers without backdrop-filter: fall back to a near-solid bar so text stays legible. */
   @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
     .globalnav {
-      background: rgba(250, 249, 246, 0.96);
+      background: rgba(255, 255, 255, 0.96);
     }
   }
 
   .globalnav.flyout-open,
   .globalnav.compact-open {
-    background: rgba(250, 249, 246, 0.92);
+    background: rgba(255, 255, 255, 0.92);
   }
 
   .globalnav-content {
@@ -900,8 +1099,123 @@
     }
   }
 
+  /* Pre-footer help: floats above the footer with space on both sides. */
+  .site-help-strip {
+    box-sizing: border-box;
+    width: 100%;
+    margin-block-start: clamp(2rem, 5vw, 3.25rem);
+    margin-block-end: clamp(2.5rem, 6vw, 4rem);
+    padding-block: 1.2rem;
+    padding-inline: max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right));
+    border-block-start: 1px solid var(--shroffin-rule);
+    border-block-end: 1px solid var(--shroffin-rule);
+    text-align: center;
+    font-family: var(--shroffin-font);
+  }
+
+  .site-help-strip-text {
+    margin: 0;
+    max-width: 40rem;
+    margin-inline: auto;
+    font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.5;
+    color: var(--shroffin-ink);
+  }
+
+  /*
+   * Text links — on-site and off-site share colour, underline, and states.
+   * Resting #3f62c8; hover keeps colour + underline; arrow gap is fixed;
+   * arrow nudges on hover; :active / :visited give the usual feedback.
+   */
+  .guide-section-link {
+    color: var(--shroffin-link);
+    text-decoration: none;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    border-bottom: 0;
+    cursor: pointer;
+    transition:
+      color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+      text-decoration-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
+  }
+
+  .guide-section-link:visited {
+    color: var(--shroffin-link-visited);
+  }
+
+  .guide-section-link:hover,
+  .guide-section-link:focus-visible {
+    color: var(--shroffin-link);
+    text-decoration: underline;
+    text-decoration-color: var(--shroffin-link);
+  }
+
+  .guide-section-link:visited:hover,
+  .guide-section-link:visited:focus-visible {
+    color: var(--shroffin-link-visited);
+    text-decoration-color: var(--shroffin-link-visited);
+  }
+
+  .guide-section-link:active {
+    color: var(--shroffin-link-active);
+    text-decoration: underline;
+    text-decoration-color: var(--shroffin-link-active);
+  }
+
+  .guide-section-link:focus-visible {
+    outline: var(--shroffin-focus-width) solid var(--shroffin-focus);
+    outline-offset: var(--shroffin-focus-offset);
+    border-radius: 2px;
+  }
+
+  .guide-section-link-arrow {
+    display: inline-block;
+    margin-inline-start: var(--shroffin-link-arrow-gap);
+    font-size: 0.9em;
+    color: inherit;
+    transition: transform var(--shroffin-micro-duration) var(--shroffin-ease);
+  }
+
+  .guide-section-link:hover .guide-section-link-arrow,
+  .guide-section-link:focus-visible .guide-section-link-arrow {
+    color: inherit;
+    transform: translate(0.12em, -0.12em);
+  }
+
+  .guide-section-link:active .guide-section-link-arrow {
+    color: inherit;
+    transform: translate(0.08em, -0.08em);
+  }
+
+  /* Help strip phone matches text-link colour (same sentence as Chat now ↗). */
+  .site-help-strip-phone {
+    color: var(--shroffin-link);
+    text-decoration: none;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    border-bottom: 0;
+    transition:
+      color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+      text-decoration-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
+  }
+
+  .site-help-strip-phone:hover,
+  .site-help-strip-phone:focus-visible {
+    color: var(--shroffin-link);
+    text-decoration: underline;
+    text-decoration-color: var(--shroffin-link);
+  }
+
+  .site-help-strip-phone:active {
+    color: var(--shroffin-link-active);
+    text-decoration: underline;
+    text-decoration-color: var(--shroffin-link-active);
+  }
+
   .site-footer {
-    margin-block-start: clamp(3rem, 8vw, 6rem);
+    margin-block-start: 0;
     border-block-start: 1px solid var(--shroffin-rule);
     background: var(--shroffin-footer);
     color: rgba(0, 0, 0, 0.56);
@@ -953,8 +1267,7 @@
     margin-block-end: 0;
   }
 
-  .site-footer-list a,
-  .site-footer-list a.guide-section-link {
+  .site-footer-list a {
     display: inline-flex;
     align-items: center;
     min-block-size: 44px;
@@ -971,21 +1284,52 @@
 
   .site-footer-list a:hover,
   .site-footer-list a:focus-visible,
-  .site-footer-list a:active,
-  .site-footer-list a.guide-section-link:hover,
-  .site-footer-list a.guide-section-link:focus-visible,
-  .site-footer-list a.guide-section-link:active {
+  .site-footer-list a:active {
     color: #005bb5;
+  }
+
+  /* Off-site footer links keep the shared link colour + hover underline/↗. */
+  .site-footer-list a.guide-section-link {
+    color: var(--shroffin-link);
+  }
+
+  .site-footer-list a.guide-section-link:visited {
+    color: var(--shroffin-link-visited);
+  }
+
+  .site-footer-list a.guide-section-link:hover,
+  .site-footer-list a.guide-section-link:focus-visible {
+    color: var(--shroffin-link);
+    text-decoration: underline;
+    text-decoration-color: var(--shroffin-link);
+  }
+
+  .site-footer-list a.guide-section-link:visited:hover,
+  .site-footer-list a.guide-section-link:visited:focus-visible {
+    color: var(--shroffin-link-visited);
+    text-decoration-color: var(--shroffin-link-visited);
+  }
+
+  .site-footer-list a.guide-section-link:active {
+    color: var(--shroffin-link-active);
+    text-decoration: underline;
+    text-decoration-color: var(--shroffin-link-active);
   }
 
   .site-footer-list a.guide-section-link .guide-section-link-arrow {
     opacity: 0;
-    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: none;
+    transition:
+      opacity var(--shroffin-micro-duration) var(--shroffin-color-ease),
+      transform var(--shroffin-micro-duration) var(--shroffin-ease);
   }
 
   .site-footer-list a.guide-section-link:hover .guide-section-link-arrow,
-  .site-footer-list a.guide-section-link:focus-visible .guide-section-link-arrow {
+  .site-footer-list a.guide-section-link:focus-visible .guide-section-link-arrow,
+  .site-footer-list a.guide-section-link:active .guide-section-link-arrow {
     opacity: 1;
+    color: inherit;
+    transform: translate(0.12em, -0.12em);
   }
 
   .site-footer-accordion-toggle {
@@ -1069,23 +1413,6 @@
     }
   }
 
-  .guide-section-link-arrow {
-    margin-inline-start: 0.15em;
-    font-size: 0.9em;
-  }
-
-  .visually-hidden {
-    position: absolute;
-    inline-size: 1px;
-    block-size: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-
   .site-footer-legal {
     padding-block-start: clamp(2.5rem, 6vw, 4rem);
   }
@@ -1158,8 +1485,7 @@
     max-inline-size: 100%;
   }
 
-  .site-footer-legal-links a,
-  .site-footer-legal-links a.guide-section-link {
+  .site-footer-legal-links a {
     display: inline-flex;
     align-items: center;
     max-inline-size: 100%;
@@ -1174,22 +1500,51 @@
 
   .site-footer-legal-links a:hover,
   .site-footer-legal-links a:focus-visible,
-  .site-footer-legal-links a:active,
-  .site-footer-legal-links a.guide-section-link:hover,
-  .site-footer-legal-links a.guide-section-link:focus-visible,
-  .site-footer-legal-links a.guide-section-link:active {
+  .site-footer-legal-links a:active {
     color: #005bb5;
+  }
+
+  .site-footer-legal-links a.guide-section-link {
+    color: var(--shroffin-link);
+  }
+
+  .site-footer-legal-links a.guide-section-link:visited {
+    color: var(--shroffin-link-visited);
+  }
+
+  .site-footer-legal-links a.guide-section-link:hover,
+  .site-footer-legal-links a.guide-section-link:focus-visible {
+    color: var(--shroffin-link);
+    text-decoration: underline;
+    text-decoration-color: var(--shroffin-link);
+  }
+
+  .site-footer-legal-links a.guide-section-link:visited:hover,
+  .site-footer-legal-links a.guide-section-link:visited:focus-visible {
+    color: var(--shroffin-link-visited);
+    text-decoration-color: var(--shroffin-link-visited);
+  }
+
+  .site-footer-legal-links a.guide-section-link:active {
+    color: var(--shroffin-link-active);
+    text-decoration: underline;
+    text-decoration-color: var(--shroffin-link-active);
   }
 
   .site-footer-legal-links a.guide-section-link .guide-section-link-arrow {
     opacity: 0;
-    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: none;
+    transition:
+      opacity var(--shroffin-micro-duration) var(--shroffin-color-ease),
+      transform var(--shroffin-micro-duration) var(--shroffin-ease);
   }
 
   .site-footer-legal-links a.guide-section-link:hover .guide-section-link-arrow,
   .site-footer-legal-links a.guide-section-link:focus-visible .guide-section-link-arrow,
   .site-footer-legal-links a.guide-section-link:active .guide-section-link-arrow {
     opacity: 1;
+    color: inherit;
+    transform: translate(0.12em, -0.12em);
   }
 
   @media (min-width: 480px) {
@@ -1247,12 +1602,17 @@
   }
 
   /*
-   * Elevated CTAs — match apple.com .button / .button-secondary.
-   * Desktop: solid 44px pill (content-box, 17px / 11×21).
-   * Phone: 36px visible fill inside a 44px tap box.
+   * Elevated primary pill — one recipe for main CTAs site-wide
+   * (Home, Learn more, Apply, About, Explore).
+   * Match apple.com .button: desktop 17px / 11×21 → 44px;
+   * phone 14px / 8×15 fill inside a 44px tap box.
+   * Compact localnav pills and in-form standard submits stay on their own tiers.
    */
   .home-hero-cta,
-  .lm-cta {
+  .lm-cta,
+  .hl-apply-cta,
+  .about-cta,
+  .hlc-btn-primary {
     display: inline-flex;
     position: relative;
     isolation: isolate;
@@ -1262,6 +1622,7 @@
     min-width: 28px;
     min-block-size: 0;
     min-height: 0;
+    margin: 0;
     padding: var(--shroffin-btn-elevated-pad-block) var(--shroffin-btn-elevated-pad-inline);
     border: 1px solid transparent;
     border-radius: var(--shroffin-btn-radius);
@@ -1269,31 +1630,36 @@
     font-size: var(--shroffin-btn-elevated-font);
     font-weight: 400;
     line-height: var(--shroffin-btn-elevated-lh);
+    letter-spacing: normal;
+    text-align: center;
     text-decoration: none;
     cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
     -webkit-tap-highlight-color: transparent;
     transition:
       background-color var(--shroffin-micro-duration) var(--shroffin-color-ease),
       color var(--shroffin-micro-duration) var(--shroffin-color-ease),
-      border-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
-  }
-
-  button.home-hero-cta,
-  button.lm-cta {
-    margin: 0;
-    -webkit-appearance: none;
-    appearance: none;
+      border-color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+      opacity var(--shroffin-micro-duration) var(--shroffin-color-ease);
   }
 
   .home-hero-cta:focus-visible,
-  .lm-cta:focus-visible {
-    outline: 2px solid #0071e3;
-    outline-offset: 3px;
+  .lm-cta:focus-visible,
+  .hl-apply-cta:focus-visible,
+  .about-cta:focus-visible,
+  .hlc-btn-primary:focus-visible {
+    outline: var(--shroffin-focus-width) solid var(--shroffin-focus);
+    outline-offset: var(--shroffin-focus-offset);
   }
 
   .home-hero-cta-primary,
   .lm-cta,
-  .lm-cta-light {
+  .lm-cta-light,
+  .hl-apply-cta,
+  .about-cta-primary,
+  .hlc-btn-primary {
+    background: var(--shroffin-btn-primary);
     background-clip: border-box;
     color: #fff;
     text-decoration: none;
@@ -1313,9 +1679,48 @@
   .lm-cta-light:visited,
   .lm-cta-light:hover,
   .lm-cta-light:focus-visible,
-  .lm-cta-light:active {
+  .lm-cta-light:active,
+  .about-cta-primary:link,
+  .about-cta-primary:visited,
+  .about-cta-primary:hover,
+  .about-cta-primary:focus-visible,
+  .about-cta-primary:active {
     color: #fff;
     text-decoration: none;
+  }
+
+  .home-hero-cta-primary:hover,
+  .home-hero-cta-primary:focus-visible,
+  .lm-cta:hover,
+  .lm-cta:focus-visible,
+  .lm-cta-light:hover,
+  .lm-cta-light:focus-visible,
+  .hl-apply-cta:hover:not(:disabled),
+  .hl-apply-cta:focus-visible:not(:disabled),
+  .about-cta-primary:hover,
+  .about-cta-primary:focus-visible,
+  .hlc-btn-primary:hover:not(:disabled),
+  .hlc-btn-primary:focus-visible:not(:disabled) {
+    background: var(--shroffin-btn-primary-hover);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .home-hero-cta-primary:active,
+  .lm-cta:active,
+  .lm-cta-light:active,
+  .hl-apply-cta:active:not(:disabled),
+  .about-cta-primary:active,
+  .hlc-btn-primary:active:not(:disabled) {
+    background: var(--shroffin-btn-primary-active);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .hl-apply-cta:disabled,
+  .hlc-btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 
   .home-hero-cta-secondary {
@@ -1330,13 +1735,13 @@
 
   @media (min-width: 834px) {
     .home-hero-cta-secondary:hover {
-      background: #0076df;
+      background: var(--shroffin-btn-primary-hover);
       color: #fff;
       border-color: transparent;
     }
 
     .home-hero-cta-secondary:active {
-      background: #006edb;
+      background: var(--shroffin-btn-primary-active);
       color: #fff;
       border-color: transparent;
     }
@@ -1344,7 +1749,10 @@
 
   @media (max-width: 833px) {
     .home-hero-cta,
-    .lm-cta {
+    .lm-cta,
+    .hl-apply-cta,
+    .about-cta,
+    .hlc-btn-primary {
       box-sizing: border-box;
       min-block-size: var(--shroffin-btn-elevated-min);
       min-height: var(--shroffin-btn-elevated-min);
@@ -1353,7 +1761,10 @@
 
     .home-hero-cta-primary,
     .lm-cta,
-    .lm-cta-light {
+    .lm-cta-light,
+    .hl-apply-cta,
+    .about-cta-primary,
+    .hlc-btn-primary {
       border-block-color: transparent;
       background-clip: padding-box;
     }
@@ -1391,11 +1802,11 @@
     }
 
     .home-hero-cta-secondary:hover::before {
-      background: #0076df;
+      background: var(--shroffin-btn-primary-hover);
     }
 
     .home-hero-cta-secondary:active::before {
-      background: #006edb;
+      background: var(--shroffin-btn-primary-active);
     }
   }
 
@@ -1567,7 +1978,7 @@
   }
 
   .shroffin-scroll-region:focus-visible {
-    outline: 2px solid var(--shroffin-focus);
+    outline: var(--shroffin-focus-width) solid var(--shroffin-focus);
     outline-offset: 2px;
   }
 
@@ -1601,7 +2012,7 @@
     padding: 0;
     border: 1px solid rgba(0, 0, 0, 0.12);
     border-radius: 50%;
-    background: rgba(250, 249, 246, 0.92);
+    background: rgba(255, 255, 255, 0.92);
     color: var(--shroffin-ink);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     -webkit-backdrop-filter: saturate(180%) blur(16px);
@@ -1628,12 +2039,12 @@
   .shroffin-to-top:focus-visible {
     color: #005bb5;
     border-color: rgba(0, 91, 181, 0.28);
-    background: rgba(250, 249, 246, 0.98);
+    background: rgba(255, 255, 255, 0.98);
   }
 
   .shroffin-to-top:focus-visible {
-    outline: 2px solid var(--shroffin-focus);
-    outline-offset: 3px;
+    outline: var(--shroffin-focus-width) solid var(--shroffin-focus);
+    outline-offset: var(--shroffin-focus-offset);
   }
 
   .shroffin-to-top-icon {
@@ -1686,7 +2097,7 @@
 
 /* Soft content fade for guide tabs (full panel). Table fades are selective — see explore-banks.css. */
 .guide-seg-panel {
-  transition: opacity var(--shroffin-sel-content-fade, 0.28s)
+  transition: opacity var(--shroffin-sel-content-fade)
     var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
 }
 

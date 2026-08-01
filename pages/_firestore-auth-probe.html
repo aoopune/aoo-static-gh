@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home loan Firestore test</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 2rem; max-width: 40rem; color: #1d1d1f; background: #fff; }
+    button { font-size: 1rem; padding: 0.75rem 1.25rem; cursor: pointer; }
+    pre { white-space: pre-wrap; background: #f5f5f7; padding: 1rem; border-radius: 0.75rem; }
+  </style>
+</head>
+<body>
+  <h1>Firestore write test</h1>
+  <p>Use <strong>http://localhost:8765</strong> only (not 127.0.0.1).</p>
+  <p>Project: <strong>home-loan-apps</strong> · collection: <strong>applications</strong></p>
+  <button type="button" id="run">Sign in with Google and write test doc</button>
+  <pre id="out">Checking…</pre>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey: "AIzaSyAsWbUw_SSNc8nXG7VR6NAB95UetshtxF0",
+      authDomain: "home-loan-apps.firebaseapp.com",
+      projectId: "home-loan-apps",
+      storageBucket: "home-loan-apps.firebasestorage.app",
+      messagingSenderId: "881073938522",
+      appId: "1:881073938522:web:6c7a07100a753682833863"
+    });
+
+    var out = document.getElementById("out");
+    function show(obj) {
+      out.textContent = typeof obj === "string" ? obj : JSON.stringify(obj, null, 2);
+    }
+
+    function writeProbe(user) {
+      var db = firebase.firestore();
+      var counterRef = db.collection("_counters").doc("applications");
+      var appRef = db.collection("applications");
+      return db
+        .runTransaction(function (tx) {
+          return tx.get(counterRef).then(function (snap) {
+            var last = (snap.exists && snap.data().lastId) || 0;
+            var next = Number(last) + 1;
+            var id = next <= 999999 ? ("000000" + next).slice(-6) : String(next);
+            tx.set(counterRef, { lastId: next }, { merge: true });
+            return id;
+          });
+        })
+        .then(function (id) {
+          var payload = {
+            email: user.email,
+            contact_email: String(user.email).toLowerCase(),
+            google_uid: user.uid,
+            name: "Firestore Probe",
+            phone: "9876543210",
+            product: "home_loan",
+            status: "probe_test",
+            created_at: firebase.firestore.FieldValue.serverTimestamp(),
+            data_version: "probe",
+            input_data: { form: { purpose: "probe" }, filters: {} },
+            banks: [{ id: "probe", bankName: "Probe Bank", effectiveRoiPct: 8.5 }]
+          };
+          return appRef.doc(id).set(payload).then(function () {
+            return { ok: true, applicationId: id, email: user.email };
+          });
+        });
+    }
+
+    firebase
+      .auth()
+      .getRedirectResult()
+      .then(function (result) {
+        if (result && result.user && result.user.email) {
+          show({ step: "signed_in_via_redirect", email: result.user.email });
+          return writeProbe(result.user).then(show);
+        }
+        if (firebase.auth().currentUser && firebase.auth().currentUser.email) {
+          show({
+            step: "already_signed_in",
+            email: firebase.auth().currentUser.email
+          });
+          return writeProbe(firebase.auth().currentUser).then(show);
+        }
+        show("Ready. Click the button.");
+      })
+      .catch(function (err) {
+        show({ ok: false, code: err && err.code, message: err && err.message });
+      });
+
+    document.getElementById("run").addEventListener("click", function () {
+      show("Redirecting to Google…");
+      var provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope("email");
+      firebase.auth().signInWithRedirect(provider);
+    });
+  </script>
+</body>
+</html>

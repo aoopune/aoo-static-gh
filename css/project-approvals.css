@@ -4,10 +4,10 @@
   --apf-ink: var(--shroffin-ink, #1d1d1f);
   --apf-muted: var(--shroffin-muted, #6e6e73);
   --apf-blue: var(--shroffin-blue, #0071e3);
-  --apf-surface: var(--shroffin-surface, #faf9f6);
+  --apf-surface: var(--shroffin-surface, #fcfcfd);
   --apf-line: rgba(29, 29, 31, 0.12);
   --apf-line-soft: rgba(29, 29, 31, 0.06);
-  --apf-wash: #f3f1eb;
+  --apf-wash: var(--shroffin-footer, #f5f7f9);
   --apf-ease: var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
@@ -20,7 +20,7 @@ body {
 body {
   background:
     radial-gradient(120% 80% at 10% -10%, rgba(0, 113, 227, 0.06), transparent 55%),
-    radial-gradient(90% 70% at 100% 0%, rgba(243, 241, 235, 0.9), transparent 50%),
+    radial-gradient(90% 70% at 100% 0%, rgba(245, 247, 249, 0.9), transparent 50%),
     var(--apf-surface);
   color: var(--apf-ink);
   font-family: var(--shroffin-font);
@@ -332,8 +332,8 @@ body {
 }
 
 .apf-table-scroll:focus-visible {
-  outline: 2px solid var(--apf-blue);
-  outline-offset: 6px;
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
 .apf-table {
@@ -376,7 +376,7 @@ body {
 }
 
 .apf-table tbody tr:hover td {
-  background: rgba(243, 241, 235, 0.55);
+  background: rgba(245, 247, 249, 0.55);
 }
 
 .apf-table th:first-child,

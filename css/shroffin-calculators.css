@@ -5,11 +5,11 @@
   --calc-muted: var(--shroffin-muted);
   --calc-line: rgba(29, 29, 31, 0.12);
   --calc-line-soft: rgba(29, 29, 31, 0.06);
-  --calc-wash: #f3f1eb;
+  --calc-wash: var(--shroffin-footer, #f5f7f9);
   --calc-paper: rgba(255, 255, 255, 0.55);
   background:
     radial-gradient(120% 80% at 10% -10%, rgba(0, 113, 227, 0.06), transparent 55%),
-    radial-gradient(90% 70% at 100% 0%, rgba(243, 241, 235, 0.9), transparent 50%),
+    radial-gradient(90% 70% at 100% 0%, rgba(245, 247, 249, 0.9), transparent 50%),
     var(--shroffin-surface);
   color: var(--calc-ink);
   font-family: var(--shroffin-font);
@@ -278,9 +278,9 @@
     visibility: hidden;
     pointer-events: none;
     transition:
-      transform 0.8s var(--shroffin-ease),
-      opacity 0.7s var(--shroffin-ease),
-      visibility 0s linear 0.8s;
+      transform var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease),
+      opacity var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease),
+      visibility 0s linear var(--shroffin-ui-duration, 0.85s);
   }
 
   .calc-live-dock.is-visible {
@@ -289,8 +289,8 @@
     visibility: visible;
     pointer-events: auto;
     transition:
-      transform 0.8s var(--shroffin-ease),
-      opacity 0.7s var(--shroffin-ease),
+      transform var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease),
+      opacity var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease),
       visibility 0s;
   }
 
@@ -348,8 +348,8 @@
   }
 
   .calc-live-dock:focus-visible .calc-live-dock-inner {
-    outline: 2px solid var(--shroffin-blue);
-    outline-offset: 3px;
+    outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+    outline-offset: var(--shroffin-focus-offset, 3px);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -390,9 +390,6 @@
 
 .calc-label {
   display: block;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: var(--calc-ink);
 }
 
 .calc-field-meta {
@@ -405,25 +402,13 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  min-height: 48px;
-  padding: var(--shroffin-space-control-pad-block) var(--shroffin-space-control-pad-inline);
-  border: 1px solid var(--calc-line);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.72);
-  transition:
-    border-color var(--shroffin-micro-duration) var(--shroffin-color-ease),
-    background-color var(--shroffin-micro-duration) var(--shroffin-color-ease),
-    box-shadow var(--shroffin-micro-duration) var(--shroffin-color-ease);
-}
-
-.calc-input-shell:focus-within {
-  border-color: var(--shroffin-blue);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
+  min-height: var(--shroffin-field-min-height, 48px);
+  padding: var(--shroffin-field-pad-block-start, 0.65rem) 0
+    var(--shroffin-field-pad-block-end, 0.75rem);
 }
 
 .calc-prefix {
-  font-size: 1.25rem;
+  font-size: var(--shroffin-field-font-size, 1.125rem);
   font-weight: 500;
   color: var(--calc-muted);
   letter-spacing: -0.02em;
@@ -433,24 +418,17 @@
 .calc-input,
 .calc-select {
   width: 100%;
-  min-height: 40px;
+  min-height: 1.5rem;
   padding: 0.15rem 0;
-  border: 0;
-  border-radius: 0;
   font: inherit;
-  font-size: var(--shroffin-type-tool-input);
   font-weight: 500;
   letter-spacing: -0.025em;
-  color: var(--calc-ink);
-  background: transparent;
   cursor: text;
   -webkit-appearance: none;
   appearance: none;
-  transition: color var(--shroffin-micro-duration) var(--shroffin-color-ease);
 }
 
 .calc-select {
-  font-size: 1.15rem;
   cursor: pointer;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236e6e73' d='M1.4.6 6 5.2 10.6.6 12 2 6 8 0 2z'/%3E%3C/svg%3E");
@@ -459,14 +437,7 @@
   padding-inline-end: 1.5rem;
 }
 
-.calc-input:focus,
-.calc-select:focus {
-  outline: none;
-  color: var(--shroffin-blue);
-}
-
 .calc-input::placeholder {
-  color: rgba(110, 110, 115, 0.55);
   font-weight: 400;
 }
 
@@ -709,12 +680,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--shroffin-link-arrow-gap, 0.35em);
   margin: 0;
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--shroffin-blue);
+  color: var(--shroffin-link, #3f62c8);
   font: inherit;
   font-size: 1.0625rem;
   font-weight: 500;
@@ -723,40 +694,49 @@
   min-height: 44px;
   cursor: pointer;
   text-decoration: none;
-  transition: color var(--shroffin-micro-duration) var(--shroffin-color-ease);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition:
+    color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+    text-decoration-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
 }
 
-.calc-amort-toggle:hover {
-  color: #0077ed;
+.calc-amort-toggle:hover,
+.calc-amort-toggle:focus-visible {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link, #3f62c8);
+}
+
+.calc-amort-toggle:active {
+  color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
 }
 
 .calc-amort-toggle:focus-visible {
-  outline: 2px solid var(--shroffin-blue);
-  outline-offset: 3px;
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline-offset: var(--shroffin-focus-offset, 3px);
   border-radius: 4px;
 }
 
 .calc-amort-toggle-arrow {
-  display: block;
-  width: 0.55em;
-  height: 0.55em;
-  max-width: 12px;
-  max-height: 12px;
-  flex-shrink: 0;
   transform: rotate(90deg);
-  transition: transform 0.75s var(--shroffin-ease);
+  transition: transform var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease);
 }
 
-.calc-amort-toggle:hover .calc-amort-toggle-arrow {
-  transform: rotate(90deg) translateY(2px);
+.calc-amort-toggle:hover .calc-amort-toggle-arrow,
+.calc-amort-toggle:focus-visible .calc-amort-toggle-arrow {
+  transform: rotate(90deg) translateY(var(--shroffin-disclose-nudge, 0.2em));
 }
 
 .calc-amort.is-open .calc-amort-toggle-arrow {
   transform: rotate(-90deg);
 }
 
-.calc-amort.is-open .calc-amort-toggle:hover .calc-amort-toggle-arrow {
-  transform: rotate(-90deg) translateY(-2px);
+.calc-amort.is-open .calc-amort-toggle:hover .calc-amort-toggle-arrow,
+.calc-amort.is-open .calc-amort-toggle:focus-visible .calc-amort-toggle-arrow {
+  transform: rotate(-90deg) translateY(calc(var(--shroffin-disclose-nudge, 0.2em) * -1));
 }
 
 .calc-amort-panel {
@@ -874,7 +854,7 @@
 }
 
 .calc-month-rows td {
-  background: rgba(243, 241, 235, 0.45);
+  background: rgba(245, 247, 249, 0.45);
   padding: 0.75rem 0;
 }
 
@@ -1056,8 +1036,8 @@
 }
 
 .calc-choice-option input:focus-visible + .calc-choice-face {
-  outline: 2px solid var(--shroffin-blue);
-  outline-offset: 2px;
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
 .calc-choice-option input:checked + .calc-choice-face {
@@ -1160,40 +1140,88 @@
 }
 
 .calc-guide-links-list a {
-  color: var(--calc-ink);
+  color: var(--shroffin-link, #3f62c8);
   text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
   font-size: 1rem;
   font-weight: 500;
   letter-spacing: -0.015em;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
-  transition: color var(--shroffin-micro-duration) var(--shroffin-color-ease);
+  transition:
+    color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+    text-decoration-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
 }
 
-.calc-guide-links-list a:hover {
-  color: var(--shroffin-blue);
+.calc-guide-links-list a:visited {
+  color: var(--shroffin-link-visited, #5a4fcf);
+}
+
+.calc-guide-links-list a:hover,
+.calc-guide-links-list a:focus-visible {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link, #3f62c8);
+}
+
+.calc-guide-links-list a:visited:hover,
+.calc-guide-links-list a:visited:focus-visible {
+  color: var(--shroffin-link-visited, #5a4fcf);
+  text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
+}
+
+.calc-guide-links-list a:active {
+  color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
 }
 
 .calc-assumptions-list a {
-  color: var(--shroffin-blue);
+  color: var(--shroffin-link, #3f62c8);
   text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
   font-weight: 500;
-  transition: opacity var(--shroffin-micro-duration) var(--shroffin-color-ease);
+  transition:
+    color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+    text-decoration-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
 }
 
-.calc-assumptions-list a:hover {
-  opacity: 0.75;
+.calc-assumptions-list a:hover,
+.calc-assumptions-list a:focus-visible {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link, #3f62c8);
+}
+
+.calc-assumptions-list a:active {
+  color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
 }
 
 .calc-hint a {
-  color: var(--shroffin-blue);
+  color: var(--shroffin-link, #3f62c8);
   text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
   font-weight: 500;
+  transition:
+    color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+    text-decoration-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
 }
 
-.calc-hint a:hover {
-  opacity: 0.75;
+.calc-hint a:hover,
+.calc-hint a:focus-visible {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link, #3f62c8);
+}
+
+.calc-hint a:active {
+  color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
 }
 
 .calc-readout .calc-hint {

@@ -11,8 +11,10 @@
       --muted: #6e6e73;
       --blue: #0071e3;
       --blue-soft: rgba(0, 113, 227, 0.08);
-      --surface: #faf9f6;
-      --wash: #f3f1eb;
+      --surface: #fcfcfd;
+      --surface: color-mix(in srgb, var(--blue) 0.75%, #ffffff);
+      --wash: #f5f7f9;
+      --wash: color-mix(in srgb, var(--blue) 1.5%, #f4f6f8);
       --line: rgba(29, 29, 31, 0.12);
       --line-soft: rgba(29, 29, 31, 0.06);
       --diff: rgba(0, 113, 227, 0.12);
@@ -38,7 +40,7 @@
       font-family: var(--font);
       background:
         radial-gradient(120% 80% at 10% -10%, rgba(0, 113, 227, 0.06), transparent 55%),
-        radial-gradient(90% 70% at 100% 0%, rgba(243, 241, 235, 0.9), transparent 50%),
+        radial-gradient(90% 70% at 100% 0%, rgba(245, 247, 249, 0.9), transparent 50%),
         var(--surface);
       padding-bottom: calc(var(--apply-h) + 1.5rem);
     }
@@ -355,8 +357,8 @@
       transition: background var(--micro) var(--ease);
     }
 
-    table.compare tbody tr:hover td { background: rgba(243, 241, 235, 0.45); }
-    table.compare tbody tr:hover td.sticky-col { background: #faf9f6; }
+    table.compare tbody tr:hover td { background: rgba(245, 247, 249, 0.45); }
+    table.compare tbody tr:hover td.sticky-col { background: #fcfcfd; }
 
     table.compare tbody tr.is-selected td { background: var(--blue-soft); }
     table.compare tbody tr.is-selected td.sticky-col { background: #eef5fc; }

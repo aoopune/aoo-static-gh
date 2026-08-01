@@ -37,12 +37,13 @@
     }
 
     :root {
-      --bg: #faf9f6;
-      --surface: #fffefb;
+      --bg: #fcfcfd;
+      --bg: color-mix(in srgb, #0071e3 0.75%, #ffffff);
+      --surface: #ffffff;
       --ink: #1d1d1f;
       --muted: rgba(0, 0, 0, 0.56);
       --rule: rgba(0, 0, 0, 0.12);
-      --link: #0066cc;
+      --link: #3f62c8;
       --max: 1068px;
     }
 
@@ -55,18 +56,40 @@
       line-height: 1.47059;
       color: var(--ink);
       background:
-        radial-gradient(120% 80% at 0% 0%, rgba(120, 96, 48, 0.05), transparent 55%),
+        radial-gradient(120% 80% at 0% 0%, rgba(0, 113, 227, 0.05), transparent 55%),
         radial-gradient(90% 60% at 100% 10%, rgba(29, 29, 31, 0.03), transparent 50%),
         var(--bg);
     }
 
     a {
       color: var(--link);
+      text-decoration: none;
       text-decoration-thickness: 1px;
-      text-underline-offset: 2px;
+      text-underline-offset: 0.18em;
     }
 
-    a:hover { text-decoration: none; }
+    a:visited {
+      color: #5a4fcf;
+    }
+
+    a:hover,
+    a:focus-visible {
+      color: var(--link);
+      text-decoration: underline;
+      text-decoration-color: var(--link);
+    }
+
+    a:visited:hover,
+    a:visited:focus-visible {
+      color: #5a4fcf;
+      text-decoration-color: #5a4fcf;
+    }
+
+    a:active {
+      color: #2f4ba0;
+      text-decoration: underline;
+      text-decoration-color: #2f4ba0;
+    }
 
     .topbar {
       position: sticky;
@@ -104,7 +127,10 @@
       align-items: center;
     }
 
-    .topbar-back:hover { color: var(--ink); }
+    .topbar-back:hover {
+      color: var(--ink);
+      text-decoration: none;
+    }
 
     main {
       width: min(var(--max), calc(100% - 40px));
@@ -246,7 +272,7 @@
     tr:last-child td { border-bottom: none; }
 
     .site-footer {
-      background: #f3f1eb;
+      background: #f5f7f9;
       color: rgba(0, 0, 0, 0.56);
       font-size: 12px;
       line-height: 1.33337;
@@ -279,7 +305,7 @@
       body { font-size: 16px; }
     }
   </style>
-  <link rel="stylesheet" href="css/shroffin-shell.css?v=sel-5">
+  <link rel="stylesheet" href="css/shroffin-shell.css?v=chevron-1">
 </head>
 <body class="privacy-page">
   <!-- SHROFFIN_NAV_START -->
@@ -659,7 +685,7 @@
             </tr>
             <tr>
               <td>Cloud storage and sign-in</td>
-              <td>Online application records and Google sign-in, where used (currently Firebase / Google services for certain online flows).</td>
+              <td>Online application records and Google sign-in for Apply once and similar flows (Firebase / Google). Home-loan Apply collects your name, phone, and email so we can contact you about the banks you selected, and uses Google sign-in to confirm it is you.</td>
             </tr>
             <tr>
               <td>Fonts, scripts, and content tools</td>
@@ -771,6 +797,18 @@
   </main>
 
   <!-- SHROFFIN_FOOTER_START -->
+  <aside class="site-help-strip" aria-label="Get help">
+    <p class="site-help-strip-text">
+      Need some help?
+      <a
+        class="guide-section-link"
+        href="https://wa.me/919112334367"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Chat now<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new window)</span></a>
+      or call <a class="site-help-strip-phone" href="tel:+919112334367">91123 34367</a>
+    </p>
+  </aside>
   <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
     <div class="site-footer-inner">
       <div class="site-footer-directory">
@@ -799,6 +837,7 @@
           <ul class="site-footer-list">
             <li><a href="/pages/about.html">About</a></li>
             <li><a href="/privacy-policy.html" aria-current="page">Privacy Policy</a></li>
+            <li><a href="/terms-of-use.html">Terms of Use</a></li>
           </ul>
         </nav>
 
@@ -837,6 +876,7 @@
           <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
             <ul class="site-footer-legal-links">
               <li><a href="/privacy-policy.html" aria-current="page">Privacy Policy</a></li>
+              <li><a href="/terms-of-use.html">Terms of Use</a></li>
               <li><a href="/sitemap.html">Site Map</a></li>
               <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
               <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
@@ -850,7 +890,7 @@
     </div>
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
-  <script src="js/shroffin-nav.js?v=sel-5"></script>
-  <script src="js/shroffin-guide.js?v=editorial-15"></script>
+  <script src="js/shroffin-nav.js?v=sel-6"></script>
+  <script src="js/shroffin-guide.js?v=chevron-1"></script>
 </body>
 </html>

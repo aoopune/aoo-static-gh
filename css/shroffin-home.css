@@ -4,7 +4,7 @@
  */
 
 .stance {
-  --stance-paper: var(--shroffin-surface, #faf9f6);
+  --stance-paper: var(--shroffin-surface, #fcfcfd);
   --stance-ink: var(--shroffin-ink, #1d1d1f);
   --stance-ink-soft: #3a3a3d;
   --stance-line: rgba(0, 0, 0, 0.1);
@@ -94,7 +94,7 @@
   }
 
   .stance-item:hover {
-    background-color: rgba(255, 254, 251, 0.92);
+    background-color: rgba(255, 255, 255, 0.92);
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
   }
 
@@ -103,9 +103,9 @@
   }
 
   .stance-item:focus-visible {
-    background-color: rgba(255, 254, 251, 0.92);
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
-    outline: none;
+    background-color: rgba(255, 255, 255, 0.92);
+    outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+    outline-offset: var(--shroffin-focus-offset, 3px);
   }
 
   .stance-item:focus-visible .stance-item-body {

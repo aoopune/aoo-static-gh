@@ -14,10 +14,13 @@ const endMarker = '<!-- SHROFFIN_FOOTER_END -->';
 function renderFooter(file) {
   const privacyCurrent =
     file === 'privacy-policy.html' ? ' aria-current="page"' : '';
+  const termsCurrent =
+    file === 'terms-of-use.html' ? ' aria-current="page"' : '';
   const sitemapCurrent = file === 'sitemap.html' ? ' aria-current="page"' : '';
 
   return footerTemplate
     .replaceAll('{{PRIVACY_CURRENT}}', privacyCurrent)
+    .replaceAll('{{TERMS_CURRENT}}', termsCurrent)
     .replaceAll('{{SITEMAP_CURRENT}}', sitemapCurrent)
     .split('\n')
     .map(function (line) {

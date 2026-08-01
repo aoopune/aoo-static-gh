@@ -2596,6 +2596,14 @@ const TABLE_AFTER_OFFER_CHARGE_NAMES = {
   "Overdue charges": true
 };
 
+const LATER_FEE_CATEGORY_ORDER = [
+  "documents",
+  "repayment",
+  "penalties",
+  "collection",
+  "other"
+];
+
 function isEmiBounceLikeChargeName(name) {
   return /bounce|dishonour|return/i.test(String(name || ""));
 }
@@ -2609,25 +2617,291 @@ function isShownOnExploreTable(charge) {
   return isEmiBounceLikeChargeName(charge.charge_name);
 }
 
-/** Full published rule for the panel — amount, basis, unit, caps, GST, notes. */
-function formatAbsoluteChargeDetail(charge) {
+/** Headline amount only — no basis/unit/GST/notes. */
+function formatChargeAmountHeadline(charge) {
   if (!charge) return "Not listed";
-  return formatChargeDisplayText(formatChargeDisplay(charge));
+  const display = formatChargeDisplay(charge, {
+    hideBasis: true,
+    hideUnit: true,
+    hideGst: true
+  });
+  const main =
+    (display.main || "") + (display.mainSuffix ? " " + display.mainSuffix : "");
+  if (main && main !== "See bank rule") return main.trim();
+  if (
+    normalizeText(charge.special_rule) &&
+    normalizeText(charge.special_rule) !== "as_per_roi"
+  ) {
+    const special = formatEncodedChargeNote(charge.special_rule);
+    if (special) return special;
+  }
+  return "See bank rule";
+}
+
+/** Short supporting line: basis, unit, min/max, GST. */
+function formatChargeMetaLine(charge, options) {
+  if (!charge) return "";
+  const settings = options || {};
+  const parts = [];
+  if (!settings.hideBasis) {
+    const basis = formatChargeBasis(charge.percentage_base_value);
+    if (basis) parts.push(basis);
+  }
+  if (!settings.hideUnit) {
+    const unit = formatChargeUnit(charge.charge_unit);
+    if (unit) parts.push(unit);
+  }
+  if (
+    charge.charge_min != null &&
+    Number.isFinite(Number(charge.charge_min))
+  ) {
+    parts.push("Min " + formatInr(Number(charge.charge_min)));
+  }
+  if (
+    charge.charge_max != null &&
+    Number.isFinite(Number(charge.charge_max))
+  ) {
+    parts.push("Max " + formatInr(Number(charge.charge_max)));
+  }
+  if (normalizeText(charge.gst_applicable) === "yes") {
+    parts.push("GST extra");
+  }
+  if (normalizeText(charge.actuals_in_addition_to_charge) === "yes") {
+    parts.push("+ Actual expenses");
+  }
+  if (normalizeText(charge.out_of_pocket_expenses_additional) === "yes") {
+    parts.push("Out-of-pocket expenses extra");
+  }
+  return parts.join(" · ");
+}
+
+function collectChargeNotes(charge) {
+  if (!charge) return [];
+  const notes = [];
+  const n1 = formatEncodedChargeNote(charge.note_1);
+  const n2 = formatEncodedChargeNote(charge.note_2);
+  if (n1) notes.push(n1);
+  if (n2) notes.push(n2);
+  const special = String(charge.special_rule || "").trim();
+  if (
+    special &&
+    normalizeText(special) !== "as_per_roi" &&
+    !/overdue_whichever_higher=yes/i.test(special)
+  ) {
+    const specialNote = formatEncodedChargeNote(special);
+    if (specialNote && notes.indexOf(specialNote) < 0) notes.push(specialNote);
+  }
+  if (normalizeText(charge.has_grace_period) === "yes") {
+    if (charge.grace_period_days != null) {
+      notes.push(
+        "No charge up to " +
+          Math.round(Number(charge.grace_period_days)) +
+          " days late"
+      );
+    } else if (charge.grace_period_months != null) {
+      notes.push(
+        Math.round(Number(charge.grace_period_months)) + "-month grace period"
+      );
+    }
+  }
+  return notes;
+}
+
+function formatSlabColumnHeader(charge) {
+  const basis = formatChargeSlabBasis(charge, "amount");
+  if (!basis) return "Range";
+  return basis.charAt(0).toUpperCase() + basis.slice(1);
+}
+
+function uniqueStrings(values) {
+  const seen = Object.create(null);
+  const out = [];
+  (values || []).forEach(function (value) {
+    const text = String(value || "").trim();
+    if (!text || seen[text]) return;
+    seen[text] = true;
+    out.push(text);
+  });
+  return out;
+}
+
+/** Same published money rule — used to drop duplicate sheet rows. */
+function chargeRuleFingerprint(charge) {
+  if (!charge) return "";
+  return [
+    charge.percentage,
+    charge.fixed_amount,
+    charge.charge_min,
+    charge.charge_max,
+    normalizeText(charge.charge_unit),
+    normalizeText(charge.gst_applicable),
+    normalizeText(charge.percentage_base_value),
+    normalizeText(charge.fixed_amount_per_lakh_or_part),
+    normalizeText(charge.fixed_amount_per_1000_rs),
+    normalizeText(charge.special_rule),
+    normalizeText(charge.has_slab_wise_charges),
+    charge.slab_from,
+    charge.slab_to,
+    normalizeText(charge.charge_by_area),
+    normalizeText(charge.note_1),
+    normalizeText(charge.note_2)
+  ].join("|");
+}
+
+function dedupeChargesByRule(charges) {
+  const byPrint = new Map();
+  (charges || []).forEach(function (charge) {
+    const key = chargeRuleFingerprint(charge);
+    if (!byPrint.has(key)) byPrint.set(key, charge);
+  });
+  return Array.from(byPrint.values());
+}
+
+/** Plain “when” label so two amounts under one fee stay distinct. */
+function chargeWhenLabel(charge) {
+  if (!charge) return "";
+  const parts = [];
+  if (charge.charge_by_area) parts.push(String(charge.charge_by_area).trim());
+  const customer = String(charge.customer_type || "").trim();
+  if (customer && normalizeText(customer) !== "any") {
+    parts.push(customer);
+  }
+  if (normalizeText(charge.charged_for_physical_copy) === "yes") {
+    parts.push("Physical copy");
+  }
+  if (normalizeText(charge.charged_for_digital_copy) === "yes") {
+    parts.push("Digital copy");
+  }
+  if (normalizeText(charge.charged_for_original_copy_or_first_issue) === "yes") {
+    parts.push("First / original issue");
+  }
+  if (parts.length) return parts.join(" · ");
+  const note = formatEncodedChargeNote(charge.note_1);
+  if (!note) return "";
+  if (/first time|first issue|original/i.test(note)) return "First issue";
+  if (/subsequent|later issue|additional copy/i.test(note)) return "Later issues";
+  if (/priority sector/i.test(note)) return "Priority sector";
+  if (note.length <= 72) return note;
+  return "";
+}
+
+/** Fixed + % rows with the same note → one “₹X or Y%” line (common bank pattern). */
+function tryMergeFixedAndPercentage(charges) {
+  if (!charges || charges.length !== 2) return null;
+  const fixed = charges.find(function (charge) {
+    return (
+      charge.fixed_amount != null &&
+      Number.isFinite(Number(charge.fixed_amount)) &&
+      (charge.percentage == null || !Number.isFinite(Number(charge.percentage)))
+    );
+  });
+  const pct = charges.find(function (charge) {
+    return (
+      charge.percentage != null &&
+      Number.isFinite(Number(charge.percentage)) &&
+      (charge.fixed_amount == null || !Number.isFinite(Number(charge.fixed_amount)))
+    );
+  });
+  if (!fixed || !pct) return null;
+  const fixedPrimary = formatEncodedChargeNote(fixed.note_1);
+  const pctPrimary = formatEncodedChargeNote(pct.note_1);
+  if (fixedPrimary !== pctPrimary) return null;
+  return {
+    entries: [
+      {
+        what: fixed.charge_name || pct.charge_name || "Charge",
+        amount:
+          formatChargeAmountHeadline(fixed) +
+          " or " +
+          formatChargeAmountHeadline(pct),
+        meta: uniqueStrings([
+          normalizeText(fixed.gst_applicable) === "yes" ||
+          normalizeText(pct.gst_applicable) === "yes"
+            ? "GST extra"
+            : "",
+          "Whichever applies as per bank rule"
+        ])
+          .filter(Boolean)
+          .join(" · "),
+        hint: ""
+      }
+    ],
+    notes: uniqueStrings(
+      collectChargeNotes(fixed).concat(collectChargeNotes(pct))
+    )
+  };
+}
+
+function laterFeeCategory(name) {
+  const n = normalizeText(name);
+  if (
+    /noc|no objection|no due|no dues|balance confirmation|interest certificate|amortisation|amortization|statement of account|list of documents|document copy|document retrieval|document retention|passbook|solvency|loan agreement|loan document|certificate/.test(
+      n
+    )
+  ) {
+    return { id: "documents", label: "Documents & certificates" };
+  }
+  if (
+    /swap|repayment mode|pdc|emi cycle|cheque reissu|cheque book|mandate|standing instruction|e-mandate|nmmp|non-maintenance of mode|cash emi|cash deposit|rebooking|cancellation|revalidation of no objection|si\/ecs|si\/|nach mandate/.test(
+      n
+    )
+  ) {
+    return { id: "repayment", label: "Changing how you pay" };
+  }
+  if (
+    /collection phone|collection visit|field collection/.test(n)
+  ) {
+    return { id: "collection", label: "Collection follow-up" };
+  }
+  if (
+    /penal|non-submission|non-collection|non-adherence|non-creation|non-completion|non-renewal|non-utilisation|non-utilization|commitment|deviation|construction delay|breach|npa|overdrawn|safe custody|facility conversion|revalidation|sanction|modification|renewal fee|re-appraisal|incidental|account handling|failed|non-payment/.test(
+      n
+    )
+  ) {
+    return {
+      id: "penalties",
+      label: "If rules aren’t met or something goes wrong"
+    };
+  }
+  return { id: "other", label: "Other fees" };
+}
+
+function earlyFeeCategory(name) {
+  const n = normalizeText(name);
+  if (n === "processing fee") {
+    return { id: "processing", label: "To start the loan" };
+  }
+  if (/cibil|cic|credit information|credit opinion/.test(n)) {
+    return { id: "credit", label: "Credit checks" };
+  }
+  if (
+    /legal|valuation|title search|inspection|technical|non-encumbrance|equitable mortgage|field investigation/.test(
+      n
+    )
+  ) {
+    return { id: "property", label: "Property & legal checks" };
+  }
+  if (/admin|documentation|service charge|digital documentation/.test(n)) {
+    return { id: "admin", label: "Admin & paperwork" };
+  }
+  return { id: "early-other", label: "Other upfront fees" };
 }
 
 /**
- * Absolute detail for one charge name: all slabs in a group, or every distinct
- * variant when the sheet stores multiple rules under the same label.
+ * Expand one fee name into scannable What | Charge rows (slabs / area variants),
+ * after dropping identical duplicate sheet rows.
  */
-function formatAbsoluteChargeRowsDetail(charges) {
-  if (!charges || !charges.length) return "Not listed";
-  if (charges.length === 1) return formatAbsoluteChargeDetail(charges[0]);
+function buildFeeTableEntries(name, charges) {
+  const list = dedupeChargesByRule(charges);
+  if (!list.length) {
+    return { entries: [], notes: [] };
+  }
 
-  const slabSeed = charges.find(function (charge) {
+  const slabSeed = list.find(function (charge) {
     return normalizeText(charge.has_slab_wise_charges) === "yes";
   });
   if (slabSeed) {
-    const slabs = charges
+    const slabs = list
       .filter(function (charge) {
         return (
           charge.charge_group_id === slabSeed.charge_group_id &&
@@ -2638,23 +2912,120 @@ function formatAbsoluteChargeRowsDetail(charges) {
         return chargeSlabStart(a) - chargeSlabStart(b);
       });
     if (slabs.length > 1) {
-      const basis = formatSlabBasisSentence(slabs[0], "amount");
-      const parts = slabs.map(function (charge) {
-        const band = formatChargeSlabBand(charge);
-        const amountText = formatChargeDisplayText(
-          formatChargeDisplay(charge, { hideBasis: true })
-        );
-        return (band ? band + ": " : "") + amountText;
-      });
-      return [basis].concat(parts).filter(Boolean).join(" · ");
+      const first = slabs[0];
+      const basisLabel = formatSlabColumnHeader(first);
+      return {
+        entries: slabs.map(function (charge) {
+          const band = formatChargeSlabBand(charge) || "Range";
+          return {
+            what: name + " · " + band,
+            amount: formatChargeAmountHeadline(charge),
+            meta: formatChargeMetaLine(charge, { hideBasis: true }),
+            hint: basisLabel
+          };
+        }),
+        notes: uniqueStrings(
+          [formatSlabBasisSentence(first, "amount")].concat(
+            slabs.reduce(function (all, charge) {
+              return all.concat(collectChargeNotes(charge));
+            }, [])
+          )
+        )
+      };
     }
   }
 
-  return charges
-    .map(function (charge) {
-      return formatAbsoluteChargeDetail(charge);
-    })
-    .join(" ··· ");
+  if (list.length === 1) {
+    const charge = list[0];
+    return {
+      entries: [
+        {
+          what: name,
+          amount: formatChargeAmountHeadline(charge),
+          meta: formatChargeMetaLine(charge),
+          hint: ""
+        }
+      ],
+      notes: collectChargeNotes(charge)
+    };
+  }
+
+  const mergedPair = tryMergeFixedAndPercentage(list);
+  if (mergedPair) {
+    mergedPair.entries[0].what = name;
+    return mergedPair;
+  }
+
+  return {
+    entries: list.map(function (charge) {
+      const when = chargeWhenLabel(charge);
+      return {
+        what: when ? name + " · " + when : name,
+        amount: formatChargeAmountHeadline(charge),
+        meta: formatChargeMetaLine(charge),
+        hint: ""
+      };
+    }),
+    notes: uniqueStrings(
+      list.reduce(function (all, charge) {
+        const when = chargeWhenLabel(charge);
+        return all.concat(
+          collectChargeNotes(charge).filter(function (note) {
+            return note !== when;
+          })
+        );
+      }, [])
+    )
+  };
+}
+
+/**
+ * For a fee name: keep the best matching rule, plus true slabs / distinct cases —
+ * never every duplicate sheet row.
+ */
+function selectChargesForFeeName(matchedRows) {
+  const list = (matchedRows || []).filter(Boolean);
+  if (!list.length) return [];
+
+  const slabRows = list.filter(function (charge) {
+    return normalizeText(charge.has_slab_wise_charges) === "yes";
+  });
+  if (slabRows.length) {
+    slabRows.sort(function (a, b) {
+      return (
+        afterOfferSpecificityScore(b) - afterOfferSpecificityScore(a) ||
+        specificityScore(b, [
+          "scheme",
+          "occupation",
+          "purpose",
+          "rate_type",
+          "facility_type",
+          "borrower_category"
+        ]) -
+          specificityScore(a, [
+            "scheme",
+            "occupation",
+            "purpose",
+            "rate_type",
+            "facility_type",
+            "borrower_category"
+          ])
+      );
+    });
+    const best = slabRows[0];
+    return list
+      .filter(function (charge) {
+        return (
+          charge.charge_group_id === best.charge_group_id &&
+          normalizeText(charge.has_slab_wise_charges) === "yes"
+        );
+      })
+      .sort(function (a, b) {
+        return chargeSlabStart(a) - chargeSlabStart(b);
+      });
+  }
+
+  return dedupeChargesByRule(list);
 }
 
 function collectMatchedChargesByName(charges) {
@@ -2667,38 +3038,218 @@ function collectMatchedChargesByName(charges) {
   return byName;
 }
 
-/** Build label/detail pairs from matched charge rows, keeping slabs and variants. */
-function panelRowsFromMatchedCharges(matchedCharges) {
+function buildFeeSectionsFromMatched(matchedCharges, categorize) {
   const byName = collectMatchedChargesByName(matchedCharges);
-  const rows = [];
-  byName.forEach(function (list, name) {
-    rows.push([name, formatAbsoluteChargeRowsDetail(list)]);
-  });
-  rows.sort(function (a, b) {
-    return String(a[0]).localeCompare(String(b[0]), "en", { sensitivity: "base" });
-  });
-  return rows;
-}
+  const sectionMap = new Map();
 
-/** Before-offer scheme fees for the bank drawer — absolute published rules. */
-function listSchemeChargePanelRows(charges, offer) {
-  const matched = (charges || []).filter(function (charge) {
-    return prefilterChargeForScheme(charge, offer);
+  byName.forEach(function (list, name) {
+    const selected = selectChargesForFeeName(list);
+    const built = buildFeeTableEntries(name, selected);
+    if (!built.entries.length) return;
+    const cat = categorize(name);
+    if (!sectionMap.has(cat.id)) {
+      sectionMap.set(cat.id, {
+        id: cat.id,
+        label: cat.label,
+        entries: [],
+        notes: []
+      });
+    }
+    const section = sectionMap.get(cat.id);
+    built.entries.forEach(function (entry) {
+      section.entries.push(entry);
+    });
+    built.notes.forEach(function (note) {
+      section.notes.push(name + ": " + note);
+    });
   });
-  return panelRowsFromMatchedCharges(matched);
+
+  const order =
+    categorize === earlyFeeCategory
+      ? ["processing", "credit", "property", "admin", "early-other"]
+      : LATER_FEE_CATEGORY_ORDER;
+
+  return order
+    .map(function (id) {
+      return sectionMap.get(id);
+    })
+    .filter(function (section) {
+      return section && section.entries.length;
+    })
+    .map(function (section) {
+      section.notes = uniqueStrings(section.notes);
+      section.entries.sort(function (a, b) {
+        return String(a.what).localeCompare(String(b.what), "en", {
+          sensitivity: "base"
+        });
+      });
+      return section;
+    });
 }
 
 /**
- * After-offer fees that are not on the table columns — absolute rules for the
- * bank drawer (document copies, NOC, swaps, penal fees, etc.).
+ * Upfront fees for the drawer — one row per real fee (processing once),
+ * grouped so you can see what each fee is for.
  */
-function listAdditionalAfterOfferPanelRows(charges, query, offer) {
+function listSchemeChargePanelSections(charges, offer) {
+  const matched = (charges || []).filter(function (charge) {
+    return prefilterChargeForScheme(charge, offer);
+  });
+  // One best row per fee name, then re-attach true slab siblings only.
+  const bestByName = listSchemeCharges(charges, offer);
+  const selected = [];
+  bestByName.forEach(function (best) {
+    if (normalizeText(best.has_slab_wise_charges) === "yes") {
+      const slabs = matched
+        .filter(function (charge) {
+          return (
+            charge.charge_name === best.charge_name &&
+            charge.charge_group_id === best.charge_group_id &&
+            normalizeText(charge.has_slab_wise_charges) === "yes"
+          );
+        })
+        .sort(function (a, b) {
+          return chargeSlabStart(a) - chargeSlabStart(b);
+        });
+      if (slabs.length) {
+        slabs.forEach(function (row) {
+          selected.push(row);
+        });
+        return;
+      }
+    }
+    selected.push(best);
+  });
+  return buildFeeSectionsFromMatched(selected, earlyFeeCategory);
+}
+
+/**
+ * Later fees not on the table — grouped by purpose, What | Charge rows,
+ * duplicates removed.
+ */
+function listAdditionalAfterOfferPanelSections(charges, query, offer) {
   const matched = (charges || []).filter(function (charge) {
     if (!prefilterAfterOfferCharge(charge, query, offer)) return false;
     if (isShownOnExploreTable(charge)) return false;
     return true;
   });
-  return panelRowsFromMatchedCharges(matched);
+  return buildFeeSectionsFromMatched(matched, laterFeeCategory);
+}
+
+/** @deprecated Compatibility: flatten sections to old block-like rows. */
+function listSchemeChargePanelBlocks(charges, offer) {
+  return listSchemeChargePanelSections(charges, offer).reduce(function (
+    blocks,
+    section
+  ) {
+    section.entries.forEach(function (entry) {
+      blocks.push({
+        name: entry.what,
+        variants: [
+          {
+            label: "",
+            summary: entry.amount,
+            meta: entry.meta,
+            slabIntro: "",
+            slabLeftHeader: "Range",
+            slabRightHeader: "Charge",
+            slabs: [],
+            notes: []
+          }
+        ]
+      });
+    });
+    return blocks;
+  },
+  []);
+}
+
+function listAdditionalAfterOfferPanelBlocks(charges, query, offer) {
+  return listAdditionalAfterOfferPanelSections(charges, query, offer).reduce(
+    function (blocks, section) {
+      section.entries.forEach(function (entry) {
+        blocks.push({
+          name: entry.what,
+          variants: [
+            {
+              label: "",
+              summary: entry.amount,
+              meta: entry.meta,
+              slabIntro: "",
+              slabLeftHeader: "Range",
+              slabRightHeader: "Charge",
+              slabs: [],
+              notes: []
+            }
+          ]
+        });
+      });
+      return blocks;
+    },
+    []
+  );
+}
+
+function listSchemeChargePanelRows(charges, offer) {
+  return listSchemeChargePanelBlocks(charges, offer).map(function (block) {
+    const first = block.variants && block.variants[0];
+    const summary = first
+      ? [first.summary, first.meta].filter(Boolean).join(" · ")
+      : "Not listed";
+    return [block.name, summary || "Not listed"];
+  });
+}
+
+function listAdditionalAfterOfferPanelRows(charges, query, offer) {
+  return listAdditionalAfterOfferPanelBlocks(charges, query, offer).map(
+    function (block) {
+      const first = block.variants && block.variants[0];
+      const summary = first
+        ? [first.summary, first.meta].filter(Boolean).join(" · ")
+        : "Not listed";
+      return [block.name, summary || "Not listed"];
+    }
+  );
+}
+
+function buildChargePanelVariant(rows) {
+  const name =
+    rows && rows[0] && rows[0].charge_name ? rows[0].charge_name : "Charge";
+  const built = buildFeeTableEntries(name, rows || []);
+  const first = built.entries[0];
+  return {
+    label: "",
+    summary: first ? first.amount : "Not listed",
+    meta: first ? first.meta : "",
+    slabIntro: "",
+    slabLeftHeader: "Range",
+    slabRightHeader: "Charge",
+    slabs: built.entries.slice(1).map(function (entry) {
+      return [entry.what, entry.amount];
+    }),
+    notes: built.notes
+  };
+}
+
+function buildChargePanelBlock(name, charges) {
+  const built = buildFeeTableEntries(name, charges || []);
+  return {
+    name: name,
+    variants: [
+      {
+        label: "",
+        summary: built.entries[0] ? built.entries[0].amount : "Not listed",
+        meta: built.entries[0] ? built.entries[0].meta : "",
+        slabIntro: "",
+        slabLeftHeader: "Range",
+        slabRightHeader: "Charge",
+        slabs: built.entries.map(function (entry) {
+          return [entry.what, entry.amount];
+        }),
+        notes: built.notes
+      }
+    ]
+  };
 }
 
 function prefilterChargeForScheme(charge, offer) {
@@ -2981,8 +3532,8 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges) {
       formatInr(computeGovernmentChargeAmount(charge, terms.loanAmount))
     ];
   });
-  const feeRows = listSchemeChargePanelRows(bankCharges, offer);
-  const additionalAfterOfferRows = listAdditionalAfterOfferPanelRows(
+  const feeSections = listSchemeChargePanelSections(bankCharges, offer);
+  const additionalAfterOfferSections = listAdditionalAfterOfferPanelSections(
     bankCharges,
     offerQuery,
     offer
@@ -3075,13 +3626,35 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges) {
         ? offer.age_min + "–" + offer.age_max
         : "—",
     occupationLabel: formatOccupationLabel(offer.occupation),
-    feeRows: feeRows,
-    additionalAfterOfferRows: additionalAfterOfferRows,
+    feeSections: feeSections,
+    feeBlocks: listSchemeChargePanelBlocks(bankCharges, offer),
+    feeRows: listSchemeChargePanelRows(bankCharges, offer),
+    additionalAfterOfferSections: additionalAfterOfferSections,
+    additionalAfterOfferBlocks: listAdditionalAfterOfferPanelBlocks(
+      bankCharges,
+      offerQuery,
+      offer
+    ),
+    additionalAfterOfferRows: listAdditionalAfterOfferPanelRows(
+      bankCharges,
+      offerQuery,
+      offer
+    ),
     otherChargeNote: (function () {
-      const other = feeRows.find(function (pair) {
-        return pair[0] !== "Processing fee";
-      });
-      return other ? other[0] + (other[1] && other[1] !== "—" ? " " + other[1] : "") : "—";
+      for (let i = 0; i < feeSections.length; i += 1) {
+        const section = feeSections[i];
+        const entry = (section.entries || []).find(function (row) {
+          return normalizeText(row.what).indexOf("processing fee") < 0;
+        });
+        if (entry) {
+          return (
+            entry.what +
+            (entry.amount ? " " + entry.amount : "") +
+            (entry.meta ? " · " + entry.meta : "")
+          );
+        }
+      }
+      return "—";
     })(),
     offer: offer,
     processingCharge: processingCharge,
@@ -3600,6 +4173,7 @@ function initPage() {
     if (state.prepaymentMethod === next) return;
     state.prepaymentMethod = next;
     applyPrepaymentMethodToRows(state.rows, state.prepaymentMethod);
+    persistExploreDraft();
     renderTable();
   }
 
@@ -3613,6 +4187,7 @@ function initPage() {
     if (state.rateChangeMethod === next) return;
     state.rateChangeMethod = next;
     applyRateChangeMethodToRows(state.rows, state.rateChangeMethod);
+    persistExploreDraft();
     renderTable();
   }
 
@@ -3953,7 +4528,7 @@ function initPage() {
                     escapeHtml(row.bankName) +
                     '">' +
                     chargeDisplayHtml(row[column.key]) +
-                    '<span class="hlc-charge-detail-arrow" aria-hidden="true">›</span></button>'
+                    '<svg class="hlc-charge-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
                   : chargeDisplayHtml(row[column.key])
                 : hasCalculation
                   ? '<button type="button" class="hlc-charge-amount" data-calculation-detail="' +
@@ -4007,7 +4582,7 @@ function initPage() {
           "</span>" +
           '<button type="button" class="hlc-bank-detail" data-detail="' +
           row.id +
-          '"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-arrow" aria-hidden="true">›</span></button>' +
+          '"><span class="hlc-bank-detail-label">More</span><svg class="hlc-bank-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
           "</div>" +
           "</div></td>" +
           (useFillCol ? '<td class="hlc-col-fill" aria-hidden="true"></td>' : "") +
@@ -4436,11 +5011,6 @@ function initPage() {
     if (row.emiBounceDetailFootnote) {
       laterChargeRows.push(["Charge details", row.emiBounceDetailFootnote]);
     }
-    if (row.additionalAfterOfferRows && row.additionalAfterOfferRows.length) {
-      row.additionalAfterOfferRows.forEach(function (pair) {
-        laterChargeRows.push(pair);
-      });
-    }
 
     const bodyHtml =
       drawerSection("Scheme", [
@@ -4460,13 +5030,19 @@ function initPage() {
         ["Green home", row.greenDiscountDetail || "None"],
         ["Insurance", row.insuranceDiscountDetail || "None"]
       ]) +
-      drawerSection(
-        "Charges",
-        row.feeRows && row.feeRows.length
-          ? row.feeRows
-          : [["Applicable charges", "None listed"]]
+      drawerFeeSections(
+        "Charges at the start",
+        row.feeSections && row.feeSections.length ? row.feeSections : null
       ) +
       drawerSection("Other charges", laterChargeRows) +
+      drawerFeeSections(
+        "Fees that may apply later",
+        row.additionalAfterOfferSections &&
+          row.additionalAfterOfferSections.length
+          ? row.additionalAfterOfferSections
+          : null,
+        { hideWhenEmpty: true }
+      ) +
       '<p class="hlc-drawer-foot">Published rules are shown without estimating an event-specific amount. Figures are indicative. The bank decides final terms.</p>';
 
     showDrawer(row.bankName, row.scheme || "", bodyHtml);
@@ -4955,11 +5531,77 @@ function initPage() {
         .map(function (pair) {
           return (
             '<div class="hlc-kv"><span class="hlc-kv-label">' +
-            pair[0] +
+            escapeHtml(pair[0]) +
             '</span><span class="hlc-kv-value">' +
-            pair[1] +
+            escapeHtml(pair[1]) +
             "</span></div>"
           );
+        })
+        .join("") +
+      "</div></section>"
+    );
+  }
+
+  function drawerFeeEntryAmountHtml(entry) {
+    return (
+      '<span class="hlc-fee-amount">' +
+      escapeHtml(entry.amount || "—") +
+      "</span>" +
+      (entry.meta
+        ? '<span class="hlc-fee-meta">' + escapeHtml(entry.meta) + "</span>"
+        : "")
+    );
+  }
+
+  function drawerFeeCategoryHtml(section) {
+    if (!section || !section.entries || !section.entries.length) return "";
+    const notesHtml = (section.notes || [])
+      .map(function (note) {
+        return '<p class="hlc-fee-note">' + escapeHtml(note) + "</p>";
+      })
+      .join("");
+    return (
+      '<div class="hlc-fee-category">' +
+      (section.label
+        ? '<h5 class="hlc-fee-category-title">' +
+          escapeHtml(section.label) +
+          "</h5>"
+        : "") +
+      '<div class="hlc-drawer-card hlc-slab-card">' +
+      '<table class="hlc-slab-table hlc-fee-table">' +
+      '<thead><tr><th scope="col">What</th><th scope="col">Charge</th></tr></thead><tbody>' +
+      section.entries
+        .map(function (entry) {
+          return (
+            "<tr><td>" +
+            escapeHtml(entry.what) +
+            "</td><td>" +
+            drawerFeeEntryAmountHtml(entry) +
+            "</td></tr>"
+          );
+        })
+        .join("") +
+      "</tbody></table></div>" +
+      notesHtml +
+      "</div>"
+    );
+  }
+
+  function drawerFeeSections(title, sections, options) {
+    const settings = options || {};
+    if ((!sections || !sections.length) && settings.hideWhenEmpty) return "";
+    if (!sections || !sections.length) {
+      return drawerSection(title, [["Applicable charges", "None listed"]]);
+    }
+    return (
+      '<section class="hlc-drawer-section">' +
+      "<h4>" +
+      escapeHtml(title) +
+      "</h4>" +
+      '<div class="hlc-fee-sections">' +
+      sections
+        .map(function (section) {
+          return drawerFeeCategoryHtml(section);
         })
         .join("") +
       "</div></section>"
@@ -5165,6 +5807,7 @@ function initPage() {
   function scheduleMatch(options) {
     clearTimeout(state.matchTimer);
     clearResolvedPrimaryIssues();
+    persistExploreDraft();
     if (!primaryFieldsAreComplete()) {
       root.setAttribute("aria-busy", "false");
       return;
@@ -5187,6 +5830,7 @@ function initPage() {
   function toggleSelect(id) {
     if (state.selected.has(id)) state.selected.delete(id);
     else state.selected.add(id);
+    persistExploreDraft();
     renderTable();
   }
 
@@ -5392,15 +6036,225 @@ function initPage() {
     if (event.key === "Escape") closeDrawer();
   });
 
+  var HL_APPLY_STORAGE_KEY = "shroffin_hl_apply_v1";
+  var HL_EXPLORE_DRAFT_KEY = "shroffin_hl_explore_draft_v1";
+  var HL_EXPLORE_DRAFT_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+
+  function cloneJson(value) {
+    try {
+      return JSON.parse(JSON.stringify(value));
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function collectFormRaw() {
+    return {
+      age: el.age ? el.age.value : "",
+      cibilScore: el.cibil ? el.cibil.value : "",
+      monthlyIncome: el.monthlyIncome ? el.monthlyIncome.value : "",
+      existingEmis: el.existingEmis ? el.existingEmis.value : "0",
+      cardLimits: el.cardLimits ? el.cardLimits.value : "0",
+      cardLoadPct: el.cardLoadPct ? el.cardLoadPct.value : String(DEFAULT_CARD_LOAD_PCT),
+      tenureYears: el.tenure ? el.tenure.value : String(DEFAULT_TENURE_YEARS),
+      foirPct: el.foir ? el.foir.value : String(DEFAULT_FOIR_PCT),
+      includeCoApplicant: el.coApplicant ? el.coApplicant.value : "no",
+      coMonthlyIncome: el.coMonthlyIncome ? el.coMonthlyIncome.value : "0",
+      coExistingEmis: el.coExistingEmis ? el.coExistingEmis.value : "0",
+      coCardLimits: el.coCardLimits ? el.coCardLimits.value : "0",
+      occupation: el.occupation ? el.occupation.value : "",
+      purpose: el.purpose ? el.purpose.value : DEFAULT_PURPOSE,
+      propertyValue: el.propertyValue ? el.propertyValue.value : ""
+    };
+  }
+
+  function setInputValue(input, value) {
+    if (!input || value == null) return;
+    input.value = String(value);
+  }
+
+  function syncProductFilterChips() {
+    document.querySelectorAll(".hlc-chip[data-product-filter]").forEach(function (btn) {
+      var key = btn.getAttribute("data-product-filter");
+      if (!key) return;
+      btn.setAttribute(
+        "aria-pressed",
+        state.productFilters[key] ? "true" : "false"
+      );
+    });
+  }
+
+  function persistExploreDraft() {
+    try {
+      var draft = {
+        v: 1,
+        ts: Date.now(),
+        selectedIds: Array.from(state.selected),
+        form: collectFormRaw(),
+        filters: cloneJson(state.productFilters) || defaultProductFilters(),
+        prepaymentMethod: state.prepaymentMethod,
+        rateChangeMethod: state.rateChangeMethod
+      };
+      window.sessionStorage.setItem(HL_EXPLORE_DRAFT_KEY, JSON.stringify(draft));
+    } catch (err) {}
+  }
+
+  function restoreExploreDraft() {
+    try {
+      var raw = window.sessionStorage.getItem(HL_EXPLORE_DRAFT_KEY);
+      if (!raw) return false;
+      var draft = JSON.parse(raw);
+      if (!draft || draft.v !== 1) return false;
+      if (draft.ts && Date.now() - draft.ts > HL_EXPLORE_DRAFT_MAX_AGE_MS) {
+        window.sessionStorage.removeItem(HL_EXPLORE_DRAFT_KEY);
+        return false;
+      }
+
+      var form = draft.form || {};
+      setInputValue(el.age, form.age);
+      setInputValue(el.cibil, form.cibilScore);
+      setInputValue(el.monthlyIncome, form.monthlyIncome);
+      setInputValue(el.existingEmis, form.existingEmis);
+      setInputValue(el.cardLimits, form.cardLimits);
+      setInputValue(el.cardLoadPct, form.cardLoadPct);
+      setInputValue(el.tenure, form.tenureYears);
+      setInputValue(el.foir, form.foirPct);
+      setInputValue(el.coMonthlyIncome, form.coMonthlyIncome);
+      setInputValue(el.coExistingEmis, form.coExistingEmis);
+      setInputValue(el.coCardLimits, form.coCardLimits);
+      setInputValue(el.propertyValue, form.propertyValue);
+
+      if (form.occupation) setOccupation(form.occupation);
+      if (form.purpose) setPurpose(form.purpose);
+      setCoApplicant(form.includeCoApplicant || "no");
+
+      if (draft.filters && typeof draft.filters === "object") {
+        state.productFilters = Object.assign(
+          defaultProductFilters(),
+          draft.filters
+        );
+      }
+      syncProductFilterChips();
+      setRateType(state.productFilters.fixedRate ? "Fixed" : "Floating");
+      setFacilityType(state.productFilters.overdraft ? "Overdraft" : "Term Loan");
+      setBankType(state.productFilters.bankType || DEFAULT_BANK_TYPE);
+
+      if (draft.prepaymentMethod) {
+        state.prepaymentMethod = draft.prepaymentMethod;
+      }
+      if (draft.rateChangeMethod) {
+        state.rateChangeMethod = draft.rateChangeMethod;
+      }
+
+      state.selected = new Set();
+      (draft.selectedIds || []).forEach(function (id) {
+        if (id != null && id !== "") state.selected.add(id);
+      });
+      updateApplyBar();
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function getActiveColumnsForPacket() {
+    var columns = [];
+    ["essentials", "charges", "laterCharges"].forEach(function (group) {
+      (GROUPS[group] || []).forEach(function (column) {
+        columns.push({
+          key: column.key,
+          label: column.label,
+          group: group,
+          type: column.type || "text"
+        });
+      });
+    });
+    return columns;
+  }
+
+  function buildApplyInputData() {
+    var raw = {
+      age: el.age ? el.age.value : "",
+      cibilScore: el.cibil ? el.cibil.value : "",
+      monthlyIncome: el.monthlyIncome ? el.monthlyIncome.value : "",
+      existingEmis: el.existingEmis ? el.existingEmis.value : "0",
+      cardLimits: el.cardLimits ? el.cardLimits.value : "0",
+      cardLoadPct: el.cardLoadPct ? el.cardLoadPct.value : DEFAULT_CARD_LOAD_PCT,
+      tenureYears: el.tenure ? el.tenure.value : DEFAULT_TENURE_YEARS,
+      foirPct: el.foir ? el.foir.value : DEFAULT_FOIR_PCT,
+      includeCoApplicant: el.coApplicant ? el.coApplicant.value : "no",
+      coMonthlyIncome: el.coMonthlyIncome ? el.coMonthlyIncome.value : "0",
+      coExistingEmis: el.coExistingEmis ? el.coExistingEmis.value : "0",
+      coCardLimits: el.coCardLimits ? el.coCardLimits.value : "0",
+      occupation: el.occupation ? el.occupation.value : "",
+      purpose: el.purpose ? el.purpose.value : DEFAULT_PURPOSE,
+      propertyValue: el.propertyValue ? el.propertyValue.value : ""
+    };
+    var query = readQuery();
+    return {
+      form: raw,
+      query: cloneJson(query),
+      filters: cloneJson(state.productFilters),
+      prepaymentMethod: state.prepaymentMethod,
+      rateChangeMethod: state.rateChangeMethod,
+      jurisdictionState: DEFAULT_JURISDICTION_STATE,
+      matchCount: state.rows.length,
+      selectedCount: state.selected.size
+    };
+  }
+
+  function buildSelectedBankPackets() {
+    var banks = [];
+    state.rows.forEach(function (row) {
+      if (!row || row.id == null || !state.selected.has(row.id)) return;
+      var cloned = cloneJson(row);
+      if (cloned) banks.push(cloned);
+    });
+    return banks;
+  }
+
+  function buildApplyPacket() {
+    return {
+      v: 1,
+      ts: Date.now(),
+      data_version: state.dataVersion || "",
+      input_data: buildApplyInputData(),
+      columns: getActiveColumnsForPacket(),
+      banks: buildSelectedBankPackets()
+    };
+  }
+
+  function saveApplyPacketAndGo() {
+    if (!state.selected.size) {
+      showToast("Select at least one bank to apply.");
+      return;
+    }
+    persistExploreDraft();
+    var packet = buildApplyPacket();
+    if (!packet.banks || !packet.banks.length) {
+      showToast("Could not prepare your selected banks. Please try again.");
+      return;
+    }
+    try {
+      window.sessionStorage.setItem(HL_APPLY_STORAGE_KEY, JSON.stringify(packet));
+    } catch (err) {
+      showToast("Could not start apply. Please try again.");
+      return;
+    }
+    window.location.href = "apply.html";
+  }
+
   el.applyBtn.addEventListener("click", function () {
-    showToast(
-      "Apply once is coming next — your " +
-        state.selected.size +
-        " selected bank" +
-        (state.selected.size === 1 ? "" : "s") +
-        " will go in one packet."
-    );
+    saveApplyPacketAndGo();
   });
+
+  try {
+    var applyReturnMsg = window.sessionStorage.getItem("shroffin_hl_apply_msg");
+    if (applyReturnMsg) {
+      window.sessionStorage.removeItem("shroffin_hl_apply_msg");
+      showToast(applyReturnMsg);
+    }
+  } catch (err) {}
 
   el.paddleLeft.addEventListener("click", function () {
     el.scroll.scrollBy({ left: -220, behavior: "smooth" });
@@ -5409,7 +6263,19 @@ function initPage() {
     el.scroll.scrollBy({ left: 220, behavior: "smooth" });
   });
 
+  restoreExploreDraft();
   syncFoirFace();
+
+  window.addEventListener("pageshow", function (event) {
+    if (!event.persisted) return;
+    restoreExploreDraft();
+    updateApplyBar();
+    if (state.dataset && primaryFieldsAreComplete()) {
+      runMatch();
+    } else {
+      renderTable();
+    }
+  });
 
   fetch(DATA_URL)
     .then(function (response) {
@@ -5567,8 +6433,14 @@ module.exports = {
   formatChargeDisplay,
   formatChargeDisplayText,
   formatChargeBasis,
-  formatAbsoluteChargeDetail,
-  formatAbsoluteChargeRowsDetail,
+  formatChargeAmountHeadline,
+  formatChargeMetaLine,
+  buildChargePanelBlock,
+  buildChargePanelVariant,
+  listSchemeChargePanelSections,
+  listAdditionalAfterOfferPanelSections,
+  listSchemeChargePanelBlocks,
+  listAdditionalAfterOfferPanelBlocks,
   listSchemeChargePanelRows,
   listAdditionalAfterOfferPanelRows,
   isShownOnExploreTable,

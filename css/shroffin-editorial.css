@@ -1,6 +1,6 @@
 /* ==========================================================================
    Shroffin editorial system — shared magazine layer for the redesigned site.
-   Warm paper, one ink, sentence-case labels, few hairlines, calm motion.
+   Cool soft blue canvas, one ink, sentence-case labels, few hairlines, calm motion.
    Pages link this file; interactive markup keeps its .guide-* hooks + IDs + JS.
    ========================================================================== */
 
@@ -9,20 +9,20 @@
   --gn-height: 48px;
   --ln-height: 52px;
 
-  /* Paper shades — section separation without a grid of lines */
-  --mag-paper: #faf9f6;       /* default page canvas */
-  --mag-paper-deep: #f3f1eb;  /* alternating band / flip back */
-  --mag-paper-note: #eceae3;  /* glance / note panels */
+  /* Cool canvas shades — section separation without a grid of lines */
+  --mag-paper: var(--shroffin-surface, #fcfcfd);       /* default page canvas */
+  --mag-paper-deep: var(--shroffin-footer, #f5f7f9);   /* alternating band / flip back */
+  --mag-paper-note: #eef1f4;                           /* glance / note panels */
 
   /* Ink */
   --mag-ink: #1d1d1f;         /* headlines, body facts */
   --mag-ink-soft: #3a3a3d;    /* leads, captions on deep panels */
   --mag-muted: #6e6e73;       /* kickers, terms, fine print (on light paper) */
-  --mag-ghost: #c8c5bc;       /* large decorative section numbers */
+  --mag-ghost: #c5c9cf;       /* large decorative section numbers */
 
   /* Blue */
-  --mag-accent: #0066cc;         /* text / off-site links on paper */
-  --mag-accent-hover: #005bb5;   /* link hover / press */
+  --mag-accent: var(--shroffin-link, #3f62c8);         /* text links on paper */
+  --mag-accent-hover: var(--shroffin-link, #3f62c8);   /* hover keeps colour; underline gives feedback */
   --mag-accent-button: #0071e3;  /* solid pill fill */
 
   --mag-hair: rgba(0, 0, 0, 0.12);
@@ -65,10 +65,10 @@ body {
   );
 }
 
-/* ---- Localnav (warm harmony; base structure lives in shroffin-guide.css) - */
+/* ---- Localnav (cool canvas; base structure lives in shroffin-guide.css) - */
 
 .localnav {
-  background: rgba(250, 249, 246, 0.78);
+  background: rgba(255, 255, 255, 0.78);
 }
 
 .localnav-title {
@@ -122,7 +122,7 @@ a.localnav-title:hover {
   background: var(--mag-ink);
 }
 
-/* ---- Off-site + inline links: colour + cursor, never an underline ------- */
+/* ---- Text links: on-site + off-site share colour, underline, arrow gap ---- */
 
 .guide-section-link,
 .mag-link,
@@ -130,29 +130,99 @@ a.localnav-title:hover {
 .guide-doc-note a,
 .mag-p a,
 .mag-def-desc a,
-.mag-lede a {
-  color: var(--mag-accent);
+.mag-lede a,
+.guide-breadcrumb a,
+.guide-related-links a {
+  color: var(--shroffin-link, #3f62c8);
   text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
   border-bottom: 0;
-  transition: color var(--mag-micro, 0.5s) var(--ease-color);
+  transition:
+    color var(--mag-micro, 0.5s) var(--ease-color),
+    text-decoration-color var(--mag-micro, 0.5s) var(--ease-color);
+}
+
+.guide-section-link:visited,
+.mag-link:visited,
+.guide-share-then a:visited,
+.guide-doc-note a:visited,
+.mag-p a:visited,
+.mag-def-desc a:visited,
+.mag-lede a:visited,
+.guide-breadcrumb a:visited,
+.guide-related-links a:visited {
+  color: var(--shroffin-link-visited, #5a4fcf);
 }
 
 .guide-section-link:hover,
 .guide-section-link:focus-visible,
-.guide-section-link:active,
 .mag-link:hover,
+.mag-link:focus-visible,
 .guide-share-then a:hover,
+.guide-share-then a:focus-visible,
 .guide-doc-note a:hover,
+.guide-doc-note a:focus-visible,
 .mag-p a:hover,
+.mag-p a:focus-visible,
 .mag-def-desc a:hover,
-.mag-lede a:hover {
-  color: var(--mag-accent-hover);
-  text-decoration: none;
+.mag-def-desc a:focus-visible,
+.mag-lede a:hover,
+.mag-lede a:focus-visible,
+.guide-breadcrumb a:hover,
+.guide-breadcrumb a:focus-visible,
+.guide-related-links a:hover,
+.guide-related-links a:focus-visible {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link, #3f62c8);
+}
+
+.guide-section-link:visited:hover,
+.guide-section-link:visited:focus-visible,
+.mag-link:visited:hover,
+.guide-share-then a:visited:hover,
+.guide-doc-note a:visited:hover,
+.mag-p a:visited:hover,
+.mag-def-desc a:visited:hover,
+.mag-lede a:visited:hover,
+.guide-breadcrumb a:visited:hover,
+.guide-related-links a:visited:hover {
+  color: var(--shroffin-link-visited, #5a4fcf);
+  text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
+}
+
+.guide-section-link:active,
+.mag-link:active,
+.guide-share-then a:active,
+.guide-doc-note a:active,
+.mag-p a:active,
+.mag-def-desc a:active,
+.mag-lede a:active,
+.guide-breadcrumb a:active,
+.guide-related-links a:active {
+  color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
 }
 
 .guide-section-link-arrow {
-  margin-left: 0.15em;
+  display: inline-block;
+  margin-inline-start: var(--shroffin-link-arrow-gap, 0.35em);
   font-size: 0.9em;
+  color: inherit;
+  transition: transform var(--mag-micro, 0.5s) var(--ease);
+}
+
+.guide-section-link:hover .guide-section-link-arrow,
+.guide-section-link:focus-visible .guide-section-link-arrow {
+  color: inherit;
+  transform: translate(0.12em, -0.12em);
+}
+
+.guide-section-link:active .guide-section-link-arrow {
+  color: inherit;
+  transform: translate(0.08em, -0.08em);
 }
 
 /* ---- Masthead (restyled guide-hero — left, editorial, verbatim copy) ---- */
@@ -343,7 +413,7 @@ h2.guide-hero-lead {
   );
   display: flex;
   flex-direction: column;
-  background: rgba(250, 249, 246, 0.92);
+  background: rgba(255, 255, 255, 0.92);
   border-block-end: 1px solid var(--mag-hair-soft);
   backdrop-filter: saturate(140%) blur(16px);
   -webkit-backdrop-filter: saturate(140%) blur(16px);
@@ -385,18 +455,13 @@ h2.guide-hero-lead {
 }
 
 .mag-toc-compact-chevron {
-  flex: 0 0 auto;
-  inline-size: 0.45rem;
-  block-size: 0.45rem;
-  border-inline-end: 1.5px solid currentColor;
-  border-block-end: 1.5px solid currentColor;
-  transform: rotate(45deg);
-  opacity: 0.55;
+  opacity: 0.7;
+  transform: rotate(90deg);
   transition: transform var(--mag-ui, 0.85s) var(--ease);
 }
 
 .mag-toc-compact.is-open .mag-toc-compact-chevron {
-  transform: rotate(225deg);
+  transform: rotate(-90deg);
 }
 
 .mag-toc-compact-panel {
@@ -1259,12 +1324,22 @@ body.guide-reading .mag-index-label {
 }
 
 .guide-breadcrumb a {
-  color: var(--mag-accent);
+  color: var(--shroffin-link, #3f62c8);
   text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
 }
 
-.guide-breadcrumb a:hover {
-  color: var(--mag-accent-hover);
+.guide-breadcrumb a:hover,
+.guide-breadcrumb a:focus-visible {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link, #3f62c8);
+}
+
+.guide-breadcrumb a:active {
+  color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
 }
 
 .guide-breadcrumb-current {
@@ -1349,12 +1424,12 @@ body.guide-reading .mag-index-label {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--shroffin-link-arrow-gap, 0.35em);
   align-self: flex-start;
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--mag-accent);
+  color: var(--shroffin-link, #3f62c8);
   font-family: var(--font-brand);
   font-size: 17px;
   font-weight: 500;
@@ -1363,7 +1438,11 @@ body.guide-reading .mag-index-label {
   min-height: 44px;
   cursor: pointer;
   text-decoration: none;
-  transition: color var(--mag-micro, 0.5s) var(--ease-color);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition:
+    color var(--mag-micro, 0.5s) var(--ease-color),
+    text-decoration-color var(--mag-micro, 0.5s) var(--ease-color);
 }
 
 .guide-flip-face--front .guide-flip-link[data-flip] {
@@ -1374,25 +1453,47 @@ body.guide-reading .mag-index-label {
   );
 }
 
-.guide-flip-link:hover {
-  color: var(--mag-accent-hover);
-  text-decoration: none;
+.guide-flip-link:visited {
+  color: var(--shroffin-link-visited, #5a4fcf);
+}
+
+.guide-flip-link:hover,
+.guide-flip-link:focus-visible {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link, #3f62c8);
+}
+
+.guide-flip-link:visited:hover,
+.guide-flip-link:visited:focus-visible {
+  color: var(--shroffin-link-visited, #5a4fcf);
+  text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
+}
+
+.guide-flip-link:active {
+  color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
 }
 
 .guide-flip-link:focus-visible {
-  outline: 2px solid var(--mag-accent-button);
-  outline-offset: 3px;
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline-offset: var(--shroffin-focus-offset, 3px);
   border-radius: 4px;
 }
 
 .guide-flip-link-arrow {
-  display: block;
-  width: 0.55em;
-  height: 0.55em;
-  max-width: 12px;
-  max-height: 12px;
-  flex-shrink: 0;
-  transition: transform 0.75s var(--ease);
+  transition: transform var(--shroffin-ui-duration, 0.85s) var(--ease);
+}
+
+/* Cross-page chevron — nudge forward on hover. */
+.guide-flip-link:not([data-flip]):hover .guide-flip-link-arrow,
+.guide-flip-link:not([data-flip]):focus-visible .guide-flip-link-arrow {
+  transform: translateX(var(--shroffin-disclose-nudge, 0.2em));
+}
+
+.guide-flip-link:not([data-flip]):active .guide-flip-link-arrow {
+  transform: translateX(0.12em);
 }
 
 /* Same button: arrow down when closed, up when open. */
@@ -1400,16 +1501,18 @@ body.guide-reading .mag-index-label {
   transform: rotate(90deg);
 }
 
-.guide-flip-link[data-flip]:hover .guide-flip-link-arrow {
-  transform: rotate(90deg) translateY(2px);
+.guide-flip-link[data-flip]:hover .guide-flip-link-arrow,
+.guide-flip-link[data-flip]:focus-visible .guide-flip-link-arrow {
+  transform: rotate(90deg) translateY(var(--shroffin-disclose-nudge, 0.2em));
 }
 
 .guide-flip.is-flipped .guide-flip-link[data-flip] .guide-flip-link-arrow {
   transform: rotate(-90deg);
 }
 
-.guide-flip.is-flipped .guide-flip-link[data-flip]:hover .guide-flip-link-arrow {
-  transform: rotate(-90deg) translateY(-2px);
+.guide-flip.is-flipped .guide-flip-link[data-flip]:hover .guide-flip-link-arrow,
+.guide-flip.is-flipped .guide-flip-link[data-flip]:focus-visible .guide-flip-link-arrow {
+  transform: rotate(-90deg) translateY(calc(var(--shroffin-disclose-nudge, 0.2em) * -1));
 }
 
 /* Department openers / cross-page CTAs (insurance hub, project link) */
@@ -1508,33 +1611,8 @@ body.guide-reading .mag-index-label {
   text-align: left;
 }
 
-.guide-calc-label {
-  color: var(--mag-muted);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-}
-
 .guide-calc-input {
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 44px;
-  padding: 10px 2px;
-  border: 0;
-  border-bottom: 1px solid var(--mag-hair);
-  border-radius: 0;
-  background: transparent;
-  color: var(--mag-ink);
   font-family: var(--font-brand);
-  font-size: 17px;
-  letter-spacing: -0.01em;
-  transition: border-color var(--mag-micro, 0.5s) var(--ease-color);
-}
-
-.guide-calc-input:focus {
-  outline: none;
-  border-bottom-color: var(--mag-accent-button);
-  box-shadow: 0 1px 0 0 var(--mag-accent-button);
 }
 
 .guide-calc-select {
@@ -1578,8 +1656,8 @@ body.guide-reading .mag-index-label {
 }
 
 .guide-calc-submit:focus-visible {
-  outline: 2px solid var(--mag-accent-button);
-  outline-offset: 3px;
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
 .guide-calc-result {
@@ -1835,8 +1913,8 @@ body.guide-reading .mag-index-label {
 }
 
 .guide-seg-btn:focus-visible {
-  outline: 2px solid var(--mag-accent-button);
-  outline-offset: 2px;
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
 .guide-seg-panel[hidden] {
@@ -1959,13 +2037,23 @@ body.guide-reading .mag-index-label {
 }
 
 .guide-related-links a {
-  color: var(--mag-accent);
+  color: var(--shroffin-link, #3f62c8);
   text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
   font-weight: 500;
 }
 
-.guide-related-links a:hover {
-  color: var(--mag-accent-hover);
+.guide-related-links a:hover,
+.guide-related-links a:focus-visible {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link, #3f62c8);
+}
+
+.guide-related-links a:active {
+  color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
 }
 
 /* ---- Escalation ladder / climb (complaints) ---------------------------- */

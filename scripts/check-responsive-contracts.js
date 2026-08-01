@@ -127,6 +127,18 @@ for (const entry of pageRegistry) {
   if (!/<footer class="site-footer"[^>]+aria-label="Shroffin Footer"/.test(activeSource)) {
     fail(file, 'missing canonical footer landmark');
   }
+  if (!/<aside class="site-help-strip"[^>]+aria-label="Get help"/.test(activeSource)) {
+    fail(file, 'missing pre-footer help strip');
+  }
+  if (!/Need some help\?/.test(activeSource)) {
+    fail(file, 'help strip must include Need some help?');
+  }
+  if (
+    !/class="site-help-strip-phone"[^>]+href="tel:\+919112334367"/.test(activeSource) &&
+    !/href="tel:\+919112334367"[^>]*class="site-help-strip-phone"/.test(activeSource)
+  ) {
+    fail(file, 'help strip must include the support phone link');
+  }
   if ((source.match(/SHROFFIN_FOOTER_START/g) || []).length !== 1) {
     fail(file, 'missing canonical footer start marker');
   }
@@ -158,8 +170,8 @@ for (const entry of pageRegistry) {
     fail(file, 'copyright and legal links must share one bottom row');
   }
   var legalList = activeSource.match(/class="site-footer-legal-links"[\s\S]*?<\/ul>/);
-  if (!legalList || (legalList[0].match(/<li>/g) || []).length !== 7) {
-    fail(file, 'bottom legal list must contain Privacy Policy, Site Map, and five official resources');
+  if (!legalList || (legalList[0].match(/<li>/g) || []).length !== 8) {
+    fail(file, 'bottom legal list must contain Privacy Policy, Terms of Use, Site Map, and five official resources');
   }
   if (activeSource.includes('Regulators and official resources')) {
     fail(file, 'footer must not show an official-resources heading');
@@ -240,6 +252,23 @@ for (const file of guidePages) {
 }
 
 const shellCss = fs.readFileSync(path.join(root, 'css', 'shroffin-shell.css'), 'utf8');
+if (
+  (shellCss.match(
+    /\.site-help-strip\s*\{[\s\S]*?border-block-start:\s*1px solid var\(--shroffin-rule\)/g
+  ) || []).length !== 1
+) {
+  fail('css/shroffin-shell.css', 'help strip must have a top hairline');
+}
+if (
+  (shellCss.match(
+    /\.site-help-strip\s*\{[\s\S]*?border-block-end:\s*1px solid var\(--shroffin-rule\)/g
+  ) || []).length !== 1
+) {
+  fail('css/shroffin-shell.css', 'help strip must have a bottom hairline');
+}
+if (!/\.site-help-strip\s*\{[\s\S]*?margin-block-end:\s*clamp\(/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'help strip must sit in the air above the footer');
+}
 if ((shellCss.match(/\.site-footer\s*\{[\s\S]*?border-block-start:\s*1px/g) || []).length !== 1) {
   fail('css/shroffin-shell.css', 'footer must have exactly one top hairline');
 }
