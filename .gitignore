@@ -4,3 +4,7 @@ playwright-report/
 playwright/.cache/
 .env
 .DS_Store
+
+# Local Firebase/Auth write probes — never commit (keys + live DB writes).
+pages/_firestore-auth-probe.html
+pages/_*-probe.html
