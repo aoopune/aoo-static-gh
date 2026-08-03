@@ -1,0 +1,128 @@
+<main class="calc-main">
+    <div class="calc-wrap">
+      <nav class="calc-crumb" aria-label="Breadcrumb">
+        <a href="../calculators.html">Calculators</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Equated Monthly Instalment (EMI)</span>
+      </nav>
+      <header class="calc-hero calc-reveal">
+        <h1 class="calc-hero-title">Equated Monthly Instalment (EMI)</h1>
+        <p class="calc-hero-lead">Know your monthly payment before you commit to a loan size.</p>
+      </header>
+      <div class="calc-workspace calc-reveal">
+        <section class="calc-controls" aria-labelledby="calc-controls-title">
+          <h2 class="calc-controls-title" id="calc-controls-title">Your numbers</h2>
+          <form class="calc-form" data-calc="emi" novalidate>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="principal">Loan amount</label>
+              </div>
+              <div class="calc-input-shell">
+                <span class="calc-prefix" aria-hidden="true">₹</span>
+                <input type="text" class="calc-input" autocomplete="off" id="principal" name="principal" inputmode="decimal" value="50,00,000">
+              </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="principalRange" min="100000" max="9999999999" step="50000" value="5000000" aria-label="Loan amount slider">
+              </div>
+            </div>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="rate">Interest rate (% a year)</label>
+              </div>
+              <div class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
+              </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="Interest rate (% a year) slider">
+              </div>
+            </div>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="years">Tenure (years)</label>
+              </div>
+              <div class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain">
+              </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="20" aria-label="Tenure (years) slider">
+              </div>
+            </div>
+          </form>
+        </section>
+        <section class="calc-readout" aria-labelledby="calc-readout-title" aria-live="polite">
+          <h2 class="calc-readout-title" id="calc-readout-title">Estimate</h2>
+          <div class="calc-readout-hero">
+            <p class="calc-result-num" id="out-emi">—</p>
+            <p class="calc-result-label">Monthly EMI</p>
+          </div>
+          <ul class="calc-stats">
+            <li><span>Total interest</span><strong id="out-interest">—</strong></li>
+            <li><span>Total you pay</span><strong id="out-payable">—</strong></li>
+            <li><span>Tenure</span><strong id="out-months">—</strong></li>
+          </ul>
+          <p class="calc-truth">Planning estimate only. Not a bank offer, sanction, or promise. Final terms stay with the lender.</p>
+        </section>
+      </div>
+      <section class="calc-amort calc-reveal" aria-label="Amortisation">
+        <button
+          type="button"
+          class="calc-amort-toggle"
+          id="amort-toggle"
+          aria-controls="calc-amort-panel"
+          aria-expanded="false"
+          data-closed-label="Amortisation schedule"
+        >
+          Amortisation schedule
+          <svg class="calc-amort-toggle-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+            <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="calc-amort-panel" id="calc-amort-panel" aria-hidden="true" inert>
+          <h2 class="calc-amort-title" id="amort-title">Amortisation</h2>
+          <p class="calc-amort-lead">Year by year first. Open any year to see each month.</p>
+          <div id="calc-amort-body"></div>
+        </div>
+      </section>
+      <section class="calc-assumptions calc-reveal" aria-labelledby="calc-assumptions-title">
+        <h2 class="calc-assumptions-title" id="calc-assumptions-title">How this estimate works</h2>
+        <p class="calc-assumptions-lead">What goes into this estimate.</p>
+
+        <div class="calc-formula" aria-labelledby="calc-formula-title">
+          <h3 class="calc-formula-title" id="calc-formula-title">Formula used</h3>
+          <p class="calc-formula-eq">EMI = P × r × (1 + r)<sup>n</sup> ÷ ((1 + r)<sup>n</sup> − 1)</p>
+          <ul class="calc-formula-keys">
+            <li><strong>P</strong> — loan amount</li>
+            <li><strong>r</strong> — monthly rate = annual rate ÷ 12 ÷ 100</li>
+            <li><strong>n</strong> — tenure in months = years × 12</li>
+          </ul>
+        </div>
+        <ul class="calc-assumptions-list">
+            <li>Interest is reducing balance with monthly compounding. That is the usual method for home loans in India.</li>
+            <li>The rate you enter is held fixed for the whole projection. Floating rates can change after sanction.</li>
+            <li>Fees, insurance, stamp duty, and Goods and Services Tax (GST) are not added into the EMI here.</li>
+            <li>The last instalment may be slightly different so the balance reaches zero.</li>
+            <li>A bank can still change EMI or tenure when the rate resets.</li>
+        </ul>
+      </section>
+      <nav class="calc-guide-links calc-reveal" aria-labelledby="calc-guide-links-title">
+        <h2 class="calc-guide-links-title" id="calc-guide-links-title">In the Guide</h2>
+        <ul class="calc-guide-links-list">
+          <li><a href="../guide.html#emi">Home loan overview · EMI</a></li>
+          <li><a href="../guide.html#tenure">Home loan overview · Tenure</a></li>
+          <li><a href="../guide.html#rates">Home loan overview · Rates</a></li>
+        </ul>
+      </nav>
+
+      <nav class="calc-related calc-reveal" aria-labelledby="calc-related-title">
+        <h2 class="calc-related-title" id="calc-related-title">Related</h2>
+        <ul class="calc-related-list">
+            <li><a href="loan-amount.html">Loan from EMI</a></li>
+            <li><a href="how-much-loan.html">Eligibility</a></li>
+            <li><a href="prepayment.html">Prepayment</a></li>
+        </ul>
+      </nav>
+    </div>
+  </main>

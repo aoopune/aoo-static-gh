@@ -1,40 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+const { applyFooter } = require('./lib/site-chrome');
 
 const root = path.resolve(__dirname, '..');
-const footerTemplatePath = path.join(root, 'partials', 'site-footer.html');
 const pagesPath = path.join(root, 'data', 'redesigned-pages.json');
 const checkOnly = process.argv.includes('--check');
-
-const footerTemplate = fs.readFileSync(footerTemplatePath, 'utf8').trim();
 const pages = JSON.parse(fs.readFileSync(pagesPath, 'utf8'));
-const startMarker = '<!-- SHROFFIN_FOOTER_START -->';
-const endMarker = '<!-- SHROFFIN_FOOTER_END -->';
-
-function renderFooter(file) {
-  const privacyCurrent =
-    file === 'privacy-policy.html' ? ' aria-current="page"' : '';
-  const termsCurrent =
-    file === 'terms-of-use.html' ? ' aria-current="page"' : '';
-  const sitemapCurrent = file === 'sitemap.html' ? ' aria-current="page"' : '';
-
-  return footerTemplate
-    .replaceAll('{{PRIVACY_CURRENT}}', privacyCurrent)
-    .replaceAll('{{TERMS_CURRENT}}', termsCurrent)
-    .replaceAll('{{SITEMAP_CURRENT}}', sitemapCurrent)
-    .split('\n')
-    .map(function (line) {
-      return line ? '  ' + line : '';
-    })
-    .join('\n');
-}
-
-function footerPattern(source) {
-  if (source.includes(startMarker) && source.includes(endMarker)) {
-    return /[ \t]*<!-- SHROFFIN_FOOTER_START -->[\s\S]*?<!-- SHROFFIN_FOOTER_END -->/;
-  }
-  return /[ \t]*<footer class="site-footer"[\s\S]*?<\/footer>/;
-}
 
 const changed = [];
 
@@ -45,12 +16,14 @@ pages.forEach(function (entry) {
   }
 
   const source = fs.readFileSync(absolutePath, 'utf8');
-  const pattern = footerPattern(source);
-  if (!pattern.test(source)) {
+  if (
+    !source.includes('<!-- SHROFFIN_FOOTER_START -->') &&
+    !/<footer class="site-footer"/.test(source)
+  ) {
     throw new Error('Canonical footer target not found in: ' + entry.path);
   }
 
-  const next = source.replace(pattern, renderFooter(entry.path));
+  const next = applyFooter(source, entry.path);
   if (next !== source) {
     changed.push(entry.path);
     if (!checkOnly) fs.writeFileSync(absolutePath, next);

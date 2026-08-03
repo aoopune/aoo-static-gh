@@ -1,0 +1,313 @@
+<main class="explore-banks-main" data-hlc-root data-hlc-testing="true" aria-busy="true">
+    <div class="hlc-shell">
+      <header class="hlc-hero">
+        <h1 class="hlc-title">Your details. Your options.</h1>
+        <p class="hlc-lead">A little context helps the right home loan options come into view.</p>
+      </header>
+
+      <div class="hlc-workspace">
+        <div class="hlc-main-rail">
+          <section class="hlc-panel hlc-panel--inputs" aria-labelledby="hlc-inputs-heading">
+            <h2 class="hlc-section-title" id="hlc-inputs-heading">Your details</h2>
+            <div class="hlc-inputs-card">
+            <form class="hlc-form" id="hlc-inputs" autocomplete="off" novalidate>
+              <div class="hlc-form-primary-grid">
+                <div class="hlc-form-zone hlc-form-zone--hero">
+                  <label class="hlc-field hlc-field--hero" for="hlc-monthly-income">
+                    <span class="hlc-field-label">Monthly income</span>
+                    <span class="hlc-input-shell hlc-input-shell--hero">
+                      <span class="hlc-prefix" aria-hidden="true">₹</span>
+                      <input type="text" id="hlc-monthly-income" name="monthlyIncome" value="1,00,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
+                    </span>
+                    <span class="hlc-field-note" id="hlc-monthly-income-note"></span>
+                  </label>
+                </div>
+
+                <div class="hlc-form-zone hlc-form-zone--hero">
+                  <label class="hlc-field hlc-field--hero hlc-field--property" for="hlc-property-value">
+                    <span class="hlc-field-label">Property agreement value</span>
+                    <span class="hlc-input-shell hlc-input-shell--hero">
+                      <span class="hlc-prefix" aria-hidden="true">₹</span>
+                      <input type="text" id="hlc-property-value" name="propertyValue" value="62,50,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
+                    </span>
+                    <span class="hlc-field-note" id="hlc-loan-hint" aria-live="polite"></span>
+                  </label>
+                </div>
+
+                <div class="hlc-form-zone hlc-form-zone--pair">
+                  <div class="hlc-form-zone-fields">
+                    <label class="hlc-field" for="hlc-age">
+                      <span class="hlc-field-label">Age</span>
+                      <span class="hlc-input-shell">
+                        <input type="text" id="hlc-age" name="age" value="35" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2">
+                      </span>
+                      <span class="hlc-field-note" id="hlc-age-note"></span>
+                    </label>
+                    <label class="hlc-field" for="hlc-cibil">
+                      <span class="hlc-field-label">CIBIL score</span>
+                      <span class="hlc-input-shell">
+                        <input type="text" id="hlc-cibil" name="cibilScore" value="780" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="3" data-hlc-max="900">
+                      </span>
+                      <span class="hlc-field-note" id="hlc-cibil-note"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="hlc-form-zone hlc-form-zone--choices">
+                  <div class="hlc-form-zone-fields">
+                    <div class="hlc-field hlc-field--occupation">
+                      <span class="hlc-field-label" id="hlc-occupation-label">Occupation</span>
+                      <div class="hlc-segmented hlc-occupation-pills" role="group" aria-labelledby="hlc-occupation-label">
+                        <button type="button" class="hlc-chip" data-occupation="Salaried" aria-pressed="true">Salaried</button>
+                        <button type="button" class="hlc-chip" data-occupation="Self-Employed" aria-pressed="false">Self-employed</button>
+                      </div>
+                      <input type="hidden" id="hlc-occupation" name="occupation" value="Salaried">
+                      <span class="hlc-field-note" id="hlc-occupation-note"></span>
+                    </div>
+                    <div class="hlc-field hlc-field--purpose">
+                      <span class="hlc-field-label" id="hlc-purpose-label">Purpose</span>
+                      <div class="hlc-segmented hlc-purpose-pills" role="group" aria-labelledby="hlc-purpose-label">
+                        <button type="button" class="hlc-chip" data-purpose="Regular Home Loan" aria-pressed="true">Regular</button>
+                        <button type="button" class="hlc-chip" data-purpose="Top-up Loan" aria-pressed="false">Top-up</button>
+                      </div>
+                      <input type="hidden" id="hlc-purpose" name="purpose" value="Regular Home Loan">
+                      <span class="hlc-field-note" id="hlc-purpose-note"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="hlc-form-actions">
+              <details class="hlc-form-more" id="hlc-form-more">
+                <summary class="hlc-form-more-toggle">
+                  <span class="hlc-form-more-copy">
+                    <span class="hlc-form-more-title">
+                      <span class="hlc-form-more-label">More details</span>
+                      <svg class="hlc-form-more-chevron" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                        <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                    <span class="hlc-form-more-hint">Existing EMIs, FOIR, tenure, co-applicant</span>
+                  </span>
+                </summary>
+                <div class="hlc-form-more-panel" id="hlc-form-more-panel">
+                  <div class="hlc-form-fields hlc-form-fields--more">
+                    <label class="hlc-field" for="hlc-existing-emis">
+                      <span class="hlc-field-label">Existing EMIs</span>
+                      <span class="hlc-input-shell">
+                        <span class="hlc-prefix" aria-hidden="true">₹</span>
+                        <input type="text" id="hlc-existing-emis" name="existingEmis" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
+                      </span>
+                    </label>
+                    <div class="hlc-field">
+                      <label class="hlc-field-label" for="hlc-card-limits">Credit card limits</label>
+                      <span class="hlc-input-shell">
+                        <span class="hlc-prefix" aria-hidden="true">₹</span>
+                        <input type="text" id="hlc-card-limits" name="cardLimits" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
+                      </span>
+                      <p class="hlc-field-note">
+                        About
+                        <select
+                          class="hlc-inline-pct-select"
+                          id="hlc-card-load-pct"
+                          name="cardLoadPct"
+                          aria-label="Share of credit card limits counted as monthly load"
+                        >
+                          <option value="0">0%</option>
+                          <option value="5">5%</option>
+                          <option value="10" selected>10%</option>
+                        </select>
+                        counts as monthly load
+                      </p>
+                    </div>
+                    <label class="hlc-field" for="hlc-foir">
+                      <span class="hlc-field-label">Share of income for EMIs / FOIR</span>
+                      <span class="hlc-input-shell hlc-input-shell--select hlc-input-shell--has-face">
+                        <select id="hlc-foir" name="foirPct">
+                          <option value="50">50%</option>
+                          <option value="55" selected>55% (default)</option>
+                          <option value="60">60%</option>
+                          <option value="65">65%</option>
+                          <option value="70">70%</option>
+                        </select>
+                        <span class="hlc-select-face" id="hlc-foir-face" aria-hidden="true">
+                          <span class="hlc-select-face-value">55%</span><span class="hlc-select-face-tag"> (default)</span>
+                        </span>
+                      </span>
+                    </label>
+                    <label class="hlc-field" for="hlc-tenure">
+                      <span class="hlc-field-label">Tenure (years)</span>
+                      <span class="hlc-input-shell">
+                        <input type="text" id="hlc-tenure" name="tenureYears" value="20" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2" data-hlc-max="30">
+                      </span>
+                      <span class="hlc-field-note" id="hlc-tenure-note"></span>
+                    </label>
+                    <div class="hlc-coapplicant-row" id="hlc-coapplicant-row">
+                      <div class="hlc-coapplicant-toggle-cell">
+                        <div class="hlc-field hlc-field--coapplicant">
+                          <span class="hlc-field-label" id="hlc-coapplicant-label">Co-applicant</span>
+                          <div class="hlc-segmented hlc-coapplicant-pills" role="group" aria-labelledby="hlc-coapplicant-label">
+                            <button type="button" class="hlc-chip" data-coapplicant="no" aria-pressed="true">No</button>
+                            <button type="button" class="hlc-chip" data-coapplicant="yes" aria-pressed="false">Yes</button>
+                          </div>
+                          <input type="hidden" id="hlc-coapplicant" name="includeCoApplicant" value="no">
+                        </div>
+                      </div>
+                      <div class="hlc-coapplicant-fields" id="hlc-coapplicant-fields" hidden>
+                        <div class="hlc-form-fields hlc-form-fields--coapplicant">
+                          <label class="hlc-field" for="hlc-co-income">
+                            <span class="hlc-field-label">Co-applicant income</span>
+                            <span class="hlc-input-shell">
+                              <span class="hlc-prefix" aria-hidden="true">₹</span>
+                              <input type="text" id="hlc-co-income" name="coMonthlyIncome" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
+                            </span>
+                          </label>
+                          <label class="hlc-field" for="hlc-co-existing-emis">
+                            <span class="hlc-field-label">Co-applicant EMIs</span>
+                            <span class="hlc-input-shell">
+                              <span class="hlc-prefix" aria-hidden="true">₹</span>
+                              <input type="text" id="hlc-co-existing-emis" name="coExistingEmis" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
+                            </span>
+                          </label>
+                          <label class="hlc-field" for="hlc-co-card-limits">
+                            <span class="hlc-field-label">Co-applicant card limits</span>
+                            <span class="hlc-input-shell">
+                              <span class="hlc-prefix" aria-hidden="true">₹</span>
+                              <input type="text" id="hlc-co-card-limits" name="coCardLimits" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </details>
+              <div class="hlc-form-submit">
+                <button type="submit" class="home-hero-cta home-hero-cta-secondary" id="hlc-see-options">See options</button>
+              </div>
+              </div>
+            </form>
+            </div>
+          </section>
+
+          <div
+            class="hlc-searching"
+            id="hlc-searching"
+            hidden
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <p class="hlc-searching-title">Finding your options.</p>
+            <div class="hlc-searching-dots" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <section class="hlc-results-shell" id="hlc-results-shell" hidden aria-live="polite">
+            <div class="hlc-results-head">
+              <div>
+                <div class="hlc-options-title-row">
+                  <h2 class="hlc-section-title" id="hlc-compare-heading">Your options</h2>
+                  <p class="hlc-select-hint" id="hlc-select-hint">Select banks to apply once</p>
+                </div>
+                <p class="visually-hidden" id="hlc-status" role="status" aria-live="polite"></p>
+                <p class="visually-hidden" id="hlc-match-meta" aria-live="polite"></p>
+              </div>
+              <div class="hlc-results-actions">
+                <div class="hlc-column-tabs" role="tablist" aria-label="Column groups">
+                  <button type="button" class="hlc-column-tab" role="tab" data-group="essentials" aria-current="page" aria-selected="true">Overview</button>
+                  <button type="button" class="hlc-column-tab" role="tab" data-group="charges" aria-selected="false">Charges</button>
+                  <button type="button" class="hlc-column-tab" role="tab" data-group="laterCharges" aria-selected="false">Other charges</button>
+                </div>
+                <div class="hlc-apply-bar" id="hlc-apply-bar" aria-live="polite">
+                  <button type="button" class="hlc-btn-primary" id="hlc-apply-btn" disabled>Apply</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="hlc-compare-stage">
+              <aside class="hlc-filters" aria-labelledby="hlc-filters-heading">
+                    <h3 class="hlc-filters-title" id="hlc-filters-heading">Filters</h3>
+
+                    <fieldset class="hlc-filter-group">
+                      <legend class="hlc-filter-legend" id="hlc-borrower-label">Borrower</legend>
+                      <div class="hlc-toggle-chips hlc-borrower-chips" role="group" aria-labelledby="hlc-borrower-label">
+                        <button type="button" class="hlc-chip" data-product-filter="govtPsu" aria-pressed="false">Govt / PSU employee and pensioner</button>
+                      </div>
+                    </fieldset>
+
+                    <fieldset class="hlc-filter-group">
+                      <legend class="hlc-filter-legend" id="hlc-concessions-label">Concessions</legend>
+                      <div class="hlc-toggle-chips hlc-concession-chips" role="group" aria-labelledby="hlc-concessions-label">
+                        <button type="button" class="hlc-chip" data-product-filter="womenApplicant" aria-pressed="false">Women applicant</button>
+                        <button type="button" class="hlc-chip" data-product-filter="greenHome" aria-pressed="false">Green home</button>
+                        <button type="button" class="hlc-chip" data-product-filter="insurance" aria-pressed="false">Insurance</button>
+                      </div>
+                    </fieldset>
+
+                    <fieldset class="hlc-filter-group">
+                      <legend class="hlc-filter-legend" id="hlc-bank-type-label">Bank type</legend>
+                      <div class="hlc-segmented hlc-bank-type-pills" role="group" aria-labelledby="hlc-bank-type-label">
+                        <button type="button" class="hlc-chip" data-bank-type="All" aria-pressed="true">All</button>
+                        <button type="button" class="hlc-chip" data-bank-type="Public" aria-pressed="false">Public</button>
+                        <button type="button" class="hlc-chip" data-bank-type="Private" aria-pressed="false">Private</button>
+                      </div>
+                    </fieldset>
+
+                    <fieldset class="hlc-filter-group">
+                      <legend class="hlc-filter-legend" id="hlc-rate-label">Rate</legend>
+                      <div class="hlc-segmented hlc-rate-pills" role="group" aria-labelledby="hlc-rate-label">
+                        <button type="button" class="hlc-chip" data-rate-type="Floating" aria-pressed="true">Floating</button>
+                        <button type="button" class="hlc-chip hlc-chip--stacked" data-rate-type="Fixed" aria-pressed="false">
+                          <span class="hlc-chip-label">Fixed</span>
+                          <span class="hlc-chip-note">About 1–2% higher</span>
+                        </button>
+                      </div>
+                    </fieldset>
+
+                    <fieldset class="hlc-filter-group">
+                      <legend class="hlc-filter-legend" id="hlc-facility-label">Facility</legend>
+                      <div class="hlc-segmented hlc-facility-pills" role="group" aria-labelledby="hlc-facility-label">
+                        <button type="button" class="hlc-chip" data-facility-type="Term Loan" aria-pressed="true">Term loan</button>
+                        <button type="button" class="hlc-chip hlc-chip--stacked" data-facility-type="Overdraft" aria-pressed="false">
+                          <span class="hlc-chip-label">Overdraft</span>
+                          <span class="hlc-chip-note">About 0.15–1% higher</span>
+                        </button>
+                      </div>
+                    </fieldset>
+              </aside>
+
+              <div class="hlc-compare-table-area">
+                <div class="hlc-table-wrap">
+                  <div class="hlc-table-scroll" id="hlc-table-scroll" tabindex="0" role="region" aria-labelledby="hlc-compare-heading">
+                    <table class="hlc-compare">
+                      <caption class="visually-hidden">Your home loan options</caption>
+                      <colgroup id="hlc-compare-cols"></colgroup>
+                      <thead id="hlc-compare-head"></thead>
+                      <tbody id="hlc-compare-body"></tbody>
+                    </table>
+                  </div>
+                  <div class="hlc-charges-note" id="hlc-charges-note" role="note" hidden></div>
+                </div>
+
+                <div class="hlc-show-more-wrap">
+                  <button type="button" class="hlc-show-more" id="hlc-show-more" hidden>
+                    <span class="hlc-show-more-label">Show more banks</span>
+                    <svg class="hlc-show-more-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                      <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="hlc-paddles">
+                  <button type="button" class="hlc-paddle" id="hlc-paddle-left" aria-label="Scroll columns left">‹</button>
+                  <button type="button" class="hlc-paddle" id="hlc-paddle-right" aria-label="Scroll columns right">›</button>
+                </div>
+              </div>
+            </div>
+
+          </section>
+      </div>
+    </div>
+  </main>

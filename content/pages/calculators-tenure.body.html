@@ -1,0 +1,97 @@
+<main class="calc-main">
+    <div class="calc-wrap">
+      <nav class="calc-crumb" aria-label="Breadcrumb">
+        <a href="../calculators.html">Calculators</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Tenure</span>
+      </nav>
+      <header class="calc-hero calc-reveal">
+        <h1 class="calc-hero-title">Tenure</h1>
+        <p class="calc-hero-lead">Know how long the loan runs at an EMI you can pay.</p>
+      </header>
+      <div class="calc-workspace calc-reveal">
+        <section class="calc-controls" aria-labelledby="calc-controls-title">
+          <h2 class="calc-controls-title" id="calc-controls-title">Your numbers</h2>
+          <form class="calc-form" data-calc="tenure" novalidate>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="principal">Loan amount</label>
+              </div>
+              <div class="calc-input-shell">
+                <span class="calc-prefix" aria-hidden="true">₹</span>
+                <input type="text" class="calc-input" autocomplete="off" id="principal" name="principal" inputmode="decimal" value="50,00,000">
+              </div>
+            </div>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="rate">Interest rate (% a year)</label>
+              </div>
+              <div class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
+              </div>
+            </div>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="emi">Monthly EMI</label>
+              </div>
+              <div class="calc-input-shell">
+                <span class="calc-prefix" aria-hidden="true">₹</span>
+                <input type="text" class="calc-input" autocomplete="off" id="emi" name="emi" inputmode="decimal" value="50,000">
+              </div>
+              <p class="calc-hint">EMI must be higher than the first month interest or the loan never clears.</p>
+            </div>
+          </form>
+        </section>
+        <section class="calc-readout" aria-labelledby="calc-readout-title" aria-live="polite">
+          <h2 class="calc-readout-title" id="calc-readout-title">Estimate</h2>
+          <div class="calc-readout-hero">
+            <p class="calc-result-num" id="out-tenure">—</p>
+            <p class="calc-result-label">Estimated tenure</p>
+          </div>
+          <ul class="calc-stats">
+            <li><span>Total interest</span><strong id="out-interest">—</strong></li>
+            <li><span>Total you pay</span><strong id="out-payable">—</strong></li>
+          </ul>
+          <p class="calc-truth">Planning estimate only. Not a bank offer, sanction, or promise. Final terms stay with the lender.</p>
+        </section>
+      </div>
+
+      <section class="calc-assumptions calc-reveal" aria-labelledby="calc-assumptions-title">
+        <h2 class="calc-assumptions-title" id="calc-assumptions-title">How this estimate works</h2>
+        <p class="calc-assumptions-lead">What goes into this estimate.</p>
+
+        <div class="calc-formula" aria-labelledby="calc-formula-title">
+          <h3 class="calc-formula-title" id="calc-formula-title">Formula used</h3>
+          <p class="calc-formula-eq">n = log(E ÷ (E − P × r)) ÷ log(1 + r)</p>
+          <ul class="calc-formula-keys">
+            <li><strong>n</strong> — tenure in months</li>
+            <li><strong>E</strong> — Equated Monthly Instalment (EMI)</li>
+            <li><strong>P</strong> — loan amount</li>
+            <li><strong>r</strong> — monthly rate = annual rate ÷ 12 ÷ 100</li>
+          </ul>
+        </div>
+        <ul class="calc-assumptions-list">
+            <li>Tenure is solved from the standard EMI formula.</li>
+            <li>If EMI is at or below monthly interest, no tenure can be shown.</li>
+            <li>Banks also cap tenure by age at loan end. That cap is not modelled here.</li>
+            <li>The rate is held fixed.</li>
+        </ul>
+      </section>
+      <nav class="calc-guide-links calc-reveal" aria-labelledby="calc-guide-links-title">
+        <h2 class="calc-guide-links-title" id="calc-guide-links-title">In the Guide</h2>
+        <ul class="calc-guide-links-list">
+          <li><a href="../guide.html#tenure">Home loan overview · Tenure</a></li>
+          <li><a href="../guide.html#emi">Home loan overview · Equated Monthly Instalment (EMI)</a></li>
+        </ul>
+      </nav>
+
+      <nav class="calc-related calc-reveal" aria-labelledby="calc-related-title">
+        <h2 class="calc-related-title" id="calc-related-title">Related</h2>
+        <ul class="calc-related-list">
+            <li><a href="emi.html">EMI</a></li>
+            <li><a href="loan-amount.html">Loan from EMI</a></li>
+            <li><a href="how-much-loan.html">Eligibility</a></li>
+        </ul>
+      </nav>
+    </div>
+  </main>

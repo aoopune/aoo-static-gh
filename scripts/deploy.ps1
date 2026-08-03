@@ -22,6 +22,15 @@ $msg = if ($CommitMessage -and $CommitMessage.Count -gt 0) {
 Write-Host "Repo: $repoRoot" -ForegroundColor Cyan
 Write-Host "Commit message: $msg" -ForegroundColor Cyan
 
+Write-Host "Building site (content, sitemap, chrome)..." -ForegroundColor Yellow
+npm run build:site
+if ($LASTEXITCODE -ne 0) { throw "build:site failed" }
+Write-Host "Verifying..." -ForegroundColor Yellow
+npm run lint:responsive
+if ($LASTEXITCODE -ne 0) { throw "lint:responsive failed" }
+npm test
+if ($LASTEXITCODE -ne 0) { throw "unit tests failed" }
+
 # Stage all changes
 Write-Host "`nStaging all changes..." -ForegroundColor Yellow
 git add .
@@ -43,4 +52,4 @@ Write-Host "Pushing to origin main..." -ForegroundColor Yellow
 git push origin main
 if ($LASTEXITCODE -ne 0) { throw "git push failed" }
 
-Write-Host "`nDone. Pushed to GitHub; Pages will update the site (e.g. https://applyonlyonce.com)." -ForegroundColor Green
+Write-Host "`nDone. Pushed to GitHub; Pages will update the site (e.g. https://shroffin.com)." -ForegroundColor Green

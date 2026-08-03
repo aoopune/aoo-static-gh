@@ -2,10 +2,10 @@
 
 **Result:** PASS (export completed)
 
-- data_version: `hlc-20260801-a024dc1c`
-- source_sha256: `a024dc1c2b781c8fbca28b8d2e50d221fd3952b1e73223e32a1b3bcb76cebddc`
-- generated_at: `2026-08-01T13:19:38+00:00`
-- offers: 1149
+- data_version: `hlc-20260803-e1876613`
+- source_sha256: `e1876613c6cf466e506244454fdbc2bf0c096503c29df1c8704dac2e5bf3e7e5`
+- generated_at: `2026-08-03T14:36:10+00:00`
+- offers: 806
 - bank_charges: 2337
 - government_charges: 18
 - output: `data/home-loans-compare.json`

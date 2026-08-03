@@ -95,11 +95,13 @@
    * tasks usable without oversized titles and empty height. 1440px keeps
    * typical laptop widths (1366) in the medium band.
    */
-    --shroffin-type-display: clamp(1.75rem, 7vw, 2.25rem);
-    --shroffin-type-display-xl: clamp(2rem, 8vw, 2.5rem);
-    --shroffin-type-title: clamp(1.25rem, 4.2vw, 1.5rem);
-    --shroffin-type-support: clamp(1.125rem, 4.2vw, 1.375rem);
-    --shroffin-type-lead: clamp(1rem, 2.8vw, 1.125rem);
+    /* Phone ladder: page hero ≫ section title ≫ support ≫ lead/body.
+       Floors stay stepped so titles never collapse into facts on ~375px. */
+    --shroffin-type-display: clamp(2.125rem, 8.5vw, 2.625rem);
+    --shroffin-type-display-xl: clamp(2.5rem, 10vw, 3rem);
+    --shroffin-type-title: clamp(1.75rem, 6.5vw, 2rem);
+    --shroffin-type-support: clamp(1.125rem, 3.6vw, 1.25rem);
+    --shroffin-type-lead: clamp(1.0625rem, 2.8vw, 1.125rem);
     --shroffin-type-body: clamp(0.9375rem, 2.4vw, 1rem);
     --shroffin-type-tool-input: clamp(1.15rem, 3.5vw, 1.35rem);
     --shroffin-type-tool-result: clamp(1.75rem, 6vw, 2.25rem);
@@ -193,7 +195,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Thin.ttf") format("truetype");
     font-style: normal;
     font-weight: 100;
-    font-display: swap;
+    font-display: block;
   }
 
   @font-face {
@@ -201,7 +203,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraLight.ttf") format("truetype");
     font-style: normal;
     font-weight: 200;
-    font-display: swap;
+    font-display: block;
   }
 
   @font-face {
@@ -209,7 +211,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Light.ttf") format("truetype");
     font-style: normal;
     font-weight: 300;
-    font-display: swap;
+    font-display: block;
   }
 
   @font-face {
@@ -217,7 +219,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf") format("truetype");
     font-style: normal;
     font-weight: 400;
-    font-display: swap;
+    font-display: block;
   }
 
   @font-face {
@@ -225,7 +227,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf") format("truetype");
     font-style: normal;
     font-weight: 500;
-    font-display: swap;
+    font-display: block;
   }
 
   @font-face {
@@ -233,7 +235,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf") format("truetype");
     font-style: normal;
     font-weight: 600;
-    font-display: swap;
+    font-display: block;
   }
 
   @font-face {
@@ -241,7 +243,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Bold.ttf") format("truetype");
     font-style: normal;
     font-weight: 700;
-    font-display: swap;
+    font-display: block;
   }
 
   @font-face {
@@ -249,7 +251,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraBold.ttf") format("truetype");
     font-style: normal;
     font-weight: 800;
-    font-display: swap;
+    font-display: block;
   }
 
   @font-face {
@@ -257,7 +259,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Black.ttf") format("truetype");
     font-style: normal;
     font-weight: 900;
-    font-display: swap;
+    font-display: block;
   }
 
   html {
@@ -992,6 +994,27 @@
     letter-spacing: 0;
   }
 
+  .globalnav-compact-item--with-value {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.15rem;
+    min-block-size: 3.25rem;
+  }
+
+  .globalnav-compact-item-label {
+    display: block;
+  }
+
+  .globalnav-compact-item-value {
+    display: block;
+    color: var(--shroffin-muted);
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: 0;
+  }
+
   .globalnav-compact-item--drill::after {
     content: "";
     flex-shrink: 0;
@@ -1415,6 +1438,8 @@
 
   .site-footer-legal {
     padding-block-start: clamp(2.5rem, 6vw, 4rem);
+    container-type: inline-size;
+    container-name: footer-legal;
   }
 
   .site-footer-disclaimer-title {
@@ -1585,6 +1610,38 @@
 
   /* Near-full content rail (~1068px): one-row pipes are usually safe. */
   @media (min-width: 1100px) {
+    .site-footer-legal-links {
+      column-gap: 0;
+      row-gap: 0.5rem;
+    }
+
+    .site-footer-legal-links li:not(:last-child)::after {
+      content: "";
+      flex: none;
+      align-self: center;
+      inline-size: 1px;
+      block-size: 0.85em;
+      margin-inline: 0.75rem;
+      background: var(--shroffin-rule);
+    }
+  }
+
+  /* Progressive container queries (same breakpoints as viewport bands above). */
+  @container footer-legal (min-width: 834px) {
+    .site-footer-legal-links {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      column-gap: 1.25rem;
+      row-gap: 0.375rem;
+    }
+
+    .site-footer-legal-links a {
+      padding-block: 0.25rem;
+    }
+  }
+
+  @container footer-legal (min-width: 1100px) {
     .site-footer-legal-links {
       column-gap: 0;
       row-gap: 0.5rem;

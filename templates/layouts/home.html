@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script>document.documentElement.classList.add('js');</script>
+  <title>Shroffin</title>
+  <link rel="icon" href="favicon.ico?v=6" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/logos/favicon-32.png?v=6">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/logos/favicon-16.png?v=6">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=6">
+  <link rel="manifest" href="site.webmanifest?v=6">
+  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <style>
+    :root {
+      --gn-height: 48px;
+      --gn-bg: #fcfcfd;
+      --gn-bg: color-mix(in srgb, #0071e3 0.75%, #ffffff);
+      --gn-text: rgba(29, 29, 31, 0.8);
+      --gn-text-hover: #1d1d1f;
+      --gn-ink: #1d1d1f;
+      --gn-max: 1068px;
+      --font-brand: 'Google Sans Flex', sans-serif;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: var(--font-brand);
+    }
+
+    /* Keep the scrollbar lane reserved so locking scroll (Support flyout)
+       does not shift the whole page when the bar disappears. */
+    html {
+      scrollbar-gutter: stable;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 50% 0%, #ffffff 0%, #fcfcfd 42%, #f5f7f9 100%);
+      color: #1d1d1f;
+    }
+
+
+
+
+    .home-content {
+      padding-top: var(--gn-height);
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 833px) {
+      .home-content {
+        padding-top: 0;
+      }
+    }
+
+    /* ——— Hero ———
+       Apple-style unit: not full viewport — leave a strip of the next section. */
+    .home-hero {
+      position: relative;
+      width: 100%;
+      height: min(580px, calc(100svh - var(--gn-height) - 7.5rem));
+      height: min(580px, calc(100dvh - var(--gn-height) - 7.5rem));
+      min-height: 28rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0;
+      box-sizing: border-box;
+      overflow: hidden;
+      text-align: center;
+      background: #f5f7f9;
+    }
+
+    .home-hero-copy {
+      position: relative;
+      z-index: 1;
+      width: min(1068px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 52px 0 0;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(14px);
+      animation:
+        home-hero-fade 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards,
+        home-hero-rise 1.45s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
+    }
+
+    .home-hero-title {
+      margin: 0;
+      color: #1d1d1f;
+      font-weight: 600;
+      font-size: calc(var(--shroffin-type-display) - 3px);
+      line-height: 1.05;
+    }
+
+    .home-hero-sub {
+      margin: 6px auto 0;
+      max-width: 34em;
+      color: #1d1d1f;
+      font-weight: 400;
+      font-size: calc(var(--shroffin-type-support) - 3px);
+      line-height: 1.35;
+    }
+
+    .home-hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 17px;
+      margin: 17px 0 0;
+      pointer-events: auto;
+    }
+
+    /* Primary pill recipe lives in shroffin-shell.css (.home-hero-cta-primary). */
+
+    /* Apple .button-secondary: outline at rest; fills blue + white text on hover */
+    .home-hero-cta-secondary {
+      background: transparent;
+      color: #0066cc;
+      border-color: #0066cc;
+    }
+
+    .home-hero-cta-secondary:hover {
+      background: var(--shroffin-btn-primary-hover, #0076df);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .home-hero-cta-secondary:active {
+      background: var(--shroffin-btn-primary-active, #006edb);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    /* Primary pill focus lives in shroffin-shell.css */
+
+    @media (max-width: 833px) {
+      .home-hero-copy {
+        width: min(1068px, calc(100% - 32px));
+        padding-top: 40px;
+      }
+
+      .home-hero-sub {
+        margin-top: 4px;
+      }
+
+      .home-hero-ctas {
+        gap: 14px;
+        margin-top: 14px;
+      }
+    }
+
+    @media (min-width: 834px) {
+      .home-hero {
+        height: min(692px, calc(100svh - var(--gn-height) - 8.5rem));
+        height: min(692px, calc(100dvh - var(--gn-height) - 8.5rem));
+        min-height: 32rem;
+      }
+    }
+
+    /* ——— Apple-like global footer ——— */
+    .site-footer {
+      background: #f5f7f9;
+      color: rgba(0, 0, 0, 0.56);
+      font-size: 12px;
+      line-height: 1.33337;
+    }
+
+    .site-footer-inner {
+      width: min(1068px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 28px 0 0;
+      box-sizing: border-box;
+    }
+
+    .site-footer-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 0;
+    }
+
+    .site-footer-logo {
+      display: block;
+      width: auto;
+      height: 28px;
+    }
+
+    .site-footer-tagline {
+      margin: 0;
+      max-width: 36em;
+      color: #1d1d1f;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.42859;
+    }
+
+    /* Full-bleed hairlines — stretch across the whole footer */
+    .site-footer-rule {
+      display: block;
+      width: 100%;
+      height: 1px;
+      margin: 20px 0 0;
+      border: 0;
+      background: rgba(0, 0, 0, 0.16);
+    }
+
+    .site-footer-legal {
+      padding-top: 20px;
+    }
+
+    .site-footer-disclaimer-title {
+      margin: 0 0 10px;
+      color: #1d1d1f;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.33337;
+    }
+
+    .site-footer-disclaimer {
+      margin: 0;
+    }
+
+    .site-footer-disclaimer p {
+      margin: 0 0 8px;
+    }
+
+    .site-footer-disclaimer p:last-child {
+      margin-bottom: 0;
+    }
+
+    .site-footer-copy {
+      margin: 0;
+      padding: 0;
+    }
+
+    .site-footer-copy a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .site-footer-copy a:hover {
+      color: #1d1d1f;
+    }
+
+    @media (min-width: 1068px) {
+      .site-footer-inner {
+        width: min(1068px, calc(100% - 48px));
+      }
+    }
+
+    @media (max-width: 733px) {
+      .site-footer-inner {
+        width: min(1068px, calc(100% - 32px));
+        padding-top: 24px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .home-hero-cta {
+        transition: none;
+      }
+
+      .home-hero-copy {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+    }
+
+    @keyframes home-hero-fade {
+      to { opacity: 1; }
+    }
+
+    @keyframes home-hero-rise {
+      to { transform: translateY(0); }
+    }
+  </style>
+  <link rel="stylesheet" href="css/shroffin-shell.css?v=type-ladder-5">
+  <!-- shroffin-home.css: stance styles moved to about; file kept for now -->
+  <!-- <link rel="stylesheet" href="css/shroffin-home.css?v=stance-34"> -->
+</head>
+<body>
+  <!-- SHROFFIN_NAV_START -->
+  <div class="globalnav-veil" id="globalnav-veil" hidden></div>
+  <nav class="globalnav" id="globalnav" aria-label="Global">
+    <div class="globalnav-content">
+      <ul class="globalnav-list">
+        <li class="globalnav-item globalnav-item-brand">
+          <a class="globalnav-link globalnav-link-brand" href="/" aria-label="Shroffin Home">
+            <img
+              class="globalnav-logo"
+              src="/images/logos/logo-h-light-clear-781x173.png"
+              alt="Shroffin"
+              width="99"
+              height="22"
+            >
+          </a>
+        </li>
+        <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/compare.html">Compare</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/quick-overview.html">Overview</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/schemes.html">Schemes</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/faq.html">FAQ</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/document-checklist.html">Documents</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/about.html">About</a>
+        </li>
+        -->
+        <!-- EDUCATION_LOAN_PRODUCT: kept in code, hidden from UI until re-enabled
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/education-loan.html">Education</a>
+        </li>
+        -->
+        <li class="globalnav-item globalnav-item-about globalnav-item-flyout" id="nav-guide">
+          <a
+            class="globalnav-link globalnav-flyout-trigger"
+            href="/pages/guide.html"
+            id="nav-guide-trigger"
+            aria-expanded="false"
+            aria-controls="nav-guide-flyout"
+          >Guide</a>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >Support</button>
+        </li>
+        <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-tools-trigger"
+            aria-expanded="false"
+            aria-controls="nav-tools-flyout"
+          >Tools</button>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/about.html">About</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-guide-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore guide</h2>
+          <ul class="globalnav-submenu-list">
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/guide.html">
+                <span class="globalnav-submenu-label">Overview</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/guide-documents.html">
+                <span class="globalnav-submenu-label">Documents</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/tax-benefits.html">
+                <span class="globalnav-submenu-label">Tax benefits</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/concessions.html">
+                <span class="globalnav-submenu-label">Concessions</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/home-loan-insurance.html">
+                <span class="globalnav-submenu-label">Insurance</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/home-loan-complaints.html">
+                <span class="globalnav-submenu-label">Grievance redressal mechanism</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content">
+        <h2 class="globalnav-submenu-header">Get support</h2>
+        <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
+              <span class="globalnav-submenu-label">Email</span>
+              <span class="globalnav-submenu-value">support@shroffin.com</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="tel:+919112334367">
+              <span class="globalnav-submenu-label">Call</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="globalnav-submenu-link"
+              href="https://wa.me/919112334367"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="globalnav-submenu-label">Chat on WhatsApp ↗</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore tools</h2>
+          <ul class="globalnav-submenu-list">
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/calculators.html">
+                <span class="globalnav-submenu-label">Calculators</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/project-approvals.html">
+                <span class="globalnav-submenu-label">Project Bank Finder</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- SHROFFIN_NAV_END -->
+
+  {{BODY_HTML}}
+
+  <!-- SHROFFIN_FOOTER_START -->
+  <aside class="site-help-strip" aria-label="Get help">
+    <p class="site-help-strip-text">
+      Need some help?
+      <a
+        class="guide-section-link"
+        href="https://wa.me/919112334367"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Chat now<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new window)</span></a>
+      or call <a class="site-help-strip-phone" href="tel:+919112334367">91123 34367</a>
+    </p>
+  </aside>
+  <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
+    <div class="site-footer-inner">
+      <div class="site-footer-directory">
+        <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
+          <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/guide.html">Overview</a></li>
+            <li><a href="/pages/guide-documents.html">Documents</a></li>
+            <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
+            <li><a href="/pages/concessions.html">Concessions</a></li>
+            <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
+            <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-tools-title">
+          <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/calculators.html">Calculators</a></li>
+            <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-company-title">
+          <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/about.html">About</a></li>
+            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/terms-of-use.html">Terms of Use</a></li>
+          </ul>
+        </nav>
+
+        <section class="site-footer-group" aria-labelledby="footer-support-title">
+          <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
+          <ul class="site-footer-list">
+            <li><a href="mailto:support@shroffin.com">Email</a></li>
+            <li><a href="tel:+919112334367">Call</a></li>
+          </ul>
+        </section>
+
+        <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
+          <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
+          <ul class="site-footer-list">
+            <li>
+              <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
+        <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
+        <div class="site-footer-disclaimer">
+          <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+          <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+          <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+          <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+          <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+        </div>
+      </section>
+
+      <div class="site-footer-bottom">
+        <div class="site-footer-bottom-row">
+          <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
+          <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
+            <ul class="site-footer-legal-links">
+              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/terms-of-use.html">Terms of Use</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
+              <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
+              <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- SHROFFIN_FOOTER_END -->
+
+  <script src="js/shroffin-nav.js?v=sel-13"></script>
+  <script src="js/shroffin-guide.js?v=strip-ln-6"></script>
+</body>
+</html>

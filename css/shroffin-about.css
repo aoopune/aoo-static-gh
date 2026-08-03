@@ -189,40 +189,7 @@
   text-align: center;
 }
 
-/* Story body off-site links — same shared link colour as the rest of the site. */
-.about-page main .guide-section-link {
-  color: var(--shroffin-link, #3f62c8);
-  text-decoration: none;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-  border-bottom: 0;
-  transition:
-    color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    text-decoration-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.about-page main .guide-section-link:visited {
-  color: var(--shroffin-link-visited, #5a4fcf);
-}
-
-.about-page main .guide-section-link:hover,
-.about-page main .guide-section-link:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
-  text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
-}
-
-.about-page main .guide-section-link:visited:hover,
-.about-page main .guide-section-link:visited:focus-visible {
-  color: var(--shroffin-link-visited, #5a4fcf);
-  text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
-}
-
-.about-page main .guide-section-link:active {
-  color: var(--shroffin-link-active, #2f4ba0);
-  text-decoration: underline;
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
-}
+/* Off-site .guide-section-link recipe lives in shroffin-shell.css */
 
 /* ——— Founder ——— */
 .about-band--founder {

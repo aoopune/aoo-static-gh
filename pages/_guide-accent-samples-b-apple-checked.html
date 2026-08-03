@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Guide accent samples B · Apple-checked – Shroffin</title>
+  <meta name="description" content="Internal preview: Approach B matched to Apple Intelligence-style gradients — clear hue travel, readable contrast. Not linked from the live site.">
+  <link rel="icon" href="../favicon.ico?v=6" sizes="any">
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=type-ladder-5">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=type-ladder-5">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=type-ladder-5">
+  <style>
+    /*
+      Checked against apple.com/apple-intelligence (Aug 2026):
+      Hero “Introducing Siri AI…” uses a clear multi-hue text wash
+      (violet → magenta → blue). You can see the gradient. Stops stay
+      mid-rich — not neon, not fogged grey. Body stays solid grey.
+
+      Rules used here:
+      1. Three stops that travel across hue (obvious left→right).
+      2. Mid saturation — colour is real, not candy, not dust.
+      3. Dark enough for contrast on light paper.
+      4. Kicker stays muted grey. Only the title gets the wash.
+    */
+
+    .sample-page {
+      padding-bottom: var(--shroffin-space-page-bottom);
+    }
+
+    .sample-banner {
+      max-width: var(--mag-wrap, 1068px);
+      margin: 0 auto;
+      padding: 1rem var(--mag-inline, 1rem) 0;
+      box-sizing: border-box;
+    }
+
+    .sample-banner p {
+      margin: 0;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      background: #f0f3f7;
+      color: var(--mag-muted, #6e6e73);
+      font-size: 0.875rem;
+      line-height: 1.45;
+    }
+
+    .sample-toc {
+      max-width: var(--mag-wrap, 1068px);
+      margin: 1.5rem auto 0;
+      padding-inline: var(--mag-inline, 1rem);
+      box-sizing: border-box;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+    }
+
+    .sample-toc a {
+      color: var(--mag-accent, #3f62c8);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .sample-toc a:hover {
+      text-decoration: underline;
+    }
+
+    .sample-block {
+      max-width: var(--mag-wrap, 1068px);
+      margin: 0 auto;
+      padding: var(--shroffin-space-section) var(--mag-inline, 1rem) 0;
+      box-sizing: border-box;
+    }
+
+    .sample-block-label {
+      margin: 0 0 0.35rem;
+      color: var(--mag-muted, #6e6e73);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .sample-block-title {
+      margin: 0;
+      color: var(--mag-ink, #1d1d1f);
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .sample-block-lead {
+      margin: 0.5rem 0 0;
+      max-width: 42em;
+      color: var(--mag-muted, #6e6e73);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .sample-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+      margin-top: 1.75rem;
+    }
+
+    @media (min-width: 834px) {
+      .sample-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem 2.5rem;
+      }
+    }
+
+    .sample-card {
+      padding: 1.25rem 0 0;
+      border-top: 1px solid var(--mag-hair-soft, rgba(0, 0, 0, 0.08));
+    }
+
+    .sample-card .mag-kicker {
+      display: block;
+      margin: 0 0 0.4rem;
+      color: var(--mag-muted, #6e6e73);
+    }
+
+    .sample-card .guide-tile-title {
+      margin: 0;
+      /* Let the wash span the full title width — Apple does this too */
+      display: inline-block;
+      max-width: 100%;
+    }
+
+    .sample-card .guide-tile-copy {
+      margin: 0.65rem 0 0;
+      max-width: 28em;
+      font-size: 0.95rem;
+    }
+
+    .sample-swatch {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 0.85rem;
+      color: var(--mag-muted, #6e6e73);
+      font-size: 0.75rem;
+    }
+
+    .sample-swatch i {
+      width: 2.75rem;
+      height: 0.7rem;
+      border-radius: 999px;
+      background: var(--g);
+    }
+
+    .g-title .guide-tile-title {
+      background-image: var(--g);
+      background-size: 100% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /*
+      Set Intelligence — closest to Apple Intelligence hero
+      (violet → magenta → blue family). Clear travel. Readable.
+    */
+    .g-siri {
+      /* Direct cousin of Apple Intelligence hero wash */
+      --g: linear-gradient(90deg, #5e5ce6 0%, #bf5af2 42%, #2997ff 100%);
+    }
+    .g-camera {
+      /* Apple camera / photo story: warm → rose → violet */
+      --g: linear-gradient(90deg, #ff6482 0%, #ff2d55 40%, #bf5af2 100%);
+    }
+    .g-chip {
+      /* Chip / performance: blue → indigo → purple */
+      --g: linear-gradient(90deg, #0071e3 0%, #5e5ce6 50%, #bf5af2 100%);
+    }
+    .g-battery {
+      /* Battery / green story: teal → green → soft lime (kept mid) */
+      --g: linear-gradient(90deg, #00c7be 0%, #30d158 48%, #a8e063 100%);
+    }
+    .g-safety {
+      /* Safety / alert: orange → coral → rose */
+      --g: linear-gradient(90deg, #ff9f0a 0%, #ff6937 45%, #ff375f 100%);
+    }
+    .g-privacy {
+      /* Privacy / calm tech: blue → cyan → teal */
+      --g: linear-gradient(90deg, #0a84ff 0%, #64d2ff 45%, #00c7be 100%);
+    }
+
+    /*
+      Set Guide — same Apple rules, mapped to tax-benefit chapters
+    */
+    .g-interest {
+      --g: linear-gradient(90deg, #0071e3 0%, #5e5ce6 48%, #bf5af2 100%);
+    }
+    .g-principal {
+      --g: linear-gradient(90deg, #00c7be 0%, #30d158 50%, #66d4a0 100%);
+    }
+    .g-build {
+      --g: linear-gradient(90deg, #64d2ff 0%, #0a84ff 40%, #5e5ce6 100%);
+    }
+    .g-joint {
+      --g: linear-gradient(90deg, #5e5ce6 0%, #bf5af2 45%, #ff375f 100%);
+    }
+    .g-claim {
+      --g: linear-gradient(90deg, #bf5af2 0%, #ff375f 48%, #ff9f0a 100%);
+    }
+    .g-other {
+      --g: linear-gradient(90deg, #ac8e68 0%, #ff9f0a 45%, #ff6937 100%);
+    }
+
+    /*
+      Set Contrast — slightly deeper starts for max readability
+      on light paper, still obvious gradient travel.
+    */
+    .g-ink-siri {
+      --g: linear-gradient(90deg, #3634a3 0%, #9b3dce 42%, #147ce5 100%);
+    }
+    .g-ink-sea {
+      --g: linear-gradient(90deg, #0a6e6a 0%, #1faa4a 48%, #6bbf4a 100%);
+    }
+    .g-ink-dusk {
+      --g: linear-gradient(90deg, #3a38b0 0%, #9b3dce 40%, #d43d6e 100%);
+    }
+    .g-ink-sky {
+      --g: linear-gradient(90deg, #0b5db8 0%, #2f8fe0 42%, #2db8b0 100%);
+    }
+    .g-ink-ember {
+      --g: linear-gradient(90deg, #c45a08 0%, #e04a2f 45%, #d12b55 100%);
+    }
+    .g-ink-gold {
+      --g: linear-gradient(90deg, #8a6a3a 0%, #d4891a 45%, #e05a2a 100%);
+    }
+
+    .sample-flow {
+      max-width: var(--mag-wrap, 1068px);
+      margin: var(--shroffin-space-section) auto 0;
+      padding-inline: var(--mag-inline, 1rem);
+      box-sizing: border-box;
+    }
+
+    .sample-flow .mag-section {
+      padding-block: 1.75rem;
+      border-top: 1px solid var(--mag-hair-soft, rgba(0, 0, 0, 0.08));
+    }
+
+    .sample-flow .mag-rail {
+      display: block !important;
+      margin-bottom: 0.35rem;
+    }
+
+    .sample-flow .mag-num {
+      display: none !important;
+    }
+
+    .sample-flow .mag-kicker {
+      display: block;
+      color: var(--mag-muted, #6e6e73);
+    }
+
+    .sample-flow .guide-tile-title {
+      display: inline-block;
+      max-width: 100%;
+      background-image: var(--g);
+      background-size: 100% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Side-by-side reference strip */
+    .sample-ref {
+      margin-top: 1.5rem;
+      padding: 1.25rem 1.1rem;
+      border-radius: 14px;
+      background: #f5f5f7;
+      text-align: center;
+    }
+
+    .sample-ref-kicker {
+      margin: 0;
+      color: #6e6e73;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .sample-ref-title {
+      margin: 0.4rem auto 0;
+      max-width: 14em;
+      font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      background-image: linear-gradient(90deg, #5e5ce6 0%, #bf5af2 42%, #2997ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sample-ref-note {
+      margin: 0.75rem auto 0;
+      max-width: 32em;
+      color: #6e6e73;
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+
+    @media (forced-colors: active) {
+      .g-title .guide-tile-title,
+      .sample-flow .guide-tile-title,
+      .sample-ref-title {
+        background-image: none;
+        color: CanvasText;
+        -webkit-text-fill-color: CanvasText;
+      }
+    }
+  </style>
+</head>
+<body class="guide-reading sample-page">
+  <div class="sample-banner">
+    <p>
+      Checked against Apple’s Apple Intelligence page: their hero title clearly travels
+      violet → magenta → blue. You can tell it’s a gradient. Colours are rich but not neon,
+      and dark enough to read on light paper. This page follows that.
+    </p>
+  </div>
+
+  <nav class="sample-toc" aria-label="Samples on this page">
+    <a href="#ref">Apple-like ref</a>
+    <a href="#intel">Intelligence set</a>
+    <a href="#guide">Guide set</a>
+    <a href="#contrast">Contrast set</a>
+    <a href="#flow">Page flow</a>
+  </nav>
+
+  <header class="guide-hero">
+    <h1 class="guide-hero-title">Your home loan EMI has tax benefits.</h1>
+    <h2 class="guide-hero-lead">
+      Page title stays steel. Section titles below use clear multi-colour washes —
+      obvious gradient, solid contrast.
+    </h2>
+  </header>
+
+  <div class="sample-block" id="ref">
+    <p class="sample-block-label">Reference</p>
+    <h2 class="sample-block-title">What Apple’s hero wash feels like</h2>
+    <p class="sample-block-lead">
+      Same family as the Siri AI headline on apple.com: violet → magenta → blue.
+      Left and right should look clearly different.
+    </p>
+    <div class="sample-ref">
+      <p class="sample-ref-kicker">Apple Intelligence–style</p>
+      <p class="sample-ref-title">Introducing Siri AI. Truly helpful. Truly yours.</p>
+      <p class="sample-ref-note">
+        Principle: three stops, big hue travel, mid-rich colour, still readable.
+        Not fog. Not neon. Clear gradient.
+      </p>
+    </div>
+  </div>
+
+  <div class="sample-block" id="intel">
+    <p class="sample-block-label">Set Intelligence · Apple product story colours</p>
+    <h2 class="sample-block-title">Same contrast language Apple uses for chapters</h2>
+    <p class="sample-block-lead">
+      Built from Apple’s own marketing hues (Action Blue, Indigo, Purple, Pink, Green, Orange).
+      Each title should read as a different colour story at a glance.
+    </p>
+    <div class="sample-grid">
+      <div class="sample-card g-title g-siri">
+        <p class="mag-kicker">Interest payment</p>
+        <h3 class="guide-tile-title">Interest payment</h3>
+        <p class="guide-tile-copy">Siri wash — violet → magenta → blue.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Siri</span>
+      </div>
+      <div class="sample-card g-title g-chip">
+        <p class="mag-kicker">Principal repayment</p>
+        <h3 class="guide-tile-title">Principal repayment</h3>
+        <p class="guide-tile-copy">Chip — blue → indigo → purple.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Chip</span>
+      </div>
+      <div class="sample-card g-title g-battery">
+        <p class="mag-kicker">Under construction</p>
+        <h3 class="guide-tile-title">Under construction</h3>
+        <p class="guide-tile-copy">Battery — teal → green → soft lime.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Battery</span>
+      </div>
+      <div class="sample-card g-title g-camera">
+        <p class="mag-kicker">Joint loan</p>
+        <h3 class="guide-tile-title">Joint home loan</h3>
+        <p class="guide-tile-copy">Camera — coral → rose → violet.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Camera</span>
+      </div>
+      <div class="sample-card g-title g-safety">
+        <p class="mag-kicker">How to claim</p>
+        <h3 class="guide-tile-title">How to claim</h3>
+        <p class="guide-tile-copy">Safety — amber → coral → rose.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Safety</span>
+      </div>
+      <div class="sample-card g-title g-privacy">
+        <p class="mag-kicker">Other</p>
+        <h3 class="guide-tile-title">Other</h3>
+        <p class="guide-tile-copy">Privacy — blue → cyan → teal.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Privacy</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sample-block" id="guide">
+    <p class="sample-block-label">Set Guide · mapped to tax chapters</p>
+    <h2 class="sample-block-title">Same Apple rules, assigned by meaning</h2>
+    <p class="sample-block-lead">
+      Interest gets blue→purple, principal gets teal→green, joint gets purple→rose, and so on.
+      Clear chapter identity when you scroll.
+    </p>
+    <div class="sample-grid">
+      <div class="sample-card g-title g-interest">
+        <p class="mag-kicker">Interest payment</p>
+        <h3 class="guide-tile-title">Interest payment</h3>
+        <p class="guide-tile-copy">Blue → indigo → purple.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Interest</span>
+      </div>
+      <div class="sample-card g-title g-principal">
+        <p class="mag-kicker">Principal repayment</p>
+        <h3 class="guide-tile-title">Principal repayment</h3>
+        <p class="guide-tile-copy">Teal → green.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Principal</span>
+      </div>
+      <div class="sample-card g-title g-build">
+        <p class="mag-kicker">Under construction</p>
+        <h3 class="guide-tile-title">Under construction</h3>
+        <p class="guide-tile-copy">Ice blue → blue → indigo.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Build</span>
+      </div>
+      <div class="sample-card g-title g-joint">
+        <p class="mag-kicker">Joint loan</p>
+        <h3 class="guide-tile-title">Joint home loan</h3>
+        <p class="guide-tile-copy">Indigo → purple → rose.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Joint</span>
+      </div>
+      <div class="sample-card g-title g-claim">
+        <p class="mag-kicker">How to claim</p>
+        <h3 class="guide-tile-title">How to claim</h3>
+        <p class="guide-tile-copy">Purple → rose → amber.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Claim</span>
+      </div>
+      <div class="sample-card g-title g-other">
+        <p class="mag-kicker">Other</p>
+        <h3 class="guide-tile-title">Other</h3>
+        <p class="guide-tile-copy">Bronze → amber → coral.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Other</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sample-block" id="contrast">
+    <p class="sample-block-label">Set Contrast · deeper starts</p>
+    <h2 class="sample-block-title">Same travel, stronger on light paper</h2>
+    <p class="sample-block-lead">
+      If Guide feels a touch light on white, use these — deeper first stop, same clear hue change.
+    </p>
+    <div class="sample-grid">
+      <div class="sample-card g-title g-ink-siri">
+        <p class="mag-kicker">Interest payment</p>
+        <h3 class="guide-tile-title">Interest payment</h3>
+        <p class="guide-tile-copy">Deeper Siri wash.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Ink Siri</span>
+      </div>
+      <div class="sample-card g-title g-ink-sea">
+        <p class="mag-kicker">Principal repayment</p>
+        <h3 class="guide-tile-title">Principal repayment</h3>
+        <p class="guide-tile-copy">Deeper teal → green.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Ink sea</span>
+      </div>
+      <div class="sample-card g-title g-ink-sky">
+        <p class="mag-kicker">Under construction</p>
+        <h3 class="guide-tile-title">Under construction</h3>
+        <p class="guide-tile-copy">Deeper blue → teal.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Ink sky</span>
+      </div>
+      <div class="sample-card g-title g-ink-dusk">
+        <p class="mag-kicker">Joint loan</p>
+        <h3 class="guide-tile-title">Joint home loan</h3>
+        <p class="guide-tile-copy">Deeper indigo → rose.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Ink dusk</span>
+      </div>
+      <div class="sample-card g-title g-ink-ember">
+        <p class="mag-kicker">How to claim</p>
+        <h3 class="guide-tile-title">How to claim</h3>
+        <p class="guide-tile-copy">Deeper amber → rose.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Ink ember</span>
+      </div>
+      <div class="sample-card g-title g-ink-gold">
+        <p class="mag-kicker">Other</p>
+        <h3 class="guide-tile-title">Other</h3>
+        <p class="guide-tile-copy">Deeper bronze → coral.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Ink gold</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sample-block" id="flow" style="padding-bottom: 0;">
+    <p class="sample-block-label">Page flow · Guide set</p>
+    <h2 class="sample-block-title">Tax benefits chapters with clear washes</h2>
+    <p class="sample-block-lead">
+      Scroll this. Each title should obviously change colour left to right —
+      and each chapter should feel different from the last.
+    </p>
+  </div>
+
+  <div class="sample-flow" style="padding-bottom: var(--shroffin-space-page-bottom);">
+    <section class="mag-section g-interest">
+      <div class="mag-rail"><p class="mag-kicker">Interest payment</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Interest payment</h2>
+        <p class="guide-tile-copy">The limit depends on whether you live in the home or rent it out.</p>
+      </div>
+    </section>
+    <section class="mag-section g-principal">
+      <div class="mag-rail"><p class="mag-kicker">Principal repayment</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Principal repayment</h2>
+        <p class="guide-tile-copy">Shares a yearly basket with other savings claims on the old tax regime.</p>
+      </div>
+    </section>
+    <section class="mag-section g-build">
+      <div class="mag-rail"><p class="mag-kicker">Under construction</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Under construction</h2>
+        <p class="guide-tile-copy">Interest before possession is claimed later, in equal parts.</p>
+      </div>
+    </section>
+    <section class="mag-section g-joint">
+      <div class="mag-rail"><p class="mag-kicker">Joint loan</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Joint home loan</h2>
+        <p class="guide-tile-copy">Each co-owner can claim their share, within the same rules.</p>
+      </div>
+    </section>
+    <section class="mag-section g-claim">
+      <div class="mag-rail"><p class="mag-kicker">How to claim</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">How to claim</h2>
+        <p class="guide-tile-copy">Interest payment and principal repayment go in different places on your return.</p>
+      </div>
+    </section>
+    <section class="mag-section g-other">
+      <div class="mag-rail"><p class="mag-kicker">Other</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Other</h2>
+        <p class="guide-tile-copy">Stamp duty, registration, and a few edge cases sit here.</p>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

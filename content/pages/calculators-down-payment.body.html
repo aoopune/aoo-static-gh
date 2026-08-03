@@ -1,0 +1,85 @@
+<main class="calc-main">
+    <div class="calc-wrap">
+      <nav class="calc-crumb" aria-label="Breadcrumb">
+        <a href="../calculators.html">Calculators</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Down payment</span>
+      </nav>
+      <header class="calc-hero calc-reveal">
+        <h1 class="calc-hero-title">Down payment</h1>
+        <p class="calc-hero-lead">Know the cash you must bring beside the bank’s share.</p>
+      </header>
+      <div class="calc-workspace calc-reveal">
+        <section class="calc-controls" aria-labelledby="calc-controls-title">
+          <h2 class="calc-controls-title" id="calc-controls-title">Your numbers</h2>
+          <form class="calc-form" data-calc="down-payment" novalidate>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="property">Property value</label>
+              </div>
+              <div class="calc-input-shell">
+                <span class="calc-prefix" aria-hidden="true">₹</span>
+                <input type="text" class="calc-input" autocomplete="off" id="property" name="property" inputmode="decimal" value="80,00,000">
+              </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="propertyRange" min="500000" max="9999999999" step="50000" value="8000000" aria-label="Property value slider">
+              </div>
+              <p class="calc-hint">Stamp duty and registration are usually extra and paid from your funds.</p>
+            </div>
+          </form>
+        </section>
+        <section class="calc-readout" aria-labelledby="calc-readout-title" aria-live="polite">
+          <h2 class="calc-readout-title" id="calc-readout-title">Estimate</h2>
+          <div class="calc-readout-hero">
+            <p class="calc-result-num" id="out-down">—</p>
+            <p class="calc-result-label">Minimum down payment at RBI ceiling</p>
+          </div>
+          <ul class="calc-stats">
+            <li><span>Max loan</span><strong id="out-loan">—</strong></li>
+            <li><span>Bank can lend up to</span><strong id="out-ltv">—</strong></li>
+          </ul>
+          <p class="calc-truth">Planning estimate only. Not a bank offer, sanction, or promise. Final terms stay with the lender.</p>
+        </section>
+      </div>
+
+      <section class="calc-assumptions calc-reveal" aria-labelledby="calc-assumptions-title">
+        <h2 class="calc-assumptions-title" id="calc-assumptions-title">How this estimate works</h2>
+        <p class="calc-assumptions-lead">What goes into this estimate.</p>
+
+        <div class="calc-formula" aria-labelledby="calc-formula-title">
+          <h3 class="calc-formula-title" id="calc-formula-title">Formula used</h3>
+          <p class="calc-formula-eq">Max loan = Agreement Value × bank share</p>
+          <p class="calc-formula-eq">Down payment = Agreement Value − max loan</p>
+          <ul class="calc-formula-keys">
+            <li><strong>Bank share</strong> — RBI ceilings on Agreement Value: 90% / 80% / 75%</li>
+          </ul>
+        </div>
+        <ul class="calc-assumptions-list">
+            <li>Agreement Value up to ₹30 lakh: bank can lend up to 90%.</li>
+            <li>Agreement Value ₹30 lakh to ₹75 lakh: bank can lend up to 80%.</li>
+            <li>Agreement Value above ₹75 lakh: bank can lend up to 75%.</li>
+            <li>These are the highest limits set by RBI. Banks may approve a lower amount depending on your profile and bank policy.</li>
+            <li>Stamp duty and registration are usually paid from your funds and are not financed here.</li>
+        </ul>
+      </section>
+      <nav class="calc-guide-links calc-reveal" aria-labelledby="calc-guide-links-title">
+        <h2 class="calc-guide-links-title" id="calc-guide-links-title">In the Guide</h2>
+        <ul class="calc-guide-links-list">
+          <li><a href="../guide.html#loan-amount-property">Home loan overview · Loan amount · Property</a></li>
+          <li><a href="../guide.html#loan-amount">Home loan overview · Loan amount</a></li>
+          <li><a href="../guide.html#charges">Home loan overview · Charges</a></li>
+          <li><a href="../tax-benefits.html#other">Tax benefits · Stamp duty and registration in the tax basket</a></li>
+        </ul>
+      </nav>
+
+      <nav class="calc-related calc-reveal" aria-labelledby="calc-related-title">
+        <h2 class="calc-related-title" id="calc-related-title">Related</h2>
+        <ul class="calc-related-list">
+            <li><a href="emi.html">EMI</a></li>
+            <li><a href="loan-amount.html">Loan from EMI</a></li>
+            <li><a href="how-much-loan.html">Eligibility</a></li>
+        </ul>
+      </nav>
+    </div>
+  </main>

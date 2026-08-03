@@ -1,0 +1,16 @@
+# Site chrome must never be empty
+
+When editing or rebuilding any HTML page in `aoo-static-gh` that uses `SHROFFIN_NAV` / `SHROFFIN_FOOTER` markers:
+
+## Always
+
+1. After writing a page under `pages/` or a root `*.html`, the file must contain live `class="globalnav"` and `class="site-footer"` — never empty markers alone.
+2. Prefer `npm run build:content -- --write` (and/or `npm run build:nav` + `npm run build:footer`) over hand-stitching layout + body.
+3. Layouts under `templates/layouts/` must also keep filled chrome (not empty marker pairs). Use `node scripts/lib/fill-layout-chrome.js` if a layout was emptied.
+4. Before finishing, spot-check one Guide page: Shroffin logo/menu at top and footer at bottom.
+
+## Never
+
+- Do not write `<!-- SHROFFIN_NAV_START -->` immediately followed by `<!-- SHROFFIN_NAV_END -->` into a shipped page.
+- Do not strip nav/footer “to clean a layout” without immediately re-injecting chrome from `partials/`.
+- Do not assume a later sync step will run — fill chrome in the same write.

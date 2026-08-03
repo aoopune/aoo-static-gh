@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Guide accent samples (preview) – Shroffin</title>
+  <meta name="description" content="Internal preview: section accent colour samples for guide pages. Not linked from the live site.">
+  <link rel="icon" href="../favicon.ico?v=6" sizes="any">
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=type-ladder-5">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=type-ladder-5">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=type-ladder-5">
+  <style>
+    /* Preview-only — not for production guides until you pick an approach. */
+    :root {
+      --sample-steel-a: #4a6fa5;
+      --sample-steel-b: #2f4a72;
+      --sample-teal-a: #3d8a86;
+      --sample-teal-b: #2a5f5c;
+      --sample-indigo-a: #6b6aad;
+      --sample-indigo-b: #45447a;
+      --sample-sage-a: #5a8f62;
+      --sample-sage-b: #3a5f40;
+      --sample-amber-a: #b07a3a;
+      --sample-amber-b: #7a5226;
+      --sample-rose-a: #a86b78;
+      --sample-rose-b: #6f4450;
+    }
+
+    .sample-page {
+      padding-bottom: var(--shroffin-space-page-bottom);
+    }
+
+    .sample-banner {
+      max-width: var(--mag-wrap, 1068px);
+      margin: 0 auto;
+      padding: 1rem var(--mag-inline, 1rem) 0;
+      box-sizing: border-box;
+    }
+
+    .sample-banner p {
+      margin: 0;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      background: #f0f3f7;
+      color: var(--mag-muted, #6e6e73);
+      font-size: 0.875rem;
+      line-height: 1.45;
+    }
+
+    .sample-toc {
+      max-width: var(--mag-wrap, 1068px);
+      margin: 1.5rem auto 0;
+      padding-inline: var(--mag-inline, 1rem);
+      box-sizing: border-box;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+    }
+
+    .sample-toc a {
+      color: var(--mag-accent, #3f62c8);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .sample-toc a:hover {
+      text-decoration: underline;
+    }
+
+    .sample-block {
+      max-width: var(--mag-wrap, 1068px);
+      margin: 0 auto;
+      padding: var(--shroffin-space-section) var(--mag-inline, 1rem) 0;
+      box-sizing: border-box;
+    }
+
+    .sample-block-label {
+      margin: 0 0 0.35rem;
+      color: var(--mag-muted, #6e6e73);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .sample-block-title {
+      margin: 0;
+      color: var(--mag-ink, #1d1d1f);
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .sample-block-lead {
+      margin: 0.5rem 0 0;
+      max-width: 36em;
+      color: var(--mag-muted, #6e6e73);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .sample-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+      margin-top: 1.75rem;
+    }
+
+    @media (min-width: 834px) {
+      .sample-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem 2.5rem;
+      }
+    }
+
+    .sample-card {
+      padding: 1.25rem 0 0;
+      border-top: 1px solid var(--mag-hair-soft, rgba(0, 0, 0, 0.08));
+    }
+
+    .sample-card .mag-kicker {
+      display: block;
+      margin: 0 0 0.4rem;
+    }
+
+    .sample-card .guide-tile-title {
+      margin: 0;
+    }
+
+    .sample-card .guide-tile-copy {
+      margin: 0.65rem 0 0;
+      max-width: 28em;
+      font-size: 0.95rem;
+    }
+
+    .sample-swatch {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.85rem;
+      color: var(--mag-muted, #6e6e73);
+      font-size: 0.75rem;
+    }
+
+    .sample-swatch i {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--sample-a), var(--sample-b));
+    }
+
+    /* ---- Approach A: coloured kicker only ---- */
+    .sample-a[data-accent="steel"] .mag-kicker { color: var(--sample-steel-a); }
+    .sample-a[data-accent="teal"] .mag-kicker { color: var(--sample-teal-a); }
+    .sample-a[data-accent="indigo"] .mag-kicker { color: var(--sample-indigo-a); }
+    .sample-a[data-accent="sage"] .mag-kicker { color: var(--sample-sage-a); }
+    .sample-a[data-accent="amber"] .mag-kicker { color: var(--sample-amber-a); }
+    .sample-a[data-accent="rose"] .mag-kicker { color: var(--sample-rose-a); }
+
+    .sample-a .guide-tile-title {
+      color: var(--mag-ink, #1d1d1f);
+    }
+
+    /* ---- Approach B: soft one-hue title wash ---- */
+    .sample-b .mag-kicker {
+      color: var(--mag-muted, #6e6e73);
+    }
+
+    .sample-b .guide-tile-title {
+      background-image: linear-gradient(90deg, var(--sample-b) 0%, var(--sample-a) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sample-b[data-accent="steel"] { --sample-a: var(--sample-steel-a); --sample-b: var(--sample-steel-b); }
+    .sample-b[data-accent="teal"] { --sample-a: var(--sample-teal-a); --sample-b: var(--sample-teal-b); }
+    .sample-b[data-accent="indigo"] { --sample-a: var(--sample-indigo-a); --sample-b: var(--sample-indigo-b); }
+    .sample-b[data-accent="sage"] { --sample-a: var(--sample-sage-a); --sample-b: var(--sample-sage-b); }
+    .sample-b[data-accent="amber"] { --sample-a: var(--sample-amber-a); --sample-b: var(--sample-amber-b); }
+    .sample-b[data-accent="rose"] { --sample-a: var(--sample-rose-a); --sample-b: var(--sample-rose-b); }
+
+    /* ---- Approach C: coloured kicker + soft title wash ---- */
+    .sample-c[data-accent="steel"] {
+      --sample-a: var(--sample-steel-a);
+      --sample-b: var(--sample-steel-b);
+    }
+    .sample-c[data-accent="teal"] {
+      --sample-a: var(--sample-teal-a);
+      --sample-b: var(--sample-teal-b);
+    }
+    .sample-c[data-accent="indigo"] {
+      --sample-a: var(--sample-indigo-a);
+      --sample-b: var(--sample-indigo-b);
+    }
+    .sample-c[data-accent="sage"] {
+      --sample-a: var(--sample-sage-a);
+      --sample-b: var(--sample-sage-b);
+    }
+    .sample-c[data-accent="amber"] {
+      --sample-a: var(--sample-amber-a);
+      --sample-b: var(--sample-amber-b);
+    }
+    .sample-c[data-accent="rose"] {
+      --sample-a: var(--sample-rose-a);
+      --sample-b: var(--sample-rose-b);
+    }
+
+    .sample-c .mag-kicker {
+      color: var(--sample-a);
+    }
+
+    .sample-c .guide-tile-title {
+      background-image: linear-gradient(90deg, var(--sample-b) 0%, var(--sample-a) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ---- Flow mock: how a real page chapter would feel ---- */
+    .sample-flow {
+      max-width: var(--mag-wrap, 1068px);
+      margin: var(--shroffin-space-section) auto 0;
+      padding-inline: var(--mag-inline, 1rem);
+      box-sizing: border-box;
+    }
+
+    .sample-flow .mag-section {
+      padding-block: 1.75rem;
+      border-top: 1px solid var(--mag-hair-soft, rgba(0, 0, 0, 0.08));
+    }
+
+    .sample-flow .mag-rail {
+      display: block !important;
+      margin-bottom: 0.35rem;
+    }
+
+    .sample-flow .mag-num {
+      display: none !important;
+    }
+
+    .sample-flow .mag-kicker {
+      display: block;
+    }
+
+    @media (forced-colors: active) {
+      .sample-b .guide-tile-title,
+      .sample-c .guide-tile-title {
+        background-image: none;
+        color: CanvasText;
+        -webkit-text-fill-color: CanvasText;
+      }
+    }
+  </style>
+</head>
+<body class="guide-reading sample-page">
+  <div class="sample-banner">
+    <p>
+      Internal preview only — not part of the live Guide menu.
+      Compare the three approaches, then tell me which one to use on the real pages.
+    </p>
+  </div>
+
+  <nav class="sample-toc" aria-label="Samples on this page">
+    <a href="#today">Today</a>
+    <a href="#approach-a">A · Kicker colour</a>
+    <a href="#approach-b">B · Title wash</a>
+    <a href="#approach-c">C · Both</a>
+    <a href="#flow-a">Page flow (A)</a>
+    <a href="#flow-b">Page flow (B)</a>
+  </nav>
+
+  <!-- Current hero (unchanged) -->
+  <header class="guide-hero" id="today">
+    <h1 class="guide-hero-title">Your home loan EMI has tax benefits.</h1>
+    <h2 class="guide-hero-lead">
+      This is today’s page title — soft steel wash. We keep this.
+      Below are samples only for the section headings.
+    </h2>
+  </header>
+
+  <!-- Today’s section look -->
+  <div class="sample-block">
+    <p class="sample-block-label">Baseline</p>
+    <h2 class="sample-block-title">Today — grey kicker, black title</h2>
+    <p class="sample-block-lead">What every guide section looks like right now. No chapter colour.</p>
+    <div class="sample-grid">
+      <div class="sample-card">
+        <p class="mag-kicker">Interest payment</p>
+        <h3 class="guide-tile-title">Interest payment</h3>
+        <p class="guide-tile-copy">The limit depends on whether you live in the home or rent it out.</p>
+      </div>
+      <div class="sample-card">
+        <p class="mag-kicker">How to claim</p>
+        <h3 class="guide-tile-title">How to claim</h3>
+        <p class="guide-tile-copy">Interest payment and principal repayment go in different places on your return.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approach A -->
+  <div class="sample-block" id="approach-a">
+    <p class="sample-block-label">Approach A · recommended start</p>
+    <h2 class="sample-block-title">Colour on the small label only</h2>
+    <p class="sample-block-lead">
+      Title stays near-black. Soft tint on the kicker gives each chapter an identity without looking fancy.
+      Closest to how Apple marks story chapters on long pages.
+    </p>
+    <div class="sample-grid">
+      <div class="sample-card sample-a" data-accent="steel">
+        <p class="mag-kicker">Interest payment</p>
+        <h3 class="guide-tile-title">Interest payment</h3>
+        <p class="guide-tile-copy">Steel blue — money, rates, interest, charges.</p>
+        <span class="sample-swatch" style="--sample-a: var(--sample-steel-a); --sample-b: var(--sample-steel-b)"><i aria-hidden="true"></i> Steel</span>
+      </div>
+      <div class="sample-card sample-a" data-accent="teal">
+        <p class="mag-kicker">Principal repayment</p>
+        <h3 class="guide-tile-title">Principal repayment</h3>
+        <p class="guide-tile-copy">Soft teal — principal, property, under construction.</p>
+        <span class="sample-swatch" style="--sample-a: var(--sample-teal-a); --sample-b: var(--sample-teal-b)"><i aria-hidden="true"></i> Teal</span>
+      </div>
+      <div class="sample-card sample-a" data-accent="indigo">
+        <p class="mag-kicker">Joint loan</p>
+        <h3 class="guide-tile-title">Joint home loan</h3>
+        <p class="guide-tile-copy">Calm indigo — people sharing a loan.</p>
+        <span class="sample-swatch" style="--sample-a: var(--sample-indigo-a); --sample-b: var(--sample-indigo-b)"><i aria-hidden="true"></i> Indigo</span>
+      </div>
+      <div class="sample-card sample-a" data-accent="sage">
+        <p class="mag-kicker">How to claim</p>
+        <h3 class="guide-tile-title">How to claim</h3>
+        <p class="guide-tile-copy">Warm sage — steps and actions.</p>
+        <span class="sample-swatch" style="--sample-a: var(--sample-sage-a); --sample-b: var(--sample-sage-b)"><i aria-hidden="true"></i> Sage</span>
+      </div>
+      <div class="sample-card sample-a" data-accent="amber">
+        <p class="mag-kicker">Other</p>
+        <h3 class="guide-tile-title">Other</h3>
+        <p class="guide-tile-copy">Muted amber — extras, exclusions, edge cases.</p>
+        <span class="sample-swatch" style="--sample-a: var(--sample-amber-a); --sample-b: var(--sample-amber-b)"><i aria-hidden="true"></i> Amber</span>
+      </div>
+      <div class="sample-card sample-a" data-accent="rose">
+        <p class="mag-kicker">Claim</p>
+        <h3 class="guide-tile-title">How to claim cover</h3>
+        <p class="guide-tile-copy">Quiet rose — insurance and cover pages.</p>
+        <span class="sample-swatch" style="--sample-a: var(--sample-rose-a); --sample-b: var(--sample-rose-b)"><i aria-hidden="true"></i> Rose</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approach B -->
+  <div class="sample-block" id="approach-b">
+    <p class="sample-block-label">Approach B · more colour</p>
+    <h2 class="sample-block-title">Soft one-hue wash on the title</h2>
+    <p class="sample-block-lead">
+      Kicker stays grey. The big heading fades within one colour family (darker → softer).
+      More life than A; still not a rainbow.
+    </p>
+    <div class="sample-grid">
+      <div class="sample-card sample-b" data-accent="steel">
+        <p class="mag-kicker">Interest payment</p>
+        <h3 class="guide-tile-title">Interest payment</h3>
+        <p class="guide-tile-copy">Steel wash on the title.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Steel</span>
+      </div>
+      <div class="sample-card sample-b" data-accent="teal">
+        <p class="mag-kicker">Principal repayment</p>
+        <h3 class="guide-tile-title">Principal repayment</h3>
+        <p class="guide-tile-copy">Teal wash on the title.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Teal</span>
+      </div>
+      <div class="sample-card sample-b" data-accent="indigo">
+        <p class="mag-kicker">Joint loan</p>
+        <h3 class="guide-tile-title">Joint home loan</h3>
+        <p class="guide-tile-copy">Indigo wash on the title.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Indigo</span>
+      </div>
+      <div class="sample-card sample-b" data-accent="sage">
+        <p class="mag-kicker">How to claim</p>
+        <h3 class="guide-tile-title">How to claim</h3>
+        <p class="guide-tile-copy">Sage wash on the title.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Sage</span>
+      </div>
+      <div class="sample-card sample-b" data-accent="amber">
+        <p class="mag-kicker">Other</p>
+        <h3 class="guide-tile-title">Other</h3>
+        <p class="guide-tile-copy">Amber wash on the title.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Amber</span>
+      </div>
+      <div class="sample-card sample-b" data-accent="rose">
+        <p class="mag-kicker">Claim</p>
+        <h3 class="guide-tile-title">How to claim cover</h3>
+        <p class="guide-tile-copy">Rose wash on the title.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Rose</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approach C -->
+  <div class="sample-block" id="approach-c">
+    <p class="sample-block-label">Approach C · strongest</p>
+    <h2 class="sample-block-title">Coloured kicker + soft title wash</h2>
+    <p class="sample-block-lead">
+      Most colour. Can feel rich on short pages; on long guides it may feel busy.
+      Only pick this if A and B feel too quiet.
+    </p>
+    <div class="sample-grid">
+      <div class="sample-card sample-c" data-accent="steel">
+        <p class="mag-kicker">Interest payment</p>
+        <h3 class="guide-tile-title">Interest payment</h3>
+        <p class="guide-tile-copy">Kicker + title both in steel.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Steel</span>
+      </div>
+      <div class="sample-card sample-c" data-accent="teal">
+        <p class="mag-kicker">Principal repayment</p>
+        <h3 class="guide-tile-title">Principal repayment</h3>
+        <p class="guide-tile-copy">Kicker + title both in teal.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Teal</span>
+      </div>
+      <div class="sample-card sample-c" data-accent="indigo">
+        <p class="mag-kicker">Joint loan</p>
+        <h3 class="guide-tile-title">Joint home loan</h3>
+        <p class="guide-tile-copy">Kicker + title both in indigo.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Indigo</span>
+      </div>
+      <div class="sample-card sample-c" data-accent="sage">
+        <p class="mag-kicker">How to claim</p>
+        <h3 class="guide-tile-title">How to claim</h3>
+        <p class="guide-tile-copy">Kicker + title both in sage.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Sage</span>
+      </div>
+      <div class="sample-card sample-c" data-accent="amber">
+        <p class="mag-kicker">Other</p>
+        <h3 class="guide-tile-title">Other</h3>
+        <p class="guide-tile-copy">Kicker + title both in amber.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Amber</span>
+      </div>
+      <div class="sample-card sample-c" data-accent="rose">
+        <p class="mag-kicker">Claim</p>
+        <h3 class="guide-tile-title">How to claim cover</h3>
+        <p class="guide-tile-copy">Kicker + title both in rose.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Rose</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full page-flow mock: Approach A -->
+  <div class="sample-block" id="flow-a" style="padding-bottom: 0;">
+    <p class="sample-block-label">Page flow · Approach A</p>
+    <h2 class="sample-block-title">How Tax benefits would feel with A</h2>
+    <p class="sample-block-lead">
+      Same section order as the real Tax benefits page. Scroll this like a real guide chapter list.
+    </p>
+  </div>
+
+  <div class="sample-flow">
+    <section class="mag-section sample-a" data-accent="steel">
+      <div class="mag-rail"><p class="mag-kicker">Interest payment</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Interest payment</h2>
+        <p class="guide-tile-copy">The limit depends on whether you live in the home or rent it out.</p>
+      </div>
+    </section>
+    <section class="mag-section sample-a" data-accent="teal">
+      <div class="mag-rail"><p class="mag-kicker">Principal repayment</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Principal repayment</h2>
+        <p class="guide-tile-copy">Shares a yearly basket with other savings claims on the old tax regime.</p>
+      </div>
+    </section>
+    <section class="mag-section sample-a" data-accent="teal">
+      <div class="mag-rail"><p class="mag-kicker">Under construction</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Under construction</h2>
+        <p class="guide-tile-copy">Interest before possession is claimed later, in equal parts.</p>
+      </div>
+    </section>
+    <section class="mag-section sample-a" data-accent="indigo">
+      <div class="mag-rail"><p class="mag-kicker">Joint loan</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Joint home loan</h2>
+        <p class="guide-tile-copy">Each co-owner can claim their share, within the same rules.</p>
+      </div>
+    </section>
+    <section class="mag-section sample-a" data-accent="sage">
+      <div class="mag-rail"><p class="mag-kicker">How to claim</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">How to claim</h2>
+        <p class="guide-tile-copy">Interest payment and principal repayment go in different places on your return.</p>
+      </div>
+    </section>
+    <section class="mag-section sample-a" data-accent="amber">
+      <div class="mag-rail"><p class="mag-kicker">Other</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Other</h2>
+        <p class="guide-tile-copy">Stamp duty, registration, and a few edge cases sit here.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Full page-flow mock: Approach B -->
+  <div class="sample-block" id="flow-b" style="padding-bottom: 0;">
+    <p class="sample-block-label">Page flow · Approach B</p>
+    <h2 class="sample-block-title">Same chapters with title washes</h2>
+    <p class="sample-block-lead">Compare this scroll to the A flow above. Pick the one that still feels calm.</p>
+  </div>
+
+  <div class="sample-flow" style="padding-bottom: var(--shroffin-space-page-bottom);">
+    <section class="mag-section sample-b" data-accent="steel">
+      <div class="mag-rail"><p class="mag-kicker">Interest payment</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Interest payment</h2>
+        <p class="guide-tile-copy">The limit depends on whether you live in the home or rent it out.</p>
+      </div>
+    </section>
+    <section class="mag-section sample-b" data-accent="teal">
+      <div class="mag-rail"><p class="mag-kicker">Principal repayment</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Principal repayment</h2>
+        <p class="guide-tile-copy">Shares a yearly basket with other savings claims on the old tax regime.</p>
+      </div>
+    </section>
+    <section class="mag-section sample-b" data-accent="teal">
+      <div class="mag-rail"><p class="mag-kicker">Under construction</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Under construction</h2>
+        <p class="guide-tile-copy">Interest before possession is claimed later, in equal parts.</p>
+      </div>
+    </section>
+    <section class="mag-section sample-b" data-accent="indigo">
+      <div class="mag-rail"><p class="mag-kicker">Joint loan</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Joint home loan</h2>
+        <p class="guide-tile-copy">Each co-owner can claim their share, within the same rules.</p>
+      </div>
+    </section>
+    <section class="mag-section sample-b" data-accent="sage">
+      <div class="mag-rail"><p class="mag-kicker">How to claim</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">How to claim</h2>
+        <p class="guide-tile-copy">Interest payment and principal repayment go in different places on your return.</p>
+      </div>
+    </section>
+    <section class="mag-section sample-b" data-accent="amber">
+      <div class="mag-rail"><p class="mag-kicker">Other</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Other</h2>
+        <p class="guide-tile-copy">Stamp duty, registration, and a few edge cases sit here.</p>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

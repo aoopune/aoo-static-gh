@@ -1,0 +1,482 @@
+{
+  "meta": {
+    "source": "Home loans - Banks ROI 23_06_26 (formatted).xlsx",
+    "master": "HOME_LOANS_COMPARE_v1.xlsx",
+    "ignored": [
+      "PNB Housing Finance",
+      "LIC Housing Finance"
+    ]
+  },
+  "verdict_counts": {
+    "RATES_OK_MASTER_EXTRAS": 14,
+    "RATES_MATCH_TIGHT": 19
+  },
+  "mismatch_banks": [],
+  "banks": [
+    {
+      "bank": "Punjab National Bank",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 20,
+      "mst_rows": 60,
+      "missing_rates": [],
+      "extra_roi_n": 27,
+      "extra_roi": [
+        8.2,
+        8.25,
+        8.4,
+        8.5,
+        8.7,
+        8.75,
+        8.8,
+        8.85,
+        8.9,
+        8.95,
+        9.05,
+        9.2,
+        9.3,
+        9.4,
+        9.45,
+        9.55,
+        9.85,
+        10.0,
+        10.1,
+        10.15
+      ]
+    },
+    {
+      "bank": "Central Bank of India",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 30,
+      "mst_rows": 15,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "Bank of India",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 43,
+      "mst_rows": 128,
+      "missing_rates": [],
+      "extra_roi_n": 12,
+      "extra_roi": [
+        8.5,
+        8.95,
+        10.65,
+        10.75,
+        10.95,
+        11.0,
+        11.15,
+        11.25,
+        11.45,
+        11.5,
+        12.55,
+        13.05
+      ]
+    },
+    {
+      "bank": "Union Bank of India",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 21,
+      "mst_rows": 32,
+      "missing_rates": [],
+      "extra_roi_n": 6,
+      "extra_roi": [
+        7.4,
+        7.6,
+        8.25,
+        8.35,
+        9.1,
+        9.6
+      ]
+    },
+    {
+      "bank": "Bank of Baroda",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 82,
+      "mst_rows": 180,
+      "missing_rates": [],
+      "extra_roi_n": 51,
+      "extra_roi": [
+        7.45,
+        7.55,
+        7.95,
+        8.0,
+        8.05,
+        8.15,
+        8.25,
+        8.4,
+        8.55,
+        8.6,
+        8.75,
+        8.8,
+        8.85,
+        8.9,
+        9.0,
+        9.05,
+        9.15,
+        9.2,
+        9.25,
+        9.3
+      ]
+    },
+    {
+      "bank": "Canara Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 45,
+      "mst_rows": 25,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "Indian Overseas Bank",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 16,
+      "mst_rows": 23,
+      "missing_rates": [],
+      "extra_roi_n": 6,
+      "extra_roi": [
+        9.65,
+        9.7,
+        9.75,
+        9.85,
+        10.05,
+        10.25
+      ]
+    },
+    {
+      "bank": "Punjab & Sind Bank",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 7,
+      "mst_rows": 21,
+      "missing_rates": [],
+      "extra_roi_n": 13,
+      "extra_roi": [
+        7.35,
+        7.5,
+        7.84,
+        8.2,
+        8.3,
+        8.35,
+        8.5,
+        8.84,
+        9.0,
+        9.2,
+        10.0,
+        10.65,
+        11.65
+      ]
+    },
+    {
+      "bank": "State Bank of India",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 18,
+      "mst_rows": 63,
+      "missing_rates": [],
+      "extra_roi_n": 30,
+      "extra_roi": [
+        7.75,
+        8.1,
+        8.2,
+        8.3,
+        8.4,
+        8.5,
+        8.75,
+        8.85,
+        8.9,
+        8.95,
+        9.0,
+        9.05,
+        9.1,
+        9.35,
+        9.4,
+        9.45,
+        9.5,
+        9.55,
+        9.6,
+        9.9
+      ]
+    },
+    {
+      "bank": "Bank of Maharashtra",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 34,
+      "mst_rows": 53,
+      "missing_rates": [],
+      "extra_roi_n": 25,
+      "extra_roi": [
+        7.45,
+        7.5,
+        7.6,
+        8.0,
+        8.05,
+        8.1,
+        8.15,
+        8.2,
+        8.6,
+        8.7,
+        8.8,
+        9.0,
+        9.2,
+        9.35,
+        9.4,
+        9.55,
+        9.9,
+        10.7,
+        10.9,
+        11.35
+      ]
+    },
+    {
+      "bank": "UCO Bank",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 8,
+      "mst_rows": 14,
+      "missing_rates": [],
+      "extra_roi_n": 5,
+      "extra_roi": [
+        8.15,
+        8.5,
+        8.75,
+        9.1,
+        10.75
+      ]
+    },
+    {
+      "bank": "Jammu and Kashmir Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 5,
+      "mst_rows": 5,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "DCB Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 6,
+      "mst_rows": 6,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "Indian Bank",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 6,
+      "mst_rows": 12,
+      "missing_rates": [],
+      "extra_roi_n": 4,
+      "extra_roi": [
+        7.55,
+        7.85,
+        8.35,
+        8.95
+      ]
+    },
+    {
+      "bank": "Bandhan Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 6,
+      "mst_rows": 6,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "City Union Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 27,
+      "mst_rows": 18,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "Axis Bank",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 6,
+      "mst_rows": 12,
+      "missing_rates": [],
+      "extra_roi_n": 5,
+      "extra_roi": [
+        7.75,
+        8.1,
+        8.4,
+        9.1,
+        9.45
+      ]
+    },
+    {
+      "bank": "ICICI Bank",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 6,
+      "mst_rows": 12,
+      "missing_rates": [],
+      "extra_roi_n": 5,
+      "extra_roi": [
+        7.4,
+        7.9,
+        8.0,
+        9.0,
+        9.2
+      ]
+    },
+    {
+      "bank": "HDFC Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 6,
+      "mst_rows": 6,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "Dhanlaxmi Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 7,
+      "mst_rows": 7,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "Federal Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 6,
+      "mst_rows": 6,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "IDBI Bank",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 7,
+      "mst_rows": 21,
+      "missing_rates": [],
+      "extra_roi_n": 14,
+      "extra_roi": [
+        7.55,
+        7.75,
+        7.9,
+        8.1,
+        8.15,
+        8.25,
+        8.35,
+        8.45,
+        9.1,
+        9.3,
+        9.65,
+        9.85,
+        10.25,
+        10.45
+      ]
+    },
+    {
+      "bank": "IDFC FIRST Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 5,
+      "mst_rows": 5,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "Karur Vysya Bank",
+      "verdict": "RATES_OK_MASTER_EXTRAS",
+      "src_lines": 5,
+      "mst_rows": 10,
+      "missing_rates": [],
+      "extra_roi_n": 4,
+      "extra_roi": [
+        9.05,
+        9.55,
+        9.95,
+        10.25
+      ]
+    },
+    {
+      "bank": "Kotak Mahindra Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 6,
+      "mst_rows": 6,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "Karnataka Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 6,
+      "mst_rows": 6,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "RBL Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 6,
+      "mst_rows": 6,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "South Indian Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 6,
+      "mst_rows": 6,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "Nainital Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 16,
+      "mst_rows": 16,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "Yes Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 6,
+      "mst_rows": 6,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "CSB Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 6,
+      "mst_rows": 6,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "Tamilnad Mercantile Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 7,
+      "mst_rows": 7,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    },
+    {
+      "bank": "IndusInd Bank",
+      "verdict": "RATES_MATCH_TIGHT",
+      "src_lines": 7,
+      "mst_rows": 7,
+      "missing_rates": [],
+      "extra_roi_n": 0,
+      "extra_roi": []
+    }
+  ]
+}

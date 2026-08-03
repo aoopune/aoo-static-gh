@@ -354,15 +354,34 @@ test.describe('breakpoints and navigation behavior', function () {
     await expect(page.locator('.globalnav')).toHaveClass(/is-compact/);
     await expect(globalToggle).toBeVisible();
 
-    // Guide localnav is an exclusive surface: while open it hides global chrome.
+    // At the top: Guide menu keeps the main Shroffin bar.
     await localToggle.click();
     await expect(localToggle).toHaveAttribute('aria-expanded', 'true');
-    await expect(page.locator('.globalnav')).toHaveCSS('visibility', 'hidden');
+    await expect(page.locator('.localnav')).toHaveClass(/is-open-with-global/);
+    await expect(page.locator('.globalnav')).toBeVisible();
+    await expect(page.locator('.globalnav')).not.toHaveCSS('visibility', 'hidden');
 
     await page.keyboard.press('Escape');
     await expect(localToggle).toHaveAttribute('aria-expanded', 'false');
     await expect(localToggle).toBeFocused();
     await expect(globalToggle).toBeVisible();
+
+    // After the main bar has scrolled away: opening Guide must not bring it back.
+    await page.evaluate(function () {
+      window.scrollTo(0, Math.max(window.innerHeight, 900));
+    });
+    await page.waitForFunction(function () {
+      var gn = document.querySelector('.globalnav');
+      return gn && gn.getBoundingClientRect().bottom <= 1;
+    });
+    await localToggle.click();
+    await expect(localToggle).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('.localnav')).not.toHaveClass(/is-open-with-global/);
+    await expect(page.locator('.globalnav')).toHaveCSS('visibility', 'hidden');
+
+    await page.keyboard.press('Escape');
+    await expect(localToggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.locator('.globalnav')).not.toHaveCSS('visibility', 'hidden');
 
     await globalToggle.click();
     await expect(globalToggle).toHaveAttribute('aria-expanded', 'true');

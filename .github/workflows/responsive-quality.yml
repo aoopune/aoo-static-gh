@@ -22,16 +22,19 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
 
       - name: Install locked dependencies
         run: npm ci
+
+      - name: Verify committed HTML matches build:site
+        run: npm run check:built-html
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium firefox webkit
@@ -44,7 +47,7 @@ jobs:
 
       - name: Upload Playwright evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: responsive-playwright-${{ github.run_attempt }}
           path: |

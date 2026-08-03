@@ -31,6 +31,8 @@
   --mag-wrap: var(--shroffin-content-max, 1068px);
   --mag-inline: max(1rem, env(safe-area-inset-left));
   --mag-inline-end: max(1rem, env(safe-area-inset-right));
+  /* Phone/tablet sticky chapter picker — JS sets 2.875rem while it is visible. */
+  --shroffin-toc-compact-offset: 0px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-color: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -97,13 +99,13 @@ a.localnav-title:hover {
 }
 
 .localnav-link {
-  color: var(--mag-ink);
+  color: var(--mag-muted);
   text-decoration: none;
   transition: color var(--mag-micro, 0.5s) var(--ease-color);
 }
 
 .localnav-link:hover {
-  color: var(--mag-accent);
+  color: var(--mag-ink);
 }
 
 .localnav-link[aria-current="page"] {
@@ -111,20 +113,49 @@ a.localnav-title:hover {
   cursor: default;
 }
 
-/* Current-page marker is a control indicator (chrome), not a link underline. */
+/* Current-page marker — same 2px underline as Explore banks column tabs. */
 .localnav-link[aria-current="page"]::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 1px;
+  height: 2px;
   background: var(--mag-ink);
+  border-radius: 1px 1px 0 0;
 }
 
-/* ---- Text links: on-site + off-site share colour, underline, arrow gap ---- */
+/*
+ * Desktop + JS: thumb owns the marker. Hide ::after as soon as html.js is set
+ * so the static line cannot flash under the new page before the thumb arms.
+ */
+@media (min-width: 834px) {
+  html.js .localnav-link[aria-current="page"]::after {
+    content: none;
+  }
 
-.guide-section-link,
+  .localnav-list .shroffin-sel-thumb--line {
+    background: var(--mag-ink, var(--shroffin-ink, #1d1d1f));
+  }
+
+  .localnav-list .shroffin-sel-thumb.is-ready {
+    transition-duration: 0.55s;
+  }
+}
+
+/* Phone drawer keeps the side tick — hide the horizontal thumb. */
+@media (max-width: 833px) {
+  .localnav-list .shroffin-sel-thumb {
+    display: none !important;
+  }
+
+  html.js .localnav-link[aria-current="page"]::after {
+    content: "";
+  }
+}
+
+/* ---- Text links: magazine in-body links share shell off-site colour/underline ---- */
+
 .mag-link,
 .guide-share-then a,
 .guide-doc-note a,
@@ -143,7 +174,6 @@ a.localnav-title:hover {
     text-decoration-color var(--mag-micro, 0.5s) var(--ease-color);
 }
 
-.guide-section-link:visited,
 .mag-link:visited,
 .guide-share-then a:visited,
 .guide-doc-note a:visited,
@@ -155,8 +185,6 @@ a.localnav-title:hover {
   color: var(--shroffin-link-visited, #5a4fcf);
 }
 
-.guide-section-link:hover,
-.guide-section-link:focus-visible,
 .mag-link:hover,
 .mag-link:focus-visible,
 .guide-share-then a:hover,
@@ -178,8 +206,6 @@ a.localnav-title:hover {
   text-decoration-color: var(--shroffin-link, #3f62c8);
 }
 
-.guide-section-link:visited:hover,
-.guide-section-link:visited:focus-visible,
 .mag-link:visited:hover,
 .guide-share-then a:visited:hover,
 .guide-doc-note a:visited:hover,
@@ -192,7 +218,6 @@ a.localnav-title:hover {
   text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
 }
 
-.guide-section-link:active,
 .mag-link:active,
 .guide-share-then a:active,
 .guide-doc-note a:active,
@@ -206,24 +231,7 @@ a.localnav-title:hover {
   text-decoration-color: var(--shroffin-link-active, #2f4ba0);
 }
 
-.guide-section-link-arrow {
-  display: inline-block;
-  margin-inline-start: var(--shroffin-link-arrow-gap, 0.35em);
-  font-size: 0.9em;
-  color: inherit;
-  transition: transform var(--mag-micro, 0.5s) var(--ease);
-}
-
-.guide-section-link:hover .guide-section-link-arrow,
-.guide-section-link:focus-visible .guide-section-link-arrow {
-  color: inherit;
-  transform: translate(0.12em, -0.12em);
-}
-
-.guide-section-link:active .guide-section-link-arrow {
-  color: inherit;
-  transform: translate(0.08em, -0.08em);
-}
+/* Arrow motion for guide-section-link lives in shroffin-shell.css */
 
 /* ---- Masthead (restyled guide-hero — left, editorial, verbatim copy) ---- */
 
@@ -513,7 +521,8 @@ h2.guide-hero-lead {
   font-weight: 600;
 }
 
-/* Phone/tablet: leave room for the compact bar under the Guide bars. */
+/* Phone/tablet: leave room for sticky bars; compact TOC height is live
+   via --shroffin-toc-compact-offset (0 when the chapter strip is still in view). */
 @media (max-width: 1199px) {
   .guide-moment[id],
   .mag-section[id],
@@ -521,7 +530,8 @@ h2.guide-hero-lead {
   .guide-flip-face--back,
   .guide-flip-link[data-flip] {
     scroll-margin-block-start: calc(
-      var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height, 52px) + 2.875rem + 1.25rem
+      var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height, 52px) +
+        var(--shroffin-toc-compact-offset, 0px) + 1.25rem
     );
   }
 }
@@ -626,26 +636,173 @@ h2.guide-hero-lead {
    Title field owns the first screen. Quiet numbered chapters (not a menu).
    Shared by Overview, Documents, Tax, Concessions, Insurance, Complaints. */
 
+body.guide-reading {
+  /*
+   * Open pause before the two-column read. On wide screens this lives on the
+   * shell (not the sticky Contents rail), so both columns start together and
+   * the rail sits flush under the Guide bars once stuck.
+   */
+  --guide-open-pause: clamp(5.5rem, 16vw, 8.5rem);
+}
+
 body.guide-reading .guide-hero {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* Title page with air — leave room so the chapter strip is fully visible. */
-  min-height: clamp(16rem, 52svh, 28rem);
-  padding-block-start: clamp(2.75rem, 9vw, 5.5rem);
-  padding-block-end: clamp(1.75rem, 5vw, 3rem);
+  /*
+   * Opening face owns first paint. Quiet steel hero needs height so the
+   * colourful first chapter title does not share the first screen.
+   * Contents / chapters wait below — spacing only, no copy change.
+   */
+  min-height: clamp(22rem, 78svh, 44rem);
+  padding-block-start: clamp(3rem, 10vw, 6rem);
+  padding-block-end: clamp(2.5rem, 7vw, 4.25rem);
   box-sizing: border-box;
+}
+
+/*
+ * Hero illustration — Apple-style product frame:
+ * photo spans the full viewport width, follows 16:9 art, title sits in the
+ * designed empty upper field. No bottom fade / soft edge.
+ * Title/lead type sizes and max-widths stay the shared masthead rules.
+ */
+body.guide-reading .guide-hero--media {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  /* True edge-to-edge (html already clips 100vw overflow). */
+  width: 100vw;
+  max-width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  box-sizing: border-box;
+  /* Frame matches the Recraft 16:9 art; floor so title+lead still fit on phones.
+     Cap height so Contents can peek under the hero — title/lead padding stays put. */
+  aspect-ratio: 16 / 9;
+  min-height: clamp(20rem, 48svh, 34rem);
+  max-height: 68svh;
+  height: auto;
+  /* Title in the upper white field — not vertically centered over the subject. */
+  justify-content: flex-start;
+  padding-block-start: clamp(2.75rem, 9vw, 5.5rem);
+  padding-block-end: clamp(1.25rem, 3.5vw, 2.25rem);
+  padding-inline: var(--mag-inline) var(--mag-inline-end);
+}
+
+/* <picture> fills the hero; phone swaps to 9:16 art via <source>. */
+body.guide-reading .guide-hero--media picture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  pointer-events: none;
+}
+
+body.guide-reading .guide-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: calc(100% + clamp(1rem, 2.5vh, 1.75rem));
+  margin: 0;
+  object-fit: cover;
+  object-position: center bottom;
+  transform: translateY(clamp(0.75rem, 2vh, 1.5rem));
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Phone: tall 9:16 art — match Recraft portrait heroes. */
+@media (max-width: 833px) {
+  body.guide-reading .guide-hero--media {
+    aspect-ratio: 9 / 16;
+    min-height: clamp(28rem, 78svh, 44rem);
+    max-height: 88svh;
+  }
+}
+
+/*
+ * Insurance hub only: keep rounded pod bottoms fully visible.
+ * Shared hero still nudges art down (clips curves); this page does not.
+ */
+body.guide-reading .guide-hero--media-pods {
+  padding-block-end: clamp(2rem, 5.5vw, 3.5rem);
+}
+
+body.guide-reading .guide-hero--media-pods .guide-hero-bg {
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  transform: none;
+}
+
+body.guide-reading .guide-hero--media .guide-hero-title,
+body.guide-reading .guide-hero--media .guide-hero-lead,
+body.guide-reading .guide-hero--media .mag-title,
+body.guide-reading .guide-hero--media .mag-standfirst {
+  position: relative;
+  z-index: 1;
 }
 
 body.guide-reading .guide-hero + .mag-index,
 body.guide-reading .guide-hero + .mag-toc-shell {
-  /* Chapters sit in the same breath as the title — not a new “app” block. */
+  /* Chapter map follows the title page — still part of the opening. */
   margin-block-start: 0;
 }
 
 body.guide-reading .mag-index {
   padding-block-start: 0;
-  padding-block-end: clamp(2rem, 6vw, 3.5rem);
+  /* Stacked layout (phone/tablet): air between chapter strip and first title. */
+  padding-block-end: clamp(3rem, 9vw, 5.5rem);
+}
+
+/* Breath before the long read — first colour chapter lands after a clear rest. */
+body.guide-reading .mag-index + .guide-story,
+body.guide-reading .guide-hero + .guide-story {
+  padding-block-start: clamp(0.5rem, 2vw, 1.25rem);
+}
+
+/* Slightly more air between chapters — reading, not denser chrome. */
+body.guide-reading .guide-story > .mag-section {
+  padding-block: clamp(2.5rem, 6vw, 5rem);
+}
+
+body.guide-reading .guide-story > .mag-section:first-child,
+body.guide-reading .mag-toc-shell .guide-story > .mag-section:first-child {
+  padding-block-start: var(--guide-open-pause);
+}
+
+body.guide-reading .guide-tile-copy {
+  margin-top: 16px;
+}
+
+body.guide-reading .guide-share-list,
+body.guide-reading .mag-defs {
+  margin-top: 22px;
+}
+
+body.guide-reading .guide-share-list li,
+body.guide-reading .mag-def {
+  padding-block: 16px;
+}
+
+body.guide-reading .guide-disclosure-stack {
+  margin-top: clamp(26px, 4.5vw, 36px);
+}
+
+body.guide-reading .guide-disclosure-stack .guide-disclosure {
+  padding-top: 16px;
+}
+
+body.guide-reading .guide-flow {
+  margin-top: clamp(28px, 4.5vw, 36px);
+}
+
+body.guide-reading .guide-flow li {
+  padding-block: 20px;
 }
 
 /* Bring chapter numbers back — the quiet “this is a guide” signal. */
@@ -684,78 +841,131 @@ body.guide-reading .mag-index-label {
   font-weight: 500;
 }
 
-/* Phone / tablet: horizontal chapter strip — magazine, not a tall menu. */
+/* Phone / tablet: horizontal chapter strip — same slide + selection chrome
+   as the Guide localnav row (Overview, Documents, …).
+   Underline is an inset shadow on the label row so it cannot paint into the
+   page margin (absolute ::after was anchoring to the full-bleed shell). */
 @media (max-width: 1199px) {
   body.guide-reading .mag-index {
-    padding-inline: 0;
+    padding-inline: var(--mag-inline) var(--mag-inline-end);
     max-width: none;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body.guide-reading .mag-index::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Kill any leftover sliding thumb from older builds. */
+  body.guide-reading .mag-index .shroffin-sel-thumb {
+    display: none !important;
   }
 
   body.guide-reading .mag-index-list {
     display: flex;
     flex-wrap: nowrap;
-    gap: 0.25rem;
-    padding-inline: var(--mag-inline) var(--mag-inline-end);
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    align-items: stretch;
+    gap: clamp(0.75rem, 1.8vw, 1.25rem);
+    width: max-content;
+    min-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    list-style: none;
   }
 
-  body.guide-reading .mag-index-list::-webkit-scrollbar {
-    display: none;
+  body.guide-reading .mag-index-list::after {
+    content: none;
   }
 
   body.guide-reading .mag-index-list > li {
+    display: block;
     flex: 0 0 auto;
+    width: fit-content;
     border-bottom: 0;
-    scroll-snap-align: start;
   }
 
   body.guide-reading .mag-index-link {
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 0.45rem;
-    min-width: 7.25rem;
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: fit-content;
+    max-width: none;
+    min-width: 0;
     min-height: 44px;
-    padding: 0.85rem 1rem 0.85rem 0;
+    padding: 0 0.125rem;
     box-sizing: border-box;
+    color: var(--mag-muted);
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  body.guide-reading .mag-index-link:link,
+  body.guide-reading .mag-index-link:visited {
+    color: var(--mag-muted);
+  }
+
+  body.guide-reading .mag-index-num {
+    display: none !important;
   }
 
   body.guide-reading .mag-index-label {
-    font-size: 0.9375rem;
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
     line-height: 1.25;
     white-space: nowrap;
   }
 
-  /* Soft edge fade so the strip reads as “more chapters this way.” */
-  body.guide-reading .mag-index {
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      #000 max(1rem, env(safe-area-inset-left)),
-      #000 calc(100% - 1.75rem),
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      #000 max(1rem, env(safe-area-inset-left)),
-      #000 calc(100% - 1.75rem),
-      transparent 100%
-    );
+  body.guide-reading .mag-index-link.is-active,
+  body.guide-reading .mag-index-link[aria-current="true"] {
+    color: var(--mag-ink);
+    cursor: default;
+    /* Line stays inside this text control — same 2px mark as localnav / Explore tabs. */
+    box-shadow: inset 0 -2px 0 0 var(--mag-ink);
   }
 
+  body.guide-reading .mag-index-link.is-active .mag-index-label,
+  body.guide-reading .mag-index-link[aria-current="true"] .mag-index-label {
+    font-weight: 400;
+  }
+
+  /* Do not reuse ::after for the marker — base styles use it as a chevron. */
+  body.guide-reading .mag-index-link.is-active::after,
+  body.guide-reading .mag-index-link[aria-current="true"]::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  body.guide-reading .mag-index-link:hover,
+  body.guide-reading .mag-index-link:focus-visible {
+    color: var(--mag-accent);
+  }
+
+  /* Keep the opening pause on small screens — do not collapse into the title. */
   body.guide-reading .mag-toc-shell .guide-story > .mag-section:first-child,
   body.guide-reading .guide-story > .mag-section:first-child {
-    padding-block-start: clamp(1.25rem, 4vw, 2rem);
+    padding-block-start: var(--guide-open-pause);
   }
 }
 
 /* Wide: sticky chapter rail keeps numbers; same quiet voice as the strip. */
 @media (min-width: 1200px) {
+  body.guide-reading {
+    --guide-open-pause: clamp(5.5rem, 12vw, 8rem);
+  }
+
   body.guide-reading .mag-toc-shell .mag-index-link {
     flex-direction: row;
     align-items: baseline;
@@ -773,6 +983,24 @@ body.guide-reading .mag-index-label {
     font-weight: 400;
   }
 
+  /*
+   * Pause on the shell so both columns start together. Do not put top padding
+   * on the sticky Contents rail — that gap would travel with it when stuck.
+   */
+  body.guide-reading .guide-hero + .mag-toc-shell {
+    padding-block-start: var(--guide-open-pause);
+  }
+
+  body.guide-reading .mag-toc-shell > .mag-index {
+    padding-block-start: 0;
+    padding-block-end: 1.5rem;
+  }
+
+  body.guide-reading .mag-toc-shell > .mag-index + .guide-story {
+    padding-block-start: 0;
+  }
+
+  /* Match Contents row padding — keeps both columns even when sticky. */
   body.guide-reading .mag-toc-shell .guide-story > .mag-section:first-child {
     padding-block-start: 0.65rem;
   }
@@ -783,11 +1011,11 @@ body.guide-reading .mag-index-label {
     min-height: 0;
     padding-block: 2.25rem;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  body.guide-reading .mag-index-list {
-    scroll-snap-type: none;
+  body.guide-reading .guide-hero--media {
+    min-height: 18rem;
+    padding-block-start: 1.75rem;
+    padding-block-end: 1.25rem;
   }
 }
 
@@ -914,6 +1142,54 @@ body.guide-reading .mag-index-label {
   line-height: 1.1;
 }
 
+/*
+ * Chapter title washes (Approach B, Contrast set).
+ * Title text only — kickers stay muted grey. Nested notes/links keep solid colour.
+ * Six washes; pages shuffle order so scroll never feels one fixed sequence.
+ */
+.guide-title-wash {
+  display: inline-block;
+  max-width: 100%;
+  background-image: var(--guide-title-g);
+  background-size: 100% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.guide-title-wash--ink-siri {
+  --guide-title-g: linear-gradient(90deg, #3634a3 0%, #9b3dce 42%, #147ce5 100%);
+}
+
+.guide-title-wash--ink-sea {
+  --guide-title-g: linear-gradient(90deg, #0a6e6a 0%, #1faa4a 48%, #6bbf4a 100%);
+}
+
+.guide-title-wash--ink-sky {
+  --guide-title-g: linear-gradient(90deg, #0b5db8 0%, #2f8fe0 42%, #2db8b0 100%);
+}
+
+.guide-title-wash--ink-dusk {
+  --guide-title-g: linear-gradient(90deg, #3a38b0 0%, #9b3dce 40%, #d43d6e 100%);
+}
+
+.guide-title-wash--ink-ember {
+  --guide-title-g: linear-gradient(90deg, #c45a08 0%, #e04a2f 45%, #d12b55 100%);
+}
+
+.guide-title-wash--ink-gold {
+  --guide-title-g: linear-gradient(90deg, #8a6a3a 0%, #d4891a 45%, #e05a2a 100%);
+}
+
+@media (forced-colors: active) {
+  .guide-title-wash {
+    background-image: none;
+    color: CanvasText;
+    -webkit-text-fill-color: CanvasText;
+  }
+}
+
 .guide-tile-kicker {
   margin: 0 0 10px;
   color: var(--mag-muted);
@@ -989,10 +1265,11 @@ body.guide-reading .mag-index-label {
 .mag-compare-title {
   margin: 0 0 6px;
   color: var(--mag-ink);
-  font-size: clamp(20px, 2.6vw, 24px);
+  /* Support step — always under .guide-tile-title / --shroffin-type-title. */
+  font-size: var(--shroffin-type-support);
   font-weight: 600;
   letter-spacing: -0.015em;
-  line-height: 1.18;
+  line-height: 1.2;
 }
 
 .guide-limit-note,
@@ -1121,6 +1398,23 @@ body.guide-reading .mag-index-label {
   font-size: 15px;
   letter-spacing: -0.01em;
   line-height: 1.5;
+}
+
+.guide-callout .guide-share-when,
+.guide-callout .guide-share-then {
+  display: block;
+}
+
+.guide-callout .guide-share-when {
+  margin-bottom: 4px;
+}
+
+.guide-callout .guide-share-then {
+  color: var(--mag-ink);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
 }
 
 .guide-callout--tight {
@@ -1274,12 +1568,15 @@ body.guide-reading .mag-index-label {
 
 .guide-flow li {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   margin: 0;
   padding: 18px 0 18px 44px;
   border-top: 1px solid var(--mag-hair-soft);
   color: var(--mag-ink);
   font-size: clamp(16px, 2vw, 18px);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.4;
 }
@@ -1300,6 +1597,15 @@ body.guide-reading .mag-index-label {
   font-variant-numeric: tabular-nums;
 }
 
+.guide-flow .guide-share-when {
+  font-size: 14px;
+}
+
+.guide-flow .guide-share-then {
+  font-size: 17px;
+  font-weight: 600;
+}
+
 /* ---- Breadcrumb (insurance sub-pages) ---------------------------------- */
 
 .guide-breadcrumb {
@@ -1310,17 +1616,22 @@ body.guide-reading .mag-index-label {
   max-width: var(--mag-wrap);
   margin: 0 auto;
   padding-inline: var(--mag-inline) var(--mag-inline-end);
-  /* Sit under the Guide bar; keep the masthead field for the title below. */
-  padding-block: var(--shroffin-space-stack) 0;
+  /* Path cue under the Guide bar — tight, not a second masthead pause. */
+  padding-block: 0.5rem 0;
   box-sizing: border-box;
   color: var(--mag-muted);
   font-size: 14px;
   letter-spacing: -0.01em;
 }
 
-/* When the breadcrumb leads, keep clear air above the title. */
+/* Short step from trail to title — masthead-start left a large empty band. */
 .guide-breadcrumb + .guide-hero {
-  padding-top: var(--shroffin-space-masthead-start);
+  padding-top: var(--shroffin-space-stack);
+}
+
+/* Media heroes already own the frame; after a breadcrumb, keep title close. */
+body.guide-reading .guide-breadcrumb + .guide-hero--media {
+  padding-block-start: clamp(1.15rem, 3.5vw, 2rem);
 }
 
 .guide-breadcrumb a {
@@ -1515,11 +1826,24 @@ body.guide-reading .mag-index-label {
   transform: rotate(-90deg) translateY(calc(var(--shroffin-disclose-nudge, 0.2em) * -1));
 }
 
-/* Department openers / cross-page CTAs (insurance hub, project link) */
+/* Department openers / cross-page CTAs (insurance hub, project link, calculators) */
 .guide-flip-link.guide-project-link,
 .guide-flip-link.guide-open-link {
   align-self: flex-start;
   margin-top: clamp(20px, 3vw, 28px);
+}
+
+/* Quiet secondary “try it” links under an on-page Estimate. */
+.guide-try-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-top: clamp(14px, 2.5vw, 18px);
+}
+
+.guide-try-row .guide-flip-link.guide-open-link {
+  margin-top: 0;
 }
 
 /* ---- Calculator worksheet ---------------------------------------------- */
@@ -1926,10 +2250,11 @@ body.guide-reading .mag-index-label {
   margin-top: 18px;
 }
 
-/* ---- Source note (RBI disclosure) — industry quote pattern ------------- */
+/* ---- Source note / accordion disclosures -------------------------------- */
 /*
- * Title (summary) → source line → one continuous left-ruled blockquote.
- * Caption sits above the bar so “Quoted from…” is not inside the quote.
+ * Title (summary) → body. Soft open/close (UI band), not an instant snap.
+ * JS wraps body in .guide-disclosure-panel and toggles .is-open (same recipe
+ * as apply disclose). + gently rotates to ×.
  */
 
 .guide-disclosure {
@@ -1937,6 +2262,26 @@ body.guide-reading .mag-index-label {
   padding-top: 24px;
   border-top: 1px solid var(--mag-hair-soft);
   text-align: left;
+}
+
+.guide-disclosure-stack {
+  margin-top: clamp(22px, 4vw, 30px);
+}
+
+.guide-disclosure-stack .guide-disclosure {
+  margin-top: 0;
+  padding-top: 14px;
+}
+
+.guide-disclosure-stack .guide-disclosure:first-child {
+  padding-top: 18px;
+}
+
+.guide-disclosure .guide-share-then {
+  margin: 10px 0 4px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .guide-disclosure summary {
@@ -1965,10 +2310,54 @@ body.guide-reading .mag-index-label {
   font-size: 22px;
   font-weight: 400;
   line-height: 1;
+  transform: rotate(0deg);
+  transition:
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .guide-disclosure[open] summary::after {
-  content: "\2212";
+  /* Same glyph; rotate into a soft × — no hard swap to −. */
+  transform: rotate(45deg);
+  color: var(--mag-ink-soft);
+}
+
+.guide-disclosure-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.guide-disclosure-panel.is-open {
+  grid-template-rows: 1fr;
+}
+
+.guide-disclosure-panel-inner {
+  overflow: hidden;
+  min-height: 0;
+  opacity: 0;
+  transition: opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.guide-disclosure-panel.is-open .guide-disclosure-panel-inner {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-disclosure summary::after,
+  .guide-disclosure-panel,
+  .guide-disclosure-panel-inner {
+    transition: none;
+  }
+
+  .guide-disclosure[open] summary::after {
+    transform: none;
+    content: "\2212";
+  }
+
+  .guide-disclosure-panel-inner {
+    opacity: 1;
+  }
 }
 
 .guide-source {
@@ -2134,6 +2523,149 @@ body.guide-reading .mag-index-label {
   font-size: 15px;
   letter-spacing: -0.01em;
   line-height: 1.5;
+}
+
+/* ---- Teach figure (one confusion → one quiet diagram) -------------------- */
+
+.guide-teach {
+  margin: clamp(24px, 4vw, 32px) 0 0;
+  padding: 0;
+  border: 0;
+  max-width: 36em;
+}
+
+.guide-teach-paths {
+  display: grid;
+  gap: 18px;
+}
+
+.guide-teach-path {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.15fr);
+  gap: 10px 12px;
+  align-items: center;
+  padding: 14px 0 0;
+  border-block-start: 1px solid var(--mag-hair-soft);
+}
+
+.guide-teach-path:first-child {
+  padding-top: 0;
+  border-block-start: 0;
+}
+
+.guide-teach-from,
+.guide-teach-to {
+  margin: 0;
+  min-width: 0;
+  color: var(--mag-ink);
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.guide-teach-from {
+  font-weight: 600;
+}
+
+.guide-teach-to-label {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--mag-muted);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.guide-teach-arrow {
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--mag-hair);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.guide-teach-arrow::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-top: 1px solid var(--mag-muted);
+  border-right: 1px solid var(--mag-muted);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.guide-teach-caption {
+  margin: 16px 0 0;
+  color: var(--mag-ink-soft);
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+}
+
+.guide-teach-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px 14px;
+  padding-top: 2px;
+}
+
+.guide-teach-step {
+  flex: 1 1 7.5rem;
+  min-width: 0;
+}
+
+.guide-teach-flow > .guide-teach-arrow {
+  flex: 0 0 auto;
+  align-self: center;
+  margin-top: 0.55em;
+}
+
+.guide-teach-note {
+  margin: 4px 0 0;
+  color: var(--mag-muted);
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+@media (max-width: 833px) {
+  .guide-teach-path {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .guide-teach-path .guide-teach-arrow,
+  .guide-teach-flow > .guide-teach-arrow {
+    width: 1px;
+    height: 20px;
+    margin-inline-start: 2px;
+    margin-top: 0;
+  }
+
+  .guide-teach-path .guide-teach-arrow::after,
+  .guide-teach-flow > .guide-teach-arrow::after {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: -1px;
+    transform: translateX(-50%) rotate(135deg);
+  }
+
+  .guide-teach-flow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .guide-teach-flow > .guide-teach-arrow {
+    align-self: flex-start;
+  }
 }
 
 /* ---- Footnote refs + endnote list -------------------------------------- */
@@ -2340,6 +2872,81 @@ a.guide-note-ref:hover {
 
   .guide-doc-table {
     table-layout: auto;
+  }
+}
+
+/* Phone reading hierarchy: page hero → section → situation → fact → label.
+   Desktop already has room; on ~375px the old floors made title ≈ limit ≈ fact. */
+@media (max-width: 833px) {
+  .guide-hero-title,
+  .mag-title {
+    font-size: var(--shroffin-type-display-xl);
+    line-height: 1.05;
+  }
+
+  .guide-hero-lead,
+  .mag-standfirst,
+  h2.guide-hero-lead {
+    margin-block-start: 0.85rem;
+    max-width: 28em;
+    color: var(--mag-muted);
+    font-size: var(--shroffin-type-lead);
+    font-weight: 400;
+    line-height: 1.45;
+  }
+
+  .guide-tile-title,
+  .mag-h,
+  .mag-pair .guide-tile-title,
+  .guide-climb-label {
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+  }
+
+  /* Situation heads — clearly under the chapter title, above facts. */
+  .guide-limit-title,
+  .mag-compare-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    line-height: 1.25;
+  }
+
+  .guide-tile-copy,
+  .mag-lede,
+  .mag-p {
+    font-size: var(--shroffin-type-lead);
+    font-weight: 400;
+  }
+
+  /* Facts scan as answers in body weight — never compete with headings. */
+  .guide-share-then,
+  .mag-def-desc {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.45;
+  }
+
+  .guide-share-list--plain .guide-share-then {
+    font-weight: 400;
+  }
+
+  .guide-share-when,
+  .mag-def-term {
+    font-size: 0.8125rem;
+    font-weight: 400;
+  }
+
+  .mag-doc-name {
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+
+  .guide-tile-list li {
+    font-size: var(--shroffin-type-lead);
+    font-weight: 400;
   }
 }
 

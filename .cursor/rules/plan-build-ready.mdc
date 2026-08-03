@@ -1,0 +1,51 @@
+---
+description: Plans must be build-ready recipes with exact commands and paste-ready code — never outline-only
+alwaysApply: true
+---
+
+# Plan = build-ready recipe
+
+**Fail closed.** Do not show, create, or update a plan for the user until the build recipe below is complete. Plan mode’s usual “outline first / details later” habit does **not** override this rule. A phase list without commands and paste-ready code is an unfinished draft — keep working; do not present it.
+
+A plan is a complete recipe so build/run later has nearly **zero runtime surprises**.
+
+## Always include in the plan
+
+1. **Exact commands** — install, build, deploy, migrate, test, lint, env setup, verify — in the order they must run. Use real paths and flags for this repo; no placeholders like “run the usual build.”
+2. **Concrete code** — the files to touch and the actual snippets / diffs / full new-file bodies needed for the build to succeed. Prefer paste-ready code over “add X later.”
+3. **Config & env** — new/changed keys, secrets *names* (never real secret values), rule files, feature flags, and where they live.
+4. **Dependencies** — packages, versions, and install commands when anything new is required.
+5. **Verify steps** — how to confirm it works (commands, URLs, expected output). Call out known risks only if they still remain after the recipe.
+
+## When the plan updates
+
+- Treat codes and commands as **part of the plan**, not an appendix.
+- On every plan change: **add, edit, or remove** the matching commands and code so the recipe stays accurate.
+- Do not leave stale snippets or obsolete commands in an updated plan.
+
+## Never
+
+- Ship a plan that is only high-level steps (“refactor auth,” “wire Firestore”) without the commands and code to do it.
+- Say “details during implementation” for anything required to build or run.
+- Update the narrative of the plan without updating the build recipe.
+
+## Bad vs good
+
+```
+❌ BAD (do not present)
+Phase 2 — Add sync script
+Phase 3 — Wire build
+(Details during implementation.)
+
+✅ GOOD (ok to present)
+Phase 2 — Add sync script
+File: scripts/sync-contacts.mjs
+[full paste-ready file body]
+
+cd "/path/to/repo" && node scripts/sync-contacts.mjs
+Verify: expect site-contacts.json updated; no stderr.
+```
+
+## Before finishing a plan (or plan update)
+
+Confirm: every build/run step has a command; every code change needed for those steps is in the plan; after this update, no command or snippet is stale. If any answer is no, the plan is not done — do not show it yet.

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Guide accent samples B · fresh gradients – Shroffin</title>
+  <meta name="description" content="Internal preview: Approach B with livelier multi-colour title gradients. Not linked from the live site.">
+  <link rel="icon" href="../favicon.ico?v=6" sizes="any">
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=type-ladder-5">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=type-ladder-5">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=type-ladder-5">
+  <style>
+    /* Preview-only — Approach B with fresher multi-hue title gradients. */
+
+    .sample-page {
+      padding-bottom: var(--shroffin-space-page-bottom);
+    }
+
+    .sample-banner {
+      max-width: var(--mag-wrap, 1068px);
+      margin: 0 auto;
+      padding: 1rem var(--mag-inline, 1rem) 0;
+      box-sizing: border-box;
+    }
+
+    .sample-banner p {
+      margin: 0;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      background: #f0f3f7;
+      color: var(--mag-muted, #6e6e73);
+      font-size: 0.875rem;
+      line-height: 1.45;
+    }
+
+    .sample-toc {
+      max-width: var(--mag-wrap, 1068px);
+      margin: 1.5rem auto 0;
+      padding-inline: var(--mag-inline, 1rem);
+      box-sizing: border-box;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+    }
+
+    .sample-toc a {
+      color: var(--mag-accent, #3f62c8);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .sample-toc a:hover {
+      text-decoration: underline;
+    }
+
+    .sample-block {
+      max-width: var(--mag-wrap, 1068px);
+      margin: 0 auto;
+      padding: var(--shroffin-space-section) var(--mag-inline, 1rem) 0;
+      box-sizing: border-box;
+    }
+
+    .sample-block-label {
+      margin: 0 0 0.35rem;
+      color: var(--mag-muted, #6e6e73);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .sample-block-title {
+      margin: 0;
+      color: var(--mag-ink, #1d1d1f);
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .sample-block-lead {
+      margin: 0.5rem 0 0;
+      max-width: 38em;
+      color: var(--mag-muted, #6e6e73);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .sample-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+      margin-top: 1.75rem;
+    }
+
+    @media (min-width: 834px) {
+      .sample-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem 2.5rem;
+      }
+    }
+
+    .sample-card {
+      padding: 1.25rem 0 0;
+      border-top: 1px solid var(--mag-hair-soft, rgba(0, 0, 0, 0.08));
+    }
+
+    .sample-card .mag-kicker {
+      display: block;
+      margin: 0 0 0.4rem;
+      color: var(--mag-muted, #6e6e73);
+    }
+
+    .sample-card .guide-tile-title {
+      margin: 0;
+    }
+
+    .sample-card .guide-tile-copy {
+      margin: 0.65rem 0 0;
+      max-width: 28em;
+      font-size: 0.95rem;
+    }
+
+    .sample-swatch {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 0.85rem;
+      color: var(--mag-muted, #6e6e73);
+      font-size: 0.75rem;
+    }
+
+    .sample-swatch i {
+      width: 2.25rem;
+      height: 0.7rem;
+      border-radius: 999px;
+      background: var(--g);
+    }
+
+    /* Shared title-gradient treatment (Approach B) */
+    .g-title .guide-tile-title {
+      background-image: var(--g);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ---- Set 1: vivid chapter gradients (recommended look) ---- */
+    .g-ocean { --g: linear-gradient(105deg, #1a5cff 0%, #00c2ff 45%, #5b8cff 100%); }
+    .g-aurora { --g: linear-gradient(105deg, #00b894 0%, #00d4aa 40%, #54e0c8 100%); }
+    .g-violet { --g: linear-gradient(105deg, #5b4bff 0%, #9b5cff 50%, #c77dff 100%); }
+    .g-mint-sun { --g: linear-gradient(105deg, #0d9f6e 0%, #3ecf8e 45%, #f0c14b 100%); }
+    .g-sunset { --g: linear-gradient(105deg, #ff6b35 0%, #ff8f4a 40%, #ffb347 100%); }
+    .g-berry { --g: linear-gradient(105deg, #e11d74 0%, #ff4d8d 45%, #ff8fb8 100%); }
+
+    /* ---- Set 2: Apple-style “story” shifts (hue travels more) ---- */
+    .g-sky-lilac { --g: linear-gradient(100deg, #0071e3 0%, #5e5ce6 48%, #bf5af2 100%); }
+    .g-lagoon { --g: linear-gradient(100deg, #00a3a1 0%, #32d74b 55%, #a8e063 100%); }
+    .g-orchid { --g: linear-gradient(100deg, #5856d6 0%, #af52de 50%, #ff2d55 100%); }
+    .g-tropic { --g: linear-gradient(100deg, #30b0c7 0%, #64d2ff 40%, #bf5af2 100%); }
+    .g-ember { --g: linear-gradient(100deg, #ff453a 0%, #ff9f0a 50%, #ffd60a 100%); }
+    .g-frost { --g: linear-gradient(100deg, #0a84ff 0%, #64d2ff 40%, #ac8e68 100%); }
+
+    /* ---- Set 3: deep → bright (more drama on long words) ---- */
+    .g-deep-sea { --g: linear-gradient(95deg, #0b1f4a 0%, #1f6feb 42%, #56d4ff 100%); }
+    .g-forest-glow { --g: linear-gradient(95deg, #0b3d2e 0%, #1db954 45%, #9be15d 100%); }
+    .g-night-neon { --g: linear-gradient(95deg, #2d1b69 0%, #7c3aed 40%, #f472b6 100%); }
+    .g-copper-gold { --g: linear-gradient(95deg, #7c2d12 0%, #ea580c 40%, #fbbf24 100%); }
+    .g-ink-cyan { --g: linear-gradient(95deg, #111827 0%, #2563eb 38%, #22d3ee 100%); }
+    .g-wine-peach { --g: linear-gradient(95deg, #7f1d1d 0%, #e11d48 42%, #fb7185 100%); }
+
+    /* Flow mocks */
+    .sample-flow {
+      max-width: var(--mag-wrap, 1068px);
+      margin: var(--shroffin-space-section) auto 0;
+      padding-inline: var(--mag-inline, 1rem);
+      box-sizing: border-box;
+    }
+
+    .sample-flow .mag-section {
+      padding-block: 1.75rem;
+      border-top: 1px solid var(--mag-hair-soft, rgba(0, 0, 0, 0.08));
+    }
+
+    .sample-flow .mag-rail {
+      display: block !important;
+      margin-bottom: 0.35rem;
+    }
+
+    .sample-flow .mag-num {
+      display: none !important;
+    }
+
+    .sample-flow .mag-kicker {
+      display: block;
+      color: var(--mag-muted, #6e6e73);
+    }
+
+    .sample-flow .guide-tile-title {
+      background-image: var(--g);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @media (forced-colors: active) {
+      .g-title .guide-tile-title,
+      .sample-flow .guide-tile-title {
+        background-image: none;
+        color: CanvasText;
+        -webkit-text-fill-color: CanvasText;
+      }
+    }
+  </style>
+</head>
+<body class="guide-reading sample-page">
+  <div class="sample-banner">
+    <p>
+      Internal preview — Approach B (colour on the big title), with fresher multi-colour gradients.
+      Kickers stay grey. Pick a set, or mix favourites, then tell me which ones to use on the real guides.
+    </p>
+  </div>
+
+  <nav class="sample-toc" aria-label="Samples on this page">
+    <a href="#set-1">Set 1 · vivid</a>
+    <a href="#set-2">Set 2 · story shift</a>
+    <a href="#set-3">Set 3 · deep → bright</a>
+    <a href="#flow-1">Flow · Set 1</a>
+    <a href="#flow-2">Flow · Set 2</a>
+  </nav>
+
+  <header class="guide-hero">
+    <h1 class="guide-hero-title">Your home loan EMI has tax benefits.</h1>
+    <h2 class="guide-hero-lead">
+      Page title stays the quiet steel wash.
+      Section titles below get the lively gradients.
+    </h2>
+  </header>
+
+  <!-- SET 1 -->
+  <div class="sample-block" id="set-1">
+    <p class="sample-block-label">Set 1 · vivid chapter gradients</p>
+    <h2 class="sample-block-title">Bright, clear, still readable</h2>
+    <p class="sample-block-lead">
+      Strong colour travel inside one title. Feels fresh without turning neon.
+      Good default if you want life on every chapter.
+    </p>
+    <div class="sample-grid">
+      <div class="sample-card g-title g-ocean">
+        <p class="mag-kicker">Interest payment</p>
+        <h3 class="guide-tile-title">Interest payment</h3>
+        <p class="guide-tile-copy">Ocean — blue into cyan. Money and rates.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Ocean</span>
+      </div>
+      <div class="sample-card g-title g-aurora">
+        <p class="mag-kicker">Principal repayment</p>
+        <h3 class="guide-tile-title">Principal repayment</h3>
+        <p class="guide-tile-copy">Aurora — green into mint. Building equity.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Aurora</span>
+      </div>
+      <div class="sample-card g-title g-violet">
+        <p class="mag-kicker">Joint loan</p>
+        <h3 class="guide-tile-title">Joint home loan</h3>
+        <p class="guide-tile-copy">Violet — indigo into lilac. Shared loan.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Violet</span>
+      </div>
+      <div class="sample-card g-title g-mint-sun">
+        <p class="mag-kicker">Under construction</p>
+        <h3 class="guide-tile-title">Under construction</h3>
+        <p class="guide-tile-copy">Mint → sun — green into warm gold. Progress.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Mint → sun</span>
+      </div>
+      <div class="sample-card g-title g-sunset">
+        <p class="mag-kicker">Other</p>
+        <h3 class="guide-tile-title">Other</h3>
+        <p class="guide-tile-copy">Sunset — orange into gold. Edge cases.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Sunset</span>
+      </div>
+      <div class="sample-card g-title g-berry">
+        <p class="mag-kicker">How to claim</p>
+        <h3 class="guide-tile-title">How to claim</h3>
+        <p class="guide-tile-copy">Berry — magenta into pink. Action.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Berry</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SET 2 -->
+  <div class="sample-block" id="set-2">
+    <p class="sample-block-label">Set 2 · story shift (Apple-like)</p>
+    <h2 class="sample-block-title">Hue travels across the word</h2>
+    <p class="sample-block-lead">
+      More “crazy” in a good way — blue becomes purple, teal becomes green, purple becomes pink.
+      Closest to how Apple paints big marketing lines.
+    </p>
+    <div class="sample-grid">
+      <div class="sample-card g-title g-sky-lilac">
+        <p class="mag-kicker">Interest payment</p>
+        <h3 class="guide-tile-title">Interest payment</h3>
+        <p class="guide-tile-copy">Sky → lilac — blue into violet.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Sky → lilac</span>
+      </div>
+      <div class="sample-card g-title g-lagoon">
+        <p class="mag-kicker">Principal repayment</p>
+        <h3 class="guide-tile-title">Principal repayment</h3>
+        <p class="guide-tile-copy">Lagoon — teal into leaf green.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Lagoon</span>
+      </div>
+      <div class="sample-card g-title g-orchid">
+        <p class="mag-kicker">Joint loan</p>
+        <h3 class="guide-tile-title">Joint home loan</h3>
+        <p class="guide-tile-copy">Orchid — purple into rose.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Orchid</span>
+      </div>
+      <div class="sample-card g-title g-tropic">
+        <p class="mag-kicker">Under construction</p>
+        <h3 class="guide-tile-title">Under construction</h3>
+        <p class="guide-tile-copy">Tropic — cyan into violet.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Tropic</span>
+      </div>
+      <div class="sample-card g-title g-ember">
+        <p class="mag-kicker">Other</p>
+        <h3 class="guide-tile-title">Other</h3>
+        <p class="guide-tile-copy">Ember — red into amber into gold.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Ember</span>
+      </div>
+      <div class="sample-card g-title g-frost">
+        <p class="mag-kicker">How to claim</p>
+        <h3 class="guide-tile-title">How to claim</h3>
+        <p class="guide-tile-copy">Frost — blue into ice, soft bronze end.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Frost</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SET 3 -->
+  <div class="sample-block" id="set-3">
+    <p class="sample-block-label">Set 3 · deep → bright</p>
+    <h2 class="sample-block-title">Dark start, bright finish</h2>
+    <p class="sample-block-lead">
+      More drama on long titles. Starts ink-deep, opens into light.
+      Feels premium and energetic — use if Set 1 still feels too soft.
+    </p>
+    <div class="sample-grid">
+      <div class="sample-card g-title g-deep-sea">
+        <p class="mag-kicker">Interest payment</p>
+        <h3 class="guide-tile-title">Interest payment</h3>
+        <p class="guide-tile-copy">Deep sea — navy into electric blue into cyan.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Deep sea</span>
+      </div>
+      <div class="sample-card g-title g-forest-glow">
+        <p class="mag-kicker">Principal repayment</p>
+        <h3 class="guide-tile-title">Principal repayment</h3>
+        <p class="guide-tile-copy">Forest glow — deep green into bright leaf.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Forest glow</span>
+      </div>
+      <div class="sample-card g-title g-night-neon">
+        <p class="mag-kicker">Joint loan</p>
+        <h3 class="guide-tile-title">Joint home loan</h3>
+        <p class="guide-tile-copy">Night neon — deep violet into pink.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Night neon</span>
+      </div>
+      <div class="sample-card g-title g-copper-gold">
+        <p class="mag-kicker">Under construction</p>
+        <h3 class="guide-tile-title">Under construction</h3>
+        <p class="guide-tile-copy">Copper → gold — warm build energy.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Copper → gold</span>
+      </div>
+      <div class="sample-card g-title g-ink-cyan">
+        <p class="mag-kicker">How to claim</p>
+        <h3 class="guide-tile-title">How to claim</h3>
+        <p class="guide-tile-copy">Ink → cyan — almost black into bright blue-cyan.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Ink → cyan</span>
+      </div>
+      <div class="sample-card g-title g-wine-peach">
+        <p class="mag-kicker">Other</p>
+        <h3 class="guide-tile-title">Other</h3>
+        <p class="guide-tile-copy">Wine → peach — deep rose into soft coral.</p>
+        <span class="sample-swatch"><i aria-hidden="true"></i> Wine → peach</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW SET 1 -->
+  <div class="sample-block" id="flow-1" style="padding-bottom: 0;">
+    <p class="sample-block-label">Page flow · Set 1</p>
+    <h2 class="sample-block-title">Tax benefits chapters with vivid washes</h2>
+    <p class="sample-block-lead">Scroll this like a real guide. Does each section feel alive without shouting?</p>
+  </div>
+
+  <div class="sample-flow">
+    <section class="mag-section g-ocean">
+      <div class="mag-rail"><p class="mag-kicker">Interest payment</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Interest payment</h2>
+        <p class="guide-tile-copy">The limit depends on whether you live in the home or rent it out.</p>
+      </div>
+    </section>
+    <section class="mag-section g-aurora">
+      <div class="mag-rail"><p class="mag-kicker">Principal repayment</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Principal repayment</h2>
+        <p class="guide-tile-copy">Shares a yearly basket with other savings claims on the old tax regime.</p>
+      </div>
+    </section>
+    <section class="mag-section g-mint-sun">
+      <div class="mag-rail"><p class="mag-kicker">Under construction</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Under construction</h2>
+        <p class="guide-tile-copy">Interest before possession is claimed later, in equal parts.</p>
+      </div>
+    </section>
+    <section class="mag-section g-violet">
+      <div class="mag-rail"><p class="mag-kicker">Joint loan</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Joint home loan</h2>
+        <p class="guide-tile-copy">Each co-owner can claim their share, within the same rules.</p>
+      </div>
+    </section>
+    <section class="mag-section g-berry">
+      <div class="mag-rail"><p class="mag-kicker">How to claim</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">How to claim</h2>
+        <p class="guide-tile-copy">Interest payment and principal repayment go in different places on your return.</p>
+      </div>
+    </section>
+    <section class="mag-section g-sunset">
+      <div class="mag-rail"><p class="mag-kicker">Other</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Other</h2>
+        <p class="guide-tile-copy">Stamp duty, registration, and a few edge cases sit here.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- FLOW SET 2 -->
+  <div class="sample-block" id="flow-2" style="padding-bottom: 0;">
+    <p class="sample-block-label">Page flow · Set 2</p>
+    <h2 class="sample-block-title">Same chapters with story-shift gradients</h2>
+    <p class="sample-block-lead">More colour travel. Compare to Set 1 above — which feels fresher while still calm?</p>
+  </div>
+
+  <div class="sample-flow" style="padding-bottom: var(--shroffin-space-page-bottom);">
+    <section class="mag-section g-sky-lilac">
+      <div class="mag-rail"><p class="mag-kicker">Interest payment</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Interest payment</h2>
+        <p class="guide-tile-copy">The limit depends on whether you live in the home or rent it out.</p>
+      </div>
+    </section>
+    <section class="mag-section g-lagoon">
+      <div class="mag-rail"><p class="mag-kicker">Principal repayment</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Principal repayment</h2>
+        <p class="guide-tile-copy">Shares a yearly basket with other savings claims on the old tax regime.</p>
+      </div>
+    </section>
+    <section class="mag-section g-tropic">
+      <div class="mag-rail"><p class="mag-kicker">Under construction</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Under construction</h2>
+        <p class="guide-tile-copy">Interest before possession is claimed later, in equal parts.</p>
+      </div>
+    </section>
+    <section class="mag-section g-orchid">
+      <div class="mag-rail"><p class="mag-kicker">Joint loan</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Joint home loan</h2>
+        <p class="guide-tile-copy">Each co-owner can claim their share, within the same rules.</p>
+      </div>
+    </section>
+    <section class="mag-section g-frost">
+      <div class="mag-rail"><p class="mag-kicker">How to claim</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">How to claim</h2>
+        <p class="guide-tile-copy">Interest payment and principal repayment go in different places on your return.</p>
+      </div>
+    </section>
+    <section class="mag-section g-ember">
+      <div class="mag-rail"><p class="mag-kicker">Other</p></div>
+      <div class="mag-content">
+        <h2 class="guide-tile-title">Other</h2>
+        <p class="guide-tile-copy">Stamp duty, registration, and a few edge cases sit here.</p>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

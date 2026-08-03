@@ -52,6 +52,16 @@ Use this when you start a new conversation or when the user says "we should be o
 
 - **Don’t change existing behaviour** unless the user explicitly asks for it. Only implement what they asked for; leave the rest as-is so the site keeps working the same way elsewhere.
 
+## 7. Content factory
+
+- Page words: edit files under `content/` (`.body.html` masters for redesigned pages), then `npm run build:content -- --write` and chrome sync.
+- Legal prose mirror: `../etc/docs/legal/*.md` → `npm run sync:legal-content`. Live legal HTML bodies are `content/legal/*.body.html` until a markdown renderer matches golden.
+- Never hand-edit generated page bodies; run `npm run check:content`.
+- Menus: `partials/*` + `build:nav` / `build:footer` / `build:guide-localnav`.
+- Contacts: `data/site-contacts.json` only.
+- Full publish path: `npm run build:site` then preview. See `docs/HOW_TO_EDIT_SITE_WORDS.md` and `docs/DEFINITION_OF_DONE.md`.
+- Legacy education pages: frozen — `docs/LEGACY_EDUCATION_FREEZE.md`.
+
 ---
 
 ## Summary (copy-paste for the user)

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script>document.documentElement.classList.add('js');</script>
+  <meta name="description" content="Tenure from loan amount, rate, and Equated Monthly Instalment (EMI). EMI must exceed monthly interest.">
+  <title>Tenure calculator – Shroffin</title>
+  <link rel="icon" href="../../favicon.ico?v=6" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../images/logos/favicon-32.png?v=6">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../images/logos/favicon-16.png?v=6">
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png?v=6">
+  <link rel="manifest" href="../../site.webmanifest?v=6">
+  <link rel="stylesheet" href="../../css/shroffin-shell.css?v=type-ladder-5">
+  <link rel="stylesheet" href="../../css/shroffin-calculators.css?v=chevron-1">
+</head>
+<body class="calc-page">
+  <!-- SHROFFIN_NAV_START -->
+  <div class="globalnav-veil" id="globalnav-veil" hidden></div>
+  <nav class="globalnav" id="globalnav" aria-label="Global">
+    <div class="globalnav-content">
+      <ul class="globalnav-list">
+        <li class="globalnav-item globalnav-item-brand">
+          <a class="globalnav-link globalnav-link-brand" href="/" aria-label="Shroffin Home">
+            <img
+              class="globalnav-logo"
+              src="/images/logos/logo-h-light-clear-781x173.png"
+              alt="Shroffin"
+              width="99"
+              height="22"
+            >
+          </a>
+        </li>
+        <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/compare.html">Compare</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/quick-overview.html">Overview</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/schemes.html">Schemes</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/faq.html">FAQ</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/document-checklist.html">Documents</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/about.html">About</a>
+        </li>
+        -->
+        <!-- EDUCATION_LOAN_PRODUCT: kept in code, hidden from UI until re-enabled
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/education-loan.html">Education</a>
+        </li>
+        -->
+        <li class="globalnav-item globalnav-item-about globalnav-item-flyout" id="nav-guide">
+          <a
+            class="globalnav-link globalnav-flyout-trigger"
+            href="/pages/guide.html"
+            id="nav-guide-trigger"
+            aria-expanded="false"
+            aria-controls="nav-guide-flyout"
+          >Guide</a>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >Support</button>
+        </li>
+        <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-tools-trigger"
+            aria-expanded="false"
+            aria-controls="nav-tools-flyout"
+          >Tools</button>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/about.html">About</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-guide-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore guide</h2>
+          <ul class="globalnav-submenu-list">
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/guide.html">
+                <span class="globalnav-submenu-label">Overview</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/guide-documents.html">
+                <span class="globalnav-submenu-label">Documents</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/tax-benefits.html">
+                <span class="globalnav-submenu-label">Tax benefits</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/concessions.html">
+                <span class="globalnav-submenu-label">Concessions</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/home-loan-insurance.html">
+                <span class="globalnav-submenu-label">Insurance</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/home-loan-complaints.html">
+                <span class="globalnav-submenu-label">Grievance redressal mechanism</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content">
+        <h2 class="globalnav-submenu-header">Get support</h2>
+        <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
+              <span class="globalnav-submenu-label">Email</span>
+              <span class="globalnav-submenu-value">support@shroffin.com</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="tel:+919112334367">
+              <span class="globalnav-submenu-label">Call</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="globalnav-submenu-link"
+              href="https://wa.me/919112334367"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="globalnav-submenu-label">Chat on WhatsApp ↗</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore tools</h2>
+          <ul class="globalnav-submenu-list">
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/calculators.html">
+                <span class="globalnav-submenu-label">Calculators</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/project-approvals.html">
+                <span class="globalnav-submenu-label">Project Bank Finder</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- SHROFFIN_NAV_END -->
+
+    {{BODY_HTML}}
+
+  <!-- SHROFFIN_FOOTER_START -->
+  <aside class="site-help-strip" aria-label="Get help">
+    <p class="site-help-strip-text">
+      Need some help?
+      <a
+        class="guide-section-link"
+        href="https://wa.me/919112334367"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Chat now<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new window)</span></a>
+      or call <a class="site-help-strip-phone" href="tel:+919112334367">91123 34367</a>
+    </p>
+  </aside>
+  <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
+    <div class="site-footer-inner">
+      <div class="site-footer-directory">
+        <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
+          <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/guide.html">Overview</a></li>
+            <li><a href="/pages/guide-documents.html">Documents</a></li>
+            <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
+            <li><a href="/pages/concessions.html">Concessions</a></li>
+            <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
+            <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-tools-title">
+          <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/calculators.html">Calculators</a></li>
+            <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-company-title">
+          <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/about.html">About</a></li>
+            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/terms-of-use.html">Terms of Use</a></li>
+          </ul>
+        </nav>
+
+        <section class="site-footer-group" aria-labelledby="footer-support-title">
+          <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
+          <ul class="site-footer-list">
+            <li><a href="mailto:support@shroffin.com">Email</a></li>
+            <li><a href="tel:+919112334367">Call</a></li>
+          </ul>
+        </section>
+
+        <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
+          <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
+          <ul class="site-footer-list">
+            <li>
+              <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
+        <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
+        <div class="site-footer-disclaimer">
+          <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+          <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+          <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+          <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+          <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+        </div>
+      </section>
+
+      <div class="site-footer-bottom">
+        <div class="site-footer-bottom-row">
+          <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
+          <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
+            <ul class="site-footer-legal-links">
+              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/terms-of-use.html">Terms of Use</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
+              <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
+              <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- SHROFFIN_FOOTER_END -->
+
+
+  <script src="../../js/shroffin-loan-math.js?v=4"></script>
+  <script src="../../js/shroffin-calculators.js?v=19"></script>
+  <script src="../../js/shroffin-nav.js?v=sel-13"></script>
+</body>
+</html>

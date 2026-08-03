@@ -10,6 +10,12 @@ MSG="${*:-Deploy: update site}"
 echo "Repo: $(pwd)"
 echo "Commit message: $MSG"
 
+echo "Building site (content, sitemap, chrome)..."
+npm run build:site
+echo "Verifying..."
+npm run lint:responsive
+npm test
+
 echo ""
 echo "Staging all changes..."
 git add .
@@ -26,4 +32,4 @@ echo "Pushing to origin main..."
 git push origin main
 
 echo ""
-echo "Done. Pushed to GitHub; Pages will update the site (e.g. https://applyonlyonce.com)."
+echo "Done. Pushed to GitHub; Pages will update the site (e.g. https://shroffin.com)."

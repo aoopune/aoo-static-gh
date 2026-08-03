@@ -1,8 +1,17 @@
-# Apply Only Once – Audit Trail & Requirements
+# Apply Only Once / Shroffin – Audit Trail & Requirements
 
-**Last updated**: 2026-02-13 (Pro-Tips: UI – two-column layout, contained table, compact spacing)
+**Last updated**: 2026-08-03 (Markdown content factory: HTML body passthrough masters, contacts JSON, sitemap XML generate, deploy/CI build gates)
 
-This document is the comprehensive audit trail of requirements, implementation status, and changes for applyonlyonce.com.
+This document is the comprehensive audit trail of requirements, implementation status, and changes for shroffin.com / applyonlyonce.com.
+
+### 2026-08-03 — Content factory (no-break)
+
+- Added `content/` body masters + `templates/layouts/` for all redesigned pages; `npm run build:content` stitches with golden `<main>` checks.
+- Contacts: `data/site-contacts.json` injected via nav/footer sync.
+- Legal: `content/legal/*.body.html` from live pages; `etc/docs/legal/*.md` synced to `content/legal/*.md`.
+- `sitemap.xml` generated from `data/redesigned-pages.json`; sitemap HTML directory preserved via passthrough.
+- Deploy scripts and CI run `build:site` / `check:built-html`.
+- Docs: `CONTENT_SOURCE_OF_TRUTH.md`, `HOW_TO_EDIT_SITE_WORDS.md`, `DEFINITION_OF_DONE.md`, `LEGACY_EDUCATION_FREEZE.md`.
 
 ---
 

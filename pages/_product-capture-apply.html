@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Seeding apply…</title></head>
+<body>
+<script>
+(function () {
+  var banks = [
+    { id: "bom-1", bankName: "Bank of Maharashtra", scheme: "Maha Super Housing Loan", interestRate: 7.25, loanAmount: 5000000, downPayment: 1250000, tenureYears: 20, emi: 39519 },
+    { id: "iob-1", bankName: "Indian Overseas Bank", scheme: "Subhagruha Housing Loan", interestRate: 7.25, loanAmount: 5000000, downPayment: 1250000, tenureYears: 20, emi: 39519 },
+    { id: "pnb-1", bankName: "Punjab National Bank", scheme: "Housing loan", interestRate: 7.25, loanAmount: 5000000, downPayment: 1250000, tenureYears: 20, emi: 39519 }
+  ];
+  var packet = {
+    v: 1,
+    ts: Date.now(),
+    data_version: "capture",
+    input_data: {
+      monthlyIncome: 100000,
+      propertyValue: 6250000,
+      age: 35,
+      cibilScore: 780,
+      occupation: "Salaried",
+      purpose: "Regular Home Loan",
+      selectedCount: 3
+    },
+    columns: [],
+    banks: banks
+  };
+  try {
+    sessionStorage.setItem("shroffin_hl_apply_v1", JSON.stringify(packet));
+  } catch (e) {}
+  location.replace("apply.html");
+})();
+</script>
+</body>
+</html>

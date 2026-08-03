@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script>document.documentElement.classList.add('js');</script>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Apply once – Shroffin</title>
+  <meta name="description" content="Apply to your selected home loan banks in one go.">
+  <link rel="icon" href="../favicon.ico?v=6" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/logos/favicon-32.png?v=6">
+  <link rel="icon" type="image/png" sizes="16x16" href="../images/logos/favicon-16.png?v=6">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png?v=6">
+  <link rel="manifest" href="../site.webmanifest?v=6">
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=chevron-2">
+  <link rel="stylesheet" href="../css/shroffin-apply.css?v=chevron-1">
+</head>
+<body class="hl-apply-page">
+  <!-- SHROFFIN_NAV_START -->
+  <div class="globalnav-veil" id="globalnav-veil" hidden></div>
+  <nav class="globalnav" id="globalnav" aria-label="Global">
+    <div class="globalnav-content">
+      <ul class="globalnav-list">
+        <li class="globalnav-item globalnav-item-brand">
+          <a class="globalnav-link globalnav-link-brand" href="/" aria-label="Shroffin Home">
+            <img
+              class="globalnav-logo"
+              src="/images/logos/logo-h-light-clear-781x173.png"
+              alt="Shroffin"
+              width="99"
+              height="22"
+            >
+          </a>
+        </li>
+        <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/compare.html">Compare</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/quick-overview.html">Overview</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/schemes.html">Schemes</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/faq.html">FAQ</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/document-checklist.html">Documents</a>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/about.html">About</a>
+        </li>
+        -->
+        <!-- EDUCATION_LOAN_PRODUCT: kept in code, hidden from UI until re-enabled
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/education-loan.html">Education</a>
+        </li>
+        -->
+        <li class="globalnav-item globalnav-item-about globalnav-item-flyout" id="nav-guide">
+          <a
+            class="globalnav-link globalnav-flyout-trigger"
+            href="/pages/guide.html"
+            id="nav-guide-trigger"
+            aria-expanded="false"
+            aria-controls="nav-guide-flyout"
+          >Guide</a>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >Support</button>
+        </li>
+        <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-tools-trigger"
+            aria-expanded="false"
+            aria-controls="nav-tools-flyout"
+          >Tools</button>
+        </li>
+        <li class="globalnav-item">
+          <a class="globalnav-link" href="/pages/about.html">About</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-guide-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore guide</h2>
+          <ul class="globalnav-submenu-list">
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/guide.html">
+                <span class="globalnav-submenu-label">Overview</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/guide-documents.html">
+                <span class="globalnav-submenu-label">Documents</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/tax-benefits.html">
+                <span class="globalnav-submenu-label">Tax benefits</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/concessions.html">
+                <span class="globalnav-submenu-label">Concessions</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/home-loan-insurance.html">
+                <span class="globalnav-submenu-label">Insurance</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/home-loan-complaints.html">
+                <span class="globalnav-submenu-label">Grievance redressal mechanism</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content">
+        <h2 class="globalnav-submenu-header">Get support</h2>
+        <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
+              <span class="globalnav-submenu-label">Email</span>
+              <span class="globalnav-submenu-value">support@shroffin.com</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="tel:+919112334367">
+              <span class="globalnav-submenu-label">Call</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="globalnav-submenu-link"
+              href="https://wa.me/919112334367"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="globalnav-submenu-label">Chat on WhatsApp ↗</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore tools</h2>
+          <ul class="globalnav-submenu-list">
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/calculators.html">
+                <span class="globalnav-submenu-label">Calculators</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/project-approvals.html">
+                <span class="globalnav-submenu-label">Project Bank Finder</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- SHROFFIN_NAV_END -->
+
+  <main id="hl-apply" class="hl-apply">
+    <div class="hl-apply-inner">
+      <h1 class="visually-hidden">Apply once</h1>
+
+      <div class="hl-apply-layout">
+        <div class="hl-apply-main">
+          <section class="hl-apply-context" aria-labelledby="hl-apply-context-heading">
+            <h2 id="hl-apply-context-heading" class="hl-apply-section-title">Your details</h2>
+            <div id="hl-apply-primary-details" class="hl-apply-facts--primary"></div>
+            <button
+              type="button"
+              class="hl-apply-disclose"
+              id="hl-apply-details-toggle"
+              aria-expanded="false"
+              aria-controls="hl-apply-your-details-panel"
+            >
+              <span class="hl-apply-disclose-label">Show more details</span>
+              <svg class="hl-apply-disclose-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div
+              class="hl-apply-disclose-panel"
+              id="hl-apply-your-details-panel"
+              aria-hidden="true"
+            >
+              <div class="hl-apply-disclose-panel-inner">
+                <dl id="hl-apply-your-details" class="hl-apply-facts"></dl>
+
+                <h3 id="hl-apply-filters-heading" class="hl-apply-context-heading hl-apply-context-heading--sub">Filters</h3>
+                <dl id="hl-apply-filters" class="hl-apply-facts"></dl>
+              </div>
+            </div>
+          </section>
+
+          <section class="hl-apply-bag" aria-labelledby="hl-apply-bag-heading">
+            <div class="hl-apply-bag-head">
+              <h2 id="hl-apply-bag-heading" class="hl-apply-section-title">Your selection</h2>
+              <p class="hl-apply-bag-meta"><span id="hl-apply-n">0</span> banks</p>
+            </div>
+            <ul id="hl-apply-banks" class="hl-apply-banks" aria-label="Selected banks"></ul>
+          </section>
+        </div>
+
+        <form id="hl-apply-form" class="hl-apply-form" novalidate>
+          <header class="hl-apply-form-intro">
+            <h2 class="hl-apply-form-heading">Tell us how to reach you</h2>
+            <p class="hl-apply-purpose">We use this email and number for updates and the next steps on your home loan application.</p>
+          </header>
+
+          <div class="hl-apply-fields">
+            <div class="hl-apply-field">
+              <label for="hl-name">Full name</label>
+              <input id="hl-name" name="name" type="text" autocomplete="name" required placeholder="As on your ID">
+            </div>
+            <div class="hl-apply-field hl-apply-field--phone">
+              <label for="hl-phone">Phone</label>
+              <div class="hl-apply-phone-row">
+                <span class="hl-apply-phone-prefix" title="India">
+                  <svg class="hl-apply-phone-flag" viewBox="0 0 24 16" focusable="false" aria-hidden="true">
+                    <rect width="24" height="5.333" y="0" fill="#FF9933"/>
+                    <rect width="24" height="5.334" y="5.333" fill="#FFFFFF"/>
+                    <rect width="24" height="5.333" y="10.667" fill="#138808"/>
+                    <circle cx="12" cy="8" r="1.65" fill="none" stroke="#000080" stroke-width="0.55"/>
+                  </svg>
+                  <span class="hl-apply-phone-cc">+91</span>
+                </span>
+                <input
+                  id="hl-phone"
+                  name="phone"
+                  type="tel"
+                  inputmode="numeric"
+                  autocomplete="tel-national"
+                  required
+                  maxlength="11"
+                  placeholder="XXXXX XXXXX"
+                  aria-label="Indian mobile number, +91"
+                >
+                <span class="hl-apply-phone-ok" id="hl-phone-ok" hidden>
+                  <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
+                    <path d="M3.2 8.2 6.4 11.4 12.8 4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="visually-hidden">Valid mobile number</span>
+                </span>
+              </div>
+            </div>
+            <div class="hl-apply-field hl-apply-field--email">
+              <label for="hl-email">Email</label>
+              <div class="hl-apply-email-row">
+                <input id="hl-email" name="email" type="email" autocomplete="email" required placeholder="name@example.com">
+                <button type="button" class="hl-apply-verify" id="hl-verify-email" disabled>Verify</button>
+              </div>
+              <p class="hl-apply-verify-status" id="hl-verify-status" hidden>Email verified</p>
+              <p class="hl-apply-email-mismatch" id="hl-email-mismatch" hidden></p>
+            </div>
+          </div>
+
+          <div class="hl-apply-commit">
+            <label class="hl-apply-consent" for="hl-consent">
+              <input type="checkbox" id="hl-consent" name="consent" required>
+              <span class="hl-apply-consent-copy">
+                <span class="hl-apply-consent-line">I confirm that the information I provide here is true and complete to the best of my knowledge.</span>
+                <span class="hl-apply-consent-line">I agree that Shroffin may email or call me about this home loan application.</span>
+                <span class="hl-apply-consent-line">See <a href="/privacy-policy.html">Privacy Policy</a> and <a href="/terms-of-use.html">Terms of Use</a>.</span>
+              </span>
+            </label>
+
+            <div class="hl-apply-actions">
+              <button type="button" class="hl-apply-cta" id="hl-submit-application" disabled>
+                <span class="hl-apply-cta-label">Submit application</span>
+                <span class="hl-apply-cta-spinner" aria-hidden="true" hidden></span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="hl-apply-toast" class="hl-apply-toast" role="status" aria-live="polite" hidden></div>
+  <div id="hl-apply-success" class="hl-apply-success" hidden></div>
+
+  <aside class="hl-apply-submit-notice" aria-labelledby="hl-apply-submit-notice-title">
+    <div class="hl-apply-submit-notice-inner">
+      <h2 id="hl-apply-submit-notice-title" class="hl-apply-submit-notice-title">Notice regarding this submission</h2>
+      <p>Shroffin is not authorised to check your credit score. We do not share your personal information with lenders without your explicit permission.</p>
+      <p>By submitting, you give that permission for your name, phone number, and email to be shared only with the lenders you chose, so they can see whether they may be able to lend to you.</p>
+      <p>KYC and supporting documents are not collected at this stage. Documents may be requested later only if a lender indicates that it may proceed.</p>
+    </div>
+  </aside>
+
+  <!-- SHROFFIN_FOOTER_START -->
+  <aside class="site-help-strip" aria-label="Get help">
+    <p class="site-help-strip-text">
+      Need some help?
+      <a
+        class="guide-section-link"
+        href="https://wa.me/919112334367"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Chat now<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new window)</span></a>
+      or call <a class="site-help-strip-phone" href="tel:+919112334367">91123 34367</a>
+    </p>
+  </aside>
+  <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
+    <div class="site-footer-inner">
+      <div class="site-footer-directory">
+        <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
+          <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/guide.html">Overview</a></li>
+            <li><a href="/pages/guide-documents.html">Documents</a></li>
+            <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
+            <li><a href="/pages/concessions.html">Concessions</a></li>
+            <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
+            <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-tools-title">
+          <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/calculators.html">Calculators</a></li>
+            <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer-group" aria-labelledby="footer-company-title">
+          <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
+          <ul class="site-footer-list">
+            <li><a href="/pages/about.html">About</a></li>
+            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/terms-of-use.html">Terms of Use</a></li>
+          </ul>
+        </nav>
+
+        <section class="site-footer-group" aria-labelledby="footer-support-title">
+          <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
+          <ul class="site-footer-list">
+            <li><a href="mailto:support@shroffin.com">Email</a></li>
+            <li><a href="tel:+919112334367">Call</a></li>
+          </ul>
+        </section>
+
+        <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
+          <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
+          <ul class="site-footer-list">
+            <li>
+              <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
+        <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
+        <div class="site-footer-disclaimer">
+          <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+          <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+          <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+          <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+          <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+        </div>
+      </section>
+
+      <div class="site-footer-bottom">
+        <div class="site-footer-bottom-row">
+          <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
+          <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
+            <ul class="site-footer-legal-links">
+              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/terms-of-use.html">Terms of Use</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
+              <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
+              <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
+              <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
+              <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- SHROFFIN_FOOTER_END -->
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="../js/home-loan-apply.js?v=apply-43"></script>
+  <script src="../js/shroffin-nav.js?v=sel-13"></script>
+</body>
+</html>

@@ -19,8 +19,14 @@
     appId: "1:881073938522:web:6c7a07100a753682833863"
   };
 
-  var HL_SUPPORT_EMAIL = "support@shroffin.com";
-  var HL_SUPPORT_PHONE = "+91 91123 34367";
+  // Contacts from data/site-contacts.json via js/site-contacts.generated.js
+  var contacts = window.ShroffinSiteContacts || {};
+  var HL_SUPPORT_EMAIL = contacts.email || "support@shroffin.com";
+  var HL_SUPPORT_PHONE = contacts.phoneDisplay || "+91 91123 34367";
+  var HL_SUPPORT_PHONE_SHORT =
+    contacts.phoneDisplayShort || "91123 34367";
+  var HL_SUPPORT_TEL = contacts.phoneTel || "+919112334367";
+  var HL_WHATSAPP_URL = contacts.whatsappUrl || "https://wa.me/919112334367";
   var HL_CONTACT_WINDOW = "48 hours";
 
   var firebaseReady = false;
@@ -883,10 +889,16 @@
       "</p>" +
       '<p class="hl-apply-success-help">' +
       "Missed a detail? " +
-      '<a class="guide-section-link" href="https://wa.me/919112334367" target="_blank" rel="noopener noreferrer">' +
+      '<a class="guide-section-link" href="' +
+      HL_WHATSAPP_URL +
+      '" target="_blank" rel="noopener noreferrer">' +
       'Chat now<span class="guide-section-link-arrow" aria-hidden="true">↗</span>' +
       '<span class="visually-hidden"> (opens in a new window)</span></a>' +
-      ' or call <a class="hl-apply-success-phone" href="tel:+919112334367">91123 34367</a>' +
+      ' or call <a class="hl-apply-success-phone" href="tel:' +
+      HL_SUPPORT_TEL +
+      '">' +
+      HL_SUPPORT_PHONE_SHORT +
+      "</a>" +
       "</p>" +
       '<button type="button" class="hl-apply-cta" id="hl-got-it">Got it</button>' +
       "</div>";

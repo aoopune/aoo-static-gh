@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product capture</title>
+  <style>
+    html, body { margin: 0; background: #f5f5f7; overflow: hidden; }
+    iframe { border: 0; width: 1440px; height: 900px; display: block; }
+  </style>
+</head>
+<body>
+  <iframe id="f" src="/pages/explore-banks.html" title="product"></iframe>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const mode = params.get("mode") || "compare";
+
+    function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+
+    async function ready(doc) {
+      const style = doc.createElement("style");
+      style.textContent = `
+        .globalnav, .globalnav-wrapper, #globalnav, nav[aria-label="Global"],
+        .shroffin-chat, [data-chat], .chat-launcher, .aoo-chat {
+          display: none !important;
+        }
+        body { padding-top: 0 !important; }
+        .explore-banks-main { padding-top: 28px !important; }
+      `;
+      doc.documentElement.appendChild(style);
+      await sleep(1200);
+    }
+
+    async function seeOptions(doc) {
+      const btn = [...doc.querySelectorAll("button")].find((b) =>
+        /see options/i.test(b.textContent || "")
+      );
+      if (btn) btn.click();
+      for (let i = 0; i < 40; i++) {
+        const shell = doc.getElementById("hlc-results-shell");
+        if (shell && !shell.hasAttribute("hidden")) break;
+        await sleep(250);
+      }
+      await sleep(900);
+    }
+
+    async function selectBanks(doc, n) {
+      const rows = [...doc.querySelectorAll("tr.hlc-selectable-row")];
+      for (const row of rows.slice(0, n)) {
+        row.click();
+        await sleep(120);
+      }
+      await sleep(400);
+    }
+
+    async function run() {
+      const f = document.getElementById("f");
+      await new Promise((r) => {
+        if (f.contentDocument && f.contentDocument.readyState === "complete") r();
+        else f.addEventListener("load", r, { once: true });
+      });
+      await sleep(800);
+      const doc = f.contentDocument;
+      if (!doc) {
+        document.title = "FAIL-NO-DOC";
+        return;
+      }
+      await ready(doc);
+
+      if (mode === "details") {
+        document.title = "READY-DETAILS";
+        return;
+      }
+
+      await seeOptions(doc);
+
+      if (mode === "compare") {
+        document.title = "READY-COMPARE";
+        return;
+      }
+
+      if (mode === "pick") {
+        await selectBanks(doc, 3);
+        document.title = "READY-PICK";
+        return;
+      }
+
+      if (mode === "decide") {
+        await selectBanks(doc, 4);
+        document.title = "READY-DECIDE";
+        return;
+      }
+
+      document.title = "READY";
+    }
+
+    run().catch((err) => {
+      console.error(err);
+      document.title = "FAIL";
+    });
+  </script>
+</body>
+</html>

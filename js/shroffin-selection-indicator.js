@@ -1,6 +1,10 @@
 /**
  * Sliding selection thumb for exclusive pill groups and underline tabs.
  * Moves softly from the current choice to the next — not a snap.
+ *
+ * Guide localnav: animate the underline on the page you are leaving, then
+ * navigate. Animating on the *next* page fought the static ::after and looked
+ * like the line jumped back and forth.
  */
 (function () {
   "use strict";
@@ -10,6 +14,10 @@
   var LINE_HEIGHT = 2;
   var GUIDE_LINE_INSET = 4;
   var UI_MS = 900;
+  /* Guide localnav exit glide — match CSS; navigate a beat before it ends. */
+  var PAGE_UI_MS = 550;
+  var PAGE_NAV_MS = 420;
+  var FADE_MS = 500;
 
   var patterns = [
     {
@@ -26,7 +34,6 @@
       item: ".hlc-column-tab",
       mode: "line",
       lineInset: 0,
-      /* Matches .hlc-column-tab[aria-current]::after { bottom: 0 } */
       lineBottom: 0,
       isSelected: function (el) {
         return el.getAttribute("aria-current") === "page";
@@ -38,12 +45,23 @@
       item: ".guide-seg-btn",
       mode: "line",
       lineInset: GUIDE_LINE_INSET,
-      /* Matches .guide-seg-btn[aria-selected]::after { bottom: -1px } */
       lineBottom: -1,
       isSelected: function (el) {
         return el.getAttribute("aria-selected") === "true";
       },
       watchAttrs: ["aria-selected"],
+    },
+    {
+      host: ".localnav-list",
+      item: ".localnav-link",
+      mode: "line",
+      lineInset: 0,
+      lineBottom: 0,
+      exitNavigate: true,
+      isSelected: function (el) {
+        return el.getAttribute("aria-current") === "page";
+      },
+      watchAttrs: ["aria-current"],
     },
   ];
 
@@ -55,6 +73,13 @@
     return (
       window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }
+
+  function isCompactLocalnav() {
+    return (
+      window.matchMedia &&
+      window.matchMedia("(max-width: 833px)").matches
     );
   }
 
@@ -83,7 +108,6 @@
       width = Math.max(0, itemRect.width - inset * 2);
       height = LINE_HEIGHT;
       x = itemRect.left - hostRect.left + scrollX + inset;
-      // CSS bottom: N → line bottom edge sits N px above item bottom (N may be negative).
       y =
         itemRect.bottom -
         hostRect.top +
@@ -115,7 +139,23 @@
     }
   }
 
+  function isPlainActivate(event, item) {
+    if (!event || !item) return false;
+    if (event.defaultPrevented) return false;
+    if (typeof event.button === "number" && event.button !== 0) return false;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return false;
+    }
+    var target = item.getAttribute("target");
+    if (target && target !== "_self") return false;
+    var href = item.getAttribute("href");
+    if (!href || href.charAt(0) === "#") return false;
+    return true;
+  }
+
   function syncController(controller, instant) {
+    if (controller.exitLock) return;
+
     var host = controller.host;
     var pattern = controller.pattern;
     var thumb = controller.thumb;
@@ -127,8 +167,6 @@
       return;
     }
 
-    // Attribute loops can briefly clear every selected marker in one turn.
-    // Keep the last thumb until the frame settles on a real choice.
     if (!selected) {
       return;
     }
@@ -155,6 +193,7 @@
   }
 
   function scheduleSync(controller, instant) {
+    if (controller.exitLock) return;
     if (instant) {
       controller.pendingInstant = true;
     }
@@ -164,6 +203,61 @@
       var snap = Boolean(controller.pendingInstant);
       controller.pendingInstant = false;
       syncController(controller, snap);
+    });
+  }
+
+  /**
+   * Slide underline to the clicked Guide link on this page, then go.
+   * New page only needs a settled underline — no reverse handoff.
+   */
+  function exitNavigate(controller, item, href) {
+    var host = controller.host;
+    var pattern = controller.pattern;
+    var thumb = controller.thumb;
+    var fromItem = findSelected(host, pattern) || controller.selected;
+
+    if (prefersReducedMotion() || isCompactLocalnav() || !fromItem) {
+      window.location.href = href;
+      return;
+    }
+
+    var fromBox = measure(host, fromItem, pattern);
+    var toBox = measure(host, item, pattern);
+    if (fromBox.width < 1 || toBox.width < 1) {
+      window.location.href = href;
+      return;
+    }
+
+    controller.exitLock = true;
+    thumb.hidden = false;
+
+    // Move aria-current so label colour tracks the thumb (optional polish).
+    if (fromItem !== item) {
+      fromItem.removeAttribute("aria-current");
+      item.setAttribute("aria-current", "page");
+    }
+
+    controller.selected = fromItem;
+    applyBox(thumb, fromBox, true);
+    controller.animUntil = Date.now() + PAGE_UI_MS;
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        controller.selected = item;
+        applyBox(thumb, toBox, false);
+        window.setTimeout(function () {
+          if (window.__shroffinSelProbe) {
+            controller.exitLock = false;
+            window.dispatchEvent(
+              new CustomEvent("shroffin-sel-exit-done", {
+                detail: { href: href },
+              })
+            );
+            return;
+          }
+          window.location.href = href;
+        }, PAGE_NAV_MS);
+      });
     });
   }
 
@@ -190,12 +284,14 @@
       raf: 0,
       pendingInstant: false,
       animUntil: 0,
+      exitLock: false,
       observer: null,
       resizeObserver: null,
     };
 
     if (typeof MutationObserver === "function") {
       controller.observer = new MutationObserver(function () {
+        if (controller.exitLock) return;
         scheduleSync(controller, false);
       });
       controller.observer.observe(host, {
@@ -208,7 +304,7 @@
 
     if (typeof ResizeObserver === "function") {
       controller.resizeObserver = new ResizeObserver(function () {
-        // Don't snap mid-slide when the table reflows after a tab change.
+        if (controller.exitLock) return;
         var moving =
           controller.animUntil && Date.now() < controller.animUntil;
         scheduleSync(controller, !moving);
@@ -218,7 +314,27 @@
 
     host.addEventListener(
       "click",
-      function () {
+      function (event) {
+        var item = event.target && event.target.closest
+          ? event.target.closest(pattern.item)
+          : null;
+        if (!item || !host.contains(item)) return;
+
+        if (pattern.exitNavigate) {
+          var current = findSelected(host, pattern);
+          if (
+            current &&
+            item !== current &&
+            isPlainActivate(event, item)
+          ) {
+            event.preventDefault();
+            event.stopPropagation();
+            exitNavigate(controller, item, item.href);
+            return;
+          }
+          return;
+        }
+
         scheduleSync(controller, false);
       },
       true
@@ -239,7 +355,10 @@
 
   function refreshAll(instant) {
     controllers.forEach(function (controller) {
-      if (instant !== false) {
+      if (controller.exitLock) return;
+      var moving =
+        controller.animUntil && Date.now() < controller.animUntil;
+      if (instant !== false && !moving) {
         syncController(controller, true);
       } else {
         scheduleSync(controller, false);
@@ -271,7 +390,6 @@
       });
     }
 
-    // Late-mounted choice groups (e.g. after compare UI boots).
     if (typeof MutationObserver === "function") {
       var bootObserver = new MutationObserver(function () {
         scan();
@@ -289,13 +407,6 @@
       refreshAll(true);
     },
   };
-
-  /**
-   * Option 1 content fade: dim → swap → settle.
-   * Matches --shroffin-sel-content-fade (micro band, 0.5s).
-   * Still finishes before / with the selection thumb (UI 0.85s).
-   */
-  var FADE_MS = 500;
 
   function runContentFade(surface, updateFn, options) {
     if (!surface || prefersReducedMotion()) {

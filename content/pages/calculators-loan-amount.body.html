@@ -1,0 +1,107 @@
+<main class="calc-main">
+    <div class="calc-wrap">
+      <nav class="calc-crumb" aria-label="Breadcrumb">
+        <a href="../calculators.html">Calculators</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Loan from EMI</span>
+      </nav>
+      <header class="calc-hero calc-reveal">
+        <h1 class="calc-hero-title">Loan from EMI</h1>
+        <p class="calc-hero-lead">Know the loan size that fits an EMI you can already live with.</p>
+      </header>
+      <div class="calc-workspace calc-reveal">
+        <section class="calc-controls" aria-labelledby="calc-controls-title">
+          <h2 class="calc-controls-title" id="calc-controls-title">Your numbers</h2>
+          <form class="calc-form" data-calc="loan-amount" novalidate>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="emi">Monthly EMI you can pay</label>
+              </div>
+              <div class="calc-input-shell">
+                <span class="calc-prefix" aria-hidden="true">₹</span>
+                <input type="text" class="calc-input" autocomplete="off" id="emi" name="emi" inputmode="decimal" value="45,000">
+              </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="emiRange" min="5000" max="10000000" step="1000" value="45000" aria-label="Monthly EMI you can pay slider">
+              </div>
+            </div>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="rate">Interest rate (% a year)</label>
+              </div>
+              <div class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
+              </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="Interest rate (% a year) slider">
+              </div>
+            </div>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="years">Tenure (years)</label>
+              </div>
+              <div class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain">
+              </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="20" aria-label="Tenure (years) slider">
+              </div>
+            </div>
+          </form>
+        </section>
+        <section class="calc-readout" aria-labelledby="calc-readout-title" aria-live="polite">
+          <h2 class="calc-readout-title" id="calc-readout-title">Estimate</h2>
+          <div class="calc-readout-hero">
+            <p class="calc-result-num" id="out-loan">—</p>
+            <p class="calc-result-label">Estimated loan size</p>
+          </div>
+          <ul class="calc-stats">
+            <li><span>Total interest</span><strong id="out-interest">—</strong></li>
+            <li><span>Total you pay</span><strong id="out-payable">—</strong></li>
+          </ul>
+          <p class="calc-truth">Planning estimate only. Not a bank offer, sanction, or promise. Final terms stay with the lender.</p>
+        </section>
+      </div>
+
+      <section class="calc-assumptions calc-reveal" aria-labelledby="calc-assumptions-title">
+        <h2 class="calc-assumptions-title" id="calc-assumptions-title">How this estimate works</h2>
+        <p class="calc-assumptions-lead">What goes into this estimate.</p>
+
+        <div class="calc-formula" aria-labelledby="calc-formula-title">
+          <h3 class="calc-formula-title" id="calc-formula-title">Formula used</h3>
+          <p class="calc-formula-eq">P = E × (1 − (1 + r)<sup>−n</sup>) ÷ r</p>
+          <ul class="calc-formula-keys">
+            <li><strong>P</strong> — estimated loan amount</li>
+            <li><strong>E</strong> — Equated Monthly Instalment (EMI) you can pay</li>
+            <li><strong>r</strong> — monthly rate = annual rate ÷ 12 ÷ 100</li>
+            <li><strong>n</strong> — tenure in months = years × 12</li>
+          </ul>
+        </div>
+        <ul class="calc-assumptions-list">
+            <li>This only reverses the EMI formula. It does not check income, credit score, or property rules.</li>
+            <li>Reducing balance and monthly compounding are used.</li>
+            <li>The rate is held fixed for the projection.</li>
+            <li>Your bank may sanction less after Fixed Obligation to Income Ratio (FOIR), Loan to Value (LTV), and document checks.</li>
+        </ul>
+      </section>
+      <nav class="calc-guide-links calc-reveal" aria-labelledby="calc-guide-links-title">
+        <h2 class="calc-guide-links-title" id="calc-guide-links-title">In the Guide</h2>
+        <ul class="calc-guide-links-list">
+          <li><a href="../guide.html#loan-amount">Home loan overview · Loan amount</a></li>
+          <li><a href="../guide.html#emi">Home loan overview · Equated Monthly Instalment (EMI)</a></li>
+        </ul>
+      </nav>
+
+      <nav class="calc-related calc-reveal" aria-labelledby="calc-related-title">
+        <h2 class="calc-related-title" id="calc-related-title">Related</h2>
+        <ul class="calc-related-list">
+            <li><a href="emi.html">EMI</a></li>
+            <li><a href="how-much-loan.html">Eligibility</a></li>
+            <li><a href="prepayment.html">Prepayment</a></li>
+        </ul>
+      </nav>
+    </div>
+  </main>

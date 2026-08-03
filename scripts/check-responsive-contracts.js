@@ -151,6 +151,12 @@ for (const entry of pageRegistry) {
   if ((source.match(/SHROFFIN_NAV_END/g) || []).length !== 1) {
     fail(file, 'missing canonical nav end marker');
   }
+  if (!/class="globalnav"/.test(source)) {
+    fail(file, 'nav markers must contain the live globalnav (empty chrome shell)');
+  }
+  if (!/class="site-footer"/.test(source)) {
+    fail(file, 'footer markers must contain the live site-footer (empty chrome shell)');
+  }
   if (!/href="\/pages\/guide\.html"/.test(activeSource)) {
     fail(file, 'global nav must use root-absolute Guide links');
   }
@@ -315,6 +321,7 @@ globalNav.compactRootLabels.forEach(function (label) {
 });
 
 const sitemapHtml = fs.readFileSync(path.join(root, 'sitemap.html'), 'utf8');
+const sitemapActive = sitemapHtml.replace(/<!--[\s\S]*?-->/g, '');
 pageRegistry
   .filter(function (entry) {
     return entry.path !== 'sitemap.html';
@@ -325,8 +332,60 @@ pageRegistry
     }
   });
 legacyRoutes.forEach(function (route) {
-  if (sitemapHtml.includes(route)) {
+  if (sitemapActive.includes(route)) {
     fail('sitemap.html', 'exposes preserved education route: ' + route);
+  }
+});
+
+const legacyAllow = new Set([
+  'education-loan.html',
+  'pages/compare.html',
+  'pages/faq.html',
+  'pages/schemes.html',
+  'pages/quick-overview.html',
+  'pages/document-checklist.html',
+  'pages/government-schemes.html',
+  'pages/pro-tips.html',
+  'pages/questions.html',
+  'pages/results.html',
+  'table-embed.html',
+  '404.html',
+  'google5420f4c52d551b3e.html'
+]);
+
+pageRegistry.forEach(function (entry) {
+  if (!fs.existsSync(path.join(root, entry.path))) {
+    fail(entry.path, 'listed in redesigned-pages.json but file missing');
+  }
+});
+
+function walkHtml(dir, acc) {
+  fs.readdirSync(dir, { withFileTypes: true }).forEach(function (ent) {
+    const p = path.join(dir, ent.name);
+    if (ent.isDirectory()) {
+      if (
+        ent.name === 'node_modules' ||
+        ent.name === 'content' ||
+        ent.name === 'prototypes' ||
+        ent.name === 'templates' ||
+        ent.name === '.git'
+      ) {
+        return;
+      }
+      walkHtml(p, acc);
+    } else if (ent.name.endsWith('.html')) {
+      acc.push(path.relative(root, p).replace(/\\/g, '/'));
+    }
+  });
+}
+const allHtml = [];
+walkHtml(root, allHtml);
+allHtml.forEach(function (rel) {
+  if (legacyAllow.has(rel)) return;
+  const src = fs.readFileSync(path.join(root, rel), 'utf8');
+  if (!/shroffin-shell\.css/.test(src)) return;
+  if (!pages.includes(rel)) {
+    fail(rel, 'uses shroffin-shell.css but missing from redesigned-pages.json');
   }
 });
 

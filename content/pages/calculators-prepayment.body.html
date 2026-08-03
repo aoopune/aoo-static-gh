@@ -1,0 +1,147 @@
+<main class="calc-main">
+    <div class="calc-wrap">
+      <nav class="calc-crumb" aria-label="Breadcrumb">
+        <a href="../calculators.html">Calculators</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Prepayment</span>
+      </nav>
+      <header class="calc-hero calc-reveal">
+        <h1 class="calc-hero-title">Prepayment</h1>
+        <p class="calc-hero-lead">Know if paying extra now is worth what you save.</p>
+      </header>
+      <div class="calc-workspace calc-reveal">
+        <section class="calc-controls" aria-labelledby="calc-controls-title">
+          <h2 class="calc-controls-title" id="calc-controls-title">Your numbers</h2>
+          <form class="calc-form" data-calc="prepayment" novalidate>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="principal">Outstanding principal</label>
+              </div>
+              <div class="calc-input-shell">
+                <span class="calc-prefix" aria-hidden="true">₹</span>
+                <input type="text" class="calc-input" autocomplete="off" id="principal" name="principal" inputmode="decimal" value="40,00,000">
+              </div>
+            </div>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="rate">Interest rate (% a year)</label>
+              </div>
+              <div class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
+              </div>
+            </div>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="years">Years left</label>
+              </div>
+              <div class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="15" data-format="plain">
+              </div>
+            </div>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="lumpSum">Lump sum now</label>
+              </div>
+              <div class="calc-input-shell">
+                <span class="calc-prefix" aria-hidden="true">₹</span>
+                <input type="text" class="calc-input" autocomplete="off" id="lumpSum" name="lumpSum" inputmode="decimal" value="2,00,000">
+              </div>
+            </div>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="extraEmi">Extra each month</label>
+              </div>
+              <div class="calc-input-shell">
+                <span class="calc-prefix" aria-hidden="true">₹</span>
+                <input type="text" class="calc-input" autocomplete="off" id="extraEmi" name="extraEmi" inputmode="decimal" value="0">
+              </div>
+            </div>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label class="calc-label" for="fee">Prepayment fee</label>
+              </div>
+              <div class="calc-input-shell">
+                <span class="calc-prefix" aria-hidden="true">₹</span>
+                <input type="text" class="calc-input" autocomplete="off" id="fee" name="fee" inputmode="decimal" value="0">
+              </div>
+              <p class="calc-hint">Floating rate home loans to individuals are usually ₹0 under Reserve Bank of India (RBI) rules. Enter a fee only if your loan is fixed rate or your letter says otherwise.</p>
+            </div>
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <span class="calc-label" id="prepay-mode-label">After the prepayment</span>
+              </div>
+              <div class="calc-choice" role="radiogroup" aria-labelledby="prepay-mode-label">
+                <label class="calc-choice-option">
+                  <input type="radio" name="mode" value="reduceTenure" checked>
+                  <span class="calc-choice-face">
+                    <span class="calc-choice-title">Keep EMI</span>
+                    <span class="calc-choice-sub">Shorten tenure</span>
+                  </span>
+                </label>
+                <label class="calc-choice-option">
+                  <input type="radio" name="mode" value="reduceEmi">
+                  <span class="calc-choice-face">
+                    <span class="calc-choice-title">Keep tenure</span>
+                    <span class="calc-choice-sub">Lower EMI</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </form>
+        </section>
+        <section class="calc-readout" aria-labelledby="calc-readout-title" aria-live="polite">
+          <h2 class="calc-readout-title" id="calc-readout-title">Estimate</h2>
+          <div class="calc-readout-hero">
+            <p class="calc-result-num" id="out-saved">—</p>
+            <p class="calc-result-label">Interest difference after fee</p>
+          </div>
+          <ul class="calc-stats">
+            <li><span>New EMI</span><strong id="out-new-emi">—</strong></li>
+            <li><span>New tenure</span><strong id="out-new-tenure">—</strong></li>
+            <li><span>Months fewer</span><strong id="out-months-saved">—</strong></li>
+          </ul>
+          <p class="calc-truth">Planning estimate only. Not a bank offer, sanction, or promise. Final terms stay with the lender.</p>
+        </section>
+      </div>
+
+      <section class="calc-assumptions calc-reveal" aria-labelledby="calc-assumptions-title">
+        <h2 class="calc-assumptions-title" id="calc-assumptions-title">How this estimate works</h2>
+        <p class="calc-assumptions-lead">What goes into this estimate.</p>
+
+        <div class="calc-formula" aria-labelledby="calc-formula-title">
+          <h3 class="calc-formula-title" id="calc-formula-title">Formula used</h3>
+          <p class="calc-formula-eq">Interest difference = interest on original schedule − interest after prepayment − fee</p>
+          <ul class="calc-formula-keys">
+            <li>Balance after lump sum = outstanding − lump sum</li>
+            <li><strong>Keep EMI</strong> — repay faster on the lower balance (tenure shortens)</li>
+            <li><strong>Keep tenure</strong> — rebuild EMI on the lower balance for the same years</li>
+            <li>Each month still uses: interest = balance × r, principal = payment − interest</li>
+          </ul>
+        </div>
+        <ul class="calc-assumptions-list">
+            <li>The starting EMI is rebuilt from the outstanding balance, rate, and years left.</li>
+            <li>The rate is held fixed after prepayment in this model.</li>
+            <li>Floating rate home loans to individuals usually have no foreclosure charge. Fixed rate loans may still charge a fee. Enter that fee if it applies to you.</li>
+            <li>Your bank may apply the lump sum on a set date in the month. Timing can change the exact difference.</li>
+            <li>This is not advice to prepay. It only compares the paths you enter.</li>
+        </ul>
+      </section>
+      <nav class="calc-guide-links calc-reveal" aria-labelledby="calc-guide-links-title">
+        <h2 class="calc-guide-links-title" id="calc-guide-links-title">In the Guide</h2>
+        <ul class="calc-guide-links-list">
+          <li><a href="../guide.html#rates">Home loan overview · Rates</a></li>
+          <li><a href="../guide.html#charges">Home loan overview · Charges</a></li>
+          <li><a href="../guide.html#emi">Home loan overview · Equated Monthly Instalment (EMI)</a></li>
+        </ul>
+      </nav>
+
+      <nav class="calc-related calc-reveal" aria-labelledby="calc-related-title">
+        <h2 class="calc-related-title" id="calc-related-title">Related</h2>
+        <ul class="calc-related-list">
+            <li><a href="emi.html">EMI</a></li>
+            <li><a href="loan-amount.html">Loan from EMI</a></li>
+            <li><a href="how-much-loan.html">Eligibility</a></li>
+        </ul>
+      </nav>
+    </div>
+  </main>

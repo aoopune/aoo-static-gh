@@ -1,0 +1,220 @@
+<main class="calc-main">
+    <div class="calc-wrap">
+      <nav class="calc-crumb" aria-label="Breadcrumb">
+        <a href="../calculators.html">Calculators</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Eligibility</span>
+      </nav>
+      <header class="calc-hero calc-reveal">
+        <h1 class="calc-hero-title">Eligibility</h1>
+        <p class="calc-hero-lead">Know how much loan you may get from property and income.</p>
+      </header>
+      <div class="calc-workspace calc-reveal">
+        <section class="calc-controls" aria-labelledby="calc-controls-title">
+          <h2 class="calc-controls-title" id="calc-controls-title">Your numbers</h2>
+          <form class="calc-form" data-calc="how-much-loan" novalidate>
+            <div class="calc-field-group">
+              <h3 class="calc-field-group-title">Property</h3>
+              <div class="calc-field">
+                <div class="calc-label-row">
+                  <label class="calc-label" for="price">Agreement Value</label>
+                </div>
+                <div class="calc-input-shell">
+                  <span class="calc-prefix" aria-hidden="true">₹</span>
+                  <input type="text" class="calc-input" autocomplete="off" id="price" name="price" inputmode="decimal" value="75,00,000">
+                </div>
+                <div class="calc-slider-wrap">
+                  <span class="calc-slider-caption">Or drag to adjust</span>
+                  <input class="calc-range" type="range" name="priceRange" min="500000" max="9999999999" step="50000" value="7500000" aria-label="Agreement Value slider">
+                </div>
+              </div>
+            </div>
+            <div class="calc-field-group">
+              <h3 class="calc-field-group-title">Income</h3>
+              <div class="calc-field-grid">
+                <div class="calc-field">
+                  <div class="calc-label-row">
+                    <label class="calc-label" for="income">Monthly take-home</label>
+                  </div>
+                  <div class="calc-input-shell">
+                    <span class="calc-prefix" aria-hidden="true">₹</span>
+                    <input type="text" class="calc-input" autocomplete="off" id="income" name="income" inputmode="decimal" value="1,20,000">
+                  </div>
+                </div>
+                <div class="calc-field">
+                  <div class="calc-label-row">
+                    <label class="calc-label" for="existingEmis">Existing EMIs</label>
+                  </div>
+                  <div class="calc-input-shell">
+                    <span class="calc-prefix" aria-hidden="true">₹</span>
+                    <input type="text" class="calc-input" autocomplete="off" id="existingEmis" name="existingEmis" inputmode="decimal" value="0">
+                  </div>
+                </div>
+              </div>
+              <div class="calc-field-grid">
+                <div class="calc-field">
+                  <div class="calc-label-row">
+                    <label class="calc-label" for="cardLimits">Credit card limits</label>
+                  </div>
+                  <div class="calc-input-shell">
+                    <span class="calc-prefix" aria-hidden="true">₹</span>
+                    <input type="text" class="calc-input" autocomplete="off" id="cardLimits" name="cardLimits" inputmode="decimal" value="0">
+                  </div>
+                </div>
+                <div class="calc-field">
+                  <div class="calc-label-row">
+                    <label class="calc-label" for="foir">FOIR for all EMIs</label>
+                  </div>
+                  <div class="calc-input-shell">
+                    <select class="calc-select" id="foir" name="foir">
+                      <option value="50">50%</option>
+                      <option value="55" selected>55%</option>
+                      <option value="60">60%</option>
+                      <option value="65">65%</option>
+                      <option value="70">70%</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <p class="calc-hint">FOIR is Fixed Obligation to Income Ratio. About 10% of credit card limits counts as a monthly load. Same rules as <a href="../guide.html#loan-amount">Loan amount in the Guide</a>.</p>
+              <div class="calc-field">
+                <div class="calc-label-row">
+                  <span class="calc-label" id="coApplicant-label">Co-applicant</span>
+                </div>
+                <div class="calc-radios" role="group" aria-labelledby="coApplicant-label">
+                  <label class="calc-radio">
+                    <input type="radio" name="coApplicant" value="no" checked>
+                    No
+                  </label>
+                  <label class="calc-radio">
+                    <input type="radio" name="coApplicant" value="yes">
+                    Yes
+                  </label>
+                </div>
+                <p class="calc-hint">An earning co-applicant can help increase the loan amount.</p>
+                <div id="co-applicant-fields" hidden>
+                  <div class="calc-field-grid">
+                    <div class="calc-field">
+                      <div class="calc-label-row">
+                        <label class="calc-label" for="coIncome">Co-applicant take-home</label>
+                      </div>
+                      <div class="calc-input-shell">
+                        <span class="calc-prefix" aria-hidden="true">₹</span>
+                        <input type="text" class="calc-input" autocomplete="off" id="coIncome" name="coIncome" inputmode="decimal" value="0">
+                      </div>
+                    </div>
+                    <div class="calc-field">
+                      <div class="calc-label-row">
+                        <label class="calc-label" for="coExistingEmis">Co-applicant EMIs</label>
+                      </div>
+                      <div class="calc-input-shell">
+                        <span class="calc-prefix" aria-hidden="true">₹</span>
+                        <input type="text" class="calc-input" autocomplete="off" id="coExistingEmis" name="coExistingEmis" inputmode="decimal" value="0">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="calc-field-grid">
+                    <div class="calc-field">
+                      <div class="calc-label-row">
+                        <label class="calc-label" for="coCardLimits">Co-applicant card limits</label>
+                      </div>
+                      <div class="calc-input-shell">
+                        <span class="calc-prefix" aria-hidden="true">₹</span>
+                        <input type="text" class="calc-input" autocomplete="off" id="coCardLimits" name="coCardLimits" inputmode="decimal" value="0">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="calc-field-group">
+              <h3 class="calc-field-group-title">Assumptions</h3>
+              <div class="calc-field-grid">
+                <div class="calc-field">
+                  <div class="calc-label-row">
+                    <label class="calc-label" for="rate">Interest rate (% a year)</label>
+                  </div>
+                  <div class="calc-input-shell">
+                    <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
+                  </div>
+                  <div class="calc-slider-wrap">
+                    <span class="calc-slider-caption">Or drag to adjust</span>
+                    <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="Interest rate (% a year) slider">
+                  </div>
+                </div>
+                <div class="calc-field">
+                  <div class="calc-label-row">
+                    <label class="calc-label" for="years">Tenure (years)</label>
+                  </div>
+                  <div class="calc-input-shell">
+                    <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain">
+                  </div>
+                  <div class="calc-slider-wrap">
+                    <span class="calc-slider-caption">Or drag to adjust</span>
+                    <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="20" aria-label="Tenure (years) slider">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </section>
+        <section class="calc-readout" aria-labelledby="calc-readout-title" aria-live="polite">
+          <h2 class="calc-readout-title" id="calc-readout-title">Estimate</h2>
+          <div class="calc-readout-hero">
+            <p class="calc-result-num" id="out-loan">—</p>
+            <p class="calc-result-label">Indicative loan (lower of the two)</p>
+          </div>
+          <ul class="calc-stats">
+            <li><span>By Agreement Value</span><strong id="out-prop">—</strong></li>
+            <li><span>By income</span><strong id="out-inc">—</strong></li>
+            <li id="out-co-row" hidden><span>Added by co-applicant</span><strong id="out-co-add">—</strong></li>
+            <li><span>EMI room for this home loan</span><strong id="out-emi-room">—</strong></li>
+            <li><span>Limit that binds</span><strong id="out-bind">—</strong></li>
+          </ul>
+          <p class="calc-truth">Planning estimate only. Not a bank offer, sanction, or promise. Final terms stay with the lender.</p>
+        </section>
+      </div>
+
+      <section class="calc-assumptions calc-reveal" aria-labelledby="calc-assumptions-title">
+        <h2 class="calc-assumptions-title" id="calc-assumptions-title">How this estimate works</h2>
+        <p class="calc-assumptions-lead">What goes into this estimate.</p>
+
+        <div class="calc-formula" aria-labelledby="calc-formula-title">
+          <h3 class="calc-formula-title" id="calc-formula-title">Formula used</h3>
+          <p class="calc-formula-eq">Property cap = Agreement Value × LTV (90% / 80% / 75% by price band)</p>
+          <p class="calc-formula-eq">Income EMI room = (combined take-home × FOIR%) − all existing EMIs − (10% × all card limits)</p>
+          <p class="calc-formula-eq">Income loan from that EMI room, then indicative loan = min(property cap, income loan)</p>
+          <p class="calc-formula-eq">Added by co-applicant = income loan with co-applicant − income loan without</p>
+          <ul class="calc-formula-keys">
+            <li>Same two-limit logic as Guide · Loan amount</li>
+            <li>FOIR choices: 50%, 55%, 60%, 65%, 70% (Guide default 55%)</li>
+          </ul>
+        </div>
+        <ul class="calc-assumptions-list">
+            <li>Two limits apply. You receive roughly the lower one.</li>
+            <li>Property: RBI ceilings on Agreement Value. Up to ₹30 lakh loan share 90%. ₹30–75 lakh 80%. Above ₹75 lakh 75%. Banks may still approve less.</li>
+            <li>Income: net take-home. Existing EMIs and about 10% of credit card limits come off first. What is left is EMI room for the home loan.</li>
+            <li>FOIR is bank practice, not an RBI fixed rule. An earning co-applicant’s take-home, EMIs, and card limits are combined under the same FOIR. Banks may still count less than 100% of co-applicant income.</li>
+            <li>Age, credit score, employer type, and document checks are not modelled.</li>
+        </ul>
+      </section>
+      <nav class="calc-guide-links calc-reveal" aria-labelledby="calc-guide-links-title">
+        <h2 class="calc-guide-links-title" id="calc-guide-links-title">In the Guide</h2>
+        <ul class="calc-guide-links-list">
+          <li><a href="../guide.html#loan-amount">Home loan overview · Loan amount</a></li>
+          <li><a href="../guide.html#loan-amount-property">Home loan overview · Property limit</a></li>
+          <li><a href="../guide.html#emi">Home loan overview · Equated Monthly Instalment (EMI)</a></li>
+        </ul>
+      </nav>
+
+      <nav class="calc-related calc-reveal" aria-labelledby="calc-related-title">
+        <h2 class="calc-related-title" id="calc-related-title">Related</h2>
+        <ul class="calc-related-list">
+            <li><a href="emi.html">EMI</a></li>
+            <li><a href="loan-amount.html">Loan from EMI</a></li>
+            <li><a href="down-payment.html">Down payment</a></li>
+            <li><a href="prepayment.html">Prepayment</a></li>
+        </ul>
+      </nav>
+    </div>
+  </main>

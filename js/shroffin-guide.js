@@ -12,7 +12,6 @@
     var menu = localnav.querySelector(".localnav-menu");
     var list = localnav.querySelector(".localnav-list");
     var cta = localnav.querySelector(".localnav-cta");
-    var title = localnav.querySelector(".localnav-title");
     if (!content || !menu || !list || !cta) return;
 
     localnav.dataset.shroffinReady = "true";
@@ -24,14 +23,18 @@
         return /home-loan-insurance\.html$/.test(link.getAttribute("href") || "");
       });
     }
-    /*
-     * Localnav title stays "Guide" only. The current page is signalled by the
-     * aria-current underline in the link row (desktop) / menu list (mobile),
-     * so we no longer append the page name onto the title.
-     */
-    void title;
-
     content.appendChild(cta);
+
+    var picker = document.createElement("div");
+    picker.className = "localnav-picker";
+
+    if (currentLink) {
+      var currentLabel = document.createElement("span");
+      currentLabel.className = "localnav-current-label";
+      currentLabel.setAttribute("aria-hidden", "true");
+      currentLabel.textContent = currentLink.textContent.trim();
+      picker.appendChild(currentLabel);
+    }
 
     var toggle = document.createElement("button");
     toggle.type = "button";
@@ -40,7 +43,8 @@
     toggle.setAttribute("aria-controls", list.id);
     toggle.setAttribute("aria-label", "Open Guide pages");
     toggle.innerHTML = '<span class="localnav-toggle-icon" aria-hidden="true"></span>';
-    content.insertBefore(toggle, cta);
+    picker.appendChild(toggle);
+    content.insertBefore(picker, cta);
 
     var veil = document.createElement("div");
     veil.className = "localnav-veil";
@@ -50,9 +54,23 @@
     var compactQuery = window.matchMedia("(max-width: 833px)");
     var open = false;
     var openSpacer = null;
+    var globalSpacer = null;
+
+    function mainBarStillInView() {
+      var globalnav = document.querySelector(".globalnav");
+      if (!globalnav) return false;
+      return globalnav.getBoundingClientRect().bottom > 1;
+    }
+
+    function removeSpacer(node) {
+      if (node && node.parentNode) node.parentNode.removeChild(node);
+    }
 
     function setOpen(next) {
       open = Boolean(next && compactQuery.matches);
+      var withMainBar = open && mainBarStillInView();
+      var globalnav = document.querySelector(".globalnav");
+
       if (open) {
         if (!openSpacer) {
           openSpacer = document.createElement("div");
@@ -63,9 +81,24 @@
         if (!openSpacer.parentNode) {
           localnav.parentNode.insertBefore(openSpacer, localnav);
         }
+
+        if (withMainBar && globalnav) {
+          if (!globalSpacer) {
+            globalSpacer = document.createElement("div");
+            globalSpacer.className = "localnav-open-gn-spacer";
+            globalSpacer.setAttribute("aria-hidden", "true");
+          }
+          globalSpacer.style.blockSize = globalnav.offsetHeight + "px";
+          if (!globalSpacer.parentNode) {
+            globalnav.parentNode.insertBefore(globalSpacer, globalnav);
+          }
+        } else {
+          removeSpacer(globalSpacer);
+        }
       }
 
       localnav.classList.toggle("is-open", open);
+      localnav.classList.toggle("is-open-with-global", withMainBar);
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
       toggle.setAttribute("aria-label", open ? "Close Guide pages" : "Open Guide pages");
       veil.classList.toggle("is-visible", open);
@@ -78,9 +111,8 @@
         }
       } else {
         veil.hidden = true;
-        if (openSpacer && openSpacer.parentNode) {
-          openSpacer.parentNode.removeChild(openSpacer);
-        }
+        removeSpacer(openSpacer);
+        removeSpacer(globalSpacer);
         if (window.ShroffinMenus) {
           window.ShroffinMenus.release("guide-local");
           window.ShroffinMenus.unlock();
@@ -145,12 +177,14 @@
     }
   }
 
-  function softScrollTo(destination, done) {
+  function softScrollTo(destination, done, topOffset) {
     cancelSoftScroll();
 
     var styles = window.getComputedStyle(destination);
     var marginTop =
-      parseFloat(styles.scrollMarginBlockStart || styles.scrollMarginTop) || 0;
+      topOffset != null
+        ? topOffset
+        : parseFloat(styles.scrollMarginBlockStart || styles.scrollMarginTop) || 0;
     /* getBoundingClientRect includes CSS transforms (e.g. reveal translateY).
        Soft-scroll to the layout position so sticky offset lands correctly. */
     var layoutTop =
@@ -177,11 +211,16 @@
     var startTime = null;
 
     var finished = false;
+    var interruptArmed = false;
+    var armTimer = window.setTimeout(function () {
+      interruptArmed = true;
+    }, 120);
 
     function finish() {
       if (finished) return;
       finished = true;
       softScrollFrame = 0;
+      window.clearTimeout(armTimer);
       if (softScrollCancel) {
         softScrollCancel();
         softScrollCancel = null;
@@ -190,10 +229,14 @@
     }
 
     function onInterrupt() {
+      /* Ignore the same tap/gesture that started the jump; if the user
+         really scrolls, snap to the intended section instead of stopping mid-page. */
+      if (!interruptArmed) return;
       if (softScrollFrame) {
         window.cancelAnimationFrame(softScrollFrame);
         softScrollFrame = 0;
       }
+      window.scrollTo(0, targetY);
       finish();
     }
 
@@ -203,6 +246,7 @@
       once: true
     });
     softScrollCancel = function () {
+      window.clearTimeout(armTimer);
       window.removeEventListener("wheel", onInterrupt);
       window.removeEventListener("touchmove", onInterrupt);
     };
@@ -346,6 +390,10 @@
         if (!compact || !rail.classList.contains("mag-index")) return;
         if (wideQuery.matches) {
           document.body.classList.remove("mag-toc-compact-on");
+          document.documentElement.style.setProperty(
+            "--shroffin-toc-compact-offset",
+            "0px"
+          );
           compact.hidden = true;
           setCompactOpen(false);
           return;
@@ -367,26 +415,29 @@
 
         var show = pastContents && !pastEnd;
         document.body.classList.toggle("mag-toc-compact-on", show);
+        document.documentElement.style.setProperty(
+          "--shroffin-toc-compact-offset",
+          show ? "2.875rem" : "0px"
+        );
         compact.hidden = !show;
         if (!show) setCompactOpen(false);
       }
 
       function setActive(id) {
         activeId = id || "";
+        var activeLink = null;
         links.forEach(function (item) {
           var isActive = activeId && item.getAttribute("href").slice(1) === activeId;
           item.classList.toggle("is-active", isActive);
-          if (isActive) item.setAttribute("aria-current", "true");
-          else item.removeAttribute("aria-current");
+          if (isActive) {
+            item.setAttribute("aria-current", "true");
+            activeLink = item;
+          } else {
+            item.removeAttribute("aria-current");
+          }
         });
         if (compact && compactLabel) {
-          var activeLink =
-            (activeId &&
-              links.find(function (item) {
-                return item.getAttribute("href").slice(1) === activeId;
-              })) ||
-            links[0];
-          compactLabel.textContent = linkLabel(activeLink);
+          compactLabel.textContent = linkLabel(activeLink || links[0]);
         }
         if (compactPanel) {
           compactPanel.querySelectorAll("a[href^='#']").forEach(function (item) {
@@ -395,6 +446,22 @@
             if (isActive) item.setAttribute("aria-current", "true");
             else item.removeAttribute("aria-current");
           });
+        }
+        ensureActiveVisibleInStrip(activeLink);
+      }
+
+      function ensureActiveVisibleInStrip(activeLink) {
+        if (!activeLink || wideQuery.matches) return;
+        if (!rail.classList.contains("mag-index")) return;
+        /* Scroller is the padded shell — same rule as Guide localnav. */
+        if (rail.scrollWidth <= rail.clientWidth) return;
+        var railLeft = rail.getBoundingClientRect().left;
+        var cur = activeLink.getBoundingClientRect();
+        var pad = 12;
+        if (cur.right > railLeft + rail.clientWidth - pad) {
+          rail.scrollLeft += cur.right - (railLeft + rail.clientWidth - pad);
+        } else if (cur.left < railLeft + pad) {
+          rail.scrollLeft += cur.left - (railLeft + pad);
         }
       }
 
@@ -440,12 +507,20 @@
         var destination = destinations.get(id);
         if (!destination) return;
         jumping = true;
+        /* Settle reveal before measuring — translated sections skew the landing. */
+        destination.classList.add("is-in");
         setActive(id);
         setCompactOpen(false);
-        softScrollTo(destination, function () {
-          finishJump(id);
-          jumping = false;
-          syncFromScroll();
+        window.requestAnimationFrame(function () {
+          softScrollTo(
+            destination,
+            function () {
+              finishJump(id);
+              jumping = false;
+              syncFromScroll();
+            },
+            stickyOffset()
+          );
         });
       }
 
@@ -752,6 +827,75 @@
     register();
   }
 
+  function initGuideDisclosures() {
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var CLOSE_MS = 900;
+
+    document.querySelectorAll("details.guide-disclosure").forEach(function (details) {
+      if (details.dataset.smoothReady === "true") return;
+      details.dataset.smoothReady = "true";
+
+      var summary = details.querySelector(":scope > summary");
+      if (!summary) return;
+
+      var panel = details.querySelector(":scope > .guide-disclosure-panel");
+      if (!panel) {
+        panel = document.createElement("div");
+        panel.className = "guide-disclosure-panel";
+        var inner = document.createElement("div");
+        inner.className = "guide-disclosure-panel-inner";
+        while (summary.nextSibling) {
+          inner.appendChild(summary.nextSibling);
+        }
+        panel.appendChild(inner);
+        details.appendChild(panel);
+      }
+
+      if (details.open) {
+        panel.classList.add("is-open");
+      }
+
+      if (reduceMotion) return;
+
+      var closingTimer = null;
+
+      summary.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        if (closingTimer) {
+          clearTimeout(closingTimer);
+          closingTimer = null;
+        }
+
+        var opening = !details.open;
+
+        if (opening) {
+          details.open = true;
+          panel.getBoundingClientRect();
+          panel.classList.add("is-open");
+          return;
+        }
+
+        panel.classList.remove("is-open");
+
+        function finishClose() {
+          panel.removeEventListener("transitionend", onTransitionEnd);
+          details.open = false;
+          closingTimer = null;
+        }
+
+        function onTransitionEnd(ev) {
+          if (ev.target !== panel) return;
+          if (ev.propertyName !== "grid-template-rows") return;
+          finishClose();
+        }
+
+        panel.addEventListener("transitionend", onTransitionEnd);
+        closingTimer = setTimeout(finishClose, CLOSE_MS);
+      });
+    });
+  }
+
   function init() {
     initLocalNav();
     initSectionNav();
@@ -761,6 +905,7 @@
     initBreadcrumbs();
     initReducedMotionUpdates();
     initDynamicAboutReveals();
+    initGuideDisclosures();
   }
 
   if (document.readyState === "loading") {

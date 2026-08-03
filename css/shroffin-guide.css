@@ -20,7 +20,7 @@
   .localnav-content {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     inline-size: min(var(--shroffin-content-max, 1068px), 100%);
     block-size: 100%;
     gap: 1rem;
@@ -31,17 +31,21 @@
 
   .localnav-title {
     flex: 0 0 auto;
-    display: flex;
-    align-items: baseline;
+    display: inline-flex;
+    align-items: center;
     gap: 0.375rem;
     margin: 0;
     min-block-size: var(--shroffin-btn-touch, 44px);
     font-size: 1.3125rem;
     font-weight: 600;
-    line-height: 1.2;
+    line-height: 1;
   }
 
   .localnav-current-label {
+    display: none;
+  }
+
+  .localnav-picker {
     display: none;
   }
 
@@ -138,11 +142,12 @@
   .localnav-toggle {
     display: none;
     flex: 0 0 auto;
+    align-self: center;
     align-items: center;
     justify-content: center;
     inline-size: 44px;
     block-size: 44px;
-    margin-inline-start: auto;
+    margin: 0;
     padding: 0;
     border: 0;
     background: transparent;
@@ -151,16 +156,18 @@
   }
 
   .localnav-toggle-icon {
-    inline-size: 0.5rem;
-    block-size: 0.5rem;
-    border-inline-end: 1px solid currentColor;
-    border-block-end: 1px solid currentColor;
-    transform: rotate(45deg) translate(-2px, -2px);
+    display: block;
+    inline-size: 0.45rem;
+    block-size: 0.45rem;
+    border-inline-end: 1.5px solid currentColor;
+    border-block-end: 1.5px solid currentColor;
+    /* Optical center: rotated square reads as a down chevron. */
+    transform: translateY(-20%) rotate(45deg);
     transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .localnav.is-open .localnav-toggle-icon {
-    transform: rotate(225deg) translate(-2px, -2px);
+    transform: translateY(20%) rotate(225deg);
   }
 
   .localnav-veil {
@@ -280,7 +287,8 @@
 
   @media (max-width: 833px) {
     .localnav-content {
-      gap: 0.25rem;
+      align-items: center;
+      gap: 0.35rem;
     }
 
     .localnav-title {
@@ -288,33 +296,47 @@
       min-inline-size: 0;
       margin-inline-end: auto;
       font-size: 1.1875rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      line-height: 1;
+    }
+
+    /* Selected guide + arrow sit together by Explore banks. */
+    .localnav-picker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      flex: 0 1 auto;
+      min-inline-size: 0;
+      margin: 0;
     }
 
     .localnav-current-label {
-      display: inline-block;
-      max-inline-size: clamp(4.5rem, 24vw, 8rem);
+      display: inline-flex;
+      align-items: center;
+      max-inline-size: clamp(4.5rem, 28vw, 10rem);
       overflow: hidden;
-      color: #6e6e73;
-      font-size: 0.8125rem;
+      color: var(--shroffin-muted, var(--mag-muted, #6e6e73));
+      font-size: 1.1875rem;
       font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-
-    .localnav-current-label::before {
-      content: "·";
-      margin-inline-end: 0.375rem;
     }
 
     .localnav-toggle {
       display: inline-flex;
+      flex: 0 0 auto;
+      align-self: center;
+      justify-content: center;
+      inline-size: 44px;
+      min-inline-size: 44px;
+      margin: 0;
+      padding: 0;
     }
 
     .localnav-cta {
       flex: 0 0 auto;
+      align-self: center;
       margin-inline-start: 0;
       padding-inline: var(--shroffin-btn-compact-pad-inline, 0.625rem);
     }
@@ -326,9 +348,10 @@
     }
 
     /*
-     * Open Guide menu: pin the sub-bar to the viewport top so sticky +
-     * scroll-lock cannot leave a giant empty panel under the links.
-     * Sit above the main bar (z-nav) while open.
+     * Open Guide menu:
+     * - Still at the top (main bar on screen): keep main bar, Guide under it.
+     * - After scrolling the main bar away: Guide alone at the top — don’t
+     *   bring the main bar back.
      */
     .localnav.is-open {
       position: fixed;
@@ -336,6 +359,10 @@
       inset-inline: 0;
       inline-size: 100%;
       z-index: calc(var(--shroffin-z-nav, 9999) + 1);
+    }
+
+    .localnav.is-open.is-open-with-global {
+      inset-block-start: var(--shroffin-gn-height, 48px);
     }
 
     .localnav-menu {
@@ -358,7 +385,6 @@
     }
 
     .localnav.is-open .localnav-menu {
-      /* Cap only — height stays content-sized via fit-content. */
       max-block-size: min(
         28rem,
         calc(100dvh - var(--shroffin-ln-height) - env(safe-area-inset-bottom, 0px))
@@ -369,18 +395,44 @@
       overscroll-behavior: contain;
     }
 
-    /* Veil starts under the pinned Guide bar, not under a phantom main-nav offset. */
-    body:has(.localnav.is-open) .localnav-veil {
+    .localnav.is-open.is-open-with-global .localnav-menu {
+      max-block-size: min(
+        28rem,
+        calc(
+          100dvh - var(--shroffin-gn-height, 48px) - var(--shroffin-ln-height) -
+            env(safe-area-inset-bottom, 0px)
+        )
+      );
+    }
+
+    /* Scrolled: main bar stays away while Guide pages are open. */
+    body:has(.localnav.is-open:not(.is-open-with-global)) .globalnav,
+    body:has(.localnav.is-open:not(.is-open-with-global)) .globalnav-veil {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    body:has(.localnav.is-open:not(.is-open-with-global)) .localnav-veil {
       inset-block-start: var(--shroffin-ln-height);
       z-index: var(--shroffin-z-nav, 9999);
-      /* Clearer than the menu paper so the list doesn’t look endlessly tall. */
       background: rgba(29, 29, 31, 0.28);
     }
 
-    body:has(.localnav.is-open) .globalnav,
-    body:has(.localnav.is-open) .globalnav-veil {
-      visibility: hidden;
-      pointer-events: none;
+    /* At top: keep the main bar with the Guide menu. */
+    body:has(.localnav.is-open-with-global) .globalnav {
+      position: fixed;
+      inset-block-start: 0;
+      inset-inline: 0;
+      inline-size: 100%;
+      z-index: var(--shroffin-z-nav, 9999);
+    }
+
+    body:has(.localnav.is-open-with-global) .localnav-veil {
+      inset-block-start: calc(
+        var(--shroffin-gn-height, 48px) + var(--shroffin-ln-height)
+      );
+      z-index: var(--shroffin-z-nav, 9999);
+      background: rgba(29, 29, 31, 0.28);
     }
 
     body:has(.localnav.is-open) .mag-toc-compact {
@@ -443,6 +495,7 @@
       inset-inline: 1rem auto;
       inline-size: 2px;
       block-size: 1rem;
+      border-radius: 0;
       transform: translateY(-50%);
     }
 
@@ -484,11 +537,8 @@
         clamp(2.5rem, 10vw, 4rem);
     }
 
-    .guide-hero-title {
-      font-size: clamp(2rem, 10vw, 3rem);
-      line-height: 1.06;
-      text-wrap: balance;
-    }
+    /* Type size lives on --shroffin-type-* / editorial masthead — do not
+       re-clamp here or phone hierarchy collapses into section titles. */
 
     .guide-tile {
       padding: clamp(2rem, 10vw, 3rem) clamp(1.25rem, 6vw, 2rem);

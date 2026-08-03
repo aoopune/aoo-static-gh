@@ -1,0 +1,261 @@
+<main class="calc-main">
+    <div class="calc-wrap">
+      <nav class="calc-crumb" aria-label="Breadcrumb">
+        <a href="../calculators.html">Calculators</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Tax claims</span>
+      </nav>
+      <header class="calc-hero calc-reveal">
+        <h1 class="calc-hero-title">Tax claims</h1>
+        <p class="calc-hero-lead">Know what this loan may change in your tax this year.</p>
+      </header>
+      <div class="calc-workspace calc-reveal">
+        <section class="calc-controls" aria-labelledby="calc-controls-title">
+          <h2 class="calc-controls-title" id="calc-controls-title">Your numbers</h2>
+          <form class="calc-form" data-calc="tax-savings" novalidate>
+            <div class="calc-field-group">
+              <h3 class="calc-field-group-title">Loan</h3>
+              <div class="calc-field">
+                <div class="calc-label-row">
+                  <label class="calc-label" for="principal">Loan amount</label>
+                </div>
+                <div class="calc-input-shell">
+                  <span class="calc-prefix" aria-hidden="true">₹</span>
+                  <input type="text" class="calc-input" autocomplete="off" id="principal" name="principal" inputmode="decimal" value="50,00,000">
+                </div>
+                <div class="calc-slider-wrap">
+                  <span class="calc-slider-caption">Or drag to adjust</span>
+                  <input class="calc-range" type="range" name="principalRange" min="100000" max="9999999999" step="50000" value="5000000" aria-label="Loan amount slider">
+                </div>
+              </div>
+              <div class="calc-field-grid">
+                <div class="calc-field">
+                  <div class="calc-label-row">
+                    <label class="calc-label" for="rate">Interest rate (% a year)</label>
+                  </div>
+                  <div class="calc-input-shell">
+                    <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
+                  </div>
+                  <div class="calc-slider-wrap">
+                    <span class="calc-slider-caption">Or drag to adjust</span>
+                    <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="Interest rate (% a year) slider">
+                  </div>
+                </div>
+                <div class="calc-field">
+                  <div class="calc-label-row">
+                    <label class="calc-label" for="years">Tenure (years)</label>
+                  </div>
+                  <div class="calc-input-shell">
+                    <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain">
+                  </div>
+                  <div class="calc-slider-wrap">
+                    <span class="calc-slider-caption">Or drag to adjust</span>
+                    <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="20" aria-label="Tenure (years) slider">
+                  </div>
+                </div>
+              </div>
+              <p class="calc-hint">Year 1 interest and principal come from a normal Equated Monthly Instalment (EMI) schedule after possession.</p>
+            </div>
+
+            <div class="calc-field-group">
+              <h3 class="calc-field-group-title">Your situation</h3>
+              <div class="calc-field">
+                <div class="calc-label-row"><span class="calc-label" id="regime-label">Tax regime</span></div>
+                <div class="calc-choice" role="radiogroup" aria-labelledby="regime-label">
+                  <label class="calc-choice-option">
+                    <input type="radio" name="regime" value="old" checked>
+                    <span class="calc-choice-face">
+                      <span class="calc-choice-title">Old</span>
+                      <span class="calc-choice-sub">Tax regime</span>
+                    </span>
+                  </label>
+                  <label class="calc-choice-option">
+                    <input type="radio" name="regime" value="new">
+                    <span class="calc-choice-face">
+                      <span class="calc-choice-title">New</span>
+                      <span class="calc-choice-sub">Tax regime</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div class="calc-field">
+                <div class="calc-label-row"><span class="calc-label" id="occupancy-label">Property use</span></div>
+                <div class="calc-choice" role="radiogroup" aria-labelledby="occupancy-label">
+                  <label class="calc-choice-option">
+                    <input type="radio" name="occupancy" value="self" checked>
+                    <span class="calc-choice-face">
+                      <span class="calc-choice-title">I live here</span>
+                      <span class="calc-choice-sub">Self occupied</span>
+                    </span>
+                  </label>
+                  <label class="calc-choice-option">
+                    <input type="radio" name="occupancy" value="letout">
+                    <span class="calc-choice-face">
+                      <span class="calc-choice-title">I rent it out</span>
+                      <span class="calc-choice-sub">Let out</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div class="calc-field" data-purpose-wrap>
+                <div class="calc-label-row"><span class="calc-label" id="purpose-label">Loan purpose</span></div>
+                <div class="calc-choice" role="radiogroup" aria-labelledby="purpose-label">
+                  <label class="calc-choice-option">
+                    <input type="radio" name="purpose" value="buyBuild" checked>
+                    <span class="calc-choice-face">
+                      <span class="calc-choice-title">Buy or build</span>
+                    </span>
+                  </label>
+                  <label class="calc-choice-option">
+                    <input type="radio" name="purpose" value="repair">
+                    <span class="calc-choice-face">
+                      <span class="calc-choice-title">Repair</span>
+                      <span class="calc-choice-sub">Renewal or reconstruction</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div class="calc-field" data-ready-wrap>
+                <div class="calc-label-row"><span class="calc-label" id="ready-label">Home ready within 5 years of the loan</span></div>
+                <div class="calc-choice calc-choice--compact" role="radiogroup" aria-labelledby="ready-label">
+                  <label class="calc-choice-option">
+                    <input type="radio" name="ready" value="yes" checked>
+                    <span class="calc-choice-face"><span class="calc-choice-title">Yes</span></span>
+                  </label>
+                  <label class="calc-choice-option">
+                    <input type="radio" name="ready" value="no">
+                    <span class="calc-choice-face"><span class="calc-choice-title">No</span></span>
+                  </label>
+                </div>
+                <p class="calc-hint">If no, the Section 22 interest limit drops to ₹30,000 a year. See <a href="../tax-benefits.html#interest">Interest payment</a>.</p>
+              </div>
+            </div>
+
+            <div class="calc-field-group" data-rupee-wrap>
+              <h3 class="calc-field-group-title">Rupee estimate</h3>
+              <div class="calc-field" data-income-wrap>
+                <div class="calc-label-row">
+                  <label class="calc-label" id="taxable-income-label" for="taxableIncome">Taxable income before these claims</label>
+                </div>
+                <div class="calc-input-shell">
+                  <span class="calc-prefix" aria-hidden="true">₹</span>
+                  <input type="text" class="calc-input" autocomplete="off" id="taxableIncome" name="taxableIncome" inputmode="decimal" value="15,00,000">
+                </div>
+                <p class="calc-hint" id="taxable-income-hint">After standard deduction and other deductions. Before Section 22 interest and Schedule XV principal for this loan. For a let out home, enter other income (salary and the like) only — rent is separate below.</p>
+              </div>
+              <div class="calc-field" data-age-wrap>
+                <div class="calc-label-row"><span class="calc-label" id="age-label">Age band (old regime exemption)</span></div>
+                <div class="calc-choice calc-choice--compact" role="radiogroup" aria-labelledby="age-label">
+                  <label class="calc-choice-option">
+                    <input type="radio" name="ageBand" value="below60" checked>
+                    <span class="calc-choice-face"><span class="calc-choice-title">Under 60</span></span>
+                  </label>
+                  <label class="calc-choice-option">
+                    <input type="radio" name="ageBand" value="senior">
+                    <span class="calc-choice-face"><span class="calc-choice-title">60–79</span></span>
+                  </label>
+                  <label class="calc-choice-option">
+                    <input type="radio" name="ageBand" value="superSenior">
+                    <span class="calc-choice-face"><span class="calc-choice-title">80+</span></span>
+                  </label>
+                </div>
+                <p class="calc-hint">Old regime basic exemption: ₹2.5 lakh / ₹3 lakh / ₹5 lakh. The new regime uses the same slabs at every age.</p>
+              </div>
+              <div class="calc-field" data-rent-wrap hidden>
+                <div class="calc-label-row">
+                  <label class="calc-label" for="annualRent">Annual rent</label>
+                </div>
+                <div class="calc-input-shell">
+                  <span class="calc-prefix" aria-hidden="true">₹</span>
+                  <input type="text" class="calc-input" autocomplete="off" id="annualRent" name="annualRent" inputmode="decimal" value="3,00,000">
+                </div>
+                <p class="calc-hint">Gross rent for the year. House property income uses rent less 30% standard deduction, then interest. Municipal taxes are not entered here.</p>
+              </div>
+              <div class="calc-field" data-basket-wrap>
+                <div class="calc-label-row">
+                  <label class="calc-label" for="usedBasket">Other Schedule XV items already used</label>
+                </div>
+                <div class="calc-input-shell">
+                  <span class="calc-prefix" aria-hidden="true">₹</span>
+                  <input type="text" class="calc-input" autocomplete="off" id="usedBasket" name="usedBasket" inputmode="decimal" value="0">
+                </div>
+                <p class="calc-hint">Shares a ₹1.5 lakh basket with EPF, life insurance, and other eligible items. See <a href="../tax-benefits.html#principal">Principal repayment</a>.</p>
+              </div>
+            </div>
+          </form>
+        </section>
+        <section class="calc-readout" aria-labelledby="calc-readout-title" aria-live="polite">
+          <h2 class="calc-readout-title" id="calc-readout-title">Estimate</h2>
+          <div class="calc-readout-hero">
+            <p class="calc-result-num" id="out-tax">—</p>
+            <p class="calc-result-label" id="out-tax-label">Estimated tax difference (with 4% cess)</p>
+          </div>
+          <ul class="calc-stats">
+            <li><span>Section 22 interest claim</span><strong id="out-int-ded">—</strong></li>
+            <li><span>Schedule XV principal claim</span><strong id="out-prin-ded">—</strong></li>
+            <li><span>Tax before these claims</span><strong id="out-tax-before">—</strong></li>
+            <li><span>Tax after these claims</span><strong id="out-tax-after">—</strong></li>
+            <li><span>Year 1 interest paid</span><strong id="out-year-int">—</strong></li>
+            <li><span>Year 1 principal paid</span><strong id="out-year-prin">—</strong></li>
+          </ul>
+          <p class="calc-hint" id="out-int-note"></p>
+          <p class="calc-hint" id="out-prin-note"></p>
+          <p class="calc-hint" id="out-rebate-note" hidden></p>
+          <p class="calc-hint" id="out-tax-note" hidden></p>
+          <p class="calc-truth">Planning estimate only. Not a bank offer, sanction, tax advice, or your refund. Confirm with a tax professional before you file.</p>
+        </section>
+      </div>
+
+      <section class="calc-assumptions calc-reveal" aria-labelledby="calc-assumptions-title">
+        <h2 class="calc-assumptions-title" id="calc-assumptions-title">How this estimate works</h2>
+        <p class="calc-assumptions-lead">Rules follow the <a href="../tax-benefits.html">Tax benefits guide</a> on this site.</p>
+
+        <div class="calc-formula" aria-labelledby="calc-formula-title">
+          <h3 class="calc-formula-title" id="calc-formula-title">Formula used</h3>
+          <p class="calc-formula-eq">Section 22 interest claim = min(interest paid in year 1, applicable cap)</p>
+          <p class="calc-formula-eq">Schedule XV principal claim = min(principal paid in year 1, room left in ₹1.5 lakh basket)</p>
+          <p class="calc-formula-eq">Tax difference = tax(income before claims) − tax(income after claims)</p>
+          <p class="calc-formula-eq">Tax = slab tax + surcharge − Section 87A rebate + 4% Health and Education Cess</p>
+          <ul class="calc-formula-keys">
+            <li>FY 2025-26 / AY 2026-27 rates. New regime default slabs; old regime age-based exemption.</li>
+            <li>Surcharge and Section 87A include marginal relief at the relevant cliffs.</li>
+            <li>Let out: house property income ≈ annual rent × 70%, then less interest. Old regime loss set-off against other income capped at ₹2 lakh.</li>
+          </ul>
+        </div>
+        <ul class="calc-assumptions-list">
+            <li>New tax regime slabs (FY 2025-26): nil up to ₹4 lakh; 5% on ₹4–8 lakh; 10% on ₹8–12 lakh; 15% on ₹12–16 lakh; 20% on ₹16–20 lakh; 25% on ₹20–24 lakh; 30% above ₹24 lakh. Section 87A rebate up to ₹60,000 when taxable income is up to ₹12 lakh, with marginal relief just above that line. Confirm on the <a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a>.</li>
+            <li>Old tax regime slabs (individual): nil up to ₹2.5 lakh (₹3 lakh if 60–79; ₹5 lakh if 80+); 5% to ₹5 lakh; 20% to ₹10 lakh; 30% above ₹10 lakh. Section 87A rebate up to ₹12,500 when taxable income is up to ₹5 lakh.</li>
+            <li>Health and Education Cess is 4% on tax after rebate (including surcharge where due). Surcharge starts above ₹50 lakh of taxable income (10% / 15% / 25%; old regime can reach 37% above ₹5 crore), with marginal relief at each step.</li>
+            <li>Interest payment is modelled under Section 22. Self occupied old tax regime allows up to ₹2 lakh a year when the loan is to buy or build and the home is ready within 5 years. Otherwise the self occupied interest limit is ₹30,000 a year. Repair, renewal, or reconstruction is also ₹30,000 a year. Full map: <a href="../tax-benefits.html#interest">Interest payment</a>.</li>
+            <li>Let out interest has no fixed upper cap under Section 22. On the new tax regime, let out interest can reduce house property income; a house property loss usually cannot cut salary. On the old tax regime, house property loss set off against other income is limited to ₹2 lakh a year. See <a href="../tax-benefits.html#other">Other</a> for loss set off.</li>
+            <li>Self occupied interest cannot be claimed on the new tax regime. See <a href="../tax-benefits.html#interest">Interest payment</a>.</li>
+            <li>Principal repayment is modelled under Schedule XV on the old tax regime only, up to ₹1.5 lakh a year in a shared basket. Same whether you live in the home or rent it out. It starts after possession. Full map: <a href="../tax-benefits.html#principal">Principal repayment</a>.</li>
+            <li>Year 1 figures assume possession has already happened. Pre possession interest claimed in 5 equal parts is not modelled here. See <a href="../tax-benefits.html#under-construction">Under construction</a>.</li>
+            <li>Extra first time buyer interest under Section 130 or Section 131 is not added. Those windows are narrow and closed for loans sanctioned after 31 March 2022. Details: <a href="../tax-benefits.html#other">Other</a>.</li>
+            <li>Stamp duty, registration, insurance premiums in the Schedule XV basket, municipal taxes on rent, and special-rate income (for example some capital gains) are not modelled. Enter other Schedule XV use in the field above if needed.</li>
+            <li>Your name must be on the property papers to claim. Being on the loan alone is not enough. See <a href="../tax-benefits.html#how-to-claim">How to claim</a> and <a href="../tax-benefits.html#joint-loan">Joint home loan</a>.</li>
+        </ul>
+      </section>
+      <nav class="calc-guide-links calc-reveal" aria-labelledby="calc-guide-links-title">
+        <h2 class="calc-guide-links-title" id="calc-guide-links-title">In the Guide</h2>
+        <ul class="calc-guide-links-list">
+          <li><a href="../tax-benefits.html#interest">Tax benefits · Interest payment (Section 22)</a></li>
+          <li><a href="../tax-benefits.html#principal">Tax benefits · Principal repayment (Schedule XV)</a></li>
+          <li><a href="../tax-benefits.html#under-construction">Tax benefits · Under construction</a></li>
+          <li><a href="../tax-benefits.html#joint-loan">Tax benefits · Joint home loan</a></li>
+          <li><a href="../tax-benefits.html#how-to-claim">Tax benefits · How to claim</a></li>
+          <li><a href="../tax-benefits.html#other">Tax benefits · Other (loss set off and first time buyer extras)</a></li>
+        </ul>
+      </nav>
+
+      <nav class="calc-related calc-reveal" aria-labelledby="calc-related-title">
+        <h2 class="calc-related-title" id="calc-related-title">Related</h2>
+        <ul class="calc-related-list">
+            <li><a href="../tax-benefits.html">Tax benefits guide</a></li>
+            <li><a href="emi.html">EMI</a></li>
+            <li><a href="loan-amount.html">Loan from EMI</a></li>
+            <li><a href="how-much-loan.html">Eligibility</a></li>
+        </ul>
+      </nav>
+    </div>
+  </main>

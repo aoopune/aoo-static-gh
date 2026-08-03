@@ -10,9 +10,25 @@
     "check:footer": "node scripts/sync-site-footer.js --check",
     "build:nav": "node scripts/sync-site-nav.js",
     "check:nav": "node scripts/sync-site-nav.js --check",
+    "build:guide-localnav": "node scripts/sync-guide-localnav.js",
+    "check:guide-localnav": "node scripts/sync-guide-localnav.js --check",
+    "sync:legal-content": "node scripts/sync-legal-content.js",
+    "check:legal-content": "node scripts/sync-legal-content.js --check",
+    "build:content": "node scripts/build-content.js",
+    "check:content": "node scripts/build-content.js --check",
+    "build:layout-chrome": "node scripts/lib/fill-layout-chrome.js",
+    "snapshot:golden": "node scripts/snapshot-golden.js",
+    "extract:page-shell": "node scripts/extract-page-shell.js",
+    "build:sitemap": "node scripts/build-sitemap.js",
+    "check:sitemap": "node scripts/build-sitemap.js --check",
+    "build:contacts": "node scripts/generate-site-contacts-js.js",
+    "check:contacts": "node scripts/generate-site-contacts-js.js --check",
+    "build:site": "npm run sync:legal-content && npm run build:contacts && npm run build:content -- --write && npm run build:sitemap -- --write && npm run build:nav && npm run build:footer && npm run build:guide-localnav",
+    "check:built-html": "node scripts/check-built-html.js",
+    "predeploy": "npm run build:site && npm run lint:responsive && npm test",
     "build:apf-data": "python3 scripts/generate-apf-data.py",
     "validate:apf-data": "node scripts/validate-apf-data.js",
-    "lint:responsive": "npm run check:footer && npm run check:nav && node scripts/check-responsive-contracts.js",
+    "lint:responsive": "npm run check:footer && npm run check:nav && npm run check:guide-localnav && npm run check:legal-content && npm run check:content && npm run check:sitemap && npm run check:contacts && node scripts/check-responsive-contracts.js",
     "build:apf": "npm run build:apf-data && npm run validate:apf-data && esbuild src/apf-project-search.js --bundle --minify --sourcemap --outfile=js/apf-project-search.bundle.js",
     "build:compare": "esbuild src/home-loan-compare.js --bundle --minify --sourcemap --outfile=js/home-loan-compare.bundle.js",
     "test": "node tests/run-unit.js",
@@ -26,7 +42,9 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
     "@playwright/test": "^1.61.1",
-    "esbuild": "^0.28.1"
+    "esbuild": "^0.28.1",
+    "gray-matter": "^4.0.3",
+    "marked": "^15.0.12"
   },
   "dependencies": {
     "json-rules-engine": "^7.3.1"

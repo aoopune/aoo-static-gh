@@ -110,12 +110,33 @@
     });
   }
 
-  function appendCompactLink(list, href, label, sub) {
+  function appendCompactLink(list, href, label, sub, value, source) {
     var item = document.createElement("li");
     var link = document.createElement("a");
-    link.className = "globalnav-compact-item" + (sub ? " globalnav-compact-item--sub" : "");
+    var hasValue = Boolean(value);
+    link.className =
+      "globalnav-compact-item" +
+      (sub ? " globalnav-compact-item--sub" : "") +
+      (hasValue ? " globalnav-compact-item--with-value" : "");
     link.href = href;
-    link.textContent = label;
+    if (source) {
+      var target = source.getAttribute("target");
+      var rel = source.getAttribute("rel");
+      if (target) link.setAttribute("target", target);
+      if (rel) link.setAttribute("rel", rel);
+    }
+    if (hasValue) {
+      var labelSpan = document.createElement("span");
+      labelSpan.className = "globalnav-compact-item-label";
+      labelSpan.textContent = label;
+      var valueSpan = document.createElement("span");
+      valueSpan.className = "globalnav-compact-item-value";
+      valueSpan.textContent = value;
+      link.appendChild(labelSpan);
+      link.appendChild(valueSpan);
+    } else {
+      link.textContent = label;
+    }
     if (isCurrentHref(link.href)) link.setAttribute("aria-current", "page");
     item.appendChild(link);
     list.appendChild(item);
@@ -141,11 +162,15 @@
     var list = document.createElement("ul");
     list.className = "globalnav-compact-list";
     links.forEach(function (source) {
+      var labelNode = source.querySelector(".globalnav-submenu-label");
+      var valueNode = source.querySelector(".globalnav-submenu-value");
       appendCompactLink(
         list,
         source.getAttribute("href"),
-        (source.querySelector(".globalnav-submenu-label") || source).textContent.trim(),
-        true
+        (labelNode || source).textContent.trim(),
+        true,
+        valueNode ? valueNode.textContent.trim() : "",
+        source
       );
     });
     inner.appendChild(list);
@@ -700,15 +725,15 @@
       return;
     }
 
-    var src = "/js/shroffin-selection-indicator.js?v=sel-6";
+    var src = "/js/shroffin-selection-indicator.js?v=sel-13";
 
     if (navScriptEl && navScriptEl.src) {
       src = navScriptEl.src.replace(
         /shroffin-nav\.js(\?[^#]*)?(#.*)?$/,
-        "shroffin-selection-indicator.js?v=sel-6"
+        "shroffin-selection-indicator.js?v=sel-13"
       );
       if (src.indexOf("shroffin-selection-indicator.js") === -1) {
-        src = "/js/shroffin-selection-indicator.js?v=sel-6";
+        src = "/js/shroffin-selection-indicator.js?v=sel-13";
       }
     }
 
