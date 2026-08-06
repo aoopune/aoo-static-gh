@@ -196,17 +196,17 @@
 
       <div class="hlc-workspace">
         <div class="hlc-main-rail">
-          <section class="hlc-panel hlc-panel--inputs" aria-labelledby="hlc-inputs-heading">
-            <h2 class="hlc-section-title" id="hlc-inputs-heading">Your details</h2>
+          <section class="hlc-panel hlc-panel--inputs" aria-label="Loan details for bank options">
+            <h2 class="visually-hidden" id="hlc-inputs-heading">Loan inputs</h2>
             <div class="hlc-inputs-card">
-            <form class="hlc-form" id="hlc-inputs" autocomplete="off" novalidate>
+            <form class="hlc-form" id="hlc-inputs" autocomplete="off" novalidate aria-labelledby="hlc-inputs-heading">
               <div class="hlc-form-primary-grid">
                 <div class="hlc-form-zone hlc-form-zone--hero">
                   <label class="hlc-field hlc-field--hero" for="hlc-monthly-income">
                     <span class="hlc-field-label">Monthly income</span>
                     <span class="hlc-input-shell hlc-input-shell--hero">
                       <span class="hlc-prefix" aria-hidden="true">₹</span>
-                      <input type="text" id="hlc-monthly-income" name="monthlyIncome" value="" placeholder="1,00,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
+                      <input type="text" id="hlc-monthly-income" name="monthlyIncome" value="1,00,000" placeholder="1,00,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
                     </span>
                     <span class="hlc-field-note" id="hlc-monthly-income-note"></span>
                   </label>
@@ -217,7 +217,7 @@
                     <span class="hlc-field-label">Property agreement value</span>
                     <span class="hlc-input-shell hlc-input-shell--hero">
                       <span class="hlc-prefix" aria-hidden="true">₹</span>
-                      <input type="text" id="hlc-property-value" name="propertyValue" value="" placeholder="62,50,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
+                      <input type="text" id="hlc-property-value" name="propertyValue" value="62,50,000" placeholder="62,50,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
                     </span>
                     <span class="hlc-field-note" id="hlc-loan-hint" aria-live="polite"></span>
                   </label>
@@ -228,7 +228,7 @@
                     <label class="hlc-field" for="hlc-age">
                       <span class="hlc-field-label">Age</span>
                       <span class="hlc-input-shell">
-                        <input type="text" id="hlc-age" name="age" value="" placeholder="35" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2">
+                        <input type="text" id="hlc-age" name="age" value="35" placeholder="35" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2">
                         <span class="hlc-suffix" aria-hidden="true">years</span>
                       </span>
                       <span class="hlc-field-note" id="hlc-age-note"></span>
@@ -236,7 +236,7 @@
                     <label class="hlc-field" for="hlc-cibil">
                       <span class="hlc-field-label">CIBIL score</span>
                       <span class="hlc-input-shell">
-                        <input type="text" id="hlc-cibil" name="cibilScore" value="" placeholder="780" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="3" data-hlc-max="900">
+                        <input type="text" id="hlc-cibil" name="cibilScore" value="780" placeholder="780" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="3" data-hlc-max="900">
                       </span>
                       <span class="hlc-field-note" id="hlc-cibil-note"></span>
                     </label>
@@ -248,19 +248,19 @@
                     <div class="hlc-field hlc-field--occupation">
                       <span class="hlc-field-label" id="hlc-occupation-label">Occupation</span>
                       <div class="hlc-segmented hlc-occupation-pills" role="group" aria-labelledby="hlc-occupation-label">
-                        <button type="button" class="hlc-chip" data-occupation="Salaried" aria-pressed="false">Salaried</button>
+                        <button type="button" class="hlc-chip" data-occupation="Salaried" aria-pressed="true">Salaried</button>
                         <button type="button" class="hlc-chip" data-occupation="Self-Employed" aria-pressed="false">Self-employed</button>
                       </div>
-                      <input type="hidden" id="hlc-occupation" name="occupation" value="">
+                      <input type="hidden" id="hlc-occupation" name="occupation" value="Salaried">
                       <span class="hlc-field-note" id="hlc-occupation-note"></span>
                     </div>
                     <div class="hlc-field hlc-field--purpose">
                       <span class="hlc-field-label" id="hlc-purpose-label">Purpose</span>
                       <div class="hlc-segmented hlc-purpose-pills" role="group" aria-labelledby="hlc-purpose-label">
-                        <button type="button" class="hlc-chip" data-purpose="Regular Home Loan" aria-pressed="false">Regular</button>
+                        <button type="button" class="hlc-chip" data-purpose="Regular Home Loan" aria-pressed="true">Regular</button>
                         <button type="button" class="hlc-chip" data-purpose="Top-up Loan" aria-pressed="false">Top-up</button>
                       </div>
-                      <input type="hidden" id="hlc-purpose" name="purpose" value="">
+                      <input type="hidden" id="hlc-purpose" name="purpose" value="Regular Home Loan">
                       <span class="hlc-field-note" id="hlc-purpose-note"></span>
                     </div>
                   </div>
@@ -399,8 +399,7 @@
             <div class="hlc-results-head">
               <div class="hlc-results-heading">
                 <div class="hlc-options-top">
-                  <h2 class="hlc-section-title" id="hlc-compare-heading">Your options</h2>
-                  <p class="hlc-select-hint" id="hlc-select-hint">Select banks to apply once</p>
+                  <h2 class="visually-hidden" id="hlc-compare-heading">Bank options</h2>
                   <div class="hlc-filters-control" id="hlc-filters-control">
                     <button
                       type="button"
@@ -510,6 +509,7 @@
                 </div>
 
                 <div class="hlc-charges-note" id="hlc-charges-note" role="note" hidden></div>
+                <p class="hlc-calc-tip" id="hlc-calc-tip" hidden>Dotted amounts show how we calculated them.</p>
 
                 <div class="hlc-paddles">
                   <button type="button" class="hlc-paddle" id="hlc-paddle-left" aria-label="Scroll columns left">‹</button>
@@ -557,80 +557,106 @@
   </aside>
   <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
     <div class="site-footer-inner">
-      <div class="site-footer-directory">
-        <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
-          <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
-          <ul class="site-footer-list">
-            <li><a href="/pages/guide.html">Overview</a></li>
-            <li><a href="/pages/guide-documents.html">Documents</a></li>
-            <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
-            <li><a href="/pages/concessions.html">Concessions</a></li>
-            <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
-            <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
-          </ul>
-        </nav>
-
-        <nav class="site-footer-group" aria-labelledby="footer-tools-title">
-          <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
-          <ul class="site-footer-list">
-            <li><a href="/pages/calculators.html">Calculators</a></li>
-            <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
-          </ul>
-        </nav>
-
-        <nav class="site-footer-group" aria-labelledby="footer-company-title">
-          <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
-          <ul class="site-footer-list">
-            <li><a href="/pages/about.html">About</a></li>
-            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-            <li><a href="/terms-of-use.html">Terms of Use</a></li>
-          </ul>
-        </nav>
-
-        <section class="site-footer-group" aria-labelledby="footer-support-title">
-          <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
-          <ul class="site-footer-list">
-            <li><a href="mailto:support@shroffin.com">Email</a></li>
-            <li><a href="tel:+919112334367">Call</a></li>
-          </ul>
+      <div class="site-footer-top">
+        <section class="site-footer-brand" aria-label="Shroffin">
+          <a class="site-footer-brand-link" href="/" aria-label="Shroffin Home">
+            <img
+              class="site-footer-logo"
+              src="/images/logos/logo.png"
+              alt=""
+              width="80"
+              height="80"
+            >
+          </a>
         </section>
 
-        <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
-          <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
-          <ul class="site-footer-list">
-            <li>
-              <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-
-      <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
-        <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
-        <div class="site-footer-disclaimer">
-          <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-          <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-          <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-          <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-          <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
-        </div>
-      </section>
-
-      <div class="site-footer-bottom">
-        <div class="site-footer-bottom-row">
-          <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
-          <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
-            <ul class="site-footer-legal-links">
-              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-              <li><a href="/terms-of-use.html">Terms of Use</a></li>
-              <li><a href="/sitemap.html">Site Map</a></li>
-              <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
-              <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
-              <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
-              <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
-              <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+        <div class="site-footer-directory">
+          <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
+            <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
+            <ul class="site-footer-list">
+              <li><a href="/pages/guide.html">Overview</a></li>
+              <li><a href="/pages/guide-documents.html">Documents</a></li>
+              <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
+              <li><a href="/pages/concessions.html">Concessions</a></li>
+              <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
+              <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
             </ul>
           </nav>
+
+          <nav class="site-footer-group" aria-labelledby="footer-tools-title">
+            <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
+            <ul class="site-footer-list">
+              <li><a href="/pages/calculators.html">Calculators</a></li>
+              <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
+            </ul>
+          </nav>
+
+          <nav class="site-footer-group" aria-labelledby="footer-company-title">
+            <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
+            <ul class="site-footer-list">
+              <li><a href="/pages/about.html">About</a></li>
+              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/terms-of-use.html">Terms of Use</a></li>
+            </ul>
+          </nav>
+
+          <section class="site-footer-group" aria-labelledby="footer-support-title">
+            <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
+            <ul class="site-footer-list">
+              <li><a href="mailto:support@shroffin.com">Email</a></li>
+              <li><a href="tel:+919112334367">Call</a></li>
+            </ul>
+          </section>
+
+          <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
+            <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
+            <ul class="site-footer-list">
+              <li>
+                <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <div class="site-footer-meta">
+        <div class="site-footer-meta-main">
+          <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
+            <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
+            <div class="site-footer-disclaimer">
+              <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
+              <details class="site-footer-disclaimer-more">
+                <summary>Read the full disclaimer</summary>
+                <div class="site-footer-disclaimer-full">
+                  <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+                  <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+                  <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+                  <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+                  <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <div class="site-footer-bottom">
+            <div class="site-footer-bottom-row">
+              <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
+              <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
+                <ul class="site-footer-legal-links">
+                  <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                  <li><a href="/terms-of-use.html">Terms of Use</a></li>
+                  <li><a href="/sitemap.html">Site Map</a></li>
+                </ul>
+                <ul class="site-footer-official-links">
+                  <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
     </div>

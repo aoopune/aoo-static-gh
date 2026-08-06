@@ -30,6 +30,7 @@ const INSURANCE_PAGES = new Set([
 ]);
 
 const SKIP_EXPLORE_BANKS_PREFOOTER_CTA = new Set([
+  'index.html',
   'pages/explore-banks.html',
   'pages/apply.html',
   'privacy-policy.html',
@@ -37,8 +38,9 @@ const SKIP_EXPLORE_BANKS_PREFOOTER_CTA = new Set([
   'sitemap.html'
 ]);
 
+const EXPLORE_BANKS_PREFOOTER_TITLE = 'Get started with Shroffin.';
 const EXPLORE_BANKS_PREFOOTER_LEAD =
-  'Every home loan bank sits side by side.';
+  'Compare every home loan bank side by side,<br>then apply once to the banks you pick.';
 
 function currentAttr(active) {
   return active ? ' aria-current="page"' : '';
@@ -47,12 +49,17 @@ function currentAttr(active) {
 function renderExploreBanksPrefooterCta(fileRel) {
   if (SKIP_EXPLORE_BANKS_PREFOOTER_CTA.has(fileRel)) return '';
   return [
-    '<div class="site-prefooter-cta">',
-    '  <p class="site-prefooter-cta-lead">' +
+    '<section class="site-prefooter-cta" aria-labelledby="site-prefooter-cta-title">',
+    '  <div class="site-prefooter-cta-inner">',
+    '    <h2 class="site-prefooter-cta-title" id="site-prefooter-cta-title">' +
+      EXPLORE_BANKS_PREFOOTER_TITLE +
+      '</h2>',
+    '    <p class="site-prefooter-cta-lead">' +
       EXPLORE_BANKS_PREFOOTER_LEAD +
       '</p>',
-    '  <a class="home-hero-cta home-hero-cta-primary" href="/pages/explore-banks.html">Explore banks</a>',
-    '</div>'
+    '    <a class="home-hero-cta home-hero-cta-primary site-prefooter-cta-action" href="/pages/explore-banks.html">Explore banks</a>',
+    '  </div>',
+    '</section>'
   ].join('\n');
 }
 
@@ -221,6 +228,7 @@ function applySiteChrome(html, fileRel) {
 module.exports = {
   GUIDE_PAGES,
   SKIP_EXPLORE_BANKS_PREFOOTER_CTA,
+  EXPLORE_BANKS_PREFOOTER_TITLE,
   EXPLORE_BANKS_PREFOOTER_LEAD,
   applyNav,
   applyFooter,

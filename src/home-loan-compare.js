@@ -5066,7 +5066,7 @@ function initPage() {
     el.applyBtn.setAttribute(
       "aria-label",
       count === 0
-        ? "Apply once — select banks first"
+        ? "Apply once"
         : "Apply once to " + count + (count === 1 ? " bank" : " banks")
     );
     if (el.applyDockBtn) {
@@ -6455,6 +6455,73 @@ function initPage() {
     }
   }
 
+  var SAMPLE_INPUTS = {
+    monthlyIncome: "100000",
+    propertyValue: "6250000",
+    age: "35",
+    cibilScore: "780",
+    occupation: "Salaried",
+    purpose: "Regular Home Loan",
+    tenureYears: "20",
+    foirPct: "55",
+    existingEmis: "0",
+    cardLimits: "0",
+    includeCoApplicant: "no"
+  };
+
+  function ensureSampleDefaults() {
+    if (!digitCount(el.monthlyIncome ? el.monthlyIncome.value : "")) {
+      setInputValue(el.monthlyIncome, SAMPLE_INPUTS.monthlyIncome);
+    }
+    if (!digitCount(el.propertyValue ? el.propertyValue.value : "")) {
+      setInputValue(el.propertyValue, SAMPLE_INPUTS.propertyValue);
+    }
+    if (!digitCount(el.age ? el.age.value : "")) {
+      setInputValue(el.age, SAMPLE_INPUTS.age);
+    }
+    if (!digitCount(el.cibil ? el.cibil.value : "")) {
+      setInputValue(el.cibil, SAMPLE_INPUTS.cibilScore);
+    }
+    if (el.tenure && !digitCount(el.tenure.value)) {
+      setInputValue(el.tenure, SAMPLE_INPUTS.tenureYears);
+    }
+    if (el.foir && !String(el.foir.value || "").trim()) {
+      setInputValue(el.foir, SAMPLE_INPUTS.foirPct);
+    }
+    if (el.existingEmis && !String(el.existingEmis.value || "").trim()) {
+      setInputValue(el.existingEmis, SAMPLE_INPUTS.existingEmis);
+    }
+    if (el.cardLimits && !String(el.cardLimits.value || "").trim()) {
+      setInputValue(el.cardLimits, SAMPLE_INPUTS.cardLimits);
+    }
+    if (el.occupation && !String(el.occupation.value || "").trim()) {
+      setOccupation(SAMPLE_INPUTS.occupation);
+    }
+    if (el.purpose && !String(el.purpose.value || "").trim()) {
+      setPurpose(SAMPLE_INPUTS.purpose);
+    }
+    if (el.coApplicant && !String(el.coApplicant.value || "").trim()) {
+      setCoApplicant(SAMPLE_INPUTS.includeCoApplicant);
+    }
+  }
+
+  var HLC_CALC_TIP_KEY = "shroffin_hlc_calc_tip_seen";
+
+  function maybeShowCalcTip() {
+    var tip = document.getElementById("hlc-calc-tip");
+    if (!tip) return;
+    try {
+      if (window.sessionStorage.getItem(HLC_CALC_TIP_KEY) === "1") {
+        tip.hidden = true;
+        return;
+      }
+      tip.hidden = false;
+      window.sessionStorage.setItem(HLC_CALC_TIP_KEY, "1");
+    } catch (err) {
+      tip.hidden = false;
+    }
+  }
+
   function getActiveColumnsForPacket() {
     var columns = [];
     ["essentials", "charges", "laterCharges"].forEach(function (group) {
@@ -6567,6 +6634,8 @@ function initPage() {
   });
 
   restoreExploreDraft();
+  ensureSampleDefaults();
+  maybeShowCalcTip();
   syncFoirFace();
   updateFiltersBadge();
 

@@ -6,6 +6,7 @@ const pageRegistry = require(path.join(root, 'data', 'redesigned-pages.json'));
 const globalNav = require(path.join(root, 'data', 'global-nav.json'));
 const {
   SKIP_EXPLORE_BANKS_PREFOOTER_CTA,
+  EXPLORE_BANKS_PREFOOTER_TITLE,
   EXPLORE_BANKS_PREFOOTER_LEAD
 } = require(path.join(root, 'scripts', 'lib', 'site-chrome'));
 const pages = pageRegistry.map(function (entry) {
@@ -116,7 +117,7 @@ for (const entry of pageRegistry) {
   if (!/name="viewport"[^>]+viewport-fit=cover/.test(activeSource)) {
     fail(file, 'missing viewport-fit=cover');
   }
-  if (!/document\.documentElement\.classList\.add\(['"]js['"]\)/.test(activeSource)) {
+  if (!/document\.documentElement\.classList\.add\(['"]js['"]/.test(activeSource)) {
     fail(file, 'missing early progressive-enhancement marker');
   }
   if (!/shroffin-shell\.css/.test(activeSource)) {
@@ -151,6 +152,17 @@ for (const entry of pageRegistry) {
   } else {
     if (!hasPrefooterCta) {
       fail(file, 'missing Explore banks prefooter CTA');
+    }
+    if (
+      !new RegExp(
+        'class="site-prefooter-cta-title"[^>]*>' +
+          EXPLORE_BANKS_PREFOOTER_TITLE.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      ).test(activeSource)
+    ) {
+      fail(
+        file,
+        'prefooter CTA must use title "' + EXPLORE_BANKS_PREFOOTER_TITLE + '"'
+      );
     }
     if (
       !new RegExp(
@@ -205,14 +217,21 @@ for (const entry of pageRegistry) {
     fail(file, 'footer must contain five named directory groups');
   }
   if ((activeSource.match(/class="site-footer-legal-links"/g) || []).length !== 1) {
-    fail(file, 'legal and official links must share one bottom list');
+    fail(file, 'bottom legal links must be one Privacy/Terms/Site Map list');
+  }
+  if ((activeSource.match(/class="site-footer-official-links"/g) || []).length !== 1) {
+    fail(file, 'official resource links must sit on their own bottom list');
   }
   if ((activeSource.match(/class="site-footer-bottom-row"/g) || []).length !== 1) {
     fail(file, 'copyright and legal links must share one bottom row');
   }
   var legalList = activeSource.match(/class="site-footer-legal-links"[\s\S]*?<\/ul>/);
-  if (!legalList || (legalList[0].match(/<li>/g) || []).length !== 8) {
-    fail(file, 'bottom legal list must contain Privacy Policy, Terms of Use, Site Map, and five official resources');
+  if (!legalList || (legalList[0].match(/<li>/g) || []).length !== 3) {
+    fail(file, 'bottom legal list must contain Privacy Policy, Terms of Use, and Site Map');
+  }
+  var officialList = activeSource.match(/class="site-footer-official-links"[\s\S]*?<\/ul>/);
+  if (!officialList || (officialList[0].match(/<li>/g) || []).length !== 5) {
+    fail(file, 'official resource list must contain five regulator/government links');
   }
   if (activeSource.includes('Regulators and official resources')) {
     fail(file, 'footer must not show an official-resources heading');
@@ -226,8 +245,27 @@ for (const entry of pageRegistry) {
   if (activeSource.includes('An Independent and transparent banking.')) {
     fail(file, 'footer must not show the removed brand tagline');
   }
-  if (/class="site-footer-logo"/.test(activeSource)) {
-    fail(file, 'footer must not show the brand logo');
+  if (!/class="site-footer-meta"/.test(activeSource)) {
+    fail(file, 'footer must keep disclaimer/legal clear of the logo column');
+  }
+  if (!/class="site-footer-meta-main"/.test(activeSource)) {
+    fail(file, 'footer meta main rail missing');
+  }
+  if (
+    !/<a class="site-footer-brand-link" href="\/" aria-label="Shroffin Home">/.test(
+      activeSource
+    )
+  ) {
+    fail(file, 'footer brand logo must link to the home page');
+  }
+  if (!/class="site-footer-logo"/.test(activeSource)) {
+    fail(file, 'footer must show the brand logo');
+  }
+  if (!/src="\/images\/logos\/logo\.png"/.test(activeSource)) {
+    fail(file, 'footer must use /images/logos/logo.png');
+  }
+  if (/class="site-footer-tagline"/.test(activeSource)) {
+    fail(file, 'footer must not show a brand tagline');
   }
   const connectGroup = activeSource.match(
     /aria-labelledby="footer-connect-title"[\s\S]*?<\/nav>/
@@ -296,8 +334,17 @@ const shellCss = fs.readFileSync(path.join(root, 'css', 'shroffin-shell.css'), '
 if (!/\.site-prefooter-cta\s*\{/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'missing .site-prefooter-cta styles');
 }
+if (!/\.site-prefooter-cta-inner\s*\{/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'missing .site-prefooter-cta-inner styles');
+}
+if (!/\.site-prefooter-cta-title\s*\{/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'missing .site-prefooter-cta-title styles');
+}
 if (!/\.site-prefooter-cta-lead\s*\{/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'missing .site-prefooter-cta-lead styles');
+}
+if (!/\.site-prefooter-cta-action\s*\{/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'missing .site-prefooter-cta-action styles');
 }
 if (!/\.site-prefooter-cta \+ \.site-help-strip\s*\{/.test(shellCss)) {
   fail(
@@ -322,22 +369,40 @@ if (
 if (!/\.site-help-strip\s*\{[\s\S]*?margin-block-end:\s*clamp\(/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'help strip must sit in the air above the footer');
 }
+if (!/\.site-footer-meta\s*\{[\s\S]*?grid-template-columns:\s*var\(--site-footer-brand-track\)/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'footer meta must share the logo/directory tracks');
+}
+if (!/\.site-footer-meta-main\s*\{[\s\S]*?grid-column:\s*2/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'footer disclaimer/legal must sit under the directory, not the logo');
+}
+if (!/\.site-footer-logo\s*\{[\s\S]*?aspect-ratio:\s*1/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'footer logo must use the square mark asset');
+}
+if (/\.site-footer-logo\s*\{[\s\S]*?filter:\s*brightness\(0\) invert\(1\)/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'footer logo.png must show as-is without invert');
+}
+if (!/\.site-footer-list li\s*\{[\s\S]*?margin-block-end:\s*0\.35rem/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'footer link list must keep readable vertical spacing');
+}
 if ((shellCss.match(/\.site-footer\s*\{[\s\S]*?border-block-start:\s*1px/g) || []).length !== 1) {
   fail('css/shroffin-shell.css', 'footer must have exactly one top hairline');
 }
 if (/\.site-footer-rule\s*\{/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'obsolete internal footer rule style remains');
 }
-if (!/\.site-footer-legal-links a\.guide-section-link \.guide-section-link-arrow\s*\{[\s\S]*?opacity:\s*0/.test(shellCss)) {
+if (!/\.site-footer-official-links a\.guide-section-link \.guide-section-link-arrow\s*\{[\s\S]*?opacity:\s*0/.test(shellCss) &&
+    !/\.site-footer-legal-links a\.guide-section-link \.guide-section-link-arrow,\s*\n\s*\.site-footer-official-links a\.guide-section-link \.guide-section-link-arrow\s*\{[\s\S]*?opacity:\s*0/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'official resource arrows must be hidden by default');
 }
 if (!/\.site-footer-list a\s*\{[\s\S]*?font-weight:\s*400/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'footer sublinks must use Apple footer weight');
 }
-if (!/\.site-footer-legal-links a\s*\{[\s\S]*?text-decoration:\s*none/.test(shellCss)) {
+if (!/\.site-footer-legal-links a,\s*\n\s*\.site-footer-official-links a\s*\{[\s\S]*?text-decoration:\s*none/.test(shellCss) &&
+    !/\.site-footer-legal-links a\s*\{[\s\S]*?text-decoration:\s*none/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'bottom legal links must not be underlined by default');
 }
-if (!/\.site-footer-legal-links li:not\(:last-child\)::after\s*\{[\s\S]*?background:\s*var\(--shroffin-rule\)/.test(shellCss)) {
+if (!/\.site-footer-official-links li:not\(:last-child\)::after\s*\{[\s\S]*?background:\s*var\(--shroffin-rule\)/.test(shellCss) &&
+    !/\.site-footer-legal-links li:not\(:last-child\)::after,\s*\n\s*\.site-footer-official-links li:not\(:last-child\)::after\s*\{[\s\S]*?background:\s*var\(--shroffin-rule\)/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'wide legal strip must use trailing Apple-style dividers');
 }
 if (!/@container footer-legal \(min-width:/.test(shellCss)) {
@@ -429,6 +494,8 @@ const allHtml = [];
 walkHtml(root, allHtml);
 allHtml.forEach(function (rel) {
   if (legacyAllow.has(rel)) return;
+  /* Draft / sample pages under pages/_… are local-only, not redesigned registry. */
+  if (/\/_/.test(rel) || /^_/.test(path.basename(rel))) return;
   const src = fs.readFileSync(path.join(root, rel), 'utf8');
   if (!/shroffin-shell\.css/.test(src)) return;
   if (!pages.includes(rel)) {

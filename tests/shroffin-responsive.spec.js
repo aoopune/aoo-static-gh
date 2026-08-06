@@ -184,7 +184,13 @@ async function expectSharedShell(page, entry) {
   await expect(page.locator('.site-footer-legal')).toHaveCSS('border-top-width', '0px');
   await expect(page.locator('.site-footer-legal')).toHaveCSS('border-bottom-width', '0px');
   await expect(page.locator('.site-footer-tagline')).toHaveCount(0);
-  await expect(page.locator('.site-footer-logo')).toHaveCount(0);
+  await expect(page.locator('.site-footer-brand')).toHaveCount(1);
+  await expect(page.locator('.site-footer-brand-link[href="/"]')).toHaveCount(1);
+  await expect(page.locator('.site-footer-logo')).toHaveCount(1);
+  await expect(page.locator('.site-footer-brand-link')).toHaveAttribute(
+    'aria-label',
+    'Shroffin Home'
+  );
   const connectLink = page.locator(
     '.site-footer-group--connect a[href="https://www.linkedin.com/company/shroffin"]'
   );
@@ -192,36 +198,39 @@ async function expectSharedShell(page, entry) {
   await expect(connectLink).toHaveText(/LinkedIn/);
   await expect(connectLink).toHaveAttribute('target', '_blank');
   await expect(connectLink).toHaveAttribute('rel', 'noopener noreferrer');
-  await expect(page.locator('.site-footer-legal-links > li')).toHaveCount(7);
-  await expect(page.locator('.site-footer-legal-links a.guide-section-link')).toHaveCount(
+  await expect(page.locator('.site-footer-legal-links > li')).toHaveCount(3);
+  await expect(page.locator('.site-footer-official-links > li')).toHaveCount(5);
+  await expect(page.locator('.site-footer-official-links a.guide-section-link')).toHaveCount(
     5
   );
   await expect(
-    page.locator('.site-footer-legal-links a.guide-section-link[target="_blank"]')
+    page.locator('.site-footer-official-links a.guide-section-link[target="_blank"]')
   ).toHaveCount(5);
   await expect(
     page.locator(
-      '.site-footer-legal-links a.guide-section-link[rel="noopener noreferrer"]'
+      '.site-footer-official-links a.guide-section-link[rel="noopener noreferrer"]'
     )
   ).toHaveCount(5);
-  await expect(page.locator('.site-footer-legal-links .guide-section-link-arrow')).toHaveCount(
+  await expect(page.locator('.site-footer-official-links .guide-section-link-arrow')).toHaveCount(
     5
   );
-  await expect(page.locator('.site-footer-legal-links .visually-hidden')).toHaveCount(5);
+  await expect(page.locator('.site-footer-official-links .visually-hidden')).toHaveCount(5);
   await expect(page.locator('.site-footer-list a').first()).toHaveCSS('font-weight', '400');
   await expect(page.locator('.site-footer-legal-links a').first()).toHaveCSS(
     'text-decoration-line',
     'none'
   );
   await expect(
-    page.locator('.site-footer-legal-links .guide-section-link-arrow').first()
+    page.locator('.site-footer-official-links .guide-section-link-arrow').first()
   ).toHaveCSS('opacity', '0');
   await expect(
     page.locator('.site-footer-group[aria-labelledby="footer-company-title"] .site-footer-list')
   ).not.toContainText('Site Map');
   await expect(page.locator('.site-footer-legal-links a[href="/sitemap.html"]')).toHaveCount(1);
   await expect(page.locator('.site-footer-disclaimer-title')).toHaveText('Disclaimer');
-  await expect(page.locator('.site-footer-disclaimer p')).toHaveCount(5);
+  await expect(page.locator('.site-footer-disclaimer-summary')).toHaveCount(1);
+  await expect(page.locator('.site-footer-disclaimer-more')).toHaveCount(1);
+  await expect(page.locator('.site-footer-disclaimer p')).toHaveCount(6);
   await expect(page.locator('.site-footer-copy')).toContainText(
     'Copyright © 2026 Shroffin. All rights reserved.'
   );
@@ -483,6 +492,65 @@ test.describe('breakpoints and navigation behavior', function () {
     await expectNoPageOverflow(page);
   });
 
+  test('desktop Guide: headroom + chapter strip + story reclaim', async function ({
+    page
+  }, testInfo) {
+    test.skip(testInfo.project.name !== 'chromium-responsive');
+
+    await page.setViewportSize({ width: 1280, height: 720 });
+    await gotoReady(page, '/pages/guide.html');
+
+    await expect(page.locator('.mag-num, .mag-index-num')).toHaveCount(0);
+
+    const align = await page.evaluate(function () {
+      var ln = document.querySelector('.localnav-content');
+      var story = document.querySelector('.guide-story');
+      return {
+        lnLeft: ln.getBoundingClientRect().left,
+        storyLeft: story.getBoundingClientRect().left,
+        storyWidth: story.getBoundingClientRect().width
+      };
+    });
+    expect(Math.abs(align.storyLeft - align.lnLeft)).toBeLessThanOrEqual(2);
+    expect(align.storyWidth).toBeGreaterThan(900);
+
+    await page.locator('#loan-amount').scrollIntoViewIfNeeded();
+    await page.evaluate(function () {
+      window.scrollBy(0, 400);
+    });
+    await expect
+      .poll(function () {
+        return page.evaluate(function () {
+          return document.body.classList.contains('guide-ln-away');
+        });
+      }, { timeout: 3000 })
+      .toBe(true);
+
+    const away = await page.evaluate(function () {
+      return {
+        lnBottom: document.querySelector('.localnav').getBoundingClientRect().bottom,
+        idxTop: document.querySelector('.mag-index').getBoundingClientRect().top,
+        lnOffset: getComputedStyle(document.documentElement)
+          .getPropertyValue('--shroffin-ln-offset')
+          .trim()
+      };
+    });
+    expect(away.lnBottom).toBeLessThanOrEqual(1);
+    expect(away.idxTop).toBeLessThanOrEqual(4);
+    expect(away.lnOffset).toBe('0px');
+
+    await page.evaluate(function () {
+      window.scrollBy(0, -160);
+    });
+    await expect
+      .poll(function () {
+        return page.evaluate(function () {
+          return document.body.classList.contains('guide-ln-away');
+        });
+      }, { timeout: 3000 })
+      .toBe(false);
+  });
+
   test('every section jump lands below the sticky bars on every layout', async function ({
     page
   }, testInfo) {
@@ -653,12 +721,12 @@ test.describe('adaptive component behavior', function () {
     await expect(linkedinArrow).toHaveCSS('opacity', '1');
 
     const officialLink = page
-      .locator('.site-footer-legal-links a.guide-section-link')
+      .locator('.site-footer-official-links a.guide-section-link')
       .first();
     const officialArrow = officialLink.locator('.guide-section-link-arrow');
     await expect(officialArrow).toHaveCSS('opacity', '0');
     await officialLink.hover();
-    await expect(officialLink).toHaveCSS('color', 'rgb(0, 91, 181)');
+    await expect(officialLink).toHaveCSS('color', 'rgb(63, 98, 200)');
     await expect(officialArrow).toHaveCSS('opacity', '1');
 
     const directoryLink = page.locator('.site-footer-list a').first();

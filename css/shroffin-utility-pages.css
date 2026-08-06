@@ -314,3 +314,10 @@
     break-inside: avoid;
   }
 }
+
+@media (max-width: 833px) {
+  .utility-page main :where(td, th, p, li, a) {
+    font-size: max(0.9375rem, 1em);
+    line-height: 1.6;
+  }
+}

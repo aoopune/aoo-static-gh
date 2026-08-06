@@ -1,5 +1,5 @@
 /**
- * Soft settle for About stance rows, home lead lines, and home open band.
+ * Soft settle for About stance rows, home lead lines, Built around you, and home open band.
  * Home open: banks pop → swish → Shroffin once; Apple-style play/pause (no loop).
  */
 (function () {

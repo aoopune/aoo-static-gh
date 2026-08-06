@@ -11,8 +11,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="../../images/logos/favicon-16.png?v=6">
   <link rel="apple-touch-icon" href="../../apple-touch-icon.png?v=6">
   <link rel="manifest" href="../../site.webmanifest?v=6">
-  <link rel="stylesheet" href="../../css/shroffin-shell.css?v=chevron-2">
-  <link rel="stylesheet" href="../../css/shroffin-calculators.css?v=chevron-1">
+  <link rel="stylesheet" href="../../css/shroffin-shell.css?v=chapters-1">
+  <link rel="stylesheet" href="../../css/shroffin-calculators.css?v=chapters-1">
 </head>
 <body class="calc-page">
   <!-- SHROFFIN_NAV_START -->
@@ -187,15 +187,15 @@
       <nav class="calc-crumb" aria-label="Breadcrumb">
         <a href="../calculators.html">Calculators</a>
         <span aria-hidden="true">/</span>
-        <span aria-current="page">Down payment</span>
+        <span aria-current="page">How much cash upfront?</span>
       </nav>
       <header class="calc-hero calc-reveal">
-        <h1 class="calc-hero-title">Down payment</h1>
-        <p class="calc-hero-lead">Know the cash you must bring beside the bank’s share.</p>
+        <h1 class="calc-hero-title">How much cash upfront?</h1>
+        <p class="calc-hero-lead">Property value minus the bank’s max share.</p>
       </header>
       <div class="calc-workspace calc-reveal">
-        <section class="calc-controls" aria-labelledby="calc-controls-title">
-          <h2 class="calc-controls-title" id="calc-controls-title">Your numbers</h2>
+        <section class="calc-controls" aria-label="Loan inputs" aria-labelledby="calc-controls-title">
+          <h2 class="visually-hidden" id="calc-controls-title">Loan inputs</h2>
           <form class="calc-form" data-calc="down-payment" novalidate>
             <div class="calc-field">
               <div class="calc-label-row">
@@ -269,6 +269,13 @@
   </main>
 
   <!-- SHROFFIN_FOOTER_START -->
+  <section class="site-prefooter-cta" aria-labelledby="site-prefooter-cta-title">
+    <div class="site-prefooter-cta-inner">
+      <h2 class="site-prefooter-cta-title" id="site-prefooter-cta-title">Get started with Shroffin.</h2>
+      <p class="site-prefooter-cta-lead">Compare every home loan bank side by side,<br>then apply once to the banks you pick.</p>
+      <a class="home-hero-cta home-hero-cta-primary site-prefooter-cta-action" href="/pages/explore-banks.html">Explore banks</a>
+    </div>
+  </section>
   <aside class="site-help-strip" aria-label="Get help">
     <p class="site-help-strip-text">
       Need some help?
@@ -282,6 +289,20 @@
     </p>
   </aside>
   <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
+    <section class="site-footer-brand" aria-label="Shroffin">
+      <div class="site-footer-brand-inner">
+        <a class="site-footer-brand-link" href="/" aria-label="Shroffin Home">
+          <img
+            class="site-footer-logo"
+            src="/images/logos/logo-h-light-clear-781x173.png"
+            alt=""
+            width="198"
+            height="44"
+          >
+        </a>
+      </div>
+    </section>
+
     <div class="site-footer-inner">
       <div class="site-footer-directory">
         <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
@@ -334,11 +355,17 @@
       <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
         <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
         <div class="site-footer-disclaimer">
-          <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-          <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-          <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-          <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-          <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+          <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
+          <details class="site-footer-disclaimer-more">
+            <summary>Read the full disclaimer</summary>
+            <div class="site-footer-disclaimer-full">
+              <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+              <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+              <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+              <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+              <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+            </div>
+          </details>
         </div>
       </section>
 
@@ -365,7 +392,7 @@
 
 
   <script src="../../js/shroffin-loan-math.js?v=5"></script>
-  <script src="../../js/shroffin-calculators.js?v=19"></script>
-  <script src="../../js/shroffin-nav.js?v=sel-13"></script>
+  <script src="../../js/shroffin-calculators.js?v=chapters-1"></script>
+  <script src="../../js/shroffin-nav.js?v=chapters-1"></script>
 </body>
 </html>

@@ -16,6 +16,7 @@
     "check:legal-content": "node scripts/sync-legal-content.js --check",
     "build:content": "node scripts/build-content.js",
     "check:content": "node scripts/build-content.js --check",
+    "bless:content": "node scripts/build-content.js --bless",
     "build:layout-chrome": "node scripts/lib/fill-layout-chrome.js",
     "snapshot:golden": "node scripts/snapshot-golden.js",
     "extract:page-shell": "node scripts/extract-page-shell.js",

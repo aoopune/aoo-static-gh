@@ -400,6 +400,20 @@
       amortToggle.insertBefore(document.createTextNode(label + (svg ? " " : "")), svg || null);
     }
 
+    function setAmortClosedLabel(yearCount) {
+      if (!amortToggle) return;
+      var base =
+        amortToggle.getAttribute("data-closed-base") ||
+        amortToggle.getAttribute("data-closed-label") ||
+        "Amortisation schedule";
+      amortToggle.setAttribute("data-closed-base", base);
+      var label = yearCount > 0 ? base + " (" + yearCount + ")" : base;
+      amortToggle.setAttribute("data-closed-label", label);
+      if (!amortSection.classList.contains("is-open")) {
+        setAmortOpen(false);
+      }
+    }
+
     function run() {
       var d = readForm(form);
       var principal = parseMoney(d.principal);
@@ -410,7 +424,9 @@
       setText("out-emi", formatINR(sched.emi));
       setText("out-interest", formatINR(sched.totalInterest));
       setText("out-payable", formatINR(sched.totalPayable));
-      setText("out-months", formatMonths(sched.months));      renderAmort(amortEl, sched);
+      setText("out-months", formatMonths(sched.months));
+      renderAmort(amortEl, sched);
+      setAmortClosedLabel(sched.years ? sched.years.length : 0);
     }
     ["principal", "rate", "years"].forEach(function (name) {
       bindMoneyInput(form.elements[name]);

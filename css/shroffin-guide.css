@@ -76,7 +76,7 @@
     align-items: center;
     min-block-size: 44px;
     padding-inline: 0.125rem;
-    font-size: 0.875rem;
+    font-size: var(--shroffin-type-body);
     white-space: nowrap;
   }
 
@@ -461,7 +461,7 @@
       min-block-size: 48px;
       padding-inline: 2rem 1rem;
       box-sizing: border-box;
-      font-size: 0.9375rem;
+      font-size: var(--shroffin-type-body);
       opacity: 0;
       transform: translateY(-6px);
       transition:
@@ -590,7 +590,7 @@
       border-radius: 0;
       background: transparent;
       color: #6e6e73;
-      font-size: 0.875rem;
+      font-size: var(--shroffin-type-body);
       font-weight: 400;
       line-height: 1.25;
       white-space: normal;

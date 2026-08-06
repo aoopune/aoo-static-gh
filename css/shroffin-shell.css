@@ -100,6 +100,9 @@
     --shroffin-type-display: clamp(2.125rem, 8.5vw, 2.625rem);
     --shroffin-type-display-xl: clamp(2.5rem, 10vw, 3rem);
     --shroffin-type-title: clamp(1.75rem, 6.5vw, 2rem);
+    /* Chapter topic title — one rung above --shroffin-type-title so each
+       block reads as a chapter while staying a clear topic name. */
+    --shroffin-type-chapter: clamp(2rem, 7.5vw, 2.5rem);
     --shroffin-type-support: clamp(1.125rem, 3.6vw, 1.25rem);
     --shroffin-type-lead: clamp(1.0625rem, 2.8vw, 1.125rem);
     --shroffin-type-body: clamp(0.9375rem, 2.4vw, 1rem);
@@ -121,11 +124,16 @@
     overflow-x: clip;
   }
 
+  body {
+    overflow-x: clip;
+  }
+
   @media (min-width: 834px) {
     :root {
       --shroffin-type-display: clamp(2rem, 3.2vw, 2.75rem);
       --shroffin-type-display-xl: clamp(2.25rem, 3.8vw, 3rem);
       --shroffin-type-title: clamp(1.35rem, 2.4vw, 1.75rem);
+      --shroffin-type-chapter: clamp(1.75rem, 3vw, 2.375rem);
       --shroffin-type-support: clamp(1.2rem, 2vw, 1.45rem);
       --shroffin-type-lead: clamp(1.05rem, 1.6vw, 1.15rem);
       --shroffin-type-body: clamp(0.9375rem, 1.4vw, 1.0625rem);
@@ -148,6 +156,7 @@
       --shroffin-type-display: clamp(2.5rem, 4vw, 4rem);
       --shroffin-type-display-xl: clamp(2.5rem, 5vw, 4.5rem);
       --shroffin-type-title: clamp(1.625rem, 2.4vw, 2.375rem);
+      --shroffin-type-chapter: clamp(2.125rem, 3vw, 2.875rem);
       --shroffin-type-support: clamp(1.25rem, 1.8vw, 1.75rem);
       --shroffin-type-lead: clamp(1.05rem, 1.5vw, 1.25rem);
       --shroffin-type-body: clamp(1rem, 1.2vw, 1.125rem);
@@ -498,6 +507,28 @@
 
     /* Keep the hamburger menu usable after scroll — pin while open. */
     .globalnav.compact-open {
+      position: fixed;
+      inset-block-start: 0;
+      inset-inline: 0;
+      inline-size: 100%;
+    }
+  }
+
+  /* Guide desktop (≥834): main bar scrolls away after landing — Apple product-page pattern.
+     Phone ≤833 unchanged (rules above). Non-guide pages keep fixed globalnav. */
+  @media (min-width: 834px) {
+    body.guide-reading {
+      --shroffin-gn-offset: 0px;
+    }
+
+    body.guide-reading .globalnav {
+      position: relative;
+      inset: auto;
+    }
+
+    /* Re-pin while a menu/flyout is open so the tray stays usable mid-page. */
+    body.guide-reading .globalnav.compact-open,
+    body.guide-reading .globalnav.flyout-open {
       position: fixed;
       inset-block-start: 0;
       inset-inline: 0;
@@ -1129,35 +1160,132 @@
     }
   }
 
-  /* Pre-footer product CTA — quiet lead + same pill as home hero. */
+  /*
+   * Pre-footer CTA — Apple Card get-started type ladder + soft mesh wash.
+   * Headline: 40 → 72 → 96 · Subhead: 21 → 24 → 40
+   * Wash: blurred color blooms (cool mist + warm edge), not flat fill.
+   */
   .site-prefooter-cta {
     box-sizing: border-box;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     width: 100%;
-    margin-block-start: clamp(2rem, 5vw, 3.25rem);
-    margin-block-end: 0;
-    padding-block-end: 0.5rem;
-    padding-inline: max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right));
+    /* Same air above and below the wash on every page that shows it. */
+    margin-block: clamp(2.5rem, 6vw, 4rem);
+    padding-block: 7.5rem;
+    padding-inline: max(1rem, env(safe-area-inset-left))
+      max(1rem, env(safe-area-inset-right));
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.85rem;
     text-align: center;
     font-family: var(--shroffin-font);
+    background-color: #f4f2ef;
+  }
+
+  /* Soft mesh bloom behind the copy — Apple Card get-started feel. */
+  .site-prefooter-cta::before {
+    content: "";
+    position: absolute;
+    inset: -25%;
+    z-index: -1;
+    background:
+      radial-gradient(circle at 18% 55%, #b4b8de 0%, transparent 42%),
+      radial-gradient(circle at 82% 38%, #efd2ab 0%, transparent 40%),
+      radial-gradient(circle at 58% 78%, #e6c9c6 0%, transparent 38%),
+      radial-gradient(circle at 42% 22%, #c5d6ef 0%, transparent 36%),
+      radial-gradient(circle at 50% 50%, #f0ebe4 0%, transparent 55%);
+    filter: blur(64px);
+    opacity: 0.9;
+    transform: translateZ(0);
+    pointer-events: none;
+  }
+
+  .site-prefooter-cta-inner {
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 62rem; /* room for 24em lead at 40px (~960px) */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .site-prefooter-cta-title {
+    margin: 0;
+    margin-block-end: 12px;
+    max-width: 12em;
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.1;
+    color: var(--shroffin-ink);
   }
 
   .site-prefooter-cta-lead {
     margin: 0;
-    max-width: 36rem;
-    font-size: clamp(0.95rem, 2.2vw, 1.05rem);
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    line-height: 1.45;
+    margin-block-end: 21px;
+    /* ~2 lines for the compare/apply-once sentence; scales with font-size. */
+    max-width: 24em;
+    width: 100%;
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: 0.011em;
+    line-height: 1.19048;
     color: var(--shroffin-ink);
   }
 
+  .site-prefooter-cta-action {
+    margin-block-start: 0;
+  }
+
   .site-prefooter-cta + .site-help-strip {
-    margin-block-start: clamp(1rem, 2.5vw, 1.5rem);
+    /* CTA already owns the equal bottom gap — don't double it. */
+    margin-block-start: 0;
+  }
+
+  /* Apple medium: max-width 1068 */
+  @media (min-width: 735px) {
+    .site-prefooter-cta {
+      padding-block: 9rem;
+    }
+
+    .site-prefooter-cta-title {
+      margin-block-end: 7px;
+      font-size: 72px;
+      letter-spacing: -0.012em;
+      line-height: 1.05556;
+    }
+
+    .site-prefooter-cta-lead {
+      margin-block-end: 28px;
+      font-size: 24px;
+      letter-spacing: 0.009em;
+      line-height: 1.16667;
+    }
+  }
+
+  /* Apple large: above 1068 */
+  @media (min-width: 1069px) {
+    .site-prefooter-cta {
+      padding-block: 11rem;
+    }
+
+    .site-prefooter-cta-title {
+      margin-block-end: 12px;
+      font-size: 96px;
+      letter-spacing: -0.015em;
+      line-height: 1.04167;
+    }
+
+    .site-prefooter-cta-lead {
+      margin-block-end: 41px;
+      font-size: 40px;
+      letter-spacing: 0;
+      line-height: 1.1;
+    }
   }
 
   /* Pre-footer help: floats above the footer with space on both sides. */
@@ -1288,6 +1416,9 @@
 
   .site-footer-inner {
     /* Same invisible rail as globalnav (logo → right chrome). */
+    --site-footer-brand-track: minmax(5.5rem, 0.55fr);
+    --site-footer-main-track: minmax(0, 4fr);
+    --site-footer-top-gap: 1.75rem;
     inline-size: min(var(--shroffin-content-max), 100%);
     margin-inline: auto;
     padding-inline: max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right));
@@ -1295,10 +1426,53 @@
     box-sizing: border-box;
   }
 
+  /*
+   * Anthropic-style footer top: dedicated brand column (mark only) + link directory.
+   * Mark is logo.png as-is (blue on clear); links home.
+   */
+  .site-footer-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .site-footer-brand {
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  .site-footer-brand-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: 44px;
+    text-decoration: none;
+  }
+
+  .site-footer-brand-link:focus-visible {
+    outline: var(--shroffin-focus-width) solid var(--shroffin-focus);
+    outline-offset: var(--shroffin-focus-offset);
+    border-radius: 2px;
+  }
+
+  .site-footer-logo {
+    display: block;
+    inline-size: clamp(2.75rem, 12vw, 4rem);
+    block-size: auto;
+    max-inline-size: 100%;
+    aspect-ratio: 1;
+  }
+
   .site-footer-directory {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 1.75rem;
+    gap: 1.5rem;
   }
 
   .site-footer-group {
@@ -1306,7 +1480,7 @@
   }
 
   .site-footer-heading {
-    margin: 0 0 0.75rem;
+    margin: 0 0 0.65rem;
     color: var(--shroffin-ink);
     font-size: 0.875rem;
     font-weight: 600;
@@ -1321,7 +1495,7 @@
   }
 
   .site-footer-list li {
-    margin-block-end: 0.5rem;
+    margin-block-end: 0.35rem;
   }
 
   .site-footer-list li:last-child {
@@ -1476,12 +1650,25 @@
 
   .site-footer-legal {
     padding-block-start: clamp(2.5rem, 6vw, 4rem);
+    padding-block-end: 0;
     container-type: inline-size;
     container-name: footer-legal;
   }
 
+  /* Phone: disclaimer + legal sit full width under the stacked logo/links. */
+  .site-footer-meta {
+    min-inline-size: 0;
+  }
+
+  .site-footer-meta-main {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.75rem, 3.5vw, 2.5rem);
+    min-inline-size: 0;
+  }
+
   .site-footer-disclaimer-title {
-    margin: 0 0 0.75rem;
+    margin: 0 0 0.55rem;
     color: var(--shroffin-ink);
     font-size: 0.875rem;
     font-weight: 600;
@@ -1489,36 +1676,49 @@
   }
 
   .site-footer-disclaimer p {
-    margin: 0 0 0.625rem;
+    margin: 0 0 0.5rem;
   }
 
   .site-footer-disclaimer p:last-child {
     margin-block-end: 0;
   }
 
+  .site-footer-disclaimer-summary {
+    margin: 0 0 0.35rem;
+    color: var(--shroffin-ink);
+  }
+
+  .site-footer-disclaimer-more > summary {
+    cursor: pointer;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--shroffin-link);
+  }
+
+  .site-footer-disclaimer-full > p {
+    margin: 0 0 0.625rem;
+  }
+
+  /*
+   * Bottom chrome proximity:
+   * 1. Clear air after Disclaimer.
+   * 2. Copyright sits with Privacy / Terms / Site Map.
+   * 3. Official regulator links own the next band.
+   */
   .site-footer-bottom {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
-    padding: 1.5rem 0 max(2rem, env(safe-area-inset-bottom));
+    gap: 0;
+    padding: 0 0 max(2rem, env(safe-area-inset-bottom));
   }
 
-  /*
-   * Bottom legal strip — progressive layout (not “wrap and hope”).
-   * Uses the same viewport bands as the rest of the shell (mobile → 834px+).
-   * 1. Copyright and link strip each own a full row (stable vertical structure).
-   * 2. Each link is an atomic unit (no mid-label / mid-acronym breaks).
-   * 3. Phone: stack as a list (clear structure).
-   * 4. Tablet/desktop: wrap with even gap — no pipes while multi-line wrap is likely.
-   * 5. Wide: trailing separators (::after) only when one row usually fits, so a
-   *    wrap line never starts with a pipe if space still runs short.
-   */
   .site-footer-bottom-row {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.2rem;
+    gap: 0.55rem;
     inline-size: 100%;
   }
 
@@ -1528,11 +1728,16 @@
   }
 
   .site-footer-legal-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
     inline-size: 100%;
     min-inline-size: 0;
   }
 
-  .site-footer-legal-links {
+  .site-footer-legal-links,
+  .site-footer-official-links {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1542,16 +1747,19 @@
     list-style: none;
   }
 
-  .site-footer-legal-links li {
+  .site-footer-legal-links li,
+  .site-footer-official-links li {
     display: flex;
     align-items: center;
     max-inline-size: 100%;
   }
 
-  .site-footer-legal-links a {
+  .site-footer-legal-links a,
+  .site-footer-official-links a {
     display: inline-flex;
     align-items: center;
     max-inline-size: 100%;
+    min-height: 44px;
     padding-block: 0.15rem;
     color: rgba(0, 0, 0, 0.72);
     font-weight: 400;
@@ -1563,38 +1771,49 @@
 
   .site-footer-legal-links a:hover,
   .site-footer-legal-links a:focus-visible,
-  .site-footer-legal-links a:active {
+  .site-footer-legal-links a:active,
+  .site-footer-official-links a:hover,
+  .site-footer-official-links a:focus-visible,
+  .site-footer-official-links a:active {
     color: #005bb5;
   }
 
-  .site-footer-legal-links a.guide-section-link {
+  .site-footer-legal-links a.guide-section-link,
+  .site-footer-official-links a.guide-section-link {
     color: var(--shroffin-link);
   }
 
-  .site-footer-legal-links a.guide-section-link:visited {
+  .site-footer-legal-links a.guide-section-link:visited,
+  .site-footer-official-links a.guide-section-link:visited {
     color: var(--shroffin-link-visited);
   }
 
   .site-footer-legal-links a.guide-section-link:hover,
-  .site-footer-legal-links a.guide-section-link:focus-visible {
+  .site-footer-legal-links a.guide-section-link:focus-visible,
+  .site-footer-official-links a.guide-section-link:hover,
+  .site-footer-official-links a.guide-section-link:focus-visible {
     color: var(--shroffin-link);
     text-decoration: underline;
     text-decoration-color: var(--shroffin-link);
   }
 
   .site-footer-legal-links a.guide-section-link:visited:hover,
-  .site-footer-legal-links a.guide-section-link:visited:focus-visible {
+  .site-footer-legal-links a.guide-section-link:visited:focus-visible,
+  .site-footer-official-links a.guide-section-link:visited:hover,
+  .site-footer-official-links a.guide-section-link:visited:focus-visible {
     color: var(--shroffin-link-visited);
     text-decoration-color: var(--shroffin-link-visited);
   }
 
-  .site-footer-legal-links a.guide-section-link:active {
+  .site-footer-legal-links a.guide-section-link:active,
+  .site-footer-official-links a.guide-section-link:active {
     color: var(--shroffin-link-active);
     text-decoration: underline;
     text-decoration-color: var(--shroffin-link-active);
   }
 
-  .site-footer-legal-links a.guide-section-link .guide-section-link-arrow {
+  .site-footer-legal-links a.guide-section-link .guide-section-link-arrow,
+  .site-footer-official-links a.guide-section-link .guide-section-link-arrow {
     opacity: 0;
     transform: none;
     transition:
@@ -1604,7 +1823,10 @@
 
   .site-footer-legal-links a.guide-section-link:hover .guide-section-link-arrow,
   .site-footer-legal-links a.guide-section-link:focus-visible .guide-section-link-arrow,
-  .site-footer-legal-links a.guide-section-link:active .guide-section-link-arrow {
+  .site-footer-legal-links a.guide-section-link:active .guide-section-link-arrow,
+  .site-footer-official-links a.guide-section-link:hover .guide-section-link-arrow,
+  .site-footer-official-links a.guide-section-link:focus-visible .guide-section-link-arrow,
+  .site-footer-official-links a.guide-section-link:active .guide-section-link-arrow {
     opacity: 1;
     color: inherit;
     transform: translate(0.12em, -0.12em);
@@ -1613,27 +1835,66 @@
   @media (min-width: 480px) {
     .site-footer-directory {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.75rem 1.25rem;
+      gap: 1.5rem 1.15rem;
     }
   }
 
   @media (min-width: 834px) {
+    .site-footer-top {
+      grid-template-columns: var(--site-footer-brand-track) var(--site-footer-main-track);
+      column-gap: var(--site-footer-top-gap);
+      row-gap: 0;
+      align-items: start;
+    }
+
+    /*
+     * Keep the logo column empty below the mark.
+     * Disclaimer + copyright/legal line up with Guide → Connect.
+     */
+    .site-footer-meta {
+      display: grid;
+      grid-template-columns: var(--site-footer-brand-track) var(--site-footer-main-track);
+      column-gap: var(--site-footer-top-gap);
+    }
+
+    .site-footer-meta-main {
+      grid-column: 2;
+    }
+
+    .site-footer-brand {
+      padding: 0;
+    }
+
+    .site-footer-brand-link {
+      min-block-size: 0;
+    }
+
+    .site-footer-logo {
+      inline-size: clamp(3.75rem, 6vw, 5rem);
+    }
+
     .site-footer-directory {
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      column-gap: 1.25rem;
+      column-gap: 1.15rem;
+      row-gap: 1.5rem;
+    }
+
+    .site-footer-heading {
+      margin-block-end: 0.7rem;
     }
 
     .site-footer-list a {
       min-block-size: 0;
-      padding-block: 0;
-      line-height: 1.3334;
+      padding-block: 0.1rem;
+      line-height: 1.45;
     }
 
     .site-footer-list li {
-      margin-block-end: 0.6rem;
+      margin-block-end: 0.45rem;
     }
 
-    .site-footer-legal-links {
+    .site-footer-legal-links,
+    .site-footer-official-links {
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
@@ -1641,19 +1902,35 @@
       row-gap: 0.25rem;
     }
 
-    .site-footer-legal-links a {
-      padding-block: 0.1rem;
+    .site-footer-legal-links a,
+    .site-footer-official-links a {
+      min-height: 0;
+      min-block-size: 0;
+      padding-block: 0.15rem;
+      line-height: 1.45;
+    }
+
+    .site-footer-disclaimer-more > summary {
+      min-height: 0;
+      min-block-size: 0;
+      padding-block: 0.2rem;
+    }
+
+    .site-footer-legal-nav {
+      gap: 0.75rem;
     }
   }
 
   /* Near-full content rail (~1068px): one-row pipes are usually safe. */
   @media (min-width: 1100px) {
-    .site-footer-legal-links {
+    .site-footer-legal-links,
+    .site-footer-official-links {
       column-gap: 0;
       row-gap: 0.25rem;
     }
 
-    .site-footer-legal-links li:not(:last-child)::after {
+    .site-footer-legal-links li:not(:last-child)::after,
+    .site-footer-official-links li:not(:last-child)::after {
       content: "";
       flex: none;
       align-self: center;
@@ -1666,7 +1943,8 @@
 
   /* Progressive container queries (same breakpoints as viewport bands above). */
   @container footer-legal (min-width: 834px) {
-    .site-footer-legal-links {
+    .site-footer-legal-links,
+    .site-footer-official-links {
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
@@ -1674,18 +1952,21 @@
       row-gap: 0.25rem;
     }
 
-    .site-footer-legal-links a {
+    .site-footer-legal-links a,
+    .site-footer-official-links a {
       padding-block: 0.1rem;
     }
   }
 
   @container footer-legal (min-width: 1100px) {
-    .site-footer-legal-links {
+    .site-footer-legal-links,
+    .site-footer-official-links {
       column-gap: 0;
       row-gap: 0.25rem;
     }
 
-    .site-footer-legal-links li:not(:last-child)::after {
+    .site-footer-legal-links li:not(:last-child)::after,
+    .site-footer-official-links li:not(:last-child)::after {
       content: "";
       flex: none;
       align-self: center;

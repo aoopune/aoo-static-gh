@@ -1,0 +1,23 @@
+---
+description: Scanner-first customer UX for Shroffin public pages (Guide, Explore, Apply, Tools)
+globs: "{content,pages,css,js,src,partials}/**/*"
+alwaysApply: false
+---
+
+# Scanner-first customer UX
+
+Grounded in Nielsen Norman Group research (scanning, inverted pyramid, recognition over recall, progressive disclosure, forms EAS, tabs). See plan: scanner-first site UX.
+
+## Always
+1. Gist before detail: locked question → locked answer line → then lists/columns/calculators. No filler. No color-on-answer as the scan bait.
+2. Prefer controls that look like their job over instructional headings (“Your details”, “Select banks…”). Recognition, not teaching.
+3. Bank select: tap bank name; clear selected-row state. Calculated figures: separate treatment (dotted underline / distinct color), never the same click as select. **No checkbox column.**
+4. In-page tabs: **browser-tab feel** — active = filled rounded pill + heavier weight; inactive = text only, muted, no fill. Never underline-only.
+5. Value before empty-form friction on Explore Banks (sample figures prefilled; See options only). Do not hide “does this work?” behind typing.
+6. Preserve meaning; change order and affordance only.
+
+## Never
+- Never rely on underline-only for the only active-tab signal.
+- Never teach the UI with a sentence when a control can show the action.
+- Never make the whole data cell mean both “select bank” and “explain math”.
+- Never add fields that fail EAS (Eliminate / Automate / Simplify) without a clear now-needed reason.

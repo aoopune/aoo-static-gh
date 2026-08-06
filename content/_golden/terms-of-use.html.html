@@ -6,308 +6,18 @@
   <script>document.documentElement.classList.add('js');</script>
   <title>Terms of Use — Shroffin</title>
   <meta name="description" content="Terms of Use for shroffin.com — home-loan comparison and application assistance in India.">
-  <link rel="icon" href="favicon.ico?v=6" sizes="any">
-  <link rel="icon" type="image/png" sizes="32x32" href="images/logos/favicon-32.png?v=6">
-  <link rel="icon" type="image/png" sizes="16x16" href="images/logos/favicon-16.png?v=6">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=6">
-  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <style>
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf') format('truetype');
-      font-weight: 400;
-      font-style: normal;
-      font-display: block;
-    }
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf') format('truetype');
-      font-weight: 500;
-      font-style: normal;
-      font-display: block;
-    }
-    @font-face {
-      font-family: 'Google Sans Flex';
-      src: url('fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf') format('truetype');
-      font-weight: 600;
-      font-style: normal;
-      font-display: block;
-    }
-
-    :root {
-      --bg: #fcfcfd;
-      --bg: color-mix(in srgb, #0071e3 0.75%, #ffffff);
-      --surface: #ffffff;
-      --ink: #1d1d1f;
-      --muted: rgba(0, 0, 0, 0.56);
-      --rule: rgba(0, 0, 0, 0.12);
-      --link: #3f62c8;
-      --max: 1068px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: 'Google Sans Flex', sans-serif;
-      font-size: 17px;
-      line-height: 1.47059;
-      color: var(--ink);
-      background:
-        radial-gradient(120% 80% at 0% 0%, rgba(0, 113, 227, 0.05), transparent 55%),
-        radial-gradient(90% 60% at 100% 10%, rgba(29, 29, 31, 0.03), transparent 50%),
-        var(--bg);
-    }
-
-    a {
-      color: var(--link);
-      text-decoration: none;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 0.18em;
-    }
-
-    a:visited {
-      color: #5a4fcf;
-    }
-
-    a:hover,
-    a:focus-visible {
-      color: var(--link);
-      text-decoration: underline;
-      text-decoration-color: var(--link);
-    }
-
-    a:visited:hover,
-    a:visited:focus-visible {
-      color: #5a4fcf;
-      text-decoration-color: #5a4fcf;
-    }
-
-    a:active {
-      color: #2f4ba0;
-      text-decoration: underline;
-      text-decoration-color: #2f4ba0;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(245, 245, 247, 0.92);
-      backdrop-filter: saturate(180%) blur(16px);
-      -webkit-backdrop-filter: saturate(180%) blur(16px);
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .topbar-inner {
-      width: min(1068px, calc(100% - 40px));
-      margin: 0 auto;
-      min-height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .topbar-logo {
-      display: block;
-      height: 22px;
-      width: auto;
-    }
-
-    .topbar-back {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--muted);
-      text-decoration: none;
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
-    }
-
-    .topbar-back:hover {
-      color: var(--ink);
-      text-decoration: none;
-    }
-
-    main {
-      width: min(var(--max), calc(100% - 40px));
-      margin: 0 auto;
-      padding: 40px 0 64px;
-    }
-
-    .legal-hero {
-      margin: 0 0 28px;
-    }
-
-    .legal-hero h1 {
-      margin: 0 0 10px;
-      font-size: clamp(28px, 5vw, 40px);
-      font-weight: 600;
-      letter-spacing: -0.015em;
-      line-height: 1.1;
-    }
-
-    .legal-meta {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .legal-meta span + span::before {
-      content: "·";
-      margin: 0 0.45em;
-      opacity: 0.6;
-    }
-
-    .notice {
-      margin: 0 0 28px;
-      padding: 14px 16px;
-      background: var(--surface);
-      border: 1px solid var(--rule);
-      border-radius: 12px;
-      font-size: 15px;
-      color: var(--muted);
-    }
-
-    .toc {
-      margin: 0 0 36px;
-      padding: 18px 18px 8px;
-      background: var(--surface);
-      border: 1px solid var(--rule);
-      border-radius: 12px;
-    }
-
-    .toc h2 {
-      margin: 0 0 10px;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-      color: var(--muted);
-    }
-
-    .toc ol {
-      margin: 0;
-      padding: 0 0 0 1.2em;
-      columns: 1;
-      gap: 24px;
-    }
-
-    @media (min-width: 640px) {
-      .toc ol { columns: 2; }
-    }
-
-    .toc li {
-      margin: 0 0 8px;
-      break-inside: avoid;
-      font-size: 14px;
-    }
-
-    .toc a {
-      color: var(--ink);
-      text-decoration: none;
-    }
-
-    .toc a:hover { color: var(--link); }
-
-    section {
-      margin: 0 0 32px;
-      scroll-margin-top: 72px;
-    }
-
-    section > h2 {
-      margin: 0 0 12px;
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-
-    section > h3 {
-      margin: 20px 0 8px;
-      font-size: 17px;
-      font-weight: 600;
-    }
-
-    p { margin: 0 0 12px; }
-
-    ul, ol {
-      margin: 0 0 12px;
-      padding-left: 1.25em;
-    }
-
-    li { margin: 0 0 6px; }
-
-    .table-wrap {
-      width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      margin: 0 0 12px;
-      border: 1px solid var(--rule);
-      border-radius: 12px;
-      background: var(--surface);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-      line-height: 1.4;
-    }
-
-    th, td {
-      padding: 10px 12px;
-      text-align: left;
-      vertical-align: top;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    th {
-      font-weight: 600;
-      background: rgba(0, 0, 0, 0.03);
-      white-space: nowrap;
-    }
-
-    tr:last-child td { border-bottom: none; }
-
-    .site-footer {
-      background: #f5f7f9;
-      color: rgba(0, 0, 0, 0.56);
-      font-size: 12px;
-      line-height: 1.33337;
-    }
-
-    .site-footer-inner {
-      width: min(1068px, calc(100% - 40px));
-      margin: 0 auto;
-      padding: 24px 0 36px;
-    }
-
-    .site-footer a {
-      color: var(--ink);
-      text-decoration: none;
-    }
-
-    .site-footer a:hover { text-decoration: underline; }
-
-    .site-footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px 16px;
-      margin: 0 0 12px;
-      padding: 0;
-      list-style: none;
-    }
-
-    @media (max-width: 480px) {
-      main { padding-top: 28px; }
-      body { font-size: 16px; }
-    }
-  </style>
-  <link rel="stylesheet" href="css/shroffin-shell.css?v=chevron-2">
+  <link rel="icon" href="/favicon.ico?v=6" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logos/favicon-32.png?v=6">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logos/favicon-16.png?v=6">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=6">
+  <link rel="manifest" href="/site.webmanifest?v=6">
+  <link rel="preload" href="/fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/shroffin-shell.css?v=chapters-1">
+  <link rel="stylesheet" href="/css/shroffin-utility-pages.css?v=no-count-1">
 </head>
-<body class="terms-page">
+<body class="utility-page legal-page">
   <!-- SHROFFIN_NAV_START -->
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
   <nav class="globalnav" id="globalnav" aria-label="Global">
@@ -907,6 +617,7 @@
   </main>
 
   <!-- SHROFFIN_FOOTER_START -->
+
   <aside class="site-help-strip" aria-label="Get help">
     <p class="site-help-strip-text">
       Need some help?
@@ -921,86 +632,112 @@
   </aside>
   <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
     <div class="site-footer-inner">
-      <div class="site-footer-directory">
-        <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
-          <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
-          <ul class="site-footer-list">
-            <li><a href="/pages/guide.html">Overview</a></li>
-            <li><a href="/pages/guide-documents.html">Documents</a></li>
-            <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
-            <li><a href="/pages/concessions.html">Concessions</a></li>
-            <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
-            <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
-          </ul>
-        </nav>
-
-        <nav class="site-footer-group" aria-labelledby="footer-tools-title">
-          <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
-          <ul class="site-footer-list">
-            <li><a href="/pages/calculators.html">Calculators</a></li>
-            <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
-          </ul>
-        </nav>
-
-        <nav class="site-footer-group" aria-labelledby="footer-company-title">
-          <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
-          <ul class="site-footer-list">
-            <li><a href="/pages/about.html">About</a></li>
-            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-            <li><a href="/terms-of-use.html" aria-current="page">Terms of Use</a></li>
-          </ul>
-        </nav>
-
-        <section class="site-footer-group" aria-labelledby="footer-support-title">
-          <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
-          <ul class="site-footer-list">
-            <li><a href="mailto:support@shroffin.com">Email</a></li>
-            <li><a href="tel:+919112334367">Call</a></li>
-          </ul>
+      <div class="site-footer-top">
+        <section class="site-footer-brand" aria-label="Shroffin">
+          <a class="site-footer-brand-link" href="/" aria-label="Shroffin Home">
+            <img
+              class="site-footer-logo"
+              src="/images/logos/logo.png"
+              alt=""
+              width="80"
+              height="80"
+            >
+          </a>
         </section>
 
-        <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
-          <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
-          <ul class="site-footer-list">
-            <li>
-              <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-
-      <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
-        <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
-        <div class="site-footer-disclaimer">
-          <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-          <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-          <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-          <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-          <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
-        </div>
-      </section>
-
-      <div class="site-footer-bottom">
-        <div class="site-footer-bottom-row">
-          <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
-          <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
-            <ul class="site-footer-legal-links">
-              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-              <li><a href="/terms-of-use.html" aria-current="page">Terms of Use</a></li>
-              <li><a href="/sitemap.html">Site Map</a></li>
-              <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
-              <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
-              <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
-              <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
-              <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+        <div class="site-footer-directory">
+          <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
+            <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
+            <ul class="site-footer-list">
+              <li><a href="/pages/guide.html">Overview</a></li>
+              <li><a href="/pages/guide-documents.html">Documents</a></li>
+              <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
+              <li><a href="/pages/concessions.html">Concessions</a></li>
+              <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
+              <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
             </ul>
           </nav>
+
+          <nav class="site-footer-group" aria-labelledby="footer-tools-title">
+            <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
+            <ul class="site-footer-list">
+              <li><a href="/pages/calculators.html">Calculators</a></li>
+              <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
+            </ul>
+          </nav>
+
+          <nav class="site-footer-group" aria-labelledby="footer-company-title">
+            <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
+            <ul class="site-footer-list">
+              <li><a href="/pages/about.html">About</a></li>
+              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/terms-of-use.html" aria-current="page">Terms of Use</a></li>
+            </ul>
+          </nav>
+
+          <section class="site-footer-group" aria-labelledby="footer-support-title">
+            <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
+            <ul class="site-footer-list">
+              <li><a href="mailto:support@shroffin.com">Email</a></li>
+              <li><a href="tel:+919112334367">Call</a></li>
+            </ul>
+          </section>
+
+          <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
+            <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
+            <ul class="site-footer-list">
+              <li>
+                <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <div class="site-footer-meta">
+        <div class="site-footer-meta-main">
+          <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
+            <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
+            <div class="site-footer-disclaimer">
+              <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
+              <details class="site-footer-disclaimer-more">
+                <summary>Read the full disclaimer</summary>
+                <div class="site-footer-disclaimer-full">
+                  <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+                  <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+                  <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+                  <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+                  <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <div class="site-footer-bottom">
+            <div class="site-footer-bottom-row">
+              <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
+              <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
+                <ul class="site-footer-legal-links">
+                  <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                  <li><a href="/terms-of-use.html" aria-current="page">Terms of Use</a></li>
+                  <li><a href="/sitemap.html">Site Map</a></li>
+                </ul>
+                <ul class="site-footer-official-links">
+                  <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
-  <script src="js/shroffin-nav.js?v=sel-13"></script>
-  <script src="js/shroffin-guide.js?v=strip-ln-2"></script>
+  <script src="/js/shroffin-nav.js?v=chapters-1"></script>
+  <script src="/js/shroffin-guide.js?v=no-count-1"></script>
 </body>
 </html>

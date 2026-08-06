@@ -208,13 +208,14 @@
 
 .about-founder-people {
   display: grid;
-  grid-template-columns: repeat(2, auto);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1.5rem, 8vw, 4rem);
   justify-content: center;
-  width: fit-content;
+  width: 100%;
   max-width: 100%;
   margin: 0 auto;
   align-items: start;
+  box-sizing: border-box;
 }
 
 .about-founder-person {
@@ -228,7 +229,7 @@
   font-size: var(--shroffin-type-title);
   font-weight: 600;
   line-height: 1.12;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .about-founder-role {
@@ -237,7 +238,20 @@
   font-size: 13px;
   font-weight: 600;
   line-height: 1.33337;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 834px) {
+  .about-founder-people {
+    grid-template-columns: repeat(2, auto);
+    width: fit-content;
+  }
+
+  .about-founder-name,
+  .about-founder-role {
+    overflow-wrap: normal;
+    white-space: nowrap;
+  }
 }
 
 .about-founder-linkedin {

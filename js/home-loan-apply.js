@@ -476,6 +476,13 @@
     var section = toggle && toggle.closest(".hl-apply-context");
     if (!toggle || !panel || toggle.getAttribute("data-bound") === "1") return;
     toggle.setAttribute("data-bound", "1");
+    var labelEl = toggle.querySelector(".hl-apply-disclose-label");
+    var fieldCount = panel.querySelectorAll(
+      "input, select, textarea"
+    ).length;
+    if (labelEl && fieldCount > 0) {
+      labelEl.textContent = "Show more details (" + fieldCount + ")";
+    }
     toggle.addEventListener("click", function () {
       var next = toggle.getAttribute("aria-expanded") !== "true";
       setDiscloseOpen(toggle, panel, next);

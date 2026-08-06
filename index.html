@@ -80,7 +80,7 @@
       width: min(1068px, calc(100% - 48px));
       margin: 0 auto;
       /* Top: title air; bottom: gap before the product frame */
-      padding: 52px 0 clamp(4.75rem, 9.5vw, 6.75rem);
+      padding: 52px 0 clamp(3.75rem, 7.5vw, 5.5rem);
       pointer-events: none;
     }
 
@@ -156,7 +156,7 @@
        Same inverted band as .home-open: black ground, white / soft grey type. */
     .home-lead {
       width: 100%;
-      padding: clamp(48px, 8vw, 88px) 22px clamp(64px, 10vw, 100px);
+      padding: clamp(80px, 12vw, 140px) 22px clamp(96px, 14vw, 160px);
       box-sizing: border-box;
       background: #1d1d1f;
       color: #f5f5f7;
@@ -171,7 +171,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: clamp(28px, 4vw, 40px);
+      gap: clamp(48px, 6.5vw, 68px);
       width: 100%;
       max-width: 46rem;
       margin: 0 auto;
@@ -194,8 +194,12 @@
       color: rgba(245, 245, 247, 0.42);
     }
 
-    /* Lead scroll moments — each line settles as it enters view */
-    .js .home-lead .home-moment {
+    .home-lead-strong {
+      color: #f5f5f7;
+    }
+
+    /* Lead + Built scroll moments — each settles as it enters view */
+    .js .home-moment {
       opacity: 0;
       transform: translate3d(0, 18px, 0);
       transition:
@@ -203,9 +207,13 @@
         transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .js .home-lead .home-moment.is-in {
+    .js .home-moment.is-in {
       opacity: 1;
       transform: translate3d(0, 0, 0);
+    }
+
+    .js .home-built-card.home-moment {
+      transition-delay: 0.2s;
     }
 
     @media only screen and (max-width: 1068px) {
@@ -219,7 +227,7 @@
     @media only screen and (max-width: 734px) {
       .home-lead-stack {
         max-width: none;
-        gap: 24px;
+        gap: 40px;
       }
 
       .home-lead-line {
@@ -234,7 +242,7 @@
     @media (max-width: 833px) {
       .home-hero-copy {
         width: min(1068px, calc(100% - 32px));
-        padding: 40px 0 4.25rem;
+        padding: 40px 0 3.5rem;
       }
 
       .home-hero-sub {
@@ -255,6 +263,16 @@
     /* ——— Built around you — topic switcher ——— */
     .home-built {
       --home-built-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      /* Local spacing scale — open the card without one-off magic numbers */
+      --hb-space-2: 12px;
+      --hb-space-3: 16px;
+      --hb-space-4: 24px;
+      --hb-space-5: 32px;
+      --hb-space-6: 48px;
+      --hb-pad-card: clamp(40px, 5.5vw, 64px);
+      --hb-gap-cols: clamp(40px, 5.5vw, 72px);
+      --hb-pad-row-y: clamp(26px, 3.2vw, 34px);
+      --hb-pad-copy-y: 4px 0 16px;
       width: 100%;
       padding: clamp(72px, 11vw, 120px) 22px clamp(72px, 11vw, 120px);
       box-sizing: border-box;
@@ -262,12 +280,12 @@
     }
 
     .home-built-inner {
-      width: min(1068px, 100%);
+      width: min(1240px, 100%);
       margin: 0 auto;
     }
 
     .home-built-title {
-      margin: 0 0 clamp(28px, 4vw, 40px);
+      margin: 0 0 clamp(32px, 4.5vw, 48px);
       color: #1d1d1f;
       font-size: calc(var(--shroffin-type-display) - 3px);
       font-weight: 600;
@@ -279,7 +297,7 @@
     .home-built-card {
       display: block;
       width: 100%;
-      padding: clamp(28px, 4vw, 48px);
+      padding: var(--hb-pad-card);
       box-sizing: border-box;
       border-radius: 28px;
       background: #ffffff;
@@ -288,8 +306,8 @@
 
     .home-built-layout {
       display: grid;
-      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-      gap: clamp(28px, 4vw, 48px);
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+      gap: var(--hb-gap-cols);
       align-items: stretch;
       min-height: 0;
     }
@@ -318,10 +336,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: var(--hb-space-4);
       width: 100%;
       margin: 0;
-      padding: 22px 4px;
+      padding: var(--hb-pad-row-y) 6px;
       border: 0;
       background: transparent;
       color: #1d1d1f;
@@ -329,7 +347,7 @@
       font-size: 21px;
       font-weight: 600;
       letter-spacing: 0.011em;
-      line-height: 1.25;
+      line-height: 1.3;
       text-align: left;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
@@ -351,8 +369,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       color: #86868b;
       transform: rotate(0deg);
       transition:
@@ -382,13 +400,15 @@
 
     .home-built-copy {
       margin: 0;
-      padding: 0 36px 22px 4px;
+      padding: var(--hb-pad-copy-y);
+      padding-right: 44px;
+      padding-left: 6px;
       max-width: 36em;
-      color: #6e6e73;
-      font-size: 15px;
+      color: #1d1d1f;
+      font-size: 18px;
       font-weight: 400;
       letter-spacing: -0.01em;
-      line-height: 1.47;
+      line-height: 1.45;
       opacity: 0;
       transform: translateY(8px);
       transition:
@@ -419,7 +439,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: clamp(18px, 3vw, 28px);
+      padding: clamp(24px, 3.5vw, 40px);
       box-sizing: border-box;
       opacity: 0;
       visibility: hidden;
@@ -441,81 +461,165 @@
         visibility 0s linear 0s;
     }
 
+    @keyframes home-built-float {
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0);
+      }
+      50% {
+        transform: translate3d(0, -7px, 0);
+      }
+    }
+
+    @keyframes home-built-soft-in {
+      from {
+        opacity: 0;
+        transform: translate3d(0, 12px, 0);
+      }
+      to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
     /* Meaningful scene cards — readable labels, quiet product language. */
     .home-built-scene {
-      width: min(100%, 420px);
-      padding: 18px 18px 20px;
+      width: min(100%, 520px);
+      padding: var(--hb-space-5) var(--hb-space-5) 28px;
       box-sizing: border-box;
-      border-radius: 16px;
+      border-radius: 18px;
       background: #ffffff;
       border: 1px solid rgba(0, 0, 0, 0.06);
     }
 
+    .home-built-visual.is-active .home-built-scene {
+      animation: home-built-float 5.2s cubic-bezier(0.22, 1, 0.36, 1) 1.45s infinite;
+    }
+
+    .home-built-visual.is-active .home-built-guide-card,
+    .home-built-visual.is-active .home-built-table-row,
+    .home-built-visual.is-active .home-built-bank-card,
+    .home-built-visual.is-active .home-built-share-box,
+    .home-built-visual.is-active .home-built-apply-form,
+    .home-built-visual.is-active .home-built-apply-banks,
+    .home-built-visual.is-active .home-built-apply-offers,
+    .home-built-visual.is-active .home-built-help-solo,
+    .home-built-visual.is-active .home-built-help-ask,
+    .home-built-visual.is-active .home-built-help-footer {
+      animation: home-built-soft-in 1.35s var(--home-built-ease) both;
+    }
+
+    .home-built-visual.is-active .home-built-guide-card:nth-child(2),
+    .home-built-visual.is-active .home-built-table-row:nth-child(2),
+    .home-built-visual.is-active .home-built-bank-card:nth-child(2),
+    .home-built-visual.is-active .home-built-apply-banks,
+    .home-built-visual.is-active .home-built-help-ask {
+      animation-delay: 0.12s;
+    }
+
+    .home-built-visual.is-active .home-built-guide-card:nth-child(3),
+    .home-built-visual.is-active .home-built-table-row:nth-child(3),
+    .home-built-visual.is-active .home-built-bank-card:nth-child(3),
+    .home-built-visual.is-active .home-built-share-box,
+    .home-built-visual.is-active .home-built-apply-offers,
+    .home-built-visual.is-active .home-built-help-footer {
+      animation-delay: 0.24s;
+    }
+
+    .home-built-visual.is-active .home-built-table-row:nth-child(4) {
+      animation-delay: 0.28s;
+    }
+
+    .home-built-scene-label {
+      margin: 0 0 var(--hb-space-3);
+      color: #86868b;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: normal;
+      text-transform: none;
+    }
+
     .home-built-table {
       display: grid;
-      gap: 8px;
+      gap: var(--hb-space-2);
     }
 
     .home-built-table-row {
       display: grid;
       grid-template-columns: 1.15fr 0.75fr 0.85fr 0.75fr;
-      gap: 8px;
+      gap: var(--hb-space-2);
       align-items: center;
-      padding: 8px 10px;
+      padding: 10px 12px;
       border-radius: 10px;
       background: #f5f5f7;
+    }
+
+    .home-built-table--five .home-built-table-row {
+      grid-template-columns: 0.95fr 0.8fr 0.75fr 0.95fr 0.7fr;
+      gap: 6px;
+      padding: 10px 8px;
     }
 
     .home-built-table-row--head {
       background: transparent;
       padding-top: 0;
-      padding-bottom: 2px;
+      padding-bottom: 4px;
     }
 
     .home-built-table-row--head span {
-      color: #86868b;
-      font-size: 11px;
+      color: #6e6e73;
+      font-size: 10px;
       font-weight: 600;
     }
 
     .home-built-table-row > span:first-child {
       color: #1d1d1f;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
     }
 
-    .home-built-table-row > span:not(:first-child) {
+    .home-built-table-row:not(.home-built-table-row--head) > span:not(:first-child):not(.home-built-table-val) {
       display: block;
       height: 8px;
       border-radius: 999px;
       background: #d2d2d7;
     }
 
+    .home-built-table-val {
+      color: #1d1d1f;
+      font-size: 11px;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
     .home-built-table-row--head > span:not(:first-child) {
       height: auto;
       background: none;
+      border-radius: 0;
     }
 
     .home-built-table-row.is-on {
       background: rgba(0, 113, 227, 0.08);
     }
 
-    .home-built-table-row.is-on > span:not(:first-child) {
-      background: rgba(0, 113, 227, 0.28);
+    .home-built-table-row.is-on .home-built-table-val {
+      color: #0071e3;
+      font-weight: 600;
     }
 
     .home-built-browse-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 12px;
+      gap: var(--hb-space-2);
+      margin-bottom: var(--hb-space-3);
     }
 
     .home-built-bank-card {
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 58px;
+      min-height: 64px;
       border-radius: 12px;
       background: #f5f5f7;
       border: 1px solid rgba(0, 0, 0, 0.04);
@@ -525,15 +629,25 @@
     }
 
     .home-built-share-box {
-      padding: 12px;
+      padding: var(--hb-space-3);
       border-radius: 12px;
       border: 1px dashed rgba(0, 0, 0, 0.14);
       background: #fbfbfd;
     }
 
+    .home-built-share-box--held {
+      border-style: solid;
+      border-color: rgba(0, 0, 0, 0.08);
+      background: #f5f5f7;
+    }
+
     .home-built-share-field {
-      margin-bottom: 8px;
-      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: var(--hb-space-2);
+      padding: 12px 14px;
       border-radius: 8px;
       background: #ffffff;
       border: 1px solid rgba(0, 0, 0, 0.06);
@@ -545,17 +659,30 @@
       margin-bottom: 0;
     }
 
-    .home-built-apply-flow {
+    .home-built-share-name {
+      color: #6e6e73;
+      font-weight: 500;
+    }
+
+    .home-built-share-note {
+      color: #1d1d1f;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .home-built-apply-flow,
+    .home-built-apply-story {
       display: grid;
       grid-template-columns: 1.15fr auto 0.95fr;
-      gap: 10px;
+      gap: var(--hb-space-3);
       align-items: center;
     }
 
     .home-built-apply-form {
       display: grid;
-      gap: 8px;
-      padding: 14px;
+      gap: var(--hb-space-2);
+      padding: var(--hb-space-3);
       border-radius: 12px;
       background: #f5f5f7;
     }
@@ -563,7 +690,7 @@
     .home-built-apply-title,
     .home-built-help-ask-title {
       color: #1d1d1f;
-      font-size: 13px;
+      font-size: 16px;
       font-weight: 600;
     }
 
@@ -583,8 +710,8 @@
       align-items: center;
       justify-content: center;
       width: fit-content;
-      margin-top: 2px;
-      padding: 7px 12px;
+      margin-top: 4px;
+      padding: 8px 14px;
       border-radius: 980px;
       background: #1d1d1f;
       color: #f5f5f7;
@@ -603,14 +730,14 @@
 
     .home-built-apply-banks {
       display: grid;
-      gap: 8px;
+      gap: var(--hb-space-2);
     }
 
     .home-built-apply-banks span {
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 34px;
+      min-height: 38px;
       border-radius: 10px;
       background: #ffffff;
       border: 1px solid rgba(0, 0, 0, 0.08);
@@ -619,24 +746,62 @@
       font-weight: 600;
     }
 
+    .home-built-apply-offers {
+      margin-top: var(--hb-space-3);
+      padding-top: var(--hb-space-3);
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .home-built-apply-offers-label {
+      display: block;
+      margin-bottom: var(--hb-space-2);
+      color: #6e6e73;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .home-built-apply-offers-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--hb-space-2);
+    }
+
+    .home-built-apply-offers-row span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      border-radius: 10px;
+      background: rgba(0, 113, 227, 0.08);
+      color: #0071e3;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .home-built-scene--help {
+      width: min(100%, 560px);
+      padding: 36px 36px 32px;
+    }
+
     .home-built-help-split {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: var(--hb-space-4);
     }
 
     .home-built-help-solo,
     .home-built-help-ask {
       display: grid;
-      gap: 8px;
-      padding: 14px;
-      border-radius: 12px;
-      min-height: 118px;
+      gap: var(--hb-space-3);
+      padding: var(--hb-space-4);
+      border-radius: 14px;
+      min-height: 168px;
       box-sizing: border-box;
     }
 
     .home-built-help-solo {
       background: #f5f5f7;
+      align-content: start;
     }
 
     .home-built-help-ask {
@@ -645,15 +810,35 @@
       align-content: start;
     }
 
+    .home-built-help-topic {
+      display: flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 0 14px;
+      border-radius: 10px;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .home-built-help-footer {
+      margin: var(--hb-space-4) 0 0;
+      color: #1d1d1f;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+    }
+
     .home-built-guide-list {
       display: grid;
-      gap: 8px;
+      gap: var(--hb-space-2);
     }
 
     .home-built-guide-card {
       display: grid;
-      gap: 4px;
-      padding: 12px 14px;
+      gap: 6px;
+      padding: 14px 16px;
       border-radius: 12px;
       background: #f5f5f7;
     }
@@ -668,7 +853,7 @@
       color: #1d1d1f;
       font-size: 13px;
       font-weight: 600;
-      line-height: 1.3;
+      line-height: 1.35;
     }
 
     @media only screen and (max-width: 1068px) {
@@ -679,15 +864,17 @@
 
     @media (max-width: 833px) {
       .home-built {
+        --hb-pad-card: 20px 20px 28px;
+        --hb-pad-row-y: 24px;
         padding: clamp(56px, 12vw, 88px) 16px;
       }
 
       .home-built-title {
-        margin-bottom: 22px;
+        margin-bottom: var(--hb-space-5);
       }
 
       .home-built-card {
-        padding: 8px 16px 20px;
+        padding: var(--hb-pad-card);
         border-radius: 22px;
       }
 
@@ -696,15 +883,16 @@
       }
 
       .home-built-trigger {
-        padding: 20px 2px;
+        padding: var(--hb-pad-row-y) 4px;
         font-size: 18px;
-        min-height: 44px;
+        min-height: 48px;
+        line-height: 1.35;
       }
 
       .home-built-copy {
-        padding-right: 28px;
-        padding-bottom: 8px;
-        font-size: 14px;
+        padding: 4px 28px 14px 4px;
+        font-size: 17px;
+        line-height: 1.45;
       }
 
       .home-built-mobile-slot {
@@ -717,20 +905,21 @@
 
       .home-built-stage {
         position: relative;
-        min-height: 260px;
-        margin: 8px 0 18px;
+        min-height: 280px;
+        margin: var(--hb-space-3) 0 var(--hb-space-4);
         border-radius: 0;
         background: transparent;
       }
 
       .home-built-scene {
         width: min(100%, 380px);
-        padding: 16px;
+        padding: var(--hb-space-4);
       }
 
-      .home-built-apply-flow {
+      .home-built-apply-flow,
+      .home-built-apply-story {
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: var(--hb-space-3);
       }
 
       .home-built-apply-arrow {
@@ -746,9 +935,6 @@
       .home-built-help-ask {
         min-height: 0;
       }
-    }
-
-    @media only screen and (max-width: 734px) {
     }
 
     /* ——— Open band — claim, then visual contrast, then advantage ——— */
@@ -796,13 +982,14 @@
     /* Below the graphic — Apple split: setup soft, claim bright */
     .home-open-caption {
       margin: clamp(0.85rem, 2vw, 1.25rem) 0 0;
-      max-width: 22em;
+      max-width: min(42rem, 100%);
       color: #f5f5f7;
       font-weight: 400;
       font-size: calc(var(--shroffin-type-support) - 3px);
       letter-spacing: normal;
       line-height: 1.35;
       text-align: center;
+      white-space: nowrap;
     }
 
     .home-open-caption-soft {
@@ -929,39 +1116,16 @@
       display: flex;
       flex-wrap: wrap;
       align-items: flex-end;
-      justify-content: space-between;
       gap: 0.75rem 1rem;
-    }
-
-    .home-open-app-title-block {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.15rem;
-      min-width: 0;
-    }
-
-    .home-open-app-title {
-      color: #1d1d1f;
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: -0.022em;
-      line-height: 1.2;
-    }
-
-    .home-open-app-hint {
-      color: #6e6e73;
-      font-size: 0.7rem;
-      font-weight: 400;
-      letter-spacing: -0.01em;
     }
 
     .home-open-app-actions {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       gap: 0.75rem 1rem;
+      width: 100%;
       min-width: 0;
     }
 
@@ -1013,48 +1177,7 @@
     }
 
     .home-open-app-body {
-      display: grid;
-      grid-template-columns: minmax(5.5rem, 7.25rem) minmax(0, 1fr);
-      gap: 0.85rem 1rem;
-      align-items: start;
-    }
-
-    .home-open-app-filters {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.35rem;
-      padding-top: 0.15rem;
-    }
-
-    .home-open-app-filters-label {
-      margin-bottom: 0.2rem;
-      color: #1d1d1f;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-
-    .home-open-app-chip {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 1.55rem;
-      padding: 0.2rem 0.55rem;
-      border-radius: 980px;
-      border: 1px solid rgba(108, 128, 155, 0.22);
-      background: #fff;
-      color: #6e6e73;
-      font-size: 0.62rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      white-space: nowrap;
-    }
-
-    .home-open-app-chip.is-on {
-      border-color: transparent;
-      background: #1d1d1f;
-      color: #f5f5f7;
+      min-width: 0;
     }
 
     .home-open-app-table {
@@ -1626,15 +1749,13 @@
 
       .home-open-caption {
         margin-top: 1.75rem;
+        /* Keep the caption on one line on narrow screens */
+        font-size: clamp(0.78rem, 3.55vw, calc(var(--shroffin-type-support) - 3px));
       }
 
       .home-open-app {
         gap: 0.65rem;
         padding: 0.7rem 0.75rem 0.8rem;
-      }
-
-      .home-open-app-hint {
-        display: none;
       }
 
       .home-open-app-head {
@@ -1650,14 +1771,6 @@
         flex-wrap: nowrap;
         gap: 0.55rem;
         min-width: 0;
-      }
-
-      .home-open-app-body {
-        grid-template-columns: 1fr;
-      }
-
-      .home-open-app-filters {
-        display: none;
       }
 
       .home-open-app-table {
@@ -1712,38 +1825,7 @@
       box-sizing: border-box;
     }
 
-    .site-footer-brand {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
-      margin: 0;
-    }
-
-    .site-footer-logo {
-      display: block;
-      width: auto;
-      height: 28px;
-    }
-
-    .site-footer-tagline {
-      margin: 0;
-      max-width: 36em;
-      color: #1d1d1f;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.42859;
-    }
-
-    /* Full-bleed hairlines — stretch across the whole footer */
-    .site-footer-rule {
-      display: block;
-      width: 100%;
-      height: 1px;
-      margin: 20px 0 0;
-      border: 0;
-      background: rgba(0, 0, 0, 0.16);
-    }
+    /* Brand logo section + directory live in shroffin-shell.css */
 
     .site-footer-legal {
       padding-top: 20px;
@@ -1817,6 +1899,20 @@
         transform: none;
       }
 
+      .home-built-visual.is-active .home-built-scene,
+      .home-built-visual.is-active .home-built-guide-card,
+      .home-built-visual.is-active .home-built-table-row,
+      .home-built-visual.is-active .home-built-bank-card,
+      .home-built-visual.is-active .home-built-share-box,
+      .home-built-visual.is-active .home-built-apply-form,
+      .home-built-visual.is-active .home-built-apply-banks,
+      .home-built-visual.is-active .home-built-apply-offers,
+      .home-built-visual.is-active .home-built-help-solo,
+      .home-built-visual.is-active .home-built-help-ask,
+      .home-built-visual.is-active .home-built-help-footer {
+        animation: none;
+      }
+
       .home-built-copy {
         opacity: 0;
       }
@@ -1833,8 +1929,8 @@
         animation: none;
       }
 
-      .js .home-lead .home-moment,
-      .js .home-lead .home-moment.is-in,
+      .js .home-moment,
+      .js .home-moment.is-in,
       .js .home-open-inner.home-reveal .home-open-display,
       .js .home-open-inner.home-reveal.is-in .home-open-display,
       .js .home-open-inner.home-reveal .home-open-caption,
@@ -2164,19 +2260,19 @@
     <section class="home-lead" aria-labelledby="home-lead-title">
       <div class="home-lead-inner">
         <div class="home-lead-stack">
-          <h2 class="home-lead-line home-moment" id="home-lead-title">We completely engineered your home loan journey.</h2>
-          <p class="home-lead-line home-lead-soft home-moment">The entire market sits in one standardized view, built so you can cross-examine rates, rules, and fine print at a glance.</p>
-          <p class="home-lead-line home-lead-soft home-moment">You can explore every lender without surrendering your phone number or email upfront.</p>
-          <p class="home-lead-line home-moment">You pick your banks, send one application to all of them at once, and let them compete for you.</p>
+          <h2 class="home-lead-line home-moment" id="home-lead-title">We completely re-engineered your home loan journey.</h2>
+          <p class="home-lead-line home-lead-soft home-moment"><span class="home-lead-strong">Now,</span> the entire market sits in one standardized view, built so you can cross-examine rates, rules, and fine print at a glance.</p>
+          <p class="home-lead-line home-lead-soft home-moment">You can look through every lender before you give your phone number or email.</p>
+          <p class="home-lead-line home-moment">You pick your banks, apply once to all of them, and they compete for you.</p>
         </div>
       </div>
     </section>
 
     <section class="home-built" aria-labelledby="home-built-title" data-home-built>
       <div class="home-built-inner">
-        <h2 class="home-built-title" id="home-built-title">Built around you.</h2>
+        <h2 class="home-built-title home-moment" id="home-built-title">Built around you.</h2>
 
-        <div class="home-built-card">
+        <div class="home-built-card home-moment">
           <div class="home-built-layout">
             <div class="home-built-list" role="list">
               <div class="home-built-item is-open" data-built-item data-built-index="0" role="listitem">
@@ -2189,7 +2285,7 @@
                     aria-controls="home-built-body-0"
                     data-built-trigger
                   >
-                    <span class="home-built-trigger-label">Banks side by side</span>
+                    <span class="home-built-trigger-label">Guides that walk you through a home loan</span>
                     <span class="home-built-chevron" aria-hidden="true">
                       <svg width="12" height="8" viewBox="0 0 12 8" focusable="false"><path d="M1.1 1.2 6 6.1l4.9-4.9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </span>
@@ -2197,7 +2293,7 @@
                 </h3>
                 <div class="home-built-body" id="home-built-body-0" role="region" aria-labelledby="home-built-trigger-0" data-built-body>
                   <div class="home-built-body-inner">
-                    <p class="home-built-copy">Home loan rates, charges, rules, and documents sit in the same layout for each lender. So comparing feels easier, not like reading five different brochures.</p>
+                    <p class="home-built-copy">These guides cover picking a bank, comparing offers, and what happens after you take the loan.</p>
                   </div>
                 </div>
                 <div class="home-built-mobile-slot" data-built-mobile-slot></div>
@@ -2213,7 +2309,7 @@
                     aria-controls="home-built-body-1"
                     data-built-trigger
                   >
-                    <span class="home-built-trigger-label">Look before you share</span>
+                    <span class="home-built-trigger-label">Every bank’s home loan in the same layout</span>
                     <span class="home-built-chevron" aria-hidden="true">
                       <svg width="12" height="8" viewBox="0 0 12 8" focusable="false"><path d="M1.1 1.2 6 6.1l4.9-4.9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </span>
@@ -2221,7 +2317,7 @@
                 </h3>
                 <div class="home-built-body" id="home-built-body-1" role="region" aria-labelledby="home-built-trigger-1" data-built-body aria-hidden="true">
                   <div class="home-built-body-inner">
-                    <p class="home-built-copy">You can explore the banks before leaving your phone number or email. No rush. Just take your time with what is on the page.</p>
+                    <p class="home-built-copy">Interest, charges, conditions, and papers are lined up the same way for every bank, so you can compare them easily.</p>
                   </div>
                 </div>
                 <div class="home-built-mobile-slot" data-built-mobile-slot></div>
@@ -2237,7 +2333,7 @@
                     aria-controls="home-built-body-2"
                     data-built-trigger
                   >
-                    <span class="home-built-trigger-label">One application</span>
+                    <span class="home-built-trigger-label">Browse before you give your number</span>
                     <span class="home-built-chevron" aria-hidden="true">
                       <svg width="12" height="8" viewBox="0 0 12 8" focusable="false"><path d="M1.1 1.2 6 6.1l4.9-4.9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </span>
@@ -2245,7 +2341,7 @@
                 </h3>
                 <div class="home-built-body" id="home-built-body-2" role="region" aria-labelledby="home-built-trigger-2" data-built-body aria-hidden="true">
                   <div class="home-built-body-inner">
-                    <p class="home-built-copy">Choose the lenders that feel right for you. We send one application to all of them, then you can look at their offers together and decide.</p>
+                    <p class="home-built-copy">You can check the banks without giving your phone number or email first.</p>
                   </div>
                 </div>
                 <div class="home-built-mobile-slot" data-built-mobile-slot></div>
@@ -2261,7 +2357,7 @@
                     aria-controls="home-built-body-3"
                     data-built-trigger
                   >
-                    <span class="home-built-trigger-label">Help on your terms</span>
+                    <span class="home-built-trigger-label">One application to the banks you pick</span>
                     <span class="home-built-chevron" aria-hidden="true">
                       <svg width="12" height="8" viewBox="0 0 12 8" focusable="false"><path d="M1.1 1.2 6 6.1l4.9-4.9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </span>
@@ -2269,7 +2365,7 @@
                 </h3>
                 <div class="home-built-body" id="home-built-body-3" role="region" aria-labelledby="home-built-trigger-3" data-built-body aria-hidden="true">
                   <div class="home-built-body-inner">
-                    <p class="home-built-copy">You can go through everything on your own, or ask us to walk through a rate, charge, or rule with you. Either way, the choice stays with you.</p>
+                    <p class="home-built-copy">The banks you choose get one application, and their offers come back in one place for you to decide.</p>
                   </div>
                 </div>
                 <div class="home-built-mobile-slot" data-built-mobile-slot></div>
@@ -2285,7 +2381,7 @@
                     aria-controls="home-built-body-4"
                     data-built-trigger
                   >
-                    <span class="home-built-trigger-label">How a home loan works</span>
+                    <span class="home-built-trigger-label">Help toward what you need</span>
                     <span class="home-built-chevron" aria-hidden="true">
                       <svg width="12" height="8" viewBox="0 0 12 8" focusable="false"><path d="M1.1 1.2 6 6.1l4.9-4.9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </span>
@@ -2293,7 +2389,7 @@
                 </h3>
                 <div class="home-built-body" id="home-built-body-4" role="region" aria-labelledby="home-built-trigger-4" data-built-body aria-hidden="true">
                   <div class="home-built-body-inner">
-                    <p class="home-built-copy">Plain guides on how a home loan works, before you choose, while you compare, and after you take it.</p>
+                    <p class="home-built-copy">You can go through it alone, or ask us when a rate or charge is unclear, and you still make the final choice.</p>
                   </div>
                 </div>
                 <div class="home-built-mobile-slot" data-built-mobile-slot></div>
@@ -2302,75 +2398,8 @@
 
             <div class="home-built-stage" data-built-stage aria-hidden="true">
               <div class="home-built-visual is-active" data-built-visual="0">
-                <div class="home-built-scene home-built-scene--compare">
-                  <div class="home-built-table">
-                    <div class="home-built-table-row home-built-table-row--head">
-                      <span>Bank</span><span>Rate</span><span>Charges</span><span>Rules</span>
-                    </div>
-                    <div class="home-built-table-row">
-                      <span>Bank A</span><span></span><span></span><span></span>
-                    </div>
-                    <div class="home-built-table-row is-on">
-                      <span>Bank B</span><span></span><span></span><span></span>
-                    </div>
-                    <div class="home-built-table-row">
-                      <span>Bank C</span><span></span><span></span><span></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="home-built-visual" data-built-visual="1">
-                <div class="home-built-scene home-built-scene--browse">
-                  <div class="home-built-browse-grid">
-                    <div class="home-built-bank-card"><span>Bank A</span></div>
-                    <div class="home-built-bank-card"><span>Bank B</span></div>
-                    <div class="home-built-bank-card"><span>Bank C</span></div>
-                  </div>
-                  <div class="home-built-share-box">
-                    <div class="home-built-share-field">Phone number</div>
-                    <div class="home-built-share-field">Email</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="home-built-visual" data-built-visual="2">
-                <div class="home-built-scene home-built-scene--apply">
-                  <div class="home-built-apply-flow">
-                    <div class="home-built-apply-form">
-                      <span class="home-built-apply-line"></span>
-                      <span class="home-built-apply-line home-built-apply-line--short"></span>
-                      <span class="home-built-apply-btn">Send once</span>
-                    </div>
-                    <div class="home-built-apply-arrow" aria-hidden="true"></div>
-                    <div class="home-built-apply-banks">
-                      <span>Bank A</span>
-                      <span>Bank B</span>
-                      <span>Bank C</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="home-built-visual" data-built-visual="3">
-                <div class="home-built-scene home-built-scene--help">
-                  <div class="home-built-help-split">
-                    <div class="home-built-help-solo">
-                      <span class="home-built-apply-line"></span>
-                      <span class="home-built-apply-line"></span>
-                      <span class="home-built-apply-line home-built-apply-line--short"></span>
-                    </div>
-                    <div class="home-built-help-ask">
-                      <span class="home-built-help-ask-title">Ask us</span>
-                      <span class="home-built-apply-line"></span>
-                      <span class="home-built-apply-line home-built-apply-line--short"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="home-built-visual" data-built-visual="4">
                 <div class="home-built-scene home-built-scene--guides">
+                  <p class="home-built-scene-label">Guides</p>
                   <div class="home-built-guide-list">
                     <div class="home-built-guide-card">
                       <span class="home-built-guide-when">Before</span>
@@ -2387,6 +2416,96 @@
                   </div>
                 </div>
               </div>
+
+              <div class="home-built-visual" data-built-visual="1">
+                <div class="home-built-scene home-built-scene--compare">
+                  <p class="home-built-scene-label">Same layout</p>
+                  <div class="home-built-table home-built-table--five">
+                    <div class="home-built-table-row home-built-table-row--head">
+                      <span>Bank</span><span>Interest</span><span>Charges</span><span>Conditions</span><span>Papers</span>
+                    </div>
+                    <div class="home-built-table-row">
+                      <span>Bank A</span><span class="home-built-table-val">8.40%</span><span class="home-built-table-val">Shown</span><span class="home-built-table-val">Shown</span><span class="home-built-table-val">Shown</span>
+                    </div>
+                    <div class="home-built-table-row is-on">
+                      <span>Bank B</span><span class="home-built-table-val">8.55%</span><span class="home-built-table-val">Shown</span><span class="home-built-table-val">Shown</span><span class="home-built-table-val">Shown</span>
+                    </div>
+                    <div class="home-built-table-row">
+                      <span>Bank C</span><span class="home-built-table-val">8.70%</span><span class="home-built-table-val">Shown</span><span class="home-built-table-val">Shown</span><span class="home-built-table-val">Shown</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="home-built-visual" data-built-visual="2">
+                <div class="home-built-scene home-built-scene--browse">
+                  <p class="home-built-scene-label">Open to read</p>
+                  <div class="home-built-browse-grid">
+                    <div class="home-built-bank-card"><span>Bank A</span></div>
+                    <div class="home-built-bank-card"><span>Bank B</span></div>
+                    <div class="home-built-bank-card"><span>Bank C</span></div>
+                  </div>
+                  <div class="home-built-share-box home-built-share-box--held">
+                    <div class="home-built-share-field">
+                      <span class="home-built-share-name">Phone number</span>
+                      <span class="home-built-share-note">Stays with you</span>
+                    </div>
+                    <div class="home-built-share-field">
+                      <span class="home-built-share-name">Email</span>
+                      <span class="home-built-share-note">Stays with you</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="home-built-visual" data-built-visual="3">
+                <div class="home-built-scene home-built-scene--apply">
+                  <p class="home-built-scene-label">One application</p>
+                  <div class="home-built-apply-story">
+                    <div class="home-built-apply-form">
+                      <span class="home-built-apply-title">Fill once</span>
+                      <span class="home-built-apply-line"></span>
+                      <span class="home-built-apply-line home-built-apply-line--short"></span>
+                      <span class="home-built-apply-btn">Send once</span>
+                    </div>
+                    <div class="home-built-apply-arrow" aria-hidden="true"></div>
+                    <div class="home-built-apply-banks">
+                      <span>Bank A</span>
+                      <span>Bank B</span>
+                      <span>Bank C</span>
+                    </div>
+                  </div>
+                  <div class="home-built-apply-offers">
+                    <span class="home-built-apply-offers-label">Offers come back together</span>
+                    <div class="home-built-apply-offers-row">
+                      <span>Offer A</span>
+                      <span>Offer B</span>
+                      <span>Offer C</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="home-built-visual" data-built-visual="4">
+                <div class="home-built-scene home-built-scene--help">
+                  <p class="home-built-scene-label">your choice</p>
+                  <div class="home-built-help-split">
+                    <div class="home-built-help-solo">
+                      <span class="home-built-help-ask-title">on your own</span>
+                      <span class="home-built-apply-line"></span>
+                      <span class="home-built-apply-line"></span>
+                      <span class="home-built-apply-line home-built-apply-line--short"></span>
+                    </div>
+                    <div class="home-built-help-ask">
+                      <span class="home-built-help-ask-title">sit with us</span>
+                      <span class="home-built-help-topic">rate</span>
+                      <span class="home-built-help-topic">charge</span>
+                      <span class="home-built-help-topic">condition</span>
+                    </div>
+                  </div>
+                  <p class="home-built-help-footer">you decide. your goals.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2396,8 +2515,8 @@
     <section class="home-open" aria-labelledby="home-open-title">
       <div class="home-open-inner home-reveal">
         <h2 class="home-open-display" id="home-open-title">
-          <span class="home-open-line home-open-line--soft">Published everywhere.</span>
-          <span class="home-open-line home-open-line--strong">Compared here.</span>
+          <span class="home-open-line home-open-line--soft">Scattered everywhere.</span>
+          <span class="home-open-line home-open-line--strong">Consolidated here.</span>
         </h2>
 
         <div class="home-open-visual">
@@ -2527,10 +2646,6 @@
                 </div>
                 <div class="home-open-app">
                   <div class="home-open-app-head">
-                    <div class="home-open-app-title-block">
-                      <span class="home-open-app-title">Your options</span>
-                      <span class="home-open-app-hint">Select banks to apply once</span>
-                    </div>
                     <div class="home-open-app-actions">
                       <div class="home-open-app-tabs">
                         <span class="is-on">Overview</span>
@@ -2541,14 +2656,6 @@
                     </div>
                   </div>
                   <div class="home-open-app-body">
-                    <aside class="home-open-app-filters">
-                      <span class="home-open-app-filters-label">Filters</span>
-                      <span class="home-open-app-chip is-on">All</span>
-                      <span class="home-open-app-chip">Public</span>
-                      <span class="home-open-app-chip">Private</span>
-                      <span class="home-open-app-chip is-on">Floating</span>
-                      <span class="home-open-app-chip">Term loan</span>
-                    </aside>
                     <table class="home-open-app-table">
                       <thead>
                         <tr>
@@ -2623,7 +2730,7 @@
         </div>
 
         <p class="home-open-caption">
-          <span class="home-open-caption-soft">The only place </span><span class="home-open-caption-strong">home loan lenders sit side by side, </span><span class="home-open-caption-punch">truly.</span>
+          <span class="home-open-caption-punch">Truly </span><span class="home-open-caption-strong">the standard way to compare home loan lenders.</span>
         </p>
       </div>
     </section>
@@ -2632,10 +2739,7 @@
 
 
   <!-- SHROFFIN_FOOTER_START -->
-  <div class="site-prefooter-cta">
-    <p class="site-prefooter-cta-lead">Every home loan bank sits side by side.</p>
-    <a class="home-hero-cta home-hero-cta-primary" href="/pages/explore-banks.html">Explore banks</a>
-  </div>
+
   <aside class="site-help-strip" aria-label="Get help">
     <p class="site-help-strip-text">
       Need some help?
@@ -2650,80 +2754,106 @@
   </aside>
   <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
     <div class="site-footer-inner">
-      <div class="site-footer-directory">
-        <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
-          <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
-          <ul class="site-footer-list">
-            <li><a href="/pages/guide.html">Overview</a></li>
-            <li><a href="/pages/guide-documents.html">Documents</a></li>
-            <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
-            <li><a href="/pages/concessions.html">Concessions</a></li>
-            <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
-            <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
-          </ul>
-        </nav>
-
-        <nav class="site-footer-group" aria-labelledby="footer-tools-title">
-          <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
-          <ul class="site-footer-list">
-            <li><a href="/pages/calculators.html">Calculators</a></li>
-            <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
-          </ul>
-        </nav>
-
-        <nav class="site-footer-group" aria-labelledby="footer-company-title">
-          <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
-          <ul class="site-footer-list">
-            <li><a href="/pages/about.html">About</a></li>
-            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-            <li><a href="/terms-of-use.html">Terms of Use</a></li>
-          </ul>
-        </nav>
-
-        <section class="site-footer-group" aria-labelledby="footer-support-title">
-          <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
-          <ul class="site-footer-list">
-            <li><a href="mailto:support@shroffin.com">Email</a></li>
-            <li><a href="tel:+919112334367">Call</a></li>
-          </ul>
+      <div class="site-footer-top">
+        <section class="site-footer-brand" aria-label="Shroffin">
+          <a class="site-footer-brand-link" href="/" aria-label="Shroffin Home">
+            <img
+              class="site-footer-logo"
+              src="/images/logos/logo.png"
+              alt=""
+              width="80"
+              height="80"
+            >
+          </a>
         </section>
 
-        <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
-          <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
-          <ul class="site-footer-list">
-            <li>
-              <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-
-      <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
-        <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
-        <div class="site-footer-disclaimer">
-          <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-          <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-          <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-          <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-          <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
-        </div>
-      </section>
-
-      <div class="site-footer-bottom">
-        <div class="site-footer-bottom-row">
-          <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
-          <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
-            <ul class="site-footer-legal-links">
-              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-              <li><a href="/terms-of-use.html">Terms of Use</a></li>
-              <li><a href="/sitemap.html">Site Map</a></li>
-              <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
-              <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
-              <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
-              <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
-              <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+        <div class="site-footer-directory">
+          <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
+            <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
+            <ul class="site-footer-list">
+              <li><a href="/pages/guide.html">Overview</a></li>
+              <li><a href="/pages/guide-documents.html">Documents</a></li>
+              <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
+              <li><a href="/pages/concessions.html">Concessions</a></li>
+              <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
+              <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
             </ul>
           </nav>
+
+          <nav class="site-footer-group" aria-labelledby="footer-tools-title">
+            <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
+            <ul class="site-footer-list">
+              <li><a href="/pages/calculators.html">Calculators</a></li>
+              <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
+            </ul>
+          </nav>
+
+          <nav class="site-footer-group" aria-labelledby="footer-company-title">
+            <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
+            <ul class="site-footer-list">
+              <li><a href="/pages/about.html">About</a></li>
+              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/terms-of-use.html">Terms of Use</a></li>
+            </ul>
+          </nav>
+
+          <section class="site-footer-group" aria-labelledby="footer-support-title">
+            <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
+            <ul class="site-footer-list">
+              <li><a href="mailto:support@shroffin.com">Email</a></li>
+              <li><a href="tel:+919112334367">Call</a></li>
+            </ul>
+          </section>
+
+          <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
+            <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
+            <ul class="site-footer-list">
+              <li>
+                <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <div class="site-footer-meta">
+        <div class="site-footer-meta-main">
+          <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
+            <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
+            <div class="site-footer-disclaimer">
+              <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
+              <details class="site-footer-disclaimer-more">
+                <summary>Read the full disclaimer</summary>
+                <div class="site-footer-disclaimer-full">
+                  <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+                  <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+                  <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+                  <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+                  <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <div class="site-footer-bottom">
+            <div class="site-footer-bottom-row">
+              <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
+              <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
+                <ul class="site-footer-legal-links">
+                  <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                  <li><a href="/terms-of-use.html">Terms of Use</a></li>
+                  <li><a href="/sitemap.html">Site Map</a></li>
+                </ul>
+                <ul class="site-footer-official-links">
+                  <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2734,7 +2864,7 @@
   <script src="js/shroffin-nav.js?v=sel-13"></script>
   <script src="js/shroffin-guide.js?v=strip-ln-6"></script>
   <script src="js/shroffin-product-demo-chrome.js?v=79"></script>
-  <script src="js/shroffin-home-stance.js?v=home-lead-1"></script>
+  <script src="js/shroffin-home-stance.js?v=home-lead-2"></script>
   <script src="js/shroffin-home-built.js?v=1"></script>
 </body>
 </html>

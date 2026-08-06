@@ -4,6 +4,10 @@
   if (window.__shroffinGuideLoaded) return;
   window.__shroffinGuideLoaded = true;
 
+  /* Paired with the 1024px / 1023px media queries in css/shroffin-editorial.css.
+     Change both together or the compact chapter bar desyncs from the rail. */
+  var WIDE_MIN = 1024;
+
   function initLocalNav() {
     var localnav = document.querySelector(".localnav");
     if (!localnav || localnav.dataset.shroffinReady === "true") return;
@@ -379,7 +383,7 @@
   }
 
   function initSectionNav() {
-    var wideQuery = window.matchMedia("(min-width: 1200px)");
+    var wideQuery = window.matchMedia("(min-width: " + WIDE_MIN + "px)");
     var signal = contentSignal();
     var listenerOpts = signal
       ? { passive: true, signal: signal }
@@ -399,6 +403,7 @@
       var links = Array.prototype.slice.call(rail.querySelectorAll('a[href^="#"]'));
       var destinations = new Map();
       var jumping = false;
+      var hashLockUntil = 0;
       var activeId = "";
       var compact = null;
       var compactToggle = null;
@@ -420,8 +425,8 @@
       });
       if (links.length < 2) return;
 
-      /* Pair Contents with the story so the rail can stick beside long pages.
-         Lead/opener copy stays above — Contents starts with the first section. */
+      /* Lift any opener above Contents. Do not wrap mag-toc-shell — desktop
+         uses a sticky horizontal chapter strip; phone keeps in-flow strip. */
       if (rail.classList.contains("mag-index")) {
         var story = rail.nextElementSibling;
         if (
@@ -441,12 +446,6 @@
               parent.insertBefore(story.firstElementChild, rail);
             }
           }
-
-          var shell = document.createElement("div");
-          shell.className = "mag-toc-shell";
-          parent.insertBefore(shell, rail);
-          shell.appendChild(rail);
-          shell.appendChild(story);
         }
       }
 
@@ -475,15 +474,15 @@
           : parseFloat(styles.getPropertyValue("--shroffin-gn-height")) ||
             parseFloat(styles.getPropertyValue("--gn-height")) ||
             48;
-        var ln =
-          parseFloat(styles.getPropertyValue("--shroffin-ln-height")) ||
-          parseFloat(styles.getPropertyValue("--ln-height")) ||
-          52;
-        var compactExtra =
-          !wideQuery.matches && document.body.classList.contains("mag-toc-compact-on")
-            ? 46
-            : 0;
-        return gn + ln + compactExtra + 24;
+        var lnOffset = parseFloat(styles.getPropertyValue("--shroffin-ln-offset"));
+        var ln = Number.isFinite(lnOffset)
+          ? lnOffset
+          : parseFloat(styles.getPropertyValue("--shroffin-ln-height")) ||
+            parseFloat(styles.getPropertyValue("--ln-height")) ||
+            52;
+        /* Phone compact bar or desktop sticky chapter strip (~2.875rem). */
+        var stripOrCompact = 46;
+        return gn + ln + stripOrCompact + 20;
       }
 
       function setCompactOpen(next) {
@@ -508,6 +507,17 @@
       function syncCompactVisibility() {
         if (!compact || !rail.classList.contains("mag-index")) return;
         if (wideQuery.matches) {
+          document.body.classList.remove("mag-toc-compact-on");
+          document.documentElement.style.setProperty(
+            "--shroffin-toc-compact-offset",
+            "0px"
+          );
+          compact.hidden = true;
+          setCompactOpen(false);
+          return;
+        }
+        /* Phone: sticky chapter strip stays put — compact TOC bar not needed. */
+        if (window.matchMedia("(max-width: 833px)").matches) {
           document.body.classList.remove("mag-toc-compact-on");
           document.documentElement.style.setProperty(
             "--shroffin-toc-compact-offset",
@@ -667,6 +677,7 @@
 
       function syncFromScroll() {
         if (jumping) return;
+        if (Date.now() < hashLockUntil) return;
         var id = activeFromScroll();
         if (id !== activeId) setActive(id);
         syncCompactVisibility();
@@ -716,6 +727,9 @@
         var id = getLocationId();
         if (id && destinations.has(id)) {
           setActive(id);
+          /* Ignore scroll-spy briefly after history/hash changes so the hash
+             remains the active chapter while the browser restores scroll. */
+          hashLockUntil = Date.now() + 400;
           if (moveFocus) {
             window.requestAnimationFrame(function () {
               destinations.get(id).focus({ preventScroll: true });
@@ -1193,7 +1207,9 @@
     var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var CLOSE_MS = 900;
 
-    document.querySelectorAll("details.guide-disclosure").forEach(function (details) {
+    document
+      .querySelectorAll("details.guide-disclosure, details.guide-chapter-more")
+      .forEach(function (details) {
       if (details.dataset.smoothReady === "true") return;
       details.dataset.smoothReady = "true";
 
@@ -1258,6 +1274,45 @@
     });
   }
 
+  var CHAPTER_MORE_MQ = "(min-width: 834px)";
+
+  function syncChapterMoreViewport() {
+    var desktop = window.matchMedia(CHAPTER_MORE_MQ).matches;
+    document.querySelectorAll("details.guide-chapter-more").forEach(function (el) {
+      if (desktop) {
+        el.open = true;
+        el.dataset.chapterMoreDesktop = "1";
+        var panel = el.querySelector(":scope > .guide-disclosure-panel");
+        if (panel) panel.classList.add("is-open");
+      } else if (el.dataset.chapterMoreDesktop === "1") {
+        el.open = false;
+        delete el.dataset.chapterMoreDesktop;
+        var panelClose = el.querySelector(":scope > .guide-disclosure-panel");
+        if (panelClose) panelClose.classList.remove("is-open");
+      }
+    });
+  }
+
+  function initChapterMoreViewport() {
+    syncChapterMoreViewport();
+    var mq = window.matchMedia(CHAPTER_MORE_MQ);
+    var onChange = function () {
+      syncChapterMoreViewport();
+    };
+    if (typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", onChange);
+    } else if (typeof mq.addListener === "function") {
+      mq.addListener(onChange);
+    }
+    addContentCleanup(function () {
+      if (typeof mq.removeEventListener === "function") {
+        mq.removeEventListener("change", onChange);
+      } else if (typeof mq.removeListener === "function") {
+        mq.removeListener(onChange);
+      }
+    });
+  }
+
   function initContent() {
     beginContentLifecycle();
     initPageModules();
@@ -1268,16 +1323,106 @@
     initScrollRegions();
     initBreadcrumbs();
     initGuideDisclosures();
+    initChapterMoreViewport();
+    if (window.ShroffinScrub) window.ShroffinScrub.init();
     initGuideMoments();
     ensureLocalnavCurrentVisible();
   }
 
   function destroyContent() {
+    if (window.ShroffinScrub) window.ShroffinScrub.destroy();
     endContentLifecycle();
+  }
+
+  /* Guide reading: hide Guide localnav while scrolling down; show on scroll up.
+     Keeps one thin chapter strip at the top while reading (phone + desktop).
+     Loop-safe: no-op if state unchanged; ignore scroll briefly after toggle.
+     Phone drawer open forces the bar visible so Guide links stay reachable. */
+  function initGuideLocalnavHeadroom() {
+    var localnav = document.querySelector(".localnav");
+    if (!localnav || !document.body.classList.contains("guide-reading")) return;
+    if (localnav.dataset.shroffinHeadroom === "true") return;
+    localnav.dataset.shroffinHeadroom = "true";
+
+    var lastY = window.scrollY || 0;
+    var ticking = false;
+    var lnHeight = 52;
+    var deltaArmed = 12;
+    var topReveal = 72;
+    var isAway = false;
+    var ignoreUntil = 0;
+
+    function measure() {
+      lnHeight = localnav.offsetHeight || 52;
+    }
+
+    function menuOpen() {
+      return localnav.classList.contains("is-open");
+    }
+
+    function setAway(away) {
+      if (menuOpen()) away = false;
+      away = Boolean(away);
+      if (away === isAway) return;
+      isAway = away;
+      document.body.classList.toggle("guide-ln-away", isAway);
+      /* Set on body — body CSS vars shadow :root; html inline would lose. */
+      document.body.style.setProperty(
+        "--shroffin-ln-offset",
+        (isAway ? 0 : lnHeight) + "px"
+      );
+      /* Ignore scroll events caused by sticky top / paint settle after toggle. */
+      ignoreUntil = performance.now() + 120;
+      lastY = window.scrollY || 0;
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        ticking = false;
+        if (menuOpen()) {
+          setAway(false);
+          lastY = window.scrollY || 0;
+          return;
+        }
+        if (performance.now() < ignoreUntil) {
+          lastY = window.scrollY || 0;
+          return;
+        }
+        var y = window.scrollY || 0;
+        var delta = y - lastY;
+        if (y <= topReveal) {
+          setAway(false);
+        } else if (delta > deltaArmed) {
+          setAway(true);
+        } else if (delta < -deltaArmed) {
+          setAway(false);
+        }
+        lastY = y;
+      });
+    }
+
+    function onChange() {
+      measure();
+      if (menuOpen()) setAway(false);
+      lastY = window.scrollY || 0;
+    }
+
+    measure();
+    setAway(false);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onChange, { passive: true });
+    /* Re-show bar when the phone Guide menu opens (class toggled elsewhere). */
+    var mo = new MutationObserver(function () {
+      if (menuOpen()) setAway(false);
+    });
+    mo.observe(localnav, { attributes: true, attributeFilter: ["class"] });
   }
 
   function init() {
     initLocalNav();
+    initGuideLocalnavHeadroom();
     initContent();
     initReducedMotionUpdates();
     initDynamicAboutReveals();

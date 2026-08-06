@@ -7,6 +7,7 @@ const root = path.resolve(__dirname, '..');
 const args = process.argv.slice(2);
 const checkOnly = args.includes('--check');
 const write = args.includes('--write');
+const bless = args.includes('--bless');
 const onlyArg = args.find(function (a) {
   return a.startsWith('--only=');
 });
@@ -39,6 +40,19 @@ function stitch(layoutRel, bodyRel, outRel) {
 function compareOrWrite(outRel, html) {
   const abs = path.join(root, outRel);
   const golden = goldenPath(outRel);
+  if (bless) {
+    /* Intentional <main> change: rewrite the page and re-approve the snapshot
+       in one explicit step. --only is required so a whole-site bless cannot
+       happen by accident. */
+    if (!only) {
+      console.error('--bless requires --only=<id|guide|legal|path>');
+      process.exit(1);
+    }
+    fs.writeFileSync(abs, html);
+    fs.writeFileSync(golden, html);
+    console.log('Blessed ' + outRel + ' (page and golden rewritten from source)');
+    return;
+  }
   if (!fs.existsSync(golden)) {
     console.error(
       'Missing golden for ' + outRel + '. Run: npm run snapshot:golden -- ' + outRel

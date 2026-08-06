@@ -1234,3 +1234,17 @@
 .calc-assumptions-lead a:hover {
   opacity: 0.75;
 }
+
+@media (max-width: 833px) {
+  .calc-hint,
+  .calc-field-hint,
+  .calc-assumptions,
+  .calc-assumptions p,
+  .calc-formula,
+  .calc-formula p,
+  .calc-note,
+  .calc-out-label,
+  .calc-amort-toggle {
+    font-size: max(0.9375rem, 1em);
+  }
+}
