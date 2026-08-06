@@ -1,0 +1,316 @@
+/* ==========================================================================
+   Utility pages — Privacy Policy, Terms of Use, Site Map
+   Nav and footer live in shroffin-shell.css only. Do not set body font-size here
+   (globalnav uses rem and must match every other redesigned page).
+   ========================================================================== */
+
+.utility-page {
+  background: var(--shroffin-surface, #fcfcfd);
+  color: var(--shroffin-ink, #1d1d1f);
+  font-family: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+.utility-page main :where(td, th, p, li, a) {
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+/* ---- Legal (Privacy + Terms) ------------------------------------------- */
+
+.utility-page :is(.privacy-main, .terms-main) {
+  inline-size: min(
+    var(--shroffin-content-max, 1068px),
+    calc(100% - 2 * var(--shroffin-gutter, clamp(1rem, 4vw, 2.5rem)))
+  );
+  margin-inline: auto;
+  padding-block: calc(var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + clamp(2rem, 5vw, 2.5rem))
+    clamp(2.5rem, 6vw, 4rem);
+  font-size: var(--shroffin-type-body, 1rem);
+  line-height: 1.47059;
+}
+
+.utility-page main a {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.utility-page main a:visited {
+  color: var(--shroffin-link-visited, #5a4fcf);
+}
+
+.utility-page main a:hover,
+.utility-page main a:focus-visible {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link, #3f62c8);
+}
+
+.utility-page main a:visited:hover,
+.utility-page main a:visited:focus-visible {
+  color: var(--shroffin-link-visited, #5a4fcf);
+  text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
+}
+
+.utility-page main a:active {
+  color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+}
+
+.utility-page .legal-hero {
+  margin-block-end: 1.75rem;
+}
+
+.utility-page .legal-hero h1 {
+  margin: 0 0 0.625rem;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+}
+
+.utility-page .legal-meta {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.56);
+  font-size: 0.875rem;
+}
+
+.utility-page .legal-meta span + span::before {
+  content: "·";
+  margin-inline: 0.45em;
+  opacity: 0.6;
+}
+
+.utility-page .notice {
+  margin-block-end: 1.75rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  background: #ffffff;
+  color: rgba(0, 0, 0, 0.56);
+  font-size: 0.9375rem;
+}
+
+.utility-page .toc {
+  margin-block-end: 2.25rem;
+  padding: 1.125rem 1.125rem 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.utility-page .toc h2 {
+  margin: 0 0 0.625rem;
+  color: rgba(0, 0, 0, 0.56);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.utility-page .toc ol {
+  margin: 0;
+  padding: 0 0 0 1.2em;
+  columns: 1;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .utility-page .toc ol {
+    columns: 2;
+  }
+}
+
+.utility-page .toc li {
+  margin-block-end: 0.5rem;
+  break-inside: avoid;
+  font-size: 0.875rem;
+}
+
+.utility-page .toc a {
+  color: var(--shroffin-ink, #1d1d1f);
+  text-decoration: none;
+}
+
+.utility-page .toc a:hover,
+.utility-page .toc a:focus-visible {
+  color: var(--shroffin-link, #3f62c8);
+}
+
+.utility-page main section {
+  margin-block-end: 2rem;
+  scroll-margin-block-start: calc(var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + 1.5rem);
+}
+
+.utility-page main section > h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.utility-page main section > h3 {
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.utility-page main p {
+  margin: 0 0 0.75rem;
+}
+
+.utility-page main :is(ul, ol) {
+  margin: 0 0 0.75rem;
+  padding-inline-start: 1.25em;
+}
+
+.utility-page main li {
+  margin-block-end: 0.375rem;
+}
+
+.utility-page .table-wrap {
+  inline-size: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+  margin-block-end: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.utility-page main table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.utility-page main :is(th, td) {
+  padding: 0.625rem 0.75rem;
+  border-block-end: 1px solid rgba(0, 0, 0, 0.12);
+  text-align: start;
+  vertical-align: top;
+}
+
+.utility-page main th {
+  background: rgba(0, 0, 0, 0.03);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.utility-page main tr:last-child td {
+  border-block-end: none;
+}
+
+@media (max-width: 600px) {
+  .utility-page :is(.privacy-main, .terms-main) {
+    padding-block-start: calc(var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + 2rem);
+  }
+
+  .utility-page .toc {
+    padding-inline: 1rem;
+  }
+}
+
+/* ---- Site map ---------------------------------------------------------- */
+
+.utility-page .sitemap-main {
+  inline-size: min(
+    var(--shroffin-content-max, 1068px),
+    calc(100% - 2 * var(--shroffin-gutter, clamp(1rem, 4vw, 2.5rem)))
+  );
+  margin-inline: auto;
+  padding-block: calc(var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + clamp(2.5rem, 7vw, 5rem))
+    clamp(2rem, 6vw, 4.5rem);
+}
+
+.utility-page .sitemap-title {
+  max-inline-size: 16ch;
+  margin: 0;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+.utility-page .sitemap-intro {
+  max-inline-size: 42rem;
+  margin: 1.25rem 0 0;
+  color: rgba(0, 0, 0, 0.62);
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  line-height: 1.5;
+}
+
+.utility-page .sitemap-directory {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  margin-block-start: clamp(3.5rem, 8vw, 6rem);
+}
+
+.utility-page .sitemap-group {
+  min-inline-size: 0;
+}
+
+.utility-page .sitemap-group h2 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.utility-page .sitemap-group ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.utility-page .sitemap-group li + li {
+  margin-block-start: 0.25rem;
+}
+
+.utility-page .sitemap-group a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  min-inline-size: 44px;
+  color: rgba(0, 0, 0, 0.64);
+  font-size: 0.95rem;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: color var(--shroffin-micro-duration, 0.5s) var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.utility-page .sitemap-group a:hover,
+.utility-page .sitemap-group a:focus-visible {
+  color: #005bb5;
+}
+
+@media (min-width: 560px) {
+  .utility-page .sitemap-directory {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 834px) {
+  .utility-page .sitemap-directory {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 3rem 2rem;
+  }
+
+  .utility-page .sitemap-group--guide {
+    grid-column: span 2;
+  }
+
+  .utility-page .sitemap-group--guide ul {
+    columns: 2;
+    column-gap: 2rem;
+  }
+
+  .utility-page .sitemap-group--guide li {
+    break-inside: avoid;
+  }
+}

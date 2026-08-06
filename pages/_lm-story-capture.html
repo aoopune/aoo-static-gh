@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>LM capture helper</title>
+  <style>
+    html, body {
+      margin: 0;
+      background: #fcfcfd;
+      background: color-mix(in srgb, #0071e3 0.75%, #ffffff);
+    }
+    iframe { border: 0; width: 1440px; height: 1200px; display: block; }
+    #shot {
+      display: none;
+      margin: 0;
+      padding: 24px;
+      background: #fff;
+      box-sizing: border-box;
+      width: max-content;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <iframe id="f" src="/pages/explore-banks.html" title="product"></iframe>
+  <div id="shot"></div>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const mode = params.get("mode") || "compare";
+
+    function sleep(ms) {
+      return new Promise((r) => setTimeout(r, ms));
+    }
+
+    async function seeOptions(doc) {
+      const btn = doc.getElementById("hlc-see-options");
+      if (btn) btn.click();
+      for (let i = 0; i < 60; i++) {
+        const shell = doc.getElementById("hlc-results-shell");
+        if (shell && !shell.hasAttribute("hidden")) {
+          const rows = doc.querySelectorAll("tr.hlc-selectable-row");
+          if (rows.length) break;
+        }
+        await sleep(250);
+      }
+      await sleep(1000);
+    }
+
+    async function selectBanks(doc, n) {
+      for (let i = 0; i < n; i++) {
+        const next = doc.querySelector(
+          "tr.hlc-selectable-row:not(.is-selected) .hlc-bank-name"
+        );
+        if (!next) break;
+        next.dispatchEvent(
+          new MouseEvent("click", {
+            bubbles: true,
+            cancelable: true,
+            view: doc.defaultView,
+          })
+        );
+        await sleep(350);
+      }
+      await sleep(700);
+      return doc.querySelectorAll("tr.hlc-selectable-row.is-selected").length;
+    }
+
+    function promoteResults(doc) {
+      const shell = doc.getElementById("hlc-results-shell");
+      if (!shell) throw new Error("no results shell");
+
+      // Pull explore-banks styles into this document so the clone renders correctly.
+      [...doc.querySelectorAll('link[rel="stylesheet"], style')].forEach((node) => {
+        document.head.appendChild(node.cloneNode(true));
+      });
+
+      const shot = document.getElementById("shot");
+      shot.innerHTML = "";
+      shot.appendChild(shell.cloneNode(true));
+      shot.style.display = "block";
+      document.getElementById("f").style.display = "none";
+
+      // Hide filters rail inside the clone — keep the options table as the story beat.
+      const filters = shot.querySelector("#hlc-filters, .hlc-filters, [data-hlc-filters]");
+      if (filters) filters.style.display = "none";
+      const layout = shot.querySelector(".hlc-results-layout, .hlc-results-body");
+      if (layout) layout.style.display = "block";
+    }
+
+    async function run() {
+      const f = document.getElementById("f");
+      await new Promise((r) => {
+        if (f.contentDocument && f.contentDocument.readyState === "complete") r();
+        else f.addEventListener("load", r, { once: true });
+      });
+      await sleep(1000);
+      const doc = f.contentDocument;
+      if (!doc) {
+        document.title = "FAIL-NO-DOC";
+        return;
+      }
+
+      await seeOptions(doc);
+      let n = 0;
+      if (mode === "pick") n = await selectBanks(doc, 3);
+
+      promoteResults(doc);
+      await sleep(400);
+      document.title = mode === "pick" ? "READY-PICK-" + n : "READY-COMPARE";
+    }
+
+    run().catch((err) => {
+      console.error(err);
+      document.title = "FAIL";
+    });
+  </script>
+</body>
+</html>

@@ -26,7 +26,6 @@
   background: var(--hlc-page-bg);
   color: var(--shroffin-ink, #1d1d1f);
   font-family: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
-  padding-bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
 }
 
 .explore-banks-main {
@@ -41,7 +40,7 @@
   max-width: min(100%, var(--hlc-main-max));
   margin-inline: auto;
   padding:
-    3rem
+    clamp(1.65rem, 4vw, 2.5rem)
     max(1rem, env(safe-area-inset-right))
     3.5rem
     max(1rem, env(safe-area-inset-left));
@@ -53,21 +52,41 @@
 .hlc-hero {
   max-width: min(48rem, 100%);
   margin: 0 auto;
-  padding-block-start: var(--shroffin-space-masthead-start, clamp(2.5rem, 8vw, 3.5rem));
-  padding-block-end: clamp(1.65rem, 3.5vw, 2.5rem);
-  margin-bottom: clamp(1.25rem, 2.8vw, 1.85rem);
+  padding-block-start: clamp(1.15rem, 3.2vw, 1.85rem);
+  padding-block-end: clamp(2.85rem, 7.5vw, 4.75rem);
+  margin-bottom: clamp(2.35rem, 6vw, 4rem);
   text-align: center;
 }
 
 .hlc-title {
-  margin: 0 0 var(--shroffin-space-stack, 1.15rem);
-  font-size: clamp(1.4rem, 4.8vw, 3.25rem);
+  margin: 0;
+  font-size: clamp(2.05rem, 7.8vw, 4.35rem);
   font-weight: 600;
-  letter-spacing: -0.035em;
-  line-height: 1.05;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
   white-space: nowrap;
   opacity: 0;
   animation: hlc-fade-in 1.1s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)) 0.12s forwards;
+}
+
+/* Editorial steel — same wash as Guide mag titles (charcoal → soft steel). */
+.hlc-title-wash {
+  display: inline-block;
+  max-width: 100%;
+  background-image: linear-gradient(90deg, #202027 0%, #485879 100%);
+  background-size: 100% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (forced-colors: active) {
+  .hlc-title-wash {
+    background-image: none;
+    color: CanvasText;
+    -webkit-text-fill-color: CanvasText;
+  }
 }
 
 .hlc-lead {
@@ -108,6 +127,72 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.35rem 0.75rem;
+  min-width: 0;
+}
+
+/* Shared shell for title + hint (+ mobile Filters). Desktop keeps the old one-line title look. */
+.hlc-results-heading {
+  min-width: 0;
+}
+
+.hlc-options-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.75rem;
+  min-width: 0;
+}
+
+@media (max-width: 833px) {
+  .hlc-results-heading {
+    width: 100%;
+  }
+
+  .hlc-options-top {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.4rem;
+    width: 100%;
+  }
+
+  .hlc-options-top .hlc-section-title {
+    flex: 0 0 auto;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .hlc-options-top .hlc-select-hint {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.8125rem;
+    line-height: 1.2;
+  }
+
+  .hlc-options-top .hlc-filters-control {
+    flex: 0 0 auto;
+  }
+
+  .hlc-options-top .hlc-filters-toggle {
+    min-height: 2.75rem;
+    padding-block: 0.35rem;
+    padding-inline: 0.45rem;
+  }
+}
+
+@media (min-width: 834px) {
+  .hlc-results-heading {
+    width: auto;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .hlc-options-top {
+    width: auto;
+  }
 }
 
 .hlc-panel--inputs .hlc-section-title {
@@ -213,7 +298,7 @@
 }
 
 .hlc-form-zone--pair .hlc-form-zone-fields {
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.15rem 1.25rem;
 }
 
@@ -237,6 +322,9 @@
 
 .hlc-form-zone--choices .hlc-occupation-pills .hlc-chip,
 .hlc-form-zone--choices .hlc-purpose-pills .hlc-chip {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
   padding-inline: 0.55rem;
   font-size: 0.8125rem;
   letter-spacing: -0.015em;
@@ -250,6 +338,73 @@
   color: var(--shroffin-ink, #1d1d1f);
 }
 
+@media (max-width: 833px) {
+  .hlc-inputs-card .hlc-field-label {
+    font-size: 0.75rem;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    white-space: nowrap;
+  }
+
+  /* Long FOIR label wraps so it does not run into Tenure beside it */
+  .hlc-field--foir .hlc-field-label {
+    white-space: normal;
+  }
+
+  /* Mobile: paired fields side by side */
+  .hlc-form-fields--more {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem 1.25rem;
+  }
+
+  /* FOIR + Tenure only: keep input lines level when FOIR label wraps */
+  .hlc-form-fields--more > .hlc-field--foir,
+  .hlc-form-fields--more > .hlc-field--tenure {
+    height: 100%;
+    min-height: 100%;
+  }
+
+  .hlc-form-fields--more > .hlc-field--foir > .hlc-field-label,
+  .hlc-form-fields--more > .hlc-field--tenure > .hlc-field-label {
+    flex: 1 1 auto;
+  }
+
+  .hlc-form-fields--coapplicant {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.15rem 1.25rem;
+  }
+
+  .hlc-form-primary-grid {
+    gap: 1.75rem 1.25rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hlc-form-zone--pair,
+  .hlc-form-zone--choices {
+    grid-column: 1 / -1;
+  }
+
+  /* Occupation a touch wider than Purpose; pills stay inside their cells */
+  .hlc-form-zone--choices .hlc-form-zone-fields {
+    grid-template-columns: minmax(0, 1.32fr) minmax(0, 0.84fr);
+    gap: 1.15rem 0.7rem;
+  }
+
+  .hlc-form-zone--choices .hlc-occupation-pills,
+  .hlc-form-zone--choices .hlc-purpose-pills {
+    gap: 0.12rem;
+    padding: 0.12rem;
+  }
+
+  .hlc-form-zone--choices .hlc-occupation-pills .hlc-chip,
+  .hlc-form-zone--choices .hlc-purpose-pills .hlc-chip {
+    padding-inline: 0.3rem;
+    font-size: 0.72rem;
+    letter-spacing: -0.028em;
+    line-height: 1.15;
+  }
+}
+
 @media (min-width: 834px) {
   .hlc-form-primary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -258,12 +413,42 @@
     align-items: stretch;
   }
 
+  .hlc-form-zone--pair,
+  .hlc-form-zone--choices {
+    grid-column: auto;
+  }
+
   .hlc-form-zone {
     padding-inline: 0.15rem;
   }
 
   .hlc-form-zone--pair .hlc-form-zone-fields {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hlc-form-zone--choices .hlc-form-zone-fields {
+    grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.92fr);
+    gap: 1.15rem 0.85rem;
+  }
+
+  /* Desktop: single-line FOIR label; four fields in one row */
+  .hlc-field--foir .hlc-field-label br {
+    display: none;
+  }
+
+  .hlc-field--foir .hlc-field-label {
+    white-space: nowrap;
+  }
+
+  .hlc-form-fields--more > .hlc-field--foir,
+  .hlc-form-fields--more > .hlc-field--tenure {
+    height: auto;
+    min-height: 0;
+  }
+
+  .hlc-form-fields--more > .hlc-field--foir > .hlc-field-label,
+  .hlc-form-fields--more > .hlc-field--tenure > .hlc-field-label {
+    flex: none;
   }
 }
 
@@ -477,7 +662,6 @@
 
 @media (min-width: 600px) {
   .hlc-form-fields--more {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.75rem 2.25rem;
   }
 
@@ -538,7 +722,7 @@
 
   .hlc-shell {
     padding:
-      2.35rem
+      clamp(1.25rem, 3.5vw, 1.85rem)
       max(1rem, env(safe-area-inset-right))
       3rem
       max(1rem, env(safe-area-inset-left));
@@ -546,6 +730,9 @@
 
   .hlc-hero {
     max-width: min(100%, 36rem);
+    padding-block-start: clamp(0.95rem, 3vw, 1.45rem);
+    padding-block-end: clamp(2.5rem, 8vw, 3.75rem);
+    margin-bottom: clamp(2rem, 5.5vw, 3.25rem);
   }
 
   .hlc-inputs-card {
@@ -558,8 +745,33 @@
     gap: 1.55rem;
   }
 
+  .hlc-form-fields--more {
+    gap: 1.55rem 1.15rem;
+  }
+
+  .hlc-form-fields--coapplicant {
+    gap: 1.15rem;
+  }
+
   .hlc-form-primary-grid {
-    gap: 1.55rem;
+    gap: 1.55rem 1.15rem;
+  }
+
+  .hlc-form-zone--pair .hlc-form-zone-fields {
+    gap: 1.15rem;
+  }
+
+  /* Co-applicant toggle above its fields — room for the 2-col inputs */
+  .hlc-coapplicant-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.15rem;
+  }
+
+  .hlc-coapplicant-toggle-cell,
+  .hlc-field--coapplicant,
+  .hlc-coapplicant-pills {
+    width: 100%;
+    max-width: none;
   }
 
   .hlc-inputs-card::before {
@@ -598,7 +810,8 @@
   padding: 0.35rem 0 0.4rem;
 }
 
-.hlc-prefix {
+.hlc-prefix,
+.hlc-suffix {
   flex: 0 0 auto;
   font-size: var(--shroffin-field-font-size, 1.125rem);
   font-weight: 500;
@@ -722,7 +935,10 @@
 }
 
 .hlc-segmented .hlc-chip {
+  box-sizing: border-box;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   justify-content: center;
   align-self: stretch;
   min-height: 0;
@@ -1145,6 +1361,11 @@
   max-width: 100%;
 }
 
+/* Desktop: filters always visible in the left rail. Mobile: click-to-open. */
+.hlc-filters-control {
+  display: none;
+}
+
 .hlc-filters {
   border: none;
   border-radius: 0;
@@ -1153,7 +1374,7 @@
 }
 
 .hlc-filters-title {
-  margin: 0;
+  margin: 0 0 0.85rem;
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: -0.025em;
@@ -1201,6 +1422,153 @@
   height: 1.05rem;
   margin: 0.15rem 0 0;
   accent-color: var(--shroffin-blue, #0071e3);
+}
+
+@media (max-width: 833px) {
+  .hlc-filters-control {
+    display: block;
+    position: relative;
+    flex: 0 0 auto;
+    align-self: center;
+    z-index: 6;
+  }
+
+  .hlc-filters-toggle {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    box-sizing: border-box;
+    min-height: var(--shroffin-btn-touch, 44px);
+    margin: 0;
+    padding: 0.35rem 0.55rem;
+    border: none;
+    border-radius: 0.7rem;
+    background: transparent;
+    color: var(--shroffin-muted, #6e6e73);
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background var(--shroffin-micro-duration, 0.5s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+      color var(--shroffin-micro-duration, 0.5s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  }
+
+  .hlc-filters-toggle:hover {
+    color: var(--shroffin-ink, #1d1d1f);
+    background: rgba(29, 29, 31, 0.04);
+  }
+
+  .hlc-filters-toggle:focus-visible {
+    outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+    outline-offset: var(--shroffin-focus-offset, 3px);
+  }
+
+  .hlc-filters-control.is-open .hlc-filters-toggle,
+  .hlc-filters-toggle[aria-expanded="true"] {
+    color: var(--shroffin-ink, #1d1d1f);
+    background: rgba(29, 29, 31, 0.06);
+  }
+
+  .hlc-filters-toggle-label {
+    line-height: 1.2;
+  }
+
+  .hlc-filters-icon {
+    width: 0.95rem;
+    height: 0.95rem;
+    opacity: 0.85;
+    flex: 0 0 auto;
+  }
+
+  .hlc-filters-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.15rem;
+    height: 1.15rem;
+    padding: 0 0.3rem;
+    border-radius: 980px;
+    background: var(--shroffin-blue, #0071e3);
+    color: #fff;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .hlc-filters-badge[hidden] {
+    display: none;
+  }
+
+  .hlc-filters {
+    position: fixed;
+    z-index: 45;
+    box-sizing: border-box;
+    /* top / right / width set by JS so the menu sits under Filters */
+    top: 0;
+    right: 0;
+    left: auto;
+    bottom: auto;
+    width: min(17.25rem, calc(100vw - 1.5rem));
+    max-height: min(48vh, 20rem);
+    overflow: auto;
+    margin: 0;
+    padding: 0.7rem 0.75rem 0.8rem;
+    border: 1px solid var(--hlc-line-soft);
+    border-radius: calc(var(--hlc-radius) - 0.15rem);
+    background: #fff;
+    box-shadow:
+      0 10px 28px rgba(29, 29, 31, 0.12),
+      0 2px 6px rgba(29, 29, 31, 0.05);
+    opacity: 0;
+    transform: translateY(-0.4rem);
+    pointer-events: none;
+    transition:
+      opacity var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+      transform var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  }
+
+  .hlc-filters.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .hlc-filters[hidden] {
+    display: none;
+  }
+
+  .hlc-filters-title {
+    margin: 0 0 0.55rem;
+    font-size: 0.9375rem;
+  }
+
+  .hlc-filters .hlc-filter-group {
+    margin-bottom: 0.7rem;
+  }
+
+  .hlc-filters .hlc-filter-legend {
+    margin-bottom: 0.4rem;
+  }
+}
+
+@media (min-width: 834px) {
+  .hlc-filters[hidden] {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hlc-filters {
+    transition: none;
+    transform: none;
+  }
 }
 
 .hlc-toggle-chips {
@@ -1315,26 +1683,23 @@
   font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.015em;
-  transition: opacity var(--shroffin-micro-duration, 0.5s) cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.hlc-select-hint.is-dismissed {
-  display: none;
-}
-
-.hlc-select-hint[hidden] {
-  display: none;
-}
-
+/*
+ * Table box = scroll + optional “show more”. Closing rule matches thead underline
+ * so footnotes sit clearly outside the data surface.
+ */
 .hlc-table-wrap {
   position: relative;
   overflow: visible;
+  border-bottom: 1px solid rgba(29, 29, 31, 0.18);
 }
 
 /*
  * Selective table fades — only soften what changes:
  * metrics = section tabs (headers + value cells; bank column stays)
  * rows    = filters rematch (bank rows + value headers that may change)
+ * Notes live outside the wrap (sibling) so they still fade with content.
  */
 .hlc-compare thead th:not(.hlc-sticky-col),
 .hlc-compare tbody td:not(.hlc-sticky-col),
@@ -1346,14 +1711,14 @@
 
 .hlc-table-wrap.is-sel-fading-metrics .hlc-compare thead th:not(.hlc-sticky-col),
 .hlc-table-wrap.is-sel-fading-metrics .hlc-compare tbody td:not(.hlc-sticky-col),
-.hlc-table-wrap.is-sel-fading-metrics .hlc-charges-note {
+.hlc-table-wrap.is-sel-fading-metrics + .hlc-charges-note {
   opacity: 0;
   pointer-events: none;
 }
 
 .hlc-table-wrap.is-sel-fading-rows .hlc-compare tbody,
 .hlc-table-wrap.is-sel-fading-rows .hlc-compare thead th:not(.hlc-sticky-col),
-.hlc-table-wrap.is-sel-fading-rows .hlc-charges-note {
+.hlc-table-wrap.is-sel-fading-rows + .hlc-charges-note {
   opacity: 0;
   pointer-events: none;
 }
@@ -1456,7 +1821,7 @@
 }
 
 .hlc-charges-note {
-  margin: 0.85rem 0 0;
+  margin: 0.95rem 0 0;
   max-width: none;
   width: 100%;
   font-size: 0.8125rem;
@@ -1546,24 +1911,6 @@
   overflow-y: visible;
   max-height: none;
   -webkit-overflow-scrolling: touch;
-}
-
-.hlc-table-scroll::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 2.5rem;
-  background: linear-gradient(to left, #fff, transparent);
-  opacity: 0.9;
-}
-
-@media (min-width: 834px) {
-  .hlc-table-scroll::after {
-    display: none;
-  }
 }
 
 .hlc-compare {
@@ -1758,6 +2105,12 @@
   white-space: normal;
   overflow: visible;
   box-shadow: none;
+}
+
+/* Flush bank header/names with the table’s left edge (“Your options”). */
+.hlc-compare th.hlc-sticky-col,
+.hlc-compare td.hlc-sticky-col {
+  padding-left: 0;
 }
 
 .hlc-compare th.hlc-sticky-col {
@@ -2077,10 +2430,19 @@
   padding: 1.75rem 1.25rem;
 }
 
+.hlc-table-wrap.is-expanding-banks {
+  overflow: hidden;
+  transition: height 1.35s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
 .hlc-show-more-wrap {
   display: flex;
   justify-content: center;
-  margin: 1rem 0 0.5rem;
+  margin: 0.35rem 0 0.55rem;
+}
+
+.hlc-show-more-wrap[hidden] {
+  display: none;
 }
 
 .hlc-show-more {
@@ -2565,9 +2927,197 @@
   justify-content: flex-start;
 }
 
+/* Floating Apply once is mobile-only. Desktop keeps the header button. */
+.hlc-apply-dock {
+  display: none;
+}
+
+@media (max-width: 833px) {
+  .hlc-apply-dock[hidden] {
+    display: none;
+  }
+
+  .hlc-apply-dock:not([hidden]) {
+    display: flex;
+    position: fixed;
+    left: 50%;
+    bottom: calc(1.15rem + env(safe-area-inset-bottom, 0px));
+    z-index: 40;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    max-width: calc(100vw - 2rem);
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    animation: hlc-apply-dock-in 0.9s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
+    pointer-events: none;
+  }
+
+  .hlc-apply-dock:not([hidden]) .hlc-btn-primary {
+    pointer-events: auto;
+    width: auto;
+    min-width: 11.5rem;
+    max-width: min(22rem, calc(100vw - 2rem));
+    box-sizing: border-box;
+    padding-inline: 1.55rem;
+    border: none;
+    box-shadow:
+      0 8px 28px rgba(0, 113, 227, 0.32),
+      0 2px 8px rgba(29, 29, 31, 0.1);
+  }
+
+  /* Mobile: never show the long header Apply once — only the floating button. */
+  .hlc-results-actions .hlc-apply-bar {
+    display: none;
+  }
+
+  /* Tabs sit on the right; hairline underline only under the tab group. */
+  .hlc-results-actions {
+    align-items: flex-end;
+  }
+
+  .hlc-column-tabs {
+    width: max-content;
+    max-width: 100%;
+    margin-inline-start: auto;
+    justify-content: flex-end;
+  }
+
+  /* Narrow sticky bank col — frees horizontal room for metric columns. */
+  .hlc-compare col.hlc-col-bank {
+    width: 8.5rem;
+  }
+
+  .hlc-sticky-col {
+    width: 8.5rem;
+    min-width: 8.5rem;
+    max-width: 8.5rem;
+  }
+
+  .hlc-compare th.hlc-sticky-col,
+  .hlc-compare td.hlc-sticky-col {
+    padding-right: 0.55rem;
+  }
+
+  .hlc-bank-name {
+    font-size: 0.875rem;
+  }
+
+  .hlc-bank-sub {
+    column-gap: 0.4rem;
+  }
+
+  /* Metric cols: keep tight side padding, but never narrower than the header
+     line (label + footnote mark + sort arrows stay on one line). */
+  .hlc-compare {
+    table-layout: auto;
+  }
+
+  .hlc-compare th,
+  .hlc-compare td {
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+  }
+
+  .hlc-compare th.hlc-sticky-col,
+  .hlc-compare td.hlc-sticky-col {
+    padding-left: 0;
+    padding-right: 0.55rem;
+  }
+
+  .hlc-compare th.hlc-col-fill,
+  .hlc-compare td.hlc-col-fill {
+    padding: 0;
+  }
+
+  .hlc-compare col.hlc-col-w-pct,
+  .hlc-compare col.hlc-col-w-inr,
+  .hlc-compare col.hlc-col-w-charge,
+  .hlc-compare col.hlc-col-w-prepayment,
+  .hlc-compare col.hlc-col-w-rate-change,
+  .hlc-compare col.hlc-col-w-tenure,
+  .hlc-compare col.hlc-col-w-note,
+  .hlc-compare col.hlc-col-w-text,
+  .hlc-compare[data-group="laterCharges"] col.hlc-col-w-charge,
+  .hlc-compare[data-group="laterCharges"] col.hlc-col-w-prepayment,
+  .hlc-compare[data-group="laterCharges"] col.hlc-col-w-rate-change {
+    width: auto;
+  }
+
+  .hlc-compare[data-group="laterCharges"] th[data-col="prepaymentChargeDisplay"],
+  .hlc-compare[data-group="laterCharges"] td[data-col="prepaymentChargeDisplay"],
+  .hlc-compare[data-group="laterCharges"] th[data-col="rateChangeChargeDisplay"],
+  .hlc-compare[data-group="laterCharges"] td[data-col="rateChangeChargeDisplay"],
+  .hlc-compare[data-group="laterCharges"] th[data-col="overdueChargeDisplay"],
+  .hlc-compare[data-group="laterCharges"] td[data-col="overdueChargeDisplay"],
+  .hlc-compare[data-group="laterCharges"] th[data-col="emiBounceChargeDisplay"],
+  .hlc-compare[data-group="laterCharges"] td[data-col="emiBounceChargeDisplay"] {
+    width: auto;
+    min-width: max-content;
+    max-width: none;
+  }
+
+  .hlc-compare thead th:not(.hlc-sticky-col):not(.hlc-col-fill) {
+    white-space: nowrap;
+    width: max-content;
+    min-width: max-content;
+    max-width: none;
+    overflow: visible;
+  }
+
+  .hlc-column-label {
+    width: max-content;
+    min-width: max-content;
+  }
+
+  .hlc-column-title {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .hlc-compare thead th .hlc-col-footnote,
+  .hlc-compare thead th .hlc-sort-ind {
+    flex-shrink: 0;
+  }
+
+  .hlc-sort-ind {
+    margin-left: 0.28rem;
+  }
+
+  body.hlc-apply-dock-open .hlc-compare-table-area {
+    padding-bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  body.hlc-apply-dock-open .hlc-toast {
+    bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@keyframes hlc-apply-dock-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0.85rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 @media (max-width: 599px) {
   .hlc-btn-primary {
     width: 100%;
+  }
+
+  .hlc-apply-dock:not([hidden]) .hlc-btn-primary {
+    width: auto;
   }
 }
 
@@ -2597,9 +3147,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hlc-table-wrap.is-expanding-banks {
+    transition: none;
+  }
+
   .hlc-drawer,
   .hlc-drawer-backdrop,
   .hlc-toast,
+  .hlc-apply-dock:not([hidden]),
   .hlc-compare tbody tr,
   .hlc-column-tab,
   .hlc-field input,
@@ -2608,6 +3163,10 @@
   .hlc-bank-detail-arrow,
   .hlc-show-more-arrow {
     transition-duration: 0.01ms !important;
+  }
+
+  .hlc-apply-dock:not([hidden]) {
+    animation: none;
   }
 
   .hlc-bank-detail:hover .hlc-bank-detail-arrow,
@@ -2653,40 +3212,4 @@
 .explore-banks-page .shroffin-to-top:hover,
 .explore-banks-page .shroffin-to-top:focus-visible {
   background: var(--hlc-nav-bg-solid);
-}
-
-/* HLC_TESTING_MODE — remove this block when UX is re-enabled */
-.hlc-testing-mode .hlc-title,
-.hlc-testing-mode .hlc-lead,
-.hlc-testing-mode .hlc-panel--inputs .hlc-section-title,
-.hlc-testing-mode .hlc-inputs-card {
-  animation: none;
-  opacity: 1;
-  transform: none;
-}
-
-.hlc-testing-mode .hlc-results-shell,
-.hlc-testing-mode .hlc-results-shell.is-visible {
-  opacity: 1;
-  transition: none;
-}
-
-.hlc-testing-mode .hlc-searching,
-.hlc-testing-mode .hlc-searching.is-visible {
-  transition: none;
-}
-
-.hlc-testing-mode .hlc-searching-dots span {
-  animation: none;
-  opacity: 0.55;
-}
-
-.hlc-testing-mode .hlc-compare td.hlc-cell-delta::after {
-  animation: none;
-  opacity: 0;
-}
-
-.hlc-testing-mode .hlc-form-more-panel,
-.hlc-testing-mode .hlc-coapplicant-fields {
-  transition: none !important;
 }

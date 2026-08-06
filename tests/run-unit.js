@@ -1135,6 +1135,29 @@ async function testHomeLoanCompare() {
     'later charge shows minimum and maximum below the main value'
   );
   ok(cappedCharge.details.indexOf('GST extra') >= 0, 'later charge shows GST when applicable');
+  var panelFee = compare.buildFeeTableEntries('Documentation charges', [
+    {
+      charge_name: 'Documentation charges',
+      fixed_amount: 500,
+      charge_unit: 'Instance',
+      gst_applicable: 'Yes'
+    }
+  ]);
+  ok(
+    panelFee.entries[0].amount === '₹500*' &&
+      panelFee.entries[0].gstApplicable === true &&
+      panelFee.entries[0].meta.indexOf('GST') === -1,
+    'side panel marks GST with * on the amount instead of repeating GST extra'
+  );
+  var metaOnly = compare.formatChargeMetaLine({
+    fixed_amount: 500,
+    charge_unit: 'Instance',
+    gst_applicable: 'Yes'
+  });
+  ok(
+    metaOnly.indexOf('GST') === -1 && metaOnly.indexOf('Per instance') >= 0,
+    'side panel meta line keeps unit/basis and leaves GST to the shared footnote'
+  );
   var compactBounceCharge = compare.formatChargeDisplay(
     {
       fixed_amount: 500,

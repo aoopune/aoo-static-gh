@@ -45,7 +45,7 @@ This notice explains how Shroffin collects, uses, stores, shares, and protects y
 | Brand | Shroffin |
 | Website | [shroffin.com](https://shroffin.com) |
 | What we do | Independent home-loan comparison and application assistance. We are not a bank, NBFC, or lender. We do not approve, sanction, or disburse loans. |
-| Operator | Operated by Yash from India. A separate company has not yet been incorporated. For Indian data protection law, we act as the Data Fiduciary for personal data we decide how to use. |
+| Operator | Operated by Yash Jangid from India. A separate company has not yet been incorporated. For Indian data protection law, we act as the Data Fiduciary for personal data we decide how to use. |
 | Contact | [support@shroffin.com](mailto:support@shroffin.com) · [+91 91123 34367](tel:+919112334367) |
 
 Loan agreements are only between you and the bank or lender you choose.
@@ -179,7 +179,7 @@ Until a separate Data Protection Officer is formally appointed (if required), pr
 
 |  |  |
 | --- | --- |
-| Name | Yash |
+| Name | Yash Jangid |
 | Role | Operator / privacy contact for Shroffin |
 | Email | [support@shroffin.com](mailto:support@shroffin.com) |
 | Phone | [+91 91123 34367](tel:+919112334367) |

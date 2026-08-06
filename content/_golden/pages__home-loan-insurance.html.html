@@ -18,8 +18,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="../css/shroffin-shell.css?v=hero-space-1">
-  <link rel="stylesheet" href="../css/shroffin-guide.css?v=page-fade-3">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=breathe-1">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=page-fade-4">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=strip-flush-1">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -220,6 +220,7 @@
       </div>
     </nav>
     <!-- SHROFFIN_GUIDE_LOCALNAV_END -->
+    <div class="guide-swap" id="guide-swap">
 
     <header class="guide-hero guide-hero--media guide-hero--media-pods">
       <picture>
@@ -369,7 +370,8 @@
         Education only. Your Certificate of Insurance or Policy Schedule wins.
       </p>
     </div>
-  </main>
+      </div>
+</main>
 
   <!-- SHROFFIN_FOOTER_START -->
   <aside class="site-help-strip" aria-label="Get help">
@@ -466,52 +468,9 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script>
-    (function () {
-      var moments = document.querySelectorAll('.guide-moment');
-      if (!moments.length) return;
-
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-      if (reduce.matches || !('IntersectionObserver' in window)) {
-        moments.forEach(function (el) {
-          el.classList.add('is-in');
-        });
-        return;
-      }
-
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add('is-in');
-            observer.unobserve(entry.target);
-          });
-        },
-        { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
-      );
-
-      moments.forEach(function (el) {
-        observer.observe(el);
-      });
-    })();
-  </script>
-
-  <script>
-    (function () {
-      var list = document.querySelector('.localnav-list');
-      var current = list && list.querySelector('.localnav-link[aria-current="page"]');
-      if (!list || !current) return;
-      list.scrollLeft = 0;
-      if (list.scrollWidth <= list.clientWidth) return;
-      var listLeft = list.getBoundingClientRect().left;
-      var cur = current.getBoundingClientRect();
-      var pad = 12;
-      if (cur.right > listLeft + list.clientWidth - pad) {
-        list.scrollLeft = Math.max(0, current.offsetLeft + current.offsetWidth - list.clientWidth + pad);
-      }
-    })();
-  </script>
-  <script src="../js/shroffin-nav.js?v=sel-13"></script>
-  <script src="../js/shroffin-guide.js?v=strip-ln-7"></script>
+  <script src="../js/guide-page-overview.js?v=soft-1"></script>
+  <script src="../js/shroffin-nav.js?v=sel-17"></script>
+  <script src="../js/shroffin-guide.js?v=soft-1"></script>
+  <script src="../js/shroffin-guide-soft-nav.js?v=soft-1"></script>
 </body>
 </html>

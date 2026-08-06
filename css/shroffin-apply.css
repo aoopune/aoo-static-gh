@@ -5,6 +5,12 @@
   color: var(--shroffin-ink, #1d1d1f);
   font-family: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
   min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hl-apply-page > .hl-apply {
+  flex: 1 0 auto;
 }
 
 .hl-apply {

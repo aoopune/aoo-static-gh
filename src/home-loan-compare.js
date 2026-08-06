@@ -4,16 +4,6 @@ const { Engine } = require("json-rules-engine");
 
 const DATA_URL = "../data/home-loans-compare.json";
 const MATCH_DEBOUNCE_MS = 280;
-/** HLC_TESTING_MODE — when true (via data-hlc-testing / .hlc-testing-mode), skip UX delays. */
-function isHlcTestingMode(root) {
-  if (!root) return false;
-  return (
-    root.hasAttribute("data-hlc-testing") ||
-    (typeof document !== "undefined" &&
-      document.body &&
-      document.body.classList.contains("hlc-testing-mode"))
-  );
-}
 const INITIAL_VISIBLE_BANKS = 10;
 const DEFAULT_PURPOSE = "Regular Home Loan";
 const DEFAULT_FOIR_PCT = 55;
@@ -130,6 +120,10 @@ const RATE_CHANGE_REPRICING_MEANING_NOTE =
   "° Repricing here means moving from a higher rate to a lower rate on the same rate type — not Floating ➔ Fixed.";
 /** Shared column notes (frequency / unit / basis / GST). Bank remarks use RATE_CHANGE_BANK_MARKERS. */
 const RATE_CHANGE_COMMON_MARKER = "°";
+/** Side-panel / column note body — amounts marked * / ° / ^ point here. */
+const GST_APPLICABLE_NOTE = "GST applicable.";
+/** Side-panel fee rows: mark with * and explain once under the list (not “GST extra” on every row). */
+const GST_APPLICABLE_FOOTNOTE = "* " + GST_APPLICABLE_NOTE;
 /** One stable marker per bank — must not reuse * ‡ ^ † § ◊ °. */
 const RATE_CHANGE_BANK_MARKERS = {
   "hdfc bank": "⁕",
@@ -2638,7 +2632,18 @@ function formatChargeAmountHeadline(charge) {
   return "See bank rule";
 }
 
-/** Short supporting line: basis, unit, min/max, GST. */
+function chargeGstApplicable(charge) {
+  return normalizeText(charge && charge.gst_applicable) === "yes";
+}
+
+/** Append * when GST applies; footnote text lives under the fee list. */
+function withGstAsterisk(amount, hasGst) {
+  const text = String(amount || "").trim();
+  if (!text || !hasGst) return text;
+  return text.charAt(text.length - 1) === "*" ? text : text + "*";
+}
+
+/** Short supporting line: basis, unit, min/max (GST uses * + shared footnote). */
 function formatChargeMetaLine(charge, options) {
   if (!charge) return "";
   const settings = options || {};
@@ -2662,9 +2667,6 @@ function formatChargeMetaLine(charge, options) {
     Number.isFinite(Number(charge.charge_max))
   ) {
     parts.push("Max " + formatInr(Number(charge.charge_max)));
-  }
-  if (normalizeText(charge.gst_applicable) === "yes") {
-    parts.push("GST extra");
   }
   if (normalizeText(charge.actuals_in_addition_to_charge) === "yes") {
     parts.push("+ Actual expenses");
@@ -2806,24 +2808,20 @@ function tryMergeFixedAndPercentage(charges) {
   const fixedPrimary = formatEncodedChargeNote(fixed.note_1);
   const pctPrimary = formatEncodedChargeNote(pct.note_1);
   if (fixedPrimary !== pctPrimary) return null;
+  const hasGst = chargeGstApplicable(fixed) || chargeGstApplicable(pct);
   return {
     entries: [
       {
         what: fixed.charge_name || pct.charge_name || "Charge",
-        amount:
+        amount: withGstAsterisk(
           formatChargeAmountHeadline(fixed) +
-          " or " +
-          formatChargeAmountHeadline(pct),
-        meta: uniqueStrings([
-          normalizeText(fixed.gst_applicable) === "yes" ||
-          normalizeText(pct.gst_applicable) === "yes"
-            ? "GST extra"
-            : "",
-          "Whichever applies as per bank rule"
-        ])
-          .filter(Boolean)
-          .join(" · "),
-        hint: ""
+            " or " +
+            formatChargeAmountHeadline(pct),
+          hasGst
+        ),
+        meta: "Whichever applies as per bank rule",
+        hint: "",
+        gstApplicable: hasGst
       }
     ],
     notes: uniqueStrings(
@@ -2917,11 +2915,16 @@ function buildFeeTableEntries(name, charges) {
       return {
         entries: slabs.map(function (charge) {
           const band = formatChargeSlabBand(charge) || "Range";
+          const hasGst = chargeGstApplicable(charge);
           return {
             what: name + " · " + band,
-            amount: formatChargeAmountHeadline(charge),
+            amount: withGstAsterisk(
+              formatChargeAmountHeadline(charge),
+              hasGst
+            ),
             meta: formatChargeMetaLine(charge, { hideBasis: true }),
-            hint: basisLabel
+            hint: basisLabel,
+            gstApplicable: hasGst
           };
         }),
         notes: uniqueStrings(
@@ -2937,13 +2940,15 @@ function buildFeeTableEntries(name, charges) {
 
   if (list.length === 1) {
     const charge = list[0];
+    const hasGst = chargeGstApplicable(charge);
     return {
       entries: [
         {
           what: name,
-          amount: formatChargeAmountHeadline(charge),
+          amount: withGstAsterisk(formatChargeAmountHeadline(charge), hasGst),
           meta: formatChargeMetaLine(charge),
-          hint: ""
+          hint: "",
+          gstApplicable: hasGst
         }
       ],
       notes: collectChargeNotes(charge)
@@ -2959,11 +2964,13 @@ function buildFeeTableEntries(name, charges) {
   return {
     entries: list.map(function (charge) {
       const when = chargeWhenLabel(charge);
+      const hasGst = chargeGstApplicable(charge);
       return {
         what: when ? name + " · " + when : name,
-        amount: formatChargeAmountHeadline(charge),
+        amount: withGstAsterisk(formatChargeAmountHeadline(charge), hasGst),
         meta: formatChargeMetaLine(charge),
-        hint: ""
+        hint: "",
+        gstApplicable: hasGst
       };
     }),
     notes: uniqueStrings(
@@ -3078,6 +3085,10 @@ function buildFeeSectionsFromMatched(matchedCharges, categorize) {
     })
     .map(function (section) {
       section.notes = uniqueStrings(section.notes);
+      const anyGst = section.entries.some(function (entry) {
+        return entry.gstApplicable;
+      });
+      if (anyGst) section.notes.push(GST_APPLICABLE_FOOTNOTE);
       section.entries.sort(function (a, b) {
         return String(a.what).localeCompare(String(b.what), "en", {
           sensitivity: "base"
@@ -3840,9 +3851,6 @@ function initPage() {
   const root = document.querySelector("[data-hlc-root]");
   if (!root) return;
 
-  const HLC_TESTING = isHlcTestingMode(root);
-  const matchDebounceMs = HLC_TESTING ? 0 : MATCH_DEBOUNCE_MS;
-
   const state = {
     dataset: null,
     engine: createMatchEngine(),
@@ -3896,6 +3904,8 @@ function initPage() {
     scroll: document.getElementById("hlc-table-scroll"),
     applyBar: document.getElementById("hlc-apply-bar"),
     applyBtn: document.getElementById("hlc-apply-btn"),
+    applyDock: document.getElementById("hlc-apply-dock"),
+    applyDockBtn: document.getElementById("hlc-apply-dock-btn"),
     drawer: document.getElementById("hlc-drawer"),
     drawerBackdrop: document.getElementById("hlc-drawer-backdrop"),
     drawerTitle: document.getElementById("hlc-drawer-title"),
@@ -3907,14 +3917,19 @@ function initPage() {
     paddleRight: document.getElementById("hlc-paddle-right"),
     chargesNote: document.getElementById("hlc-charges-note"),
     showMoreBtn: document.getElementById("hlc-show-more"),
-    selectHint: document.getElementById("hlc-select-hint")
+    filtersControl: document.getElementById("hlc-filters-control"),
+    filtersToggle: document.getElementById("hlc-filters-toggle"),
+    filtersPanel: document.getElementById("hlc-filters-panel"),
+    filtersBadge: document.getElementById("hlc-filters-badge")
   };
 
-  function revealResultsShell() {
-    const shell = document.getElementById("hlc-results-shell");
-    if (!shell) return;
-    shell.hidden = false;
-    shell.classList.add("is-visible");
+  var exploreMobileMq =
+    typeof window.matchMedia === "function"
+      ? window.matchMedia("(max-width: 833px)")
+      : null;
+
+  function isExploreMobile() {
+    return Boolean(exploreMobileMq && exploreMobileMq.matches);
   }
 
   function syncFoirFace() {
@@ -3931,16 +3946,8 @@ function initPage() {
     return bankName + (isSelected ? ", selected" : ", tap to select");
   }
 
-  function updateSelectHint(hasRows) {
-    if (!el.selectHint) return;
-    if (!hasRows) {
-      el.selectHint.hidden = true;
-      el.selectHint.classList.add("is-dismissed");
-      return;
-    }
-    el.selectHint.hidden = false;
-    el.selectHint.classList.remove("is-dismissed");
-    el.selectHint.setAttribute("aria-hidden", "false");
+  function applyOnceLabel() {
+    return "Apply once";
   }
 
   function readQuery() {
@@ -4163,6 +4170,7 @@ function initPage() {
       const selected = btn.getAttribute("data-rate-type") === rate;
       btn.setAttribute("aria-pressed", selected ? "true" : "false");
     });
+    updateFiltersBadge();
   }
 
   function setPrepaymentMethod(method) {
@@ -4198,6 +4206,7 @@ function initPage() {
       const selected = btn.getAttribute("data-facility-type") === facility;
       btn.setAttribute("aria-pressed", selected ? "true" : "false");
     });
+    updateFiltersBadge();
   }
 
   function setBankType(value) {
@@ -4207,6 +4216,165 @@ function initPage() {
       const selected = btn.getAttribute("data-bank-type") === bankType;
       btn.setAttribute("aria-pressed", selected ? "true" : "false");
     });
+    updateFiltersBadge();
+  }
+
+  function countActiveProductFilters(filters) {
+    const f = filters || defaultProductFilters();
+    let count = 0;
+    if (f.govtPsu) count += 1;
+    if (f.womenApplicant) count += 1;
+    if (f.greenHome) count += 1;
+    if (f.insurance) count += 1;
+    if (f.fixedRate) count += 1;
+    if (f.overdraft) count += 1;
+    if (normalizeBankType(f.bankType) !== DEFAULT_BANK_TYPE) count += 1;
+    return count;
+  }
+
+  function updateFiltersBadge() {
+    if (!el.filtersBadge) return;
+    const count = countActiveProductFilters(state.productFilters);
+    if (count > 0) {
+      el.filtersBadge.textContent = String(count);
+      el.filtersBadge.removeAttribute("hidden");
+      el.filtersBadge.setAttribute(
+        "aria-label",
+        count === 1 ? "1 filter active" : count + " filters active"
+      );
+    } else {
+      el.filtersBadge.textContent = "";
+      el.filtersBadge.setAttribute("hidden", "");
+      el.filtersBadge.removeAttribute("aria-label");
+    }
+  }
+
+  function isFiltersOpen() {
+    return Boolean(
+      (el.filtersControl && el.filtersControl.classList.contains("is-open")) ||
+        (el.filtersPanel && el.filtersPanel.classList.contains("is-open"))
+    );
+  }
+
+  function clearMobileFiltersPosition() {
+    if (!el.filtersPanel) return;
+    el.filtersPanel.style.top = "";
+    el.filtersPanel.style.right = "";
+    el.filtersPanel.style.left = "";
+    el.filtersPanel.style.bottom = "";
+    el.filtersPanel.style.width = "";
+    el.filtersPanel.style.maxHeight = "";
+  }
+
+  function positionMobileFiltersPanel() {
+    if (!el.filtersPanel || !el.filtersToggle || !isExploreMobile()) {
+      clearMobileFiltersPosition();
+      return;
+    }
+
+    var heading = el.filtersToggle.closest(".hlc-results-heading");
+    var anchor = (heading || el.filtersToggle).getBoundingClientRect();
+    var toggleRect = el.filtersToggle.getBoundingClientRect();
+    var gutter = 12;
+    var gap = 8;
+    var width = Math.min(276, window.innerWidth - gutter * 2);
+    var right = Math.max(gutter, Math.round(window.innerWidth - toggleRect.right));
+    if (toggleRect.right - width < gutter) {
+      right = gutter;
+    }
+
+    var top = Math.round(anchor.bottom + gap);
+    var spaceBelow = Math.max(140, window.innerHeight - top - gutter);
+
+    el.filtersPanel.style.top = top + "px";
+    el.filtersPanel.style.right = right + "px";
+    el.filtersPanel.style.left = "auto";
+    el.filtersPanel.style.bottom = "auto";
+    el.filtersPanel.style.width = Math.round(width) + "px";
+    el.filtersPanel.style.maxHeight = Math.round(Math.min(spaceBelow, window.innerHeight * 0.48, 320)) + "px";
+  }
+
+  function setFiltersOpen(open) {
+    if (!el.filtersPanel) return;
+    const next = Boolean(open);
+    const reduceMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Desktop keeps the left filter rail always open.
+    if (!isExploreMobile()) {
+      clearMobileFiltersPosition();
+      el.filtersPanel.removeAttribute("hidden");
+      el.filtersPanel.classList.remove("is-open");
+      if (el.filtersControl) el.filtersControl.classList.remove("is-open");
+      if (el.filtersToggle) el.filtersToggle.setAttribute("aria-expanded", "true");
+      return;
+    }
+
+    if (!el.filtersToggle || !el.filtersControl) return;
+
+    if (next) {
+      el.filtersPanel.removeAttribute("hidden");
+      positionMobileFiltersPanel();
+      if (reduceMotion) {
+        el.filtersControl.classList.add("is-open");
+        el.filtersPanel.classList.add("is-open");
+      } else {
+        requestAnimationFrame(function () {
+          positionMobileFiltersPanel();
+          el.filtersControl.classList.add("is-open");
+          el.filtersPanel.classList.add("is-open");
+        });
+      }
+      el.filtersToggle.setAttribute("aria-expanded", "true");
+      return;
+    }
+
+    el.filtersControl.classList.remove("is-open");
+    el.filtersPanel.classList.remove("is-open");
+    el.filtersToggle.setAttribute("aria-expanded", "false");
+
+    if (reduceMotion || el.filtersPanel.hasAttribute("hidden")) {
+      el.filtersPanel.setAttribute("hidden", "");
+      clearMobileFiltersPosition();
+      return;
+    }
+
+    var finished = false;
+    function finishClose() {
+      if (finished) return;
+      finished = true;
+      el.filtersPanel.removeEventListener("transitionend", onEnd);
+      if (!isFiltersOpen()) {
+        el.filtersPanel.setAttribute("hidden", "");
+        clearMobileFiltersPosition();
+      }
+    }
+    function onEnd(event) {
+      if (event.target !== el.filtersPanel) return;
+      if (event.propertyName !== "opacity" && event.propertyName !== "transform") return;
+      finishClose();
+    }
+    el.filtersPanel.addEventListener("transitionend", onEnd);
+    window.setTimeout(finishClose, 950);
+  }
+
+  function syncFiltersForViewport() {
+    if (!el.filtersPanel) return;
+    if (!isExploreMobile()) {
+      clearMobileFiltersPosition();
+      setFiltersOpen(true);
+      return;
+    }
+    if (!isFiltersOpen()) {
+      el.filtersPanel.classList.remove("is-open");
+      el.filtersPanel.setAttribute("hidden", "");
+      clearMobileFiltersPosition();
+      if (el.filtersControl) el.filtersControl.classList.remove("is-open");
+      if (el.filtersToggle) el.filtersToggle.setAttribute("aria-expanded", "false");
+    } else {
+      positionMobileFiltersPanel();
+    }
   }
 
   function bindFormattedInput(input) {
@@ -4312,12 +4480,15 @@ function initPage() {
 
   function updateShowMoreButton(totalRows, visibleRows) {
     if (!el.showMoreBtn) return;
+    const wrap = el.showMoreBtn.closest(".hlc-show-more-wrap");
     const hidden = totalRows - visibleRows;
     if (hidden <= 0 || state.showAllBanks) {
       el.showMoreBtn.hidden = true;
+      if (wrap) wrap.hidden = true;
       return;
     }
     el.showMoreBtn.hidden = false;
+    if (wrap) wrap.hidden = false;
     const label = el.showMoreBtn.querySelector(".hlc-show-more-label");
     const text =
       "Show " + hidden + " more bank" + (hidden === 1 ? "" : "s");
@@ -4493,7 +4664,6 @@ function initPage() {
         '">No banks matched these inputs. Try a different income, property agreement value, age, CIBIL score, purpose, or filters.</td></tr>';
       state.cellSnapshot = nextSnapshot;
       updateShowMoreButton(0, 0);
-      updateSelectHint(false);
       updateApplyBar();
       return;
     }
@@ -4594,7 +4764,6 @@ function initPage() {
 
     state.cellSnapshot = nextSnapshot;
     updateShowMoreButton(rows.length, visibleRows.length);
-    updateSelectHint(rows.length > 0);
     updateApplyBar();
   }
 
@@ -4668,9 +4837,7 @@ function initPage() {
         }
         if (hasGst) {
           prepaymentNotes.push(
-            escapeHtml(
-              "* GST is added where the lender marks it as applicable."
-            )
+            escapeHtml("* " + GST_APPLICABLE_NOTE)
           );
         }
       }
@@ -4725,8 +4892,7 @@ function initPage() {
       if (hasRateChangeGst) {
         rateChangeNotes.push(
           escapeHtml(
-            RATE_CHANGE_COMMON_MARKER +
-              " GST is added where the lender marks it as applicable."
+            RATE_CHANGE_COMMON_MARKER + " " + GST_APPLICABLE_NOTE
           )
         );
       }
@@ -4813,9 +4979,7 @@ function initPage() {
       }
       if (hasEmiGst) {
         emiGroupNotes.push(
-          escapeHtml(
-            "^ GST is added where the lender marks it as applicable."
-          )
+          escapeHtml("^ " + GST_APPLICABLE_NOTE)
         );
       }
       emiGroupNotes.push.apply(emiGroupNotes, emiNotes);
@@ -4891,10 +5055,38 @@ function initPage() {
     el.chargesNote.innerHTML = noteHtml || "";
   }
 
+  var tableInView = false;
+
   function updateApplyBar() {
     const count = state.selected.size;
+    const hasRows = !!(state.rows && state.rows.length);
+    const label = applyOnceLabel();
     el.applyBtn.disabled = count === 0;
-    el.applyBtn.textContent = "Apply";
+    el.applyBtn.textContent = label;
+    el.applyBtn.setAttribute(
+      "aria-label",
+      count === 0
+        ? "Apply once — select banks first"
+        : "Apply once to " + count + (count === 1 ? " bank" : " banks")
+    );
+    if (el.applyDockBtn) {
+      el.applyDockBtn.disabled = count === 0;
+      el.applyDockBtn.textContent = label;
+      el.applyDockBtn.setAttribute("aria-label", el.applyBtn.getAttribute("aria-label"));
+    }
+    if (el.applyDock) {
+      var resultsShell = document.getElementById("hlc-results-shell");
+      // Floating Apply once is mobile-only. Desktop keeps the header button.
+      var showDock = Boolean(
+        isExploreMobile() &&
+          resultsShell &&
+          !resultsShell.hidden &&
+          hasRows &&
+          tableInView
+      );
+      el.applyDock.hidden = !showDock;
+      document.body.classList.toggle("hlc-apply-dock-open", showDock);
+    }
   }
 
   function showDrawer(title, subtitle, bodyHtml) {
@@ -5654,10 +5846,9 @@ function initPage() {
     state.rows = await matchOffers(state.dataset, query, state.engine);
     applyPrepaymentMethodToRows(state.rows, state.prepaymentMethod);
     applyRateChangeMethodToRows(state.rows, state.rateChangeMethod);
-    if (HLC_TESTING) state.showAllBanks = true;
+    state.showAllBanks = false;
     root.setAttribute("aria-busy", "false");
-    renderTable({ highlightDeltas: !HLC_TESTING });
-    if (HLC_TESTING) revealResultsShell();
+    renderTable({ highlightDeltas: true });
   }
 
   function setSoftMissInput(input, on) {
@@ -5824,7 +6015,7 @@ function initPage() {
       };
       if (fade) withResultsFade(run, "rows");
       else run();
-    }, matchDebounceMs);
+    }, MATCH_DEBOUNCE_MS);
   }
 
   function toggleSelect(id) {
@@ -5857,10 +6048,63 @@ function initPage() {
     });
   });
 
-  if (el.showMoreBtn) {
-    el.showMoreBtn.addEventListener("click", function () {
+  function prefersReducedMotion() {
+    return (
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }
+
+  function expandAllBanks() {
+    if (state.showAllBanks) return;
+
+    const wrap =
+      (el.showMoreBtn && el.showMoreBtn.closest(".hlc-table-wrap")) ||
+      (el.scroll && el.scroll.closest(".hlc-table-wrap"));
+
+    if (!wrap || prefersReducedMotion()) {
       state.showAllBanks = true;
       renderTable();
+      return;
+    }
+
+    const fromHeight = Math.round(wrap.getBoundingClientRect().height);
+    wrap.style.height = fromHeight + "px";
+    wrap.style.overflow = "hidden";
+    wrap.classList.add("is-expanding-banks");
+
+    state.showAllBanks = true;
+    renderTable();
+
+    const toHeight = Math.round(wrap.scrollHeight);
+    void wrap.offsetHeight;
+
+    requestAnimationFrame(function () {
+      wrap.style.height = toHeight + "px";
+    });
+
+    let finished = false;
+    function finishExpand() {
+      if (finished) return;
+      finished = true;
+      wrap.removeEventListener("transitionend", onExpandEnd);
+      wrap.classList.remove("is-expanding-banks");
+      wrap.style.height = "";
+      wrap.style.overflow = "";
+    }
+
+    function onExpandEnd(event) {
+      if (event.target !== wrap || event.propertyName !== "height") return;
+      finishExpand();
+    }
+
+    wrap.addEventListener("transitionend", onExpandEnd);
+    window.setTimeout(finishExpand, 1800);
+  }
+
+  if (el.showMoreBtn) {
+    el.showMoreBtn.addEventListener("click", function () {
+      expandAllBanks();
     });
   }
 
@@ -5873,9 +6117,62 @@ function initPage() {
       const next = btn.getAttribute("aria-pressed") !== "true";
       btn.setAttribute("aria-pressed", next ? "true" : "false");
       state.productFilters[key] = next;
+      updateFiltersBadge();
       scheduleMatch({ fade: true });
     });
   });
+
+  if (el.filtersToggle && el.filtersControl && el.filtersPanel) {
+    el.filtersToggle.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!isExploreMobile()) return;
+      setFiltersOpen(!isFiltersOpen());
+    });
+
+    document.addEventListener("click", function (event) {
+      if (!isExploreMobile() || !isFiltersOpen()) return;
+      if (el.filtersControl.contains(event.target)) return;
+      if (el.filtersPanel.contains(event.target)) return;
+      setFiltersOpen(false);
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape") return;
+      if (!isExploreMobile() || !isFiltersOpen()) return;
+      setFiltersOpen(false);
+      el.filtersToggle.focus();
+    });
+
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!isExploreMobile() || !isFiltersOpen()) return;
+        positionMobileFiltersPanel();
+      },
+      true
+    );
+
+    window.addEventListener("resize", function () {
+      if (!isExploreMobile() || !isFiltersOpen()) return;
+      positionMobileFiltersPanel();
+    });
+  }
+
+  syncFiltersForViewport();
+  if (exploreMobileMq) {
+    if (typeof exploreMobileMq.addEventListener === "function") {
+      exploreMobileMq.addEventListener("change", function () {
+        syncFiltersForViewport();
+        updateApplyBar();
+      });
+    } else if (typeof exploreMobileMq.addListener === "function") {
+      exploreMobileMq.addListener(function () {
+        syncFiltersForViewport();
+        updateApplyBar();
+      });
+    }
+  }
 
   const occupationPills = document.querySelector(".hlc-occupation-pills");
   if (occupationPills) {
@@ -6082,6 +6379,7 @@ function initPage() {
         state.productFilters[key] ? "true" : "false"
       );
     });
+    updateFiltersBadge();
   }
 
   function persistExploreDraft() {
@@ -6226,7 +6524,7 @@ function initPage() {
 
   function saveApplyPacketAndGo() {
     if (!state.selected.size) {
-      showToast("Select at least one bank to apply.");
+      showToast("Select at least one bank to apply once.");
       return;
     }
     persistExploreDraft();
@@ -6247,6 +6545,11 @@ function initPage() {
   el.applyBtn.addEventListener("click", function () {
     saveApplyPacketAndGo();
   });
+  if (el.applyDockBtn) {
+    el.applyDockBtn.addEventListener("click", function () {
+      saveApplyPacketAndGo();
+    });
+  }
 
   try {
     var applyReturnMsg = window.sessionStorage.getItem("shroffin_hl_apply_msg");
@@ -6265,6 +6568,40 @@ function initPage() {
 
   restoreExploreDraft();
   syncFoirFace();
+  updateFiltersBadge();
+
+  var resultsShellEl = document.getElementById("hlc-results-shell");
+  if (resultsShellEl) {
+    new MutationObserver(function () {
+      updateApplyBar();
+    }).observe(resultsShellEl, { attributes: true, attributeFilter: ["hidden"] });
+  }
+
+  var tableSight =
+    (el.scroll && el.scroll.closest(".hlc-compare-table-area")) ||
+    document.querySelector(".hlc-compare-table-area") ||
+    document.querySelector(".hlc-table-wrap");
+  if (tableSight && typeof IntersectionObserver === "function") {
+    new IntersectionObserver(
+      function (entries) {
+        var entry = entries[0];
+        // Table must be meaningfully on screen (header + bank rows),
+        // not a sliver while the inputs are still the main view.
+        tableInView = Boolean(
+          entry &&
+            entry.isIntersecting &&
+            entry.intersectionRatio >= 0.18
+        );
+        updateApplyBar();
+      },
+      {
+        threshold: [0, 0.1, 0.18, 0.3, 0.5],
+        rootMargin: "0px 0px -18% 0px"
+      }
+    ).observe(tableSight);
+  } else {
+    tableInView = true;
+  }
 
   window.addEventListener("pageshow", function (event) {
     if (!event.persisted) return;
@@ -6435,6 +6772,7 @@ module.exports = {
   formatChargeBasis,
   formatChargeAmountHeadline,
   formatChargeMetaLine,
+  buildFeeTableEntries,
   buildChargePanelBlock,
   buildChargePanelVariant,
   listSchemeChargePanelSections,

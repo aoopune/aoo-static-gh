@@ -1,0 +1,655 @@
+/**
+ * Preview / home chrome only. Product UI lives in _product-demo-frame.html (iframe).
+ *
+ * Feel: a Mac desktop (blue wallpaper) with one app window sitting on it —
+ * traffic lights + title bar — demo playing inside. YC-style: frame only on home.
+ */
+.spd-section {
+  --spd-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --spd-desktop: #4a6278;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(3rem, 7vw, 5rem);
+  background:
+    radial-gradient(110% 70% at 50% -20%, rgba(0, 113, 227, 0.04), transparent 55%),
+    var(--shroffin-surface, #fcfcfd);
+  font-family: var(--shroffin-font, "Google Sans Flex", "Segoe UI", Arial, sans-serif);
+  color: var(--shroffin-ink, #1d1d1f);
+}
+
+/* Home: product frame sits just under the CTAs (hero owns the gap above). */
+.spd-section--home {
+  padding: 0 0 clamp(2.75rem, 7vw, 4.5rem);
+  background: #f5f7f9;
+}
+
+.spd-section-inner {
+  width: min(1180px, calc(100% - 1.5rem));
+  margin-inline: auto;
+}
+
+/* Cursor-style: large outer stage, near full content width */
+.spd-section--home .spd-section-inner {
+  width: min(1400px, calc(100% - clamp(0.75rem, 2.5vw, 1.5rem)));
+}
+
+.spd-eyebrow {
+  margin: 0 0 0.65rem;
+  color: var(--shroffin-muted, #6e6e73);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.spd-heading {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.spd-lede {
+  margin: 0 0 1.75rem;
+  max-width: 36em;
+  color: var(--shroffin-muted, #6e6e73);
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+}
+
+/*
+ * Mac desktop hug: height is set by fit() from the window + rim.
+ * Rim: 60px top/bottom, 130px left/right. Wallpaper = landscape photo.
+ */
+.spd-stage {
+  --spd-margin-y: 60px;
+  --spd-margin-x: 130px;
+  --spd-window-radius: 12px; /* same corner as .spd-window */
+  --spd-outer-radius: calc(var(--spd-window-radius) * var(--spd-scale, 0.5));
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  /* Reserve space before chrome.js fit() — default scale matches --spd-scale fallback. */
+  min-height: calc(760px * var(--spd-scale, 0.5) + var(--spd-margin-y) * 2);
+  margin: 0 auto;
+  /* Same visible roundness as the scaled window (not larger) */
+  border-radius: var(--spd-outer-radius);
+  overflow: hidden;
+  isolation: isolate;
+  background-color: #c9956e; /* soft fallback while image loads */
+  background-image: url("../media/demos/product-demo-desktop.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow:
+    0 1px 2px rgba(29, 29, 31, 0.05),
+    0 32px 72px rgba(55, 75, 100, 0.22);
+}
+
+/*
+ * Slot = real layout size after scale (so wallpaper shows evenly around).
+ * Window = fixed 1640×760 canvas (wide enough for live filter hang + full
+ * table width), scaled from top-left into that slot.
+ */
+.spd-stage-scaler {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spd-margin-y) var(--spd-margin-x);
+  box-sizing: border-box;
+}
+
+.spd-window-slot {
+  position: relative;
+  width: calc(1640px * var(--spd-scale, 0.5));
+  height: calc(760px * var(--spd-scale, 0.5));
+  flex: 0 0 auto;
+}
+
+.spd-window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1640px;
+  height: 760px;
+  transform-origin: top left;
+  transform: scale(var(--spd-scale, 0.5));
+  border-radius: var(--spd-window-radius, 12px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #fcfcfd;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.18),
+    0 28px 64px rgba(0, 0, 0, 0.32),
+    0 10px 28px rgba(0, 0, 0, 0.16);
+  opacity: 0;
+  /* entrance: slight rise, then settle — scale already set by --spd-scale */
+  translate: 0 16px;
+  transition:
+    opacity 1.1s var(--spd-ease),
+    translate 1.45s var(--spd-ease);
+}
+
+.spd-window.is-ready {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.spd-titlebar {
+  position: relative;
+  flex: 0 0 auto;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  padding: 0 0.85rem;
+  border-bottom: 1px solid rgba(108, 128, 155, 0.12);
+  background: linear-gradient(180deg, #f6f6f7 0%, #ececef 100%);
+}
+
+.spd-traffic {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.spd-traffic span {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: #c8c8cc;
+  /* Soft grey fill + darker grey ring (same colour family, no red/yellow/green) */
+  box-shadow: 0 0 0 1.5px #8e8e93;
+}
+
+.spd-titlebar-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--shroffin-muted, #6e6e73);
+  font-size: 0.75rem;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.spd-frame {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  border: 0;
+  display: block;
+  background: #fcfcfd;
+  pointer-events: none;
+}
+
+/*
+ * Apple Watch–style play/pause: soft grey circle, dark glyph.
+ * Sits on the stage rim (bottom-left), not over the product UI.
+ */
+.spd-playback {
+  position: absolute;
+  left: clamp(0.75rem, 2.5vw, 1.25rem);
+  bottom: clamp(0.75rem, 2.5vw, 1.25rem);
+  z-index: 6;
+  box-sizing: border-box;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.spd-playback:hover {
+  background: #e8e8ed;
+}
+
+.spd-playback:focus-visible {
+  outline: 2px solid #0071e3;
+  outline-offset: 3px;
+}
+
+.spd-playback-icon {
+  display: none;
+  fill: currentColor;
+  flex: 0 0 auto;
+  pointer-events: none;
+}
+
+/* Playing → pause glyph; paused/ended → play glyph */
+.spd-playback[data-spd-state="playing"] .spd-playback-icon--pause,
+.spd-playback:not([data-spd-state]) .spd-playback-icon--pause {
+  display: block;
+}
+
+.spd-playback[data-spd-state="paused"] .spd-playback-icon--play,
+.spd-playback[data-spd-state="ended"] .spd-playback-icon--play {
+  display: block;
+}
+
+.spd-playback[data-spd-state="paused"] .spd-playback-icon--play,
+.spd-playback[data-spd-state="ended"] .spd-playback-icon--play {
+  /* Optical center: play triangle sits slightly left in the circle */
+  transform: translateX(1px);
+}
+
+.spd-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 833px) {
+  .spd-section-inner {
+    width: min(1120px, calc(100% - 1.5rem));
+  }
+
+  .spd-section--home .spd-section-inner {
+    width: min(1400px, calc(100% - 0.75rem));
+  }
+
+  /* Keep the same rim ratios on small screens (slightly tighter) */
+  .spd-stage {
+    --spd-margin-y: 32px;
+    --spd-margin-x: 64px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spd-window {
+    opacity: 1;
+    translate: 0 0;
+    transition: none;
+  }
+}
+
+/* ========== Mobile iPhone stage ========== */
+.spd-section--phone {
+  padding: clamp(2rem, 5vw, 3.5rem) 0 clamp(2.75rem, 7vw, 4.5rem);
+  background: #f5f7f9;
+}
+
+/* Home phone: sits just under CTAs (same family as Mac home frame) */
+.spd-section--home-phone {
+  padding: 0 0 clamp(2.75rem, 7vw, 4.5rem);
+  background: #f5f7f9;
+}
+
+.spd-section--phone .spd-section-inner {
+  width: min(720px, calc(100% - 1.5rem));
+}
+
+/* Home: one demo per viewport — Mac on tablet+, iPhone on phone */
+.spd-section--phone-only {
+  display: block;
+}
+
+.spd-section--desktop-only {
+  display: none;
+}
+
+@media (min-width: 834px) {
+  .spd-section--phone-only {
+    display: none;
+  }
+
+  .spd-section--desktop-only {
+    display: block;
+  }
+}
+
+.spd-stage--phone {
+  --spd-margin-y: 60px;
+  --spd-margin-x: 130px;
+  min-height: calc(
+    (844px + 28px) * var(--spd-scale, 0.5) + var(--spd-margin-y) * 2
+  );
+  /* Keep wallpaper clipped, but let side buttons sit in the rim */
+  overflow: hidden;
+}
+
+/*
+ * Real-device cues: titanium rim (not flat black slab), nested screen radius,
+ * side buttons, Dynamic Island on the glass, status bar + home indicator.
+ * Bezel scales with --spd-scale so chrome.js hug math stays true.
+ */
+.spd-phone {
+  --spd-phone-w: 390px;
+  --spd-phone-h: 844px;
+  /* --spd-bezel / radii are set in px by chrome.js fitPhone() */
+  --spd-bezel: 14px;
+  --spd-phone-r: 54px;
+  --spd-screen-r: 42px;
+  position: relative;
+  width: calc(var(--spd-phone-w) * var(--spd-scale, 0.5) + var(--spd-bezel) * 2);
+  height: calc(var(--spd-phone-h) * var(--spd-scale, 0.5) + var(--spd-bezel) * 2);
+  margin: 0 auto;
+  padding: var(--spd-bezel);
+  box-sizing: border-box;
+  border-radius: var(--spd-phone-r);
+  /* Titanium chassis — the padding ring IS the metal */
+  background:
+    linear-gradient(
+      165deg,
+      #c4c4ca 0%,
+      #6e6e76 10%,
+      #2e2e34 26%,
+      #141418 48%,
+      #3a3a42 70%,
+      #8a8a92 88%,
+      #d0d0d6 100%
+    );
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 2px 0 rgba(255, 255, 255, 0.42),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.5),
+    /* Soft depth only — do NOT paint a black inset over the titanium ring */
+    0 40px 80px rgba(0, 0, 0, 0.42),
+    0 16px 36px rgba(0, 0, 0, 0.24),
+    0 2px 6px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  translate: 0 16px;
+  transition:
+    opacity 1.1s var(--spd-ease),
+    translate 1.45s var(--spd-ease);
+}
+
+.spd-phone.is-ready {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* Antenna breaks — only in the metal ring, not across the screen */
+.spd-phone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 3;
+  background:
+    linear-gradient(#1a1a1e, #1a1a1e) left 0 top 72px / var(--spd-bezel) 1.5px no-repeat,
+    linear-gradient(#1a1a1e, #1a1a1e) right 0 top 72px / var(--spd-bezel) 1.5px no-repeat,
+    linear-gradient(#1a1a1e, #1a1a1e) left 0 bottom 72px / var(--spd-bezel) 1.5px no-repeat,
+    linear-gradient(#1a1a1e, #1a1a1e) right 0 bottom 72px / var(--spd-bezel) 1.5px no-repeat;
+  opacity: 0.65;
+}
+
+.spd-phone-btn {
+  position: absolute;
+  z-index: 4;
+  background: linear-gradient(90deg, #d0d0d6 0%, #4a4a52 42%, #9a9aa2 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.spd-phone-btn--silent {
+  left: -3px;
+  top: calc(108px * var(--spd-scale, 0.5));
+  width: 3px;
+  height: max(22px, calc(28px * var(--spd-scale, 0.5)));
+  border-radius: 1px 2px 2px 1px;
+}
+
+.spd-phone-btn--vol-up {
+  left: -5px;
+  top: calc(152px * var(--spd-scale, 0.5));
+  width: 5px;
+  height: max(40px, calc(54px * var(--spd-scale, 0.5)));
+  border-radius: 2px 3px 3px 2px;
+}
+
+.spd-phone-btn--vol-down {
+  left: -5px;
+  top: calc(216px * var(--spd-scale, 0.5));
+  width: 5px;
+  height: max(40px, calc(54px * var(--spd-scale, 0.5)));
+  border-radius: 2px 3px 3px 2px;
+}
+
+.spd-phone-btn--power {
+  right: -5px;
+  top: calc(184px * var(--spd-scale, 0.5));
+  width: 5px;
+  height: max(56px, calc(80px * var(--spd-scale, 0.5)));
+  border-radius: 3px 2px 2px 3px;
+  background: linear-gradient(270deg, #d0d0d6 0%, #4a4a52 42%, #9a9aa2 100%);
+}
+
+.spd-phone-screen {
+  position: relative;
+  z-index: 1;
+  width: calc(var(--spd-phone-w) * var(--spd-scale, 0.5));
+  height: calc(var(--spd-phone-h) * var(--spd-scale, 0.5));
+  border-radius: var(--spd-screen-r);
+  overflow: hidden;
+  background: #fcfcfd;
+  isolation: isolate;
+  box-shadow:
+    /* Black glass lip sits on the screen edge, not over the metal */
+    0 0 0 2px #0a0a0a,
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.14);
+}
+
+/* Soft glass edge over the screen */
+.spd-phone-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.spd-phone-statusbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(54px * var(--spd-scale, 0.5));
+  padding:
+    calc(14px * var(--spd-scale, 0.5))
+    calc(28px * var(--spd-scale, 0.5))
+    0;
+  box-sizing: border-box;
+  pointer-events: none;
+  color: #1d1d1f;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+  font-weight: 600;
+  font-size: calc(15px * var(--spd-scale, 0.5));
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.spd-phone-time {
+  min-width: calc(54px * var(--spd-scale, 0.5));
+}
+
+.spd-phone-status-icons {
+  display: flex;
+  align-items: center;
+  gap: calc(6px * var(--spd-scale, 0.5));
+  min-width: calc(54px * var(--spd-scale, 0.5));
+  justify-content: flex-end;
+}
+
+.spd-phone-signal,
+.spd-phone-wifi,
+.spd-phone-battery {
+  display: block;
+  background: currentColor;
+}
+
+.spd-phone-signal {
+  width: calc(17px * var(--spd-scale, 0.5));
+  height: calc(11px * var(--spd-scale, 0.5));
+  clip-path: polygon(
+    0 100%, 18% 100%, 18% 70%, 36% 70%, 36% 50%,
+    54% 50%, 54% 30%, 72% 30%, 72% 12%, 100% 12%, 100% 100%
+  );
+}
+
+.spd-phone-wifi {
+  width: calc(16px * var(--spd-scale, 0.5));
+  height: calc(12px * var(--spd-scale, 0.5));
+  background:
+    radial-gradient(circle at 50% 100%, currentColor 0 1.5px, transparent 1.6px),
+    radial-gradient(circle at 50% 100%, transparent 4px, currentColor 4.2px, currentColor 5.2px, transparent 5.4px),
+    radial-gradient(circle at 50% 100%, transparent 7.5px, currentColor 7.7px, currentColor 8.7px, transparent 8.9px);
+  background-repeat: no-repeat;
+  background-position: center bottom;
+}
+
+.spd-phone-battery {
+  position: relative;
+  width: calc(24px * var(--spd-scale, 0.5));
+  height: calc(11px * var(--spd-scale, 0.5));
+  border-radius: calc(2.5px * var(--spd-scale, 0.5));
+  background: transparent;
+  box-shadow: inset 0 0 0 1.25px currentColor;
+}
+
+.spd-phone-battery::before {
+  content: "";
+  position: absolute;
+  top: calc(2.5px * var(--spd-scale, 0.5));
+  left: calc(2px * var(--spd-scale, 0.5));
+  width: calc(16px * var(--spd-scale, 0.5));
+  height: calc(6px * var(--spd-scale, 0.5));
+  border-radius: 1px;
+  background: currentColor;
+}
+
+.spd-phone-battery::after {
+  content: "";
+  position: absolute;
+  top: calc(3px * var(--spd-scale, 0.5));
+  right: calc(-3px * var(--spd-scale, 0.5));
+  width: calc(2px * var(--spd-scale, 0.5));
+  height: calc(5px * var(--spd-scale, 0.5));
+  border-radius: 0 1px 1px 0;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+.spd-phone-island {
+  position: absolute;
+  top: calc(11px * var(--spd-scale, 0.5));
+  left: 50%;
+  z-index: 4;
+  width: calc(126px * var(--spd-scale, 0.5));
+  height: calc(37px * var(--spd-scale, 0.5));
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #010101;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+
+.spd-phone-island::before,
+.spd-phone-island::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Speaker mesh hint */
+.spd-phone-island::before {
+  left: calc(22px * var(--spd-scale, 0.5));
+  width: calc(48px * var(--spd-scale, 0.5));
+  height: calc(6px * var(--spd-scale, 0.5));
+  border-radius: 999px;
+  background: #0a0a0a;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+/* Camera lens */
+.spd-phone-island::after {
+  right: calc(14px * var(--spd-scale, 0.5));
+  width: calc(12px * var(--spd-scale, 0.5));
+  height: calc(12px * var(--spd-scale, 0.5));
+  background:
+    radial-gradient(circle at 35% 30%, #3a4a5a 0%, #15202a 45%, #05080c 100%);
+  box-shadow:
+    0 0 0 1.5px #111,
+    inset 0 0 0 1px rgba(120, 160, 200, 0.25);
+}
+
+.spd-phone-home {
+  position: absolute;
+  bottom: calc(9px * var(--spd-scale, 0.5));
+  left: 50%;
+  z-index: 4;
+  width: calc(134px * var(--spd-scale, 0.5));
+  height: calc(5px * var(--spd-scale, 0.5));
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgba(29, 29, 31, 0.55);
+  pointer-events: none;
+}
+
+.spd-phone-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--spd-phone-w);
+  height: var(--spd-phone-h);
+  transform-origin: top left;
+  transform: scale(var(--spd-scale, 0.5));
+  border: 0;
+  display: block;
+  background: #fcfcfd;
+  pointer-events: none;
+}
+
+@media (max-width: 833px) {
+  .spd-stage--phone {
+    --spd-margin-y: 32px;
+    --spd-margin-x: 64px;
+  }
+
+  .spd-section--phone .spd-section-inner {
+    width: min(720px, calc(100% - 0.75rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spd-phone {
+    opacity: 1;
+    translate: 0 0;
+    transition: none;
+  }
+}

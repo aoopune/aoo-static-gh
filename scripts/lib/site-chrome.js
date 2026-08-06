@@ -29,8 +29,31 @@ const INSURANCE_PAGES = new Set([
   'pages/credit-life-insurance.html'
 ]);
 
+const SKIP_EXPLORE_BANKS_PREFOOTER_CTA = new Set([
+  'pages/explore-banks.html',
+  'pages/apply.html',
+  'privacy-policy.html',
+  'terms-of-use.html',
+  'sitemap.html'
+]);
+
+const EXPLORE_BANKS_PREFOOTER_LEAD =
+  'Every home loan bank sits side by side.';
+
 function currentAttr(active) {
   return active ? ' aria-current="page"' : '';
+}
+
+function renderExploreBanksPrefooterCta(fileRel) {
+  if (SKIP_EXPLORE_BANKS_PREFOOTER_CTA.has(fileRel)) return '';
+  return [
+    '<div class="site-prefooter-cta">',
+    '  <p class="site-prefooter-cta-lead">' +
+      EXPLORE_BANKS_PREFOOTER_LEAD +
+      '</p>',
+    '  <a class="home-hero-cta home-hero-cta-primary" href="/pages/explore-banks.html">Explore banks</a>',
+    '</div>'
+  ].join('\n');
 }
 
 function applyContacts(html) {
@@ -78,6 +101,10 @@ function renderFooter(fileRel) {
   let html = fs
     .readFileSync(path.join(root, 'partials', 'site-footer.html'), 'utf8')
     .trim();
+  html = html.replaceAll(
+    '{{EXPLORE_BANKS_PREFOOTER_CTA}}',
+    renderExploreBanksPrefooterCta(fileRel)
+  );
   html = html
     .replaceAll(
       '{{PRIVACY_CURRENT}}',
@@ -193,6 +220,8 @@ function applySiteChrome(html, fileRel) {
 
 module.exports = {
   GUIDE_PAGES,
+  SKIP_EXPLORE_BANKS_PREFOOTER_CTA,
+  EXPLORE_BANKS_PREFOOTER_LEAD,
   applyNav,
   applyFooter,
   applyGuideLocalnav,
@@ -200,5 +229,6 @@ module.exports = {
   assertChrome,
   renderNav,
   renderFooter,
-  renderGuideLocalnav
+  renderGuideLocalnav,
+  renderExploreBanksPrefooterCta
 };

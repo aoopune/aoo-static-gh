@@ -7,7 +7,6 @@ const globalNav = require('../data/global-nav.json');
 /** Full geometry matrix — keep cost bounded; calculators covered by contract lint. */
 const matrixPaths = new Set([
   '/',
-  '/pages/learn-more.html',
   '/pages/about.html',
   '/privacy-policy.html',
   '/terms-of-use.html',
@@ -339,6 +338,25 @@ test.describe('breakpoints and navigation behavior', function () {
     await page.setViewportSize({ width: 834, height: 700 });
     await expect(toggle).toBeHidden();
     await expect(page.locator('.localnav-list')).toHaveCSS('display', 'flex');
+  });
+
+  test('Guide local menu opens from current-page title text on mobile', async function ({
+    page
+  }, testInfo) {
+    test.skip(testInfo.project.name !== 'chromium-responsive');
+
+    await page.setViewportSize({ width: 375, height: 667 });
+    await gotoReady(page, '/pages/home-loan-complaints.html');
+    const toggle = page.locator('.localnav-toggle');
+    const label = page.locator('.localnav-current-label');
+    await expect(toggle).toBeVisible();
+    await expect(label).toBeVisible();
+    await expect(label).toHaveText(/Grievance/);
+    await label.click();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('.localnav-link')).toHaveCount(6);
+    await page.keyboard.press('Escape');
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
   });
 
   test('global compact menu is exclusive, closable, and ordered', async function ({

@@ -18,10 +18,6 @@ body {
 }
 
 body {
-  background:
-    radial-gradient(120% 80% at 10% -10%, rgba(0, 113, 227, 0.06), transparent 55%),
-    radial-gradient(90% 70% at 100% 0%, rgba(245, 247, 249, 0.9), transparent 50%),
-    var(--apf-surface);
   color: var(--apf-ink);
   font-family: var(--shroffin-font);
 }
@@ -134,14 +130,14 @@ body {
 .apf-fields {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.15rem;
+  gap: 1.55rem;
 }
 
 .apf-field {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.6rem;
   min-width: 0;
 }
 
@@ -149,43 +145,7 @@ body {
   z-index: 2;
 }
 
-.apf-label {
-  color: var(--apf-ink);
-  font-size: 0.9375rem;
-  font-weight: 500;
-}
-
-.apf-input {
-  width: 100%;
-  min-height: 52px;
-  padding: 0.7rem 0.9rem;
-  border: 1px solid var(--apf-line);
-  border-radius: 10px;
-  box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.72);
-  color: var(--apf-ink);
-  font: inherit;
-  font-size: 1.0625rem;
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  transition:
-    border-color var(--shroffin-micro-duration, 0.5s) var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
-    background-color var(--shroffin-micro-duration, 0.5s) var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
-    box-shadow var(--shroffin-micro-duration, 0.5s) var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1));
-}
-
-.apf-input::placeholder {
-  color: rgba(110, 110, 115, 0.55);
-  font-weight: 400;
-}
-
-.apf-input:focus {
-  outline: none;
-  border-color: var(--apf-blue);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
-  color: var(--apf-blue);
-}
+/* Label + input underline look come from shell (.apf-label / .apf-input). */
 
 .apf-options {
   position: absolute;
@@ -412,7 +372,7 @@ body {
 @media (min-width: 735px) {
   .apf-fields {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem 1.25rem;
+    gap: 1.35rem 1.45rem;
   }
 }
 

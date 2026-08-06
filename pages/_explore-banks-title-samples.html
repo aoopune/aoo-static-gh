@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Explore banks · contrast gradient samples (no blue) – Shroffin</title>
+  <meta name="description" content="Internal preview: contrast title gradients for Explore banks — no blue in the palette.">
+  <link rel="icon" href="../favicon.ico?v=6" sizes="any">
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=type-ladder-5">
+  <style>
+  /*
+    Contrast gradients — no blue, cyan, teal, or indigo.
+    Warm / earth / violet / green / neutral axes only.
+  */
+    body {
+      margin: 0;
+      background: var(--shroffin-surface, #fcfcfd);
+      color: #1d1d1f;
+      font-family: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
+    }
+
+    .wrap {
+      max-width: 54rem;
+      margin: 0 auto;
+      padding: 2.25rem 1.15rem 5rem;
+      box-sizing: border-box;
+    }
+
+    .banner {
+      margin: 0 0 0.6rem;
+      padding: 0.95rem 1.05rem;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      color: #6e6e73;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    .banner strong { color: #1d1d1f; }
+
+    .hint {
+      margin: 0 0 2rem;
+      color: #86868b;
+      font-size: 0.8125rem;
+      line-height: 1.45;
+    }
+
+    .card {
+      margin: 0 0 1.5rem;
+      padding: 2.1rem 1.15rem 1.85rem;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid rgba(108, 128, 155, 0.14);
+      text-align: center;
+    }
+
+    .rule {
+      margin: 0 0 0.35rem;
+      color: #7c2d12;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .num {
+      margin: 0 0 1.1rem;
+      color: #86868b;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .title {
+      margin: 0;
+      font-size: clamp(1.4rem, 4.8vw, 3.25rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      white-space: nowrap;
+    }
+
+    .wash {
+      display: inline-block;
+      max-width: 100%;
+      background-size: 100% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* 1 Value — black → charcoal → warm grey */
+    .wash--value {
+      background-image: linear-gradient(
+        108deg,
+        #0a0a0a 0%,
+        #1d1d1f 22%,
+        #52525b 58%,
+        #27272a 100%
+      );
+    }
+
+    /* 2 Editorial graphite — charcoal → warm stone (no blue undertone) */
+    .wash--steel {
+      background-image: linear-gradient(100deg, #1a1a1a 0%, #57534e 100%);
+    }
+
+    /* 3 Warm analogous — ember → coral → gold */
+    .wash--ember {
+      background-image: linear-gradient(
+        108deg,
+        #1a1208 0%,
+        #c45a08 32%,
+        #e04a2f 52%,
+        #d4891a 76%,
+        #7c2d12 100%
+      );
+    }
+
+    /* 4 Chroma peak — dark → vivid amber centre → dark */
+    .wash--chroma {
+      background-image: linear-gradient(
+        108deg,
+        #1c1917 0%,
+        #b45309 28%,
+        #ea580c 50%,
+        #b45309 72%,
+        #1c1917 100%
+      );
+    }
+
+    /* 5 Violet → magenta (purple axis, no blue) */
+    .wash--violet {
+      background-image: linear-gradient(
+        110deg,
+        #3b0764 0%,
+        #7e22ce 30%,
+        #c026d3 58%,
+        #9f1239 100%
+      );
+    }
+
+    /* 6 Split complementary — charcoal + amber vs violet accent */
+    .wash--split {
+      background-image: linear-gradient(
+        108deg,
+        #0f0f0f 0%,
+        #d97706 42%,
+        #ea580c 68%,
+        #86198f 100%
+      );
+    }
+
+    /* 7 Forest — deep ink → emerald → moss */
+    .wash--forest {
+      background-image: linear-gradient(
+        108deg,
+        #0a0f0a 0%,
+        #166534 34%,
+        #22c55e 52%,
+        #15803d 76%,
+        #14532d 100%
+      );
+    }
+
+    /* 8 Bronze titanium — metal sheen, warm neutral */
+    .wash--bronze {
+      background-image: linear-gradient(
+        95deg,
+        #292524 0%,
+        #8a6a3a 28%,
+        #d4891a 48%,
+        #a8a29e 68%,
+        #44403c 100%
+      );
+    }
+
+    .stops {
+      margin: 1rem auto 0;
+      max-width: 36rem;
+      color: #6e6e73;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      font-family: ui-monospace, monospace;
+    }
+
+    .note {
+      margin: 0.5rem auto 0;
+      max-width: 36rem;
+      color: #86868b;
+      font-size: 0.8125rem;
+      line-height: 1.45;
+    }
+
+    @media (forced-colors: active) {
+      .wash {
+        background-image: none !important;
+        color: CanvasText;
+        -webkit-text-fill-color: CanvasText;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <p class="banner">
+      <strong>No blue</strong> — no cyan, teal, indigo, or brand blue in any stop.
+      Text only, on the real Explore banks background. Pick a number for the live page.
+    </p>
+    <p class="hint">Live page is still plain black for now.</p>
+
+    <article class="card">
+      <p class="rule">Value contrast</p>
+      <p class="num">1</p>
+      <h1 class="title"><span class="wash wash--value">Explore banks.</span></h1>
+      <p class="note">Black → ink → warm grey → charcoal. Luminance only.</p>
+      <p class="stops">#0a0a0a → #1d1d1f → #52525b → #27272a</p>
+    </article>
+
+    <article class="card">
+      <p class="rule">Editorial graphite</p>
+      <p class="num">2</p>
+      <h1 class="title"><span class="wash wash--steel">Explore banks.</span></h1>
+      <p class="note">Charcoal → warm stone grey. Quiet contrast, no cool hue.</p>
+      <p class="stops">#1a1a1a → #57534e</p>
+    </article>
+
+    <article class="card">
+      <p class="rule">Warm analogous</p>
+      <p class="num">3</p>
+      <h1 class="title"><span class="wash wash--ember">Explore banks.</span></h1>
+      <p class="note">Dark umber → amber → coral → gold → rust bookend.</p>
+      <p class="stops">#1a1208 → #c45a08 → #e04a2f → #d4891a → #7c2d12</p>
+    </article>
+
+    <article class="card">
+      <p class="rule">Chroma peak</p>
+      <p class="num">4</p>
+      <h1 class="title"><span class="wash wash--chroma">Explore banks.</span></h1>
+      <p class="note">Dark stone ends, vivid orange centre. Saturation contrast.</p>
+      <p class="stops">#1c1917 → #b45309 → #ea580c → #b45309 → #1c1917</p>
+    </article>
+
+    <article class="card">
+      <p class="rule">Violet → magenta</p>
+      <p class="num">5</p>
+      <h1 class="title"><span class="wash wash--violet">Explore banks.</span></h1>
+      <p class="note">Deep purple → violet → fuchsia → rose. Cool without blue.</p>
+      <p class="stops">#3b0764 → #7e22ce → #c026d3 → #9f1239</p>
+    </article>
+
+    <article class="card">
+      <p class="rule">Split complementary</p>
+      <p class="num">6</p>
+      <h1 class="title"><span class="wash wash--split">Explore banks.</span></h1>
+      <p class="note">Charcoal → amber/orange → purple tail. Warm vs violet tension.</p>
+      <p class="stops">#0f0f0f → #d97706 → #ea580c → #86198f</p>
+    </article>
+
+    <article class="card">
+      <p class="rule">Forest analogous</p>
+      <p class="num">7</p>
+      <h1 class="title"><span class="wash wash--forest">Explore banks.</span></h1>
+      <p class="note">Near-black → forest → bright green → deep moss.</p>
+      <p class="stops">#0a0f0a → #166534 → #22c55e → #15803d → #14532d</p>
+    </article>
+
+    <article class="card">
+      <p class="rule">Bronze titanium</p>
+      <p class="num">8</p>
+      <h1 class="title"><span class="wash wash--bronze">Explore banks.</span></h1>
+      <p class="note">Stone → bronze → gold → silver-grey → charcoal. Hardware sheen.</p>
+      <p class="stops">#292524 → #8a6a3a → #d4891a → #a8a29e → #44403c</p>
+    </article>
+  </main>
+</body>
+</html>

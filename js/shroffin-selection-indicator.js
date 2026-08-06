@@ -97,8 +97,11 @@
     var itemRect = item.getBoundingClientRect();
     var scrollX = host.scrollLeft || 0;
     var scrollY = host.scrollTop || 0;
-    var x = itemRect.left - hostRect.left + scrollX;
-    var y = itemRect.top - hostRect.top + scrollY;
+    /* Absolute top/left are relative to the padding edge; rects are border-box. */
+    var originX = host.clientLeft || 0;
+    var originY = host.clientTop || 0;
+    var x = itemRect.left - hostRect.left + scrollX - originX;
+    var y = itemRect.top - hostRect.top + scrollY - originY;
     var width = itemRect.width;
     var height = itemRect.height;
 
@@ -107,11 +110,12 @@
       var cssBottom = pattern.lineBottom == null ? 0 : pattern.lineBottom;
       width = Math.max(0, itemRect.width - inset * 2);
       height = LINE_HEIGHT;
-      x = itemRect.left - hostRect.left + scrollX + inset;
+      x = itemRect.left - hostRect.left + scrollX - originX + inset;
       y =
         itemRect.bottom -
         hostRect.top +
         scrollY -
+        originY -
         cssBottom -
         LINE_HEIGHT;
     }
@@ -217,6 +221,14 @@
     var fromItem = findSelected(host, pattern) || controller.selected;
 
     if (prefersReducedMotion() || isCompactLocalnav() || !fromItem) {
+      if (
+        window.ShroffinGuideSoftNav &&
+        typeof window.ShroffinGuideSoftNav.canHandle === "function" &&
+        window.ShroffinGuideSoftNav.canHandle(href)
+      ) {
+        window.ShroffinGuideSoftNav.navigate(href);
+        return;
+      }
       window.location.href = href;
       return;
     }
@@ -253,6 +265,15 @@
                 detail: { href: href },
               })
             );
+            return;
+          }
+          if (
+            window.ShroffinGuideSoftNav &&
+            typeof window.ShroffinGuideSoftNav.canHandle === "function" &&
+            window.ShroffinGuideSoftNav.canHandle(href)
+          ) {
+            controller.exitLock = false;
+            window.ShroffinGuideSoftNav.navigate(href, { fromExit: true });
             return;
           }
           window.location.href = href;

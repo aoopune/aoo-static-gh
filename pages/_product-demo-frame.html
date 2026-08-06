@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1640">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Explore banks demo frame – Shroffin</title>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=type-ladder-5">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=form-foir-align-5">
+  <style>
+    /*
+     * Frame chrome only. Do NOT re-layout the product —
+     * explore-banks.css owns pills, card, filters, buttons, hang.
+     *
+     * Canvas is wider than the form shell (1068) so the live filter hang
+     * has side room. Table keeps full shell width; form stays centered.
+     */
+    html, body {
+      margin: 0;
+      background: var(--shroffin-surface, #fcfcfd);
+    }
+    /*
+     * Scroll only inside this frame document (html overflow).
+     * Demo JS must NOT use scrollIntoView — that also scrolls the parent page.
+     */
+    html {
+      width: 100%;
+      height: 728px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+    html::-webkit-scrollbar { display: none; }
+    body {
+      width: 1640px;
+      margin-inline: auto;
+      min-height: 100%;
+      overflow: visible;
+      position: relative;
+    }
+
+    .explore-banks-main {
+      padding-top: 0 !important;
+      min-height: 0 !important;
+    }
+
+    /* Live shell, slightly less top pad (no hero / nav in frame) */
+    .hlc-shell {
+      padding-top: 1.75rem !important;
+      padding-bottom: 2.5rem !important;
+    }
+
+    .hlc-hero,
+    .hlc-drawer,
+    .hlc-drawer-backdrop,
+    .hlc-toast,
+    .hlc-paddles,
+    .hlc-apply-dock,
+    .site-help-strip,
+    .site-footer,
+    .globalnav,
+    .globalnav-veil {
+      display: none !important;
+    }
+
+    .hlc-chip.is-press,
+    .hlc-column-tab.is-press,
+    .hlc-btn-primary.is-press,
+    .home-hero-cta.is-press {
+      transform: scale(0.97);
+    }
+
+    .hlc-input-shell.is-typing {
+      box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.22);
+    }
+
+    .hlc-table-scroll { scrollbar-width: none; }
+    .hlc-table-scroll::-webkit-scrollbar { display: none; }
+
+    /* Filters rematch like live — hide non-matching rows on every tab */
+    .hlc-compare tr[hidden] {
+      display: none !important;
+    }
+
+    .hlc-form-more,
+    .hlc-form-more-toggle {
+      pointer-events: none;
+    }
+
+    /* Kill live entrance so the card is visible immediately in the loop */
+    .hlc-inputs-card {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+
+    .spd-cursor {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 20px;
+      height: 20px;
+      margin: -1px 0 0 -1px;
+      pointer-events: none;
+      z-index: 10000;
+      opacity: 0;
+      transform: translate(48px, 64px);
+      transition:
+        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform, opacity;
+    }
+    .spd-cursor.is-on { opacity: 1; }
+    .spd-cursor.is-click {
+      transition:
+        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.12s cubic-bezier(0.22, 1, 0.36, 1);
+      transform: translate(var(--spd-x, 48px), var(--spd-y, 64px)) scale(0.88);
+    }
+    .spd-cursor svg {
+      display: block;
+      width: 20px;
+      height: 20px;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.28));
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .spd-cursor { display: none !important; }
+    }
+  </style>
+</head>
+<body class="explore-banks-page" data-spd-root>
+  <div class="spd-cursor" data-spd-cursor aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5.5 3.2 19.2 12.1l-6.1 1.4 2.9 6.8-2.4 1-2.9-6.8-4.8 4.6V3.2Z" fill="#1d1d1f" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <main class="explore-banks-main">
+    <div class="hlc-shell">
+      <div class="hlc-workspace">
+        <div class="hlc-main-rail">
+
+          <section class="hlc-panel hlc-panel--inputs" data-spd-inputs aria-labelledby="spd-inputs-heading">
+            <h2 class="hlc-section-title" id="spd-inputs-heading">Your details</h2>
+            <div class="hlc-inputs-card">
+              <form class="hlc-form" autocomplete="off" novalidate onsubmit="return false;">
+                <div class="hlc-form-primary-grid">
+                  <div class="hlc-form-zone hlc-form-zone--hero">
+                    <label class="hlc-field hlc-field--hero" for="spd-income">
+                      <span class="hlc-field-label">Monthly income</span>
+                      <span class="hlc-input-shell hlc-input-shell--hero" data-spd-shell="income">
+                        <span class="hlc-prefix" aria-hidden="true">₹</span>
+                        <input type="text" id="spd-income" data-spd-input="income" value="" placeholder="1,00,000" readonly tabindex="-1" aria-hidden="true">
+                      </span>
+                    </label>
+                  </div>
+
+                  <div class="hlc-form-zone hlc-form-zone--hero">
+                    <label class="hlc-field hlc-field--hero" for="spd-property">
+                      <span class="hlc-field-label">Property agreement value</span>
+                      <span class="hlc-input-shell hlc-input-shell--hero" data-spd-shell="property">
+                        <span class="hlc-prefix" aria-hidden="true">₹</span>
+                        <input type="text" id="spd-property" data-spd-input="property" value="" placeholder="62,50,000" readonly tabindex="-1" aria-hidden="true">
+                      </span>
+                    </label>
+                  </div>
+
+                  <div class="hlc-form-zone hlc-form-zone--pair">
+                    <div class="hlc-form-zone-fields">
+                      <label class="hlc-field" for="spd-age">
+                        <span class="hlc-field-label">Age</span>
+                        <span class="hlc-input-shell" data-spd-shell="age">
+                          <input type="text" id="spd-age" data-spd-input="age" value="" placeholder="35" readonly tabindex="-1" aria-hidden="true">
+                          <span class="hlc-suffix" aria-hidden="true">years</span>
+                        </span>
+                      </label>
+                      <label class="hlc-field" for="spd-cibil">
+                        <span class="hlc-field-label">CIBIL score</span>
+                        <span class="hlc-input-shell" data-spd-shell="cibil">
+                          <input type="text" id="spd-cibil" data-spd-input="cibil" value="" placeholder="780" readonly tabindex="-1" aria-hidden="true">
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="hlc-form-zone hlc-form-zone--choices">
+                    <div class="hlc-form-zone-fields">
+                      <div class="hlc-field hlc-field--occupation">
+                        <span class="hlc-field-label">Occupation</span>
+                        <div class="hlc-segmented hlc-occupation-pills" role="group">
+                          <button type="button" class="hlc-chip" data-spd-chip="occupation" data-spd-choice="Salaried" aria-pressed="false" tabindex="-1">Salaried</button>
+                          <button type="button" class="hlc-chip" data-spd-chip="occupation" data-spd-choice="Self-Employed" aria-pressed="false" tabindex="-1">Self-employed</button>
+                        </div>
+                      </div>
+                      <div class="hlc-field hlc-field--purpose">
+                        <span class="hlc-field-label">Purpose</span>
+                        <div class="hlc-segmented hlc-purpose-pills" role="group">
+                          <button type="button" class="hlc-chip" data-spd-chip="purpose" data-spd-choice="Regular" aria-pressed="false" tabindex="-1">Regular</button>
+                          <button type="button" class="hlc-chip" data-spd-chip="purpose" data-spd-choice="Top-up" aria-pressed="false" tabindex="-1">Top-up</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hlc-form-actions">
+                  <!-- Shown for look only — closed like live; demo never opens or fills these -->
+                  <details class="hlc-form-more" data-spd-more>
+                    <summary class="hlc-form-more-toggle" tabindex="-1">
+                      <span class="hlc-form-more-copy">
+                        <span class="hlc-form-more-title">
+                          <span class="hlc-form-more-label">More details</span>
+                          <svg class="hlc-form-more-chevron" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                            <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                        <span class="hlc-form-more-hint">Existing EMIs, FOIR, tenure, co-applicant</span>
+                      </span>
+                    </summary>
+                    <div class="hlc-form-more-panel">
+                      <div class="hlc-form-fields hlc-form-fields--more">
+                        <label class="hlc-field">
+                          <span class="hlc-field-label">Existing EMIs</span>
+                          <span class="hlc-input-shell">
+                            <span class="hlc-prefix" aria-hidden="true">₹</span>
+                            <input type="text" value="0" readonly tabindex="-1" aria-hidden="true">
+                          </span>
+                        </label>
+                        <div class="hlc-field">
+                          <span class="hlc-field-label">Credit card limits</span>
+                          <span class="hlc-input-shell">
+                            <span class="hlc-prefix" aria-hidden="true">₹</span>
+                            <input type="text" value="0" readonly tabindex="-1" aria-hidden="true">
+                          </span>
+                          <p class="hlc-field-note">About 10% counts as monthly load</p>
+                        </div>
+                        <label class="hlc-field hlc-field--foir">
+                          <span class="hlc-field-label">Share of income for EMIs /<br>FOIR</span>
+                          <span class="hlc-input-shell hlc-input-shell--select hlc-input-shell--has-face">
+                            <span class="hlc-select-face" aria-hidden="true">
+                              <span class="hlc-select-face-value">55%</span><span class="hlc-select-face-tag"> (default)</span>
+                            </span>
+                          </span>
+                        </label>
+                        <label class="hlc-field">
+                          <span class="hlc-field-label">Tenure</span>
+                          <span class="hlc-input-shell">
+                            <input type="text" value="20" readonly tabindex="-1" aria-hidden="true">
+                            <span class="hlc-suffix" aria-hidden="true">years</span>
+                          </span>
+                        </label>
+                        <div class="hlc-coapplicant-row">
+                          <div class="hlc-coapplicant-toggle-cell">
+                            <div class="hlc-field hlc-field--coapplicant">
+                              <span class="hlc-field-label">Co-applicant</span>
+                              <div class="hlc-segmented hlc-coapplicant-pills" role="group">
+                                <button type="button" class="hlc-chip" aria-pressed="true" tabindex="-1">No</button>
+                                <button type="button" class="hlc-chip" aria-pressed="false" tabindex="-1">Yes</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </details>
+                  <div class="hlc-form-submit">
+                    <button type="button" class="home-hero-cta home-hero-cta-secondary" data-spd-see-options tabindex="-1">See options</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <div
+            class="hlc-searching"
+            data-spd-searching
+            hidden
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <p class="hlc-searching-title">Finding your options.</p>
+            <div class="hlc-searching-dots" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <section class="hlc-results-shell" data-spd-results hidden aria-live="polite">
+            <div class="hlc-results-head">
+              <div class="hlc-results-heading">
+                <div class="hlc-options-top">
+                  <h2 class="hlc-section-title">Your options</h2>
+                  <p class="hlc-select-hint">Select banks to apply once</p>
+                  <div class="hlc-filters-control" data-spd-filters-control>
+                    <button
+                      type="button"
+                      class="hlc-filters-toggle"
+                      data-spd-filters-toggle
+                      aria-expanded="false"
+                      aria-controls="spd-filters-panel"
+                      tabindex="-1"
+                    >
+                      <svg class="hlc-filters-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                        <path d="M2.5 4h11M4.5 8h7M6.5 12h3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                      <span class="hlc-filters-toggle-label">Filters</span>
+                      <span class="hlc-filters-badge" data-spd-filters-badge hidden></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="hlc-results-actions">
+                <div class="hlc-column-tabs" role="tablist" aria-label="Column groups">
+                  <button type="button" class="hlc-column-tab" role="tab" data-spd-tab="essentials" aria-current="page" aria-selected="true" tabindex="-1">Overview</button>
+                  <button type="button" class="hlc-column-tab" role="tab" data-spd-tab="charges" aria-selected="false" tabindex="-1">Charges</button>
+                  <button type="button" class="hlc-column-tab" role="tab" data-spd-tab="later" aria-selected="false" tabindex="-1">Other charges</button>
+                </div>
+                <div class="hlc-apply-bar">
+                  <button type="button" class="hlc-btn-primary" data-spd-apply disabled tabindex="-1">Apply once</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="hlc-compare-stage">
+              <aside
+                class="hlc-filters"
+                id="spd-filters-panel"
+                data-spd-filters-panel
+                role="region"
+                aria-labelledby="spd-filters-heading"
+              >
+                <h3 class="hlc-filters-title" id="spd-filters-heading">Filters</h3>
+
+                <fieldset class="hlc-filter-group">
+                  <legend class="hlc-filter-legend">Borrower</legend>
+                  <div class="hlc-toggle-chips">
+                    <button type="button" class="hlc-chip" data-spd-filter="govt" data-spd-default-pressed="false" aria-pressed="false" tabindex="-1">Govt / PSU employee and pensioner</button>
+                  </div>
+                </fieldset>
+
+                <fieldset class="hlc-filter-group">
+                  <legend class="hlc-filter-legend">Concessions</legend>
+                  <div class="hlc-toggle-chips">
+                    <button type="button" class="hlc-chip" data-spd-filter="women" data-spd-default-pressed="false" aria-pressed="false" tabindex="-1">Women applicant</button>
+                    <button type="button" class="hlc-chip" data-spd-filter="green" data-spd-default-pressed="false" aria-pressed="false" tabindex="-1">Green home</button>
+                    <button type="button" class="hlc-chip" data-spd-filter="insurance" data-spd-default-pressed="false" aria-pressed="false" tabindex="-1">Insurance</button>
+                  </div>
+                </fieldset>
+
+                <fieldset class="hlc-filter-group">
+                  <legend class="hlc-filter-legend">Bank type</legend>
+                  <div class="hlc-segmented hlc-bank-type-pills">
+                    <button type="button" class="hlc-chip" data-spd-filter="All" data-spd-default-pressed="true" aria-pressed="true" tabindex="-1">All</button>
+                    <button type="button" class="hlc-chip" data-spd-filter="Public" data-spd-default-pressed="false" aria-pressed="false" tabindex="-1">Public</button>
+                    <button type="button" class="hlc-chip" data-spd-filter="Private" data-spd-default-pressed="false" aria-pressed="false" tabindex="-1">Private</button>
+                  </div>
+                </fieldset>
+
+                <fieldset class="hlc-filter-group">
+                  <legend class="hlc-filter-legend">Rate</legend>
+                  <div class="hlc-segmented hlc-rate-pills">
+                    <button type="button" class="hlc-chip" data-spd-filter="Floating" data-spd-default-pressed="true" aria-pressed="true" tabindex="-1">Floating</button>
+                    <button type="button" class="hlc-chip hlc-chip--stacked" data-spd-filter="Fixed" data-spd-default-pressed="false" aria-pressed="false" tabindex="-1">
+                      <span class="hlc-chip-label">Fixed</span>
+                      <span class="hlc-chip-note">About 1–2% higher</span>
+                    </button>
+                  </div>
+                </fieldset>
+
+                <fieldset class="hlc-filter-group">
+                  <legend class="hlc-filter-legend">Facility</legend>
+                  <div class="hlc-segmented hlc-facility-pills">
+                    <button type="button" class="hlc-chip" data-spd-filter="Term" data-spd-default-pressed="true" aria-pressed="true" tabindex="-1">Term loan</button>
+                    <button type="button" class="hlc-chip hlc-chip--stacked" data-spd-filter="OD" data-spd-default-pressed="false" aria-pressed="false" tabindex="-1">
+                      <span class="hlc-chip-label">Overdraft</span>
+                      <span class="hlc-chip-note">About 0.15–1% higher</span>
+                    </button>
+                  </div>
+                </fieldset>
+              </aside>
+
+              <div class="hlc-compare-table-area">
+                <div class="hlc-table-wrap" data-spd-panel="essentials">
+                  <div class="hlc-table-scroll" data-spd-scroll tabindex="0" role="region" aria-label="Your home loan options">
+                    <table class="hlc-compare" data-group="essentials">
+                      <caption class="visually-hidden">Your home loan options</caption>
+                      <colgroup>
+                        <col class="hlc-col-bank">
+                        <col class="hlc-col-w-pct">
+                        <col class="hlc-col-w-inr">
+                        <col class="hlc-col-w-inr">
+                        <col class="hlc-col-w-tenure">
+                        <col class="hlc-col-w-inr">
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th scope="col" class="hlc-sticky-col hlc-sort-static">Bank</th>
+                          <th scope="col" class="hlc-col-num hlc-sortable" aria-sort="ascending" data-sort="rate">Rate
+                            <span class="hlc-sort-ind" aria-hidden="true">
+                              <span class="hlc-sort-up"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 4.5 4 1.5 7 4.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                              <span class="hlc-sort-down"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 0.5 4 3.5 7 0.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                            </span>
+                          </th>
+                          <th scope="col" class="hlc-col-num hlc-sortable" aria-sort="none" data-sort="loan">Loan amount
+                            <span class="hlc-sort-ind" aria-hidden="true">
+                              <span class="hlc-sort-up"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 4.5 4 1.5 7 4.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                              <span class="hlc-sort-down"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 0.5 4 3.5 7 0.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                            </span>
+                          </th>
+                          <th scope="col" class="hlc-col-num hlc-sortable" aria-sort="none" data-sort="down">Down payment
+                            <span class="hlc-sort-ind" aria-hidden="true">
+                              <span class="hlc-sort-up"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 4.5 4 1.5 7 4.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                              <span class="hlc-sort-down"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 0.5 4 3.5 7 0.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                            </span>
+                          </th>
+                          <th scope="col" class="hlc-col-text hlc-sortable" aria-sort="none" data-sort="tenure">Tenure
+                            <span class="hlc-sort-ind" aria-hidden="true">
+                              <span class="hlc-sort-up"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 4.5 4 1.5 7 4.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                              <span class="hlc-sort-down"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 0.5 4 3.5 7 0.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                            </span>
+                          </th>
+                          <th scope="col" class="hlc-col-num hlc-sortable" aria-sort="none" data-sort="emi">EMI
+                            <span class="hlc-sort-ind" aria-hidden="true">
+                              <span class="hlc-sort-up"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 4.5 4 1.5 7 4.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                              <span class="hlc-sort-down"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 0.5 4 3.5 7 0.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <!-- Same bank order on every tab (rate ascending). Scheme + More stay on every tab. -->
+                      <tbody>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="bom" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Bank of Maharashtra</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Maha Super Housing Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.25%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹39,519</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="iob" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Indian Overseas Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Subhagruha Housing Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.25%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹39,519</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="pnb" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Punjab National Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing Loan For Public</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.25%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹39,519</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="canara" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Canara Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.30%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹39,670</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="centralboi" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Central Bank of India</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Cent Home loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.30%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹39,670</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="axis" data-bank-type="Private" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Axis Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.35%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹39,822</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="unionboi" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Union Bank of India</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Union Home</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.35%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹39,822</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="bob" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Bank of Baroda</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Baroda Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.40%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹39,974</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="sib" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">South Indian Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">SIB Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.45%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹40,127</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="jkb" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Jammu and Kashmir Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.50%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹40,280</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="nainital" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Nainital Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Apna Aashiana - Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.50%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹40,280</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="hdfc" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">HDFC Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.60%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹40,586</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="bandhan" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Bandhan Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Suraksha Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.65%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹40,739</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="icici" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">ICICI Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.65%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹40,739</span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="federal" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Federal Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.75%</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                          <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
+                          <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹41,047</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="hlc-show-more-wrap">
+                    <button type="button" class="hlc-show-more" tabindex="-1" aria-hidden="true">
+                      <span class="hlc-show-more-label">Show 25 more banks</span>
+                      <svg class="hlc-show-more-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                        <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                                <div class="hlc-table-wrap" data-spd-panel="charges" hidden>
+                  <div class="hlc-table-scroll">
+                    <table class="hlc-compare" data-group="charges">
+                      <colgroup>
+                        <col class="hlc-col-bank">
+                        <col class="hlc-col-w-inr">
+                        <col class="hlc-col-w-inr">
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th scope="col" class="hlc-sticky-col">Bank</th>
+                          <th scope="col" class="hlc-col-num" data-col="processingFee" aria-describedby="spd-charges-note">Processing fees<sup class="hlc-col-footnote" aria-hidden="true">*</sup></th>
+                          <th scope="col" class="hlc-col-num" data-col="governmentCharges">Government charges</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="bom" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Bank of Maharashtra</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Maha Super Housing Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹12,500</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="iob" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Indian Overseas Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Subhagruha Housing Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹20,000</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="pnb" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Punjab National Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing Loan For Public</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹15,000</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="canara" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Canara Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹10,000</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="centralboi" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Central Bank of India</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Cent Home loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹20,000</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="axis" data-bank-type="Private" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Axis Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹50,000</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="unionboi" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Union Bank of India</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Union Home</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹15,000</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="bob" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Bank of Baroda</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Baroda Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹15,000</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="sib" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">South Indian Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">SIB Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹25,000</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="jkb" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Jammu and Kashmir Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹12,500</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="nainital" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Nainital Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Apna Aashiana - Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹4,000</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="hdfc" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">HDFC Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹25,000</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="bandhan" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Bandhan Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Suraksha Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹50,000</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="icici" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">ICICI Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹1,00,000</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="federal" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Federal Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-num" data-col="processingFee"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹25,000</button></td>
+                          <td class="hlc-col-num" data-col="governmentCharges"><button type="button" class="hlc-charge-amount" tabindex="-1" aria-hidden="true">₹31,100</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="hlc-charges-note" data-spd-panel="charges" id="spd-charges-note" hidden>
+                  <p class="hlc-charges-note-body">* Part of the processing fee is often taken upfront as a login fee to file the application. The amount differs by bank and is included in the processing fee shown — we don’t list it separately yet.</p>
+                </div>
+
+                <div class="hlc-table-wrap" data-spd-panel="later" hidden>
+                  <div class="hlc-table-scroll">
+                    <table class="hlc-compare" data-group="laterCharges">
+                      <colgroup>
+                        <col class="hlc-col-bank">
+                        <col class="hlc-col-fill">
+                        <col class="hlc-col-w-rate-change">
+                        <col class="hlc-col-w-charge">
+                        <col class="hlc-col-w-charge">
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th scope="col" class="hlc-sticky-col">Bank</th>
+                          <th class="hlc-col-fill" scope="col" aria-hidden="true"></th>
+                          <th scope="col" class="hlc-col-text" data-col="rateChangeChargeDisplay" aria-describedby="spd-later-note">Rate change charge<sup class="hlc-col-footnote" aria-hidden="true">°</sup></th>
+                          <th scope="col" class="hlc-col-text" data-col="overdueChargeDisplay" aria-describedby="spd-later-note">Overdue charge<sup class="hlc-col-footnote" aria-hidden="true">‡</sup></th>
+                          <th scope="col" class="hlc-col-text" data-col="emiBounceChargeDisplay" aria-describedby="spd-later-note">EMI bounce charge<sup class="hlc-col-footnote" aria-hidden="true">^</sup></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="bom" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Bank of Maharashtra</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Maha Super Housing Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹5,000</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">2.00% p.a.</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹500</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="iob" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Indian Overseas Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Subhagruha Housing Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">0.10%</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">On outstanding loan amount</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">Max ₹5,000</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">2.00% p.a.</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹200<sup class="hlc-col-footnote" aria-hidden="true">†</sup></span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">for a bounce amount up to ₹1 lakh</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="pnb" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Punjab National Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing Loan For Public</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">0.50%</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">On outstanding loan amount</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">Max ₹10,000</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">2.00% p.a.</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹100</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="canara" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Canara Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">0.25%</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">On outstanding loan amount</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">Min ₹250 · Max ₹25,000</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">0%<sup class="hlc-col-footnote" aria-hidden="true">◊</sup></span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">Up to ₹25,000</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹300<sup class="hlc-col-footnote" aria-hidden="true">†</sup></span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">for a bounce amount up to ₹1,000</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="centralboi" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Central Bank of India</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Cent Home loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">Not listed</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">0%<sup class="hlc-col-footnote" aria-hidden="true">◊</sup></span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">Up to ₹30,000 · Applies when loan tenure is up to 23 months.</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹200</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="axis" data-bank-type="Private" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Axis Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">1.00%</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">On outstanding principal</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">Min ₹10,000</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">8.00% p.a.</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹500</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="unionboi" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Union Bank of India</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Union Home</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><button type="button" class="hlc-charge-detail-button" tabindex="-1" aria-hidden="true"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">Fixed amount by loan amount range</span></span><svg class="hlc-charge-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">2.00% p.a.</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹400</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="bob" data-bank-type="Public" aria-selected="false">
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Bank of Baroda</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Baroda Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">0.10%</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">On outstanding + undisbursed amount</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">Min ₹10,000 · Max ₹1,00,000</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">2.00% p.a.</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹125<sup class="hlc-col-footnote" aria-hidden="true">§</sup></span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">ECS / cheque return</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">for a bounce amount up to ₹1 lakh in metro areas</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="sib" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">South Indian Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">SIB Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹0</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">6.00% p.a.</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹2<span class="hlc-charge-rule-subnote hlc-charge-rule-main-suffix">per ₹1,000</span></span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">Min ₹100 · Max ₹400</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="jkb" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Jammu and Kashmir Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">Not listed</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">0.20% p.a.</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">or ₹200, whichever is higher</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">No charge up to 15 days late</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹200</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="nainital" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Nainital Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Apna Aashiana - Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">Not listed</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">2.00% p.a.</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹250<sup class="hlc-col-footnote" aria-hidden="true">†</sup></span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">for a bounce amount up to ₹1 lakh</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="hdfc" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">HDFC Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">0.50%</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">On outstanding + undisbursed amount</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">Max ₹3,000</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">18.00% p.a.</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹450</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="bandhan" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Bandhan Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Suraksha Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">Not listed</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">2.00% p.a.</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹500</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="icici" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">ICICI Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹3,000</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">5.00% p.a.</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹500</span></span></td>
+                        </tr>
+                        <tr class="hlc-selectable-row" data-spd-row data-bank="federal" data-bank-type="Private" aria-selected="false" hidden>
+                          <td class="hlc-sticky-col">
+                            <div class="hlc-bank-cell">
+                              <div class="hlc-bank-name">Federal Bank</div>
+                              <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                            </div>
+                          </td>
+                          <td class="hlc-col-fill" aria-hidden="true"></td>
+                          <td class="hlc-col-text" data-col="rateChangeChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">0.25%</span><span class="hlc-charge-rule-subnote hlc-charge-rule-detail">On outstanding balance</span></span></td>
+                          <td class="hlc-col-text" data-col="overdueChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">18.00% p.a.</span></span></td>
+                          <td class="hlc-col-text" data-col="emiBounceChargeDisplay"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹200</span></span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="hlc-charges-note" data-spd-panel="later" id="spd-later-note" hidden>
+                  <p class="hlc-charges-note-body">° Usually each rate-type switch. ‡ On overdue amount. ^ Per bounce.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/shroffin-product-demo.js?v=58"></script>
+</body>
+</html>

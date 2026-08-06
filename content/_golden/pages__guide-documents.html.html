@@ -18,8 +18,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="../css/shroffin-shell.css?v=hero-space-1">
-  <link rel="stylesheet" href="../css/shroffin-guide.css?v=page-fade-3">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=breathe-1">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=page-fade-4">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=strip-flush-1">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -220,6 +220,7 @@
       </div>
     </nav>
     <!-- SHROFFIN_GUIDE_LOCALNAV_END -->
+    <div class="guide-swap" id="guide-swap">
 
     <header class="guide-hero guide-hero--media">
       <picture>
@@ -396,6 +397,9 @@
               </div>
             </div>
           </div>
+          <p class="guide-callout guide-callout--tight">
+            Keep about 6 months between each year’s ITR filing. Filing 2 or 3 years together just before applying can look like income made for the loan, not real ongoing income.
+          </p>
         </div>
       </section>
 
@@ -513,7 +517,8 @@
         Above is an indicative list only. Additional documents may be required based upon your profile as per lenders’ policy.
       </p>
     </div>
-  </main>
+      </div>
+</main>
 
   <!-- SHROFFIN_FOOTER_START -->
   <aside class="site-help-strip" aria-label="Get help">
@@ -610,135 +615,9 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script>
-    (function () {
-      document.querySelectorAll('.guide-seg[role="tablist"]').forEach(function (seg) {
-        var tabs = seg.querySelectorAll('[role="tab"]');
-        var panelIds = Array.prototype.map.call(tabs, function (tab) {
-          return tab.getAttribute('aria-controls');
-        });
-        var panels = panelIds.map(function (id) {
-          return document.getElementById(id);
-        }).filter(Boolean);
-
-        function activateTab(tab) {
-          var nextId = tab.getAttribute('aria-controls');
-          var current = null;
-          var next = null;
-          panels.forEach(function (panel) {
-            if (!panel.hidden) current = panel;
-            if (panel.id === nextId) next = panel;
-          });
-
-          tabs.forEach(function (btn) {
-            var selected = btn === tab;
-            btn.setAttribute('aria-selected', selected ? 'true' : 'false');
-            btn.tabIndex = selected ? 0 : -1;
-          });
-
-          if (!next || next === current) {
-            panels.forEach(function (panel) {
-              panel.hidden = panel.id !== nextId;
-            });
-            return;
-          }
-
-          var reduce =
-            window.matchMedia &&
-            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          var fadeMs =
-            (window.ShroffinSelectionFade && window.ShroffinSelectionFade.duration) ||
-            500;
-
-          if (reduce) {
-            panels.forEach(function (panel) {
-              panel.hidden = panel !== next;
-              panel.classList.remove('is-sel-fading');
-            });
-            return;
-          }
-
-          if (current) current.classList.add('is-sel-fading');
-          window.setTimeout(function () {
-            panels.forEach(function (panel) {
-              panel.hidden = panel !== next;
-              panel.classList.remove('is-sel-fading');
-            });
-            next.classList.add('is-sel-fading');
-            requestAnimationFrame(function () {
-              requestAnimationFrame(function () {
-                next.classList.remove('is-sel-fading');
-              });
-            });
-          }, fadeMs);
-        }
-
-        tabs.forEach(function (tab) {
-          tab.addEventListener('click', function () {
-            activateTab(tab);
-          });
-          tab.addEventListener('keydown', function (event) {
-            var index = Array.prototype.indexOf.call(tabs, tab);
-            var next = -1;
-            if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
-            if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
-            if (next >= 0) {
-              event.preventDefault();
-              activateTab(tabs[next]);
-              tabs[next].focus();
-            }
-          });
-        });
-      });
-    })();
-  </script>
-  <script>
-    (function () {
-      var moments = document.querySelectorAll('.guide-moment');
-      if (!moments.length) return;
-
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-      if (reduce.matches || !('IntersectionObserver' in window)) {
-        moments.forEach(function (el) {
-          el.classList.add('is-in');
-        });
-        return;
-      }
-
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add('is-in');
-            observer.unobserve(entry.target);
-          });
-        },
-        { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
-      );
-
-      moments.forEach(function (el) {
-        observer.observe(el);
-      });
-    })();
-  </script>
-
-  <script>
-    (function () {
-      var list = document.querySelector('.localnav-list');
-      var current = list && list.querySelector('.localnav-link[aria-current="page"]');
-      if (!list || !current) return;
-      // Always start from the left so Overview + Tax Benefits stay reachable.
-      list.scrollLeft = 0;
-      if (list.scrollWidth <= list.clientWidth) return;
-      var listLeft = list.getBoundingClientRect().left;
-      var cur = current.getBoundingClientRect();
-      var pad = 12;
-      if (cur.right > listLeft + list.clientWidth - pad) {
-        list.scrollLeft = Math.max(0, current.offsetLeft + current.offsetWidth - list.clientWidth + pad);
-      }
-    })();
-  </script>
-  <script src="../js/shroffin-nav.js?v=sel-13"></script>
-  <script src="../js/shroffin-guide.js?v=strip-ln-7"></script>
+  <script src="../js/guide-page-overview.js?v=soft-1"></script>
+  <script src="../js/shroffin-nav.js?v=sel-17"></script>
+  <script src="../js/shroffin-guide.js?v=soft-1"></script>
+  <script src="../js/shroffin-guide-soft-nav.js?v=soft-1"></script>
 </body>
 </html>

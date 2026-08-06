@@ -18,8 +18,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="../css/shroffin-shell.css?v=hero-space-1">
-  <link rel="stylesheet" href="../css/shroffin-guide.css?v=page-fade-3">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=breathe-1">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=page-fade-4">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=strip-flush-1">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -220,6 +220,7 @@
       </div>
     </nav>
     <!-- SHROFFIN_GUIDE_LOCALNAV_END -->
+    <div class="guide-swap" id="guide-swap">
 
     <header class="guide-hero guide-hero--media">
       <picture>
@@ -229,7 +230,7 @@
         >
         <img
           class="guide-hero-bg"
-          src="../images/guide-heroes/overview.png?v=portrait-1"
+          src="../images/guide-heroes/overview.png?v=landscape-2"
           alt=""
           width="1600"
           height="900"
@@ -941,7 +942,8 @@
         This guide is for education and comparison. Figures and summaries here are indicative. Final rates, charges, eligibility, insurance, and approval depend on your profile, the property, and the lender. Your sanction letter, loan agreement, and policy papers prevail.
       </p>
     </div>
-  </main>
+      </div>
+</main>
 
   <!-- SHROFFIN_FOOTER_START -->
   <aside class="site-help-strip" aria-label="Get help">
@@ -1038,258 +1040,9 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script>
-    (function () {
-      function parseMoney(raw) {
-        if (raw == null) return NaN;
-        var cleaned = String(raw).replace(/[,+\s₹]/g, '');
-        if (!cleaned) return 0;
-        var n = Number(cleaned);
-        return Number.isFinite(n) ? n : NaN;
-      }
-
-      function formatRupee(n) {
-        if (!Number.isFinite(n) || n <= 0) return '₹0';
-        return '₹' + Math.round(n).toLocaleString('en-IN');
-      }
-
-      /** Indian comma style while typing: 12,00,000 */
-      function formatIndianAmount(str, maxDigits) {
-        var digits = String(str).replace(/\D/g, '').slice(0, maxDigits || 12);
-        if (!digits) return '';
-        if (digits.length <= 3) return digits;
-        var result = digits.slice(-3);
-        var rest = digits.slice(0, -3);
-        while (rest.length > 0) {
-          result = rest.slice(-2) + ',' + result;
-          rest = rest.slice(0, -2);
-        }
-        return result;
-      }
-
-      function bindIndianMoneyInputs(formEl, names) {
-        names.forEach(function (name) {
-          var el = formEl.elements[name];
-          if (!el) return;
-          el.addEventListener('input', function () {
-            var start = this.selectionStart;
-            var oldValue = this.value;
-            var digitsBefore = (oldValue.slice(0, start).match(/\d/g) || []).length;
-            var formatted = formatIndianAmount(oldValue, 12);
-            this.value = formatted;
-            var newPos = 0;
-            var count = 0;
-            for (var i = 0; i < formatted.length && count < digitsBefore; i++) {
-              if (/\d/.test(formatted[i])) count++;
-              newPos = i + 1;
-            }
-            this.setSelectionRange(newPos, newPos);
-          });
-        });
-      }
-
-      function propertyCap(price) {
-        if (price <= 3000000) return price * 0.9;
-        if (price <= 7500000) return price * 0.8;
-        return price * 0.75;
-      }
-
-      function loanFromEmi(emi, annualRate, years) {
-        if (emi <= 0 || years <= 0) return 0;
-        var r = annualRate / 100 / 12;
-        var n = Math.round(years * 12);
-        if (r <= 0) return emi * n;
-        return emi * (1 - Math.pow(1 + r, -n)) / r;
-      }
-
-      function emiFromLoan(principal, annualRate, years) {
-        if (principal <= 0 || years <= 0) return 0;
-        var r = annualRate / 100 / 12;
-        var n = Math.round(years * 12);
-        if (r <= 0) return principal / n;
-        return principal * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
-      }
-
-      function setupFlip(flipId, formId, onReady) {
-        var flip = document.getElementById(flipId);
-        if (!flip) return null;
-
-        var back = flip.querySelector('.guide-flip-face--back');
-        var form = formId ? document.getElementById(formId) : null;
-
-        function setFlipped(open) {
-          flip.classList.toggle('is-flipped', open);
-          if (back) back.setAttribute('aria-hidden', open ? 'false' : 'true');
-          flip.querySelectorAll('[data-flip]').forEach(function (btn) {
-            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-          });
-          if (open && form) {
-            window.requestAnimationFrame(function () {
-              var first = form.querySelector('input, select');
-              if (first) first.focus({ preventScroll: true });
-            });
-          }
-        }
-
-        flip.querySelectorAll('[data-flip]').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            setFlipped(!flip.classList.contains('is-flipped'));
-          });
-        });
-
-        if (typeof onReady === 'function') {
-          onReady({
-            flip: flip,
-            form: form,
-            setFlipped: setFlipped
-          });
-        }
-
-        return { flip: flip, setFlipped: setFlipped };
-      }
-
-      var flips = [];
-
-      var borrow = setupFlip('borrow-flip', 'borrow-calc-form', function (ctx) {
-        var form = ctx.form;
-        if (!form) return;
-        var result = document.getElementById('borrow-calc-result');
-        var outTotal = document.getElementById('borrow-calc-total');
-        var outProp = document.getElementById('borrow-calc-prop');
-        var outInc = document.getElementById('borrow-calc-inc');
-
-        bindIndianMoneyInputs(form, ['price', 'income', 'emis', 'cards']);
-        form.addEventListener('submit', function (event) {
-          event.preventDefault();
-          var price = parseMoney(form.price.value);
-          var income = parseMoney(form.income.value);
-          var emis = parseMoney(form.emis.value);
-          var cards = parseMoney(form.cards.value);
-          var years = parseMoney(form.years.value);
-          var rate = parseMoney(form.rate.value);
-          var foirPct = parseMoney(form.foir.value);
-          if (![50, 55, 60, 65, 70].includes(foirPct)) foirPct = 55;
-
-          if (!(price > 0) || !(income > 0) || !(years > 0) || !(rate > 0)) {
-            if (result) result.hidden = true;
-            return;
-          }
-          if (!Number.isFinite(emis) || emis < 0) emis = 0;
-          if (!Number.isFinite(cards) || cards < 0) cards = 0;
-
-          var fromProperty = propertyCap(price);
-          var maxAllEmis = income * (foirPct / 100);
-          var cardLoad = cards * 0.1;
-          var homeEmiRoom = Math.max(0, maxAllEmis - emis - cardLoad);
-          var fromIncome = loanFromEmi(homeEmiRoom, rate, years);
-          var estimate = Math.min(fromProperty, fromIncome);
-
-          if (outProp) outProp.textContent = formatRupee(fromProperty);
-          if (outInc) outInc.textContent = formatRupee(fromIncome);
-          if (outTotal) outTotal.textContent = formatRupee(estimate);
-          if (result) result.hidden = false;
-        });
-      });
-      if (borrow) flips.push(borrow);
-
-      var emi = setupFlip('emi-flip', 'emi-calc-form', function (ctx) {
-        var form = ctx.form;
-        if (!form) return;
-        var result = document.getElementById('emi-calc-result');
-        var outTotal = document.getElementById('emi-calc-total');
-        var outPayable = document.getElementById('emi-calc-payable');
-        var outInterest = document.getElementById('emi-calc-interest');
-
-        bindIndianMoneyInputs(form, ['amount']);
-        form.addEventListener('submit', function (event) {
-          event.preventDefault();
-          var amount = parseMoney(form.amount.value);
-          var years = parseMoney(form.years.value);
-          var rate = parseMoney(form.rate.value);
-
-          if (!(amount > 0) || !(years > 0) || !(rate > 0)) {
-            if (result) result.hidden = true;
-            return;
-          }
-
-          years = Math.min(40, years);
-          var monthly = emiFromLoan(amount, rate, years);
-          var months = Math.round(years * 12);
-          var totalPayable = monthly * months;
-          var totalInterest = Math.max(0, totalPayable - amount);
-
-          if (outTotal) outTotal.textContent = formatRupee(monthly);
-          if (outPayable) outPayable.textContent = formatRupee(totalPayable);
-          if (outInterest) outInterest.textContent = formatRupee(totalInterest);
-          if (result) result.hidden = false;
-        });
-      });
-      if (emi) flips.push(emi);
-
-      var structure = setupFlip('structure-flip');
-      if (structure) flips.push(structure);
-
-      var rate = setupFlip('rate-flip');
-      if (rate) flips.push(rate);
-
-      var charges = setupFlip('charges-flip');
-      if (charges) flips.push(charges);
-
-      window.addEventListener('keydown', function (event) {
-        if (event.key !== 'Escape') return;
-        flips.forEach(function (item) {
-          if (item.flip.classList.contains('is-flipped')) item.setFlipped(false);
-        });
-      });
-    })();
-  </script>
-  <script>
-    (function () {
-      var moments = document.querySelectorAll('.guide-moment');
-      if (!moments.length) return;
-
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-      if (reduce.matches || !('IntersectionObserver' in window)) {
-        moments.forEach(function (el) {
-          el.classList.add('is-in');
-        });
-        return;
-      }
-
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add('is-in');
-            observer.unobserve(entry.target);
-          });
-        },
-        { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
-      );
-
-      moments.forEach(function (el) {
-        observer.observe(el);
-      });
-    })();
-  </script>
-
-  <script>
-    (function () {
-      var list = document.querySelector('.localnav-list');
-      var current = list && list.querySelector('.localnav-link[aria-current="page"]');
-      if (!list || !current) return;
-      // Always start from the left so Overview + Tax Benefits stay reachable.
-      list.scrollLeft = 0;
-      if (list.scrollWidth <= list.clientWidth) return;
-      var listLeft = list.getBoundingClientRect().left;
-      var cur = current.getBoundingClientRect();
-      var pad = 12;
-      if (cur.right > listLeft + list.clientWidth - pad) {
-        list.scrollLeft = Math.max(0, current.offsetLeft + current.offsetWidth - list.clientWidth + pad);
-      }
-    })();
-  </script>
-  <script src="../js/shroffin-nav.js?v=sel-13"></script>
-  <script src="../js/shroffin-guide.js?v=strip-ln-7"></script>
+  <script src="../js/guide-page-overview.js?v=soft-1"></script>
+  <script src="../js/shroffin-nav.js?v=sel-17"></script>
+  <script src="../js/shroffin-guide.js?v=soft-1"></script>
+  <script src="../js/shroffin-guide-soft-nav.js?v=soft-1"></script>
 </body>
 </html>

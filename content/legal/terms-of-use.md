@@ -54,9 +54,9 @@ These Terms of Use are a legally binding agreement between you and Shroffin for 
 | --- | --- |
 | Brand | Shroffin |
 | Website | [shroffin.com](https://shroffin.com) |
-| What we do | Independent home-loan comparison and application assistance in India. We help you compare lenders side by side, choose who to apply to, and (if you ask) assist with applications. We may also help create competition among lenders you selected so they can compete on terms for your benefit. You decide which offer to take. |
+| What we do | Independent home-loan comparison and application assistance in India. We help you compare lenders side by side, suggest and recommend who to apply to, and assist with applications. We may also help create competition among lenders you selected so they can compete on terms for your benefit. You decide which offer to take. |
 | What we are not | We are not a bank, NBFC, housing finance company, deposit-taking institution, payment system, credit information company, or insurance company. We do not approve, sanction, disburse, or underwrite loans. We are not a Direct Selling Agent (DSA) of any bank and do not take commission from banks to rank or recommend lenders. |
-| Operator | Operated by Yash from India. A separate company has not yet been incorporated. References to “Shroffin,” “we,” “us,” or “our” mean the operator of shroffin.com. When a company is incorporated, these Terms may be updated to name that entity. |
+| Operator | Operated by Yash Jangid from India. A separate company has not yet been incorporated. References to “Shroffin,” “we,” “us,” or “our” mean the operator of shroffin.com. When a company is incorporated, these Terms may be updated to name that entity. |
 | Contact | [support@shroffin.com](mailto:support@shroffin.com) · [+91 91123 34367](tel:+919112334367) |
 
 Loan agreements are only between you and the bank or lender you choose. We are not a party to that loan contract.
@@ -329,7 +329,7 @@ In line with applicable Indian information-technology rules for intermediaries a
 
 |  |  |
 | --- | --- |
-| Grievance Officer | Yash |
+| Grievance Officer | Yash Jangid |
 | Email | [support@shroffin.com](mailto:support@shroffin.com) |
 | Phone | [+91 91123 34367](tel:+919112334367) |
 | Website | [shroffin.com](https://shroffin.com) |

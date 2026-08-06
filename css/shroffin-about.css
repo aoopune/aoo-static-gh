@@ -191,22 +191,14 @@
 
 /* Off-site .guide-section-link recipe lives in shroffin-shell.css */
 
-/* ——— Founder ——— */
+/* ——— People / founder ——— */
 .about-band--founder {
   text-align: center;
-  padding-top: var(--shroffin-space-masthead-start);
+  padding-top: calc(var(--shroffin-space-masthead-start) + clamp(1.5rem, 4vw, 2.5rem));
 }
 
-.about-founder-role {
-  margin: 0 0 12px;
-  color: var(--about-muted);
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.33337;
-}
-
-.about-founder-name {
-  margin: 0 auto 22px;
+.about-founder-section-title {
+  margin: 0 auto 28px;
   max-width: 12em;
   color: var(--about-ink);
   font-size: var(--shroffin-type-display);
@@ -214,12 +206,58 @@
   line-height: 1.1;
 }
 
-.about-founder-copy {
+.about-founder-people {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: clamp(1.5rem, 8vw, 4rem);
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
   margin: 0 auto;
-  max-width: 28em;
+  align-items: start;
+}
+
+.about-founder-person {
+  min-width: 0;
+  text-align: center;
+}
+
+.about-founder-name {
+  margin: 0 0 8px;
+  color: var(--about-ink);
+  font-size: var(--shroffin-type-title);
+  font-weight: 600;
+  line-height: 1.12;
+  white-space: nowrap;
+}
+
+.about-founder-role {
+  margin: 0;
   color: var(--about-muted);
-  font-size: var(--shroffin-type-body);
-  line-height: 1.52947;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.33337;
+  white-space: nowrap;
+}
+
+.about-founder-linkedin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  min-width: 44px;
+  min-height: 44px;
+  color: var(--about-muted);
+  transition: color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-founder-linkedin:hover {
+  color: var(--about-ink);
+}
+
+.about-founder-linkedin-icon {
+  width: 20px;
+  height: 20px;
 }
 
 /* ——— How we work ——— */
@@ -284,52 +322,6 @@
 
 .about-glance li:last-child {
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-/* ——— Close CTA ——— */
-.about-close {
-  padding: var(--shroffin-space-masthead-start) 0;
-  text-align: center;
-  background: var(--about-paper-deep);
-}
-
-.about-close-title {
-  margin: 0 0 28px;
-  color: var(--about-ink);
-  font-size: var(--shroffin-type-title);
-  font-weight: 600;
-  line-height: 1.12;
-}
-
-.about-close-ctas {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-}
-
-.about-cta-secondary {
-  background: transparent;
-  border-color: rgba(0, 0, 0, 0.2);
-  color: var(--about-ink);
-}
-
-.about-cta-secondary:hover {
-  background: var(--shroffin-btn-primary, #0071e3);
-  border-color: var(--shroffin-btn-primary, #0071e3);
-  color: #fff;
-}
-
-.about-cta-secondary:link,
-.about-cta-secondary:visited {
-  color: var(--about-ink);
-  text-decoration: none;
-}
-
-.about-cta-secondary:hover,
-.about-cta-secondary:focus-visible,
-.about-cta-secondary:active {
-  text-decoration: none;
 }
 
 /* ——— Tablet / desktop ——— */

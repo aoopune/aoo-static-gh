@@ -18,10 +18,9 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="../css/shroffin-shell.css?v=type-ladder-5">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=footer-1">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=footer-gap-1">
 </head>
-<!-- HLC_TESTING_MODE: temporary — pre-filled inputs, no UX delays. Ask to restore when testing is done. -->
-<body class="explore-banks-page hlc-testing-mode">
+<body class="explore-banks-page">
   <!-- SHROFFIN_NAV_START -->
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
   <nav class="globalnav" id="globalnav" aria-label="Global">
@@ -205,6 +204,10 @@
 
   <div class="hlc-toast" id="hlc-toast" role="status"></div>
 
+  <div class="hlc-apply-dock" id="hlc-apply-dock" hidden>
+    <button type="button" class="hlc-btn-primary" id="hlc-apply-dock-btn" disabled>Apply once</button>
+  </div>
+
   <!-- SHROFFIN_FOOTER_START -->
   <aside class="site-help-strip" aria-label="Get help">
     <p class="site-help-strip-text">
@@ -301,8 +304,8 @@
   <!-- SHROFFIN_FOOTER_END -->
 
   <script src="../js/shroffin-home-stance.js?v=stance-18"></script>
-  <script src="../js/shroffin-nav.js?v=sel-13"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=chevron-1"></script>
+  <script src="../js/shroffin-nav.js?v=sel-16"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=show-more-smooth-1"></script>
   <script>
     (function () {
       var form = document.getElementById("hlc-inputs");
@@ -311,15 +314,13 @@
       var submitBtn = form && form.querySelector('button[type="submit"]');
       if (!form || !resultsShell || !searching) return;
 
-      var testingMode = document.body.classList.contains("hlc-testing-mode");
-      var reduceMotion =
-        testingMode || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       var busy = false;
       var searchTimer = null;
       var scrollRaf = null;
-      var searchMs = testingMode ? 0 : reduceMotion ? 220 : 1400;
-      var fadeOutMs = testingMode ? 0 : reduceMotion ? 0 : 750;
-      var scrollMs = testingMode ? 0 : 1100;
+      var searchMs = reduceMotion ? 220 : 1400;
+      var fadeOutMs = reduceMotion ? 0 : 750;
+      var scrollMs = 1100;
       var ease = function (t) {
         // Soft ease-out — matches cubic-bezier(0.22, 1, 0.36, 1) feel
         return 1 - Math.pow(1 - t, 3.2);
@@ -425,11 +426,6 @@
 
         if (!resultsShell.hidden && resultsShell.classList.contains("is-visible")) {
           softScrollToOptions();
-          return;
-        }
-
-        if (testingMode) {
-          revealResults();
           return;
         }
 

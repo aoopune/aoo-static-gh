@@ -14,116 +14,10 @@
   <link rel="preload" href="/fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: #fcfcfd;
-      background: color-mix(in srgb, #0071e3 0.75%, #ffffff);
-      color: #1d1d1f;
-      font-family: "Google Sans Flex", sans-serif;
-    }
-
-    .sitemap-main {
-      width: min(1068px, calc(100% - (2 * clamp(1rem, 4vw, 2.5rem))));
-      margin-inline: auto;
-      padding-block: clamp(3.5rem, 9vw, 7rem) clamp(2rem, 6vw, 4.5rem);
-    }
-
-    .sitemap-title {
-      max-inline-size: 16ch;
-      margin: 0;
-      font-size: clamp(2.5rem, 7vw, 5rem);
-      font-weight: 600;
-      letter-spacing: -0.045em;
-      line-height: 0.98;
-    }
-
-    .sitemap-intro {
-      max-inline-size: 42rem;
-      margin: 1.25rem 0 0;
-      color: rgba(0, 0, 0, 0.62);
-      font-size: clamp(1rem, 2.2vw, 1.25rem);
-      line-height: 1.5;
-    }
-
-    .sitemap-directory {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 2.5rem;
-      margin-block-start: clamp(3.5rem, 8vw, 6rem);
-    }
-
-    .sitemap-group {
-      min-inline-size: 0;
-    }
-
-    .sitemap-group h2 {
-      margin: 0 0 1rem;
-      font-size: 1.25rem;
-      font-weight: 600;
-      letter-spacing: -0.015em;
-    }
-
-    .sitemap-group ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .sitemap-group li + li {
-      margin-block-start: 0.25rem;
-    }
-
-    .sitemap-group a {
-      display: inline-flex;
-      align-items: center;
-      min-block-size: 44px;
-      min-inline-size: 44px;
-      color: rgba(0, 0, 0, 0.64);
-      font-size: 0.95rem;
-      line-height: 1.35;
-      text-decoration: none;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .sitemap-group a:hover,
-    .sitemap-group a:focus-visible {
-      color: #005bb5;
-    }
-
-    @media (min-width: 560px) {
-      .sitemap-directory {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (min-width: 834px) {
-      .sitemap-directory {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 3rem 2rem;
-      }
-
-      .sitemap-group--guide {
-        grid-column: span 2;
-      }
-
-      .sitemap-group--guide ul {
-        columns: 2;
-        column-gap: 2rem;
-      }
-
-      .sitemap-group--guide li {
-        break-inside: avoid;
-      }
-    }
-  </style>
   <link rel="stylesheet" href="/css/shroffin-shell.css?v=type-ladder-5">
+  <link rel="stylesheet" href="/css/shroffin-utility-pages.css?v=1">
 </head>
-<body>
+<body class="utility-page sitemap-page">
   <!-- SHROFFIN_NAV_START -->
   <div class="globalnav-veil" id="globalnav-veil" hidden></div>
   <nav class="globalnav" id="globalnav" aria-label="Global">
@@ -327,7 +221,6 @@
       <nav class="sitemap-group" aria-labelledby="sitemap-tools-title">
         <h2 id="sitemap-tools-title">Tools</h2>
         <ul>
-          <li><a href="/pages/learn-more.html">Learn more</a></li>
           <li><a href="/pages/explore-banks.html">Explore banks</a></li>
           <li><a href="/pages/apply.html">Apply once</a></li>
           <li><a href="/pages/calculators.html">Calculators</a></li>
@@ -370,6 +263,7 @@
   </main>
 
   <!-- SHROFFIN_FOOTER_START -->
+
   <aside class="site-help-strip" aria-label="Get help">
     <p class="site-help-strip-text">
       Need some help?

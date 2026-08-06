@@ -4,6 +4,10 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 const pageRegistry = require(path.join(root, 'data', 'redesigned-pages.json'));
 const globalNav = require(path.join(root, 'data', 'global-nav.json'));
+const {
+  SKIP_EXPLORE_BANKS_PREFOOTER_CTA,
+  EXPLORE_BANKS_PREFOOTER_LEAD
+} = require(path.join(root, 'scripts', 'lib', 'site-chrome'));
 const pages = pageRegistry.map(function (entry) {
   return entry.path;
 });
@@ -139,6 +143,37 @@ for (const entry of pageRegistry) {
   ) {
     fail(file, 'help strip must include the support phone link');
   }
+  const hasPrefooterCta = /class="site-prefooter-cta"/.test(activeSource);
+  if (SKIP_EXPLORE_BANKS_PREFOOTER_CTA.has(file)) {
+    if (hasPrefooterCta) {
+      fail(file, 'Explore banks prefooter CTA must be omitted on this page');
+    }
+  } else {
+    if (!hasPrefooterCta) {
+      fail(file, 'missing Explore banks prefooter CTA');
+    }
+    if (
+      !new RegExp(
+        'class="site-prefooter-cta-lead">' +
+          EXPLORE_BANKS_PREFOOTER_LEAD.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      ).test(activeSource)
+    ) {
+      fail(
+        file,
+        'prefooter CTA must use lead "' + EXPLORE_BANKS_PREFOOTER_LEAD + '"'
+      );
+    }
+    if (
+      !/class="site-prefooter-cta"[\s\S]*?href="\/pages\/explore-banks\.html"[\s\S]*?>Explore banks<\/a>[\s\S]*?class="site-help-strip"/.test(
+        activeSource
+      )
+    ) {
+      fail(
+        file,
+        'Explore banks prefooter CTA must sit immediately above the help strip'
+      );
+    }
+  }
   if ((source.match(/SHROFFIN_FOOTER_START/g) || []).length !== 1) {
     fail(file, 'missing canonical footer start marker');
   }
@@ -258,6 +293,18 @@ for (const file of guidePages) {
 }
 
 const shellCss = fs.readFileSync(path.join(root, 'css', 'shroffin-shell.css'), 'utf8');
+if (!/\.site-prefooter-cta\s*\{/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'missing .site-prefooter-cta styles');
+}
+if (!/\.site-prefooter-cta-lead\s*\{/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'missing .site-prefooter-cta-lead styles');
+}
+if (!/\.site-prefooter-cta \+ \.site-help-strip\s*\{/.test(shellCss)) {
+  fail(
+    'css/shroffin-shell.css',
+    'prefooter CTA must tighten help-strip top margin when present'
+  );
+}
 if (
   (shellCss.match(
     /\.site-help-strip\s*\{[\s\S]*?border-block-start:\s*1px solid var\(--shroffin-rule\)/g

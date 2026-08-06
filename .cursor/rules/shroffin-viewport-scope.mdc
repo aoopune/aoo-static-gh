@@ -1,0 +1,43 @@
+---
+description: When user says mobile-only or desktop-only, change only that viewport — never break the other
+alwaysApply: true
+---
+
+# Viewport-scoped changes (mobile / desktop)
+
+When the user says a change is **mobile only**, **desktop only**, **phone only**, or similar, that scope is binding. The other viewport is frozen.
+
+Shroffin breakpoint (match existing site): **mobile / phone = default &lt; 834px**; **tablet / desktop = `min-width: 834px`**.
+
+## Always
+
+1. Treat the **unscoped viewport as locked**. Do not restyle, restructure, or rewire it “while you’re there.”
+2. Prefer **CSS/JS overrides inside the target breakpoint** over rewriting shared HTML.
+   - Mobile-only styles → inside `@media (max-width: 833px)` (or mobile-first base only if desktop already has an explicit override that preserves today’s desktop look).
+   - Desktop-only styles → inside `@media (min-width: 834px)`.
+   - Mobile-only behavior → gate with `matchMedia("(max-width: 833px)")` (or equivalent).
+3. If shared markup must change, **desktop (or the locked viewport) must look and behave exactly as before** — same layout regions, same visibility, same controls.
+4. Before finishing a scoped ask, **open the other viewport in your head (or browser) and confirm it is unchanged**: title row, filters, tabs, primary CTAs, side rails, floating docks.
+5. If the user says “mobile only” mid-thread, apply that to **all following work in the thread** until they explicitly widen scope.
+
+## Never
+
+- Never rewrite a shared page structure for mobile convenience if it alters desktop layout.
+- Never hide/show, move, or restyle a desktop control as a side effect of a mobile-only request (or the reverse).
+- Never assume “it’ll be fine on desktop” without a deliberate check.
+- Never apply floating docks, click-to-open panels, or stacked mobile chrome to desktop unless the user asks for desktop too.
+
+## Bad vs good
+
+```
+❌ BAD — user said mobile only
+Move Filters into a new heading flex; desktop title row and Apply once break.
+
+✅ GOOD — user said mobile only
+Keep desktop filter rail + header Apply once as they are.
+Add Filters toggle + floating Apply once only under max-width: 833px / mobile JS branch.
+```
+
+## Before finishing (scoped request)
+
+Confirm: scope matches the user’s viewport words; locked viewport untouched; overrides live in the correct breakpoint/JS gate; other viewport still matches pre-change behavior. If any answer is no, the change is not finished.
