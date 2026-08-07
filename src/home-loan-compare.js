@@ -2,7 +2,13 @@
 
 const { Engine } = require("json-rules-engine");
 
-const DATA_URL = "../data/home-loans-compare.json";
+/** Stamped by scripts/stamp-asset-versions.js → js/hlc-data-url.generated.js */
+function resolveCompareDataUrl() {
+  if (typeof window !== "undefined" && window.__HLC_DATA_URL__) {
+    return window.__HLC_DATA_URL__;
+  }
+  return "../data/home-loans-compare.json";
+}
 const MATCH_DEBOUNCE_MS = 280;
 const INITIAL_VISIBLE_BANKS = 10;
 const DEFAULT_PURPOSE = "Regular Home Loan";
@@ -19,17 +25,6 @@ const DEFAULT_BANK_TYPE = "All";
 /** Govt charges in the data are Maharashtra + India; no state input on this page yet. */
 const DEFAULT_JURISDICTION_STATE = "Maharashtra";
 const FOIR_CHOICES = [50, 55, 60, 65, 70];
-const REQUIRED_FIELD_MESSAGES = {
-  monthlyIncome: "Enter monthly income",
-  propertyValue: "Enter property agreement value",
-  age: "Enter age",
-  cibilScore: "Enter CIBIL score",
-  tenureYears: "Enter tenure",
-  occupation: "Choose occupation",
-  purpose: "Choose purpose"
-};
-const TENURE_HELP_DEFAULT = "";
-const TENURE_HELP_REQUIRED = REQUIRED_FIELD_MESSAGES.tenureYears;
 
 function defaultProductFilters() {
   return {
@@ -47,8 +42,7 @@ const GROUPS = {
   essentials: [
     { key: "effectiveRoiPct", label: "Rate", type: "pct", sort: "num" },
     { key: "loanAmount", label: "Loan amount", type: "inr", sort: "num" },
-    { key: "downPayment", label: "Down payment", type: "inr", sort: "num" },
-    { key: "tenureLabel", label: "Tenure", type: "text", sort: "text" },
+    { key: "tenureLabel", label: "Tenure (yrs)", type: "text", sort: "text" },
     { key: "emi", label: "EMI", type: "inr", sort: "num" }
   ],
   charges: [
@@ -544,7 +538,7 @@ function queryForOffer(query, offer) {
 function formatTenureYears(years) {
   if (!Number.isFinite(years) || years <= 0) return "—";
   const rounded = Math.round(years * 10) / 10;
-  return rounded === 1 ? "1 year" : String(rounded) + " years";
+  return String(rounded);
 }
 
 function matchesOptionalField(recordValue, queryValue) {
@@ -3874,27 +3868,21 @@ function initPage() {
     age: document.getElementById("hlc-age"),
     cibil: document.getElementById("hlc-cibil"),
     monthlyIncome: document.getElementById("hlc-monthly-income"),
-    monthlyIncomeNote: document.getElementById("hlc-monthly-income-note"),
     existingEmis: document.getElementById("hlc-existing-emis"),
     cardLimits: document.getElementById("hlc-card-limits"),
     cardLoadPct: document.getElementById("hlc-card-load-pct"),
     tenure: document.getElementById("hlc-tenure"),
     foir: document.getElementById("hlc-foir"),
     foirFace: document.getElementById("hlc-foir-face"),
-    ageNote: document.getElementById("hlc-age-note"),
-    cibilNote: document.getElementById("hlc-cibil-note"),
     coApplicant: document.getElementById("hlc-coapplicant"),
     coApplicantFields: document.getElementById("hlc-coapplicant-fields"),
     coMonthlyIncome: document.getElementById("hlc-co-income"),
     coExistingEmis: document.getElementById("hlc-co-existing-emis"),
     coCardLimits: document.getElementById("hlc-co-card-limits"),
     occupation: document.getElementById("hlc-occupation"),
-    occupationNote: document.getElementById("hlc-occupation-note"),
     purpose: document.getElementById("hlc-purpose"),
-    purposeNote: document.getElementById("hlc-purpose-note"),
     propertyValue: document.getElementById("hlc-property-value"),
     loanHint: document.getElementById("hlc-loan-hint"),
-    tenureNote: document.getElementById("hlc-tenure-note"),
     status: document.getElementById("hlc-status"),
     meta: document.getElementById("hlc-match-meta"),
     table: document.querySelector(".hlc-compare"),
@@ -3920,7 +3908,8 @@ function initPage() {
     filtersControl: document.getElementById("hlc-filters-control"),
     filtersToggle: document.getElementById("hlc-filters-toggle"),
     filtersPanel: document.getElementById("hlc-filters-panel"),
-    filtersBadge: document.getElementById("hlc-filters-badge")
+    filtersBadge: document.getElementById("hlc-filters-badge"),
+    filtersClear: document.getElementById("hlc-filters-clear")
   };
 
   var exploreMobileMq =
@@ -3946,8 +3935,68 @@ function initPage() {
     return bankName + (isSelected ? ", selected" : ", tap to select");
   }
 
+  function rowCheckHtml(isSelected) {
+    return (
+      '<span class="hlc-row-check" aria-hidden="true"' +
+      (isSelected ? ' data-checked="true"' : "") +
+      ">" +
+      '<svg viewBox="0 0 12 12" focusable="false">' +
+      '<path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' +
+      "</svg></span>"
+    );
+  }
+
+  function visibleBankRows() {
+    const rows = sortRows(state.rows, state.sortKey, state.sortDir);
+    if (state.showAllBanks || rows.length <= INITIAL_VISIBLE_BANKS) return rows;
+    return rows.slice(0, INITIAL_VISIBLE_BANKS);
+  }
+
+  /** none | some | all — for the Bank header checkbox over currently listed banks. */
+  function selectAllCheckState(visibleRows) {
+    if (!visibleRows.length) return "none";
+    let selectedCount = 0;
+    visibleRows.forEach(function (row) {
+      if (state.selected.has(row.id)) selectedCount += 1;
+    });
+    if (selectedCount === 0) return "none";
+    if (selectedCount === visibleRows.length) return "all";
+    return "some";
+  }
+
+  function headerCheckHtml(checkState) {
+    const ariaChecked =
+      checkState === "all" ? "true" : checkState === "some" ? "mixed" : "false";
+    const label =
+      checkState === "all"
+        ? "Deselect all visible banks"
+        : "Select all visible banks";
+    return (
+      '<button type="button" class="hlc-select-all" data-state="' +
+      checkState +
+      '" role="checkbox" aria-checked="' +
+      ariaChecked +
+      '" aria-label="' +
+      label +
+      '">' +
+      '<svg class="hlc-select-all-tick" viewBox="0 0 12 12" focusable="false" aria-hidden="true">' +
+      '<path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' +
+      "</svg>" +
+      '<svg class="hlc-select-all-dash" viewBox="0 0 12 12" focusable="false" aria-hidden="true">' +
+      '<path d="M2.5 6h7" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.8" stroke-linecap="round"/>' +
+      "</svg>" +
+      "</button>"
+    );
+  }
+
   function applyOnceLabel() {
-    return "Apply once";
+    const count = state.selected.size;
+    if (count <= 0) return "Apply once";
+    if (count === 1) return "Apply once · 1 selected";
+    return "Apply once · " + count + " selected";
   }
 
   function readQuery() {
@@ -3973,109 +4022,6 @@ function initPage() {
     );
   }
 
-  function setFieldIssue(input, noteEl, message, options) {
-    if (!input) return;
-    const opts = options || {};
-    const isInvalid = Boolean(message);
-    input.setAttribute("aria-invalid", isInvalid ? "true" : "false");
-    const shell = input.closest(".hlc-input-shell");
-    if (shell) shell.classList.toggle("is-invalid", isInvalid);
-    if (noteEl) {
-      if (isInvalid || !opts.preserveNoteWhenValid) {
-        noteEl.textContent = message || "";
-      }
-      noteEl.classList.toggle("is-invalid", isInvalid);
-    }
-  }
-
-  function setChoiceIssue(fieldEl, noteEl, message) {
-    if (fieldEl) fieldEl.classList.toggle("is-invalid", Boolean(message));
-    if (noteEl) {
-      noteEl.textContent = message || "";
-      noteEl.classList.toggle("is-invalid", Boolean(message));
-    }
-  }
-
-  function syncPrimaryFieldIssues() {
-    const missing = [];
-    const checks = [
-      {
-        input: el.monthlyIncome,
-        note: el.monthlyIncomeNote,
-        key: "monthlyIncome"
-      },
-      {
-        input: el.propertyValue,
-        note: el.loanHint,
-        key: "propertyValue",
-        preserveNoteWhenValid: true
-      },
-      {
-        input: el.age,
-        note: el.ageNote,
-        key: "age"
-      },
-      {
-        input: el.cibil,
-        note: el.cibilNote,
-        key: "cibilScore"
-      },
-      {
-        input: el.tenure,
-        note: el.tenureNote,
-        key: "tenureYears"
-      }
-    ];
-
-    checks.forEach(function (check) {
-      const hasValue = check.input ? digitCount(check.input.value) > 0 : true;
-      const message = hasValue ? "" : REQUIRED_FIELD_MESSAGES[check.key];
-      if (message) missing.push(message);
-      setFieldIssue(check.input, check.note, message, {
-        preserveNoteWhenValid: Boolean(check.preserveNoteWhenValid)
-      });
-    });
-
-    const occupationValue = el.occupation ? String(el.occupation.value || "").trim() : "";
-    const occupationMessage = occupationValue ? "" : REQUIRED_FIELD_MESSAGES.occupation;
-    if (occupationMessage) missing.push(occupationMessage);
-    setChoiceIssue(
-      el.occupation ? el.occupation.closest(".hlc-field--occupation") : null,
-      el.occupationNote,
-      occupationMessage
-    );
-
-    const purposeValue = el.purpose ? String(el.purpose.value || "").trim() : "";
-    const purposeMessage = purposeValue ? "" : REQUIRED_FIELD_MESSAGES.purpose;
-    if (purposeMessage) missing.push(purposeMessage);
-    setChoiceIssue(
-      el.purpose ? el.purpose.closest(".hlc-field--purpose") : null,
-      el.purposeNote,
-      purposeMessage
-    );
-
-    if (!digitCount(el.propertyValue ? el.propertyValue.value : "")) {
-      if (el.loanHint) el.loanHint.textContent = REQUIRED_FIELD_MESSAGES.propertyValue;
-    } else if (el.loanHint) {
-      el.loanHint.classList.remove("is-invalid");
-    }
-    if (!digitCount(el.tenure ? el.tenure.value : "")) {
-      if (el.tenureNote) el.tenureNote.textContent = TENURE_HELP_REQUIRED;
-    } else if (el.tenureNote) {
-      el.tenureNote.textContent = TENURE_HELP_DEFAULT;
-      el.tenureNote.classList.remove("is-invalid");
-    }
-    if (el.status) {
-      el.status.textContent =
-        missing.length === 0
-          ? ""
-          : missing.length === 1
-            ? missing[0]
-            : "Fill in the highlighted fields";
-    }
-    return missing.length === 0;
-  }
-
   function primaryFieldsAreComplete() {
     if (!digitCount(el.monthlyIncome ? el.monthlyIncome.value : "")) return false;
     if (!digitCount(el.propertyValue ? el.propertyValue.value : "")) return false;
@@ -4087,22 +4033,8 @@ function initPage() {
     return true;
   }
 
-  function setTenureIncomplete(isIncomplete) {
-    setFieldIssue(el.tenure, el.tenureNote, isIncomplete ? TENURE_HELP_REQUIRED : "");
-    if (el.tenureNote && !isIncomplete) el.tenureNote.textContent = TENURE_HELP_DEFAULT;
-    if (el.status) {
-      el.status.textContent = isIncomplete ? TENURE_HELP_REQUIRED : "";
-    }
-  }
-
-  function tenureInputIsComplete() {
-    if (!el.tenure) return true;
-    return digitCount(el.tenure.value) > 0;
-  }
-
   function updateLoanHint() {
     if (!el.loanHint) return;
-    if (el.loanHint.classList.contains("is-invalid")) return;
     el.loanHint.textContent = "";
   }
 
@@ -4113,11 +4045,6 @@ function initPage() {
       const selected = btn.getAttribute("data-occupation") === value;
       btn.setAttribute("aria-pressed", selected ? "true" : "false");
     });
-    setChoiceIssue(
-      el.occupation.closest(".hlc-field--occupation"),
-      el.occupationNote,
-      ""
-    );
   }
 
   function setPurpose(value) {
@@ -4128,11 +4055,6 @@ function initPage() {
       const selected = btn.getAttribute("data-purpose") === purpose;
       btn.setAttribute("aria-pressed", selected ? "true" : "false");
     });
-    setChoiceIssue(
-      el.purpose.closest(".hlc-field--purpose"),
-      el.purposeNote,
-      ""
-    );
   }
 
   function setFormMoreOpen(open) {
@@ -4247,6 +4169,23 @@ function initPage() {
       el.filtersBadge.setAttribute("hidden", "");
       el.filtersBadge.removeAttribute("aria-label");
     }
+    if (el.filtersClear) {
+      if (count > 0) el.filtersClear.removeAttribute("hidden");
+      else el.filtersClear.setAttribute("hidden", "");
+    }
+  }
+
+  function clearAllProductFilters() {
+    state.productFilters = defaultProductFilters();
+    setRateType(DEFAULT_RATE_TYPE);
+    setFacilityType(DEFAULT_FACILITY_TYPE);
+    setBankType(DEFAULT_BANK_TYPE);
+    document.querySelectorAll("[data-product-filter]").forEach(function (el) {
+      setProductFilterControl(el, false);
+    });
+    updateFiltersBadge();
+    persistExploreDraft();
+    scheduleMatch({ fade: true });
   }
 
   function isFiltersOpen() {
@@ -4538,7 +4477,12 @@ function initPage() {
     }
 
     let headHtml = "<tr>";
-    headHtml += '<th class="hlc-sticky-col" scope="col">Bank</th>';
+    headHtml +=
+      '<th class="hlc-sticky-col" scope="col">' +
+      '<div class="hlc-bank-head">' +
+      headerCheckHtml(selectAllCheckState(visibleRows)) +
+      '<span class="hlc-bank-head-label">Bank</span>' +
+      "</div></th>";
     if (useFillCol) {
       headHtml +=
         '<th class="hlc-col-fill" scope="col" aria-hidden="true"></th>';
@@ -4681,7 +4625,6 @@ function initPage() {
                 : "";
             const hasCalculation =
               column.key === "loanAmount" ||
-              column.key === "downPayment" ||
               column.key === "emi" ||
               column.key === "processingFee" ||
               column.key === "governmentCharges";
@@ -4743,6 +4686,8 @@ function initPage() {
           '">' +
           '<td class="hlc-sticky-col">' +
           '<div class="hlc-bank-cell">' +
+          rowCheckHtml(isSelected) +
+          '<div class="hlc-bank-cell-text">' +
           '<div class="hlc-bank-name">' +
           row.bankName +
           "</div>" +
@@ -4752,9 +4697,11 @@ function initPage() {
           "</span>" +
           '<button type="button" class="hlc-bank-detail" data-detail="' +
           row.id +
-          '"><span class="hlc-bank-detail-label">More</span><svg class="hlc-bank-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+          '" aria-label="View details for ' +
+          escapeHtml(row.bankName) +
+          '"><span class="hlc-bank-detail-label">Details</span><svg class="hlc-bank-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
           "</div>" +
-          "</div></td>" +
+          "</div></div></td>" +
           (useFillCol ? '<td class="hlc-col-fill" aria-hidden="true"></td>' : "") +
           cells +
           "</tr>"
@@ -5374,34 +5321,6 @@ function initPage() {
     );
   }
 
-  function downPaymentCalculationHtml(row) {
-    const propertyValue = Math.max(
-      0,
-      Number(readQuery().propertyValue) || 0
-    );
-    const equation =
-      formatInr(propertyValue) +
-      " − " +
-      formatInr(row.loanAmount) +
-      " = " +
-      formatInr(row.downPayment);
-
-    return (
-      '<div class="hlc-calc-steps">' +
-      calculationStep(
-        "Property value minus loan",
-        equation,
-        "This is the part of the property value not covered by the calculated loan amount."
-      ) +
-      "</div>" +
-      calculationTotal(
-        "Down payment shown",
-        equation,
-        formatInr(row.downPayment)
-      )
-    );
-  }
-
   function emiCalculationHtml(row) {
     const monthlyRate = row.roiDecimal / 12;
     const monthlyRateDecimal = monthlyRate.toFixed(8);
@@ -5662,16 +5581,6 @@ function initPage() {
       return;
     }
 
-    if (calculationKey === "downPayment") {
-      showDrawer(
-        "Down payment",
-        "Property value " + formatInr(readQuery().propertyValue),
-        downPaymentCalculationHtml(row) +
-          '<p class="hlc-drawer-foot">Government charges, bank charges and other purchase costs are not included in this down payment.</p>'
-      );
-      return;
-    }
-
     if (calculationKey === "emi") {
       showDrawer(
         "EMI",
@@ -5851,136 +5760,6 @@ function initPage() {
     renderTable({ highlightDeltas: true });
   }
 
-  function setSoftMissInput(input, on) {
-    if (!input) return;
-    const shell = input.closest(".hlc-input-shell");
-    if (shell) shell.classList.toggle("is-soft-miss", Boolean(on));
-  }
-
-  function setSoftMissChoice(fieldEl, on) {
-    if (fieldEl) fieldEl.classList.toggle("is-soft-miss", Boolean(on));
-  }
-
-  function clearAllPrimaryIssues() {
-    const checks = [
-      { input: el.monthlyIncome, note: el.monthlyIncomeNote },
-      { input: el.propertyValue, note: el.loanHint, preserveNoteWhenValid: true },
-      { input: el.age, note: el.ageNote },
-      { input: el.cibil, note: el.cibilNote },
-      { input: el.tenure, note: el.tenureNote }
-    ];
-    checks.forEach(function (check) {
-      if (!check.input) return;
-      setFieldIssue(check.input, check.note, "", {
-        preserveNoteWhenValid: Boolean(check.preserveNoteWhenValid)
-      });
-      setSoftMissInput(check.input, false);
-      if (check.note) {
-        check.note.textContent = "";
-        check.note.classList.remove("is-invalid");
-      }
-    });
-    if (el.tenureNote) el.tenureNote.textContent = TENURE_HELP_DEFAULT;
-    if (el.loanHint) {
-      el.loanHint.textContent = "";
-      el.loanHint.classList.remove("is-invalid");
-    }
-    setChoiceIssue(
-      el.occupation ? el.occupation.closest(".hlc-field--occupation") : null,
-      el.occupationNote,
-      ""
-    );
-    setChoiceIssue(
-      el.purpose ? el.purpose.closest(".hlc-field--purpose") : null,
-      el.purposeNote,
-      ""
-    );
-    setSoftMissChoice(
-      el.occupation ? el.occupation.closest(".hlc-field--occupation") : null,
-      false
-    );
-    setSoftMissChoice(
-      el.purpose ? el.purpose.closest(".hlc-field--purpose") : null,
-      false
-    );
-    if (el.status) el.status.textContent = "";
-  }
-
-  function highlightMissingPrimaryFields() {
-    clearAllPrimaryIssues();
-    let missing = false;
-
-    const inputChecks = [
-      el.monthlyIncome,
-      el.propertyValue,
-      el.age,
-      el.cibil,
-      el.tenure
-    ];
-    inputChecks.forEach(function (input) {
-      const empty = !input || digitCount(input.value) === 0;
-      if (empty) {
-        missing = true;
-        setSoftMissInput(input, true);
-      }
-    });
-
-    const occupationEmpty = !(el.occupation && String(el.occupation.value || "").trim());
-    if (occupationEmpty) {
-      missing = true;
-      setSoftMissChoice(
-        el.occupation ? el.occupation.closest(".hlc-field--occupation") : null,
-        true
-      );
-    }
-
-    const purposeEmpty = !(el.purpose && String(el.purpose.value || "").trim());
-    if (purposeEmpty) {
-      missing = true;
-      setSoftMissChoice(
-        el.purpose ? el.purpose.closest(".hlc-field--purpose") : null,
-        true
-      );
-    }
-
-    if (missing) {
-      const card = el.form && el.form.closest(".hlc-inputs-card");
-      const target = card || el.form;
-      if (target && typeof target.scrollIntoView === "function") {
-        target.scrollIntoView({ block: "nearest", behavior: "smooth" });
-      }
-    }
-
-    return !missing;
-  }
-
-  function clearResolvedPrimaryIssues() {
-    const checks = [
-      el.monthlyIncome,
-      el.propertyValue,
-      el.age,
-      el.cibil,
-      el.tenure
-    ];
-    checks.forEach(function (input) {
-      if (!input || digitCount(input.value) === 0) return;
-      setSoftMissInput(input, false);
-      setFieldIssue(input, null, "");
-    });
-    if (el.occupation && String(el.occupation.value || "").trim()) {
-      setSoftMissChoice(el.occupation.closest(".hlc-field--occupation"), false);
-      setChoiceIssue(el.occupation.closest(".hlc-field--occupation"), el.occupationNote, "");
-    }
-    if (el.purpose && String(el.purpose.value || "").trim()) {
-      setSoftMissChoice(el.purpose.closest(".hlc-field--purpose"), false);
-      setChoiceIssue(el.purpose.closest(".hlc-field--purpose"), el.purposeNote, "");
-    }
-  }
-
-  function validatePrimaryFieldsForSubmit() {
-    return highlightMissingPrimaryFields();
-  }
-
   function withResultsFade(updateFn, mode) {
     const surface =
       (el.scroll && el.scroll.closest(".hlc-table-wrap")) ||
@@ -5997,13 +5776,11 @@ function initPage() {
 
   function scheduleMatch(options) {
     clearTimeout(state.matchTimer);
-    clearResolvedPrimaryIssues();
     persistExploreDraft();
     if (!primaryFieldsAreComplete()) {
       root.setAttribute("aria-busy", "false");
       return;
     }
-    clearAllPrimaryIssues();
     const fade = !!(options && options.fade);
     state.matchTimer = setTimeout(function () {
       const run = function () {
@@ -6021,6 +5798,22 @@ function initPage() {
   function toggleSelect(id) {
     if (state.selected.has(id)) state.selected.delete(id);
     else state.selected.add(id);
+    persistExploreDraft();
+    renderTable();
+  }
+
+  function toggleSelectAllVisible() {
+    const visibleRows = visibleBankRows();
+    if (!visibleRows.length) return;
+    if (selectAllCheckState(visibleRows) === "all") {
+      visibleRows.forEach(function (row) {
+        state.selected.delete(row.id);
+      });
+    } else {
+      visibleRows.forEach(function (row) {
+        state.selected.add(row.id);
+      });
+    }
     persistExploreDraft();
     renderTable();
   }
@@ -6108,15 +5901,13 @@ function initPage() {
     });
   }
 
-  document.querySelectorAll(".hlc-toggle-chips").forEach(function (group) {
-    group.addEventListener("click", function (event) {
-      const btn = event.target.closest(".hlc-chip[data-product-filter]");
-      if (!btn || !group.contains(btn)) return;
-      event.preventDefault();
-      const key = btn.getAttribute("data-product-filter");
-      const next = btn.getAttribute("aria-pressed") !== "true";
-      btn.setAttribute("aria-pressed", next ? "true" : "false");
-      state.productFilters[key] = next;
+  document.querySelectorAll(".hlc-filter-checks").forEach(function (group) {
+    group.addEventListener("change", function (event) {
+      const input = event.target.closest("input[type='checkbox'][data-product-filter]");
+      if (!input || !group.contains(input)) return;
+      const key = input.getAttribute("data-product-filter");
+      if (!key || !(key in state.productFilters)) return;
+      state.productFilters[key] = Boolean(input.checked);
       updateFiltersBadge();
       scheduleMatch({ fade: true });
     });
@@ -6156,6 +5947,12 @@ function initPage() {
     window.addEventListener("resize", function () {
       if (!isExploreMobile() || !isFiltersOpen()) return;
       positionMobileFiltersPanel();
+    });
+  }
+
+  if (el.filtersClear) {
+    el.filtersClear.addEventListener("click", function () {
+      clearAllProductFilters();
     });
   }
 
@@ -6283,6 +6080,13 @@ function initPage() {
   });
 
   document.body.addEventListener("click", function (event) {
+    const selectAll = event.target.closest(".hlc-select-all");
+    if (selectAll) {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleSelectAllVisible();
+      return;
+    }
     const chargeDetail = event.target.closest("[data-charge-detail][data-row-id]");
     if (chargeDetail) {
       event.stopPropagation();
@@ -6309,10 +6113,15 @@ function initPage() {
       openDrawer(detail.getAttribute("data-detail"));
       return;
     }
-    const bankCell = event.target.closest(".hlc-compare tbody td.hlc-sticky-col");
-    if (!bankCell) return;
-    const row = bankCell.closest("tr[data-id]");
-    if (row) toggleSelect(row.getAttribute("data-id"));
+    const interactive = event.target.closest(
+      "button, a, input, select, textarea, label"
+    );
+    if (interactive) return;
+    const row = event.target.closest(
+      ".hlc-compare tbody tr.hlc-selectable-row[data-id]"
+    );
+    if (!row) return;
+    toggleSelect(row.getAttribute("data-id"));
   });
 
   if (el.body) {
@@ -6370,14 +6179,20 @@ function initPage() {
     input.value = String(value);
   }
 
+  function setProductFilterControl(el, on) {
+    if (!el) return;
+    if (el.type === "checkbox") {
+      el.checked = Boolean(on);
+      return;
+    }
+    el.setAttribute("aria-pressed", on ? "true" : "false");
+  }
+
   function syncProductFilterChips() {
-    document.querySelectorAll(".hlc-chip[data-product-filter]").forEach(function (btn) {
-      var key = btn.getAttribute("data-product-filter");
+    document.querySelectorAll("[data-product-filter]").forEach(function (el) {
+      var key = el.getAttribute("data-product-filter");
       if (!key) return;
-      btn.setAttribute(
-        "aria-pressed",
-        state.productFilters[key] ? "true" : "false"
-      );
+      setProductFilterControl(el, Boolean(state.productFilters[key]));
     });
     updateFiltersBadge();
   }
@@ -6633,7 +6448,16 @@ function initPage() {
     el.scroll.scrollBy({ left: 220, behavior: "smooth" });
   });
 
-  restoreExploreDraft();
+  /** Bring bank results back after reload / bfcache — same place the user left. */
+  function revealResultsShellQuiet() {
+    var resultsShell = document.getElementById("hlc-results-shell");
+    if (!resultsShell) return;
+    resultsShell.hidden = false;
+    resultsShell.classList.add("is-visible");
+    updateApplyBar();
+  }
+
+  var didRestoreDraft = restoreExploreDraft();
   ensureSampleDefaults();
   maybeShowCalcTip();
   syncFoirFace();
@@ -6674,16 +6498,21 @@ function initPage() {
 
   window.addEventListener("pageshow", function (event) {
     if (!event.persisted) return;
-    restoreExploreDraft();
+    var restored = restoreExploreDraft();
     updateApplyBar();
     if (state.dataset && primaryFieldsAreComplete()) {
-      runMatch();
+      Promise.resolve(runMatch())
+        .then(function () {
+          if (restored) revealResultsShellQuiet();
+        })
+        .catch(function () {});
     } else {
       renderTable();
+      if (restored) revealResultsShellQuiet();
     }
   });
 
-  fetch(DATA_URL)
+  fetch(resolveCompareDataUrl())
     .then(function (response) {
       if (!response.ok) throw new Error("Failed to load compare data");
       return response.json();
@@ -6692,17 +6521,17 @@ function initPage() {
       state.dataset = dataset;
       state.dataVersion = dataset.meta && dataset.meta.data_version ? dataset.meta.data_version : "";
       root.setAttribute("aria-busy", "false");
-      clearAllPrimaryIssues();
       if (!primaryFieldsAreComplete()) return;
-      return runMatch();
+      return Promise.resolve(runMatch()).then(function () {
+        // After Ctrl+R, restore the visible results the user already had.
+        if (didRestoreDraft) revealResultsShellQuiet();
+      });
     })
     .catch(function (error) {
       console.error(error);
       showToast("Could not load comparison data. Refresh and try again.");
       root.setAttribute("aria-busy", "false");
     });
-
-  window.__hlcValidatePrimaryFields = validatePrimaryFieldsForSubmit;
 }
 
 module.exports = {

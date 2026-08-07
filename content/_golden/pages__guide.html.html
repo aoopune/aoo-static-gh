@@ -19,7 +19,7 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="../css/shroffin-shell.css?v=chapters-3">
   <link rel="stylesheet" href="../css/shroffin-guide.css?v=chapters-3">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=title-link-sm-2">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=card-flip-1">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -128,7 +128,7 @@
             </li>
             <li>
               <a class="globalnav-submenu-link" href="/pages/home-loan-complaints.html">
-                <span class="globalnav-submenu-label">Grievance redressal mechanism</span>
+                <span class="globalnav-submenu-label">If something goes wrong</span>
               </a>
             </li>
           </ul>
@@ -212,7 +212,7 @@
               <a class="localnav-link" href="home-loan-insurance.html">Insurance</a>
             </li>
             <li>
-              <a class="localnav-link" href="home-loan-complaints.html">Grievance redressal mechanism</a>
+              <a class="localnav-link" href="home-loan-complaints.html">If something goes wrong</a>
             </li>
           </ul>
           <a class="localnav-cta" href="explore-banks.html">Explore banks</a>
@@ -279,7 +279,7 @@
         </li>
         <li>
           <a class="mag-index-link" href="#project-bank-approval">
-<span class="mag-index-label">Project approval</span>
+<span class="mag-index-label">Bank-approved project</span>
           </a>
         </li>
       </ul>
@@ -290,6 +290,7 @@
       <section class="mag-section guide-moment" id="loan-amount">
 <div class="mag-content">
         <div class="guide-flip" id="borrow-flip">
+          <div class="guide-flip-scene" data-flip-scene>
           <div class="guide-flip-inner">
             <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
               <span class="guide-tile-mark guide-tile-mark--glyph" aria-hidden="true">₹</span>
@@ -297,80 +298,72 @@
               <p class="guide-tile-copy guide-tile-copy--rule">
                 Depends on Property value and income, whichever is lower.
               </p>
-              <details class="guide-chapter-more">
-                <summary>See the limits</summary>
+              <div class="guide-chapter-card">
                 <div class="guide-limits" data-guide-scrub="on">
                 <div class="guide-limit" id="loan-amount-property">
-                  <h3 class="guide-limit-title">1. Property</h3>
+                  <h3 class="guide-limit-title">1. Property value</h3>
                   <p class="guide-limit-copy">
-                    The bank can lend only up to these percentages of the Agreement Value.
+                    The bank can lend only up to certain percentages of the Agreement Value given below.
                   </p>
-                  <ul class="guide-share-list">
-                    <li>
-                      <span class="guide-share-when">Agreement Value up to ₹30 lakh</span>
-                      <span class="guide-share-then">Bank can lend up to 90%.</span>
-                    </li>
-                    <li>
-                      <span class="guide-share-when">Agreement Value ₹30 lakh to ₹75 lakh</span>
-                      <span class="guide-share-then">Bank can lend up to 80%.</span>
-                    </li>
-                    <li>
-                      <span class="guide-share-when">Agreement Value above ₹75 lakh</span>
-                      <span class="guide-share-then">Bank can lend up to 75%.</span>
-                    </li>
+                  <ul class="guide-share-list guide-share-list--plain">
+                    <li>Up to ₹30 lakh: up to 90%.</li>
+                    <li>From ₹30 lakh to ₹75 lakh: up to 80%.</li>
+                    <li>Above ₹75 lakh: up to 75%.</li>
                   </ul>
                   <p class="guide-glance">
-                    These are the highest limits set by RBI.<br>
-                    Banks may approve a lower or higher amount depending on your profile and bank policy.
+                    These are RBI’s highest limits — banks may still lend less or more, based on you and their rules.
                   </p>
                 </div>
                 <div class="guide-limit">
                   <h3 class="guide-limit-title">2. Income</h3>
                   <p class="guide-limit-copy">
-                    The bank can lend only up to what your monthly EMI capacity supports.
+                    The bank can lend only up to what your monthly EMI capacity supports, worked out as below.
                   </p>
                   <ul class="guide-share-list guide-share-list--plain">
-                    <li>Net take-home income per month</li>
-                    <li>Less existing EMIs, and a share of your credit card limits</li>
-                    <li>Whatever is left becomes your EMI capacity for the home loan.</li>
-                    <li>From that EMI, rate, and tenure, the bank works out the loan amount.</li>
+                    <li>Start with monthly take-home.</li>
+                    <li>Minus EMIs and a share of card limits — what’s left is your EMI capacity.</li>
+                    <li>From that EMI, rate, and tenure, the bank sets the loan amount.</li>
                   </ul>
                   <p class="guide-glance">
-                    All EMIs are usually limited to about 55–70% of take-home.<br>
-                    An earning co-applicant can help to increase the loan amount.
+                    All EMIs are usually limited to about 55–70% of take-home.
+                  </p>
+                  <p class="guide-tip">
+                    <span class="guide-tip-icon" aria-hidden="true">
+                      <svg class="guide-tip-bulb" viewBox="0 0 24 24" focusable="false">
+                        <path
+                          class="guide-tip-bulb-glow"
+                          d="M12 3.2c-3.1 0-5.6 2.4-5.6 5.4 0 2 1.1 3.7 2.7 4.7v1.9c0 .6.5 1.1 1.1 1.1h3.6c.6 0 1.1-.5 1.1-1.1v-1.9c1.6-1 2.7-2.7 2.7-4.7 0-3-2.5-5.4-5.6-5.4z"
+                        />
+                        <path
+                          class="guide-tip-bulb-line"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M9.6 16.8h4.8M10.2 19h3.6M12 3.2c-3.1 0-5.6 2.4-5.6 5.4 0 2 1.1 3.7 2.7 4.7v1.9c0 .6.5 1.1 1.1 1.1h3.6c.6 0 1.1-.5 1.1-1.1v-1.9c1.6-1 2.7-2.7 2.7-4.7 0-3-2.5-5.4-5.6-5.4z"
+                        />
+                      </svg>
+                    </span>
+                    <span class="guide-tip-body">
+                      <span class="guide-tip-label">Tip</span>
+                      An earning co-applicant can help to increase the loan amount.
+                    </span>
                   </p>
                 </div>
                 </div>
-              </details>
-              <button type="button" class="guide-flip-link" data-flip="borrow-flip" aria-controls="borrow-calc" aria-expanded="false">
-                Estimate your range
-                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-              <div class="guide-try-row">
-                <a class="guide-flip-link guide-open-link" href="calculators/how-much-loan.html">
-                  See eligibility calculator
-                  <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                    <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </a>
-                <a class="guide-flip-link guide-open-link" href="calculators/down-payment.html">
-                  See down payment calculator
-                  <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                    <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </a>
               </div>
             </article>
 
             <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="borrow-calc" aria-hidden="true">
+              <div class="guide-flip-back-scroll">
               <div class="guide-calc-main">
                 <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky">Estimate</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
                   Indicative only.
                 </p>
-                <div class="guide-calc-body guide-calc-body--split">
+                <div class="guide-chapter-card">
+<div class="guide-calc-body guide-calc-body--split">
                   <form class="guide-calc" id="borrow-calc-form" novalidate>
                     <div class="guide-calc-row">
                       <label class="guide-calc-field">
@@ -426,8 +419,31 @@
                     </p>
                   </div>
                 </div>
+                </div>
+              </div>
               </div>
             </article>
+          </div>
+          </div>
+          <button type="button" class="guide-flip-link guide-flip-dock" data-flip="borrow-flip" aria-controls="borrow-calc" aria-expanded="false">
+            Estimate your range
+            <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+              <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="guide-try-row">
+            <a class="guide-flip-link guide-open-link" href="calculators/how-much-loan.html">
+              See eligibility calculator
+              <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a class="guide-flip-link guide-open-link" href="calculators/down-payment.html">
+              See down payment calculator
+              <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
           </div>
         </div>
         </div>
@@ -436,6 +452,7 @@
       <section class="mag-section guide-moment" id="emi">
 <div class="mag-content">
         <div class="guide-flip" id="emi-flip">
+          <div class="guide-flip-scene" data-flip-scene>
           <div class="guide-flip-inner">
             <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
               <span class="guide-tile-mark" aria-hidden="true">
@@ -446,54 +463,71 @@
                   <circle cx="24" cy="30" r="2.6" fill="currentColor"/>
                 </svg>
               </span>
-              <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-gold guide-tile-question">What do you pay each month?</span></h2>
+              <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-gold guide-tile-question">How do you repay the loan?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
                 Equated Monthly Instalment (EMI) — interest and principal together.
               </p>
-              <div class="guide-limits" data-guide-scrub="on">
+              <div class="guide-chapter-card">
+<div class="guide-limits" data-guide-scrub="on">
                 <div class="guide-limit">
-                  <h3 class="guide-limit-title">What you pay</h3>
+                  <h3 class="guide-limit-title">How EMI works</h3>
                   <p class="guide-limit-copy">
-                    Each EMI splits into interest payment on the outstanding loan and principal repayment that reduces the balance.
+                    Each EMI goes two ways: interest on what’s left to pay, and principal that reduces the loan.
                   </p>
                   <ul class="guide-share-list guide-share-list--plain">
-                    <li>Early years: more of each EMI goes to interest payment</li>
-                    <li>Later years: more of each EMI goes to principal repayment</li>
+                    <li>Early years: you’re mostly paying interest.</li>
+                    <li>Later years: you’re mostly paying off the loan.</li>
                   </ul>
                   <p class="guide-glance">
-                    EMI stays the same while the rate stays the same. If the rate changes, EMI or tenure may change.
+                    Rate same → EMI same. Rate changes → EMI or years may change.
                   </p>
                 </div>
                 <div class="guide-limit">
                   <h3 class="guide-limit-title">When it starts</h3>
                   <p class="guide-limit-copy">
-                    Depends on whether the home is ready or under construction.
+                    Depends on if the property is ready to move in or under construction.
                   </p>
                   <ul class="guide-share-list guide-share-list--plain">
-                    <li>Ready home: full EMI about one month after first disbursement</li>
-                    <li>Under construction: pre-EMI (interest only) on the amount already disbursed</li>
-                    <li>Under construction: full EMI usually starts around possession</li>
+                    <li>Ready home: full EMI about one month after first disbursement.</li>
+                    <li>Under construction: interest-only (pre-EMI) on what’s disbursed, then full EMI around possession.</li>
                   </ul>
-                  <p class="guide-glance">
-                    Some lenders let you pay more than interest during construction. Ask if that option exists.
+                  <p class="guide-tip">
+                    <span class="guide-tip-icon" aria-hidden="true">
+                      <svg class="guide-tip-bulb" viewBox="0 0 24 24" focusable="false">
+                        <path
+                          class="guide-tip-bulb-glow"
+                          d="M12 3.2c-3.1 0-5.6 2.4-5.6 5.4 0 2 1.1 3.7 2.7 4.7v1.9c0 .6.5 1.1 1.1 1.1h3.6c.6 0 1.1-.5 1.1-1.1v-1.9c1.6-1 2.7-2.7 2.7-4.7 0-3-2.5-5.4-5.6-5.4z"
+                        />
+                        <path
+                          class="guide-tip-bulb-line"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M9.6 16.8h4.8M10.2 19h3.6M12 3.2c-3.1 0-5.6 2.4-5.6 5.4 0 2 1.1 3.7 2.7 4.7v1.9c0 .6.5 1.1 1.1 1.1h3.6c.6 0 1.1-.5 1.1-1.1v-1.9c1.6-1 2.7-2.7 2.7-4.7 0-3-2.5-5.4-5.6-5.4z"
+                        />
+                      </svg>
+                    </span>
+                    <span class="guide-tip-body">
+                      <span class="guide-tip-label">Tip</span>
+                      Some lenders let you pay more than interest during construction — ask if that option exists.
+                    </span>
                   </p>
                 </div>
               </div>
-              <button type="button" class="guide-flip-link" data-flip="emi-flip" aria-controls="emi-calc" aria-expanded="false">
-                Estimate your EMI
-                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
+              </div>
             </article>
 
             <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="emi-calc" aria-hidden="true">
+              <div class="guide-flip-back-scroll">
               <div class="guide-calc-main">
                 <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea">Estimate</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
                   Indicative only.
                 </p>
-                <div class="guide-calc-body guide-calc-body--split">
+                <div class="guide-chapter-card">
+<div class="guide-calc-body guide-calc-body--split">
                   <form class="guide-calc" id="emi-calc-form" novalidate>
                     <label class="guide-calc-field">
                       <span class="guide-calc-label">Loan amount (₹)</span>
@@ -523,9 +557,18 @@
                     </p>
                   </div>
                 </div>
+                </div>
+              </div>
               </div>
             </article>
           </div>
+          </div>
+          <button type="button" class="guide-flip-link guide-flip-dock" data-flip="emi-flip" aria-controls="emi-calc" aria-expanded="false">
+            Estimate your EMI
+            <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+              <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
         </div>
         </div>
       </section>
@@ -540,9 +583,9 @@
               <path d="M20 8.5h8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
             </svg>
           </span>
-          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">How long to repay?</span></h2>
+          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">Up to what period can you repay?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Up to 30 years. Shorter if you are older.
+                Up to 30 years. Age and bank rules often shorten that period. A longer period lowers the EMI and raises total interest.
               </p>
           <a class="guide-flip-link guide-open-link" href="calculators/tenure.html">
             Estimate your tenure
@@ -557,16 +600,16 @@
       <section class="mag-section guide-moment" id="rates">
 <div class="mag-content">
         <div class="guide-flip" id="rate-flip">
+          <div class="guide-flip-scene" data-flip-scene>
           <div class="guide-flip-inner">
             <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
               <span class="guide-tile-mark guide-tile-mark--glyph" aria-hidden="true">%</span>
-              <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-siri guide-tile-question">Will your rate change?</span></h2>
+              <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-siri guide-tile-question">What are the types of interest rates?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                It might move, or stay fixed for a few years.
+                Floating rates that change, and fixed rates for a few years.
               </p>
-              <details class="guide-chapter-more">
-                <summary>See the rate types</summary>
-                <div class="guide-limits" data-guide-scrub="on">
+              <div class="guide-chapter-card">
+<div class="guide-limits" data-guide-scrub="on">
                 <div class="guide-limit">
                   <h3 class="guide-limit-title">Floating <span class="guide-limit-note">Preferred</span></h3>
                   <p class="guide-limit-copy">
@@ -577,14 +620,13 @@
                     <li>Repo rate resets at least once every 3 months</li>
                     <li>If the rate rises, choose how the extra cost hits you: pay a lump sum, raise EMI, extend tenure, or mix these</li>
                     <li>
-                      Prepayment / foreclosure charges:
+                      Prepayment / foreclosure charges: none on floating home loans under
                       <a
                         class="guide-section-link"
                         href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13140&amp;Mode=0"
                         target="_blank"
                         rel="noopener noreferrer"
-                      >None<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a>
-                      <span class="guide-limit-note">Part E, paragraphs 352 and 353</span>
+                      >RBI rules<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a>
                     </li>
                   </ul>
                 </div>
@@ -601,31 +643,36 @@
                   </ul>
                 </div>
                 </div>
-              </details>
-              <button type="button" class="guide-flip-link" data-flip="rate-flip" aria-controls="rate-ask" aria-expanded="false">
-                After disbursement
-                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
+              </div>
             </article>
 
             <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="rate-ask" aria-hidden="true">
+              <div class="guide-flip-back-scroll">
               <div class="guide-calc-main">
-                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-gold">After disbursement</span></h2>
+                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-gold">After you take the loan</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
-                  After you take the loan, you still have choices.
+                  These still matter later, so weigh them while you choose the rate type.
                 </p>
-                <div class="guide-rate-notes">
+                <div class="guide-chapter-card">
+<div class="guide-rate-notes">
                   <p>You can switch between fixed and floating rates as per the bank’s policy, at the applicable cost.</p>
                   <p>You can switch between benchmark rates as per the bank’s policy, at the applicable cost.</p>
                   <p>If your credit score improves, you can ask to lower your rate as per the bank’s policy, at the applicable cost.</p>
                   <p>When the repo rate changes, an existing interest rate usually updates within about a month.</p>
                   <p>A newly sanctioned loan can take about 90 days for the first change.</p>
                 </div>
+                </div>
+              </div>
               </div>
             </article>
           </div>
+          </div>
+          <button type="button" class="guide-flip-link guide-flip-dock" data-flip="rate-flip" aria-controls="rate-ask" aria-expanded="false">
+            Choices that stay after you take the loan
+            <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+              <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
         </div>
         </div>
       </section>
@@ -633,6 +680,7 @@
       <section class="mag-section guide-moment" id="loan-structure">
 <div class="mag-content">
         <div class="guide-flip" id="structure-flip">
+          <div class="guide-flip-scene" data-flip-scene>
           <div class="guide-flip-inner">
             <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
               <span class="guide-tile-mark" aria-hidden="true">
@@ -642,13 +690,12 @@
                   <path d="M32.5 10.5v6M28.5 13.5h8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
                 </svg>
               </span>
-              <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-ember guide-tile-question">How does overdraft cut interest?</span></h2>
+              <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-ember guide-tile-question">What are the types of loan structures?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Spare cash in the linked loan account.
+                A regular term loan, or an overdraft where spare cash cuts interest.
               </p>
-              <details class="guide-chapter-more">
-                <summary>See how they differ</summary>
-                <div class="guide-limits" data-guide-scrub="on">
+              <div class="guide-chapter-card">
+<div class="guide-limits" data-guide-scrub="on">
                 <div class="guide-limit">
                   <h3 class="guide-limit-title">Term loan <span class="guide-limit-note">Regular</span></h3>
                   <p class="guide-limit-copy">
@@ -676,23 +723,18 @@
                   </ul>
                 </div>
                 </div>
-              </details>
-              <button type="button" class="guide-flip-link" data-flip="structure-flip" aria-controls="structure-ask" aria-expanded="false">
-                After you choose
-                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
+              </div>
             </article>
 
             <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="structure-ask" aria-hidden="true">
+              <div class="guide-flip-back-scroll">
               <div class="guide-calc-main">
-                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky">After you choose</span></h2>
+                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky">Once the structure is set</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
-                  After the structure is set, these still matter.
+                  These rules matter when you choose. A later switch is possible under bank policy, at a cost.
                 </p>
-                <div class="guide-rate-notes">
-                  <p>You can switch between term loan and overdraft later as per the bank’s policy, at the applicable cost.</p>
+                <div class="guide-chapter-card">
+<div class="guide-rate-notes">
                   <p>On overdraft, interest on the linked account is counted as per the bank’s policy.</p>
                   <p>On overdraft, you can withdraw parked money as per the bank’s limit and rules.</p>
                   <p>On overdraft, the usable limit may fall over the years (dropline), as per the lender.</p>
@@ -700,9 +742,18 @@
                   <p>The linked account is usually with the same lender.</p>
                   <p>On a term loan, spare cash still does not cut interest until you prepay.</p>
                 </div>
+                </div>
+              </div>
               </div>
             </article>
           </div>
+          </div>
+          <button type="button" class="guide-flip-link guide-flip-dock" data-flip="structure-flip" aria-controls="structure-ask" aria-expanded="false">
+            What still matters once the structure is set
+            <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+              <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
         </div>
         </div>
       </section>
@@ -710,6 +761,7 @@
       <section class="mag-section guide-moment" id="charges">
 <div class="mag-content">
         <div class="guide-flip" id="charges-flip">
+          <div class="guide-flip-scene" data-flip-scene>
           <div class="guide-flip-inner">
             <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
               <span class="guide-tile-mark" aria-hidden="true">
@@ -722,16 +774,17 @@
               <p class="guide-tile-copy guide-tile-copy--rule">
                 Bank fees, property checks, and government charges.
               </p>
-              <div class="guide-limits" data-guide-scrub="on">
+              <div class="guide-chapter-card">
+<div class="guide-limits" data-guide-scrub="on">
                 <div class="guide-limit">
                   <h3 class="guide-limit-title">Bank fees</h3>
                   <p class="guide-limit-copy">
-                    Fee the lender charges to process your case.
+                    What the lender charges to open and run your case.
                   </p>
                   <ul class="guide-share-list guide-share-list--plain">
                     <li>
                       <span class="guide-share-then">Processing fee</span>
-                      <span class="guide-share-when">Fee the lender charges to process your case. Part may be taken upfront as a login fee; the rest at final sanction.</span>
+                      <span class="guide-share-when">Part may be taken upfront as a login fee; the rest at final sanction.</span>
                     </li>
                     <li>
                       <span class="guide-share-then">Others</span>
@@ -767,21 +820,18 @@
               <p class="guide-glance">
                 Note — Lenders may bundle these charges, use different names, or charge them as one unified fee.
               </p>
-              <button type="button" class="guide-flip-link" data-flip="charges-flip" aria-controls="charges-breakdown" aria-expanded="false">
-                Fee breakdown
-                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
+              </div>
             </article>
 
             <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="charges-breakdown" aria-hidden="true">
+              <div class="guide-flip-back-scroll">
               <div class="guide-calc-main">
                 <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea">Fee breakdown</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
-                  Typical one-time fees at sanction and disbursement.
+                  Usual one-time costs at sanction and disbursement. Banks may use different names or bundle them.
                 </p>
-                <div class="guide-fee-schedule">
+                <div class="guide-chapter-card">
+<div class="guide-fee-schedule">
                   <div class="guide-fee-col">
                     <div class="guide-fee-block">
                       <p class="guide-fee-heading">Lender</p>
@@ -830,31 +880,31 @@
                     <ul class="guide-fee-rows">
                       <li class="guide-fee-item">
                         <div class="guide-fee-row">
-                          <span class="guide-fee-name">MODT</span>
+                          <span class="guide-fee-name">Stamp when you pledge the house (MODT)</span>
                           <span class="guide-fee-value">0.3% of loan amount#</span>
                         </div>
                         <span class="guide-fee-detail">Stamp duty when you give property papers to the bank as security.</span>
                       </li>
                       <li class="guide-fee-item">
                         <div class="guide-fee-row">
-                          <span class="guide-fee-name">NOI registration</span>
+                          <span class="guide-fee-name">Register the loan agreement (NOI registration)</span>
                           <span class="guide-fee-value">0.5%, max ₹15,000#</span>
                         </div>
                         <span class="guide-fee-detail">Fee to register the loan agreement with the government.</span>
                       </li>
                       <li class="guide-fee-item">
                         <div class="guide-fee-row">
-                          <span class="guide-fee-name">NOI filing</span>
+                          <span class="guide-fee-name">File that registration (NOI filing)</span>
                           <span class="guide-fee-value">₹1,000 + ₹300#</span>
                         </div>
-                        <span class="guide-fee-detail">To file the NOI. ₹300 extra if done in person.</span>
+                        <span class="guide-fee-detail">Filing fee. ₹300 extra if done in person.</span>
                       </li>
                       <li class="guide-fee-item">
                         <div class="guide-fee-row">
-                          <span class="guide-fee-name">NOI stamp duty</span>
+                          <span class="guide-fee-name">Small stamp on that filing (NOI stamp duty)</span>
                           <span class="guide-fee-value">₹100#</span>
                         </div>
-                        <span class="guide-fee-detail">Small stamp duty if MODT stamp duty is already paid.</span>
+                        <span class="guide-fee-detail">Often due only if the pledge stamp (MODT) is already paid.</span>
                       </li>
                       <li class="guide-fee-item">
                         <div class="guide-fee-row">
@@ -865,7 +915,7 @@
                       </li>
                       <li class="guide-fee-item">
                         <div class="guide-fee-row">
-                          <span class="guide-fee-name">CERSAI</span>
+                          <span class="guide-fee-name">Central property charge record (CERSAI)</span>
                         </div>
                         <span class="guide-fee-detail">Helps stop the same property from being used for more than one loan.</span>
                         <div class="guide-fee-nested">
@@ -887,9 +937,18 @@
                   # Only in Maharashtra. Differs from state to state as per state laws.<br>
                   Figures above are typical industry averages. Exact fees may differ by lender and as per your profile.
                 </p>
+                </div>
+              </div>
               </div>
             </article>
           </div>
+          </div>
+          <button type="button" class="guide-flip-link guide-flip-dock" data-flip="charges-flip" aria-controls="charges-breakdown" aria-expanded="false">
+            Fee breakdown
+            <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+              <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
         </div>
         </div>
       </section>
@@ -904,22 +963,28 @@
               <path d="M21 39.5v-5h6v5" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
             </svg>
           </span>
-          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-siri guide-tile-question">Is the project approved?</span></h2>
+          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-siri guide-tile-question">Is this project bank-approved?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                The bank approves the project once for all buyers.
+                Before the loan is released, the bank must clear the project or the property. Lenders call that approved project finance.
               </p>
-          <div class="guide-limits" data-guide-scrub="on">
-            <div class="guide-limit">
-              <h3 class="guide-limit-title">New or under-construction home</h3>
-              <p class="guide-limit-copy">If a bank has already approved the project, phase, tower or wing, your home loan may move faster and reduce repeated legal, technical and search-report charges.</p>
-            </div>
-            <div class="guide-limit">
-              <h3 class="guide-limit-title">Resale home</h3>
-              <p class="guide-limit-copy">For a resale home, the individual property is usually checked instead of the whole project. This may take additional time and include legal, technical and search-report charges.</p>
-            </div>
+          <div class="guide-chapter-card">
+          <p class="guide-tile-copy guide-tile-copy--rule">
+            It depends on how you buy.
+          </p>
+<div class="guide-seg" role="tablist" aria-label="Home type">
+            <button type="button" class="guide-seg-btn" role="tab" id="apf-tab-new" aria-selected="true" aria-controls="apf-panel-new">New or under-construction home</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="apf-tab-resale" aria-selected="false" aria-controls="apf-panel-resale" tabindex="-1">Resale home</button>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="apf-panel-new" aria-labelledby="apf-tab-new">
+            <p class="guide-limit-copy">If a bank has already approved the project, phase, tower or wing, your home loan may move faster and reduce repeated legal, technical and search-report charges.</p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="apf-panel-resale" aria-labelledby="apf-tab-resale" hidden>
+            <p class="guide-limit-copy">For a resale home, the individual property is usually checked instead of the whole project. This may take additional time and include legal, technical and search-report charges.</p>
           </div>
           <p class="guide-glance">
-            Required before release: the property checks must be completed before the home loan is released.
+            Property checks must finish before the home loan is released.
           </p>
           <a class="guide-flip-link guide-project-link" href="project-approvals.html">
             Find banks for your project
@@ -927,6 +992,7 @@
               <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </a>
+          </div>
         </article>
         </div>
       </section>
@@ -969,8 +1035,8 @@
               class="site-footer-logo"
               src="/images/logos/logo.png"
               alt=""
-              width="80"
-              height="80"
+              width="40"
+              height="40"
             >
           </a>
         </section>
@@ -984,7 +1050,7 @@
               <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
               <li><a href="/pages/concessions.html">Concessions</a></li>
               <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
-              <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
+              <li><a href="/pages/home-loan-complaints.html">If something goes wrong</a></li>
             </ul>
           </nav>
 
@@ -1068,9 +1134,9 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/guide-page-overview.js?v=soft-1"></script>
+  <script src="../js/guide-page-overview.js?v=card-flip-1"></script>
   <script src="../js/shroffin-nav.js?v=chapters-3"></script>
-  <script src="../js/shroffin-guide.js?v=no-count-1"></script>
+  <script src="../js/shroffin-guide.js?v=card-flip-1"></script>
   <script src="../js/shroffin-scrub.js?v=chapters-3"></script>
   <script src="../js/shroffin-guide-soft-nav.js?v=chapters-3"></script>
 </body>

@@ -12,7 +12,6 @@
   if (window.ShroffinSelectionIndicator) return;
 
   var LINE_HEIGHT = 2;
-  var GUIDE_LINE_INSET = 4;
   var UI_MS = 900;
   /* Guide localnav exit glide — match CSS; navigate a beat before it ends. */
   var PAGE_UI_MS = 550;
@@ -32,20 +31,19 @@
     {
       host: ".hlc-column-tabs",
       item: ".hlc-column-tab",
-      mode: "line",
-      lineInset: 0,
-      lineBottom: 0,
+      mode: "pill",
       isSelected: function (el) {
-        return el.getAttribute("aria-current") === "page";
+        return (
+          el.getAttribute("aria-current") === "page" ||
+          el.getAttribute("aria-selected") === "true"
+        );
       },
       watchAttrs: ["aria-current", "aria-selected"],
     },
     {
       host: '.guide-seg[role="tablist"]',
       item: ".guide-seg-btn",
-      mode: "line",
-      lineInset: GUIDE_LINE_INSET,
-      lineBottom: -1,
+      mode: "pill",
       isSelected: function (el) {
         return el.getAttribute("aria-selected") === "true";
       },

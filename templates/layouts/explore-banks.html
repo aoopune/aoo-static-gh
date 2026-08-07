@@ -17,8 +17,9 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=type-ladder-5">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=footer-gap-1">
+  <link rel="preload" href="../fonts/RobotoMono/static/RobotoMono-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=eb87bbcfdc">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=ed6b559875">
 </head>
 <body class="explore-banks-page">
   <!-- SHROFFIN_NAV_START -->
@@ -127,7 +128,7 @@
             </li>
             <li>
               <a class="globalnav-submenu-link" href="/pages/home-loan-complaints.html">
-                <span class="globalnav-submenu-label">Grievance redressal mechanism</span>
+                <span class="globalnav-submenu-label">If something goes wrong</span>
               </a>
             </li>
           </ul>
@@ -232,7 +233,7 @@
             <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
             <li><a href="/pages/concessions.html">Concessions</a></li>
             <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
-            <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
+            <li><a href="/pages/home-loan-complaints.html">If something goes wrong</a></li>
           </ul>
         </nav>
 
@@ -303,9 +304,11 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/shroffin-home-stance.js?v=stance-18"></script>
-  <script src="../js/shroffin-nav.js?v=sel-16"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=show-more-smooth-1"></script>
+  <script src="../js/shroffin-home-stance.js?v=57363ca34b"></script>
+  <script src="../js/shroffin-nav.js?v=2edcc56c54"></script>
+  <script src="../js/hlc-data-url.generated.js?v=4fce1ee0e3"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=925ab0575b"></script>
+  <script src="../js/hlc-field-help.js?v=f96bd1158b"></script>
   <script>
     (function () {
       var form = document.getElementById("hlc-inputs");
@@ -418,11 +421,20 @@
         event.preventDefault();
         if (busy) return;
 
-        var fieldsOk =
-          typeof window.__hlcValidatePrimaryFields === "function"
-            ? window.__hlcValidatePrimaryFields()
-            : form.reportValidity();
-        if (!fieldsOk) return;
+        // Open Adjust eligibility if a required field inside it is empty,
+        // so the browser can focus it and show the native required message.
+        var more = document.getElementById("hlc-form-more");
+        if (more && !more.open) {
+          var nestedRequired = more.querySelectorAll("[required]");
+          for (var i = 0; i < nestedRequired.length; i++) {
+            if (!nestedRequired[i].checkValidity()) {
+              more.open = true;
+              break;
+            }
+          }
+        }
+
+        if (!form.reportValidity()) return;
 
         if (!resultsShell.hidden && resultsShell.classList.contains("is-visible")) {
           softScrollToOptions();

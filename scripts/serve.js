@@ -18,6 +18,21 @@ var server = http.createServer(function (req, res) {
   if (!path.relative(root, filePath).split(path.sep).every(function (p) { return p !== '..'; })) {
     res.writeHead(403); res.end(); return;
   }
+  // Industry pattern: HTML always revalidated; versioned assets (?v=hash) can be cached hard.
+  function setCacheHeaders(file) {
+    var ext = path.extname(file).toLowerCase();
+    var versioned = (req.url || '').indexOf('?v=') !== -1;
+    if (ext === '.html') {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      return;
+    }
+    if (versioned && (ext === '.js' || ext === '.css' || ext === '.json')) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      return;
+    }
+    res.setHeader('Cache-Control', 'no-cache');
+  }
+
   fs.readFile(filePath, function (err, data) {
     if (err) {
       if (err.code === 'ENOENT' && !path.extname(filePath)) {
@@ -25,9 +40,7 @@ var server = http.createServer(function (req, res) {
         fs.readFile(filePath, function (e2, d2) {
           if (e2) { res.writeHead(404); res.end('Not found'); return; }
           res.setHeader('Content-Type', mime(filePath));
-          if (path.extname(filePath) === '.html') {
-            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-          }
+          setCacheHeaders(filePath);
           res.end(d2);
         });
         return;
@@ -35,9 +48,7 @@ var server = http.createServer(function (req, res) {
       res.writeHead(404); res.end('Not found'); return;
     }
     res.setHeader('Content-Type', mime(filePath));
-    if (path.extname(filePath) === '.html') {
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    }
+    setCacheHeaders(filePath);
     res.end(data);
   });
 });

@@ -17,8 +17,9 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=type-ladder-5">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=footer-gap-1">
+  <link rel="preload" href="../fonts/RobotoMono/static/RobotoMono-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=eb87bbcfdc">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=ed6b559875">
 </head>
 <body class="explore-banks-page">
   <!-- SHROFFIN_NAV_START -->
@@ -127,7 +128,7 @@
             </li>
             <li>
               <a class="globalnav-submenu-link" href="/pages/home-loan-complaints.html">
-                <span class="globalnav-submenu-label">Grievance redressal mechanism</span>
+                <span class="globalnav-submenu-label">If something goes wrong</span>
               </a>
             </li>
           </ul>
@@ -203,42 +204,97 @@
               <div class="hlc-form-primary-grid">
                 <div class="hlc-form-zone hlc-form-zone--hero">
                   <label class="hlc-field hlc-field--hero" for="hlc-monthly-income">
-                    <span class="hlc-field-label">Monthly income</span>
+                    <span class="hlc-field-label-row">
+                      <span class="hlc-field-label">Monthly income<span class="hlc-req" aria-hidden="true">*</span><button
+                        type="button"
+                        class="hlc-field-help"
+                        aria-expanded="false"
+                        aria-controls="hlc-help-monthly-income"
+                        aria-label="About Monthly income"
+                      >
+                        <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                      </button></span>
+                    </span>
                     <span class="hlc-input-shell hlc-input-shell--hero">
                       <span class="hlc-prefix" aria-hidden="true">₹</span>
-                      <input type="text" id="hlc-monthly-income" name="monthlyIncome" value="1,00,000" placeholder="1,00,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
+                      <input type="text" id="hlc-monthly-income" name="monthlyIncome" value="1,00,000" placeholder="1,00,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10" required>
                     </span>
                     <span class="hlc-field-note" id="hlc-monthly-income-note"></span>
+                    <div class="hlc-field-help-popover" id="hlc-help-monthly-income" role="tooltip" hidden>
+                      <p class="hlc-field-help-text">Sets how much loan banks can offer you. Use take-home, not CTC.</p>
+                      <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
+                    </div>
                   </label>
                 </div>
 
                 <div class="hlc-form-zone hlc-form-zone--hero">
                   <label class="hlc-field hlc-field--hero hlc-field--property" for="hlc-property-value">
-                    <span class="hlc-field-label">Property agreement value</span>
+                    <span class="hlc-field-label-row">
+                      <span class="hlc-field-label">Property agreement value<span class="hlc-req" aria-hidden="true">*</span><button
+                        type="button"
+                        class="hlc-field-help"
+                        aria-expanded="false"
+                        aria-controls="hlc-help-property-value"
+                        aria-label="About Property agreement value"
+                      >
+                        <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                      </button></span>
+                    </span>
                     <span class="hlc-input-shell hlc-input-shell--hero">
                       <span class="hlc-prefix" aria-hidden="true">₹</span>
-                      <input type="text" id="hlc-property-value" name="propertyValue" value="62,50,000" placeholder="62,50,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
+                      <input type="text" id="hlc-property-value" name="propertyValue" value="62,50,000" placeholder="62,50,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10" required>
                     </span>
                     <span class="hlc-field-note" id="hlc-loan-hint" aria-live="polite"></span>
+                    <div class="hlc-field-help-popover" id="hlc-help-property-value" role="tooltip" hidden>
+                      <p class="hlc-field-help-text">Sets the ceiling on the loan against this house. Use the sale agreement price.</p>
+                      <a class="hlc-field-help-more" href="guide.html#loan-amount-property">Learn more</a>
+                    </div>
                   </label>
                 </div>
 
                 <div class="hlc-form-zone hlc-form-zone--pair">
                   <div class="hlc-form-zone-fields">
                     <label class="hlc-field" for="hlc-age">
-                      <span class="hlc-field-label">Age</span>
+                      <span class="hlc-field-label-row">
+                        <span class="hlc-field-label">Age<span class="hlc-req" aria-hidden="true">*</span><button
+                          type="button"
+                          class="hlc-field-help"
+                          aria-expanded="false"
+                          aria-controls="hlc-help-age"
+                          aria-label="About Age"
+                        >
+                          <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                        </button></span>
+                    </span>
                       <span class="hlc-input-shell">
-                        <input type="text" id="hlc-age" name="age" value="35" placeholder="35" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2">
+                        <input type="text" id="hlc-age" name="age" value="35" placeholder="35" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2" required>
                         <span class="hlc-suffix" aria-hidden="true">years</span>
                       </span>
                       <span class="hlc-field-note" id="hlc-age-note"></span>
+                      <div class="hlc-field-help-popover" id="hlc-help-age" role="tooltip" hidden>
+                        <p class="hlc-field-help-text">Sets the longest tenure banks will allow.</p>
+                        <a class="hlc-field-help-more" href="guide.html#tenure">Learn more</a>
+                      </div>
                     </label>
                     <label class="hlc-field" for="hlc-cibil">
-                      <span class="hlc-field-label">CIBIL score</span>
+                      <span class="hlc-field-label-row">
+                        <span class="hlc-field-label">CIBIL score<span class="hlc-req" aria-hidden="true">*</span><button
+                          type="button"
+                          class="hlc-field-help"
+                          aria-expanded="false"
+                          aria-controls="hlc-help-cibil"
+                          aria-label="About CIBIL score"
+                        >
+                          <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                        </button></span>
+                    </span>
                       <span class="hlc-input-shell">
-                        <input type="text" id="hlc-cibil" name="cibilScore" value="780" placeholder="780" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="3" data-hlc-max="900">
+                        <input type="text" id="hlc-cibil" name="cibilScore" value="780" placeholder="780" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="3" data-hlc-max="900" required>
                       </span>
                       <span class="hlc-field-note" id="hlc-cibil-note"></span>
+                      <div class="hlc-field-help-popover" id="hlc-help-cibil" role="tooltip" hidden>
+                        <p class="hlc-field-help-text">Changes the rates banks show you.</p>
+                      </div>
                     </label>
                   </div>
                 </div>
@@ -246,7 +302,21 @@
                 <div class="hlc-form-zone hlc-form-zone--choices">
                   <div class="hlc-form-zone-fields">
                     <div class="hlc-field hlc-field--occupation">
-                      <span class="hlc-field-label" id="hlc-occupation-label">Occupation</span>
+                      <span class="hlc-field-label-row">
+                        <span class="hlc-field-label" id="hlc-occupation-label">Occupation<span class="hlc-req" aria-hidden="true">*</span><button
+                          type="button"
+                          class="hlc-field-help"
+                          aria-expanded="false"
+                          aria-controls="hlc-help-occupation"
+                          aria-label="About Occupation"
+                        >
+                          <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                        </button></span>
+                    </span>
+                      <div class="hlc-field-help-popover" id="hlc-help-occupation" role="tooltip" hidden>
+                        <p class="hlc-field-help-text">Changes which offers and rates you see.</p>
+                        <a class="hlc-field-help-more" href="guide-documents.html#income">Learn more</a>
+                      </div>
                       <div class="hlc-segmented hlc-occupation-pills" role="group" aria-labelledby="hlc-occupation-label">
                         <button type="button" class="hlc-chip" data-occupation="Salaried" aria-pressed="true">Salaried</button>
                         <button type="button" class="hlc-chip" data-occupation="Self-Employed" aria-pressed="false">Self-employed</button>
@@ -255,7 +325,20 @@
                       <span class="hlc-field-note" id="hlc-occupation-note"></span>
                     </div>
                     <div class="hlc-field hlc-field--purpose">
-                      <span class="hlc-field-label" id="hlc-purpose-label">Purpose</span>
+                      <span class="hlc-field-label-row">
+                        <span class="hlc-field-label" id="hlc-purpose-label">Purpose<span class="hlc-req" aria-hidden="true">*</span><button
+                          type="button"
+                          class="hlc-field-help"
+                          aria-expanded="false"
+                          aria-controls="hlc-help-purpose"
+                          aria-label="About Purpose"
+                        >
+                          <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                        </button></span>
+                    </span>
+                      <div class="hlc-field-help-popover" id="hlc-help-purpose" role="tooltip" hidden>
+                        <p class="hlc-field-help-text">Top-up adds money on a home loan you already have.</p>
+                      </div>
                       <div class="hlc-segmented hlc-purpose-pills" role="group" aria-labelledby="hlc-purpose-label">
                         <button type="button" class="hlc-chip" data-purpose="Regular Home Loan" aria-pressed="true">Regular</button>
                         <button type="button" class="hlc-chip" data-purpose="Top-up Loan" aria-pressed="false">Top-up</button>
@@ -272,25 +355,49 @@
                 <summary class="hlc-form-more-toggle">
                   <span class="hlc-form-more-copy">
                     <span class="hlc-form-more-title">
-                      <span class="hlc-form-more-label">More details</span>
+                      <span class="hlc-form-more-label">Adjust eligibility</span>
                       <svg class="hlc-form-more-chevron" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                         <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                     </span>
-                    <span class="hlc-form-more-hint">Existing EMIs, FOIR, tenure, co-applicant</span>
+                    <span class="hlc-form-more-hint">Existing EMIs, credit cards, income share for EMIs, tenure, co-applicant</span>
                   </span>
                 </summary>
                 <div class="hlc-form-more-panel" id="hlc-form-more-panel">
                   <div class="hlc-form-fields hlc-form-fields--more">
                     <label class="hlc-field" for="hlc-existing-emis">
-                      <span class="hlc-field-label">Existing EMIs</span>
+                      <span class="hlc-field-label-row">
+                        <span class="hlc-field-label">Existing EMIs<button
+                          type="button"
+                          class="hlc-field-help"
+                          aria-expanded="false"
+                          aria-controls="hlc-help-existing-emis"
+                          aria-label="About Existing EMIs"
+                        >
+                          <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                        </button></span>
+                    </span>
                       <span class="hlc-input-shell">
                         <span class="hlc-prefix" aria-hidden="true">₹</span>
                         <input type="text" id="hlc-existing-emis" name="existingEmis" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
                       </span>
+                      <div class="hlc-field-help-popover" id="hlc-help-existing-emis" role="tooltip" hidden>
+                        <p class="hlc-field-help-text">Lowers how much new loan you can get.</p>
+                        <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
+                      </div>
                     </label>
                     <div class="hlc-field">
-                      <label class="hlc-field-label" for="hlc-card-limits">Credit card limits</label>
+                      <div class="hlc-field-label-row">
+                        <span class="hlc-field-label-cluster"><label class="hlc-field-label" for="hlc-card-limits">Credit card limits</label><button
+                          type="button"
+                          class="hlc-field-help"
+                          aria-expanded="false"
+                          aria-controls="hlc-help-card-limits"
+                          aria-label="About Credit card limits"
+                        >
+                          <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                        </button></span>
+                      </div>
                       <span class="hlc-input-shell">
                         <span class="hlc-prefix" aria-hidden="true">₹</span>
                         <input type="text" id="hlc-card-limits" name="cardLimits" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
@@ -309,9 +416,23 @@
                         </select>
                         counts as monthly load
                       </p>
+                      <div class="hlc-field-help-popover" id="hlc-help-card-limits" role="tooltip" hidden>
+                        <p class="hlc-field-help-text">Part of this counts as monthly load — the limit, not what you owe.</p>
+                        <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
+                      </div>
                     </div>
                     <label class="hlc-field hlc-field--foir" for="hlc-foir">
-                      <span class="hlc-field-label">Share of income for EMIs /<br> FOIR</span>
+                      <span class="hlc-field-label-row">
+                        <span class="hlc-field-label">Share of income for EMIs /<br> FOIR<button
+                          type="button"
+                          class="hlc-field-help"
+                          aria-expanded="false"
+                          aria-controls="hlc-help-foir"
+                          aria-label="About Share of income for EMIs / FOIR"
+                        >
+                          <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                        </button></span>
+                    </span>
                       <span class="hlc-input-shell hlc-input-shell--select hlc-input-shell--has-face">
                         <select id="hlc-foir" name="foirPct">
                           <option value="50">50%</option>
@@ -324,19 +445,51 @@
                           <span class="hlc-select-face-value">55%</span><span class="hlc-select-face-tag"> (default)</span>
                         </span>
                       </span>
+                      <div class="hlc-field-help-popover" id="hlc-help-foir" role="tooltip" hidden>
+                        <p class="hlc-field-help-text">Cap on EMIs versus income. Leave at 55% unless you know another figure.</p>
+                        <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
+                      </div>
                     </label>
                     <label class="hlc-field hlc-field--tenure" for="hlc-tenure">
-                      <span class="hlc-field-label">Tenure</span>
+                      <span class="hlc-field-label-row">
+                        <span class="hlc-field-label">Tenure<span class="hlc-req" aria-hidden="true">*</span><button
+                          type="button"
+                          class="hlc-field-help"
+                          aria-expanded="false"
+                          aria-controls="hlc-help-tenure"
+                          aria-label="About Tenure"
+                        >
+                          <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                        </button></span>
+                    </span>
                       <span class="hlc-input-shell">
-                        <input type="text" id="hlc-tenure" name="tenureYears" value="20" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2" data-hlc-max="30">
+                        <input type="text" id="hlc-tenure" name="tenureYears" value="20" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2" data-hlc-max="30" required>
                         <span class="hlc-suffix" aria-hidden="true">years</span>
                       </span>
                       <span class="hlc-field-note" id="hlc-tenure-note"></span>
+                      <div class="hlc-field-help-popover" id="hlc-help-tenure" role="tooltip" hidden>
+                        <p class="hlc-field-help-text">Years to repay. Changes your EMI.</p>
+                        <a class="hlc-field-help-more" href="guide.html#tenure">Learn more</a>
+                      </div>
                     </label>
                     <div class="hlc-coapplicant-row" id="hlc-coapplicant-row">
                       <div class="hlc-coapplicant-toggle-cell">
                         <div class="hlc-field hlc-field--coapplicant">
-                          <span class="hlc-field-label" id="hlc-coapplicant-label">Co-applicant</span>
+                          <span class="hlc-field-label-row">
+                            <span class="hlc-field-label" id="hlc-coapplicant-label">Co-applicant<button
+                              type="button"
+                              class="hlc-field-help"
+                              aria-expanded="false"
+                              aria-controls="hlc-help-coapplicant"
+                              aria-label="About Co-applicant"
+                            >
+                              <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                            </button></span>
+                    </span>
+                          <div class="hlc-field-help-popover" id="hlc-help-coapplicant" role="tooltip" hidden>
+                            <p class="hlc-field-help-text">Adds a second person’s income to what you can borrow.</p>
+                            <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
+                          </div>
                           <div class="hlc-segmented hlc-coapplicant-pills" role="group" aria-labelledby="hlc-coapplicant-label">
                             <button type="button" class="hlc-chip" data-coapplicant="no" aria-pressed="true">No</button>
                             <button type="button" class="hlc-chip" data-coapplicant="yes" aria-pressed="false">Yes</button>
@@ -347,25 +500,67 @@
                       <div class="hlc-coapplicant-fields" id="hlc-coapplicant-fields" hidden>
                         <div class="hlc-form-fields hlc-form-fields--coapplicant">
                           <label class="hlc-field" for="hlc-co-income">
-                            <span class="hlc-field-label">Co-applicant income</span>
+                            <span class="hlc-field-label-row">
+                              <span class="hlc-field-label">Co-applicant income<button
+                                type="button"
+                                class="hlc-field-help"
+                                aria-expanded="false"
+                                aria-controls="hlc-help-co-income"
+                                aria-label="About Co-applicant income"
+                              >
+                                <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                              </button></span>
+                    </span>
                             <span class="hlc-input-shell">
                               <span class="hlc-prefix" aria-hidden="true">₹</span>
                               <input type="text" id="hlc-co-income" name="coMonthlyIncome" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
                             </span>
+                            <div class="hlc-field-help-popover" id="hlc-help-co-income" role="tooltip" hidden>
+                              <p class="hlc-field-help-text">Added to yours for eligibility.</p>
+                              <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
+                            </div>
                           </label>
                           <label class="hlc-field" for="hlc-co-existing-emis">
-                            <span class="hlc-field-label">Co-applicant EMIs</span>
+                            <span class="hlc-field-label-row">
+                              <span class="hlc-field-label">Co-applicant EMIs<button
+                                type="button"
+                                class="hlc-field-help"
+                                aria-expanded="false"
+                                aria-controls="hlc-help-co-emis"
+                                aria-label="About Co-applicant EMIs"
+                              >
+                                <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                              </button></span>
+                    </span>
                             <span class="hlc-input-shell">
                               <span class="hlc-prefix" aria-hidden="true">₹</span>
                               <input type="text" id="hlc-co-existing-emis" name="coExistingEmis" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
                             </span>
+                            <div class="hlc-field-help-popover" id="hlc-help-co-emis" role="tooltip" hidden>
+                              <p class="hlc-field-help-text">Lowers eligibility the same way yours do.</p>
+                              <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
+                            </div>
                           </label>
                           <label class="hlc-field" for="hlc-co-card-limits">
-                            <span class="hlc-field-label">Co-applicant card limits</span>
+                            <span class="hlc-field-label-row">
+                              <span class="hlc-field-label">Co-applicant card limits<button
+                                type="button"
+                                class="hlc-field-help"
+                                aria-expanded="false"
+                                aria-controls="hlc-help-co-cards"
+                                aria-label="About Co-applicant card limits"
+                              >
+                                <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                              </button></span>
+                    </span>
                             <span class="hlc-input-shell">
                               <span class="hlc-prefix" aria-hidden="true">₹</span>
                               <input type="text" id="hlc-co-card-limits" name="coCardLimits" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
                             </span>
+                            <div class="hlc-field-help-popover" id="hlc-help-co-cards" role="tooltip" hidden>
+                              <p class="hlc-field-help-text">Counted like your card limits.</p>
+                              <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
+                            </div>
                           </label>
                         </div>
                       </div>
@@ -438,35 +633,114 @@
                 role="region"
                 aria-labelledby="hlc-filters-heading"
               >
-                <h3 class="hlc-filters-title" id="hlc-filters-heading">Filters</h3>
+                <div class="hlc-filters-head">
+                  <h3 class="hlc-filters-title" id="hlc-filters-heading">Filters</h3>
+                  <button type="button" class="hlc-filters-clear" id="hlc-filters-clear" hidden>
+                    Clear all
+                  </button>
+                </div>
 
                 <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="hlc-borrower-label">Borrower</legend>
-                  <div class="hlc-toggle-chips hlc-borrower-chips" role="group" aria-labelledby="hlc-borrower-label">
-                    <button type="button" class="hlc-chip" data-product-filter="govtPsu" aria-pressed="false">Govt / PSU employee and pensioner</button>
+                  <legend class="hlc-filter-legend" id="hlc-borrower-label">
+                    <span class="hlc-field-label-row">
+                      <span class="hlc-field-label-text">Borrower</span>
+                      <button
+                        type="button"
+                        class="hlc-field-help"
+                        aria-expanded="false"
+                        aria-controls="hlc-help-borrower"
+                        aria-label="About Borrower"
+                      >
+                        <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                      </button>
+                    </span>
+                  </legend>
+                  <div class="hlc-filter-checks hlc-borrower-chips" role="group" aria-labelledby="hlc-borrower-label">
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="govtPsu" />
+                      <span class="hlc-filter-option-label">Govt / PSU employee and pensioner</span>
+                    </label>
+                  </div>
+                  <div class="hlc-field-help-popover" id="hlc-help-borrower" role="tooltip" hidden>
+                    <p class="hlc-field-help-text">Only if you work for the government or a PSU, or you’re a pensioner.</p>
                   </div>
                 </fieldset>
 
                 <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="hlc-concessions-label">Concessions</legend>
-                  <div class="hlc-toggle-chips hlc-concession-chips" role="group" aria-labelledby="hlc-concessions-label">
-                    <button type="button" class="hlc-chip" data-product-filter="womenApplicant" aria-pressed="false">Women applicant</button>
-                    <button type="button" class="hlc-chip" data-product-filter="greenHome" aria-pressed="false">Green home</button>
-                    <button type="button" class="hlc-chip" data-product-filter="insurance" aria-pressed="false">Insurance</button>
+                  <legend class="hlc-filter-legend" id="hlc-concessions-label">
+                    <span class="hlc-field-label-row">
+                      <span class="hlc-field-label-text">Concessions</span>
+                      <button
+                        type="button"
+                        class="hlc-field-help"
+                        aria-expanded="false"
+                        aria-controls="hlc-help-concessions"
+                        aria-label="About Concessions"
+                      >
+                        <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                      </button>
+                    </span>
+                  </legend>
+                  <div class="hlc-filter-checks hlc-concession-chips" role="group" aria-labelledby="hlc-concessions-label">
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="womenApplicant" />
+                      <span class="hlc-filter-option-label">Women applicant</span>
+                    </label>
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="greenHome" />
+                      <span class="hlc-filter-option-label">Green home</span>
+                    </label>
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="insurance" />
+                      <span class="hlc-filter-option-label">Insurance</span>
+                    </label>
+                  </div>
+                  <div class="hlc-field-help-popover" id="hlc-help-concessions" role="tooltip" hidden>
+                    <p class="hlc-field-help-text">Turns on rate cuts that apply to you.</p>
+                    <a class="hlc-field-help-more" href="concessions.html#bank-rates">Learn more</a>
                   </div>
                 </fieldset>
 
                 <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="hlc-bank-type-label">Bank type</legend>
+                  <legend class="hlc-filter-legend" id="hlc-bank-type-label">
+                    <span class="hlc-field-label-row">
+                      <span class="hlc-field-label-text">Bank type</span>
+                      <button
+                        type="button"
+                        class="hlc-field-help"
+                        aria-expanded="false"
+                        aria-controls="hlc-help-bank-type"
+                        aria-label="About Bank type"
+                      >
+                        <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                      </button>
+                    </span>
+                  </legend>
                   <div class="hlc-segmented hlc-bank-type-pills" role="group" aria-labelledby="hlc-bank-type-label">
                     <button type="button" class="hlc-chip" data-bank-type="All" aria-pressed="true">All</button>
                     <button type="button" class="hlc-chip" data-bank-type="Public" aria-pressed="false">Public</button>
                     <button type="button" class="hlc-chip" data-bank-type="Private" aria-pressed="false">Private</button>
                   </div>
+                  <div class="hlc-field-help-popover" id="hlc-help-bank-type" role="tooltip" hidden>
+                    <p class="hlc-field-help-text">Shows only that kind of bank.</p>
+                  </div>
                 </fieldset>
 
                 <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="hlc-rate-label">Rate</legend>
+                  <legend class="hlc-filter-legend" id="hlc-rate-label">
+                    <span class="hlc-field-label-row">
+                      <span class="hlc-field-label-text">Rate</span>
+                      <button
+                        type="button"
+                        class="hlc-field-help"
+                        aria-expanded="false"
+                        aria-controls="hlc-help-rate"
+                        aria-label="About Rate"
+                      >
+                        <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                      </button>
+                    </span>
+                  </legend>
                   <div class="hlc-segmented hlc-rate-pills" role="group" aria-labelledby="hlc-rate-label">
                     <button type="button" class="hlc-chip" data-rate-type="Floating" aria-pressed="true">Floating</button>
                     <button type="button" class="hlc-chip hlc-chip--stacked" data-rate-type="Fixed" aria-pressed="false">
@@ -474,16 +748,37 @@
                       <span class="hlc-chip-note">About 1–2% higher</span>
                     </button>
                   </div>
+                  <div class="hlc-field-help-popover" id="hlc-help-rate" role="tooltip" hidden>
+                    <p class="hlc-field-help-text">Floating can change later. Fixed stays put for a period.</p>
+                    <a class="hlc-field-help-more" href="guide.html#rates">Learn more</a>
+                  </div>
                 </fieldset>
 
                 <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="hlc-facility-label">Facility</legend>
+                  <legend class="hlc-filter-legend" id="hlc-facility-label">
+                    <span class="hlc-field-label-row">
+                      <span class="hlc-field-label-text">Facility</span>
+                      <button
+                        type="button"
+                        class="hlc-field-help"
+                        aria-expanded="false"
+                        aria-controls="hlc-help-facility"
+                        aria-label="About Facility"
+                      >
+                        <span class="hlc-field-help-mark" aria-hidden="true">?</span>
+                      </button>
+                    </span>
+                  </legend>
                   <div class="hlc-segmented hlc-facility-pills" role="group" aria-labelledby="hlc-facility-label">
                     <button type="button" class="hlc-chip" data-facility-type="Term Loan" aria-pressed="true">Term loan</button>
                     <button type="button" class="hlc-chip hlc-chip--stacked" data-facility-type="Overdraft" aria-pressed="false">
                       <span class="hlc-chip-label">Overdraft</span>
                       <span class="hlc-chip-note">About 0.15–1% higher</span>
                     </button>
+                  </div>
+                  <div class="hlc-field-help-popover" id="hlc-help-facility" role="tooltip" hidden>
+                    <p class="hlc-field-help-text">Term loan = set EMI. Overdraft = redraw within a limit.</p>
+                    <a class="hlc-field-help-more" href="guide.html#loan-structure">Learn more</a>
                   </div>
                 </fieldset>
               </aside>
@@ -523,6 +818,7 @@
     </div>
   </main>
 
+
   <div class="hlc-drawer-backdrop" id="hlc-drawer-backdrop" hidden></div>
   <aside class="hlc-drawer" id="hlc-drawer" aria-hidden="true" role="dialog" aria-labelledby="hlc-drawer-title">
     <div class="hlc-drawer-top">
@@ -556,110 +852,118 @@
     </p>
   </aside>
   <footer class="site-footer" role="contentinfo" aria-label="Shroffin Footer">
-    <section class="site-footer-brand" aria-label="Shroffin">
-      <div class="site-footer-brand-inner">
-        <a class="site-footer-brand-link" href="/" aria-label="Shroffin Home">
-          <img
-            class="site-footer-logo"
-            src="/images/logos/logo-h-light-clear-781x173.png"
-            alt=""
-            width="198"
-            height="44"
-          >
-        </a>
-      </div>
-    </section>
-
     <div class="site-footer-inner">
-      <div class="site-footer-directory">
-        <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
-          <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
-          <ul class="site-footer-list">
-            <li><a href="/pages/guide.html">Overview</a></li>
-            <li><a href="/pages/guide-documents.html">Documents</a></li>
-            <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
-            <li><a href="/pages/concessions.html">Concessions</a></li>
-            <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
-            <li><a href="/pages/home-loan-complaints.html">Grievance redressal mechanism</a></li>
-          </ul>
-        </nav>
-
-        <nav class="site-footer-group" aria-labelledby="footer-tools-title">
-          <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
-          <ul class="site-footer-list">
-            <li><a href="/pages/calculators.html">Calculators</a></li>
-            <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
-          </ul>
-        </nav>
-
-        <nav class="site-footer-group" aria-labelledby="footer-company-title">
-          <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
-          <ul class="site-footer-list">
-            <li><a href="/pages/about.html">About</a></li>
-            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-            <li><a href="/terms-of-use.html">Terms of Use</a></li>
-          </ul>
-        </nav>
-
-        <section class="site-footer-group" aria-labelledby="footer-support-title">
-          <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
-          <ul class="site-footer-list">
-            <li><a href="mailto:support@shroffin.com">Email</a></li>
-            <li><a href="tel:+919112334367">Call</a></li>
-          </ul>
+      <div class="site-footer-top">
+        <section class="site-footer-brand" aria-label="Shroffin">
+          <a class="site-footer-brand-link" href="/" aria-label="Shroffin Home">
+            <img
+              class="site-footer-logo"
+              src="/images/logos/logo.png"
+              alt=""
+              width="40"
+              height="40"
+            >
+          </a>
         </section>
 
-        <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
-          <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
-          <ul class="site-footer-list">
-            <li>
-              <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-
-      <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
-        <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
-        <div class="site-footer-disclaimer">
-          <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
-          <details class="site-footer-disclaimer-more">
-            <summary>Read the full disclaimer</summary>
-            <div class="site-footer-disclaimer-full">
-              <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-              <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-              <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-              <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-              <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
-            </div>
-          </details>
-        </div>
-      </section>
-
-      <div class="site-footer-bottom">
-        <div class="site-footer-bottom-row">
-          <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
-          <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
-            <ul class="site-footer-legal-links">
-              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-              <li><a href="/terms-of-use.html">Terms of Use</a></li>
-              <li><a href="/sitemap.html">Site Map</a></li>
-              <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
-              <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
-              <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
-              <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
-              <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+        <div class="site-footer-directory">
+          <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
+            <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
+            <ul class="site-footer-list">
+              <li><a href="/pages/guide.html">Overview</a></li>
+              <li><a href="/pages/guide-documents.html">Documents</a></li>
+              <li><a href="/pages/tax-benefits.html">Tax benefits</a></li>
+              <li><a href="/pages/concessions.html">Concessions</a></li>
+              <li><a href="/pages/home-loan-insurance.html">Insurance</a></li>
+              <li><a href="/pages/home-loan-complaints.html">If something goes wrong</a></li>
             </ul>
           </nav>
+
+          <nav class="site-footer-group" aria-labelledby="footer-tools-title">
+            <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
+            <ul class="site-footer-list">
+              <li><a href="/pages/calculators.html">Calculators</a></li>
+              <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
+            </ul>
+          </nav>
+
+          <nav class="site-footer-group" aria-labelledby="footer-company-title">
+            <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
+            <ul class="site-footer-list">
+              <li><a href="/pages/about.html">About</a></li>
+              <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="/terms-of-use.html">Terms of Use</a></li>
+            </ul>
+          </nav>
+
+          <section class="site-footer-group" aria-labelledby="footer-support-title">
+            <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
+            <ul class="site-footer-list">
+              <li><a href="mailto:support@shroffin.com">Email</a></li>
+              <li><a href="tel:+919112334367">Call</a></li>
+            </ul>
+          </section>
+
+          <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
+            <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
+            <ul class="site-footer-list">
+              <li>
+                <a class="guide-section-link" href="https://www.linkedin.com/company/shroffin" target="_blank" rel="noopener noreferrer">LinkedIn<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens LinkedIn page)</span></a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <div class="site-footer-meta">
+        <div class="site-footer-meta-main">
+          <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
+            <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
+            <div class="site-footer-disclaimer">
+              <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
+              <details class="site-footer-disclaimer-more">
+                <summary>Read the full disclaimer</summary>
+                <div class="site-footer-disclaimer-full">
+                  <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+                  <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+                  <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+                  <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+                  <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <div class="site-footer-bottom">
+            <div class="site-footer-bottom-row">
+              <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
+              <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
+                <ul class="site-footer-legal-links">
+                  <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                  <li><a href="/terms-of-use.html">Terms of Use</a></li>
+                  <li><a href="/sitemap.html">Site Map</a></li>
+                </ul>
+                <ul class="site-footer-official-links">
+                  <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/shroffin-home-stance.js?v=stance-18"></script>
-  <script src="../js/shroffin-nav.js?v=sel-16"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=show-more-smooth-1"></script>
+  <script src="../js/shroffin-home-stance.js?v=57363ca34b"></script>
+  <script src="../js/shroffin-nav.js?v=2edcc56c54"></script>
+  <script src="../js/hlc-data-url.generated.js?v=4fce1ee0e3"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=925ab0575b"></script>
+  <script src="../js/hlc-field-help.js?v=f96bd1158b"></script>
   <script>
     (function () {
       var form = document.getElementById("hlc-inputs");
@@ -772,11 +1076,20 @@
         event.preventDefault();
         if (busy) return;
 
-        var fieldsOk =
-          typeof window.__hlcValidatePrimaryFields === "function"
-            ? window.__hlcValidatePrimaryFields()
-            : form.reportValidity();
-        if (!fieldsOk) return;
+        // Open Adjust eligibility if a required field inside it is empty,
+        // so the browser can focus it and show the native required message.
+        var more = document.getElementById("hlc-form-more");
+        if (more && !more.open) {
+          var nestedRequired = more.querySelectorAll("[required]");
+          for (var i = 0; i < nestedRequired.length; i++) {
+            if (!nestedRequired[i].checkValidity()) {
+              more.open = true;
+              break;
+            }
+          }
+        }
+
+        if (!form.reportValidity()) return;
 
         if (!resultsShell.hidden && resultsShell.classList.contains("is-visible")) {
           softScrollToOptions();

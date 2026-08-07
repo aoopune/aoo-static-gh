@@ -293,7 +293,7 @@
     return [
       { label: "Rate", value: formatPct(row && row.effectiveRoiPct) },
       { label: "Loan amount", value: formatInr(row && row.loanAmount) },
-      { label: "Tenure", value: formatPlain(row && row.tenureLabel) },
+      { label: "Tenure (yrs)", value: formatPlain(row && row.tenureLabel) },
       { label: "EMI", value: formatInr(row && row.emi) }
     ];
   }

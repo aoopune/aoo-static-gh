@@ -631,7 +631,7 @@ test.describe('breakpoints and navigation behavior', function () {
 });
 
 test.describe('adaptive component behavior', function () {
-  test('expand panels keep the explanation visible when open', async function ({
+  test('card flip keeps box size and dock in place', async function ({
     page
   }, testInfo) {
     test.skip(testInfo.project.name !== 'chromium-responsive');
@@ -639,15 +639,30 @@ test.describe('adaptive component behavior', function () {
     await page.setViewportSize({ width: 375, height: 667 });
     await gotoReady(page, '/pages/guide.html');
     const flip = page.locator('#borrow-flip');
+    const scene = flip.locator('.guide-flip-scene');
+    const dock = flip.locator('.guide-flip-dock[data-flip]');
     const front = flip.locator('.guide-flip-face--front');
     const back = flip.locator('.guide-flip-face--back');
+
+    const before = await scene.boundingBox();
+    const dockBefore = await dock.boundingBox();
     await expect(back).toHaveAttribute('aria-hidden', 'true');
-    await front.locator('[data-flip]').click();
+
+    await dock.click();
     await expect(flip).toHaveClass(/is-flipped/);
-    await expect(front).toHaveAttribute('aria-hidden', 'false');
+    await expect(front).toHaveAttribute('aria-hidden', 'true');
     await expect(back).toHaveAttribute('aria-hidden', 'false');
-    await expect(front).toBeVisible();
-    await expect(back).toBeVisible();
+    await expect(dock).toHaveAttribute('aria-expanded', 'true');
+
+    const after = await scene.boundingBox();
+    const dockAfter = await dock.boundingBox();
+    expect(Math.abs(after.height - before.height)).toBeLessThanOrEqual(2);
+    expect(Math.abs(dockAfter.y - dockBefore.y)).toBeLessThanOrEqual(2);
+    expect(Math.abs(dockAfter.x - dockBefore.x)).toBeLessThanOrEqual(2);
+
+    await dock.click();
+    await expect(flip).not.toHaveClass(/is-flipped/);
+    await expect(front).toHaveAttribute('aria-hidden', 'false');
   });
 
   test('Privacy tables are named keyboard scroll regions', async function ({

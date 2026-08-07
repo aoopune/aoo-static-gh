@@ -120,17 +120,29 @@
 
                           <fieldset class="hlc-filter-group">
                             <legend class="hlc-filter-legend">Borrower</legend>
-                            <div class="hlc-toggle-chips">
-                              <button type="button" class="hlc-chip" data-spd-filter="govt" data-spd-default-pressed="false" aria-pressed="false" tabindex="-1">Govt / PSU employee and pensioner</button>
+                            <div class="hlc-filter-checks">
+                              <label class="hlc-filter-option">
+                                <input type="checkbox" data-spd-filter="govt" data-spd-default-pressed="false" tabindex="-1" />
+                                <span class="hlc-filter-option-label">Govt / PSU employee and pensioner</span>
+                              </label>
                             </div>
                           </fieldset>
 
                           <fieldset class="hlc-filter-group">
                             <legend class="hlc-filter-legend">Concessions</legend>
-                            <div class="hlc-toggle-chips">
-                              <button type="button" class="hlc-chip" data-spd-filter="women" data-spd-default-pressed="false" aria-pressed="false" tabindex="-1">Women applicant</button>
-                              <button type="button" class="hlc-chip" data-spd-filter="green" data-spd-default-pressed="false" aria-pressed="false" tabindex="-1">Green home</button>
-                              <button type="button" class="hlc-chip" data-spd-filter="insurance" data-spd-default-pressed="false" aria-pressed="false" tabindex="-1">Insurance</button>
+                            <div class="hlc-filter-checks">
+                              <label class="hlc-filter-option">
+                                <input type="checkbox" data-spd-filter="women" data-spd-default-pressed="false" tabindex="-1" />
+                                <span class="hlc-filter-option-label">Women applicant</span>
+                              </label>
+                              <label class="hlc-filter-option">
+                                <input type="checkbox" data-spd-filter="green" data-spd-default-pressed="false" tabindex="-1" />
+                                <span class="hlc-filter-option-label">Green home</span>
+                              </label>
+                              <label class="hlc-filter-option">
+                                <input type="checkbox" data-spd-filter="insurance" data-spd-default-pressed="false" tabindex="-1" />
+                                <span class="hlc-filter-option-label">Insurance</span>
+                              </label>
                             </div>
                           </fieldset>
 
@@ -174,7 +186,6 @@
                                   <col class="hlc-col-bank">
                                   <col class="hlc-col-w-pct">
                                   <col class="hlc-col-w-inr">
-                                  <col class="hlc-col-w-inr">
                                   <col class="hlc-col-w-tenure">
                                   <col class="hlc-col-w-inr">
                                 </colgroup>
@@ -183,8 +194,7 @@
                                     <th scope="col" class="hlc-sticky-col">Bank</th>
                                     <th scope="col" class="hlc-col-num">Rate</th>
                                     <th scope="col" class="hlc-col-num">Loan amount</th>
-                                    <th scope="col" class="hlc-col-num">Down payment</th>
-                                    <th scope="col" class="hlc-col-text">Tenure</th>
+                                    <th scope="col" class="hlc-col-text">Tenure (yrs)</th>
                                     <th scope="col" class="hlc-col-num">EMI</th>
                                   </tr>
                                 </thead>
@@ -192,66 +202,76 @@
                                   <tr class="hlc-selectable-row" data-spd-row data-bank="hdfc" aria-selected="false">
                                     <td class="hlc-sticky-col">
                                       <div class="hlc-bank-cell">
-                                        <div class="hlc-bank-name">HDFC Bank</div>
-                                        <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                                        <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                        <div class="hlc-bank-cell-text">
+                                          <div class="hlc-bank-name">HDFC Bank</div>
+                                          <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">Details</span><svg class="hlc-bank-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+                                        </div>
                                       </div>
                                     </td>
                                     <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">8.35%</span></td>
                                     <td class="hlc-col-num"><span class="hlc-cell-value">₹60,00,000</span></td>
-                                    <td class="hlc-col-num"><span class="hlc-cell-value">₹15,00,000</span></td>
-                                    <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                                    <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
                                     <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹51,420</span></td>
                                   </tr>
                                   <tr class="hlc-selectable-row" data-spd-row data-bank="icici" aria-selected="false">
                                     <td class="hlc-sticky-col">
                                       <div class="hlc-bank-cell">
-                                        <div class="hlc-bank-name">ICICI Bank</div>
-                                        <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                                        <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                        <div class="hlc-bank-cell-text">
+                                          <div class="hlc-bank-name">ICICI Bank</div>
+                                          <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">Details</span><svg class="hlc-bank-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+                                        </div>
                                       </div>
                                     </td>
                                     <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">8.40%</span></td>
                                     <td class="hlc-col-num"><span class="hlc-cell-value">₹60,00,000</span></td>
-                                    <td class="hlc-col-num"><span class="hlc-cell-value">₹15,00,000</span></td>
-                                    <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                                    <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
                                     <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹51,620</span></td>
                                   </tr>
                                   <tr class="hlc-selectable-row" data-spd-row data-bank="sbi" aria-selected="false">
                                     <td class="hlc-sticky-col">
                                       <div class="hlc-bank-cell">
-                                        <div class="hlc-bank-name">State Bank of India</div>
-                                        <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Maxgain</span><span class="hlc-bank-detail-label">More</span></div>
+                                        <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                        <div class="hlc-bank-cell-text">
+                                          <div class="hlc-bank-name">State Bank of India</div>
+                                          <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Maxgain</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">Details</span><svg class="hlc-bank-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+                                        </div>
                                       </div>
                                     </td>
                                     <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">8.20%</span></td>
                                     <td class="hlc-col-num"><span class="hlc-cell-value">₹58,00,000</span></td>
-                                    <td class="hlc-col-num"><span class="hlc-cell-value">₹17,00,000</span></td>
-                                    <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                                    <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
                                     <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹49,210</span></td>
                                   </tr>
                                   <tr class="hlc-selectable-row" data-spd-row data-bank="axis" aria-selected="false">
                                     <td class="hlc-sticky-col">
                                       <div class="hlc-bank-cell">
-                                        <div class="hlc-bank-name">Axis Bank</div>
-                                        <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail-label">More</span></div>
+                                        <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                        <div class="hlc-bank-cell-text">
+                                          <div class="hlc-bank-name">Axis Bank</div>
+                                          <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">Details</span><svg class="hlc-bank-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+                                        </div>
                                       </div>
                                     </td>
                                     <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">8.50%</span></td>
                                     <td class="hlc-col-num"><span class="hlc-cell-value">₹58,50,000</span></td>
-                                    <td class="hlc-col-num"><span class="hlc-cell-value">₹16,50,000</span></td>
-                                    <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                                    <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
                                     <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹50,890</span></td>
                                   </tr>
                                   <tr class="hlc-selectable-row" data-spd-row data-bank="bom" aria-selected="false">
                                     <td class="hlc-sticky-col">
                                       <div class="hlc-bank-cell">
-                                        <div class="hlc-bank-name">Bank of Maharashtra</div>
-                                        <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Maha Super Housing</span><span class="hlc-bank-detail-label">More</span></div>
+                                        <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                        <div class="hlc-bank-cell-text">
+                                          <div class="hlc-bank-name">Bank of Maharashtra</div>
+                                          <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Maha Super Housing</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">Details</span><svg class="hlc-bank-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+                                        </div>
                                       </div>
                                     </td>
                                     <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.25%</span></td>
                                     <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
-                                    <td class="hlc-col-num"><span class="hlc-cell-value">₹12,50,000</span></td>
-                                    <td class="hlc-col-text"><span class="hlc-cell-value">20 years</span></td>
+                                    <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
                                     <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹39,519</span></td>
                                   </tr>
                                 </tbody>

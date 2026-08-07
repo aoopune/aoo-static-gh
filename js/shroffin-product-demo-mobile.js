@@ -133,6 +133,10 @@
 
   function setPressed(el, on) {
     if (!el) return;
+    if (el.type === "checkbox") {
+      el.checked = Boolean(on);
+      return;
+    }
     el.setAttribute("aria-pressed", on ? "true" : "false");
   }
 

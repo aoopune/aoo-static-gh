@@ -890,28 +890,35 @@
       btn.setAttribute("aria-expanded", open ? "true" : "false");
     }
 
+    function syncSceneHeight(scene, front) {
+      if (!scene || !front) return;
+      var h = front.offsetHeight;
+      if (h > 0) scene.style.height = h + "px";
+    }
+
     document.querySelectorAll(".guide-flip").forEach(function (flip) {
+      var scene = flip.querySelector("[data-flip-scene]") || flip.querySelector(".guide-flip-scene");
       var front = flip.querySelector(".guide-flip-face--front");
       var back = flip.querySelector(".guide-flip-face--back");
-      if (!front || !back) return;
+      if (!front || !back || !scene) return;
+
       var wasOpen = flip.classList.contains("is-flipped");
-      var toggles = flip.querySelectorAll(".guide-flip-face--front [data-flip]");
+      var docks = flip.querySelectorAll(".guide-flip-dock[data-flip]");
 
       function scrollToOpened() {
-        var target = toggles[0] || back;
-        /* Same soft ~1s ease as Contents section jumps. */
         window.requestAnimationFrame(function () {
-          softScrollTo(target);
+          softScrollTo(flip);
         });
       }
 
       function sync() {
         var open = flip.classList.contains("is-flipped");
-        front.setAttribute("aria-hidden", "false");
-        front.inert = false;
+        front.setAttribute("aria-hidden", open ? "true" : "false");
+        front.inert = !!open;
         back.setAttribute("aria-hidden", open ? "false" : "true");
         back.inert = !open;
-        toggles.forEach(function (btn) {
+        syncSceneHeight(scene, front);
+        docks.forEach(function (btn) {
           setToggleLabel(btn, open);
         });
         if (open && !wasOpen) scrollToOpened();
@@ -923,9 +930,26 @@
         attributes: true,
         attributeFilter: ["class"]
       });
+
+      var ro = null;
+      if (typeof ResizeObserver !== "undefined") {
+        ro = new ResizeObserver(function () {
+          syncSceneHeight(scene, front);
+        });
+        ro.observe(front);
+      }
+
+      function onResize() {
+        syncSceneHeight(scene, front);
+      }
+      window.addEventListener("resize", onResize);
+
       addContentCleanup(function () {
         observer.disconnect();
+        if (ro) ro.disconnect();
+        window.removeEventListener("resize", onResize);
       });
+
       sync();
     });
   }
@@ -1207,12 +1231,22 @@
     var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var CLOSE_MS = 900;
 
+    /* In-card stacks: first row starts open so the pattern is visible.
+       It still closes like any other row when the reader taps it again. */
+    document.querySelectorAll(".guide-disclosure-stack").forEach(function (stack) {
+      var first = stack.querySelector(":scope > details.guide-disclosure");
+      if (!first) return;
+      first.classList.remove("guide-disclosure--stay-open");
+      first.open = true;
+    });
+
     document
-      .querySelectorAll("details.guide-disclosure, details.guide-chapter-more")
+      .querySelectorAll("details.guide-disclosure")
       .forEach(function (details) {
       if (details.dataset.smoothReady === "true") return;
       details.dataset.smoothReady = "true";
 
+      details.classList.remove("guide-disclosure--stay-open");
       var summary = details.querySelector(":scope > summary");
       if (!summary) return;
 
@@ -1230,6 +1264,7 @@
       }
 
       if (details.open) {
+        details.open = true;
         panel.classList.add("is-open");
       }
 
@@ -1274,45 +1309,6 @@
     });
   }
 
-  var CHAPTER_MORE_MQ = "(min-width: 834px)";
-
-  function syncChapterMoreViewport() {
-    var desktop = window.matchMedia(CHAPTER_MORE_MQ).matches;
-    document.querySelectorAll("details.guide-chapter-more").forEach(function (el) {
-      if (desktop) {
-        el.open = true;
-        el.dataset.chapterMoreDesktop = "1";
-        var panel = el.querySelector(":scope > .guide-disclosure-panel");
-        if (panel) panel.classList.add("is-open");
-      } else if (el.dataset.chapterMoreDesktop === "1") {
-        el.open = false;
-        delete el.dataset.chapterMoreDesktop;
-        var panelClose = el.querySelector(":scope > .guide-disclosure-panel");
-        if (panelClose) panelClose.classList.remove("is-open");
-      }
-    });
-  }
-
-  function initChapterMoreViewport() {
-    syncChapterMoreViewport();
-    var mq = window.matchMedia(CHAPTER_MORE_MQ);
-    var onChange = function () {
-      syncChapterMoreViewport();
-    };
-    if (typeof mq.addEventListener === "function") {
-      mq.addEventListener("change", onChange);
-    } else if (typeof mq.addListener === "function") {
-      mq.addListener(onChange);
-    }
-    addContentCleanup(function () {
-      if (typeof mq.removeEventListener === "function") {
-        mq.removeEventListener("change", onChange);
-      } else if (typeof mq.removeListener === "function") {
-        mq.removeListener(onChange);
-      }
-    });
-  }
-
   function initContent() {
     beginContentLifecycle();
     initPageModules();
@@ -1323,7 +1319,6 @@
     initScrollRegions();
     initBreadcrumbs();
     initGuideDisclosures();
-    initChapterMoreViewport();
     if (window.ShroffinScrub) window.ShroffinScrub.init();
     initGuideMoments();
     ensureLocalnavCurrentVisible();
@@ -1335,6 +1330,8 @@
   }
 
   /* Guide reading: hide Guide localnav while scrolling down; show on scroll up.
+     After scroll-up reveal (past the top), auto-hide again after 2s — unless the
+     cursor is on the bar; leaving the bar starts the 2s timer.
      Keeps one thin chapter strip at the top while reading (phone + desktop).
      Loop-safe: no-op if state unchanged; ignore scroll briefly after toggle.
      Phone drawer open forces the bar visible so Guide links stay reachable. */
@@ -1349,8 +1346,11 @@
     var lnHeight = 52;
     var deltaArmed = 12;
     var topReveal = 72;
+    var hideAfterMs = 2000;
     var isAway = false;
     var ignoreUntil = 0;
+    var hideTimer = null;
+    var pointerOver = false;
 
     function measure() {
       lnHeight = localnav.offsetHeight || 52;
@@ -1360,11 +1360,33 @@
       return localnav.classList.contains("is-open");
     }
 
+    function clearHideTimer() {
+      if (hideTimer == null) return;
+      clearTimeout(hideTimer);
+      hideTimer = null;
+    }
+
+    function scheduleHide() {
+      if (pointerOver || menuOpen()) return;
+      if ((window.scrollY || 0) <= topReveal) return;
+      clearHideTimer();
+      hideTimer = setTimeout(function () {
+        hideTimer = null;
+        if (pointerOver || menuOpen()) return;
+        if ((window.scrollY || 0) <= topReveal) return;
+        setAway(true);
+      }, hideAfterMs);
+    }
+
     function setAway(away) {
-      if (menuOpen()) away = false;
+      if (menuOpen() || pointerOver) {
+        away = false;
+        clearHideTimer();
+      }
       away = Boolean(away);
       if (away === isAway) return;
       isAway = away;
+      if (isAway) clearHideTimer();
       document.body.classList.toggle("guide-ln-away", isAway);
       /* Set on body — body CSS vars shadow :root; html inline would lose. */
       document.body.style.setProperty(
@@ -1381,7 +1403,8 @@
       ticking = true;
       window.requestAnimationFrame(function () {
         ticking = false;
-        if (menuOpen()) {
+        if (menuOpen() || pointerOver) {
+          clearHideTimer();
           setAway(false);
           lastY = window.scrollY || 0;
           return;
@@ -1393,11 +1416,13 @@
         var y = window.scrollY || 0;
         var delta = y - lastY;
         if (y <= topReveal) {
+          clearHideTimer();
           setAway(false);
         } else if (delta > deltaArmed) {
           setAway(true);
         } else if (delta < -deltaArmed) {
           setAway(false);
+          scheduleHide();
         }
         lastY = y;
       });
@@ -1405,17 +1430,36 @@
 
     function onChange() {
       measure();
-      if (menuOpen()) setAway(false);
+      if (menuOpen() || pointerOver) {
+        clearHideTimer();
+        setAway(false);
+      }
       lastY = window.scrollY || 0;
+    }
+
+    function onPointerEnter() {
+      pointerOver = true;
+      clearHideTimer();
+      setAway(false);
+    }
+
+    function onPointerLeave() {
+      pointerOver = false;
+      scheduleHide();
     }
 
     measure();
     setAway(false);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onChange, { passive: true });
+    localnav.addEventListener("pointerenter", onPointerEnter);
+    localnav.addEventListener("pointerleave", onPointerLeave);
     /* Re-show bar when the phone Guide menu opens (class toggled elsewhere). */
     var mo = new MutationObserver(function () {
-      if (menuOpen()) setAway(false);
+      if (menuOpen()) {
+        clearHideTimer();
+        setAway(false);
+      }
     });
     mo.observe(localnav, { attributes: true, attributeFilter: ["class"] });
   }

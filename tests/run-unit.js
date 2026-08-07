@@ -1303,12 +1303,12 @@ async function testHomeLoanCompare() {
     { key: 'tenureLabel', type: 'text' }
   ];
   var deltaRowsA = [
-    { id: 'bank-a', loanAmount: 5000000, emi: 40000, tenureLabel: '20 years' },
-    { id: 'bank-b', loanAmount: 4800000, emi: 39000, tenureLabel: '20 years' }
+    { id: 'bank-a', loanAmount: 5000000, emi: 40000, tenureLabel: '20' },
+    { id: 'bank-b', loanAmount: 4800000, emi: 39000, tenureLabel: '20' }
   ];
   var deltaRowsB = [
-    { id: 'bank-a', loanAmount: 5000000, emi: 42000, tenureLabel: '15 years' },
-    { id: 'bank-c', loanAmount: 4500000, emi: 38000, tenureLabel: '20 years' }
+    { id: 'bank-a', loanAmount: 5000000, emi: 42000, tenureLabel: '15' },
+    { id: 'bank-c', loanAmount: 4500000, emi: 38000, tenureLabel: '20' }
   ];
   var snapA = compare.buildCellSnapshot(deltaRowsA, deltaCols);
   var snapB = compare.buildCellSnapshot(deltaRowsB, deltaCols);
