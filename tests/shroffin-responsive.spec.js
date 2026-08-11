@@ -68,7 +68,8 @@ const primaryControlSelector = [
   '.apf-submit',
   '.apf-more',
   '.guide-disclosure summary',
-  '.sitemap-group a'
+  '.sitemap-group a',
+  '.site-help-strip a'
 ].join(',');
 
 /* Desktop may use the Standard visual tier (~36px) for jumps and segments. */
@@ -198,7 +199,7 @@ async function expectSharedShell(page, entry) {
   await expect(connectLink).toHaveText(/LinkedIn/);
   await expect(connectLink).toHaveAttribute('target', '_blank');
   await expect(connectLink).toHaveAttribute('rel', 'noopener noreferrer');
-  await expect(page.locator('.site-footer-legal-links > li')).toHaveCount(3);
+  await expect(page.locator('.site-footer-legal-links')).toHaveCount(0);
   await expect(page.locator('.site-footer-official-links > li')).toHaveCount(5);
   await expect(page.locator('.site-footer-official-links a.guide-section-link')).toHaveCount(
     5
@@ -216,7 +217,7 @@ async function expectSharedShell(page, entry) {
   );
   await expect(page.locator('.site-footer-official-links .visually-hidden')).toHaveCount(5);
   await expect(page.locator('.site-footer-list a').first()).toHaveCSS('font-weight', '400');
-  await expect(page.locator('.site-footer-legal-links a').first()).toHaveCSS(
+  await expect(page.locator('.site-footer-official-links a').first()).toHaveCSS(
     'text-decoration-line',
     'none'
   );
@@ -225,8 +226,18 @@ async function expectSharedShell(page, entry) {
   ).toHaveCSS('opacity', '0');
   await expect(
     page.locator('.site-footer-group[aria-labelledby="footer-company-title"] .site-footer-list')
-  ).not.toContainText('Site Map');
-  await expect(page.locator('.site-footer-legal-links a[href="/sitemap.html"]')).toHaveCount(1);
+  ).toContainText('Privacy Policy');
+  await expect(
+    page.locator('.site-footer-group[aria-labelledby="footer-company-title"] .site-footer-list')
+  ).toContainText('Terms of Use');
+  await expect(
+    page.locator('.site-footer-group[aria-labelledby="footer-company-title"] .site-footer-list')
+  ).toContainText('Site Map');
+  await expect(
+    page.locator(
+      '.site-footer-group[aria-labelledby="footer-company-title"] a[href="/sitemap.html"]'
+    )
+  ).toHaveCount(1);
   await expect(page.locator('.site-footer-disclaimer-title')).toHaveText('Disclaimer');
   await expect(page.locator('.site-footer-disclaimer-summary')).toHaveCount(1);
   await expect(page.locator('.site-footer-disclaimer-more')).toHaveCount(1);
@@ -360,12 +371,51 @@ test.describe('breakpoints and navigation behavior', function () {
     const label = page.locator('.localnav-current-label');
     await expect(toggle).toBeVisible();
     await expect(label).toBeVisible();
-    await expect(label).toHaveText(/Grievance/);
+    await expect(label).toHaveText('If something goes wrong');
+    await expect(label).toHaveCSS('white-space', 'normal');
     await label.click();
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
     await expect(page.locator('.localnav-link')).toHaveCount(6);
     await page.keyboard.press('Escape');
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test('mobile Guide menu page hops open at the top', async function ({
+    page
+  }, testInfo) {
+    test.skip(testInfo.project.name !== 'chromium-responsive');
+
+    await page.setViewportSize({ width: 375, height: 667 });
+    await gotoReady(page, '/pages/guide.html');
+    await page.evaluate(function () {
+      window.scrollTo(0, Math.max(window.innerHeight * 2, 1200));
+    });
+    await page.waitForFunction(function () {
+      return (window.scrollY || window.pageYOffset || 0) > 400;
+    });
+
+    const toggle = page.locator('.localnav-toggle');
+    await toggle.click();
+    await expect(page.locator('body')).toHaveClass(/shroffin-scroll-locked/);
+    await page.locator('.localnav-link[href$="tax-benefits.html"]').click();
+
+    await page.waitForFunction(function () {
+      return /tax-benefits\.html$/.test(window.location.pathname);
+    });
+    /* Soft close unlock finishes after ~850ms; stay at the top afterward. */
+    await expect
+      .poll(
+        function () {
+          return page.evaluate(function () {
+            if (document.body.classList.contains('shroffin-scroll-locked')) {
+              return 9999;
+            }
+            return window.scrollY || window.pageYOffset || 0;
+          });
+        },
+        { timeout: 3000 }
+      )
+      .toBeLessThan(40);
   });
 
   test('global compact menu is exclusive, closable, and ordered', async function ({
@@ -475,7 +525,9 @@ test.describe('breakpoints and navigation behavior', function () {
     expect(await links.count()).toBeGreaterThanOrEqual(4);
     for (const link of await links.all()) {
       await expect(link).toBeVisible();
-      expect((await link.boundingBox()).height).toBeGreaterThanOrEqual(43.5);
+      const box = await link.boundingBox();
+      expect(box.height).toBeGreaterThanOrEqual(43.5);
+      expect(box.width).toBeGreaterThanOrEqual(43.5);
     }
 
     const columns = await menu.evaluate(function (node) {
@@ -492,7 +544,7 @@ test.describe('breakpoints and navigation behavior', function () {
     await expectNoPageOverflow(page);
   });
 
-  test('desktop Guide: headroom + chapter strip + story reclaim', async function ({
+  test('desktop Guide: strip handoff + chapter strip + story reclaim', async function ({
     page
   }, testInfo) {
     test.skip(testInfo.project.name !== 'chromium-responsive');
@@ -514,10 +566,20 @@ test.describe('breakpoints and navigation behavior', function () {
     expect(Math.abs(align.storyLeft - align.lnLeft)).toBeLessThanOrEqual(2);
     expect(align.storyWidth).toBeGreaterThan(900);
 
-    await page.locator('#loan-amount').scrollIntoViewIfNeeded();
+    /* Small scroll must keep Guide bar — strip has not reached it yet. */
     await page.evaluate(function () {
-      window.scrollBy(0, 400);
+      window.scrollBy(0, 120);
     });
+    await expect
+      .poll(function () {
+        return page.evaluate(function () {
+          return document.body.classList.contains('guide-ln-away');
+        });
+      }, { timeout: 3000 })
+      .toBe(false);
+
+    /* Deep in a chapter: strip has met the Guide bar and owns the top. */
+    await page.locator('#loan-amount').scrollIntoViewIfNeeded();
     await expect
       .poll(function () {
         return page.evaluate(function () {
@@ -530,7 +592,7 @@ test.describe('breakpoints and navigation behavior', function () {
       return {
         lnBottom: document.querySelector('.localnav').getBoundingClientRect().bottom,
         idxTop: document.querySelector('.mag-index').getBoundingClientRect().top,
-        lnOffset: getComputedStyle(document.documentElement)
+        lnOffset: getComputedStyle(document.body)
           .getPropertyValue('--shroffin-ln-offset')
           .trim()
       };
@@ -539,8 +601,30 @@ test.describe('breakpoints and navigation behavior', function () {
     expect(away.idxTop).toBeLessThanOrEqual(4);
     expect(away.lnOffset).toBe('0px');
 
+    /* Scroll-up peek: Guide bar returns while still deep in the chapter. */
     await page.evaluate(function () {
       window.scrollBy(0, -160);
+    });
+    await expect
+      .poll(function () {
+        return page.evaluate(function () {
+          return document.body.classList.contains('guide-ln-away');
+        });
+      }, { timeout: 3000 })
+      .toBe(false);
+
+    /* Without the cursor on the bar, it hides again after ~2s. */
+    await expect
+      .poll(function () {
+        return page.evaluate(function () {
+          return document.body.classList.contains('guide-ln-away');
+        });
+      }, { timeout: 3500 })
+      .toBe(true);
+
+    /* Back at the top: strip drops away and Guide bar returns. */
+    await page.evaluate(function () {
+      window.scrollTo(0, 0);
     });
     await expect
       .poll(function () {
@@ -631,7 +715,7 @@ test.describe('breakpoints and navigation behavior', function () {
 });
 
 test.describe('adaptive component behavior', function () {
-  test('card flip keeps box size and dock in place', async function ({
+  test('card flip grows to fit back and keeps Close docked', async function ({
     page
   }, testInfo) {
     test.skip(testInfo.project.name !== 'chromium-responsive');
@@ -640,27 +724,56 @@ test.describe('adaptive component behavior', function () {
     await gotoReady(page, '/pages/guide.html');
     const flip = page.locator('#borrow-flip');
     const scene = flip.locator('.guide-flip-scene');
-    const dock = flip.locator('.guide-flip-dock[data-flip]');
+    const openDock = flip.locator('.guide-flip-face--front .guide-flip-dock[data-flip]');
+    const closeDock = flip.locator('.guide-flip-face--back .guide-chapter-card > .guide-flip-dock[data-flip]');
     const front = flip.locator('.guide-flip-face--front');
     const back = flip.locator('.guide-flip-face--back');
+    const backScroll = back.locator('.guide-flip-back-scroll');
+
+    await expect(openDock).toHaveCount(1);
+    await expect(closeDock).toHaveCount(1);
+    await expect(front.locator('.guide-chapter-card > .guide-flip-dock')).toHaveCount(1);
+    await expect(back.locator('.guide-chapter-card > .guide-flip-dock')).toHaveCount(1);
+    /* Heading stays outside the scene — only the grey card flips. */
+    const title = flip.locator(':scope > .guide-tile-title');
+    await expect(title).toHaveCount(1);
+    await expect(front.locator('.guide-tile-title')).toHaveCount(0);
+    await expect(back.locator('.guide-flip-back-scroll > .guide-tile-title')).toHaveCount(1);
 
     const before = await scene.boundingBox();
-    const dockBefore = await dock.boundingBox();
+    const dockBefore = await openDock.boundingBox();
+    const titleBefore = await title.boundingBox();
     await expect(back).toHaveAttribute('aria-hidden', 'true');
 
-    await dock.click();
+    await openDock.click();
     await expect(flip).toHaveClass(/is-flipped/);
     await expect(front).toHaveAttribute('aria-hidden', 'true');
     await expect(back).toHaveAttribute('aria-hidden', 'false');
-    await expect(dock).toHaveAttribute('aria-expanded', 'true');
+    await expect(openDock).toHaveAttribute('aria-expanded', 'true');
+    await expect(closeDock).toHaveAttribute('aria-expanded', 'true');
+
+    /* Wait for open-height settle (same duration band as the flip). */
+    await page.waitForTimeout(1400);
 
     const after = await scene.boundingBox();
-    const dockAfter = await dock.boundingBox();
-    expect(Math.abs(after.height - before.height)).toBeLessThanOrEqual(2);
-    expect(Math.abs(dockAfter.y - dockBefore.y)).toBeLessThanOrEqual(2);
-    expect(Math.abs(dockAfter.x - dockBefore.x)).toBeLessThanOrEqual(2);
+    const dockAfter = await closeDock.boundingBox();
+    const titleAfter = await title.boundingBox();
+    /* Borrow Estimate is taller than the front — scene grows to fit. */
+    expect(after.height).toBeGreaterThan(before.height + 40);
+    expect(Math.abs(titleAfter.y - titleBefore.y)).toBeLessThanOrEqual(2);
+    /* Close stays left-aligned on phone and pinned under the back body. */
+    expect(Math.abs(dockAfter.x - dockBefore.x)).toBeLessThanOrEqual(8);
+    expect(dockAfter.y).toBeGreaterThan(dockBefore.y);
+    expect(dockAfter.y + dockAfter.height).toBeLessThanOrEqual(
+      after.y + after.height + 2
+    );
+    /* Grown scene should fit the Estimate body without an inner scrollbar. */
+    const overflowY = await backScroll.evaluate(function (el) {
+      return el.scrollHeight - el.clientHeight;
+    });
+    expect(overflowY).toBeLessThanOrEqual(2);
 
-    await dock.click();
+    await closeDock.click();
     await expect(flip).not.toHaveClass(/is-flipped/);
     await expect(front).toHaveAttribute('aria-hidden', 'false');
   });
@@ -710,7 +823,7 @@ test.describe('adaptive component behavior', function () {
     ) {
       const copy = row.querySelector('.site-footer-copy');
       const items = Array.prototype.slice.call(
-        row.querySelectorAll('.site-footer-legal-links > li')
+        row.querySelectorAll('.site-footer-official-links > li')
       );
       const firstItem = items[0].getBoundingClientRect();
       const lastItem = items[items.length - 1].getBoundingClientRect();
@@ -748,16 +861,12 @@ test.describe('adaptive component behavior', function () {
     await directoryLink.hover();
     await expect(directoryLink).toHaveCSS('color', 'rgb(0, 91, 181)');
 
-    const bottomLink = page.locator('.site-footer-legal-links a').first();
-    await bottomLink.hover();
-    await expect(bottomLink).toHaveCSS('color', 'rgb(0, 91, 181)');
-
     const navLink = page.locator('.globalnav-link').first();
     await navLink.hover();
     await expect(navLink).toHaveCSS('color', 'rgb(0, 91, 181)');
   });
 
-  test('footer collapses into an Apple-style accordion on small screens', async function ({
+  test('footer collapses into a calm product-site accordion on small screens', async function ({
     page
   }, testInfo) {
     test.skip(testInfo.project.name !== 'chromium-responsive');

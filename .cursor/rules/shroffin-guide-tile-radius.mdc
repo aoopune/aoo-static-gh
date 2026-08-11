@@ -1,12 +1,12 @@
 ---
-description: Guide/content tile corner radii must match Apple Card’s responsive ladder
+description: Guide/content tile corner radii must match calm product-page responsive ladder
 globs: "pages/*.html"
 alwaysApply: false
 ---
 
 # Guide tile corner radius
 
-Rounded content tiles (`.guide-tile`, `--guide-radius`) follow Apple Card’s `.tile` ladder — not a single fixed radius.
+Rounded content tiles (`.guide-tile`, `--guide-radius`) follow calm product-page `.tile` ladder — not a single fixed radius.
 
 ## Ladder (mobile-first)
 
@@ -16,13 +16,13 @@ Rounded content tiles (`.guide-tile`, `--guide-radius`) follow Apple Card’s `.
 | `min-width: 735px` | `30px` |
 | `min-width: 1069px` | `40px` |
 
-Source: apple.com/apple-card CSS — `.tile` uses `40px` desktop, `30px` ≤1068px, `10px` ≤734px.
+Source: reference product-page CSS — `.tile` uses `40px` desktop, `30px` ≤1068px, `10px` ≤734px.
 
 ## Always
 
 1. Drive tile corners through `--guide-radius` (or the same numeric ladder).
 2. Keep the three-step responsive radius when adding or cloning guide-style pages.
-3. Use normal CSS `border-radius` — do **not** invent squircle / continuous-curvature shapes for web tiles (Apple’s site does not).
+3. Use normal CSS `border-radius` — do **not** invent squircle / continuous-curvature shapes for web tiles (that reference site does not).
 
 ## Never
 

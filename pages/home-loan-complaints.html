@@ -17,9 +17,9 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=chapters-3">
-  <link rel="stylesheet" href="../css/shroffin-guide.css?v=chapters-3">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=card-flip-1">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=seg-radius-1">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=seg-radius-1">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=card-flip-no-white-1">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -72,15 +72,6 @@
             aria-controls="nav-guide-flyout" aria-current="page"
           >Guide</a>
         </li>
-        <li class="globalnav-item globalnav-item-support" id="nav-support">
-          <button
-            type="button"
-            class="globalnav-flyout-trigger"
-            id="nav-support-trigger"
-            aria-expanded="false"
-            aria-controls="nav-support-flyout"
-          >Support</button>
-        </li>
         <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
           <button
             type="button"
@@ -89,6 +80,15 @@
             aria-expanded="false"
             aria-controls="nav-tools-flyout"
           >Tools</button>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >Support</button>
         </li>
         <li class="globalnav-item">
           <a class="globalnav-link" href="/pages/about.html">About</a>
@@ -136,37 +136,6 @@
       </div>
     </div>
 
-    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
-      <div class="globalnav-flyout-content">
-        <h2 class="globalnav-submenu-header">Get support</h2>
-        <ul class="globalnav-submenu-list">
-          <li>
-            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
-              <span class="globalnav-submenu-label">Email</span>
-              <span class="globalnav-submenu-value">support@shroffin.com</span>
-            </a>
-          </li>
-          <li>
-            <a class="globalnav-submenu-link" href="tel:+919112334367">
-              <span class="globalnav-submenu-label">Call</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-          <li>
-            <a
-              class="globalnav-submenu-link"
-              href="https://wa.me/919112334367"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span class="globalnav-submenu-label">Chat on WhatsApp ↗</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
     <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content globalnav-flyout-content--guide">
         <div class="globalnav-submenu-column">
@@ -184,6 +153,54 @@
             </li>
           </ul>
         </div>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content">
+        <h2 class="globalnav-submenu-header">Get support</h2>
+        <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
+              <span class="globalnav-submenu-label">Email us</span>
+              <span class="globalnav-submenu-value">support@shroffin.com</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="tel:+919112334367">
+              <span class="globalnav-submenu-label">Call us</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="globalnav-submenu-link"
+              href="https://wa.me/919112334367"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="globalnav-submenu-label globalnav-submenu-label--with-icon">
+                Message us
+                <svg
+                  class="globalnav-whatsapp-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                  />
+                </svg>
+                <span class="visually-hidden"> (opens WhatsApp)</span>
+              </span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -238,7 +255,7 @@
         aria-hidden="true"
       >
       </picture>
-      <h1 class="guide-hero-title">Your home loan issue<br>has a fair path.</h1>
+      <h1 class="guide-hero-title">Your home loan<br class="guide-br--phone"> issue<br class="guide-br--desktop"> has a<br class="guide-br--phone"> fair path.</h1>
       <h2 class="guide-hero-lead">
         If a lender issue stays stuck, you are not without a next step.
       </h2>
@@ -280,12 +297,12 @@
       </ul>
     </nav>
 
-    <div class="guide-story">
+    <div class="guide-story guide-story--complaints">
       <section class="mag-section guide-moment" id="path">
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">What is the complaint path?</span></h2>
           <p class="guide-tile-copy guide-tile-copy--rule">
-            Write to your lender first. Wait about 30 days. Then RBI or NHB only if it stays stuck.
+            Write to your lender first. Wait about 30 days. Then approach the RBI or NHB only if it stays unresolved.
           </p>
           <div class="guide-chapter-card">
 <ol class="guide-flow" data-guide-scrub="on">
@@ -313,42 +330,49 @@
       <section class="mag-section guide-moment" id="talk">
 <div class="mag-content">
           <div class="guide-flip" id="talk-flip">
+            <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea guide-tile-question">Where do you start?</span></h2>
+              <p class="guide-tile-copy guide-tile-copy--rule">
+                Talk to the loan team first. Get it on record. Write an email if it still does not move.
+              </p>
+
             <div class="guide-flip-scene" data-flip-scene>
             <div class="guide-flip-inner">
-              <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
-                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea guide-tile-question">Where do you start?</span></h2>
-              <p class="guide-tile-copy guide-tile-copy--rule">
-                Talk to the loan team first. Get it on record. Write if it still does not move.
-              </p>
+              <div class="guide-flip-face guide-flip-face--front">
                 <div class="guide-chapter-card">
-<div class="guide-doc-rows" data-guide-scrub="on">
-                  <div class="guide-doc-row">
-                    <p class="guide-doc-name">Talk first</p>
-                    <p class="guide-doc-note">Call or visit the loan team. Ask them to check the problem and tell you what they will do next.</p>
-                  </div>
-                  <div class="guide-doc-row">
-                    <p class="guide-doc-name">Ask for a ticket number</p>
-                    <p class="guide-doc-note">Note the date and what they said.</p>
-                  </div>
-                  <div class="guide-doc-row">
-                    <p class="guide-doc-name">If they fix it</p>
-                    <p class="guide-doc-note">Ask for written confirmation. You may not need the next steps.</p>
-                  </div>
-                  <div class="guide-doc-row">
-                    <p class="guide-doc-name">Then put it in writing</p>
-                    <p class="guide-doc-note">No ticket, only vague promises, or the same problem again. Write the same facts down next.</p>
-                  </div>
+<ul class="guide-share-list" data-guide-scrub="on">
+                  <li>
+                    <span class="guide-share-when">Talk first</span>
+                    <span class="guide-share-then">Call or visit the loan team. Ask them to check the problem and tell you what they will do next.</span>
+                  </li>
+                  <li>
+                    <span class="guide-share-when">Ask for a ticket number</span>
+                    <span class="guide-share-then">Note the date and what they said.</span>
+                  </li>
+                  <li>
+                    <span class="guide-share-when">If they fix it</span>
+                    <span class="guide-share-then">Ask for written confirmation. You may not need the next steps.</span>
+                  </li>
+                  <li>
+                    <span class="guide-share-when">Then put it in writing</span>
+                    <span class="guide-share-then">No ticket, only vague promises, or the same problem again. Write the same facts down next.</span>
+                  </li>
+                </ul>
+                <button type="button" class="guide-flip-link guide-flip-dock" data-flip="talk-flip" aria-controls="talk-inside" aria-expanded="false">
+                  Who to escalate to inside the lender
+                  <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                    <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
                 </div>
-                </div>
-              </article>
+              </div>
 
-              <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="talk-inside" aria-hidden="true">
-                <div class="guide-flip-back-scroll">
-                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-ember guide-tile-question">What are the bank’s levels?</span></h2>
+              <div class="guide-flip-face guide-flip-face--back" id="talk-inside" aria-hidden="true">
+                <div class="guide-chapter-card">
+              <div class="guide-flip-back-scroll">
+                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-ember guide-tile-question">What are the lender’s levels?</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--rule">
                   Climb these levels on the lender’s site if the first desk does not fix it.
                 </p>
-                <div class="guide-chapter-card">
 <div class="guide-climb" data-guide-scrub="on">
                   <div class="guide-climb-col">
                     <h3 class="guide-climb-label">Bank</h3>
@@ -389,17 +413,17 @@
                     </div>
                   </div>
                 </div>
+              </div>
+                <button type="button" class="guide-flip-link guide-flip-dock" data-flip="talk-flip" aria-controls="talk-inside" aria-expanded="false">
+                  Close
+                  <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                    <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
                 </div>
-                </div>
-              </article>
+              </div>
             </div>
             </div>
-            <button type="button" class="guide-flip-link guide-flip-dock" data-flip="talk-flip" aria-controls="talk-inside" aria-expanded="false">
-              Who to escalate to inside the lender
-              <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
           </div>
         </div>
       </section>
@@ -408,7 +432,7 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-siri guide-tile-question">What must a complaint include?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Name, loan number, what happened, and what you want fixed.
+                Your name, loan number, what happened, and what you want fixed.
               </p>
           <div class="guide-chapter-card">
 <div class="guide-seg" role="tablist" aria-label="Complaint contents">
@@ -418,56 +442,56 @@
 
           <div class="guide-seg-panels">
           <div class="guide-seg-panel" role="tabpanel" id="write-panel-letter" aria-labelledby="write-tab-letter">
-            <div class="guide-doc-rows guide-doc-rows--cols">
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Who you are</p>
-                <p class="guide-doc-note">Your full name, mobile, email, and address.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Your loan</p>
-                <p class="guide-doc-note">Loan account number and branch.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">What happened</p>
-                <p class="guide-doc-note">The facts with dates. Any money involved.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">What you want fixed</p>
-                <p class="guide-doc-note">Refund, correction, papers back, written confirmation, or compensation you can prove.</p>
-              </div>
-            </div>
+            <ul class="guide-perk-grid">
+              <li class="guide-perk">
+                <span class="guide-share-when">Who you are</span>
+                <span class="guide-share-then">Your full name, mobile, email, and address.</span>
+              </li>
+              <li class="guide-perk">
+                <span class="guide-share-when">Your loan</span>
+                <span class="guide-share-then">Loan account number and branch.</span>
+              </li>
+              <li class="guide-perk">
+                <span class="guide-share-when">What happened</span>
+                <span class="guide-share-then">The facts with dates. Any money involved.</span>
+              </li>
+              <li class="guide-perk">
+                <span class="guide-share-when">What you want fixed</span>
+                <span class="guide-share-then">Refund, correction, papers back, written confirmation, or compensation you can prove.</span>
+              </li>
+            </ul>
             <p class="guide-callout">
               Send it by email, app, website form, or a letter they acknowledge.
             </p>
           </div>
 
           <div class="guide-seg-panel" role="tabpanel" id="write-panel-papers" aria-labelledby="write-tab-papers" hidden>
-            <div class="guide-doc-rows guide-doc-rows--cols">
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Loan papers</p>
-                <p class="guide-doc-note">Sanction letter and Key Fact Statement.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Your complaint trail</p>
-                <p class="guide-doc-note">The written complaint and the acknowledgment or ticket.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Their reply, or silence</p>
-                <p class="guide-doc-note">The final reply, or proof that 30 days passed with no answer.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Evidence pack</p>
-                <p class="guide-doc-note">Statements, charge receipts, emails, SMS.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">If papers are delayed after closure</p>
-                <p class="guide-doc-note">Keep the loan-closed letter and proof you paid in full. Property papers should come back within 30 days. If the lender is late, RBI allows ₹5,000 a day. If papers are lost, the lender replaces them at its cost.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">If someone files for you</p>
-                <p class="guide-doc-note">You need an authorisation letter. An advocate can file with the Ombudsman only if that advocate is the person who was wronged.</p>
-              </div>
-            </div>
+            <ul class="guide-perk-grid">
+              <li class="guide-perk">
+                <span class="guide-share-when">Loan papers</span>
+                <span class="guide-share-then">Sanction letter and Key Fact Statement.</span>
+              </li>
+              <li class="guide-perk">
+                <span class="guide-share-when">Your complaint trail</span>
+                <span class="guide-share-then">The written complaint and the acknowledgment or ticket.</span>
+              </li>
+              <li class="guide-perk">
+                <span class="guide-share-when">Their reply, or silence</span>
+                <span class="guide-share-then">The final reply, or proof that 30 days passed with no answer.</span>
+              </li>
+              <li class="guide-perk">
+                <span class="guide-share-when">Evidence pack</span>
+                <span class="guide-share-then">Statements, charge receipts, emails, SMS.</span>
+              </li>
+              <li class="guide-perk">
+                <span class="guide-share-when">If papers are delayed after closure</span>
+                <span class="guide-share-then">Keep the loan-closed letter and proof you paid in full. Property papers should come back within 30 days. If the lender is late, RBI allows ₹5,000 a day. If papers are lost, the lender replaces them at its cost.</span>
+              </li>
+              <li class="guide-perk">
+                <span class="guide-share-when">If someone files for you</span>
+                <span class="guide-share-then">You need an authorisation letter. An advocate can file with the Ombudsman only if that advocate is the person who was wronged.</span>
+              </li>
+            </ul>
           </div>
           </div>
           </div>
@@ -478,91 +502,91 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-gold guide-tile-question">When do you go to the regulator?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                After the lender path: RBI for banks, NHB for housing finance.
+                After the lender's process: the RBI for banks, or the NHB for housing finance.
               </p>
           <div class="guide-chapter-card">
 <div class="guide-seg" role="tablist" aria-label="Ombudsman and NHB">
             <button type="button" class="guide-seg-btn" role="tab" id="stuck-tab-when" aria-selected="true" aria-controls="stuck-panel-when">Time limits</button>
             <button type="button" class="guide-seg-btn" role="tab" id="stuck-tab-file" aria-selected="false" aria-controls="stuck-panel-file" tabindex="-1">Filing with RBI</button>
-            <button type="button" class="guide-seg-btn" role="tab" id="stuck-tab-award" aria-selected="false" aria-controls="stuck-panel-award" tabindex="-1">Awards and limits</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="stuck-tab-award" aria-selected="false" aria-controls="stuck-panel-award" tabindex="-1">Money limits</button>
             <button type="button" class="guide-seg-btn" role="tab" id="stuck-tab-hfc" aria-selected="false" aria-controls="stuck-panel-hfc" tabindex="-1">Filing with NHB</button>
           </div>
 
           <div class="guide-seg-panels">
           <div class="guide-seg-panel" role="tabpanel" id="stuck-panel-when" aria-labelledby="stuck-tab-when">
-            <div class="guide-doc-rows">
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">When you may file with RBI</p>
-                <p class="guide-doc-note">After about 30 days with no final reply. Or sooner, if the bank already gave a final reply and the issue is still not fixed.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Deadline to file</p>
-                <p class="guide-doc-note">Within 90 days of the bank’s last reply, or of the day the 30-day wait ended if there was no reply. Use whichever date is later.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Before you file</p>
-                <p class="guide-doc-note">Incomplete, anonymous, or suggestion-only complaints are rejected. So is a request beyond what the Ombudsman can grant.</p>
-              </div>
-            </div>
+            <ul class="guide-status-grid">
+              <li class="guide-status">
+                <span class="guide-share-when">When you may file with RBI</span>
+                <span class="guide-share-then">After about 30 days with no final reply. Or sooner, if the bank already gave a final reply and the issue is still not fixed.</span>
+              </li>
+              <li class="guide-status">
+                <span class="guide-share-when">Deadline to file</span>
+                <span class="guide-share-then">Within 90 days of the bank’s last reply, or of the day the 30-day wait ended if there was no reply. Use whichever date is later.</span>
+              </li>
+              <li class="guide-status">
+                <span class="guide-share-when">Before you file</span>
+                <span class="guide-share-then">Incomplete, anonymous, or suggestion-only complaints are rejected. So is a request beyond what the Ombudsman can grant.</span>
+              </li>
+            </ul>
           </div>
 
           <div class="guide-seg-panel" role="tabpanel" id="stuck-panel-file" aria-labelledby="stuck-tab-file" hidden>
-            <div class="guide-doc-rows">
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Online</p>
-                <p class="guide-doc-note">File through RBI CMS. Keep the complaint number.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Email or post</p>
-                <p class="guide-doc-note">Send the complaint to CRPC by email or by post.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Helpline</p>
-                <p class="guide-doc-note">Explains the process. Does not register the complaint.</p>
-              </div>
-            </div>
+            <ul class="guide-status-grid">
+              <li class="guide-status">
+                <span class="guide-share-when">Online</span>
+                <span class="guide-share-then">File through RBI CMS. Keep the complaint number.</span>
+              </li>
+              <li class="guide-status">
+                <span class="guide-share-when">Email or post</span>
+                <span class="guide-share-then">Send the complaint to CRPC by email or by post.</span>
+              </li>
+              <li class="guide-status">
+                <span class="guide-share-when">Helpline</span>
+                <span class="guide-share-then">Explains the process. Does not register the complaint.</span>
+              </li>
+            </ul>
           </div>
 
           <div class="guide-seg-panel" role="tabpanel" id="stuck-panel-award" aria-labelledby="stuck-tab-award" hidden>
-            <div class="guide-doc-rows guide-doc-rows--cols">
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Size of the dispute</p>
-                <p class="guide-doc-note">No upper limit on the home loan dispute amount.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Consequential loss</p>
-                <p class="guide-doc-note">Proven consequential loss capped at ₹30 lakh.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Time, expense, harassment</p>
-                <p class="guide-doc-note">Additional compensation capped at ₹3 lakh.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">If you receive an Award</p>
-                <p class="guide-doc-note">Accept it in writing to the bank within 30 days, or it lapses.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Bank after an Award</p>
-                <p class="guide-doc-note">30 days to comply, or to appeal where the scheme allows.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Your appeal</p>
-                <p class="guide-doc-note">Certain Awards or rejections may go to the RBI Appellate Authority within 30 days, usually through CMS or the appellate email. Not every closure is appealable. Read the decision letter carefully.</p>
-              </div>
-            </div>
+            <ul class="guide-perk-grid">
+              <li class="guide-perk">
+                <span class="guide-share-when">Size of the dispute</span>
+                <span class="guide-share-then">No upper limit on the home loan dispute amount.</span>
+              </li>
+              <li class="guide-perk">
+                <span class="guide-share-when">Consequential loss</span>
+                <span class="guide-share-then">Proven consequential loss capped at ₹30 lakh.</span>
+              </li>
+              <li class="guide-perk">
+                <span class="guide-share-when">Time, expense, harassment</span>
+                <span class="guide-share-then">Additional compensation capped at ₹3 lakh.</span>
+              </li>
+              <li class="guide-perk">
+                <span class="guide-share-when">If you receive an Award</span>
+                <span class="guide-share-then">Accept it in writing to the bank within 30 days, or it lapses.</span>
+              </li>
+              <li class="guide-perk">
+                <span class="guide-share-when">Bank after an Award</span>
+                <span class="guide-share-then">30 days to comply, or to appeal where the scheme allows.</span>
+              </li>
+              <li class="guide-perk">
+                <span class="guide-share-when">Your appeal</span>
+                <span class="guide-share-then">Certain Awards or rejections may go to the RBI Appellate Authority within 30 days, usually through CMS or the appellate email. Not every closure is appealable. Read the decision letter carefully.</span>
+              </li>
+            </ul>
           </div>
 
           <div class="guide-seg-panel" role="tabpanel" id="stuck-panel-hfc" aria-labelledby="stuck-tab-hfc" hidden>
-            <div class="guide-doc-rows">
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">File with NHB</p>
-                <p class="guide-doc-note">File through NHB GRIDS, or use the complaint cell form on nhb.org.in.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Appeal at NHB</p>
-                <p class="guide-doc-note">You may appeal to NHB’s Chief Grievance Redressal Officer within 30 days of the status intimation, as NHB states.</p>
-              </div>
-            </div>
+            <ul class="guide-status-grid">
+              <li class="guide-status">
+                <span class="guide-share-when">File with NHB</span>
+                <span class="guide-share-then">File through NHB GRIDS, or use the complaint cell form on nhb.org.in.</span>
+              </li>
+              <li class="guide-status">
+                <span class="guide-share-when">Appeal at NHB</span>
+                <span class="guide-share-then">You may appeal to NHB’s Chief Grievance Redressal Officer within 30 days of the status intimation, as NHB states.</span>
+              </li>
+            </ul>
           </div>
           </div>
           </div>
@@ -573,38 +597,58 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky guide-tile-question">What is outside this path?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                These need a different route than bank → RBI or NHB.
+                Some issues need a different route than Bank → RBI or NHB.
               </p>
           <div class="guide-chapter-card">
-<div class="guide-doc-rows guide-doc-rows--cols">
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Wrong credit report</p>
-              <p class="guide-doc-note">Start with the credit bureau and the bank that sent the data. Then RBI CMS if you still need help.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">The bank refused the loan</p>
-              <p class="guide-doc-note">This path will not force them to sanction it.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">You only want a better rate</p>
-              <p class="guide-doc-note">That is not a service complaint by itself. Compare and negotiate with lenders.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">The same matter is already in court or a tribunal</p>
-              <p class="guide-doc-note">An Ombudsman filing on the same matter usually closes. Pick one main track.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Loan-linked insurance feels mis-sold</p>
-              <p class="guide-doc-note">Policy side → insurer and IRDAI. Lender’s service around the sale → still write to the lender.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Fraud, bribery, or criminal harassment</p>
-              <p class="guide-doc-note">Go to the police for the crime. Use bank vigilance for staff bribery. You can still raise the loan service side with the lender.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Consumer Commission, civil court, or Lok Adalat</p>
-              <p class="guide-doc-note">Separate legal tracks. National Consumer Helpline and CPGRAMS can run beside this path.</p>
-            </div>
+<div class="guide-seg" role="tablist" aria-label="What is outside this path">
+            <button type="button" class="guide-seg-btn" role="tab" id="limits-tab-not" aria-selected="true" aria-controls="limits-panel-not">Not a complaint</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="limits-tab-route" aria-selected="false" aria-controls="limits-panel-route" tabindex="-1">Go elsewhere</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="limits-tab-tracks" aria-selected="false" aria-controls="limits-panel-tracks" tabindex="-1">Courts</button>
+          </div>
+
+          <div class="guide-seg-panels">
+          <div class="guide-seg-panel" role="tabpanel" id="limits-panel-not" aria-labelledby="limits-tab-not">
+            <ul class="guide-status-grid">
+              <li class="guide-status">
+                <span class="guide-share-when">The bank refused the loan</span>
+                <span class="guide-share-then">This path will not force them to sanction it.</span>
+              </li>
+              <li class="guide-status">
+                <span class="guide-share-when">You only want a better rate</span>
+                <span class="guide-share-then">That is not a service complaint by itself. Compare and negotiate with lenders.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="limits-panel-route" aria-labelledby="limits-tab-route" hidden>
+            <ul class="guide-status-grid">
+              <li class="guide-status">
+                <span class="guide-share-when">Wrong credit report</span>
+                <span class="guide-share-then">Start with the credit bureau and the bank that sent the data. Then RBI CMS if you still need help.</span>
+              </li>
+              <li class="guide-status">
+                <span class="guide-share-when">Loan-linked insurance feels mis-sold</span>
+                <span class="guide-share-then">Policy side → insurer and IRDAI. Lender’s service around the sale → still write to the lender.</span>
+              </li>
+              <li class="guide-status">
+                <span class="guide-share-when">Fraud, bribery, or criminal harassment</span>
+                <span class="guide-share-then">Go to the police for the crime. Use bank vigilance for staff bribery. You can still raise the loan service side with the lender.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="limits-panel-tracks" aria-labelledby="limits-tab-tracks" hidden>
+            <ul class="guide-status-grid">
+              <li class="guide-status">
+                <span class="guide-share-when">The same matter is already in court or a tribunal</span>
+                <span class="guide-share-then">An Ombudsman filing on the same matter usually closes. Pick one main track.</span>
+              </li>
+              <li class="guide-status">
+                <span class="guide-share-when">Consumer Commission, civil court, or Lok Adalat</span>
+                <span class="guide-share-then">Separate legal tracks. National Consumer Helpline and CPGRAMS can run beside this path.</span>
+              </li>
+            </ul>
+          </div>
           </div>
           </div>
         </div>
@@ -614,42 +658,62 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">Where do you file?</span></h2>
           <p class="guide-tile-copy guide-tile-copy--rule">
-            RBI CMS for banks. NHB GRIDS for housing finance. Related helplines below.
+            File via RBI CMS for banks, or NHB GRIDS for housing finance. Related helplines are below.
           </p>
           <div class="guide-chapter-card">
-<div class="guide-doc-rows guide-doc-rows--cols">
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">RBI CMS</p>
-              <p class="guide-doc-note"><a class="guide-section-link" href="https://cms.rbi.org.in" target="_blank" rel="noopener noreferrer">cms.rbi.org.in<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI CMS page)</span></a></p>
+<div class="guide-seg" role="tablist" aria-label="Where to file">
+            <button type="button" class="guide-seg-btn" role="tab" id="contacts-tab-rbi" aria-selected="true" aria-controls="contacts-panel-rbi">RBI</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="contacts-tab-nhb" aria-selected="false" aria-controls="contacts-panel-nhb" tabindex="-1">NHB</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="contacts-tab-other" aria-selected="false" aria-controls="contacts-panel-other" tabindex="-1">Other help</button>
+          </div>
+
+          <div class="guide-seg-panels">
+          <div class="guide-seg-panel" role="tabpanel" id="contacts-panel-rbi" aria-labelledby="contacts-tab-rbi">
+            <div class="guide-doc-rows guide-doc-rows--cols">
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">RBI CMS</p>
+                <p class="guide-doc-note"><a class="guide-section-link" href="https://cms.rbi.org.in" target="_blank" rel="noopener noreferrer">cms.rbi.org.in<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI CMS page)</span></a></p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">RBI contact centre</p>
+                <p class="guide-doc-note"><a href="tel:14448">14448</a></p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">CRPC email</p>
+                <p class="guide-doc-note"><a href="mailto:crpc@rbi.org.in">crpc@rbi.org.in</a></p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">CRPC post</p>
+                <p class="guide-doc-note">Centralised Receipt and Processing Centre, Reserve Bank of India, Central Vista, Sector 17, Chandigarh 160017.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">RBI appeal email</p>
+                <p class="guide-doc-note"><a href="mailto:aaos@rbi.org.in">aaos@rbi.org.in</a></p>
+              </div>
             </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">RBI contact centre</p>
-              <p class="guide-doc-note"><a href="tel:14448">14448</a></p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="contacts-panel-nhb" aria-labelledby="contacts-tab-nhb" hidden>
+            <div class="guide-doc-rows guide-doc-rows--cols">
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">NHB GRIDS</p>
+                <p class="guide-doc-note"><a class="guide-section-link" href="https://grids.nhbonline.org.in" target="_blank" rel="noopener noreferrer">grids.nhbonline.org.in<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB GRIDS page)</span></a></p>
+              </div>
             </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">CRPC email</p>
-              <p class="guide-doc-note"><a href="mailto:crpc@rbi.org.in">crpc@rbi.org.in</a></p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="contacts-panel-other" aria-labelledby="contacts-tab-other" hidden>
+            <div class="guide-doc-rows guide-doc-rows--cols">
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">National Consumer Helpline</p>
+                <p class="guide-doc-note"><a href="tel:1915">1915</a> · <a class="guide-section-link" href="https://consumerhelpline.gov.in" target="_blank" rel="noopener noreferrer">consumerhelpline.gov.in<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">CPGRAMS</p>
+                <p class="guide-doc-note"><a class="guide-section-link" href="https://pgportal.gov.in" target="_blank" rel="noopener noreferrer">pgportal.gov.in<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official CPGRAMS page)</span></a></p>
+              </div>
             </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">CRPC post</p>
-              <p class="guide-doc-note">Centralised Receipt and Processing Centre, Reserve Bank of India, Central Vista, Sector 17, Chandigarh 160017.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">RBI appeal email</p>
-              <p class="guide-doc-note"><a href="mailto:aaos@rbi.org.in">aaos@rbi.org.in</a></p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">NHB GRIDS</p>
-              <p class="guide-doc-note"><a class="guide-section-link" href="https://grids.nhbonline.org.in" target="_blank" rel="noopener noreferrer">grids.nhbonline.org.in<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB GRIDS page)</span></a></p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">National Consumer Helpline</p>
-              <p class="guide-doc-note"><a href="tel:1915">1915</a> · <a class="guide-section-link" href="https://consumerhelpline.gov.in" target="_blank" rel="noopener noreferrer">consumerhelpline.gov.in<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">CPGRAMS</p>
-              <p class="guide-doc-note"><a class="guide-section-link" href="https://pgportal.gov.in" target="_blank" rel="noopener noreferrer">pgportal.gov.in<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official CPGRAMS page)</span></a></p>
-            </div>
+          </div>
           </div>
           </div>
         </div>
@@ -726,14 +790,26 @@
               <li><a href="/pages/about.html">About</a></li>
               <li><a href="/privacy-policy.html">Privacy Policy</a></li>
               <li><a href="/terms-of-use.html">Terms of Use</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
             </ul>
           </nav>
 
           <section class="site-footer-group" aria-labelledby="footer-support-title">
             <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
             <ul class="site-footer-list">
-              <li><a href="mailto:support@shroffin.com">Email</a></li>
-              <li><a href="tel:+919112334367">Call</a></li>
+              <li>
+                <a href="mailto:support@shroffin.com">Email us</a>
+              </li>
+              <li>
+                <a href="tel:+919112334367">Call us</a>
+              </li>
+              <li>
+                <a
+                  href="https://wa.me/919112334367"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Message us<span class="visually-hidden"> (opens WhatsApp)</span></a>
+              </li>
             </ul>
           </section>
 
@@ -756,12 +832,14 @@
               <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
               <details class="site-footer-disclaimer-more">
                 <summary>Read the full disclaimer</summary>
-                <div class="site-footer-disclaimer-full">
-                  <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-                  <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-                  <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-                  <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-                  <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                <div class="site-footer-disclaimer-panel">
+                  <div class="site-footer-disclaimer-full">
+                    <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+                    <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+                    <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+                    <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+                    <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                  </div>
                 </div>
               </details>
             </div>
@@ -770,12 +848,7 @@
           <div class="site-footer-bottom">
             <div class="site-footer-bottom-row">
               <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
-              <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
-                <ul class="site-footer-legal-links">
-                  <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-                  <li><a href="/terms-of-use.html">Terms of Use</a></li>
-                  <li><a href="/sitemap.html">Site Map</a></li>
-                </ul>
+              <nav class="site-footer-legal-nav" aria-label="Official resources">
                 <ul class="site-footer-official-links">
                   <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
                   <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
@@ -792,10 +865,10 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/guide-page-overview.js?v=card-flip-1"></script>
-  <script src="../js/shroffin-nav.js?v=chapters-3"></script>
-  <script src="../js/shroffin-guide.js?v=card-flip-1"></script>
+  <script src="../js/guide-page-overview.js?v=card-only-flip-1"></script>
+  <script src="../js/shroffin-nav.js?v=guide-top-1"></script>
+  <script src="../js/shroffin-guide.js?v=card-elev-1"></script>
   <script src="../js/shroffin-scrub.js?v=chapters-3"></script>
-  <script src="../js/shroffin-guide-soft-nav.js?v=chapters-3"></script>
+  <script src="../js/shroffin-guide-soft-nav.js?v=guide-top-1"></script>
 </body>
 </html>

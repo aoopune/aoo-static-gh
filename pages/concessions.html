@@ -17,9 +17,9 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=chapters-3">
-  <link rel="stylesheet" href="../css/shroffin-guide.css?v=chapters-3">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=guide-first-static-1">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=seg-radius-1">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=seg-radius-1">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=card-flip-no-white-1">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -72,15 +72,6 @@
             aria-controls="nav-guide-flyout" aria-current="page"
           >Guide</a>
         </li>
-        <li class="globalnav-item globalnav-item-support" id="nav-support">
-          <button
-            type="button"
-            class="globalnav-flyout-trigger"
-            id="nav-support-trigger"
-            aria-expanded="false"
-            aria-controls="nav-support-flyout"
-          >Support</button>
-        </li>
         <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
           <button
             type="button"
@@ -89,6 +80,15 @@
             aria-expanded="false"
             aria-controls="nav-tools-flyout"
           >Tools</button>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >Support</button>
         </li>
         <li class="globalnav-item">
           <a class="globalnav-link" href="/pages/about.html">About</a>
@@ -136,37 +136,6 @@
       </div>
     </div>
 
-    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
-      <div class="globalnav-flyout-content">
-        <h2 class="globalnav-submenu-header">Get support</h2>
-        <ul class="globalnav-submenu-list">
-          <li>
-            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
-              <span class="globalnav-submenu-label">Email</span>
-              <span class="globalnav-submenu-value">support@shroffin.com</span>
-            </a>
-          </li>
-          <li>
-            <a class="globalnav-submenu-link" href="tel:+919112334367">
-              <span class="globalnav-submenu-label">Call</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-          <li>
-            <a
-              class="globalnav-submenu-link"
-              href="https://wa.me/919112334367"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span class="globalnav-submenu-label">Chat on WhatsApp ↗</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
     <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content globalnav-flyout-content--guide">
         <div class="globalnav-submenu-column">
@@ -184,6 +153,54 @@
             </li>
           </ul>
         </div>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content">
+        <h2 class="globalnav-submenu-header">Get support</h2>
+        <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
+              <span class="globalnav-submenu-label">Email us</span>
+              <span class="globalnav-submenu-value">support@shroffin.com</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="tel:+919112334367">
+              <span class="globalnav-submenu-label">Call us</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="globalnav-submenu-link"
+              href="https://wa.me/919112334367"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="globalnav-submenu-label globalnav-submenu-label--with-icon">
+                Message us
+                <svg
+                  class="globalnav-whatsapp-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                  />
+                </svg>
+                <span class="visually-hidden"> (opens WhatsApp)</span>
+              </span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -270,25 +287,25 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky guide-tile-question">What can lower your home loan rate?</span></h2>
           <p class="guide-tile-copy guide-tile-copy--rule">
-            Some banks cut a little off the listed rate when you fit their rules.
+            Some banks offer a discount on their listed rate when you meet their eligibility rules.
           </p>
           <div class="guide-chapter-card">
-          <ul class="guide-share-list guide-share-list--split">
-            <li>
+          <ul class="guide-perk-grid">
+            <li class="guide-perk">
               <span class="guide-share-when">Woman as primary applicant</span>
-              <span class="guide-share-then">Often 0.05% to 0.10% lower. She is usually the sole owner or the first name on the property papers.</span>
+              <span class="guide-share-then"><span class="guide-skim">Often 0.05% to 0.10% lower.</span> She is usually the sole owner or the first name on the property papers.</span>
             </li>
-            <li>
+            <li class="guide-perk">
               <span class="guide-share-when">Salary with the same bank</span>
               <span class="guide-share-then">Your salary account with that bank can mean a lower rate.</span>
             </li>
-            <li>
+            <li class="guide-perk">
               <span class="guide-share-when">Existing savings or loan customer</span>
               <span class="guide-share-then">Long-standing customers sometimes get a small cut at sanction.</span>
             </li>
-            <li>
+            <li class="guide-perk">
               <span class="guide-share-when">Green home</span>
-              <span class="guide-share-then">Often 0.05% to 0.10% lower when the project is rated by IGBC, GRIHA, LEED, or another approved Indian agency.</span>
+              <span class="guide-share-then"><span class="guide-skim">Often 0.05% to 0.10% lower when the project is rated by IGBC, GRIHA, LEED, or another approved Indian agency.</span></span>
             </li>
           </ul>
           <p class="guide-glance">
@@ -302,54 +319,124 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-ember guide-tile-question">Who can get a PMAY subsidy?</span></h2>
           <p class="guide-tile-copy guide-tile-copy--rule">
-            A government cut on your home loan interest. The bank files it. <span class="guide-limit-note"><a class="guide-section-link" href="https://pmay-urban.gov.in/" target="_blank" rel="noopener noreferrer">PMAY (U)<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official PMAY page)</span></a></span>
+            If your household income is up to ₹3, ₹6, or ₹9 lakh a year, this is your first home, your loan is up to ₹25 lakh, and the house is up to ₹35 lakh. <span class="guide-limit-note"><a class="guide-section-link" href="https://pmaymis.gov.in/PMAYMIS2_2024/PmayISS.aspx" target="_blank" rel="noopener noreferrer">PMAY-U 2.0 ISS<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official PMAY interest subsidy page)</span></a></span>
           </p>
           <div class="guide-chapter-card">
-            <p class="guide-doc-sub">Who qualifies</p>
-            <ul class="guide-share-list guide-share-list--split">
-              <li>
-                <span class="guide-share-when">Income band (EWS, LIG, or MIG)</span>
-                <span class="guide-share-then">Household income and home price set your slab. Each has its own caps.</span>
-              </li>
-              <li>
-                <span class="guide-share-when">First home</span>
-                <span class="guide-share-then">Usually no finished house already in your name anywhere in India. Many cases need a woman as owner or co-owner.</span>
-              </li>
-              <li>
-                <span class="guide-share-when">Loan within the subsidy cap</span>
-                <span class="guide-share-then">The subsidy is worked out on a capped amount by category, not always on your full sanction.</span>
-              </li>
-            </ul>
-            <p class="guide-doc-sub">How the money arrives</p>
-            <ul class="guide-share-list guide-share-list--split">
-              <li>
-                <span class="guide-share-when">At loan sanction</span>
-                <span class="guide-share-then">The bank checks eligibility and registers the claim with the nodal agency.</span>
-              </li>
-              <li>
-                <span class="guide-share-when">On your loan account</span>
-                <span class="guide-share-then">It lowers your EMI or outstanding balance. You do not get cash in hand.</span>
-              </li>
-              <li>
-                <span class="guide-share-when">Aadhaar and income proof</span>
-                <span class="guide-share-then">The bank files the claim. You do not apply to PMAY separately.</span>
-              </li>
-            </ul>
+<div class="guide-seg" role="tablist" aria-label="PMAY scheme">
+            <button type="button" class="guide-seg-btn" role="tab" id="pmay-tab-now" aria-selected="true" aria-controls="pmay-panel-now">PMAY-U 2.0 ISS</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="pmay-tab-older" aria-selected="false" aria-controls="pmay-panel-older" tabindex="-1">PMAY CLSS (closed)</button>
+          </div>
+
+          <div class="guide-seg-panels">
+          <div class="guide-seg-panel" role="tabpanel" id="pmay-panel-now" aria-labelledby="pmay-tab-now">
+            <div class="guide-seg" role="tablist" aria-label="PMAY-U 2.0 ISS">
+              <button type="button" class="guide-seg-btn" role="tab" id="pmay-now-tab-qualifies" aria-selected="true" aria-controls="pmay-now-panel-qualifies">Who qualifies</button>
+              <button type="button" class="guide-seg-btn" role="tab" id="pmay-now-tab-how" aria-selected="false" aria-controls="pmay-now-panel-how" tabindex="-1">How you get it</button>
+            </div>
+            <div class="guide-seg-panels">
+              <div class="guide-seg-panel" role="tabpanel" id="pmay-now-panel-qualifies" aria-labelledby="pmay-now-tab-qualifies">
+                <ul class="guide-share-list guide-share-list--split">
+                  <li>
+                    <span class="guide-share-when">Income</span>
+                    <span class="guide-share-then"><span class="guide-skim">Household income up to ₹3 lakh (EWS), ₹6 lakh (LIG), or ₹9 lakh (MIG) a year.</span></span>
+                  </li>
+                  <li>
+                    <span class="guide-share-when">First home</span>
+                    <span class="guide-share-then"><span class="guide-skim">You and your family should not already own a finished house anywhere in India.</span> No housing-scheme benefit in the last 20 years. The house is usually in a woman’s name, or joint with her.</span>
+                  </li>
+                  <li>
+                    <span class="guide-share-when">Loan and house</span>
+                    <span class="guide-share-then"><span class="guide-skim">Purchase, repurchase, or construction.</span> Loan up to ₹25 lakh. House value up to ₹35 lakh. Carpet area up to 120 sqm.</span>
+                  </li>
+                  <li>
+                    <span class="guide-share-when">Loan tenure</span>
+                    <span class="guide-share-then"><span class="guide-skim">Longer than 5 years.</span> The 4% is worked out for up to 12 years.</span>
+                  </li>
+                  <li>
+                    <span class="guide-share-when">Bank’s numbers</span>
+                    <span class="guide-share-then"><span class="guide-skim">Income and house value as the bank assesses them must stay within the caps.</span></span>
+                  </li>
+                  <li>
+                    <span class="guide-share-when">Subsidy</span>
+                    <span class="guide-share-then"><span class="guide-skim">4% a year on the first ₹8 lakh of the loan. Max about ₹1.80 lakh.</span> Only for loans sanctioned and disbursed on or after 1 Sep 2024. One subsidy per house — if a previous owner already got ISS on it, you usually cannot.</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="guide-seg-panel" role="tabpanel" id="pmay-now-panel-how" aria-labelledby="pmay-now-tab-how" hidden>
+                <ol class="guide-flow" data-guide-scrub="on">
+                  <li data-step="1">
+                    <span class="guide-share-when">Register on the PMAY portal</span>
+                    <span class="guide-share-then"><span class="guide-skim">Put in your demand on the Unified Web Portal.</span> Then it goes to your bank or housing finance company.</span>
+                  </li>
+                  <li data-step="2">
+                    <span class="guide-share-when">On your loan account</span>
+                    <span class="guide-share-then"><span class="guide-skim">Subsidy comes in 5 yearly credits on the loan. It cuts principal.</span> You do not get cash in hand.</span>
+                  </li>
+                  <li data-step="3">
+                    <span class="guide-share-when">What you give the bank</span>
+                    <span class="guide-share-then"><span class="guide-skim">Aadhaar and income proof for the claim.</span> Loan must stay active, and more than half the principal must still be outstanding when each credit lands.</span>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="pmay-panel-older" aria-labelledby="pmay-tab-older" hidden>
+            <div class="guide-seg" role="tablist" aria-label="PMAY CLSS">
+              <button type="button" class="guide-seg-btn" role="tab" id="pmay-old-tab-who" aria-selected="true" aria-controls="pmay-old-panel-who">Who it was for</button>
+              <button type="button" class="guide-seg-btn" role="tab" id="pmay-old-tab-how" aria-selected="false" aria-controls="pmay-old-panel-how" tabindex="-1">How it worked</button>
+            </div>
+            <div class="guide-seg-panels">
+              <div class="guide-seg-panel" role="tabpanel" id="pmay-old-panel-who" aria-labelledby="pmay-old-tab-who">
+                <ul class="guide-share-list guide-share-list--split">
+                  <li>
+                    <span class="guide-share-when">Income bands</span>
+                    <span class="guide-share-then"><span class="guide-skim">EWS, LIG, MIG-I, MIG-II.</span> Each band had its own income and loan caps.</span>
+                  </li>
+                  <li>
+                    <span class="guide-share-when">First home</span>
+                    <span class="guide-share-then"><span class="guide-skim">No finished house already in the family’s name.</span> Woman owner or co-owner in many cases.</span>
+                  </li>
+                  <li>
+                    <span class="guide-share-when">Subsidy</span>
+                    <span class="guide-share-then"><span class="guide-skim">Interest cut on a capped loan amount by category (about 6.5% / 4% / 3% on up to about ₹6 lakh / ₹9 lakh / ₹12 lakh).</span> Not always on your full sanction.</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="guide-seg-panel" role="tabpanel" id="pmay-old-panel-how" aria-labelledby="pmay-old-tab-how" hidden>
+                <ol class="guide-flow" data-guide-scrub="on">
+                  <li data-step="1">
+                    <span class="guide-share-when">Through the bank</span>
+                    <span class="guide-share-then"><span class="guide-skim">At sanction, the bank checked eligibility and filed the claim with the nodal agency.</span> You did not file a separate PMAY form for that scheme.</span>
+                  </li>
+                  <li data-step="2">
+                    <span class="guide-share-when">On your loan account</span>
+                    <span class="guide-share-then"><span class="guide-skim">It lowered EMI or outstanding balance.</span> Not cash in hand.</span>
+                  </li>
+                  <li data-step="3">
+                    <span class="guide-share-when">Closed for new loans</span>
+                    <span class="guide-share-then"><span class="guide-skim">MIG closed 31 Mar 2021. EWS and LIG closed 31 Mar 2022.</span> Use this tab only if you already claimed CLSS, or your old claim was in that window.</span>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          </div>
           </div>
         </div>
       </section>
 
       <section class="mag-section guide-moment" id="fees">
 <div class="mag-content">
-          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">Can fees get waived?</span></h2>
+          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">Can fees be waived?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Banks sometimes waive charges for a limited time.
+                Yes, banks sometimes waive charges for a limited time.
               </p>
           <div class="guide-chapter-card">
 <div class="guide-disclosure-stack">
             <details class="guide-disclosure" open>
               <summary>During a festival or campaign</summary>
-              <p class="guide-share-then">Processing fee may be zero or discounted. GST may or may not be included in the waiver.</p>
+              <p class="guide-share-then"><span class="guide-skim">Processing fee may be zero or discounted.</span> GST may or may not be included in the waiver.</p>
             </details>
             <details class="guide-disclosure">
               <summary>Salary with the same bank</summary>
@@ -357,11 +444,11 @@
             </details>
             <details class="guide-disclosure">
               <summary>Offer with free legal or valuation</summary>
-              <p class="guide-share-then">Those fees may be waived. Others still charge them separately.</p>
+              <p class="guide-share-then"><span class="guide-skim">Those fees may be waived.</span> Others still charge them separately.</p>
             </details>
             <details class="guide-disclosure">
               <summary>Moving your loan to another bank</summary>
-              <p class="guide-share-then">Takeover fees on the old loan plus fresh charges on the new one can cancel a small waiver.</p>
+              <p class="guide-share-then"><span class="guide-skim">Takeover fees on the old loan plus fresh charges on the new one can cancel a small waiver.</span></p>
             </details>
           </div>
           </div>
@@ -369,13 +456,9 @@
       </section>
     </div>
 
-    <div class="guide-related-wrap">
-      <p class="guide-related-links">Next: compare lenders side by side. <a href="explore-banks.html">Explore banks</a><span aria-hidden="true"> · </span><a href="tax-benefits.html">Tax benefits</a></p>
-    </div>
-
     <div class="guide-fine-wrap">
       <p class="guide-fine">
-        For general understanding only. Concession rules depend on your income, property, and the lender’s current policy. Banks and government schemes change over time.
+        For general understanding only. Concession rules depend on your income, property, and the lender’s current policy. Confirm PMAY on the official site and with your lender before you count on a subsidy. Banks and government schemes change over time.
       </p>
     </div>
       </div>
@@ -443,14 +526,26 @@
               <li><a href="/pages/about.html">About</a></li>
               <li><a href="/privacy-policy.html">Privacy Policy</a></li>
               <li><a href="/terms-of-use.html">Terms of Use</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
             </ul>
           </nav>
 
           <section class="site-footer-group" aria-labelledby="footer-support-title">
             <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
             <ul class="site-footer-list">
-              <li><a href="mailto:support@shroffin.com">Email</a></li>
-              <li><a href="tel:+919112334367">Call</a></li>
+              <li>
+                <a href="mailto:support@shroffin.com">Email us</a>
+              </li>
+              <li>
+                <a href="tel:+919112334367">Call us</a>
+              </li>
+              <li>
+                <a
+                  href="https://wa.me/919112334367"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Message us<span class="visually-hidden"> (opens WhatsApp)</span></a>
+              </li>
             </ul>
           </section>
 
@@ -473,12 +568,14 @@
               <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
               <details class="site-footer-disclaimer-more">
                 <summary>Read the full disclaimer</summary>
-                <div class="site-footer-disclaimer-full">
-                  <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-                  <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-                  <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-                  <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-                  <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                <div class="site-footer-disclaimer-panel">
+                  <div class="site-footer-disclaimer-full">
+                    <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+                    <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+                    <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+                    <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+                    <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                  </div>
                 </div>
               </details>
             </div>
@@ -487,12 +584,7 @@
           <div class="site-footer-bottom">
             <div class="site-footer-bottom-row">
               <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
-              <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
-                <ul class="site-footer-legal-links">
-                  <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-                  <li><a href="/terms-of-use.html">Terms of Use</a></li>
-                  <li><a href="/sitemap.html">Site Map</a></li>
-                </ul>
+              <nav class="site-footer-legal-nav" aria-label="Official resources">
                 <ul class="site-footer-official-links">
                   <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
                   <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
@@ -509,10 +601,10 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/guide-page-overview.js?v=soft-1"></script>
-  <script src="../js/shroffin-nav.js?v=chapters-3"></script>
-  <script src="../js/shroffin-guide.js?v=disclosure-close-1"></script>
+  <script src="../js/guide-page-overview.js?v=card-only-flip-1"></script>
+  <script src="../js/shroffin-nav.js?v=guide-top-1"></script>
+  <script src="../js/shroffin-guide.js?v=card-elev-1"></script>
   <script src="../js/shroffin-scrub.js?v=chapters-3"></script>
-  <script src="../js/shroffin-guide-soft-nav.js?v=chapters-3"></script>
+  <script src="../js/shroffin-guide-soft-nav.js?v=guide-top-1"></script>
 </body>
 </html>

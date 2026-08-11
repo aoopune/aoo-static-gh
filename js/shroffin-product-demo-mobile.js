@@ -1,28 +1,31 @@
 /**
  * Mobile product demo choreography — phone frame only.
  * Story: type → See options → tabs → Filters popover → Private rematch →
- * select → dock Apply once (play once, no loop).
+ * select → dock Apply once. Plays through once, then stops (parent Pause can stop early).
  * NEVER scrollIntoView. NEVER press Women. NEVER show a mouse/finger cursor — tap ripple only.
  */
 (function () {
   "use strict";
 
   var WAIT = Object.freeze({
-    settle: 1400,
-    typeChar: 70,
-    afterField: 420,
-    chip: 700,
-    searching: 2400,
-    scroll: 1400,
-    tab: 1500,
-    filter: 1000,
-    bank: 650,
-    delta: 1500,
-    holdApply: 2600,
-    loopGap: 1400,
-    press: 280,
-    move: 880,
-    click: 220
+    settle: 480,
+    typeChar: 22,
+    afterField: 110,
+    chip: 240,
+    /* Match live explore-banks See options → results timing */
+    searching: 1400,
+    searchFade: 750,
+    revealPause: 280,
+    scroll: 1100,
+    tab: 550,
+    filter: 360,
+    bank: 240,
+    delta: 550,
+    holdApply: 1000,
+    loopGap: 500,
+    press: 100,
+    move: 340,
+    click: 80
   });
 
   var FIELDS = [
@@ -348,7 +351,7 @@
     wraps.forEach(function (wrap) {
       wrap.classList.add("is-sel-fading-rows");
     });
-    await sleep(reduced() ? 0 : 480, signal);
+    await sleep(reduced() ? 0 : 160, signal);
     applyFilters(root, filters);
     wraps.forEach(function (wrap) {
       wrap.classList.remove("is-sel-fading-rows");
@@ -367,16 +370,54 @@
     });
   }
 
+  function setSeeOptionsBusy(root, on) {
+    var btn = root.querySelector("[data-spd-see-options]");
+    if (!btn) return;
+    if (on) {
+      if (!btn.getAttribute("data-spd-label")) {
+        btn.setAttribute("data-spd-label", btn.textContent || "See options");
+      }
+      btn.textContent = "Finding options";
+      btn.disabled = true;
+    } else {
+      var label = btn.getAttribute("data-spd-label");
+      if (label) btn.textContent = label;
+      btn.removeAttribute("data-spd-label");
+      btn.disabled = false;
+    }
+  }
+
+  function showSearching(root) {
+    var el = root.querySelector("[data-spd-searching]");
+    if (!el) return;
+    setSeeOptionsBusy(root, true);
+    el.hidden = false;
+    el.classList.remove("is-visible");
+    void el.offsetWidth;
+    el.classList.add("is-visible");
+  }
+
+  async function hideSearching(root, signal) {
+    var el = root.querySelector("[data-spd-searching]");
+    if (!el) {
+      setSeeOptionsBusy(root, false);
+      return;
+    }
+    el.classList.remove("is-visible");
+    await sleep(reduced() ? 0 : WAIT.searchFade, signal);
+    el.hidden = true;
+    setSeeOptionsBusy(root, false);
+  }
+
   function setSearching(root, on) {
     var el = root.querySelector("[data-spd-searching]");
     if (!el) return;
     if (on) {
-      el.hidden = false;
-      void el.offsetWidth;
-      el.classList.add("is-visible");
+      showSearching(root);
     } else {
       el.classList.remove("is-visible");
       el.hidden = true;
+      setSeeOptionsBusy(root, false);
     }
   }
 
@@ -410,10 +451,31 @@
     root.scrollLeft = 0;
   }
 
-  function targetScrollTop(el) {
+  function targetScrollTop(el, pad) {
     if (!el) return 0;
     var root = scrollingRoot();
-    return Math.max(0, el.getBoundingClientRect().top + root.scrollTop - SAFE_TOP);
+    var topPad = typeof pad === "number" ? pad : SAFE_TOP;
+    return Math.max(0, el.getBoundingClientRect().top + root.scrollTop - topPad);
+  }
+
+  /*
+   * Same intent as live softScrollToOptions on phone: park results under the
+   * status/safe chrome so the input card leaves the view.
+   */
+  function resultsScrollTop(root) {
+    var scrollRoot = scrollingRoot();
+    var head =
+      root.querySelector("[data-spd-results] .hlc-results-head") ||
+      root.querySelector("[data-spd-results]");
+    var y = targetScrollTop(head, SAFE_TOP + 12);
+    var inputs = root.querySelector("[data-spd-inputs]");
+    if (inputs) {
+      var inputsBottom =
+        inputs.getBoundingClientRect().bottom + scrollRoot.scrollTop;
+      y = Math.max(y, inputsBottom - SAFE_TOP + 8);
+    }
+    var maxY = Math.max(0, scrollRoot.scrollHeight - scrollRoot.clientHeight);
+    return Math.min(Math.max(0, y), maxY);
   }
 
   async function animateScrollY(toY, signal) {
@@ -433,8 +495,8 @@
           return;
         }
         var t = Math.min(1, (now - start) / duration);
-        /* soft ease-out — same family as site motion */
-        var eased = 1 - Math.pow(1 - t, 3);
+        /* Soft ease-out — matches live explore-banks (1 - (1-t)^3.2) */
+        var eased = 1 - Math.pow(1 - t, 3.2);
         setScrollY(fromY + dist * eased);
         if (t < 1) {
           requestAnimationFrame(frame);
@@ -446,10 +508,17 @@
     });
   }
 
-  async function scrollTo(el, signal) {
+  async function scrollTo(el, signal, pad) {
     if (!el) return;
-    await animateScrollY(targetScrollTop(el), signal);
-    setScrollY(targetScrollTop(el));
+    var y = targetScrollTop(el, pad);
+    await animateScrollY(y, signal);
+    setScrollY(targetScrollTop(el, pad));
+  }
+
+  async function softScrollToResults(root, signal) {
+    var y = resultsScrollTop(root);
+    await animateScrollY(y, signal);
+    setScrollY(resultsScrollTop(root));
   }
 
   async function typeField(root, key, text, signal) {
@@ -544,8 +613,7 @@
     });
     syncSelection(root);
     setApplyEnabled(root, true);
-    var results = root.querySelector("[data-spd-results]");
-    if (results) setScrollY(targetScrollTop(results));
+    setScrollY(resultsScrollTop(root));
   }
 
   async function playOnce(root, signal) {
@@ -568,20 +636,19 @@
     setChoice(root, "purpose", "Regular");
     await sleep(WAIT.chip, signal);
 
-    /* 3 — See options → Finding options */
+    /* 3 — See options → Finding options (stay on the form, like live) */
     var see = root.querySelector("[data-spd-see-options]");
     await tapOn(see, signal);
-    setSearching(root, true);
-    await scrollTo(root.querySelector("[data-spd-searching]"), signal);
+    showSearching(root);
     await sleep(WAIT.searching, signal);
-    setSearching(root, false);
+    await hideSearching(root, signal);
 
-    /* 4 — Banks appear; show dock; scroll */
+    /* 4 — Banks appear; show dock; calm scroll so the input card leaves */
     setResults(root, true);
     resetResultsState(root);
     setApplyDock(root, true);
-    await sleep(120, signal);
-    await scrollTo(root.querySelector("[data-spd-results]"), signal);
+    await sleep(WAIT.revealPause, signal);
+    await softScrollToResults(root, signal);
     await sleep(WAIT.settle, signal);
 
     /* 5 — Glance Charges → Other charges → Overview */
@@ -614,7 +681,7 @@
       var chipTop = privateChip.offsetTop - 48;
       filtersPanel.scrollTop = Math.max(0, chipTop);
     }
-    await sleep(400, signal);
+    await sleep(140, signal);
 
     await tapOn(privateChip, signal);
     setPressed(privateChip, true);
@@ -635,7 +702,7 @@
     }
 
     setApplyEnabled(root, rows.length > 0);
-    await sleep(500, signal);
+    await sleep(160, signal);
     await tapOn(root.querySelector("[data-spd-apply]"), signal);
     await sleep(WAIT.holdApply, signal);
   }
@@ -723,7 +790,7 @@
 
     notifyParent("spd-ready");
 
-    /* Standalone preview: play once (no loop). Embedded: parent starts. */
+    /* Standalone preview: play once. Embedded: parent starts. */
     if (!isEmbedded()) {
       start();
       document.addEventListener("visibilitychange", function () {

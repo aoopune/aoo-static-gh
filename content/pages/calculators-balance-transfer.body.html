@@ -21,6 +21,10 @@
                 <span class="calc-prefix" aria-hidden="true">₹</span>
                 <input type="text" class="calc-input" autocomplete="off" id="outstanding" name="outstanding" inputmode="decimal" value="35,00,000">
               </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="outstandingRange" min="100000" max="9999999999" step="50000" value="3500000" aria-label="Outstanding balance slider">
+              </div>
             </div>
             <div class="calc-field">
               <div class="calc-label-row">
@@ -28,6 +32,10 @@
               </div>
               <div class="calc-input-shell">
                 <input type="text" class="calc-input" autocomplete="off" id="oldRate" name="oldRate" inputmode="decimal" value="9.0" data-format="plain">
+              </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="oldRateRange" min="5" max="20" step="0.05" value="9.0" aria-label="Current rate (% a year) slider">
               </div>
             </div>
             <div class="calc-field">
@@ -37,6 +45,10 @@
               <div class="calc-input-shell">
                 <input type="text" class="calc-input" autocomplete="off" id="newRate" name="newRate" inputmode="decimal" value="8.4" data-format="plain">
               </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="newRateRange" min="5" max="20" step="0.05" value="8.4" aria-label="New rate (% a year) slider">
+              </div>
             </div>
             <div class="calc-field">
               <div class="calc-label-row">
@@ -44,6 +56,10 @@
               </div>
               <div class="calc-input-shell">
                 <input type="text" class="calc-input" autocomplete="off" id="yearsLeft" name="yearsLeft" inputmode="decimal" value="12" data-format="plain">
+              </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="yearsLeftRange" min="1" max="30" step="1" value="12" aria-label="Years left slider">
               </div>
             </div>
             <div class="calc-field">
@@ -64,7 +80,7 @@
             <p class="calc-result-num" id="out-net">—</p>
             <p class="calc-result-label">Difference after fees</p>
           </div>
-          <ul class="calc-stats">
+          <ul class="calc-stats calc-stats--compare">
             <li><span>Current EMI</span><strong id="out-old-emi">—</strong></li>
             <li><span>New EMI</span><strong id="out-new-emi">—</strong></li>
             <li><span>Interest difference</span><strong id="out-interest-saved">—</strong></li>
@@ -109,6 +125,8 @@
             <li><a href="emi.html">EMI</a></li>
             <li><a href="loan-amount.html">Loan from EMI</a></li>
             <li><a href="how-much-loan.html">Eligibility</a></li>
+            <li><a href="prepayment.html">Prepayment</a></li>
+            <li><a href="tenure.html">Tenure</a></li>
         </ul>
       </nav>
     </div>

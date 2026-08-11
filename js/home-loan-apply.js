@@ -133,12 +133,15 @@
 
   function appendFact(dl, label, value) {
     if (!dl) return;
+    var item = document.createElement("div");
+    item.className = "hl-apply-fact";
     var dt = document.createElement("dt");
     dt.textContent = label;
     var dd = document.createElement("dd");
     dd.textContent = value == null || value === "" ? "—" : String(value);
-    dl.appendChild(dt);
-    dl.appendChild(dd);
+    item.appendChild(dt);
+    item.appendChild(dd);
+    dl.appendChild(item);
   }
 
   function appendPrimaryFact(container, label, value) {

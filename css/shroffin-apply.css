@@ -1,4 +1,4 @@
-/* Home loan Apply once — checkout hierarchy: title → review → contact → commit → help */
+/* Home loan Apply once — checkout hierarchy: title → quiet receipt → banks → soft contact → commit */
 
 .hl-apply-page {
   background: var(--shroffin-surface, #fcfcfd);
@@ -24,14 +24,14 @@
 }
 
 .hl-apply-inner {
-  max-width: min(64rem, 1068px);
+  max-width: min(58rem, 980px);
   margin: 0 auto;
 }
 
 .hl-apply-layout {
   display: flex;
   flex-direction: column;
-  gap: clamp(2rem, 5vw, 2.75rem);
+  gap: clamp(2.25rem, 5vw, 3rem);
 }
 
 .hl-apply-main {
@@ -43,23 +43,26 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  padding: 1.5rem 1.35rem 1.6rem;
+  border: none;
+  border-radius: 1.25rem;
+  background: #fff;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
 }
 
 @media (min-width: 834px) {
   .hl-apply-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(17.5rem, 0.85fr);
-    gap: clamp(2rem, 4vw, 3.5rem);
+    grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+    gap: clamp(2.5rem, 5vw, 4rem);
     align-items: start;
   }
 
   .hl-apply-form {
     position: sticky;
     top: calc(var(--shroffin-gn-offset, 48px) + 1.25rem);
-    padding: 1.35rem 1.35rem 1.5rem;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 1.15rem;
-    background: #fff;
+    padding: 1.75rem 1.6rem 1.85rem;
+    border-radius: 1.35rem;
   }
 
   .hl-apply-actions {
@@ -74,10 +77,49 @@
   }
 }
 
-/* 1 — Review: details + banks (no page masthead) */
+/* Page title — one idea, then air */
+.hl-apply-title {
+  margin: 0 0 clamp(2.25rem, 5vw, 3.25rem);
+  font-size: clamp(2.35rem, 7vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: var(--shroffin-ink, #1d1d1f);
+  text-wrap: balance;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .hl-apply-title {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: hl-apply-settle-fade 1.1s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)) forwards,
+      hl-apply-settle-move 1.45s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)) forwards;
+  }
+
+  .js .hl-apply-layout {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: hl-apply-settle-fade 1.1s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)) 0.16s forwards,
+      hl-apply-settle-move 1.45s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)) 0.16s forwards;
+  }
+}
+
+@keyframes hl-apply-settle-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hl-apply-settle-move {
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* 1 — Review: quiet receipt, then banks */
 .hl-apply-context {
-  margin-bottom: clamp(2rem, 4.5vw, 2.75rem);
-  padding-bottom: clamp(1.5rem, 3.5vw, 2rem);
+  margin-bottom: clamp(2.25rem, 5vw, 3rem);
+  padding-bottom: clamp(1.75rem, 4vw, 2.25rem);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
@@ -93,10 +135,10 @@
   padding: 0;
   border: none;
   background: transparent;
-  color: var(--shroffin-link, #3f62c8);
+  color: #424245;
   font: inherit;
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.3;
   cursor: pointer;
@@ -111,22 +153,22 @@
 }
 
 .hl-apply-bank .hl-apply-disclose {
-  margin-top: 0.15rem;
+  margin-top: 0.1rem;
   font-size: 0.875rem;
   font-weight: 400;
 }
 
 .hl-apply-disclose:hover,
 .hl-apply-disclose:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
+  color: #1d1d1f;
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: rgba(29, 29, 31, 0.45);
 }
 
 .hl-apply-disclose:active {
-  color: var(--shroffin-link-active, #2f4ba0);
+  color: #1d1d1f;
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: rgba(29, 29, 31, 0.55);
 }
 
 .hl-apply-disclose:focus-visible {
@@ -161,7 +203,7 @@
 }
 
 /*
- * Apple bag “Show product details” motion: height grows to real content
+ * commerce bag “Show product details” motion: height grows to real content
  * (grid 0fr → 1fr), not a large max-height guess. Same curve open and close.
  * UI-band + soft ease — calm, not snappy.
  */
@@ -191,52 +233,68 @@
 
 .hl-apply-section-title {
   margin: 0 0 0.85rem;
-  font-size: clamp(1.5rem, 4vw, 1.85rem);
+  font-size: clamp(1.125rem, 2.4vw, 1.35rem);
   font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1.15;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
   color: var(--shroffin-ink, #1d1d1f);
 }
 
-.hl-apply-context .hl-apply-disclose {
-  margin-top: 0.55rem;
+.hl-apply-context > .hl-apply-section-title {
+  margin-bottom: 1.15rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+  font-weight: 600;
+  color: #6e6e73;
 }
 
-/* Compact primary details: stacked label→value cells, 2-up from 480px */
+.hl-apply-bag .hl-apply-section-title {
+  font-size: clamp(1.25rem, 2.8vw, 1.5rem);
+}
+
+.hl-apply-context .hl-apply-disclose {
+  margin-top: 0.65rem;
+}
+
+/* Quiet receipt: label left, value right — one column */
 .hl-apply-facts--primary {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+}
+
+.hl-apply-facts--primary > .hl-apply-fact {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.85rem 1.25rem;
-  margin: 0 0 0.15rem;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 0 1.25rem;
+  align-items: baseline;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.hl-apply-facts--primary > .hl-apply-fact:last-child {
+  border-bottom: none;
 }
 
 .hl-apply-fact {
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
 }
 
 .hl-apply-fact-label {
-  font-size: 0.75rem;
+  font-size: 0.9375rem;
   line-height: 1.35;
   color: var(--shroffin-muted, #6e6e73);
   font-weight: 400;
 }
 
 .hl-apply-fact-value {
-  font-size: 1.0625rem;
-  line-height: 1.3;
+  font-size: 0.9375rem;
+  line-height: 1.35;
   color: var(--shroffin-ink, #1d1d1f);
   font-weight: 500;
   letter-spacing: -0.015em;
+  text-align: right;
   overflow-wrap: anywhere;
-}
-
-@media (min-width: 480px) {
-  .hl-apply-facts--primary {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
 .hl-apply-context-heading {
@@ -252,10 +310,18 @@
 }
 
 .hl-apply-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 0;
+}
+
+.hl-apply-facts > .hl-apply-fact {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: 0.65rem 1rem;
-  margin: 0;
+  gap: 0 1rem;
+  align-items: baseline;
+  min-width: 0;
 }
 
 .hl-apply-facts dt {
@@ -274,9 +340,10 @@
   font-weight: 500;
   letter-spacing: -0.01em;
   text-align: right;
+  overflow-wrap: anywhere;
 }
 
-/* 3 — Selection: bank name identifies; details in Apple-style disclosure */
+/* 3 — Selection: bank name leads; controls stay quiet */
 .hl-apply-bag {
   margin-bottom: 0;
   padding-bottom: 0;
@@ -288,13 +355,13 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.55rem;
 }
 
 .hl-apply-bag-meta {
   margin: 0;
   color: var(--shroffin-muted, #6e6e73);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.3;
 }
@@ -314,7 +381,7 @@
 }
 
 .hl-apply-bank {
-  padding: 1rem 0 1.05rem;
+  padding: 1.15rem 0 1.2rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
@@ -333,10 +400,10 @@
 .hl-apply-bank-name {
   flex: 1;
   min-width: 0;
-  font-size: clamp(1.0625rem, 2.4vw, 1.125rem);
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  line-height: 1.3;
+  font-size: clamp(1.15rem, 2.8vw, 1.35rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
   color: var(--shroffin-ink, #1d1d1f);
 }
 
@@ -348,7 +415,7 @@
   padding: 0.35rem 0;
   border: none;
   background: transparent;
-  color: var(--shroffin-link, #3f62c8);
+  color: #424245;
   font: inherit;
   font-size: 0.875rem;
   font-weight: 400;
@@ -367,15 +434,15 @@
 
 .hl-apply-bank-remove:hover,
 .hl-apply-bank-remove:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
+  color: #1d1d1f;
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: rgba(29, 29, 31, 0.45);
 }
 
 .hl-apply-bank-remove:active {
-  color: var(--shroffin-link-active, #2f4ba0);
+  color: #1d1d1f;
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: rgba(29, 29, 31, 0.55);
 }
 
 .hl-apply-bank-remove:focus-visible {
@@ -393,44 +460,94 @@
   font-size: 0.875rem;
 }
 
+/* Mobile: compact two-up cells so the list isn’t a long stack */
+@media (max-width: 833px) {
+  .hl-apply-facts--primary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem 1.25rem;
+    margin: 0 0 0.15rem;
+  }
+
+  .hl-apply-facts--primary > .hl-apply-fact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .hl-apply-facts--primary .hl-apply-fact-label {
+    font-size: 0.75rem;
+    line-height: 1.35;
+  }
+
+  .hl-apply-facts--primary .hl-apply-fact-value {
+    text-align: left;
+    font-size: 1.0625rem;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  .hl-apply-context .hl-apply-facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem 1.25rem;
+  }
+
+  .hl-apply-context .hl-apply-facts > .hl-apply-fact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .hl-apply-context .hl-apply-facts dt {
+    font-size: 0.75rem;
+    line-height: 1.35;
+  }
+
+  .hl-apply-context .hl-apply-facts dd {
+    text-align: left;
+    font-size: 1.0625rem;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+}
+
+/* Bank detail rows: stack label→value on narrow phones only */
 @media (max-width: 480px) {
-  .hl-apply-facts {
-    grid-template-columns: 1fr;
-    gap: 0.2rem 0;
+  .hl-apply-facts--bank > .hl-apply-fact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
   }
 
-  .hl-apply-facts dt {
-    margin-top: 0.55rem;
-  }
-
-  .hl-apply-facts dt:first-child {
-    margin-top: 0;
-  }
-
-  .hl-apply-facts dd {
+  .hl-apply-facts--bank dd {
     text-align: left;
     font-size: 1rem;
   }
 }
 
-/* 4 — Contact: the working section */
+/* 4 — Contact: soft white step, only CTA stays loud */
 .hl-apply-form-intro {
-  margin-bottom: clamp(1.35rem, 3vw, 1.75rem);
+  margin-bottom: clamp(1.5rem, 3.2vw, 1.9rem);
 }
 
 .hl-apply-form-heading {
-  margin: 0 0 0.45rem;
-  font-size: clamp(1.05rem, 2.2vw, 1.15rem);
+  margin: 0 0 0.4rem;
+  font-size: clamp(1.15rem, 2.4vw, 1.3rem);
   font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.25;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
   color: var(--shroffin-ink, #1d1d1f);
 }
 
 .hl-apply-purpose {
   margin: 0;
   color: var(--shroffin-muted, #6e6e73);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   line-height: 1.5;
   max-width: 34rem;
 }
@@ -551,7 +668,7 @@
   border-radius: 0;
   border-bottom: 1px solid transparent;
   background: transparent;
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-blue, #0071e3);
   font: inherit;
   font-size: 0.9375rem;
   font-weight: 500;
@@ -570,15 +687,15 @@
 
 .hl-apply-verify:hover:not(:disabled):not(.is-verified),
 .hl-apply-verify:focus-visible:not(:disabled):not(.is-verified) {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-blue, #0071e3);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: var(--shroffin-blue, #0071e3);
 }
 
 .hl-apply-verify:active:not(:disabled):not(.is-verified) {
-  color: var(--shroffin-link-active, #2f4ba0);
+  color: #0077ed;
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: #0077ed;
 }
 
 .hl-apply-verify:disabled {
@@ -629,7 +746,7 @@
   }
 }
 
-/* 5 — Commit: consent quiet, CTA the only loud control */
+/* 5 — Commit: consent whisper, CTA the only loud control */
 .hl-apply-commit {
   margin-top: clamp(1.75rem, 4vw, 2.25rem);
   padding-top: clamp(1.35rem, 3vw, 1.75rem);
@@ -641,9 +758,9 @@
   gap: 0.7rem;
   align-items: flex-start;
   min-height: 44px;
-  margin: 0 0 1.35rem;
+  margin: 0 0 1.5rem;
   padding: 0;
-  font-size: 0.9rem;
+  font-size: 0.8125rem;
   line-height: 1.45;
   color: var(--shroffin-muted, #6e6e73);
 }
@@ -651,16 +768,17 @@
 .hl-apply-consent input {
   width: 1.1rem;
   height: 1.1rem;
-  margin-top: 0.15rem;
+  margin-top: 0.1rem;
   flex-shrink: 0;
   accent-color: var(--shroffin-blue, #0071e3);
 }
 
 .hl-apply-consent a {
-  color: var(--shroffin-link, #3f62c8);
-  text-decoration: none;
+  color: #424245;
+  text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
+  text-decoration-color: rgba(66, 66, 69, 0.4);
   transition:
     color var(--shroffin-micro-duration, 0.5s)
       var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
@@ -669,26 +787,24 @@
 }
 
 .hl-apply-consent a:visited {
-  color: var(--shroffin-link-visited, #5a4fcf);
+  color: #424245;
 }
 
 .hl-apply-consent a:hover,
 .hl-apply-consent a:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
-  text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  color: #1d1d1f;
+  text-decoration-color: rgba(29, 29, 31, 0.55);
 }
 
 .hl-apply-consent a:visited:hover,
 .hl-apply-consent a:visited:focus-visible {
-  color: var(--shroffin-link-visited, #5a4fcf);
-  text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
+  color: #1d1d1f;
+  text-decoration-color: rgba(29, 29, 31, 0.55);
 }
 
 .hl-apply-consent a:active {
-  color: var(--shroffin-link-active, #2f4ba0);
-  text-decoration: underline;
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+  color: #1d1d1f;
+  text-decoration-color: rgba(29, 29, 31, 0.65);
 }
 
 .hl-apply-consent-copy {
@@ -1006,6 +1122,13 @@
   .hl-apply-disclose-arrow,
   .hl-apply-disclose-panel {
     transition: none;
+  }
+
+  .js .hl-apply-title,
+  .js .hl-apply-layout {
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 
   .hl-apply-cta-spinner {

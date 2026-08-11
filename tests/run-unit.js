@@ -262,17 +262,24 @@ async function testHomeLoanCompare() {
   var axisOffer = dataset.offers.find(function (offer) {
     return (
       offer.bank_name === 'Axis Bank' &&
-      offer.occupation === 'Salaried' &&
       offer.rate_type === 'Floating' &&
       compare.prefilterOffer(offer, query)
     );
   });
   ok(axisOffer, 'compare fixture axis offer exists');
   ok(await compare.matchesOfferRules(engine, axisOffer, query), 'json-rules-engine accepts matching offer');
+  var salariedOnlyOffer = dataset.offers.find(function (offer) {
+    return (
+      offer.occupation === 'Salaried' &&
+      offer.rate_type === 'Floating' &&
+      compare.prefilterOffer(offer, query)
+    );
+  });
+  ok(salariedOnlyOffer, 'compare fixture salaried-only offer exists');
   ok(
     !(await compare.matchesOfferRules(
       engine,
-      axisOffer,
+      salariedOnlyOffer,
       Object.assign({}, query, { occupation: 'Self-Employed' })
     )),
     'json-rules-engine rejects occupation mismatch when offer is salaried-only'

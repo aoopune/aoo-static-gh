@@ -625,6 +625,9 @@
     ["principal", "rate", "years", "lumpSum", "extraEmi", "fee"].forEach(function (name) {
       bindMoneyInput(form.elements[name]);
     });
+    syncRange(form.elements.principal, form.elements.principalRange);
+    syncRange(form.elements.rate, form.elements.rateRange);
+    syncRange(form.elements.years, form.elements.yearsRange);
     form.addEventListener("input", run);
     form.addEventListener("change", run);
     run();
@@ -647,6 +650,10 @@
     ["outstanding", "oldRate", "newRate", "yearsLeft", "fees"].forEach(function (name) {
       bindMoneyInput(form.elements[name]);
     });
+    syncRange(form.elements.outstanding, form.elements.outstandingRange);
+    syncRange(form.elements.oldRate, form.elements.oldRateRange);
+    syncRange(form.elements.newRate, form.elements.newRateRange);
+    syncRange(form.elements.yearsLeft, form.elements.yearsLeftRange);
     form.addEventListener("input", run);
     run();
   }
@@ -672,23 +679,9 @@
     ["principal", "rate", "emi"].forEach(function (name) {
       bindMoneyInput(form.elements[name]);
     });
-    form.addEventListener("input", run);
-    run();
-  }
-
-  function bindDownPayment(form) {
-    function run() {
-      var d = readForm(form);
-      var value = parseMoney(d.property);
-      if (!(value > 0)) return;
-      var loan = MathLib.maxLoanForProperty(value);
-      var down = MathLib.downPaymentForProperty(value);
-      setText("out-down", formatINR(down));
-      setText("out-loan", formatINR(loan));
-      setText("out-ltv", (MathLib.ltvCeilingForProperty(value) * 100).toFixed(0) + "%");
-    }
-    bindMoneyInput(form.elements.property);
-    syncRange(form.elements.property, form.elements.propertyRange);
+    syncRange(form.elements.principal, form.elements.principalRange);
+    syncRange(form.elements.rate, form.elements.rateRange);
+    syncRange(form.elements.emi, form.elements.emiRange);
     form.addEventListener("input", run);
     run();
   }
@@ -808,7 +801,6 @@
     prepayment: bindPrepayment,
     "balance-transfer": bindBalanceTransfer,
     tenure: bindTenure,
-    "down-payment": bindDownPayment,
     "tax-savings": bindTax
   };
 

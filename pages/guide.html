@@ -17,9 +17,9 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=chapters-3">
-  <link rel="stylesheet" href="../css/shroffin-guide.css?v=chapters-3">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=card-flip-1">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=seg-radius-1">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=seg-radius-1">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=card-flip-no-white-1">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -72,15 +72,6 @@
             aria-controls="nav-guide-flyout" aria-current="page"
           >Guide</a>
         </li>
-        <li class="globalnav-item globalnav-item-support" id="nav-support">
-          <button
-            type="button"
-            class="globalnav-flyout-trigger"
-            id="nav-support-trigger"
-            aria-expanded="false"
-            aria-controls="nav-support-flyout"
-          >Support</button>
-        </li>
         <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
           <button
             type="button"
@@ -89,6 +80,15 @@
             aria-expanded="false"
             aria-controls="nav-tools-flyout"
           >Tools</button>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >Support</button>
         </li>
         <li class="globalnav-item">
           <a class="globalnav-link" href="/pages/about.html">About</a>
@@ -136,37 +136,6 @@
       </div>
     </div>
 
-    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
-      <div class="globalnav-flyout-content">
-        <h2 class="globalnav-submenu-header">Get support</h2>
-        <ul class="globalnav-submenu-list">
-          <li>
-            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
-              <span class="globalnav-submenu-label">Email</span>
-              <span class="globalnav-submenu-value">support@shroffin.com</span>
-            </a>
-          </li>
-          <li>
-            <a class="globalnav-submenu-link" href="tel:+919112334367">
-              <span class="globalnav-submenu-label">Call</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-          <li>
-            <a
-              class="globalnav-submenu-link"
-              href="https://wa.me/919112334367"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span class="globalnav-submenu-label">Chat on WhatsApp ↗</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
     <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content globalnav-flyout-content--guide">
         <div class="globalnav-submenu-column">
@@ -184,6 +153,54 @@
             </li>
           </ul>
         </div>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content">
+        <h2 class="globalnav-submenu-header">Get support</h2>
+        <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
+              <span class="globalnav-submenu-label">Email us</span>
+              <span class="globalnav-submenu-value">support@shroffin.com</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="tel:+919112334367">
+              <span class="globalnav-submenu-label">Call us</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="globalnav-submenu-link"
+              href="https://wa.me/919112334367"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="globalnav-submenu-label globalnav-submenu-label--with-icon">
+                Message us
+                <svg
+                  class="globalnav-whatsapp-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                  />
+                </svg>
+                <span class="visually-hidden"> (opens WhatsApp)</span>
+              </span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -290,17 +307,21 @@
       <section class="mag-section guide-moment" id="loan-amount">
 <div class="mag-content">
         <div class="guide-flip" id="borrow-flip">
+          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-ember guide-tile-question">How much can you borrow?</span></h2>
+          <p class="guide-tile-copy guide-tile-copy--rule">
+            Depends on Property value and income, whichever is lower.
+          </p>
+
           <div class="guide-flip-scene" data-flip-scene>
           <div class="guide-flip-inner">
-            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
-              <span class="guide-tile-mark guide-tile-mark--glyph" aria-hidden="true">₹</span>
-              <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-ember guide-tile-question">How much can you borrow?</span></h2>
-              <p class="guide-tile-copy guide-tile-copy--rule">
-                Depends on Property value and income, whichever is lower.
-              </p>
+            <div class="guide-flip-face guide-flip-face--front">
               <div class="guide-chapter-card">
-                <div class="guide-limits" data-guide-scrub="on">
-                <div class="guide-limit" id="loan-amount-property">
+<div class="guide-seg" role="tablist" aria-label="How much can you borrow" data-guide-seg-mobile="true">
+                  <button type="button" class="guide-seg-btn" role="tab" id="borrow-tab-property" aria-selected="true" aria-controls="loan-amount-property">Property value</button>
+                  <button type="button" class="guide-seg-btn" role="tab" id="borrow-tab-income" aria-selected="false" aria-controls="borrow-panel-income" tabindex="-1">Income</button>
+                </div>
+                <div class="guide-limits" data-guide-scrub="on" data-guide-seg-mobile-panels>
+                <div class="guide-limit" id="loan-amount-property" role="tabpanel" aria-labelledby="borrow-tab-property">
                   <h3 class="guide-limit-title">1. Property value</h3>
                   <p class="guide-limit-copy">
                     The bank can lend only up to certain percentages of the Agreement Value given below.
@@ -311,10 +332,10 @@
                     <li>Above ₹75 lakh: up to 75%.</li>
                   </ul>
                   <p class="guide-glance">
-                    These are RBI’s highest limits — banks may still lend less or more, based on you and their rules.
+                    These are RBI’s highest limits. What a bank actually offers can be less or more than a simple estimate, based on your profile and their rules.
                   </p>
                 </div>
-                <div class="guide-limit">
+                <div class="guide-limit" id="borrow-panel-income" role="tabpanel" aria-labelledby="borrow-tab-income">
                   <h3 class="guide-limit-title">2. Income</h3>
                   <p class="guide-limit-copy">
                     The bank can lend only up to what your monthly EMI capacity supports, worked out as below.
@@ -352,17 +373,22 @@
                   </p>
                 </div>
                 </div>
+              <button type="button" class="guide-flip-link guide-flip-dock" data-flip="borrow-flip" aria-controls="borrow-calc" aria-expanded="false">
+                Estimate your range
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
               </div>
-            </article>
+            </div>
 
-            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="borrow-calc" aria-hidden="true">
+            <div class="guide-flip-face guide-flip-face--back" id="borrow-calc" aria-hidden="true">
+              <div class="guide-chapter-card">
               <div class="guide-flip-back-scroll">
-              <div class="guide-calc-main">
                 <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky">Estimate</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
                   Indicative only.
                 </p>
-                <div class="guide-chapter-card">
 <div class="guide-calc-body guide-calc-body--split">
                   <form class="guide-calc" id="borrow-calc-form" novalidate>
                     <div class="guide-calc-row">
@@ -419,31 +445,16 @@
                     </p>
                   </div>
                 </div>
+              </div>
+                <button type="button" class="guide-flip-link guide-flip-dock" data-flip="borrow-flip" aria-controls="borrow-calc" aria-expanded="false">
+                  Close
+                  <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                    <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
                 </div>
-              </div>
-              </div>
-            </article>
+            </div>
           </div>
-          </div>
-          <button type="button" class="guide-flip-link guide-flip-dock" data-flip="borrow-flip" aria-controls="borrow-calc" aria-expanded="false">
-            Estimate your range
-            <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-              <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <div class="guide-try-row">
-            <a class="guide-flip-link guide-open-link" href="calculators/how-much-loan.html">
-              See eligibility calculator
-              <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-            <a class="guide-flip-link guide-open-link" href="calculators/down-payment.html">
-              See down payment calculator
-              <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
           </div>
         </div>
         </div>
@@ -452,45 +463,50 @@
       <section class="mag-section guide-moment" id="emi">
 <div class="mag-content">
         <div class="guide-flip" id="emi-flip">
+          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-gold guide-tile-question">How do you repay the loan?</span></h2>
+          <p class="guide-tile-copy guide-tile-copy--rule">
+            Through an Equated Monthly Instalment (EMI) — which includes both the principal and the interest together.
+          </p>
+
           <div class="guide-flip-scene" data-flip-scene>
           <div class="guide-flip-inner">
-            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
-              <span class="guide-tile-mark" aria-hidden="true">
-                <svg viewBox="0 0 48 48" fill="none" focusable="false">
-                  <rect x="8.5" y="12.5" width="31" height="27" rx="3.5" stroke="currentColor" stroke-width="1.35"/>
-                  <path d="M8.5 20.5h31" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-                  <path d="M16 9.5v6M32 9.5v6" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-                  <circle cx="24" cy="30" r="2.6" fill="currentColor"/>
-                </svg>
-              </span>
-              <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-gold guide-tile-question">How do you repay the loan?</span></h2>
-              <p class="guide-tile-copy guide-tile-copy--rule">
-                Equated Monthly Instalment (EMI) — interest and principal together.
-              </p>
+            <div class="guide-flip-face guide-flip-face--front">
               <div class="guide-chapter-card">
-<div class="guide-limits" data-guide-scrub="on">
-                <div class="guide-limit">
-                  <h3 class="guide-limit-title">How EMI works</h3>
-                  <p class="guide-limit-copy">
-                    Each EMI goes two ways: interest on what’s left to pay, and principal that reduces the loan.
-                  </p>
+<div class="guide-seg" role="tablist" aria-label="How do you repay the loan">
+                  <button type="button" class="guide-seg-btn" role="tab" id="emi-tab-how" aria-selected="true" aria-controls="emi-panel-how">How EMI works</button>
+                  <button type="button" class="guide-seg-btn" role="tab" id="emi-tab-starts" aria-selected="false" aria-controls="emi-panel-starts" tabindex="-1">When it starts</button>
+                </div>
+
+                <div class="guide-seg-panels">
+                <div class="guide-seg-panel" role="tabpanel" id="emi-panel-how" aria-labelledby="emi-tab-how">
                   <ul class="guide-share-list guide-share-list--plain">
                     <li>Early years: you’re mostly paying interest.</li>
                     <li>Later years: you’re mostly paying off the loan.</li>
+                    <li>If the rate stays the same, the EMI stays the same. If the rate changes, the EMI or the years may change.</li>
                   </ul>
-                  <p class="guide-glance">
-                    Rate same → EMI same. Rate changes → EMI or years may change.
-                  </p>
                 </div>
-                <div class="guide-limit">
-                  <h3 class="guide-limit-title">When it starts</h3>
+
+                <div class="guide-seg-panel" role="tabpanel" id="emi-panel-starts" aria-labelledby="emi-tab-starts" hidden>
                   <p class="guide-limit-copy">
                     Depends on if the property is ready to move in or under construction.
                   </p>
-                  <ul class="guide-share-list guide-share-list--plain">
-                    <li>Ready home: full EMI about one month after first disbursement.</li>
-                    <li>Under construction: interest-only (pre-EMI) on what’s disbursed, then full EMI around possession.</li>
-                  </ul>
+                  <div class="guide-seg" role="tablist" aria-label="Property readiness">
+                    <button type="button" class="guide-seg-btn" role="tab" id="emi-tab-ready" aria-selected="true" aria-controls="emi-panel-ready">Ready home</button>
+                    <button type="button" class="guide-seg-btn" role="tab" id="emi-tab-uc" aria-selected="false" aria-controls="emi-panel-uc" tabindex="-1">Under construction</button>
+                  </div>
+                  <div class="guide-seg-panels">
+                    <div class="guide-seg-panel" role="tabpanel" id="emi-panel-ready" aria-labelledby="emi-tab-ready">
+                      <ul class="guide-share-list guide-share-list--plain">
+                        <li>Full EMI about one month after first disbursement.</li>
+                      </ul>
+                    </div>
+                    <div class="guide-seg-panel" role="tabpanel" id="emi-panel-uc" aria-labelledby="emi-tab-uc" hidden>
+                      <ul class="guide-share-list guide-share-list--plain">
+                        <li>Interest-only (pre-EMI) on what’s disbursed, then full EMI around possession.</li>
+                      </ul>
+                    </div>
+                  </div>
+
                   <p class="guide-tip">
                     <span class="guide-tip-icon" aria-hidden="true">
                       <svg class="guide-tip-bulb" viewBox="0 0 24 24" focusable="false">
@@ -515,18 +531,24 @@
                     </span>
                   </p>
                 </div>
-              </div>
-              </div>
-            </article>
+                </div>
 
-            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="emi-calc" aria-hidden="true">
+              <button type="button" class="guide-flip-link guide-flip-dock" data-flip="emi-flip" aria-controls="emi-calc" aria-expanded="false">
+                Estimate your EMI
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              </div>
+            </div>
+
+            <div class="guide-flip-face guide-flip-face--back" id="emi-calc" aria-hidden="true">
+              <div class="guide-chapter-card">
               <div class="guide-flip-back-scroll">
-              <div class="guide-calc-main">
                 <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea">Estimate</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
                   Indicative only.
                 </p>
-                <div class="guide-chapter-card">
 <div class="guide-calc-body guide-calc-body--split">
                   <form class="guide-calc" id="emi-calc-form" novalidate>
                     <label class="guide-calc-field">
@@ -557,18 +579,17 @@
                     </p>
                   </div>
                 </div>
+              </div>
+                <button type="button" class="guide-flip-link guide-flip-dock" data-flip="emi-flip" aria-controls="emi-calc" aria-expanded="false">
+                  Close
+                  <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                    <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
                 </div>
-              </div>
-              </div>
-            </article>
+            </div>
           </div>
           </div>
-          <button type="button" class="guide-flip-link guide-flip-dock" data-flip="emi-flip" aria-controls="emi-calc" aria-expanded="false">
-            Estimate your EMI
-            <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-              <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
         </div>
         </div>
       </section>
@@ -585,7 +606,7 @@
           </span>
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">Up to what period can you repay?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Up to 30 years. Age and bank rules often shorten that period. A longer period lowers the EMI and raises total interest.
+                Up to 30 years. Age and bank rules often shorten that period. A longer period lowers the EMI and raises the total interest.
               </p>
           <a class="guide-flip-link guide-open-link" href="calculators/tenure.html">
             Estimate your tenure
@@ -600,60 +621,67 @@
       <section class="mag-section guide-moment" id="rates">
 <div class="mag-content">
         <div class="guide-flip" id="rate-flip">
+          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-siri guide-tile-question">What are the types of interest rates?</span></h2>
+          <p class="guide-tile-copy guide-tile-copy--rule">
+            Floating rates, which change over time, and fixed rates, which stay the same for a few years.
+          </p>
+
           <div class="guide-flip-scene" data-flip-scene>
           <div class="guide-flip-inner">
-            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
-              <span class="guide-tile-mark guide-tile-mark--glyph" aria-hidden="true">%</span>
-              <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-siri guide-tile-question">What are the types of interest rates?</span></h2>
-              <p class="guide-tile-copy guide-tile-copy--rule">
-                Floating rates that change, and fixed rates for a few years.
-              </p>
+            <div class="guide-flip-face guide-flip-face--front">
               <div class="guide-chapter-card">
-<div class="guide-limits" data-guide-scrub="on">
-                <div class="guide-limit">
-                  <h3 class="guide-limit-title">Floating <span class="guide-limit-note">Preferred</span></h3>
-                  <p class="guide-limit-copy">
-                    Moves with the benchmark over the loan tenure.
-                  </p>
-                  <ul class="guide-share-list guide-share-list--plain">
-                    <li>External benchmark (often the repo rate) + the bank’s spread</li>
-                    <li>Repo rate resets at least once every 3 months</li>
-                    <li>If the rate rises, choose how the extra cost hits you: pay a lump sum, raise EMI, extend tenure, or mix these</li>
-                    <li>
-                      Prepayment / foreclosure charges: none on floating home loans under
-                      <a
-                        class="guide-section-link"
-                        href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13140&amp;Mode=0"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >RBI rules<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a>
-                    </li>
-                  </ul>
+                <div class="guide-seg" role="tablist" aria-label="Interest rate type">
+                  <button type="button" class="guide-seg-btn" role="tab" id="rate-tab-floating" aria-selected="true" aria-controls="rate-panel-floating">Floating <span class="guide-limit-note">Preferred</span></button>
+                  <button type="button" class="guide-seg-btn" role="tab" id="rate-tab-fixed" aria-selected="false" aria-controls="rate-panel-fixed" tabindex="-1">Fixed / hybrid</button>
                 </div>
-                <div class="guide-limit">
-                  <h3 class="guide-limit-title">Fixed / hybrid</h3>
-                  <p class="guide-limit-copy">
-                    Fixed for a set period, then the rate resets.
-                  </p>
-                  <ul class="guide-share-list guide-share-list--plain">
-                    <li>External benchmark (often the repo rate) + the bank’s spread + a fixed rate premium</li>
-                    <li>Usually fixed for 3 or 5 years, as per the lender</li>
-                    <li>Usually about 1% to 2% higher than floating during the fixed period</li>
-                    <li>Prepayment / foreclosure charges: 2% to 4%</li>
-                  </ul>
+                <div class="guide-seg-panels">
+                  <div class="guide-seg-panel" role="tabpanel" id="rate-panel-floating" aria-labelledby="rate-tab-floating">
+                    <p class="guide-limit-copy">
+                      Moves with the benchmark over the loan tenure.
+                    </p>
+                    <ul class="guide-share-list guide-share-list--plain">
+                      <li>External benchmark (often the repo rate) + the bank’s spread</li>
+                      <li>Repo rate resets at least once every 3 months</li>
+                      <li>When the rate goes up, your lender asks how you want to take the extra cost. You can pay a lump sum, raise EMI, extend tenure, or mix these.</li>
+                      <li>
+                        Prepayment / foreclosure charges: none on floating home loans under
+                        <a
+                          class="guide-section-link"
+                          href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13140&amp;Mode=0"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >RBI rules<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="guide-seg-panel" role="tabpanel" id="rate-panel-fixed" aria-labelledby="rate-tab-fixed" hidden>
+                    <p class="guide-limit-copy">
+                      Fixed for a set period, then the rate resets.
+                    </p>
+                    <ul class="guide-share-list guide-share-list--plain">
+                      <li>External benchmark (often the repo rate) + the bank’s spread + a fixed rate premium</li>
+                      <li>Usually fixed for 3 or 5 years, as per the lender</li>
+                      <li>Usually about 1% to 2% higher than floating during the fixed period</li>
+                      <li>Prepayment / foreclosure charges: 2% to 4%</li>
+                    </ul>
+                  </div>
                 </div>
-                </div>
+              <button type="button" class="guide-flip-link guide-flip-dock" data-flip="rate-flip" aria-controls="rate-ask" aria-expanded="false">
+                Choices that stay after you take the loan
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
               </div>
-            </article>
+            </div>
 
-            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="rate-ask" aria-hidden="true">
+            <div class="guide-flip-face guide-flip-face--back" id="rate-ask" aria-hidden="true">
+              <div class="guide-chapter-card">
               <div class="guide-flip-back-scroll">
-              <div class="guide-calc-main">
                 <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-gold">After you take the loan</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
                   These still matter later, so weigh them while you choose the rate type.
                 </p>
-                <div class="guide-chapter-card">
 <div class="guide-rate-notes">
                   <p>You can switch between fixed and floating rates as per the bank’s policy, at the applicable cost.</p>
                   <p>You can switch between benchmark rates as per the bank’s policy, at the applicable cost.</p>
@@ -661,18 +689,17 @@
                   <p>When the repo rate changes, an existing interest rate usually updates within about a month.</p>
                   <p>A newly sanctioned loan can take about 90 days for the first change.</p>
                 </div>
+              </div>
+                <button type="button" class="guide-flip-link guide-flip-dock" data-flip="rate-flip" aria-controls="rate-ask" aria-expanded="false">
+                  Close
+                  <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                    <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
                 </div>
-              </div>
-              </div>
-            </article>
+            </div>
           </div>
           </div>
-          <button type="button" class="guide-flip-link guide-flip-dock" data-flip="rate-flip" aria-controls="rate-ask" aria-expanded="false">
-            Choices that stay after you take the loan
-            <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-              <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
         </div>
         </div>
       </section>
@@ -680,80 +707,71 @@
       <section class="mag-section guide-moment" id="loan-structure">
 <div class="mag-content">
         <div class="guide-flip" id="structure-flip">
+          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-ember guide-tile-question">What are the types of loan structures?</span></h2>
+          <p class="guide-tile-copy guide-tile-copy--rule">
+            A regular term loan or an overdraft (where spare cash reduces interest).
+          </p>
+
           <div class="guide-flip-scene" data-flip-scene>
           <div class="guide-flip-inner">
-            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
-              <span class="guide-tile-mark" aria-hidden="true">
-                <svg viewBox="0 0 48 48" fill="none" focusable="false">
-                  <path d="M10.5 14.5h27v22H10.5z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
-                  <path d="M14.5 20.5h19M14.5 26.5h13M14.5 32.5h9" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-                  <path d="M32.5 10.5v6M28.5 13.5h8" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-ember guide-tile-question">What are the types of loan structures?</span></h2>
-              <p class="guide-tile-copy guide-tile-copy--rule">
-                A regular term loan, or an overdraft where spare cash cuts interest.
-              </p>
+            <div class="guide-flip-face guide-flip-face--front">
               <div class="guide-chapter-card">
-<div class="guide-limits" data-guide-scrub="on">
-                <div class="guide-limit">
-                  <h3 class="guide-limit-title">Term loan <span class="guide-limit-note">Regular</span></h3>
-                  <p class="guide-limit-copy">
-                    Fixed EMI loan. Interest on the full leftover amount.
-                  </p>
-                  <ul class="guide-share-list guide-share-list--plain">
-                    <li>Money in your normal savings does not lower interest</li>
-                    <li>To cut interest early, you have to prepay</li>
-                    <li>Rate is usually 0.15% to 1% lower than the same bank’s overdraft</li>
-                    <li>Fits if you will not keep large surplus parked for months</li>
-                    <li>You win on rate if surplus will sit unused anyway</li>
-                  </ul>
+                <div class="guide-seg" role="tablist" aria-label="Loan structure type">
+                  <button type="button" class="guide-seg-btn" role="tab" id="structure-tab-term" aria-selected="true" aria-controls="structure-panel-term">Term loan <span class="guide-limit-note">Regular</span></button>
+                  <button type="button" class="guide-seg-btn" role="tab" id="structure-tab-od" aria-selected="false" aria-controls="structure-panel-od" tabindex="-1">Overdraft</button>
                 </div>
-                <div class="guide-limit">
-                  <h3 class="guide-limit-title">Overdraft</h3>
-                  <p class="guide-limit-copy">
-                    Home loan linked to an account. Interest drops when spare cash sits there.
-                  </p>
-                  <ul class="guide-share-list guide-share-list--plain">
-                    <li>Money lowers interest only if it sits in the linked account</li>
-                    <li>You can withdraw that parked money when you need it</li>
-                    <li>Rate is usually 0.15% to 1% higher than the same bank’s term loan</li>
-                    <li>Fits only if you will actually keep surplus parked often enough</li>
-                    <li>You win only if parked surplus saves more interest than the higher rate costs</li>
-                  </ul>
+                <div class="guide-seg-panels">
+                  <div class="guide-seg-panel" role="tabpanel" id="structure-panel-term" aria-labelledby="structure-tab-term">
+                    <p class="guide-limit-copy">
+                      This is the normal home loan. You pay a fixed EMI every month, and interest is charged on the unpaid loan balance. Money in your savings does not change that.
+                    </p>
+                    <ul class="guide-share-list guide-share-list--plain">
+                      <li>To cut interest early, you have to prepay</li>
+                      <li>Fits if you will not keep large surplus parked for months</li>
+                    </ul>
+                  </div>
+                  <div class="guide-seg-panel" role="tabpanel" id="structure-panel-od" aria-labelledby="structure-tab-od" hidden>
+                    <p class="guide-limit-copy">
+                      This home loan is linked to an account. When spare cash sits in that account, interest is charged on a lower balance. You can still withdraw that money when you need it.
+                    </p>
+                    <ul class="guide-share-list guide-share-list--plain">
+                      <li>Rate is usually 0.15% to 1% higher than the same bank’s term loan</li>
+                      <li>You win only if parked surplus saves more interest than the higher rate costs</li>
+                    </ul>
+                  </div>
                 </div>
-                </div>
+              <button type="button" class="guide-flip-link guide-flip-dock" data-flip="structure-flip" aria-controls="structure-ask" aria-expanded="false">
+                What still matters once the structure is set
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
               </div>
-            </article>
+            </div>
 
-            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="structure-ask" aria-hidden="true">
+            <div class="guide-flip-face guide-flip-face--back" id="structure-ask" aria-hidden="true">
+              <div class="guide-chapter-card">
               <div class="guide-flip-back-scroll">
-              <div class="guide-calc-main">
                 <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky">Once the structure is set</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
-                  These rules matter when you choose. A later switch is possible under bank policy, at a cost.
+                  These rules matter when you choose.
                 </p>
-                <div class="guide-chapter-card">
 <div class="guide-rate-notes">
-                  <p>On overdraft, interest on the linked account is counted as per the bank’s policy.</p>
-                  <p>On overdraft, you can withdraw parked money as per the bank’s limit and rules.</p>
+                  <p>You can switch between term loan and overdraft later as per the bank’s policy, at the applicable cost.</p>
+                  <p>On overdraft, withdrawing parked money follows the bank’s limit and rules.</p>
                   <p>On overdraft, the usable limit may fall over the years (dropline), as per the lender.</p>
-                  <p>If surplus rarely sits in the linked account, overdraft usually costs more than a term loan for no extra benefit.</p>
-                  <p>The linked account is usually with the same lender.</p>
-                  <p>On a term loan, spare cash still does not cut interest until you prepay.</p>
-                </div>
                 </div>
               </div>
-              </div>
-            </article>
+                <button type="button" class="guide-flip-link guide-flip-dock" data-flip="structure-flip" aria-controls="structure-ask" aria-expanded="false">
+                  Close
+                  <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                    <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                </div>
+            </div>
           </div>
           </div>
-          <button type="button" class="guide-flip-link guide-flip-dock" data-flip="structure-flip" aria-controls="structure-ask" aria-expanded="false">
-            What still matters once the structure is set
-            <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-              <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
         </div>
         </div>
       </section>
@@ -761,22 +779,21 @@
       <section class="mag-section guide-moment" id="charges">
 <div class="mag-content">
         <div class="guide-flip" id="charges-flip">
+          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">What are the charges to get the loan?</span></h2>
+          <p class="guide-tile-copy guide-tile-copy--rule">
+            Bank fees, property checks, and government charges.
+          </p>
+
           <div class="guide-flip-scene" data-flip-scene>
           <div class="guide-flip-inner">
-            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--front">
-              <span class="guide-tile-mark" aria-hidden="true">
-                <svg viewBox="0 0 48 48" fill="none" focusable="false">
-                  <path d="M14.5 9.5h19a2 2 0 0 1 2 2v25.2l-3.1-2.1-3.1 2.1-3.1-2.1-3.1 2.1-3.1-2.1-3.1 2.1-3.1-2.1-3.1 2.1V11.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
-                  <path d="M18.5 18.5h11M18.5 24.5h11M18.5 30.5h7" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">What are the charges to get the loan?</span></h2>
-              <p class="guide-tile-copy guide-tile-copy--rule">
-                Bank fees, property checks, and government charges.
-              </p>
+            <div class="guide-flip-face guide-flip-face--front">
               <div class="guide-chapter-card">
-<div class="guide-limits" data-guide-scrub="on">
-                <div class="guide-limit">
+<div class="guide-seg" role="tablist" aria-label="What are the charges to get the loan" data-guide-seg-mobile="true">
+                  <button type="button" class="guide-seg-btn" role="tab" id="charges-tab-bank" aria-selected="true" aria-controls="charges-panel-bank">Bank fees</button>
+                  <button type="button" class="guide-seg-btn" role="tab" id="charges-tab-other" aria-selected="false" aria-controls="charges-panel-other" tabindex="-1">Other fees</button>
+                </div>
+<div class="guide-limits" data-guide-scrub="on" data-guide-seg-mobile-panels>
+                <div class="guide-limit" id="charges-panel-bank" role="tabpanel" aria-labelledby="charges-tab-bank">
                   <h3 class="guide-limit-title">Bank fees</h3>
                   <p class="guide-limit-copy">
                     What the lender charges to open and run your case.
@@ -792,7 +809,7 @@
                     </li>
                   </ul>
                 </div>
-                <div class="guide-limit">
+                <div class="guide-limit" id="charges-panel-other" role="tabpanel" aria-labelledby="charges-tab-other">
                   <h3 class="guide-limit-title">Other fees</h3>
                   <p class="guide-limit-copy">
                     Fees for checks and for registering the loan and security.
@@ -817,20 +834,22 @@
                   </ul>
                 </div>
               </div>
-              <p class="guide-glance">
-                Note — Lenders may bundle these charges, use different names, or charge them as one unified fee.
-              </p>
+              <button type="button" class="guide-flip-link guide-flip-dock" data-flip="charges-flip" aria-controls="charges-breakdown" aria-expanded="false">
+                Fee breakdown
+                <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
               </div>
-            </article>
+            </div>
 
-            <article class="guide-tile guide-tile--stage guide-flip-face guide-flip-face--back" id="charges-breakdown" aria-hidden="true">
+            <div class="guide-flip-face guide-flip-face--back" id="charges-breakdown" aria-hidden="true">
+              <div class="guide-chapter-card">
               <div class="guide-flip-back-scroll">
-              <div class="guide-calc-main">
                 <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea">Fee breakdown</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
                   Usual one-time costs at sanction and disbursement. Banks may use different names or bundle them.
                 </p>
-                <div class="guide-chapter-card">
 <div class="guide-fee-schedule">
                   <div class="guide-fee-col">
                     <div class="guide-fee-block">
@@ -937,18 +956,17 @@
                   # Only in Maharashtra. Differs from state to state as per state laws.<br>
                   Figures above are typical industry averages. Exact fees may differ by lender and as per your profile.
                 </p>
+              </div>
+                <button type="button" class="guide-flip-link guide-flip-dock" data-flip="charges-flip" aria-controls="charges-breakdown" aria-expanded="false">
+                  Close
+                  <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                    <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
                 </div>
-              </div>
-              </div>
-            </article>
+            </div>
           </div>
           </div>
-          <button type="button" class="guide-flip-link guide-flip-dock" data-flip="charges-flip" aria-controls="charges-breakdown" aria-expanded="false">
-            Fee breakdown
-            <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-              <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
         </div>
         </div>
       </section>
@@ -963,29 +981,28 @@
               <path d="M21 39.5v-5h6v5" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
             </svg>
           </span>
-          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-siri guide-tile-question">Is this project bank-approved?</span></h2>
+          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-siri guide-tile-question">Is your project bank-approved?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Before the loan is released, the bank must clear the project or the property. Lenders call that approved project finance.
+                Before the loan is released, the bank must clear the property. Lenders call this Approved Project Finance (APF).
               </p>
           <div class="guide-chapter-card">
           <p class="guide-tile-copy guide-tile-copy--rule">
             It depends on how you buy.
           </p>
 <div class="guide-seg" role="tablist" aria-label="Home type">
-            <button type="button" class="guide-seg-btn" role="tab" id="apf-tab-new" aria-selected="true" aria-controls="apf-panel-new">New or under-construction home</button>
-            <button type="button" class="guide-seg-btn" role="tab" id="apf-tab-resale" aria-selected="false" aria-controls="apf-panel-resale" tabindex="-1">Resale home</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="apf-tab-new" aria-selected="true" aria-controls="apf-panel-new">New / under-construction</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="apf-tab-resale" aria-selected="false" aria-controls="apf-panel-resale" tabindex="-1">Resale</button>
           </div>
 
+          <div class="guide-seg-panels">
           <div class="guide-seg-panel" role="tabpanel" id="apf-panel-new" aria-labelledby="apf-tab-new">
             <p class="guide-limit-copy">If a bank has already approved the project, phase, tower or wing, your home loan may move faster and reduce repeated legal, technical and search-report charges.</p>
           </div>
 
           <div class="guide-seg-panel" role="tabpanel" id="apf-panel-resale" aria-labelledby="apf-tab-resale" hidden>
-            <p class="guide-limit-copy">For a resale home, the individual property is usually checked instead of the whole project. This may take additional time and include legal, technical and search-report charges.</p>
+            <p class="guide-limit-copy">The individual property is usually checked instead of the whole project. This may take additional time and include legal, technical and search-report charges.</p>
           </div>
-          <p class="guide-glance">
-            Property checks must finish before the home loan is released.
-          </p>
+          </div>
           <a class="guide-flip-link guide-project-link" href="project-approvals.html">
             Find banks for your project
             <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
@@ -1068,14 +1085,26 @@
               <li><a href="/pages/about.html">About</a></li>
               <li><a href="/privacy-policy.html">Privacy Policy</a></li>
               <li><a href="/terms-of-use.html">Terms of Use</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
             </ul>
           </nav>
 
           <section class="site-footer-group" aria-labelledby="footer-support-title">
             <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
             <ul class="site-footer-list">
-              <li><a href="mailto:support@shroffin.com">Email</a></li>
-              <li><a href="tel:+919112334367">Call</a></li>
+              <li>
+                <a href="mailto:support@shroffin.com">Email us</a>
+              </li>
+              <li>
+                <a href="tel:+919112334367">Call us</a>
+              </li>
+              <li>
+                <a
+                  href="https://wa.me/919112334367"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Message us<span class="visually-hidden"> (opens WhatsApp)</span></a>
+              </li>
             </ul>
           </section>
 
@@ -1098,12 +1127,14 @@
               <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
               <details class="site-footer-disclaimer-more">
                 <summary>Read the full disclaimer</summary>
-                <div class="site-footer-disclaimer-full">
-                  <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-                  <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-                  <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-                  <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-                  <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                <div class="site-footer-disclaimer-panel">
+                  <div class="site-footer-disclaimer-full">
+                    <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+                    <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+                    <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+                    <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+                    <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                  </div>
                 </div>
               </details>
             </div>
@@ -1112,12 +1143,7 @@
           <div class="site-footer-bottom">
             <div class="site-footer-bottom-row">
               <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
-              <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
-                <ul class="site-footer-legal-links">
-                  <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-                  <li><a href="/terms-of-use.html">Terms of Use</a></li>
-                  <li><a href="/sitemap.html">Site Map</a></li>
-                </ul>
+              <nav class="site-footer-legal-nav" aria-label="Official resources">
                 <ul class="site-footer-official-links">
                   <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
                   <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
@@ -1134,10 +1160,10 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/guide-page-overview.js?v=card-flip-1"></script>
-  <script src="../js/shroffin-nav.js?v=chapters-3"></script>
-  <script src="../js/shroffin-guide.js?v=card-flip-1"></script>
+  <script src="../js/guide-page-overview.js?v=card-only-flip-1"></script>
+  <script src="../js/shroffin-nav.js?v=guide-top-1"></script>
+  <script src="../js/shroffin-guide.js?v=card-elev-1"></script>
   <script src="../js/shroffin-scrub.js?v=chapters-3"></script>
-  <script src="../js/shroffin-guide-soft-nav.js?v=chapters-3"></script>
+  <script src="../js/shroffin-guide-soft-nav.js?v=guide-top-1"></script>
 </body>
 </html>

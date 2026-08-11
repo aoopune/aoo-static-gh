@@ -56,7 +56,7 @@ These Terms of Use are a legally binding agreement between you and Shroffin for 
 | Website | [shroffin.com](https://shroffin.com) |
 | What we do | Independent home-loan comparison and application assistance in India. We help you compare lenders side by side, suggest and recommend who to apply to, and assist with applications. We may also help create competition among lenders you selected so they can compete on terms for your benefit. You decide which offer to take. |
 | What we are not | We are not a bank, NBFC, housing finance company, deposit-taking institution, payment system, credit information company, or insurance company. We do not approve, sanction, disburse, or underwrite loans. We are not a Direct Selling Agent (DSA) of any bank and do not take commission from banks to rank or recommend lenders. |
-| Operator | Operated by Yash Jangid from India. A separate company has not yet been incorporated. References to “Shroffin,” “we,” “us,” or “our” mean the operator of shroffin.com. When a company is incorporated, these Terms may be updated to name that entity. |
+| Operator | Operated by Yash Jangid from India. References to “Shroffin,” “we,” “us,” or “our” mean the operator of shroffin.com. |
 | Contact | [support@shroffin.com](mailto:support@shroffin.com) · [+91 91123 34367](tel:+919112334367) |
 
 Loan agreements are only between you and the bank or lender you choose. We are not a party to that loan contract.
@@ -375,7 +375,7 @@ We may seek interim relief in any court of competent jurisdiction to protect int
 1. **Entire agreement.** These Terms, together with the Privacy Policy and any product-specific notices you accept for a particular flow, are the entire agreement between you and us about the Services, and replace prior understandings on the same subject.
 2. **Severability.** If any clause is held unenforceable, the rest remains in effect, and the invalid clause will be modified to the minimum extent needed to make it enforceable.
 3. **No waiver.** If we do not enforce a right once, we may still enforce it later.
-4. **Assignment.** You may not assign these Terms without our consent. We may assign them to a successor entity (for example after incorporation or transfer of the platform), with notice on the website or by email.
+4. **Assignment.** You may not assign these Terms without our consent. We may assign them to a successor entity (for example after transfer of the platform), with notice on the website or by email.
 5. **Force majeure.** We are not liable for delay or failure caused by events beyond reasonable control (including natural disasters, war, epidemics, infrastructure failures, or government action).
 6. **Language.** These Terms are in English. If we publish a translation, the English version controls unless Indian law requires otherwise.
 7. **Relationship.** Nothing in these Terms creates a partnership, joint venture, employment, or agency relationship that makes us your attorney or makes you our employee. Application assistance does not make us a party to your loan.

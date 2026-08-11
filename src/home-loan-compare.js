@@ -3885,14 +3885,19 @@ function initPage() {
     loanHint: document.getElementById("hlc-loan-hint"),
     status: document.getElementById("hlc-status"),
     meta: document.getElementById("hlc-match-meta"),
-    table: document.querySelector(".hlc-compare"),
+    headTable: document.querySelector(".hlc-compare--head"),
+    table: document.querySelector(".hlc-compare--body") || document.querySelector(".hlc-compare"),
+    headCols: document.getElementById("hlc-compare-head-cols"),
     cols: document.getElementById("hlc-compare-cols"),
     head: document.getElementById("hlc-compare-head"),
     body: document.getElementById("hlc-compare-body"),
+    headScroll: document.getElementById("hlc-table-head-scroll"),
     scroll: document.getElementById("hlc-table-scroll"),
     applyBar: document.getElementById("hlc-apply-bar"),
+    applyCount: document.getElementById("hlc-apply-count"),
     applyBtn: document.getElementById("hlc-apply-btn"),
     applyDock: document.getElementById("hlc-apply-dock"),
+    applyDockCount: document.getElementById("hlc-apply-dock-count"),
     applyDockBtn: document.getElementById("hlc-apply-dock-btn"),
     drawer: document.getElementById("hlc-drawer"),
     drawerBackdrop: document.getElementById("hlc-drawer-backdrop"),
@@ -3909,7 +3914,11 @@ function initPage() {
     filtersToggle: document.getElementById("hlc-filters-toggle"),
     filtersPanel: document.getElementById("hlc-filters-panel"),
     filtersBadge: document.getElementById("hlc-filters-badge"),
-    filtersClear: document.getElementById("hlc-filters-clear")
+    filtersClear: document.getElementById("hlc-filters-clear"),
+    filtersScrim: document.getElementById("hlc-filters-scrim"),
+    filtersClose: document.getElementById("hlc-filters-close"),
+    filtersDone: document.getElementById("hlc-filters-done"),
+    resultsHead: document.querySelector("#hlc-results-shell .hlc-results-head"),
   };
 
   var exploreMobileMq =
@@ -3993,10 +4002,23 @@ function initPage() {
   }
 
   function applyOnceLabel() {
-    const count = state.selected.size;
-    if (count <= 0) return "Apply once";
-    if (count === 1) return "Apply once · 1 selected";
-    return "Apply once · " + count + " selected";
+    return "Apply once";
+  }
+
+  function setApplyCountLabel(node, count) {
+    if (!node) return;
+    if (count <= 0) {
+      node.hidden = true;
+      node.textContent = "";
+      return;
+    }
+    node.hidden = false;
+    node.replaceChildren();
+    var num = document.createElement("span");
+    num.className = "hlc-apply-count-n";
+    num.textContent = String(count);
+    node.appendChild(num);
+    node.appendChild(document.createTextNode(" selected"));
   }
 
   function readQuery() {
@@ -4203,34 +4225,30 @@ function initPage() {
     el.filtersPanel.style.bottom = "";
     el.filtersPanel.style.width = "";
     el.filtersPanel.style.maxHeight = "";
+    el.filtersPanel.style.transform = "";
   }
 
+  // Popover anchoring removed — mobile uses bottom sheet.
   function positionMobileFiltersPanel() {
-    if (!el.filtersPanel || !el.filtersToggle || !isExploreMobile()) {
-      clearMobileFiltersPosition();
-      return;
+    clearMobileFiltersPosition();
+  }
+
+  function setFiltersScrimOpen(open) {
+    if (!el.filtersScrim) return;
+    if (open) {
+      el.filtersScrim.removeAttribute("hidden");
+      requestAnimationFrame(function () {
+        el.filtersScrim.classList.add("is-open");
+      });
+    } else {
+      el.filtersScrim.classList.remove("is-open");
+      el.filtersScrim.style.opacity = "";
+      window.setTimeout(function () {
+        if (!isFiltersOpen() && el.filtersScrim) {
+          el.filtersScrim.setAttribute("hidden", "");
+        }
+      }, 950);
     }
-
-    var heading = el.filtersToggle.closest(".hlc-results-heading");
-    var anchor = (heading || el.filtersToggle).getBoundingClientRect();
-    var toggleRect = el.filtersToggle.getBoundingClientRect();
-    var gutter = 12;
-    var gap = 8;
-    var width = Math.min(276, window.innerWidth - gutter * 2);
-    var right = Math.max(gutter, Math.round(window.innerWidth - toggleRect.right));
-    if (toggleRect.right - width < gutter) {
-      right = gutter;
-    }
-
-    var top = Math.round(anchor.bottom + gap);
-    var spaceBelow = Math.max(140, window.innerHeight - top - gutter);
-
-    el.filtersPanel.style.top = top + "px";
-    el.filtersPanel.style.right = right + "px";
-    el.filtersPanel.style.left = "auto";
-    el.filtersPanel.style.bottom = "auto";
-    el.filtersPanel.style.width = Math.round(width) + "px";
-    el.filtersPanel.style.maxHeight = Math.round(Math.min(spaceBelow, window.innerHeight * 0.48, 320)) + "px";
   }
 
   function setFiltersOpen(open) {
@@ -4240,11 +4258,19 @@ function initPage() {
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Desktop keeps the left filter rail always open.
+    // Desktop: left filter rail always open — unchanged.
     if (!isExploreMobile()) {
       clearMobileFiltersPosition();
+      document.body.classList.remove("hlc-filters-sheet-open");
+      if (el.filtersScrim) {
+        el.filtersScrim.classList.remove("is-open");
+        el.filtersScrim.setAttribute("hidden", "");
+        el.filtersScrim.style.opacity = "";
+      }
       el.filtersPanel.removeAttribute("hidden");
-      el.filtersPanel.classList.remove("is-open");
+      el.filtersPanel.classList.remove("is-open", "is-dragging");
+      el.filtersPanel.setAttribute("role", "region");
+      el.filtersPanel.removeAttribute("aria-modal");
       if (el.filtersControl) el.filtersControl.classList.remove("is-open");
       if (el.filtersToggle) el.filtersToggle.setAttribute("aria-expanded", "true");
       return;
@@ -4254,13 +4280,16 @@ function initPage() {
 
     if (next) {
       el.filtersPanel.removeAttribute("hidden");
-      positionMobileFiltersPanel();
+      clearMobileFiltersPosition();
+      el.filtersPanel.setAttribute("role", "dialog");
+      el.filtersPanel.setAttribute("aria-modal", "true");
+      document.body.classList.add("hlc-filters-sheet-open");
+      setFiltersScrimOpen(true);
       if (reduceMotion) {
         el.filtersControl.classList.add("is-open");
         el.filtersPanel.classList.add("is-open");
       } else {
         requestAnimationFrame(function () {
-          positionMobileFiltersPanel();
           el.filtersControl.classList.add("is-open");
           el.filtersPanel.classList.add("is-open");
         });
@@ -4270,11 +4299,17 @@ function initPage() {
     }
 
     el.filtersControl.classList.remove("is-open");
-    el.filtersPanel.classList.remove("is-open");
+    el.filtersPanel.classList.remove("is-open", "is-dragging");
     el.filtersToggle.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("hlc-filters-sheet-open");
+    setFiltersScrimOpen(false);
+    // Re-sync Apply once / N selected — do not rewrite updateApplyBar.
+    updateApplyBar();
 
     if (reduceMotion || el.filtersPanel.hasAttribute("hidden")) {
       el.filtersPanel.setAttribute("hidden", "");
+      el.filtersPanel.setAttribute("role", "region");
+      el.filtersPanel.removeAttribute("aria-modal");
       clearMobileFiltersPosition();
       return;
     }
@@ -4286,6 +4321,8 @@ function initPage() {
       el.filtersPanel.removeEventListener("transitionend", onEnd);
       if (!isFiltersOpen()) {
         el.filtersPanel.setAttribute("hidden", "");
+        el.filtersPanel.setAttribute("role", "region");
+        el.filtersPanel.removeAttribute("aria-modal");
         clearMobileFiltersPosition();
       }
     }
@@ -4303,17 +4340,42 @@ function initPage() {
     if (!isExploreMobile()) {
       clearMobileFiltersPosition();
       setFiltersOpen(true);
+      document.documentElement.style.removeProperty("--hlc-sticky-tools-h");
       return;
     }
     if (!isFiltersOpen()) {
-      el.filtersPanel.classList.remove("is-open");
+      el.filtersPanel.classList.remove("is-open", "is-dragging");
       el.filtersPanel.setAttribute("hidden", "");
+      el.filtersPanel.setAttribute("role", "region");
+      el.filtersPanel.removeAttribute("aria-modal");
       clearMobileFiltersPosition();
+      document.body.classList.remove("hlc-filters-sheet-open");
+      if (el.filtersScrim) {
+        el.filtersScrim.classList.remove("is-open");
+        el.filtersScrim.setAttribute("hidden", "");
+      }
       if (el.filtersControl) el.filtersControl.classList.remove("is-open");
       if (el.filtersToggle) el.filtersToggle.setAttribute("aria-expanded", "false");
-    } else {
-      positionMobileFiltersPanel();
     }
+    syncStickyToolsHeight();
+  }
+
+  function syncStickyToolsHeight() {
+    if (!isExploreMobile()) {
+      document.documentElement.style.removeProperty("--hlc-sticky-tools-h");
+      return;
+    }
+    if (!el.resultsHead) return;
+    var shell = document.getElementById("hlc-results-shell");
+    if (!shell || shell.hidden) return;
+    function applyHeight() {
+      var h = Math.ceil(el.resultsHead.getBoundingClientRect().height);
+      if (h > 0) {
+        document.documentElement.style.setProperty("--hlc-sticky-tools-h", h + "px");
+      }
+    }
+    applyHeight();
+    requestAnimationFrame(applyHeight);
   }
 
   function bindFormattedInput(input) {
@@ -4464,21 +4526,23 @@ function initPage() {
           " banks";
     el.status.textContent = "";
 
+    if (el.headTable) el.headTable.setAttribute("data-group", state.group);
     if (el.table) el.table.setAttribute("data-group", state.group);
     const useFillCol = state.group === "laterCharges";
-    if (el.cols) {
+    if (el.cols || el.headCols) {
       let colHtml = '<col class="hlc-col-bank">';
       /* Push charge columns to the right; fill sits between Bank and charges. */
       if (useFillCol) colHtml += '<col class="hlc-col-fill">';
       columns.forEach(function (column) {
         colHtml += '<col class="' + columnWidthClass(column) + '">';
       });
-      el.cols.innerHTML = colHtml;
+      if (el.headCols) el.headCols.innerHTML = colHtml;
+      if (el.cols) el.cols.innerHTML = colHtml;
     }
 
     let headHtml = "<tr>";
     headHtml +=
-      '<th class="hlc-sticky-col" scope="col">' +
+      '<th class="hlc-sticky-col" scope="col" id="hlc-th-bank">' +
       '<div class="hlc-bank-head">' +
       headerCheckHtml(selectAllCheckState(visibleRows)) +
       '<span class="hlc-bank-head-label">Bank</span>' +
@@ -4582,7 +4646,9 @@ function initPage() {
         '<th class="' +
         columnAlignClass(column) +
         sortClass +
-        '" scope="col" data-col="' +
+        '" scope="col" id="hlc-th-' +
+        escapeHtml(column.key) +
+        '" data-col="' +
         column.key +
         '"' +
         sortAttr +
@@ -4609,6 +4675,7 @@ function initPage() {
       state.cellSnapshot = nextSnapshot;
       updateShowMoreButton(0, 0);
       updateApplyBar();
+      syncCompareColumnWidths();
       return;
     }
 
@@ -4662,6 +4729,8 @@ function initPage() {
               deltaClass +
               '" data-col="' +
               column.key +
+              '" headers="hlc-th-' +
+              escapeHtml(column.key) +
               '"' +
               (column.type === "charge" &&
               row[column.key] &&
@@ -4684,7 +4753,7 @@ function initPage() {
           '" aria-label="' +
           rowAriaLabel(row.bankName, isSelected).replace(/"/g, "&quot;") +
           '">' +
-          '<td class="hlc-sticky-col">' +
+          '<td class="hlc-sticky-col" headers="hlc-th-bank">' +
           '<div class="hlc-bank-cell">' +
           rowCheckHtml(isSelected) +
           '<div class="hlc-bank-cell-text">' +
@@ -4697,9 +4766,9 @@ function initPage() {
           "</span>" +
           '<button type="button" class="hlc-bank-detail" data-detail="' +
           row.id +
-          '" aria-label="View details for ' +
+          '" aria-label="More about ' +
           escapeHtml(row.bankName) +
-          '"><span class="hlc-bank-detail-label">Details</span><svg class="hlc-bank-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+          '"><span class="hlc-bank-detail-label">More</span><svg class="hlc-bank-detail-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="5" r="1" fill="currentColor"/><path d="M8 7.15v4.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>' +
           "</div>" +
           "</div></div></td>" +
           (useFillCol ? '<td class="hlc-col-fill" aria-hidden="true"></td>' : "") +
@@ -4712,6 +4781,131 @@ function initPage() {
     state.cellSnapshot = nextSnapshot;
     updateShowMoreButton(rows.length, visibleRows.length);
     updateApplyBar();
+    syncCompareColumnWidths();
+  }
+
+  /**
+   * Head and body are separate tables (page-sticky header). Same col classes +
+   * width:100% keep columns aligned — do not lock content-sized min-widths or
+   * the table grows a sideways scrollbar for no reason.
+   *
+   * Phone Overview is the exception: metric cols hug the widest header/value
+   * on screen (and grow when amounts get longer). Bank stays on CSS width.
+   */
+  function measureOverviewColContentWidth(cell) {
+    if (!cell) return 0;
+    const cellCs = window.getComputedStyle(cell);
+    const pad =
+      (parseFloat(cellCs.paddingLeft) || 0) +
+      (parseFloat(cellCs.paddingRight) || 0);
+    const isHead = cell.tagName === "TH";
+    const content = isHead
+      ? cell
+      : cell.querySelector(".hlc-charge-amount, .hlc-cell-value") || cell;
+    const probe = document.createElement("div");
+    probe.setAttribute("aria-hidden", "true");
+    const cs = window.getComputedStyle(content);
+    probe.style.cssText =
+      "position:absolute;left:-10000px;top:0;visibility:hidden;pointer-events:none;" +
+      "display:inline-block;width:max-content;max-width:none;white-space:nowrap;" +
+      "box-sizing:border-box;";
+    probe.style.font = cs.font;
+    probe.style.fontSize = cs.fontSize;
+    probe.style.fontFamily = cs.fontFamily;
+    probe.style.fontWeight = cs.fontWeight;
+    probe.style.letterSpacing = cs.letterSpacing;
+    probe.style.fontVariantNumeric = cs.fontVariantNumeric;
+    probe.style.fontFeatureSettings = cs.fontFeatureSettings;
+    if (isHead) {
+      probe.innerHTML = cell.innerHTML;
+    } else {
+      probe.textContent = (content.textContent || "").replace(/\s+/g, " ").trim();
+    }
+    document.body.appendChild(probe);
+    const width = Math.ceil(probe.getBoundingClientRect().width + pad);
+    document.body.removeChild(probe);
+    return width;
+  }
+
+  function syncCompareColumnWidths() {
+    if (!el.headTable || !el.table || !el.head) return;
+    const headRow = el.head.querySelector("tr");
+    if (!headRow) return;
+    const headCells = Array.prototype.slice.call(headRow.children);
+    const bodyRows = el.body
+      ? Array.prototype.slice.call(el.body.querySelectorAll("tr"))
+      : [];
+    const phoneOverview =
+      state.group === "essentials" &&
+      window.matchMedia("(max-width: 833px)").matches;
+
+    headCells.forEach(function (cell) {
+      cell.style.width = "";
+      cell.style.minWidth = "";
+      cell.style.maxWidth = "";
+    });
+    bodyRows.forEach(function (row) {
+      Array.prototype.forEach.call(row.children, function (cell) {
+        cell.style.width = "";
+        cell.style.minWidth = "";
+        cell.style.maxWidth = "";
+      });
+    });
+    [el.headCols, el.cols].forEach(function (colgroup) {
+      if (!colgroup) return;
+      Array.prototype.forEach.call(colgroup.children, function (col) {
+        col.style.width = "";
+      });
+    });
+
+    if (!phoneOverview) {
+      el.headTable.style.width = "100%";
+      el.table.style.width = "100%";
+      el.headTable.style.tableLayout = "";
+      el.table.style.tableLayout = "";
+      if (el.headScroll && el.scroll) {
+        el.headScroll.scrollLeft = el.scroll.scrollLeft;
+      }
+      return;
+    }
+
+    el.headTable.style.width = "max-content";
+    el.table.style.width = "max-content";
+    el.headTable.style.tableLayout = "fixed";
+    el.table.style.tableLayout = "fixed";
+
+    /* Skip bank col (0); size Rate / Loan / Tenure / EMI to widest content. */
+    for (let i = 1; i < headCells.length; i++) {
+      let maxW = measureOverviewColContentWidth(headCells[i]);
+      for (let r = 0; r < bodyRows.length; r++) {
+        maxW = Math.max(
+          maxW,
+          measureOverviewColContentWidth(bodyRows[r].children[i])
+        );
+      }
+      if (maxW <= 0) continue;
+      const px = maxW + "px";
+      headCells[i].style.width = px;
+      headCells[i].style.minWidth = px;
+      headCells[i].style.maxWidth = px;
+      bodyRows.forEach(function (row) {
+        const cell = row.children[i];
+        if (!cell) return;
+        cell.style.width = px;
+        cell.style.minWidth = px;
+        cell.style.maxWidth = px;
+      });
+      if (el.headCols && el.headCols.children[i]) {
+        el.headCols.children[i].style.width = px;
+      }
+      if (el.cols && el.cols.children[i]) {
+        el.cols.children[i].style.width = px;
+      }
+    }
+
+    if (el.headScroll && el.scroll) {
+      el.headScroll.scrollLeft = el.scroll.scrollLeft;
+    }
   }
 
   function lowerFirst(value) {
@@ -5008,6 +5202,8 @@ function initPage() {
     const count = state.selected.size;
     const hasRows = !!(state.rows && state.rows.length);
     const label = applyOnceLabel();
+    setApplyCountLabel(el.applyCount, count);
+    setApplyCountLabel(el.applyDockCount, count);
     el.applyBtn.disabled = count === 0;
     el.applyBtn.textContent = label;
     el.applyBtn.setAttribute(
@@ -5037,6 +5233,9 @@ function initPage() {
   }
 
   function showDrawer(title, subtitle, bodyHtml) {
+    if (isExploreMobile() && isFiltersOpen()) {
+      setFiltersOpen(false);
+    }
     el.drawerTitle.textContent = title;
     el.drawerSub.textContent = subtitle || "";
     el.drawerBody.innerHTML = bodyHtml;
@@ -5187,30 +5386,103 @@ function initPage() {
     showDrawer(row.bankName, row.scheme || "", bodyHtml);
   }
 
-  function calculationStep(label, equation, detail) {
+  /** One row in a notebook-style sum: optional operator, then the value. */
+  function calculationLine(value, operator) {
     return (
-      '<div class="hlc-calc-step">' +
-      '<p class="hlc-calc-step-label">' +
-      label +
-      "</p>" +
-      '<p class="hlc-calc-equation">' +
-      equation +
-      "</p>" +
-      (detail
-        ? '<p class="hlc-calc-detail">' + detail + "</p>"
-        : "") +
+      '<div class="hlc-calc-line">' +
+      '<span class="hlc-calc-op" aria-hidden="true">' +
+      (operator || "") +
+      "</span>" +
+      '<span class="hlc-calc-val">' +
+      value +
+      "</span>" +
       "</div>"
     );
   }
 
-  function calculationTotal(label, equation, amount) {
+  function calculationRule() {
+    return '<div class="hlc-calc-rule" aria-hidden="true"></div>';
+  }
+
+  function calculationAnswer(value) {
+    return (
+      '<div class="hlc-calc-line hlc-calc-line--answer">' +
+      '<span class="hlc-calc-op" aria-hidden="true"></span>' +
+      '<span class="hlc-calc-val">' +
+      value +
+      "</span>" +
+      "</div>"
+    );
+  }
+
+  /**
+   * Stacked arithmetic: first value, then each next line with its operator,
+   * then a rule and the answer (school-notebook layout).
+   * lines: [{ value, op? }] — first line’s op is ignored.
+   */
+  function calculationStack(lines, answer) {
+    if (!lines || !lines.length) return "";
+    let html = '<div class="hlc-calc-stack">';
+    lines.forEach(function (line, index) {
+      html += calculationLine(line.value, index === 0 ? "" : line.op || "");
+    });
+    if (answer != null && answer !== "") {
+      html += calculationRule() + calculationAnswer(answer);
+    }
+    html += "</div>";
+    return html;
+  }
+
+  /** Sum / list of amounts stacked with the same operator, then answer. */
+  function calculationSumStack(values, operator, answer) {
+    return calculationStack(
+      values.map(function (value, index) {
+        return { value: value, op: index === 0 ? "" : operator };
+      }),
+      answer
+    );
+  }
+
+  let calculationStepSerial = 0;
+
+  function resetCalculationSteps() {
+    calculationStepSerial = 0;
+  }
+
+  /**
+   * Numbered calc card (1, 2, 3…). options.wide → full row under the 2-col grid.
+   */
+  function calculationStep(label, stackHtml, note, options) {
+    calculationStepSerial += 1;
+    const n = calculationStepSerial;
+    const wide = options && options.wide;
+    return (
+      '<div class="hlc-calc-step' +
+      (wide ? " hlc-calc-step--wide" : "") +
+      '">' +
+      '<p class="hlc-calc-step-label">' +
+      '<span class="hlc-calc-step-num">' +
+      n +
+      "</span>" +
+      '<span class="hlc-calc-step-title">' +
+      label +
+      "</span>" +
+      "</p>" +
+      stackHtml +
+      (note ? '<p class="hlc-calc-detail">' + note + "</p>" : "") +
+      "</div>"
+    );
+  }
+
+  function calculationTotal(label, amount, stackHtml) {
     return (
       '<div class="hlc-calc-total">' +
-      '<div><p class="hlc-calc-total-label">' +
+      '<div class="hlc-calc-total-main">' +
+      '<p class="hlc-calc-total-label">' +
       label +
-      '</p><p class="hlc-calc-total-equation">' +
-      equation +
-      "</p></div>" +
+      "</p>" +
+      (stackHtml || "") +
+      "</div>" +
       '<strong class="hlc-calc-total-amount">' +
       amount +
       "</strong>" +
@@ -5224,6 +5496,7 @@ function initPage() {
   }
 
   function loanAmountCalculationHtml(row) {
+    resetCalculationSteps();
     const query = readQuery();
     const propertyValue = Math.max(0, Number(query.propertyValue) || 0);
     const propertyPct =
@@ -5239,48 +5512,63 @@ function initPage() {
       (query.includeCoApplicant ? Number(query.coCardLimits) || 0 : 0);
     const foirPct = normalizeFoirPct(query.foirPct);
     const cardLoadPct = normalizeCardLoadPct(query.cardLoadPct);
+    const incomeAllowance = totalIncome * (foirPct / 100);
     const cardLoad = cardLimits * (cardLoadPct / 100);
-    const emiRoom = Math.max(
-      0,
-      totalIncome * (foirPct / 100) - existingEmis - cardLoad
-    );
+    const emiRoom = Math.max(0, incomeAllowance - existingEmis - cardLoad);
     const applicableLimits = [row.fromProperty, row.fromIncome];
     let steps =
       calculationStep(
         "Property limit",
-        formatInr(propertyValue) +
-          " × " +
-          formatPct(propertyPct) +
-          " = " +
-          formatInr(row.fromProperty),
-        "The allowed percentage of the property value sets this limit."
+        calculationStack(
+          [
+            { value: formatInr(propertyValue) },
+            { value: formatPct(propertyPct), op: "×" }
+          ],
+          formatInr(row.fromProperty)
+        )
+      ) +
+      calculationStep(
+        "Income allowance",
+        calculationStack(
+          [
+            { value: formatInr(totalIncome) },
+            { value: formatPct(foirPct), op: "×" }
+          ],
+          formatInr(incomeAllowance)
+        )
+      ) +
+      calculationStep(
+        "Credit-card load",
+        calculationStack(
+          [
+            { value: formatInr(cardLimits) },
+            { value: formatPct(cardLoadPct), op: "×" }
+          ],
+          formatInr(cardLoad)
+        )
       ) +
       calculationStep(
         "Monthly EMI available",
-        "(" +
-          formatInr(totalIncome) +
-          " × " +
-          formatPct(foirPct) +
-          ") − " +
-          formatInr(existingEmis) +
-          " − (" +
-          formatInr(cardLimits) +
-          " × " +
-          formatPct(cardLoadPct) +
-          ") = " +
-          formatInr(emiRoom),
-        "Income allowance minus existing EMIs and the credit-card load."
+        calculationStack(
+          [
+            { value: formatInr(incomeAllowance) },
+            { value: formatInr(existingEmis), op: "−" },
+            { value: formatInr(cardLoad), op: "−" }
+          ],
+          formatInr(emiRoom)
+        )
       ) +
       calculationStep(
         "Income limit",
-        formatInr(emiRoom) +
-          " a month at " +
-          formatPct(row.effectiveRoiPct) +
-          " for " +
-          row.tenureMonths +
-          " months = " +
-          formatInr(row.fromIncome),
-        "The monthly EMI available is converted into a loan amount using the standard EMI formula."
+        calculationStack(
+          [
+            { value: formatInr(emiRoom) + " / month" },
+            { value: formatPct(row.effectiveRoiPct) },
+            { value: String(row.tenureMonths) + " months" }
+          ],
+          formatInr(row.fromIncome)
+        ),
+        "Standard EMI formula."
       );
 
     const bankMaximum =
@@ -5296,91 +5584,89 @@ function initPage() {
       applicableLimits.push(bankMaximum);
       steps += calculationStep(
         "Bank maximum",
-        "Maximum loan listed = " + formatInr(bankMaximum),
-        ""
+        calculationStack([{ value: formatInr(bankMaximum) }], null)
       );
     }
 
-    const limitEquation =
-      "Lowest of " +
-      applicableLimits.map(function (amount) {
-        return formatInr(amount);
-      }).join(", ") +
-      " = " +
-      formatInr(row.loanAmount);
+    const limitLabels = applicableLimits.map(function (amount) {
+      return formatInr(amount);
+    });
 
     return (
       '<div class="hlc-calc-steps">' +
       steps +
+      calculationStep(
+        "Lowest of these limits",
+        calculationStack(
+          limitLabels.map(function (value) {
+            return { value: value };
+          }),
+          formatInr(row.loanAmount)
+        ),
+        null,
+        { wide: true }
+      ) +
       "</div>" +
-      calculationTotal(
-        "Loan amount shown",
-        limitEquation,
-        formatInr(row.loanAmount)
-      )
+      calculationTotal("Loan amount shown", formatInr(row.loanAmount))
     );
   }
 
   function emiCalculationHtml(row) {
+    resetCalculationSteps();
     const monthlyRate = row.roiDecimal / 12;
     const monthlyRateDecimal = monthlyRate.toFixed(8);
     const monthlyFactor = (1 + monthlyRate).toFixed(8);
-    const formula =
-      formatInr(row.loanAmount) +
-      " × " +
-      monthlyRateDecimal +
-      " × (" +
-      monthlyFactor +
-      ")^" +
-      row.tenureMonths +
-      " ÷ ((" +
-      monthlyFactor +
-      ")^" +
-      row.tenureMonths +
-      " − 1)";
+    const power =
+      "(" + monthlyFactor + ")<sup>" + row.tenureMonths + "</sup>";
+    const formulaStack =
+      '<div class="hlc-calc-stack hlc-calc-stack--formula">' +
+      '<div class="hlc-calc-fraction">' +
+      '<div class="hlc-calc-fraction-num">' +
+      calculationLine(formatInr(row.loanAmount)) +
+      calculationLine(monthlyRateDecimal, "×") +
+      calculationLine(power, "×") +
+      "</div>" +
+      '<div class="hlc-calc-fraction-bar" aria-hidden="true"></div>' +
+      '<div class="hlc-calc-fraction-den">' +
+      calculationLine(power + " − 1") +
+      "</div>" +
+      "</div>" +
+      calculationRule() +
+      calculationAnswer(formatInr(row.emi)) +
+      "</div>";
 
     return (
       '<div class="hlc-calc-steps">' +
       calculationStep(
         "Monthly interest rate",
-        formatPct(row.effectiveRoiPct) +
-          " ÷ 12 = " +
-          formatCalculationPct(monthlyRate * 100, 4),
-        "The annual rate is divided by 12."
+        calculationStack(
+          [
+            { value: formatPct(row.effectiveRoiPct) },
+            { value: "12", op: "÷" }
+          ],
+          formatCalculationPct(monthlyRate * 100, 4)
+        )
       ) +
-      calculationStep(
-        "EMI formula",
-        formula,
-        "Loan amount × monthly rate × (1 + monthly rate)^months ÷ ((1 + monthly rate)^months − 1)."
-      ) +
+      calculationStep("EMI", formulaStack) +
       "</div>" +
-      calculationTotal(
-        "EMI shown",
-        formatInr(row.loanAmount) +
-          " at " +
-          formatPct(row.effectiveRoiPct) +
-          " for " +
-          row.tenureMonths +
-          " months",
-        formatInr(row.emi)
-      )
+      calculationTotal("EMI shown", formatInr(row.emi))
     );
   }
 
   function processingFeeCalculationHtml(row) {
+    resetCalculationSteps();
     const charge = row.processingCharge;
     if (!charge) {
       return (
+        '<div class="hlc-calc-steps">' +
         calculationStep(
           "Processing fee rule",
-          "No matching rule is listed in the data.",
-          ""
+          calculationStack([{ value: "No matching rule listed" }], null),
+          null,
+          { wide: true }
         ) +
-        calculationTotal(
-          "Amount shown",
-          "No calculation available",
-          formatInr(row.processingFee)
-        )
+        "</div>" +
+        calculationTotal("Amount shown", formatInr(row.processingFee))
       );
     }
 
@@ -5389,18 +5675,19 @@ function initPage() {
     const fixed =
       charge.fixed_amount == null ? NaN : Number(charge.fixed_amount);
     let steps = "";
-    let totalEquation = "";
 
     if (Number.isFinite(pct) && pct > 0) {
       const beforeLimits = row.loanAmount * pct;
-      const baseEquation =
-        formatInr(row.loanAmount) +
-        " × " +
-        formatPct(pct * 100) +
-        " = " +
-        formatInr(beforeLimits);
-      steps += calculationStep("Percentage calculation", baseEquation, "");
-      totalEquation = baseEquation;
+      steps += calculationStep(
+        "Percentage",
+        calculationStack(
+          [
+            { value: formatInr(row.loanAmount) },
+            { value: formatPct(pct * 100), op: "×" }
+          ],
+          formatInr(beforeLimits)
+        )
+      );
 
       if (
         charge.charge_min != null &&
@@ -5409,13 +5696,15 @@ function initPage() {
         const minimum = Number(charge.charge_min);
         steps += calculationStep(
           "Minimum applied",
-          formatInr(beforeLimits) + " → " + formatInr(minimum),
-          formatInr(beforeLimits) +
-            " is below the " +
-            formatInr(minimum) +
-            " minimum."
+          calculationStack(
+            [
+              { value: formatInr(beforeLimits) },
+              { value: formatInr(minimum), op: "→" }
+            ],
+            formatInr(minimum)
+          ),
+          "Below the bank minimum."
         );
-        totalEquation = "Minimum " + formatInr(minimum) + " applied";
       } else if (
         charge.charge_max != null &&
         beforeLimits > Number(charge.charge_max)
@@ -5423,55 +5712,60 @@ function initPage() {
         const maximum = Number(charge.charge_max);
         steps += calculationStep(
           "Maximum applied",
-          formatInr(beforeLimits) + " → " + formatInr(maximum),
-          formatInr(beforeLimits) +
-            " is above the " +
-            formatInr(maximum) +
-            " maximum."
+          calculationStack(
+            [
+              { value: formatInr(beforeLimits) },
+              { value: formatInr(maximum), op: "→" }
+            ],
+            formatInr(maximum)
+          ),
+          "Above the bank maximum."
         );
-        totalEquation = "Maximum " + formatInr(maximum) + " applied";
       } else if (charge.charge_min != null || charge.charge_max != null) {
-        let rangeDetail = formatInr(beforeLimits) + " needs no adjustment.";
+        let rangeNote = "Within the allowed range.";
         if (charge.charge_min != null && charge.charge_max != null) {
-          rangeDetail =
-            formatInr(beforeLimits) +
-            " is within the " +
+          rangeNote =
+            "Within " +
             formatInr(Number(charge.charge_min)) +
-            " to " +
+            " – " +
             formatInr(Number(charge.charge_max)) +
-            " range.";
+            ".";
         } else if (charge.charge_min != null) {
-          rangeDetail =
-            formatInr(beforeLimits) +
-            " is above the " +
+          rangeNote =
+            "Above the " +
             formatInr(Number(charge.charge_min)) +
             " minimum.";
         } else if (charge.charge_max != null) {
-          rangeDetail =
-            formatInr(beforeLimits) +
-            " is below the " +
+          rangeNote =
+            "Below the " +
             formatInr(Number(charge.charge_max)) +
             " maximum.";
         }
         steps += calculationStep(
-          "Rule check",
-          "No limit applied",
-          rangeDetail
+          "Limit check",
+          calculationStack([{ value: formatInr(beforeLimits) }], formatInr(beforeLimits)),
+          rangeNote
         );
       }
     } else if (Number.isFinite(fixed)) {
-      totalEquation = "Flat processing fee";
       steps += calculationStep(
         "Flat fee",
-        "Flat charge = " + formatInr(fixed),
-        ""
+        calculationStack([{ value: formatInr(fixed) }], null),
+        null,
+        { wide: true }
       );
     } else if (charge.percentage === 0) {
-      totalEquation = "0% processing fee";
       steps += calculationStep(
-        "Processing fee rule",
-        formatInr(row.loanAmount) + " × 0% = ₹0",
-        ""
+        "Percentage",
+        calculationStack(
+          [
+            { value: formatInr(row.loanAmount) },
+            { value: "0%", op: "×" }
+          ],
+          formatInr(0)
+        ),
+        null,
+        { wide: true }
       );
     }
 
@@ -5479,11 +5773,7 @@ function initPage() {
       '<div class="hlc-calc-steps">' +
       steps +
       "</div>" +
-      calculationTotal(
-        "Processing fee shown",
-        totalEquation,
-        formatInr(row.processingFee)
-      )
+      calculationTotal("Processing fee shown", formatInr(row.processingFee))
     );
   }
 
@@ -5498,6 +5788,7 @@ function initPage() {
   }
 
   function governmentChargeCalculationHtml(row) {
+    resetCalculationSteps();
     const query = readQuery();
     const charges = listApplicableGovernmentCharges(
       (state.dataset && state.dataset.government_charges) || [],
@@ -5506,60 +5797,86 @@ function initPage() {
       DEFAULT_JURISDICTION_STATE
     );
     const amounts = [];
-    const steps = charges.map(function (charge) {
-      const amount = computeGovernmentChargeAmount(charge, row.loanAmount);
-      amounts.push(amount);
-      const method = normalizeText(charge.calculation_method);
-      let equation = "Flat charge = " + formatInr(amount);
-      let detail = "";
-      if (method === "percentage") {
-        const beforeLimits = row.loanAmount * Number(charge.percentage);
-        equation =
-          formatInr(row.loanAmount) +
-          " × " +
-          formatPct(Number(charge.percentage) * 100) +
-          " = " +
-          formatInr(beforeLimits);
-        if (
-          charge.min_amount_inr != null &&
-          beforeLimits < Number(charge.min_amount_inr)
-        ) {
-          detail =
-            "Minimum " +
-            formatInr(Number(charge.min_amount_inr)) +
-            " applied.";
-        } else if (
-          charge.max_amount_inr != null &&
-          beforeLimits > Number(charge.max_amount_inr)
-        ) {
-          detail =
-            "Maximum " +
-            formatInr(Number(charge.max_amount_inr)) +
-            " applied. Amount included: " +
-            formatInr(amount) +
-            ".";
+    const steps = charges
+      .map(function (charge) {
+        const amount = computeGovernmentChargeAmount(charge, row.loanAmount);
+        amounts.push(amount);
+        const method = normalizeText(charge.calculation_method);
+        if (method === "percentage") {
+          const beforeLimits = row.loanAmount * Number(charge.percentage);
+          const minApplied =
+            charge.min_amount_inr != null &&
+            beforeLimits < Number(charge.min_amount_inr);
+          const maxApplied =
+            charge.max_amount_inr != null &&
+            beforeLimits > Number(charge.max_amount_inr);
+          let note = "";
+          if (minApplied) {
+            note =
+              "Minimum " +
+              formatInr(Number(charge.min_amount_inr)) +
+              " applied.";
+          } else if (maxApplied) {
+            note =
+              "Maximum " +
+              formatInr(Number(charge.max_amount_inr)) +
+              " applied.";
+          }
+          let stack = calculationStack(
+            [
+              { value: formatInr(row.loanAmount) },
+              {
+                value: formatPct(Number(charge.percentage) * 100),
+                op: "×"
+              }
+            ],
+            formatInr(beforeLimits)
+          );
+          if (minApplied || maxApplied) {
+            stack += calculationStack(
+              [
+                { value: formatInr(beforeLimits) },
+                { value: formatInr(amount), op: "→" }
+              ],
+              formatInr(amount)
+            );
+          }
+          return calculationStep(
+            governmentChargeName(charge.charge_name),
+            stack,
+            note
+          );
         }
-      }
-      return calculationStep(
-        governmentChargeName(charge.charge_name),
-        equation,
-        detail
-      );
-    }).join("");
-    const totalEquation =
-      amounts.map(function (amount) {
-        return formatInr(amount);
-      }).join(" + ") +
-      " = " +
-      formatInr(row.governmentCharges);
+        return calculationStep(
+          governmentChargeName(charge.charge_name),
+          calculationStack([{ value: formatInr(amount) }], null)
+        );
+      })
+      .join("");
+
+    const totalStack =
+      amounts.length > 1
+        ? calculationSumStack(
+            amounts.map(function (amount) {
+              return formatInr(amount);
+            }),
+            "+",
+            formatInr(row.governmentCharges)
+          )
+        : calculationStack(
+            [{ value: formatInr(row.governmentCharges) }],
+            null
+          );
 
     return (
       '<div class="hlc-calc-steps">' +
       steps +
+      (amounts.length > 1
+        ? calculationStep("Total", totalStack, null, { wide: true })
+        : "") +
       "</div>" +
       calculationTotal(
         "Government charges shown",
-        totalEquation,
         formatInr(row.governmentCharges)
       )
     );
@@ -5821,15 +6138,30 @@ function initPage() {
   function setColumnGroup(group) {
     if (state.group === group) return;
     state.group = group;
+    var activeTab = null;
     document.querySelectorAll(".hlc-column-tab[data-group]").forEach(function (tab) {
       if (tab.getAttribute("data-group") === group) {
         tab.setAttribute("aria-current", "page");
         tab.setAttribute("aria-selected", "true");
+        activeTab = tab;
       } else {
         tab.removeAttribute("aria-current");
         tab.setAttribute("aria-selected", "false");
       }
     });
+    if (activeTab) {
+      var scroller = activeTab.closest(".hlc-column-tabs-scroller");
+      if (scroller) {
+        var tabRect = activeTab.getBoundingClientRect();
+        var scrollerRect = scroller.getBoundingClientRect();
+        var pad = 8;
+        if (tabRect.right > scrollerRect.right - pad) {
+          scroller.scrollLeft += tabRect.right - scrollerRect.right + pad;
+        } else if (tabRect.left < scrollerRect.left + pad) {
+          scroller.scrollLeft -= scrollerRect.left - tabRect.left + pad;
+        }
+      }
+    }
     withResultsFade(function () {
       renderTable();
     }, "metrics");
@@ -5913,7 +6245,73 @@ function initPage() {
     });
   });
 
+  function bindFiltersSheetDrag() {
+    var panel = el.filtersPanel;
+    var handle = panel && panel.querySelector(".hlc-filters-handle");
+    if (!panel || !handle || handle.dataset.boundDrag) return;
+    handle.dataset.boundDrag = "1";
+
+    var DISMISS_PX = 120;
+    var DISMISS_VELOCITY = 0.65;
+    var startY = 0;
+    var lastY = 0;
+    var lastT = 0;
+    var dragging = false;
+    var reduceMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function onDown(e) {
+      if (!isExploreMobile() || !isFiltersOpen()) return;
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      if (reduceMotion) return;
+      dragging = true;
+      startY = lastY = e.clientY;
+      lastT = performance.now();
+      panel.classList.add("is-dragging");
+      try {
+        handle.setPointerCapture(e.pointerId);
+      } catch (err) {}
+    }
+
+    function onMove(e) {
+      if (!dragging) return;
+      var dy = Math.max(0, e.clientY - startY);
+      lastY = e.clientY;
+      lastT = performance.now();
+      panel.style.transform = "translateY(" + dy + "px)";
+      if (el.filtersScrim) {
+        el.filtersScrim.style.opacity = String(Math.max(0.12, 1 - dy / 400));
+      }
+    }
+
+    function onUp(e) {
+      if (!dragging) return;
+      dragging = false;
+      panel.classList.remove("is-dragging");
+      try {
+        handle.releasePointerCapture(e.pointerId);
+      } catch (err) {}
+      var dy = Math.max(0, e.clientY - startY);
+      var dt = Math.max(16, performance.now() - lastT);
+      var velocity = (e.clientY - lastY) / dt;
+      panel.style.transform = "";
+      if (el.filtersScrim) el.filtersScrim.style.opacity = "";
+      if (dy >= DISMISS_PX || velocity > DISMISS_VELOCITY) {
+        setFiltersOpen(false);
+        if (el.filtersToggle) el.filtersToggle.focus();
+      }
+    }
+
+    handle.addEventListener("pointerdown", onDown);
+    handle.addEventListener("pointermove", onMove);
+    handle.addEventListener("pointerup", onUp);
+    handle.addEventListener("pointercancel", onUp);
+  }
+
   if (el.filtersToggle && el.filtersControl && el.filtersPanel) {
+    bindFiltersSheetDrag();
+
     el.filtersToggle.addEventListener("click", function (event) {
       event.preventDefault();
       event.stopPropagation();
@@ -5921,12 +6319,22 @@ function initPage() {
       setFiltersOpen(!isFiltersOpen());
     });
 
-    document.addEventListener("click", function (event) {
+    if (el.filtersScrim) {
+      el.filtersScrim.addEventListener("click", function () {
+        if (!isExploreMobile() || !isFiltersOpen()) return;
+        setFiltersOpen(false);
+        if (el.filtersToggle) el.filtersToggle.focus();
+      });
+    }
+
+    function closeFiltersFromUi() {
       if (!isExploreMobile() || !isFiltersOpen()) return;
-      if (el.filtersControl.contains(event.target)) return;
-      if (el.filtersPanel.contains(event.target)) return;
       setFiltersOpen(false);
-    });
+      if (el.filtersToggle) el.filtersToggle.focus();
+    }
+
+    if (el.filtersClose) el.filtersClose.addEventListener("click", closeFiltersFromUi);
+    if (el.filtersDone) el.filtersDone.addEventListener("click", closeFiltersFromUi);
 
     document.addEventListener("keydown", function (event) {
       if (event.key !== "Escape") return;
@@ -5935,19 +6343,15 @@ function initPage() {
       el.filtersToggle.focus();
     });
 
-    window.addEventListener(
-      "scroll",
-      function () {
-        if (!isExploreMobile() || !isFiltersOpen()) return;
-        positionMobileFiltersPanel();
-      },
-      true
-    );
-
     window.addEventListener("resize", function () {
-      if (!isExploreMobile() || !isFiltersOpen()) return;
-      positionMobileFiltersPanel();
+      syncStickyToolsHeight();
     });
+
+    if (typeof ResizeObserver === "function" && el.resultsHead) {
+      new ResizeObserver(function () {
+        syncStickyToolsHeight();
+      }).observe(el.resultsHead);
+    }
   }
 
   if (el.filtersClear) {
@@ -6047,37 +6451,39 @@ function initPage() {
   }
   if (el.cardLoadPct) el.cardLoadPct.addEventListener("change", scheduleMatch);
 
-  el.head.addEventListener("change", function (event) {
-    const select = event.target.closest(".hlc-header-select");
-    if (!select || !el.head.contains(select)) return;
-    if (select.classList.contains("hlc-prepay-header-select")) {
-      setPrepaymentMethod(select.value);
-      return;
-    }
-    if (select.classList.contains("hlc-rate-change-header-select")) {
-      setRateChangeMethod(select.value);
-    }
-  });
-
-  el.head.addEventListener("click", function (event) {
-    if (event.target.closest(".hlc-header-select")) return;
-    const header = event.target.closest("th.hlc-sortable");
-    if (!header) return;
-    const key = header.getAttribute("data-sort");
-    if (!key) return;
-    if (state.sortKey === key) {
-      if (state.sortDir === "asc") {
-        state.sortDir = "desc";
-      } else {
-        state.sortKey = null;
-        state.sortDir = null;
+  if (el.head) {
+    el.head.addEventListener("change", function (event) {
+      const select = event.target.closest(".hlc-header-select");
+      if (!select || !el.head.contains(select)) return;
+      if (select.classList.contains("hlc-prepay-header-select")) {
+        setPrepaymentMethod(select.value);
+        return;
       }
-    } else {
-      state.sortKey = key;
-      state.sortDir = "asc";
-    }
-    renderTable();
-  });
+      if (select.classList.contains("hlc-rate-change-header-select")) {
+        setRateChangeMethod(select.value);
+      }
+    });
+
+    el.head.addEventListener("click", function (event) {
+      if (event.target.closest(".hlc-header-select")) return;
+      const header = event.target.closest("th.hlc-sortable");
+      if (!header) return;
+      const key = header.getAttribute("data-sort");
+      if (!key) return;
+      if (state.sortKey === key) {
+        if (state.sortDir === "asc") {
+          state.sortDir = "desc";
+        } else {
+          state.sortKey = null;
+          state.sortDir = null;
+        }
+      } else {
+        state.sortKey = key;
+        state.sortDir = "asc";
+      }
+      renderTable();
+    });
+  }
 
   document.body.addEventListener("click", function (event) {
     const selectAll = event.target.closest(".hlc-select-all");
@@ -6139,7 +6545,9 @@ function initPage() {
   el.drawerClose.addEventListener("click", closeDrawer);
   el.drawerBackdrop.addEventListener("click", closeDrawer);
   document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") closeDrawer();
+    if (event.key !== "Escape") return;
+    if (isExploreMobile() && isFiltersOpen()) return;
+    closeDrawer();
   });
 
   var HL_APPLY_STORAGE_KEY = "shroffin_hl_apply_v1";
@@ -6320,23 +6728,6 @@ function initPage() {
     }
   }
 
-  var HLC_CALC_TIP_KEY = "shroffin_hlc_calc_tip_seen";
-
-  function maybeShowCalcTip() {
-    var tip = document.getElementById("hlc-calc-tip");
-    if (!tip) return;
-    try {
-      if (window.sessionStorage.getItem(HLC_CALC_TIP_KEY) === "1") {
-        tip.hidden = true;
-        return;
-      }
-      tip.hidden = false;
-      window.sessionStorage.setItem(HLC_CALC_TIP_KEY, "1");
-    } catch (err) {
-      tip.hidden = false;
-    }
-  }
-
   function getActiveColumnsForPacket() {
     var columns = [];
     ["essentials", "charges", "laterCharges"].forEach(function (group) {
@@ -6442,11 +6833,53 @@ function initPage() {
   } catch (err) {}
 
   el.paddleLeft.addEventListener("click", function () {
-    el.scroll.scrollBy({ left: -220, behavior: "smooth" });
+    var scroller = el.scroll || el.headScroll;
+    if (!scroller) return;
+    scroller.scrollBy({ left: -220, behavior: "smooth" });
   });
   el.paddleRight.addEventListener("click", function () {
-    el.scroll.scrollBy({ left: 220, behavior: "smooth" });
+    var scroller = el.scroll || el.headScroll;
+    if (!scroller) return;
+    scroller.scrollBy({ left: 220, behavior: "smooth" });
   });
+
+  /* Keep header + body columns locked while either strip scrolls sideways. */
+  var syncingTableScroll = false;
+  function syncCompareScroll(source) {
+    if (!source || syncingTableScroll) return;
+    var target = source === el.scroll ? el.headScroll : el.scroll;
+    if (!target || target.scrollLeft === source.scrollLeft) return;
+    syncingTableScroll = true;
+    target.scrollLeft = source.scrollLeft;
+    syncingTableScroll = false;
+  }
+  if (el.scroll) {
+    el.scroll.addEventListener(
+      "scroll",
+      function () {
+        syncCompareScroll(el.scroll);
+      },
+      { passive: true }
+    );
+  }
+  if (el.headScroll) {
+    el.headScroll.addEventListener(
+      "scroll",
+      function () {
+        syncCompareScroll(el.headScroll);
+      },
+      { passive: true }
+    );
+  }
+
+  var columnWidthSyncTimer = 0;
+  function scheduleCompareColumnWidthSync() {
+    window.clearTimeout(columnWidthSyncTimer);
+    columnWidthSyncTimer = window.setTimeout(function () {
+      syncCompareColumnWidths();
+    }, 50);
+  }
+  window.addEventListener("resize", scheduleCompareColumnWidthSync);
 
   /** Bring bank results back after reload / bfcache — same place the user left. */
   function revealResultsShellQuiet() {
@@ -6455,11 +6888,11 @@ function initPage() {
     resultsShell.hidden = false;
     resultsShell.classList.add("is-visible");
     updateApplyBar();
+    syncStickyToolsHeight();
   }
 
   var didRestoreDraft = restoreExploreDraft();
   ensureSampleDefaults();
-  maybeShowCalcTip();
   syncFoirFace();
   updateFiltersBadge();
 
@@ -6467,6 +6900,7 @@ function initPage() {
   if (resultsShellEl) {
     new MutationObserver(function () {
       updateApplyBar();
+      syncStickyToolsHeight();
     }).observe(resultsShellEl, { attributes: true, attributeFilter: ["hidden"] });
   }
 

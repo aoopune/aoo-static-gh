@@ -272,7 +272,7 @@
       min-height: var(--shroffin-btn-standard-min, 36px);
       padding-block: var(--shroffin-btn-standard-pad-block, 8px);
       padding-inline: var(--shroffin-btn-standard-pad-inline, 16px);
-      border-radius: var(--shroffin-btn-radius, 980px);
+      /* Corner roundness: --shroffin-seg-option-radius (not pill 980px). */
       font-size: var(--shroffin-btn-standard-font, 14px);
       line-height: var(--shroffin-btn-standard-lh, 1.23536);
       box-sizing: border-box;
@@ -306,7 +306,8 @@
       align-self: center;
       justify-content: flex-end;
       min-inline-size: 0;
-      max-inline-size: calc(100% - 7.5rem);
+      /* Reserve for smaller one-line Explore banks pill (~6.25rem). */
+      max-inline-size: calc(100% - 6.25rem);
       margin: 0;
       padding-inline: 0.15rem 0.35rem;
     }
@@ -319,11 +320,45 @@
       overflow: hidden;
       color: var(--shroffin-muted, var(--mag-muted, #6e6e73));
       font-size: 1.1875rem;
-      font-weight: 400;
+      font-weight: 500;
       letter-spacing: -0.01em;
       line-height: 1;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    /*
+     * Mobile only: “If something goes wrong” is the one title that does not
+     * fit the single-line ellipsis. Wrap just that selection; grow only this
+     * page’s Guide bar so the second line is not clipped. Other titles stay
+     * one line; desktop is unchanged.
+     */
+    body.guide-reading:has(
+      .localnav-link[aria-current="page"][href$="home-loan-complaints.html"]
+    ) {
+      --shroffin-ln-height: 58px;
+    }
+
+    .localnav:has(
+      .localnav-link[aria-current="page"][href$="home-loan-complaints.html"]
+    ) {
+      block-size: 58px;
+      overflow: visible;
+    }
+
+    .localnav:has(
+      .localnav-link[aria-current="page"][href$="home-loan-complaints.html"]
+    )
+      .localnav-current-label {
+      display: inline-block;
+      /* Narrow enough to break after “something”, not after “goes”. */
+      max-inline-size: 7.5rem;
+      overflow: visible;
+      font-size: 1.0625rem;
+      line-height: 1.2;
+      text-align: end;
+      text-overflow: clip;
+      white-space: normal;
     }
 
     .localnav-toggle-icon {
@@ -335,7 +370,18 @@
       flex: 0 0 auto;
       align-self: center;
       margin-inline-start: 0;
-      padding-inline: var(--shroffin-btn-compact-pad-inline, 0.625rem);
+      min-inline-size: max-content;
+      padding-inline: 0.5rem;
+      font-size: 11px;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      /* Defeat shell :where(a){ overflow-wrap: anywhere } mid-label breaks. */
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+
+    .localnav-cta::before {
+      block-size: 28px;
     }
 
     .localnav-cta:hover,
@@ -345,12 +391,16 @@
     }
 
     /*
-     * Open Guide menu:
+     * Open / soft-close Guide menu:
      * - Still at the top (main bar on screen): keep main bar, Guide under it.
      * - After scrolling the main bar away: Guide alone at the top — don’t
      *   bring the main bar back.
+     * - is-closing keeps fixed chrome until the panel finishes easing shut.
+     * - Height uses max-block-size to the *measured* content size (JS sets
+     *   --localnav-menu-max). Animating to 28rem sat still then snapped shut.
      */
-    .localnav.is-open {
+    .localnav.is-open,
+    .localnav.is-closing {
       position: fixed;
       inset-block-start: 0;
       inset-inline: 0;
@@ -358,7 +408,8 @@
       z-index: calc(var(--shroffin-z-nav, 9999) + 1);
     }
 
-    .localnav.is-open.is-open-with-global {
+    .localnav.is-open.is-open-with-global,
+    .localnav.is-closing.is-open-with-global {
       inset-block-start: var(--shroffin-gn-height, 48px);
     }
 
@@ -382,41 +433,32 @@
     }
 
     .localnav.is-open .localnav-menu {
-      max-block-size: min(
-        28rem,
-        calc(100dvh - var(--shroffin-ln-height) - env(safe-area-inset-bottom, 0px))
-      );
+      max-block-size: var(--localnav-menu-max, 28rem);
       overflow-y: auto;
       visibility: visible;
       pointer-events: auto;
       overscroll-behavior: contain;
     }
 
-    .localnav.is-open.is-open-with-global .localnav-menu {
-      max-block-size: min(
-        28rem,
-        calc(
-          100dvh - var(--shroffin-gn-height, 48px) - var(--shroffin-ln-height) -
-            env(safe-area-inset-bottom, 0px)
-        )
-      );
-    }
-
-    /* Scrolled: main bar stays away while Guide pages are open. */
+    /* Scrolled: main bar stays away while Guide pages are open / closing. */
     body:has(.localnav.is-open:not(.is-open-with-global)) .globalnav,
-    body:has(.localnav.is-open:not(.is-open-with-global)) .globalnav-veil {
+    body:has(.localnav.is-open:not(.is-open-with-global)) .globalnav-veil,
+    body:has(.localnav.is-closing:not(.is-open-with-global)) .globalnav,
+    body:has(.localnav.is-closing:not(.is-open-with-global)) .globalnav-veil {
       visibility: hidden;
       pointer-events: none;
     }
 
-    body:has(.localnav.is-open:not(.is-open-with-global)) .localnav-veil {
+    body:has(.localnav.is-open:not(.is-open-with-global)) .localnav-veil,
+    body:has(.localnav.is-closing:not(.is-open-with-global)) .localnav-veil {
       inset-block-start: var(--shroffin-ln-height);
       z-index: var(--shroffin-z-nav, 9999);
       background: rgba(29, 29, 31, 0.28);
     }
 
     /* At top: keep the main bar with the Guide menu. */
-    body:has(.localnav.is-open-with-global) .globalnav {
+    body:has(.localnav.is-open-with-global) .globalnav,
+    body:has(.localnav.is-closing.is-open-with-global) .globalnav {
       position: fixed;
       inset-block-start: 0;
       inset-inline: 0;
@@ -424,7 +466,8 @@
       z-index: var(--shroffin-z-nav, 9999);
     }
 
-    body:has(.localnav.is-open-with-global) .localnav-veil {
+    body:has(.localnav.is-open-with-global) .localnav-veil,
+    body:has(.localnav.is-closing.is-open-with-global) .localnav-veil {
       inset-block-start: calc(
         var(--shroffin-gn-height, 48px) + var(--shroffin-ln-height)
       );
@@ -432,7 +475,8 @@
       background: rgba(29, 29, 31, 0.28);
     }
 
-    body:has(.localnav.is-open) .mag-toc-compact {
+    body:has(.localnav.is-open) .mag-toc-compact,
+    body:has(.localnav.is-closing) .mag-toc-compact {
       visibility: hidden;
       pointer-events: none;
     }
@@ -444,8 +488,8 @@
       block-size: auto;
       gap: 0;
       padding:
-        0.75rem max(1rem, env(safe-area-inset-right))
-        max(1.5rem, env(safe-area-inset-bottom))
+        0.4rem max(1rem, env(safe-area-inset-right))
+        max(0.85rem, env(safe-area-inset-bottom))
         max(1rem, env(safe-area-inset-left));
       box-sizing: border-box;
     }
@@ -458,10 +502,12 @@
       display: flex;
       align-items: center;
       inline-size: 100%;
-      min-block-size: 48px;
+      min-block-size: 40px;
+      padding-block: 0.2rem;
       padding-inline: 2rem 1rem;
       box-sizing: border-box;
-      font-size: var(--shroffin-type-body);
+      font-size: 1.125rem;
+      line-height: 1.2;
       opacity: 0;
       transform: translateY(-6px);
       transition:
@@ -482,9 +528,24 @@
     .localnav.is-open .localnav-list li:nth-child(5) .localnav-link { transition-delay: 440ms; }
     .localnav.is-open .localnav-list li:nth-child(6) .localnav-link { transition-delay: 520ms; }
 
+    /* Soft close: reverse stagger so items settle before the panel finishes. */
+    .localnav.is-closing .localnav-list li:nth-child(1) .localnav-link { transition-delay: 0ms; }
+    .localnav.is-closing .localnav-list li:nth-child(2) .localnav-link { transition-delay: 40ms; }
+    .localnav.is-closing .localnav-list li:nth-child(3) .localnav-link { transition-delay: 80ms; }
+    .localnav.is-closing .localnav-list li:nth-child(4) .localnav-link { transition-delay: 120ms; }
+    .localnav.is-closing .localnav-list li:nth-child(5) .localnav-link { transition-delay: 160ms; }
+    .localnav.is-closing .localnav-list li:nth-child(6) .localnav-link { transition-delay: 200ms; }
+
     .localnav.is-open .localnav-link[aria-current="page"] {
       opacity: 1;
       font-weight: 500;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .localnav-menu,
+      .localnav-link {
+        transition: none;
+      }
     }
 
     .localnav-link[aria-current="page"]::after {
@@ -554,6 +615,12 @@
     .guide-section-source {
       display: block;
       margin-block-start: 0.5rem;
+    }
+
+    /* Seg option tags (“Preferred”, “Regular”) stay on the same line as the name. */
+    .guide-seg-btn .guide-limit-note {
+      display: inline;
+      margin-block-start: 0;
     }
 
     .guide-story {
@@ -626,16 +693,20 @@
       color: #1d1d1f;
     }
 
+    /*
+     * Phone strips hug their options (not full card width). Extra options
+     * wrap onto the next row instead of scrolling sideways or clipping.
+     */
     .guide-seg[role="tablist"] {
-      display: flex;
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: stretch;
       justify-content: flex-start;
+      width: fit-content;
+      max-width: 100%;
       max-inline-size: 100%;
-      gap: 0.5rem;
-      padding-block-end: 0.25rem;
-      overflow-x: auto;
-      scroll-snap-type: x proximity;
-      scrollbar-width: none;
-      overscroll-behavior-inline: contain;
+      gap: 0;
+      overflow: visible;
     }
 
     .guide-seg-panels > .guide-seg-panel[hidden] {
@@ -643,13 +714,9 @@
       visibility: hidden;
     }
 
-    .guide-seg[role="tablist"]::-webkit-scrollbar {
-      display: none;
-    }
-
     .guide-seg-btn {
-      flex: 0 0 auto;
-      scroll-snap-align: start;
+      flex: 0 1 auto;
+      max-width: 100%;
       white-space: normal;
     }
 

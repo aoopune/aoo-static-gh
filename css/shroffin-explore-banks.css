@@ -1,21 +1,5 @@
 /* Explore banks — home loan compare */
 
-@font-face {
-  font-family: "Roboto Mono";
-  src: url("../fonts/RobotoMono/static/RobotoMono-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Roboto Mono";
-  src: url("../fonts/RobotoMono/static/RobotoMono-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
 .explore-banks-page {
   --hlc-gap: 1.25rem;
   --hlc-gap-lg: 2.35rem;
@@ -35,7 +19,7 @@
     0 2px 8px rgba(60, 64, 67, 0.1);
   --hlc-check-size: 1.125rem;
   --hlc-check-gap: 0.65rem;
-  --hlc-font-num: "Roboto Mono", ui-monospace, "Cascadia Mono", "Segoe UI Mono", Menlo, Consolas, monospace;
+  --hlc-font-num: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
   --hlc-delta-wash: rgba(176, 142, 70, 0.16);
   --hlc-delta-duration: 2.2s;
   --hlc-main-max: var(--shroffin-content-max, 1068px);
@@ -64,8 +48,9 @@
   width: 100%;
   max-width: min(100%, var(--hlc-main-max));
   margin-inline: auto;
+  --hlc-shell-pad-top: clamp(1.65rem, 4vw, 2.5rem);
   padding:
-    clamp(1.65rem, 4vw, 2.5rem)
+    var(--hlc-shell-pad-top)
     max(1rem, env(safe-area-inset-right))
     3.5rem
     max(1rem, env(safe-area-inset-left));
@@ -77,8 +62,8 @@
 .hlc-hero {
   max-width: min(48rem, 100%);
   margin: 0 auto;
-  padding-block-start: clamp(1.15rem, 3.2vw, 1.85rem);
-  padding-block-end: clamp(2.85rem, 7.5vw, 4.75rem);
+  /* Equal air above/below the title — bottom clamp is the standard. */
+  padding-block: clamp(2.85rem, 7.5vw, 4.75rem);
   margin-bottom: clamp(2.35rem, 6vw, 4rem);
   text-align: center;
 }
@@ -155,57 +140,9 @@
   min-width: 0;
 }
 
-/* Shared shell for title + hint (+ mobile Filters). Desktop keeps the old one-line title look. */
+/* Heading is a11y/status only; Filters lives in .hlc-results-actions (trailing). */
 .hlc-results-heading {
   min-width: 0;
-}
-
-.hlc-options-top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem 0.75rem;
-  min-width: 0;
-}
-
-@media (max-width: 833px) {
-  .hlc-results-heading {
-    width: 100%;
-  }
-
-  .hlc-options-top {
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 0.4rem;
-    width: 100%;
-  }
-
-  .hlc-options-top .hlc-section-title {
-    flex: 0 0 auto;
-    margin: 0;
-    white-space: nowrap;
-  }
-
-  .hlc-options-top .hlc-select-hint {
-    flex: 1 1 auto;
-    min-width: 0;
-    margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 0.8125rem;
-    line-height: 1.2;
-  }
-
-  .hlc-options-top .hlc-filters-control {
-    flex: 0 0 auto;
-  }
-
-  .hlc-options-top .hlc-filters-toggle {
-    min-height: 2.75rem;
-    padding-block: 0.35rem;
-    padding-inline: 0.45rem;
-  }
 }
 
 @media (min-width: 834px) {
@@ -214,10 +151,6 @@
     flex: 0 0 auto;
     width: auto;
     min-width: 0;
-  }
-
-  .hlc-options-top {
-    width: auto;
   }
 }
 
@@ -358,6 +291,10 @@
 
 /* Field names and Adjust eligibility share the same header weight */
 .explore-banks-page .hlc-inputs-card .hlc-field-label {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 0;
   font-size: 1.125rem;
   font-weight: 500;
   letter-spacing: -0.02em;
@@ -366,12 +303,18 @@
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-req {
-  display: inline-block;
-  margin-left: 0.2em;
-  font-size: 0.6em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  margin-left: 0.25em;
+  margin-right: 0.4em;
+  font-size: 0.7em;
   font-weight: 500;
   line-height: 1;
-  vertical-align: 0.55em;
+  /* Asterisk ink sits high in the glyph box; drop it onto the ? center line */
+  position: relative;
+  top: 0.22em;
   color: var(--shroffin-ink, #1d1d1f);
 }
 
@@ -391,43 +334,89 @@
 
 @media (max-width: 833px) {
   .explore-banks-page .hlc-inputs-card .hlc-field-label {
-    font-size: 1rem;
+    font-size: 0.9375rem;
     letter-spacing: -0.02em;
     line-height: 1.25;
     white-space: nowrap;
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-form-more-label {
-    font-size: 1rem;
+    font-size: 0.9375rem;
     letter-spacing: -0.02em;
     line-height: 1.25;
   }
 
+  /* Hint under Adjust eligibility — smaller than the heading above it */
+  .explore-banks-page .hlc-inputs-card .hlc-form-more-hint {
+    font-size: 0.75rem;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+  }
+
   .explore-banks-page .hlc-inputs-card .hlc-field--hero .hlc-field-label {
-    font-size: 1.125rem;
+    font-size: 1rem;
     white-space: normal;
   }
 
-  /* FOIR label: keep “FOIR” on its own line so it never runs into Tenure */
+  /*
+   * Property label is long on phone: “Property agreement” may wrap, but
+   * “value”, *, and the help mark must stay on one line together.
+   */
+  .explore-banks-page .hlc-inputs-card .hlc-field--property .hlc-field-label-tail {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  /*
+   * FOIR on phone only: break after “Share of income for”, then keep
+   * “EMIs / FOIR” + help mark on one line. Desktop is untouched
+   * (mobile break hidden; rest uses display:contents).
+   */
   .explore-banks-page .hlc-inputs-card .hlc-field--foir .hlc-field-label {
     white-space: normal;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-field--foir .hlc-foir-mobile-break {
+    display: block;
+    flex-basis: 100%;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-field--foir .hlc-foir-rest {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-field--foir .hlc-foir-rest > br {
+    display: none;
   }
 
   /* Mobile: paired fields side by side */
   .hlc-form-fields--more {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.75rem 1.25rem;
+    align-items: stretch;
   }
 
-  /* FOIR + Tenure only: keep input lines level when FOIR label wraps */
+  /*
+   * FOIR + Tenure: FOIR label is two lines, Tenure is one. Grow the label
+   * row (not the label itself — that isn’t a direct child) so both input
+   * underlines sit on the same baseline.
+   */
   .hlc-form-fields--more > .hlc-field--foir,
   .hlc-form-fields--more > .hlc-field--tenure {
     height: 100%;
     min-height: 100%;
   }
 
-  .hlc-form-fields--more > .hlc-field--foir > .hlc-field-label,
-  .hlc-form-fields--more > .hlc-field--tenure > .hlc-field-label {
+  .hlc-form-fields--more > .hlc-field--foir > .hlc-field-label-row,
+  .hlc-form-fields--more > .hlc-field--tenure > .hlc-field-label-row {
     flex: 1 1 auto;
   }
 
@@ -439,6 +428,20 @@
   .hlc-form-primary-grid {
     gap: 1.75rem 1.25rem;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  /*
+   * Monthly income is one label line; Property wraps to two. Grow the label
+   * row so both input underlines sit on the same baseline.
+   */
+  .hlc-form-primary-grid > .hlc-form-zone--hero .hlc-field--hero {
+    height: 100%;
+    min-height: 100%;
+  }
+
+  .hlc-form-primary-grid > .hlc-form-zone--hero .hlc-field--hero > .hlc-field-label-row {
+    flex: 1 1 auto;
   }
 
   .hlc-form-zone--pair,
@@ -565,6 +568,7 @@
   opacity: 1;
   transform: translateX(0);
   pointer-events: auto;
+  overflow: visible;
 }
 
 .hlc-coapplicant-fields[hidden] {
@@ -696,6 +700,8 @@
 .hlc-form-more[open]::details-content {
   block-size: auto;
   opacity: 1;
+  /* Clip only while collapsed/animating; open tips must paint past the panel edge. */
+  overflow: visible;
 }
 
 .hlc-form-more.is-animating > .hlc-form-more-panel {
@@ -770,7 +776,7 @@
   .hlc-coapplicant-pills .hlc-chip {
     padding-inline: 0.65rem;
     font-size: 0.9375rem;
-    border-radius: calc(var(--hlc-radius) - 0.15rem);
+    border-radius: var(--shroffin-seg-option-radius, 9px);
   }
 }
 
@@ -780,8 +786,9 @@
   }
 
   .hlc-shell {
+    --hlc-shell-pad-top: clamp(1.25rem, 3.5vw, 1.85rem);
     padding:
-      clamp(1.25rem, 3.5vw, 1.85rem)
+      var(--hlc-shell-pad-top)
       max(1rem, env(safe-area-inset-right))
       3rem
       max(1rem, env(safe-area-inset-left));
@@ -789,9 +796,7 @@
 
   .hlc-hero {
     max-width: min(100%, 36rem);
-    padding-block-start: clamp(0.95rem, 3vw, 1.45rem);
-    padding-block-end: clamp(2.5rem, 8vw, 3.75rem);
-    margin-bottom: clamp(2rem, 5.5vw, 3.25rem);
+    padding-block: clamp(2.5rem, 8vw, 3.75rem);
   }
 
   .hlc-inputs-card {
@@ -837,6 +842,17 @@
     box-shadow:
       0 1px 2px rgba(29, 29, 31, 0.04),
       0 10px 28px rgba(73, 92, 118, 0.1);
+  }
+}
+
+/* Phone: match air above/below the title (shell pad top = gap into inputs). */
+@media (max-width: 833px) {
+  .hlc-hero {
+    margin-bottom: var(--hlc-shell-pad-top);
+  }
+
+  .hlc-inputs-card {
+    margin-top: 0;
   }
 }
 
@@ -977,7 +993,7 @@
   padding: 0.2rem;
   min-height: var(--shroffin-btn-touch, 44px);
   border: 1px solid var(--hlc-line-soft);
-  border-radius: var(--hlc-radius);
+  border-radius: var(--shroffin-seg-radius, 12px);
   background: rgba(29, 29, 31, 0.045);
 }
 
@@ -995,7 +1011,7 @@
   letter-spacing: -0.01em;
   white-space: nowrap;
   border: none;
-  border-radius: calc(var(--hlc-radius) - 0.15rem);
+  border-radius: var(--shroffin-seg-option-radius, 9px);
   background: transparent;
   color: var(--shroffin-muted, #6e6e73);
   cursor: pointer;
@@ -1155,7 +1171,7 @@
   padding: 4px;
   border: 0;
   border-bottom: 0;
-  border-radius: 12px;
+  border-radius: var(--shroffin-seg-radius, 12px);
   background: color-mix(in srgb, var(--shroffin-ink, #1d1d1f) 6%, #fff);
   max-width: 100%;
   position: relative;
@@ -1163,6 +1179,11 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   box-sizing: border-box;
+}
+
+/* Desktop: wrapper is transparent. Mobile: wrapper scrolls so the segment track is never clipped. */
+.hlc-column-tabs-scroller {
+  display: contents;
 }
 
 .hlc-column-tabs::-webkit-scrollbar {
@@ -1222,7 +1243,7 @@
   padding: 0.45em 1.05em;
   margin: 0;
   border: 0;
-  border-radius: 9px;
+  border-radius: var(--shroffin-seg-option-radius, 9px);
   background: transparent;
   color: color-mix(in srgb, var(--shroffin-ink, #1d1d1f) 55%, transparent);
   font: inherit;
@@ -1267,7 +1288,7 @@
 .hlc-column-tabs .shroffin-sel-thumb--pill {
   background: #fff;
   box-shadow: 0 1px 2px rgba(29, 29, 31, 0.06);
-  border-radius: 9px;
+  border-radius: var(--shroffin-seg-option-radius, 9px);
 }
 
 .hlc-column-tab:focus-visible {
@@ -1452,9 +1473,23 @@
 }
 
 .hlc-table-wrap,
+.hlc-table-pin,
+.hlc-table-head-scroll,
 .hlc-table-scroll {
   width: 100%;
   max-width: 100%;
+}
+
+/*
+ * Column titles pin to the page under the site nav. They must live outside the
+ * body’s overflow-x scroller — otherwise overflow-x creates a scrollport and
+ * position:sticky top never engages while the page scrolls.
+ */
+.hlc-table-pin {
+  position: sticky;
+  top: var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px));
+  z-index: 4;
+  background: var(--hlc-page-bg);
 }
 
 /* Desktop: filters always visible in the left rail. Mobile: click-to-open. */
@@ -1490,6 +1525,26 @@
 
 .hlc-filters-head .hlc-filters-title {
   margin: 0;
+}
+
+/* Sheet chrome is mobile-only; desktop left rail unchanged. */
+.hlc-filters-handle,
+.hlc-filters-close,
+.hlc-filters-foot,
+.hlc-filters-scrim {
+  display: none;
+}
+
+.hlc-filters-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex: 0 0 auto;
+}
+
+.hlc-filters-scroll {
+  /* Desktop: transparent wrapper — no sheet scrolling chrome */
+  display: contents;
 }
 
 .hlc-filters-clear {
@@ -1576,6 +1631,7 @@
   flex: 1 1 auto;
   min-width: 0;
   padding-top: 0.05rem;
+  font-weight: 500;
 }
 
 .hlc-filter-option input {
@@ -1592,12 +1648,77 @@
 }
 
 @media (max-width: 833px) {
+  /* --- Sticky results tools (Filters + tabs) --- */
+  #hlc-results-shell:not([hidden]) .hlc-results-head {
+    position: sticky;
+    top: var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px));
+    z-index: 5;
+    margin-inline: calc(-1 * max(1rem, env(safe-area-inset-left, 0px)))
+      calc(-1 * max(1rem, env(safe-area-inset-right, 0px)));
+    padding-block: 0.35rem 0.55rem;
+    padding-inline: max(1rem, env(safe-area-inset-left, 0px))
+      max(1rem, env(safe-area-inset-right, 0px));
+    background: var(--hlc-page-bg, #fcfcfd);
+    box-shadow: 0 1px 0 var(--hlc-line-soft, rgba(0, 0, 0, 0.06));
+  }
+
+  /* Raise column titles under sticky tools (mobile only) */
+  .hlc-table-pin {
+    top: calc(
+      var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) +
+        var(--hlc-sticky-tools-h, 3.25rem)
+    );
+  }
+
+  .hlc-results-head,
+  #hlc-compare-heading {
+    scroll-margin-top: calc(
+      var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) +
+        var(--hlc-sticky-tools-h, 3.25rem) + 0.75rem
+    );
+  }
+
+  /*
+   * One tools row: tabs lead, Filter trails.
+   * Tabs never shrink/clip mid-pill — scroller owns overflow; track stays max-content.
+   */
+  .hlc-results-actions {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .hlc-results-actions .hlc-column-tabs-scroller {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .hlc-results-actions .hlc-column-tabs-scroller::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hlc-results-actions .hlc-column-tabs {
+    flex: 0 0 auto;
+    width: max-content;
+    max-width: none;
+    overflow: visible;
+  }
+
   .hlc-filters-control {
     display: block;
     position: relative;
     flex: 0 0 auto;
-    align-self: center;
     z-index: 6;
+    margin-inline-start: auto;
   }
 
   .hlc-filters-toggle {
@@ -1605,30 +1726,31 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.4rem;
+    gap: 0.35rem;
     box-sizing: border-box;
-    min-height: var(--shroffin-btn-touch, 44px);
+    min-height: var(--shroffin-btn-standard-min, 36px);
+    min-width: var(--shroffin-btn-touch, 44px);
     margin: 0;
-    padding: 0.35rem 0.55rem;
+    padding: 0.28rem 0.45rem;
     border: none;
-    border-radius: 0.7rem;
+    border-radius: 0.5rem;
     background: transparent;
-    color: var(--shroffin-muted, #6e6e73);
+    color: color-mix(in srgb, var(--shroffin-ink, #1d1d1f) 72%, transparent);
     font: inherit;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     font-weight: 500;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.01em;
     line-height: 1.2;
     white-space: nowrap;
     cursor: pointer;
     transition:
-      background var(--shroffin-micro-duration, 0.5s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
-      color var(--shroffin-micro-duration, 0.5s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+      color var(--shroffin-micro-duration, 0.5s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+      background var(--shroffin-micro-duration, 0.5s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
   }
 
   .hlc-filters-toggle:hover {
     color: var(--shroffin-ink, #1d1d1f);
-    background: rgba(29, 29, 31, 0.04);
+    background: color-mix(in srgb, var(--shroffin-ink, #1d1d1f) 5%, transparent);
   }
 
   .hlc-filters-toggle:focus-visible {
@@ -1638,8 +1760,8 @@
 
   .hlc-filters-control.is-open .hlc-filters-toggle,
   .hlc-filters-toggle[aria-expanded="true"] {
-    color: var(--shroffin-ink, #1d1d1f);
-    background: rgba(29, 29, 31, 0.06);
+    color: var(--shroffin-blue, #0071e3);
+    background: color-mix(in srgb, var(--shroffin-blue, #0071e3) 8%, transparent);
   }
 
   .hlc-filters-toggle-label {
@@ -1647,9 +1769,9 @@
   }
 
   .hlc-filters-icon {
-    width: 0.95rem;
-    height: 0.95rem;
-    opacity: 0.85;
+    width: 0.9rem;
+    height: 0.9rem;
+    opacity: 0.9;
     flex: 0 0 auto;
   }
 
@@ -1657,13 +1779,13 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 1.15rem;
-    height: 1.15rem;
-    padding: 0 0.3rem;
-    border-radius: 980px;
+    min-width: 1rem;
+    height: 1rem;
+    padding: 0 0.25rem;
+    border-radius: 0.35rem;
     background: var(--shroffin-blue, #0071e3);
     color: #fff;
-    font-size: 0.6875rem;
+    font-size: 0.625rem;
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1;
@@ -1673,38 +1795,103 @@
     display: none;
   }
 
+  /* --- Light peek scrim --- */
+  .hlc-filters-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 44;
+    background: rgba(29, 29, 31, 0.22);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--shroffin-ui-duration, 0.85s)
+      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  }
+
+  .hlc-filters-scrim.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* --- Modal bottom sheet --- */
+  .hlc-filters-handle {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    padding-top: 0.35rem;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .hlc-filters-handle-pill {
+    width: 2rem;
+    height: 0.25rem;
+    border-radius: 980px;
+    background: color-mix(in srgb, var(--shroffin-ink, #1d1d1f) 22%, transparent);
+  }
+
+  .hlc-filters-close {
+    display: inline-flex;
+  }
+
+  .hlc-filters-foot {
+    display: block;
+    flex: 0 0 auto;
+    padding: 0.85rem 1.15rem calc(0.85rem + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--hlc-line-soft);
+    background: #fff;
+  }
+
+  .hlc-filters-done {
+    width: 100%;
+  }
+
+  .hlc-filters-scroll {
+    display: block;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    padding: 0 1.15rem 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+
   .hlc-filters {
     position: fixed;
-    z-index: 45;
-    box-sizing: border-box;
-    /* top / right / width set by JS so the menu sits under Filters */
-    top: 0;
+    z-index: 46;
+    inset: auto 0 0 0;
+    left: 0;
     right: 0;
-    left: auto;
-    bottom: auto;
-    width: min(17.25rem, calc(100vw - 1.5rem));
-    max-height: min(48vh, 20rem);
-    overflow: auto;
-    margin: 0;
-    padding: 0.7rem 0.75rem 0.8rem;
-    border: 1px solid var(--hlc-line-soft);
-    border-radius: calc(var(--hlc-radius) - 0.15rem);
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    max-width: 40rem;
+    margin-inline: auto;
+    max-height: min(90dvh, 40rem);
+    padding: 0;
+    border: none;
+    border-radius: 0.75rem 0.75rem 0 0;
     background: #fff;
-    box-shadow:
-      0 10px 28px rgba(29, 29, 31, 0.12),
-      0 2px 6px rgba(29, 29, 31, 0.05);
-    opacity: 0;
-    transform: translateY(-0.4rem);
+    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.14);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 1;
+    transform: translateY(110%);
     pointer-events: none;
-    transition:
-      opacity var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
-      transform var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+    transition: transform var(--shroffin-ui-duration, 0.85s)
+      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
   }
 
   .hlc-filters.is-open {
-    opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
+  }
+
+  .hlc-filters.is-dragging {
+    transition: none;
   }
 
   .hlc-filters[hidden] {
@@ -1712,12 +1899,14 @@
   }
 
   .hlc-filters-title {
-    margin: 0 0 1rem;
+    margin: 0;
     font-size: 0.9375rem;
   }
 
   .hlc-filters-head {
-    margin-bottom: 1rem;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0 1.15rem 0.85rem;
   }
 
   .hlc-filters-head .hlc-filters-title {
@@ -1737,17 +1926,45 @@
     margin-bottom: 0.4rem;
     font-size: 0.9375rem;
   }
+
+  body.hlc-filters-sheet-open {
+    overflow: hidden;
+  }
+
+  /* Cover Apply once only while sheet open — do not set [hidden] via JS */
+  body.hlc-filters-sheet-open .hlc-apply-dock {
+    visibility: hidden;
+    pointer-events: none;
+  }
 }
 
 @media (min-width: 834px) {
   .hlc-filters[hidden] {
     display: block;
   }
+
+  /* Desktop: table headers pin under nav only — never under a Filters sticky bar */
+  .hlc-table-pin {
+    top: var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px));
+  }
+
+  #hlc-results-shell:not([hidden]) .hlc-results-head {
+    position: static;
+    margin-inline: 0;
+    padding: 0;
+    box-shadow: none;
+    background: transparent;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hlc-filters {
+  .hlc-filters,
+  .hlc-filters-scrim {
     transition: none;
+    transform: none;
+  }
+
+  .hlc-filters.is-open {
     transform: none;
   }
 }
@@ -2010,17 +2227,6 @@
   display: none;
 }
 
-.hlc-calc-tip {
-  margin: 0.35rem 0 0;
-  color: var(--shroffin-muted, #6e6e73);
-  font-size: 0.8125rem;
-  line-height: 1.4;
-}
-
-.hlc-calc-tip[hidden] {
-  display: none;
-}
-
 .hlc-col-footnote {
   font-size: 0.75em;
   font-weight: 500;
@@ -2029,7 +2235,11 @@
   vertical-align: super;
 }
 
-/* Vertical: grow with the page (browser scrollbar). Horizontal only when columns overflow. */
+/*
+ * Vertical: page scroll (browser bar). Horizontal: each strip scrolls sideways.
+ * Head + body scrollLeft stay mirrored in JS so columns line up.
+ */
+.hlc-table-head-scroll,
 .hlc-table-scroll {
   position: relative;
   overflow-x: auto;
@@ -2038,10 +2248,24 @@
   -webkit-overflow-scrolling: touch;
 }
 
+/* One scrollbar (body). Head mirrors silently. */
+.hlc-table-head-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hlc-table-head-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.hlc-compare--head {
+  margin: 0;
+}
+
 .hlc-compare {
   table-layout: fixed;
-  width: max-content;
-  min-width: 100%;
+  width: 100%;
+  min-width: 0;
   border-collapse: separate;
   border-spacing: 0;
   font-size: 0.9375rem;
@@ -2049,7 +2273,7 @@
 }
 
 .hlc-compare col.hlc-col-bank {
-  width: 14.25rem;
+  width: 18rem;
 }
 
 .hlc-compare col.hlc-col-w-pct {
@@ -2110,9 +2334,6 @@
 .hlc-compare[data-group="laterCharges"] td[data-col="overdueChargeDisplay"],
 .hlc-compare[data-group="laterCharges"] th[data-col="emiBounceChargeDisplay"],
 .hlc-compare[data-group="laterCharges"] td[data-col="emiBounceChargeDisplay"] {
-  width: 13rem;
-  min-width: 13rem;
-  max-width: 13rem;
   box-sizing: border-box;
   white-space: normal;
 }
@@ -2151,8 +2372,8 @@
 }
 
 .hlc-compare thead th {
-  position: sticky;
-  top: 0;
+  /* Vertical freeze comes from .hlc-table-pin; only Bank uses sticky left. */
+  position: relative;
   z-index: 3;
   background: var(--hlc-page-bg);
   border-bottom: 1px solid rgba(29, 29, 31, 0.18);
@@ -2227,9 +2448,9 @@
   left: 0;
   z-index: 2;
   background: var(--hlc-page-bg);
-  width: 14.25rem;
-  min-width: 14.25rem;
-  max-width: 14.25rem;
+  width: 18rem;
+  min-width: 18rem;
+  max-width: 18rem;
   white-space: normal;
   overflow: visible;
   box-shadow: none;
@@ -2243,8 +2464,8 @@
 
 .hlc-compare th.hlc-sticky-col {
   position: sticky;
-  top: 0;
   left: 0;
+  top: auto;
   z-index: 5;
   background: var(--hlc-page-bg);
 }
@@ -2453,6 +2674,8 @@
   transform: translateX(var(--shroffin-disclose-nudge, 0.2em));
 }
 
+/* Calculated amounts: ink digits + blue dotted underline (cue without
+   painting the whole number as a navigation link). */
 .hlc-charge-amount {
   position: relative;
   z-index: 1;
@@ -2466,9 +2689,10 @@
   border: 0;
   border-radius: 0;
   background: transparent;
-  color: var(--shroffin-link, #0066cc);
+  color: var(--shroffin-ink, #1d1d1f);
   text-decoration: underline;
   text-decoration-style: dotted;
+  text-decoration-color: var(--shroffin-link, #0066cc);
   text-underline-offset: 0.2em;
   font-family: var(--hlc-font-num);
   font-size: inherit;
@@ -2478,12 +2702,15 @@
   line-height: inherit;
   letter-spacing: inherit;
   cursor: pointer;
-  transition: color var(--shroffin-micro-duration, 0.5s)
-    var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  transition:
+    text-decoration-color var(--shroffin-micro-duration, 0.5s)
+      cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.hlc-charge-amount:hover {
-  color: var(--shroffin-link, #3f62c8);
+.hlc-charge-amount:hover,
+.hlc-charge-amount:focus-visible {
+  color: var(--shroffin-ink, #1d1d1f);
+  text-decoration-color: var(--shroffin-link, #3f62c8);
 }
 
 .hlc-charge-amount:focus-visible {
@@ -2642,33 +2869,41 @@
 }
 
 .hlc-bank-sub {
-  color: var(--shroffin-muted, #6e6e73);
-  font-size: 0.75rem;
-  margin-top: 0.2rem;
-  white-space: normal;
-  line-height: 1.35;
+  --hlc-detail-mark-size: 0.6875rem;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  column-gap: 0.55rem;
-  row-gap: 0.15rem;
+  column-gap: 0.35em;
+  row-gap: 0.12em;
+  color: var(--shroffin-muted, #6e6e73);
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+  min-width: 0;
+  line-height: 1.35;
 }
 
 .hlc-bank-scheme {
-  display: inline;
+  /* Grow only with the name — not the full cell — so More + icon sit next to it. */
+  flex: 0 1 auto;
   min-width: 0;
   color: var(--shroffin-muted, #6e6e73);
 }
 
-/* Secondary disclosure — same caption scale as the scheme, but clearly
-   a control (ink + soft underline). Avoid loud link-blue in this row;
-   that fights the bank cell and feels bolted on. */
+.hlc-bank-scheme::after {
+  content: ".";
+}
+
+/* Secondary disclosure — “More” + blue circled i, shared flex slot on every row.
+   Text carries the action; the mark signals “about this bank.” Fixed rem mark
+   size so every row matches (em sizing + inline flow made them drift). */
 .hlc-bank-detail {
   appearance: none;
   display: inline-flex;
   align-items: center;
-  gap: 0.14em;
-  vertical-align: baseline;
+  align-self: baseline;
+  flex: 0 0 auto;
+  gap: 0.3em;
+  white-space: nowrap;
   border: none;
   background: none;
   color: var(--shroffin-ink, #1d1d1f);
@@ -2678,24 +2913,17 @@
   line-height: inherit;
   cursor: pointer;
   margin: 0;
-  padding: 0.15rem 0;
-  margin-block: -0.15rem;
+  padding: 0;
   text-align: left;
   text-decoration: none;
-  flex: 0 0 auto;
   transition: color var(--shroffin-micro-duration, 0.5s) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hlc-bank-detail-label {
   color: inherit;
   font-weight: 400;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.16em;
-  text-decoration-color: rgba(29, 29, 31, 0.28);
-  transition:
-    color var(--shroffin-micro-duration, 0.5s) cubic-bezier(0.4, 0, 0.2, 1),
-    text-decoration-color var(--shroffin-micro-duration, 0.5s) cubic-bezier(0.4, 0, 0.2, 1);
+  line-height: inherit;
+  text-decoration: none;
 }
 
 /* Demo frames use the label span without a button wrapper */
@@ -2708,32 +2936,80 @@
   color: var(--shroffin-ink, #1d1d1f);
 }
 
-.hlc-bank-detail:hover .hlc-bank-detail-label,
-.hlc-bank-detail:focus-visible .hlc-bank-detail-label {
-  text-decoration-color: rgba(29, 29, 31, 0.55);
-}
-
 .hlc-bank-detail:focus-visible {
   outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
   outline-offset: var(--shroffin-focus-offset, 3px);
   border-radius: 0.2rem;
 }
 
-.hlc-bank-detail-arrow {
-  width: 0.62em;
-  height: 0.62em;
+.hlc-bank-detail-mark {
+  display: block;
+  box-sizing: border-box;
+  width: var(--hlc-detail-mark-size, 0.6875rem);
+  height: var(--hlc-detail-mark-size, 0.6875rem);
   flex: 0 0 auto;
-  color: currentColor;
-  opacity: 0.45;
-  transition:
-    transform var(--shroffin-micro-duration, 0.5s) cubic-bezier(0.22, 1, 0.36, 1),
-    opacity var(--shroffin-micro-duration, 0.5s) cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible;
+  color: var(--shroffin-link, #3f62c8);
+  opacity: 0.88;
+  transition: opacity var(--shroffin-micro-duration, 0.5s) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.hlc-bank-detail:hover .hlc-bank-detail-arrow,
-.hlc-bank-detail:focus-visible .hlc-bank-detail-arrow {
-  opacity: 0.72;
-  transform: translateX(var(--shroffin-disclose-nudge, 0.2em));
+.hlc-bank-detail:hover .hlc-bank-detail-mark,
+.hlc-bank-detail:focus-visible .hlc-bank-detail-mark {
+  opacity: 1;
+}
+
+/*
+ * Desktop only: table type + matching icons one step larger (15px → 16px).
+ * Phone keeps the base sizes above (and its max-width: 833px overrides).
+ */
+@media (min-width: 834px) {
+  .hlc-compare {
+    font-size: 1rem;
+  }
+
+  .hlc-compare th {
+    font-size: 1rem;
+  }
+
+  .hlc-charge-rule-main {
+    font-size: 1rem;
+  }
+
+  .hlc-charge-rule-subnote {
+    font-size: 0.75rem;
+  }
+
+  .hlc-header-select,
+  .hlc-prepay-header-select {
+    font-size: 0.6875rem;
+    background-size: calc(0.4rem * 16 / 15) calc(0.28rem * 16 / 15);
+  }
+
+  .hlc-bank-sub {
+    font-size: 0.8125rem;
+    --hlc-detail-mark-size: 0.75rem;
+  }
+
+  .hlc-sort-up svg,
+  .hlc-sort-down svg {
+    width: calc(0.55rem * 16 / 15);
+  }
+
+  .explore-banks-page {
+    --hlc-check-size: calc(1.125rem * 16 / 15);
+  }
+
+  .hlc-select-all svg,
+  .hlc-row-check svg {
+    width: calc(0.7rem * 16 / 15);
+    height: calc(0.7rem * 16 / 15);
+  }
+
+  .hlc-bank-detail-mark {
+    max-width: calc(0.95rem * 16 / 15);
+    max-height: calc(0.95rem * 16 / 15);
+  }
 }
 
 .hlc-num,
@@ -2750,7 +3026,7 @@
   text-align: center;
 }
 
-/* Roboto Mono only on number values — not Bank names, Tenure text, or column title letters */
+/* Number values use Google Sans with tabular figures for column alignment */
 .hlc-compare td.hlc-col-num,
 .hlc-compare td.hlc-col-num .hlc-cell-value,
 .hlc-compare td.hlc-col-num .hlc-num,
@@ -2835,6 +3111,7 @@
 
 .hlc-paddles {
   display: flex;
+  justify-content: flex-end;
   gap: 0.5rem;
   margin-top: 0.85rem;
 }
@@ -3086,51 +3363,150 @@
 }
 
 .hlc-calc-steps {
-  display: block;
-  padding: 0.2rem 1.05rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem 0.7rem;
+  padding: 0.65rem;
   border-radius: 0.9rem;
   background: rgba(29, 29, 31, 0.035);
 }
 
 .hlc-calc-step {
-  padding: 0.85rem 0;
-  border-bottom: 1px solid rgba(29, 29, 31, 0.08);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0.7rem 0.75rem 0.75rem;
+  border-radius: 0.75rem;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(29, 29, 31, 0.06);
 }
 
-.hlc-calc-step:last-child {
-  border-bottom: none;
+.hlc-calc-step--wide {
+  grid-column: 1 / -1;
 }
 
 .hlc-calc-step-label,
-.hlc-calc-equation,
 .hlc-calc-detail,
-.hlc-calc-total-label,
-.hlc-calc-total-equation {
+.hlc-calc-total-label {
   margin: 0;
 }
 
 .hlc-calc-step-label {
-  color: var(--shroffin-muted, #6e6e73);
-  font-size: 0.9375rem;
-  font-weight: 400;
-  line-height: 1.35;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  color: var(--shroffin-ink, #1d1d1f);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
-.hlc-calc-equation {
-  margin-top: 0.3rem;
+.hlc-calc-step-num {
+  flex: 0 0 auto;
+  color: var(--shroffin-muted, #6e6e73);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.hlc-calc-step-num::after {
+  content: ".";
+}
+
+.hlc-calc-step-title {
+  min-width: 0;
+  font-weight: 600;
+}
+
+.hlc-calc-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.16rem;
+  margin-top: 0.45rem;
+  width: 100%;
+}
+
+.hlc-calc-step .hlc-calc-stack + .hlc-calc-stack {
+  margin-top: 0.55rem;
+}
+
+.hlc-calc-line {
+  display: grid;
+  grid-template-columns: 1.35rem minmax(0, 1fr);
+  column-gap: 0.4rem;
+  align-items: baseline;
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+}
+
+.hlc-calc-op {
+  color: var(--shroffin-muted, #6e6e73);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.hlc-calc-val {
   color: var(--shroffin-ink, #1d1d1f);
-  font-size: 0.9375rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
-  line-height: 1.35;
+  line-height: 1.3;
+  text-align: right;
   overflow-wrap: anywhere;
+}
+
+.hlc-calc-rule {
+  width: 100%;
+  max-width: 100%;
+  margin: 0.15rem 0 0.1rem auto;
+  border-bottom: 1.5px solid rgba(29, 29, 31, 0.55);
+}
+
+.hlc-calc-line--answer .hlc-calc-val {
+  font-weight: 600;
+}
+
+.hlc-calc-stack--formula {
+  gap: 0.28rem;
+}
+
+.hlc-calc-fraction {
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+}
+
+.hlc-calc-fraction-num,
+.hlc-calc-fraction-den {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.16rem;
+}
+
+.hlc-calc-fraction-num .hlc-calc-line,
+.hlc-calc-fraction-den .hlc-calc-line {
+  max-width: none;
+}
+
+.hlc-calc-fraction-bar {
+  width: 100%;
+  margin: 0.28rem 0;
+  border-bottom: 1.5px solid rgba(29, 29, 31, 0.55);
+}
+
+.hlc-calc-fraction-den .hlc-calc-val {
+  font-weight: 400;
 }
 
 .hlc-calc-detail {
   margin-top: 0.35rem;
   color: var(--shroffin-muted, #6e6e73);
-  font-size: 0.75rem;
-  line-height: 1.45;
+  font-size: 0.6875rem;
+  line-height: 1.4;
 }
 
 .hlc-calc-total {
@@ -3138,26 +3514,21 @@
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.75rem 1rem;
   align-items: center;
-  margin-top: 0.9rem;
+  margin-top: 0.75rem;
   padding: 0.85rem 1.05rem;
   border-radius: 0.9rem;
   background: rgba(29, 29, 31, 0.035);
   color: var(--shroffin-ink, #1d1d1f);
 }
 
+.hlc-calc-total-main {
+  min-width: 0;
+}
+
 .hlc-calc-total-label {
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.35;
-}
-
-.hlc-calc-total-equation {
-  margin-top: 0.25rem;
-  color: var(--shroffin-muted, #6e6e73);
-  font-size: 0.75rem;
-  font-variant-numeric: tabular-nums;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
 }
 
 .hlc-calc-total-amount {
@@ -3167,6 +3538,19 @@
   font-variant-numeric: tabular-nums;
   line-height: 1.35;
   white-space: nowrap;
+}
+
+@media (max-width: 833px) {
+  .hlc-calc-steps {
+    padding: 0.55rem;
+    gap: 0.55rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .hlc-calc-steps {
+    grid-template-columns: 1fr;
+  }
 }
 
 .hlc-kv {
@@ -3261,7 +3645,27 @@
 
 .hlc-apply-bar {
   display: flex;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.hlc-apply-count {
+  margin: 0;
+  color: var(--shroffin-muted, #6e6e73);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.hlc-apply-count-n {
+  font-weight: 600;
+}
+
+.hlc-apply-count[hidden] {
+  display: none;
 }
 
 /* Floating Apply once is mobile-only. Desktop keeps the header button. */
@@ -3282,6 +3686,7 @@
     z-index: 40;
     align-items: center;
     justify-content: center;
+    gap: 0.65rem;
     width: max-content;
     max-width: calc(100vw - 2rem);
     margin: 0;
@@ -3295,6 +3700,20 @@
     opacity: 1;
     animation: hlc-apply-dock-in 0.9s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
     pointer-events: none;
+  }
+
+  .hlc-apply-dock:not([hidden]) .hlc-apply-count {
+    pointer-events: none;
+    padding: 0.55rem 0.9rem;
+    border-radius: var(--shroffin-btn-radius, 980px);
+    /* Solid ink — white frosted pill was invisible on the light canvas. */
+    background: var(--shroffin-ink, #1d1d1f);
+    color: #fff;
+    box-shadow:
+      0 4px 16px rgba(29, 29, 31, 0.22),
+      0 1px 3px rgba(29, 29, 31, 0.12);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 
   .hlc-apply-dock:not([hidden]) .hlc-btn-primary {
@@ -3315,117 +3734,121 @@
     display: none;
   }
 
-  /* Tabs on the left; Apply once is the floating dock on mobile. */
-  .hlc-results-actions {
-    align-items: flex-start;
-  }
-
+  /*
+   * Phone: Overview / Charges / Other charges — standard visual tier, not the
+   * 44px touch floor (that made the track feel oversized next to phone chrome).
+   * Desktop keeps the base .hlc-column-tab sizing unchanged.
+   * Track stays max-content; the scroller (not the track) clips/scrolls.
+   */
   .hlc-column-tabs {
     width: max-content;
-    max-width: 100%;
+    max-width: none;
     margin-inline-start: 0;
     justify-content: flex-start;
-  }
-
-  /* Narrow sticky bank col — frees horizontal room for metric columns. */
-  .hlc-compare col.hlc-col-bank {
-    width: 9.75rem;
-  }
-
-  .hlc-sticky-col {
-    width: 9.75rem;
-    min-width: 9.75rem;
-    max-width: 9.75rem;
-  }
-
-  .hlc-compare th.hlc-sticky-col,
-  .hlc-compare td.hlc-sticky-col {
-    padding-right: 0.55rem;
-  }
-
-  .hlc-bank-name {
-    font-size: 0.875rem;
-  }
-
-  .hlc-bank-sub {
-    column-gap: 0.5rem;
-  }
-
-  /* Metric cols: keep tight side padding, but never narrower than the header
-     line (label + footnote mark + sort arrows stay on one line). */
-  .hlc-compare {
-    table-layout: auto;
-  }
-
-  .hlc-compare th,
-  .hlc-compare td {
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
-  }
-
-  .hlc-compare th.hlc-sticky-col,
-  .hlc-compare td.hlc-sticky-col {
-    padding-left: 0.35rem;
-    padding-right: 0.55rem;
-  }
-
-  .hlc-compare th.hlc-col-fill,
-  .hlc-compare td.hlc-col-fill {
-    padding: 0;
-  }
-
-  .hlc-compare col.hlc-col-w-pct,
-  .hlc-compare col.hlc-col-w-inr,
-  .hlc-compare col.hlc-col-w-charge,
-  .hlc-compare col.hlc-col-w-prepayment,
-  .hlc-compare col.hlc-col-w-rate-change,
-  .hlc-compare col.hlc-col-w-tenure,
-  .hlc-compare col.hlc-col-w-note,
-  .hlc-compare col.hlc-col-w-text,
-  .hlc-compare[data-group="laterCharges"] col.hlc-col-w-charge,
-  .hlc-compare[data-group="laterCharges"] col.hlc-col-w-prepayment,
-  .hlc-compare[data-group="laterCharges"] col.hlc-col-w-rate-change {
-    width: auto;
-  }
-
-  .hlc-compare[data-group="laterCharges"] th[data-col="prepaymentChargeDisplay"],
-  .hlc-compare[data-group="laterCharges"] td[data-col="prepaymentChargeDisplay"],
-  .hlc-compare[data-group="laterCharges"] th[data-col="rateChangeChargeDisplay"],
-  .hlc-compare[data-group="laterCharges"] td[data-col="rateChangeChargeDisplay"],
-  .hlc-compare[data-group="laterCharges"] th[data-col="overdueChargeDisplay"],
-  .hlc-compare[data-group="laterCharges"] td[data-col="overdueChargeDisplay"],
-  .hlc-compare[data-group="laterCharges"] th[data-col="emiBounceChargeDisplay"],
-  .hlc-compare[data-group="laterCharges"] td[data-col="emiBounceChargeDisplay"] {
-    width: auto;
-    min-width: max-content;
-    max-width: none;
-  }
-
-  .hlc-compare thead th:not(.hlc-sticky-col):not(.hlc-col-fill) {
-    white-space: nowrap;
-    width: max-content;
-    min-width: max-content;
-    max-width: none;
+    padding: 3px;
     overflow: visible;
   }
 
-  .hlc-column-label {
-    width: max-content;
-    min-width: max-content;
+  .hlc-column-tab {
+    min-height: var(--shroffin-btn-standard-min, 36px);
+    padding: 0.28em 0.78em;
+    font-size: 0.8125rem; /* 13px — one step under phone body 14px */
   }
 
-  .hlc-column-title {
+  /*
+   * Keep real column widths on phone. width:100% + fixed layout was squashing
+   * every col into the viewport; size to columns and scroll sideways instead.
+   */
+  .hlc-compare {
+    width: max-content;
+    min-width: 100%;
+    /* Desktop 15px → phone: another ×14/15 step (was 14px) → ~13.1px */
+    font-size: calc(0.875rem * 14 / 15);
+  }
+
+  .hlc-compare th {
+    font-size: calc(0.875rem * 14 / 15);
+  }
+
+  .hlc-charge-rule-main {
+    font-size: calc(0.875rem * 14 / 15);
+  }
+
+  /*
+   * Same step-down as main table text (desktop 15px → phone 14px = ×14/15).
+   * Desktop sizes stay on the base rules above.
+   */
+  .hlc-charge-rule-subnote {
+    font-size: calc(0.6875rem * 14 / 15); /* ~10.3px */
+  }
+
+  .hlc-header-select,
+  .hlc-prepay-header-select {
+    font-size: calc(0.625rem * 14 / 15); /* ~9.3px */
+  }
+
+  /*
+   * Phone: bank sticky was 18rem and ate the viewport so Rate sat off-screen.
+   * Narrow enough that Rate is visible beside Bank. Scheme + More stay one
+   * inline sentence (same flow as desktop) — do not flex-split them.
+   */
+  .hlc-compare col.hlc-col-bank {
+    width: 12.75rem;
+  }
+
+  .hlc-sticky-col {
+    width: 12.75rem;
+    min-width: 12.75rem;
+    max-width: 12.75rem;
+  }
+
+  .hlc-compare th.hlc-sticky-col,
+  .hlc-compare td.hlc-sticky-col {
+    padding-right: 0.55rem;
+  }
+
+  /*
+   * Overview only: metric cols hug content (JS measures widest value/header).
+   * Bank stays. Charges / Other charges keep shared rem widths above.
+   */
+  .hlc-compare[data-group="essentials"] {
+    width: max-content;
+    min-width: 0;
+  }
+
+  .hlc-compare[data-group="essentials"] col.hlc-col-w-pct,
+  .hlc-compare[data-group="essentials"] col.hlc-col-w-inr,
+  .hlc-compare[data-group="essentials"] col.hlc-col-w-tenure,
+  .hlc-compare[data-group="essentials"] col.hlc-col-w-text {
+    width: auto;
+  }
+
+  .hlc-compare[data-group="essentials"] th:not(.hlc-sticky-col),
+  .hlc-compare[data-group="essentials"] td:not(.hlc-sticky-col) {
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
+  }
+
+  .hlc-bank-sub {
+    font-size: calc(0.75rem * 14 / 15); /* ~11.2px — ×14/15 of desktop 12px */
     flex-wrap: nowrap;
+  }
+
+  .hlc-bank-scheme {
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .hlc-compare thead th .hlc-col-footnote,
-  .hlc-compare thead th .hlc-sort-ind {
-    flex-shrink: 0;
+  .explore-banks-page {
+    --hlc-check-size: 0.8125rem;
+    --hlc-check-gap: 0.45rem;
   }
 
-  .hlc-sort-ind {
-    margin-left: 0.28rem;
+  .hlc-select-all svg,
+  .hlc-row-check svg {
+    width: 0.5rem;
+    height: 0.5rem;
   }
 
   body.hlc-apply-dock-open .hlc-compare-table-area {
@@ -3497,18 +3920,13 @@
   .hlc-field input,
   .hlc-field select,
   .hlc-paddle,
-  .hlc-bank-detail-arrow,
+  .hlc-bank-detail-mark,
   .hlc-show-more-arrow {
     transition-duration: 0.01ms !important;
   }
 
   .hlc-apply-dock:not([hidden]) {
     animation: none;
-  }
-
-  .hlc-bank-detail:hover .hlc-bank-detail-arrow,
-  .hlc-bank-detail:focus-visible .hlc-bank-detail-arrow {
-    transform: none;
   }
 
   .hlc-show-more:hover .hlc-show-more-arrow {
@@ -3541,14 +3959,23 @@
   background: var(--hlc-nav-bg-solid);
 }
 
-.explore-banks-page .shroffin-to-top {
-  background: var(--hlc-nav-bg);
-  border-color: var(--hlc-nav-border);
-}
+/* Phone: main bar scrolls away (unlike other non-Guide pages). Desktop stays fixed. */
+@media (max-width: 833px) {
+  .explore-banks-page {
+    --shroffin-gn-offset: 0px;
+  }
 
-.explore-banks-page .shroffin-to-top:hover,
-.explore-banks-page .shroffin-to-top:focus-visible {
-  background: var(--hlc-nav-bg-solid);
+  .explore-banks-page .globalnav {
+    position: relative;
+    inset: auto;
+  }
+
+  .explore-banks-page .globalnav.compact-open {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    inline-size: 100%;
+  }
 }
 
 /* ---- Concessions toggle chips (Facility-weight type) ---- */
@@ -3624,23 +4051,61 @@
 
 .hlc-filter-legend .hlc-field-label-row {
   display: inline-flex;
-  align-items: baseline;
-  gap: 0.2em;
+  align-items: center;
+  gap: 0.35em;
   max-width: 100%;
 }
 
-.hlc-filter-legend .hlc-field-help {
+.hlc-field-help-anchor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  margin-left: 0.15em;
+  line-height: 0;
+}
+
+.hlc-field-help-anchor:has(.hlc-field-help[aria-expanded="true"]),
+.hlc-field-help-anchor:has(.hlc-field-help-popover.is-open) {
+  z-index: 65;
+}
+
+.hlc-req + .hlc-field-help-anchor {
   margin-left: 0;
-  vertical-align: baseline;
+}
+
+.hlc-filter-legend .hlc-field-help-anchor {
+  margin-left: 0;
 }
 
 .hlc-field--foir .hlc-field-label-row {
-  align-items: baseline;
+  align-items: center;
 }
 
-.hlc-field--foir .hlc-field-help {
+/* Keep “FOIR” + info mark on one line after the intentional wrap */
+.hlc-field-label-keep {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/*
+ * Desktop: mobile break hidden; rest is transparent so the label flexes
+ * like the original “Share of income for EMIs /” + <br> + FOIR.
+ * Phone restyles only under max-width: 833px.
+ */
+.hlc-foir-mobile-break {
+  display: none;
+}
+
+.hlc-foir-rest {
+  display: contents;
+}
+
+.hlc-field--foir .hlc-field-help-anchor {
   margin-top: 0;
-  vertical-align: baseline;
 }
 
 .hlc-field-help {
@@ -3648,44 +4113,42 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: 1.45em;
-  height: 1.45em;
-  min-width: 1.45em;
-  min-height: 1.45em;
-  margin: 0 0 0 0.15em;
+  width: 1.22em;
+  height: 1.22em;
+  min-width: 1.22em;
+  min-height: 1.22em;
+  margin: 0;
   padding: 0;
-  border: 1px solid currentColor;
-  border-radius: 50%;
+  border: none;
+  border-radius: 0;
   background: transparent;
   color: var(--shroffin-ink, #1d1d1f);
   font-family: inherit;
-  font-size: 0.6em;
+  font-size: 0.65em;
   font-weight: 500;
-  line-height: 1;
+  line-height: 0;
   letter-spacing: 0;
-  vertical-align: 0.55em;
   cursor: help;
-  transition:
-    opacity var(--shroffin-micro-duration, 0.5s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
-    border-color var(--shroffin-micro-duration, 0.5s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
-}
-
-.hlc-req + .hlc-field-help {
-  margin-left: 0.45em;
+  transition: opacity var(--shroffin-micro-duration, 0.5s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .hlc-field-help-mark {
   display: block;
-  font-size: 1em;
-  font-weight: 500;
-  line-height: 1;
+  width: 100%;
+  height: 100%;
+  line-height: 0;
+}
+
+.hlc-field-help-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .hlc-field-help:hover,
 .hlc-field-help:focus-visible,
 .hlc-field-help[aria-expanded="true"] {
   color: var(--shroffin-ink, #1d1d1f);
-  border-color: currentColor;
   background: transparent;
   opacity: 0.72;
 }
@@ -3695,14 +4158,16 @@
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
+/* Parked absolute under the i mark; when open, JS portals to body as fixed. */
 .hlc-field-help-popover {
   position: absolute;
-  z-index: 60;
-  top: calc(100% + 0.35rem);
+  z-index: 80;
+  top: 0;
   left: 0;
   right: auto;
-  width: min(17.5rem, calc(100vw - 2rem));
-  max-width: 100%;
+  box-sizing: border-box;
+  width: min(17.5rem, calc(100vw - 1.5rem));
+  max-width: min(17.5rem, calc(100vw - 1.5rem));
   padding: 0.75rem 0.85rem;
   border: 1px solid rgba(29, 29, 31, 0.1);
   border-radius: 12px;
@@ -3710,12 +4175,21 @@
   box-shadow:
     0 1px 2px rgba(29, 29, 31, 0.04),
     0 12px 28px rgba(29, 29, 31, 0.1);
+  white-space: normal;
+  overflow: visible;
   opacity: 0;
   transform: translateY(6px);
   pointer-events: none;
   transition:
     opacity var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
     transform var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.hlc-field-help-popover.is-portaled {
+  position: fixed;
+  inset: auto;
+  /* Above filters drawer (41) and mobile chrome; below global nav flyouts. */
+  z-index: 60;
 }
 
 .hlc-field-help-popover.is-open {
@@ -3739,6 +4213,8 @@
   font-weight: 400;
   line-height: 1.45;
   letter-spacing: -0.01em;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .hlc-field-help-more {

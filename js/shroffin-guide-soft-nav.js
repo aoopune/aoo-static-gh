@@ -219,10 +219,35 @@
     }
   }
 
+  function currentScrollY() {
+    if (
+      document.body.classList.contains("shroffin-scroll-locked") &&
+      window.ShroffinMenus &&
+      typeof window.ShroffinMenus.getLockedScrollY === "function"
+    ) {
+      return window.ShroffinMenus.getLockedScrollY();
+    }
+    return window.pageYOffset || window.scrollY || 0;
+  }
+
+  function syncMenuUnlockScroll(y) {
+    if (
+      window.ShroffinMenus &&
+      typeof window.ShroffinMenus.adoptLockScroll === "function"
+    ) {
+      window.ShroffinMenus.adoptLockScroll(y);
+    }
+  }
+
   function applyPayload(payload, options) {
     var opts = options || {};
     var swap = swapRoot();
     if (!swap) return Promise.reject(new Error("Missing #guide-swap"));
+
+    var scrollY =
+      typeof opts.restoreScroll === "number" ? opts.restoreScroll : 0;
+    /* Retarget menu unlock before close starts its delayed unlock. */
+    syncMenuUnlockScroll(scrollY);
 
     if (window.ShroffinGuide && typeof window.ShroffinGuide.closeLocalNav === "function") {
       window.ShroffinGuide.closeLocalNav();
@@ -238,11 +263,7 @@
     activeGuideFile = payload.file;
     swap.innerHTML = payload.swapHtml;
 
-    if (!opts.restoreScroll) {
-      window.scrollTo(0, 0);
-    } else if (typeof opts.restoreScroll === "number") {
-      window.scrollTo(0, opts.restoreScroll);
-    }
+    window.scrollTo(0, scrollY);
 
     if (window.ShroffinGuide && typeof window.ShroffinGuide.initContent === "function") {
       window.ShroffinGuide.initContent();
@@ -272,7 +293,12 @@
 
     navigating = true;
     var fromFile = fileFromUrl(window.location.href);
-    scrollMemory[fromFile] = window.pageYOffset || 0;
+    scrollMemory[fromFile] = currentScrollY();
+    /* Forward Guide hops open at the top — do not let a later menu unlock
+       restore the mid-page offset captured when the Guide menu opened. */
+    if (!opts.popstate) {
+      syncMenuUnlockScroll(0);
+    }
 
     var href = absoluteHref(url);
     var swap = swapRoot();
@@ -286,7 +312,7 @@
             history.replaceState({ shroffinGuideSoft: true, file: payload.file }, "", href);
           }
           return applyPayload(payload, {
-            restoreScroll: opts.popstate ? scrollMemory[payload.file] || 0 : false
+            restoreScroll: opts.popstate ? scrollMemory[payload.file] || 0 : 0
           }).then(function () {
             return fadeSwap(swap, false);
           });
@@ -363,7 +389,7 @@
     document.addEventListener("focusin", onPointerPrefetch, true);
     window.addEventListener("popstate", onPopState);
 
-    document.querySelectorAll(".localnav-link[href], .guide-breadcrumb a[href], .guide-related-links a[href]").forEach(function (link) {
+    document.querySelectorAll(".localnav-link[href], .guide-breadcrumb a[href]").forEach(function (link) {
       if (canHandle(link.href)) prefetch(link.href);
     });
   }

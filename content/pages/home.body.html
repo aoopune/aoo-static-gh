@@ -1,15 +1,14 @@
 <main class="home-content">
     <section class="home-hero" aria-labelledby="home-hero-title">
       <div class="home-hero-copy">
-        <h1 class="home-hero-title" id="home-hero-title">See everything.</h1>
-        <p class="home-hero-sub">Get a fair view of home loans and<br>apply to your chosen banks in one go.</p>
+        <h1 class="home-hero-title" id="home-hero-title"><span class="home-hero-title-line">Get a fair view of home loans and</span> <span class="home-hero-title-line">apply to your chosen banks in one go.</span></h1>
         <div class="home-hero-ctas">
           <a class="home-hero-cta home-hero-cta-primary" href="pages/explore-banks.html">Explore banks</a>
         </div>
       </div>
     </section>
 
-    <!-- YC-style product frame: Mac on tablet/desktop, iPhone on phone -->
+    <!-- Product demo: latest Safari frames (macOS Tahoe Separate / iOS 26 Compact) -->
     <section class="spd-section spd-section--home spd-section--desktop-only" aria-label="Explore banks product demo">
       <div class="spd-section-inner">
         <div class="spd-sr-only">
@@ -19,17 +18,42 @@
           <div class="spd-stage-scaler">
             <div class="spd-window-slot" data-spd-slot>
               <div class="spd-window" data-spd-window>
-                <div class="spd-titlebar">
-                  <div class="spd-traffic" aria-hidden="true"><span></span><span></span><span></span></div>
-                  <div class="spd-titlebar-label">Explore banks</div>
+                <div class="spd-safari" aria-hidden="true">
+                  <div class="spd-safari-toolbar">
+                    <div class="spd-safari-tools spd-safari-tools--lead">
+                      <div class="spd-traffic"><span></span><span></span><span></span></div>
+                      <span class="spd-safari-cluster spd-safari-cluster--sidebar">
+                        <span class="spd-safari-btn spd-safari-btn--sidebar"></span>
+                        <span class="spd-safari-btn spd-safari-btn--chevron"></span>
+                      </span>
+                      <span class="spd-safari-cluster spd-safari-cluster--nav">
+                        <span class="spd-safari-btn spd-safari-btn--back"></span>
+                        <span class="spd-safari-btn spd-safari-btn--forward is-dim"></span>
+                      </span>
+                    </div>
+                    <div class="spd-safari-center">
+                      <span class="spd-safari-btn spd-safari-btn--shield"></span>
+                      <div class="spd-safari-field">
+                        <span class="spd-lock"></span>
+                        <span class="spd-url">shroffin.com</span>
+                      </div>
+                    </div>
+                    <div class="spd-safari-tools spd-safari-tools--trail">
+                      <span class="spd-safari-cluster spd-safari-cluster--actions">
+                        <span class="spd-safari-btn spd-safari-btn--share"></span>
+                        <span class="spd-safari-btn spd-safari-btn--plus"></span>
+                        <span class="spd-safari-btn spd-safari-btn--tabs"></span>
+                      </span>
+                    </div>
+                  </div>
                 </div>
                 <iframe
                   class="spd-frame"
                   data-spd-frame
                   title="Explore banks product demo"
-                  src="pages/_product-demo-frame.html?v=58"
+                  src="pages/_product-demo-frame.html?v=71"
                   width="1640"
-                  height="728"
+                  height="1025"
                   loading="eager"
                   tabindex="-1"
                 ></iframe>
@@ -57,36 +81,43 @@
     <section class="spd-section spd-section--phone spd-section--home-phone spd-section--phone-only" aria-label="Explore banks mobile demo">
       <div class="spd-section-inner">
         <div class="spd-sr-only">
-          Animated phone demonstration of Explore banks. Open Explore banks for the live tool.
+          Animated demonstration of Explore banks on a phone-sized layout. Open Explore banks for the live tool.
         </div>
         <div class="spd-stage spd-stage--phone" data-spd-stage data-spd-device="phone" data-spd-playback-root>
           <div class="spd-stage-scaler">
-            <div class="spd-phone" data-spd-phone>
-              <div class="spd-phone-btn spd-phone-btn--silent" aria-hidden="true"></div>
-              <div class="spd-phone-btn spd-phone-btn--vol-up" aria-hidden="true"></div>
-              <div class="spd-phone-btn spd-phone-btn--vol-down" aria-hidden="true"></div>
-              <div class="spd-phone-btn spd-phone-btn--power" aria-hidden="true"></div>
-              <div class="spd-phone-screen">
-                <div class="spd-phone-statusbar" aria-hidden="true">
-                  <span class="spd-phone-time">9:41</span>
-                  <span class="spd-phone-status-icons">
-                    <span class="spd-phone-signal"></span>
-                    <span class="spd-phone-wifi"></span>
-                    <span class="spd-phone-battery"></span>
-                  </span>
+            <div class="spd-window-slot" data-spd-slot>
+              <div class="spd-window" data-spd-window>
+                <div class="spd-ios-top" aria-hidden="true">
+                  <div class="spd-statusbar">
+                    <span class="spd-statusbar-time">9:41</span>
+                    <span class="spd-statusbar-icons">
+                      <span class="spd-statusbar-signal"></span>
+                      <span class="spd-statusbar-wifi"></span>
+                      <span class="spd-statusbar-battery"></span>
+                    </span>
+                  </div>
                 </div>
-                <div class="spd-phone-island" aria-hidden="true"></div>
                 <iframe
-                  class="spd-phone-frame"
+                  class="spd-frame"
                   data-spd-frame
                   title="Explore banks mobile demo"
-                  src="pages/_product-demo-frame-mobile.html?v=17"
-                  width="390"
-                  height="844"
+                  src="pages/_product-demo-frame-mobile.html?v=33"
+                  width="402"
+                  height="874"
                   loading="eager"
                   tabindex="-1"
                 ></iframe>
-                <div class="spd-phone-home" aria-hidden="true"></div>
+                <div class="spd-ios-bottom" aria-hidden="true">
+                  <div class="spd-ios-compact">
+                    <span class="spd-ios-back"></span>
+                    <span class="spd-ios-pill">
+                      <span class="spd-lock"></span>
+                      <span class="spd-url">shroffin.com</span>
+                    </span>
+                    <span class="spd-ios-more"><i></i><i></i><i></i></span>
+                  </div>
+                  <div class="spd-home-indicator"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -108,6 +139,7 @@
       </div>
     </section>
 
+    <div class="home-story-dark">
     <section class="home-lead" aria-labelledby="home-lead-title">
       <div class="home-lead-inner">
         <div class="home-lead-stack">
@@ -118,6 +150,55 @@
         </div>
       </div>
     </section>
+
+    <section class="home-clear" aria-labelledby="home-clear-title">
+      <div class="home-clear-track">
+        <div class="home-clear-pin">
+          <div class="home-clear-inner">
+            <h2 class="home-clear-display home-moment" id="home-clear-title">
+              <span class="home-clear-word">Transparent,</span>
+              <span class="home-clear-aside"><span class="home-clear-aside-word">like</span> <span class="home-clear-aside-word">never</span> <span class="home-clear-aside-word">before.</span></span>
+            </h2>
+            <p class="home-clear-body home-moment"><span class="home-clear-body-lead">So you find what works for you</span><span class="home-clear-body-tail"> — with no surprises.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-zero" aria-labelledby="home-zero-title" data-home-scrub="zero">
+      <div class="home-zero-track">
+        <div class="home-zero-pin">
+          <div class="home-zero-inner">
+            <h2 class="home-zero-display" id="home-zero-title">
+              <span class="home-zero-pair">
+                <span class="home-zero-zero">Zero</span>
+                <span class="home-zero-rest">commissions.</span>
+              </span>
+              <span class="home-zero-pair">
+                <span class="home-zero-zero">Zero</span>
+                <span class="home-zero-rest">bias.</span>
+              </span>
+            </h2>
+            <p class="home-zero-body">So you get a fair view of every lender, as none is listed, ranked, or pushed ahead of another.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-best" aria-labelledby="home-best-title">
+      <div class="home-best-track">
+        <div class="home-best-pin">
+          <div class="home-best-inner">
+            <h2 class="home-best-display home-moment" id="home-best-title">
+              <span class="home-best-lead">Best of all,</span>
+              <span class="home-best-aside">you can look through everything at your own pace,</span>
+            </h2>
+            <p class="home-best-body home-moment">without spam calls, a hard sell, or pushy notifications.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
 
     <section class="home-built" aria-labelledby="home-built-title" data-home-built>
       <div class="home-built-inner">
@@ -489,12 +570,8 @@
 
           <div class="home-open-col home-open-col--here">
             <div class="home-open-ours">
-              <!-- Decorative product window — recognisable, not the live UI -->
+              <!-- Decorative product view — recognisable, not the live UI -->
               <div class="home-open-browser home-open-browser--ours" aria-hidden="true">
-                <div class="spd-titlebar">
-                  <div class="spd-traffic"><span></span><span></span><span></span></div>
-                  <div class="spd-titlebar-label">Explore banks</div>
-                </div>
                 <div class="home-open-app">
                   <div class="home-open-app-head">
                     <div class="home-open-app-actions">

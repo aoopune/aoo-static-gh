@@ -17,9 +17,9 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=chapters-3">
-  <link rel="stylesheet" href="../css/shroffin-guide.css?v=chapters-3">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=guide-first-static-1">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=seg-radius-1">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=seg-radius-1">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=card-flip-no-white-1">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -72,15 +72,6 @@
             aria-controls="nav-guide-flyout" aria-current="page"
           >Guide</a>
         </li>
-        <li class="globalnav-item globalnav-item-support" id="nav-support">
-          <button
-            type="button"
-            class="globalnav-flyout-trigger"
-            id="nav-support-trigger"
-            aria-expanded="false"
-            aria-controls="nav-support-flyout"
-          >Support</button>
-        </li>
         <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
           <button
             type="button"
@@ -89,6 +80,15 @@
             aria-expanded="false"
             aria-controls="nav-tools-flyout"
           >Tools</button>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >Support</button>
         </li>
         <li class="globalnav-item">
           <a class="globalnav-link" href="/pages/about.html">About</a>
@@ -136,37 +136,6 @@
       </div>
     </div>
 
-    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
-      <div class="globalnav-flyout-content">
-        <h2 class="globalnav-submenu-header">Get support</h2>
-        <ul class="globalnav-submenu-list">
-          <li>
-            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
-              <span class="globalnav-submenu-label">Email</span>
-              <span class="globalnav-submenu-value">support@shroffin.com</span>
-            </a>
-          </li>
-          <li>
-            <a class="globalnav-submenu-link" href="tel:+919112334367">
-              <span class="globalnav-submenu-label">Call</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-          <li>
-            <a
-              class="globalnav-submenu-link"
-              href="https://wa.me/919112334367"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span class="globalnav-submenu-label">Chat on WhatsApp ↗</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
     <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content globalnav-flyout-content--guide">
         <div class="globalnav-submenu-column">
@@ -184,6 +153,54 @@
             </li>
           </ul>
         </div>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content">
+        <h2 class="globalnav-submenu-header">Get support</h2>
+        <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
+              <span class="globalnav-submenu-label">Email us</span>
+              <span class="globalnav-submenu-value">support@shroffin.com</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="tel:+919112334367">
+              <span class="globalnav-submenu-label">Call us</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="globalnav-submenu-link"
+              href="https://wa.me/919112334367"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="globalnav-submenu-label globalnav-submenu-label--with-icon">
+                Message us
+                <svg
+                  class="globalnav-whatsapp-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                  />
+                </svg>
+                <span class="visually-hidden"> (opens WhatsApp)</span>
+              </span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -273,30 +290,49 @@
       </ul>
     </nav>
 
-    <div class="guide-story">
+    <div class="guide-story guide-story--property-cover">
       <section class="mag-section guide-moment" id="coverage">
 <div class="mag-content"><h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-ember guide-tile-question">What does it pay for?</span></h2>
           <p class="guide-tile-copy guide-tile-copy--rule">
-            Repair or rebuild after covered damage.
+            Repair or rebuilding after covered damage.
           </p>
           <div class="guide-chapter-card">
-<p class="guide-callout guide-callout--tight">Take cover at possession of a finished house. Until handover, risk for the unfinished house usually sits with the seller or builder.</p>
-          
-          <ul class="guide-share-list">
-            <li>
-              <span class="guide-share-when">Building and contents</span>
-              <span class="guide-share-then">Building is the structure. Land is not insured. Contents are the things inside, and only if you add contents cover.</span>
-            </li>
-          </ul>
-          <div class="guide-compare-strip" data-guide-scrub="on">
-            <div class="guide-compare-col">
-              <h3 class="guide-limit-title">Often covered</h3>
-              <p class="guide-compare-body">Fire, lightning, earthquake, storm, flood, and other events listed on the policy. Theft or burglary can vary by policy.</p>
+<div class="guide-seg" role="tablist" aria-label="What does it pay for">
+            <button type="button" class="guide-seg-btn" role="tab" id="coverage-tab-when" aria-selected="true" aria-controls="coverage-panel-when">When to insure</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="coverage-tab-insured" aria-selected="false" aria-controls="coverage-panel-insured" tabindex="-1">What is insured</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="coverage-tab-events" aria-selected="false" aria-controls="coverage-panel-events" tabindex="-1">Covered or not</button>
+          </div>
+
+          <div class="guide-seg-panels">
+          <div class="guide-seg-panel" role="tabpanel" id="coverage-panel-when" aria-labelledby="coverage-tab-when">
+            <p class="guide-share-then"><span class="guide-skim">Take cover at possession of a finished house.</span> Until handover, risk for the unfinished house usually sits with the seller or builder.</p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="coverage-panel-insured" aria-labelledby="coverage-tab-insured" hidden>
+            <div class="guide-compare-strip" data-guide-scrub="on">
+              <div class="guide-compare-col">
+                <h3 class="guide-limit-title">Building</h3>
+                <p class="guide-compare-body">Building is the structure. <span class="guide-skim">Land is not insured.</span></p>
+              </div>
+              <div class="guide-compare-col">
+                <h3 class="guide-limit-title">Contents</h3>
+                <p class="guide-compare-body">Contents are the things inside, and only if you add contents cover.</p>
+              </div>
             </div>
-            <div class="guide-compare-col">
-              <h3 class="guide-limit-title">Usually not covered</h3>
-              <p class="guide-compare-body">Intentional damage, war, nuclear risks, and losses the policy does not cover. A drop in market value is usually not covered.</p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="coverage-panel-events" aria-labelledby="coverage-tab-events" hidden>
+            <div class="guide-compare-strip" data-guide-scrub="on">
+              <div class="guide-compare-col">
+                <h3 class="guide-limit-title">Often covered</h3>
+                <p class="guide-compare-body"><span class="guide-skim">Fire, lightning, earthquake, storm, flood, and other events listed on the policy.</span> Theft or burglary can vary by policy.</p>
+              </div>
+              <div class="guide-compare-col">
+                <h3 class="guide-limit-title">Usually not covered</h3>
+                <p class="guide-compare-body"><span class="guide-skim">Intentional damage, war, nuclear risks, and losses the policy does not cover.</span> A drop in market value is usually not covered.</p>
+              </div>
             </div>
+          </div>
           </div>
           </div>
         </div>
@@ -306,27 +342,39 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-siri guide-tile-question">How is the cover set up?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                The written details sit on your Policy Schedule.
+                The written details are found on your Policy Schedule.
               </p>
           <div class="guide-chapter-card">
-<ol class="guide-flow" data-guide-scrub="on">
-            <li data-step="1">
-              <span class="guide-share-when">House address</span>
-              <span class="guide-share-then">The address on the policy must match the house.</span>
-            </li>
-            <li data-step="2">
-              <span class="guide-share-when">Cover amount</span>
-              <span class="guide-share-then">Check the cover amount before you sign. It should match rebuild cost of the structure, not market price of flat plus land. Too low and the lender may reject the policy, and a claim can be scaled down by the same shortfall. Insuring for less than rebuild cost is under-insurance.</span>
-            </li>
-            <li data-step="3">
-              <span class="guide-share-when">Cover period</span>
-              <span class="guide-share-then">Many home policies last about 10 years. Longer brand packages exist. They help only if amount, perils, and lender naming still match your agreement. If your loan is longer, renew on time and keep the bank named on each renewal.</span>
-            </li>
-            <li data-step="4">
-              <span class="guide-share-when">Rebuild or loan-only</span>
-              <span class="guide-share-then">Some policies pay to rebuild the home. Others only clear what you still owe the bank. Outstanding-loan packages and full rebuild policies are different products. Ask which one you are buying.</span>
-            </li>
+<div class="guide-seg" role="tablist" aria-label="How is the cover set up">
+            <button type="button" class="guide-seg-btn" role="tab" id="setup-tab-schedule" aria-selected="true" aria-controls="setup-panel-schedule">What to check</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="setup-tab-product" aria-selected="false" aria-controls="setup-panel-product" tabindex="-1">Rebuild or loan-only</button>
+          </div>
+
+          <div class="guide-seg-panels">
+          <div class="guide-seg-panel" role="tabpanel" id="setup-panel-schedule" aria-labelledby="setup-tab-schedule">
+            <ol class="guide-flow" data-guide-scrub="on">
+              <li data-step="1">
+                <span class="guide-share-when">House address</span>
+                <span class="guide-share-then">The address on the policy must match the house.</span>
+              </li>
+              <li data-step="2">
+                <span class="guide-share-when">Cover amount</span>
+                <span class="guide-share-then">Check the cover amount before you sign. <span class="guide-skim">It should match rebuild cost of the structure, not market price of flat plus land.</span> Too low and the lender may reject the policy, and a claim can be scaled down by the same shortfall. Insuring for less than rebuild cost is under-insurance.</span>
+              </li>
+              <li data-step="3">
+                <span class="guide-share-when">Cover period</span>
+                <span class="guide-share-then">Many home policies last about 10 years. Longer brand packages exist. They help only if amount, perils, and lender naming still match your agreement. <span class="guide-skim">If your loan is longer, renew on time and keep the bank named on each renewal.</span></span>
+              </li>
             </ol>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="setup-panel-product" aria-labelledby="setup-tab-product" hidden>
+            <div class="guide-callout guide-callout--tight">
+              <span class="guide-share-when">Rebuild or loan-only</span>
+              <span class="guide-share-then"><span class="guide-skim">Some policies pay to rebuild the home. Others only clear what you still owe the bank.</span> Outstanding-loan packages and full rebuild policies are different products. Ask which one you are buying.</span>
+            </div>
+          </div>
+          </div>
           </div>
         </div>
       </section>
@@ -335,72 +383,92 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky guide-tile-question">How big is the premium?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Usually smaller than loan cover.
+                It is usually smaller than loan cover.
               </p>
           <div class="guide-chapter-card">
-<ul class="guide-share-list">
-            <li>
-              <span class="guide-share-when">When you pay</span>
-              <span class="guide-share-then">Most policies renew yearly — you pay the insurer and keep the receipt. Some packs cover several years in one premium, often about 10. If your home loan runs longer, plan the next renewal before cover ends.</span>
-            </li>
-            <li>
-              <span class="guide-share-when">Premium inside the home loan</span>
-              <span class="guide-share-then">Less common than for loan cover, but some offers still club a property premium into the loan. If that happens, you pay interest on that premium too.</span>
-            </li>
-            <li>
-              <span class="guide-share-when">Missed renewal</span>
-              <span class="guide-share-then">A lapsed policy leaves the house uninsured. The bank may also flag the loan if the agreement required continuous cover with the lender named.</span>
-            </li>
-            <li>
-              <span class="guide-share-when">GST on the premium</span>
-              <span class="guide-share-then">Property cover is general insurance and currently carries 18% GST. It shows on your premium receipt.</span>
-            </li>
-          </ul>
+<div class="guide-seg" role="tablist" aria-label="How big is the premium">
+            <button type="button" class="guide-seg-btn" role="tab" id="pay-tab-when" aria-selected="true" aria-controls="pay-panel-when">When you pay</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="pay-tab-loan" aria-selected="false" aria-controls="pay-panel-loan" tabindex="-1">In the loan</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="pay-tab-missed" aria-selected="false" aria-controls="pay-panel-missed" tabindex="-1">Missed renewal</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="pay-tab-gst" aria-selected="false" aria-controls="pay-panel-gst" tabindex="-1">GST</button>
+          </div>
+
+          <div class="guide-seg-panels">
+          <div class="guide-seg-panel" role="tabpanel" id="pay-panel-when" aria-labelledby="pay-tab-when">
+            <p class="guide-share-then"><span class="guide-skim">Most policies renew yearly — you pay the insurer and keep the receipt.</span> Some packs cover several years in one premium, often about 10. If your home loan runs longer, plan the next renewal before cover ends.</p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="pay-panel-loan" aria-labelledby="pay-tab-loan" hidden>
+            <p class="guide-share-then">Less common than for loan cover, but some offers still club a property premium into the loan. <span class="guide-skim">If that happens, you pay interest on that premium too.</span></p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="pay-panel-missed" aria-labelledby="pay-tab-missed" hidden>
+            <p class="guide-share-then"><span class="guide-skim">A lapsed policy leaves the house uninsured.</span> The bank may also flag the loan if the agreement required continuous cover with the lender named.</p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="pay-panel-gst" aria-labelledby="pay-tab-gst" hidden>
+            <p class="guide-share-then"><span class="guide-skim">Property cover is general insurance and currently carries 18% GST.</span> It shows on your premium receipt.</p>
+          </div>
+          </div>
           </div>
         </div>
       </section>
 
       <section class="mag-section guide-moment" id="claim">
 <div class="mag-content">
-          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">What after damage?</span></h2>
+          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">What happens after damage?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
                 Follow the claim steps.
               </p>
           <div class="guide-chapter-card">
-<ol class="guide-flow" data-guide-scrub="on">
-            <li data-step="1">
-              <span class="guide-share-when">First steps</span>
-              <span class="guide-share-then">Make the property safe. Tell the insurer soon — many policies want notice within about 30 days. Keep damaged items for survey unless you must move them for safety.</span>
-            </li>
-            <li data-step="2">
-              <span class="guide-share-when">What to keep</span>
-              <span class="guide-share-then">Policy number, photos, and any police or fire report if they apply. Do not discard debris or start non-urgent repairs before the survey unless the insurer agrees.</span>
-            </li>
-          </ol>
-          <div class="guide-disclosure-stack">
-            <details class="guide-disclosure" open>
-              <summary>How payout works</summary>
-              <p class="guide-share-then">Partial damage usually pays repair cost. Total loss pays up to the cover amount on your schedule. Rebuild policies aim to restore the home; loan-only packages may pay the bank up to what you still owe.<a class="guide-note-ref" href="#note-2">2</a></p>
-            </details>
-            <details class="guide-disclosure">
-              <summary>If the bank is named</summary>
-              <p class="guide-share-then">The bank is usually on the building policy as loss payee or under an Agreed Bank Clause. How money flows depends on your policy and that clause — especially on a total loss. On partial damage, many rebuild policies reimburse repair cost to you, but the bank may still need to be told and may need to approve release of funds.</p>
-            </details>
-            <details class="guide-disclosure">
-              <summary>Building vs contents</summary>
-              <p class="guide-share-then">Contents claims are often separate from the building. Contents payout may go to you even when the bank is named on the building cover.</p>
-            </details>
+<div class="guide-seg" role="tablist" aria-label="What happens after damage">
+            <button type="button" class="guide-seg-btn" role="tab" id="claim-tab-steps" aria-selected="true" aria-controls="claim-panel-steps">Claim steps</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="claim-tab-payout" aria-selected="false" aria-controls="claim-panel-payout" tabindex="-1">How payout works</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="claim-tab-bank" aria-selected="false" aria-controls="claim-panel-bank" tabindex="-1">If the bank is named</button>
           </div>
-          <p class="guide-glance">
-            On total loss, the bank is usually named on the building payout. Contents can still pay out separately.
-          </p>
+
+          <div class="guide-seg-panels">
+          <div class="guide-seg-panel" role="tabpanel" id="claim-panel-steps" aria-labelledby="claim-tab-steps">
+            <ol class="guide-flow" data-guide-scrub="on">
+              <li data-step="1">
+                <span class="guide-share-when">First steps</span>
+                <span class="guide-share-then">Make the property safe. <span class="guide-skim">Tell the insurer soon — many policies want notice within about 30 days.</span> Keep damaged items for survey unless you must move them for safety.</span>
+              </li>
+              <li data-step="2">
+                <span class="guide-share-when">What to keep</span>
+                <span class="guide-share-then">Policy number, photos, and any police or fire report if they apply. <span class="guide-skim">Do not discard debris or start non-urgent repairs before the survey unless the insurer agrees.</span></span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="claim-panel-payout" aria-labelledby="claim-tab-payout" hidden>
+            <div class="guide-disclosure-stack">
+              <details class="guide-disclosure" open>
+                <summary>How payout works</summary>
+                <p class="guide-share-then">Partial damage usually pays repair cost. Total loss pays up to the cover amount on your schedule. <span class="guide-skim">Rebuild policies aim to restore the home; loan-only packages may pay the bank up to what you still owe.</span></p>
+              </details>
+            </div>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="claim-panel-bank" aria-labelledby="claim-tab-bank" hidden>
+            <div class="guide-disclosure-stack">
+              <details class="guide-disclosure" open>
+                <summary>If the bank is named</summary>
+                <p class="guide-share-then"><span class="guide-skim">The bank is usually on the building policy as loss payee or under an Agreed Bank Clause.</span> How money flows depends on your policy and that clause — especially on a total loss. On partial damage, many rebuild policies reimburse repair cost to you, but the bank may still need to be told and may need to approve release of funds.</p>
+              </details>
+              <details class="guide-disclosure">
+                <summary>Building vs contents</summary>
+                <p class="guide-share-then">Contents claims are often separate from the building. <span class="guide-skim">Contents payout may go to you even when the bank is named on the building cover.</span></p>
+              </details>
+            </div>
+            <p class="guide-glance">
+              <span class="guide-skim">On total loss, the bank is usually named on the building payout.</span> Contents can still pay out separately.
+            </p>
+          </div>
+          </div>
           </div>
         </div>
       </section>
-    </div>
-
-    <div class="guide-related-wrap">
-      <p class="guide-related-links">Property cover and loan cover are separate products. One does not replace the other. <a href="home-loan-insurance.html">Both covers overview</a><span aria-hidden="true"> · </span><a href="credit-life-insurance.html">Loan cover</a></p>
     </div>
 
     <div class="guide-fine-wrap">
@@ -474,14 +542,26 @@
               <li><a href="/pages/about.html">About</a></li>
               <li><a href="/privacy-policy.html">Privacy Policy</a></li>
               <li><a href="/terms-of-use.html">Terms of Use</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
             </ul>
           </nav>
 
           <section class="site-footer-group" aria-labelledby="footer-support-title">
             <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
             <ul class="site-footer-list">
-              <li><a href="mailto:support@shroffin.com">Email</a></li>
-              <li><a href="tel:+919112334367">Call</a></li>
+              <li>
+                <a href="mailto:support@shroffin.com">Email us</a>
+              </li>
+              <li>
+                <a href="tel:+919112334367">Call us</a>
+              </li>
+              <li>
+                <a
+                  href="https://wa.me/919112334367"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Message us<span class="visually-hidden"> (opens WhatsApp)</span></a>
+              </li>
             </ul>
           </section>
 
@@ -504,12 +584,14 @@
               <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
               <details class="site-footer-disclaimer-more">
                 <summary>Read the full disclaimer</summary>
-                <div class="site-footer-disclaimer-full">
-                  <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-                  <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-                  <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-                  <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-                  <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                <div class="site-footer-disclaimer-panel">
+                  <div class="site-footer-disclaimer-full">
+                    <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+                    <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+                    <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+                    <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+                    <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                  </div>
                 </div>
               </details>
             </div>
@@ -518,12 +600,7 @@
           <div class="site-footer-bottom">
             <div class="site-footer-bottom-row">
               <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
-              <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
-                <ul class="site-footer-legal-links">
-                  <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-                  <li><a href="/terms-of-use.html">Terms of Use</a></li>
-                  <li><a href="/sitemap.html">Site Map</a></li>
-                </ul>
+              <nav class="site-footer-legal-nav" aria-label="Official resources">
                 <ul class="site-footer-official-links">
                   <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
                   <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
@@ -540,10 +617,10 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/guide-page-overview.js?v=soft-1"></script>
-  <script src="../js/shroffin-nav.js?v=chapters-3"></script>
-  <script src="../js/shroffin-guide.js?v=disclosure-close-1"></script>
+  <script src="../js/guide-page-overview.js?v=card-only-flip-1"></script>
+  <script src="../js/shroffin-nav.js?v=guide-top-1"></script>
+  <script src="../js/shroffin-guide.js?v=card-elev-1"></script>
   <script src="../js/shroffin-scrub.js?v=chapters-3"></script>
-  <script src="../js/shroffin-guide-soft-nav.js?v=chapters-3"></script>
+  <script src="../js/shroffin-guide-soft-nav.js?v=guide-top-1"></script>
 </body>
 </html>

@@ -216,18 +216,14 @@ for (const entry of pageRegistry) {
   if ((activeSource.match(/class="site-footer-heading"/g) || []).length !== 5) {
     fail(file, 'footer must contain five named directory groups');
   }
-  if ((activeSource.match(/class="site-footer-legal-links"/g) || []).length !== 1) {
-    fail(file, 'bottom legal links must be one Privacy/Terms/Site Map list');
+  if (/class="site-footer-legal-links"/.test(activeSource)) {
+    fail(file, 'bottom must not contain a separate legal-links list (Privacy/Terms/Site Map live under Company)');
   }
   if ((activeSource.match(/class="site-footer-official-links"/g) || []).length !== 1) {
     fail(file, 'official resource links must sit on their own bottom list');
   }
   if ((activeSource.match(/class="site-footer-bottom-row"/g) || []).length !== 1) {
-    fail(file, 'copyright and legal links must share one bottom row');
-  }
-  var legalList = activeSource.match(/class="site-footer-legal-links"[\s\S]*?<\/ul>/);
-  if (!legalList || (legalList[0].match(/<li>/g) || []).length !== 3) {
-    fail(file, 'bottom legal list must contain Privacy Policy, Terms of Use, and Site Map');
+    fail(file, 'copyright and official links must share one bottom row');
   }
   var officialList = activeSource.match(/class="site-footer-official-links"[\s\S]*?<\/ul>/);
   if (!officialList || (officialList[0].match(/<li>/g) || []).length !== 5) {
@@ -279,14 +275,17 @@ for (const entry of pageRegistry) {
   ) {
     fail(file, 'Connect group must contain the LinkedIn link');
   }
-  if (!activeSource.includes('href="/sitemap.html"')) {
-    fail(file, 'missing bottom Site Map link');
-  }
   const companyGroup = activeSource.match(
     /aria-labelledby="footer-company-title"[\s\S]*?<\/nav>/
   );
-  if (!companyGroup || companyGroup[0].includes('Site Map')) {
-    fail(file, 'Company group must not contain Site Map');
+  if (
+    !companyGroup ||
+    !companyGroup[0].includes('Privacy Policy') ||
+    !companyGroup[0].includes('Terms of Use') ||
+    !companyGroup[0].includes('Site Map') ||
+    !companyGroup[0].includes('href="/sitemap.html"')
+  ) {
+    fail(file, 'Company group must contain Privacy Policy, Terms of Use, and Site Map');
   }
   officialUrls.forEach(function (url) {
     const escaped = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -369,6 +368,26 @@ if (
 if (!/\.site-help-strip\s*\{[\s\S]*?margin-block-end:\s*clamp\(/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'help strip must sit in the air above the footer');
 }
+if (
+  !/\.site-help-strip \.guide-section-link,\s*\n\s*\.site-help-strip-phone\s*\{[\s\S]*?min-height:\s*var\(--shroffin-btn-touch\)/.test(
+    shellCss
+  )
+) {
+  fail(
+    'css/shroffin-shell.css',
+    'help strip Chat now / phone links must use --shroffin-btn-touch min-height'
+  );
+}
+if (
+  !/\.site-help-strip \.guide-section-link,\s*\n\s*\.site-help-strip-phone\s*\{[\s\S]*?min-width:\s*var\(--shroffin-btn-touch\)/.test(
+    shellCss
+  )
+) {
+  fail(
+    'css/shroffin-shell.css',
+    'help strip Chat now / phone links must use --shroffin-btn-touch min-width'
+  );
+}
 if (!/\.site-footer-meta\s*\{[\s\S]*?grid-template-columns:\s*var\(--site-footer-brand-track\)/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'footer meta must share the logo/directory tracks');
 }
@@ -390,20 +409,20 @@ if ((shellCss.match(/\.site-footer\s*\{[\s\S]*?border-block-start:\s*1px/g) || [
 if (/\.site-footer-rule\s*\{/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'obsolete internal footer rule style remains');
 }
-if (!/\.site-footer-official-links a\.guide-section-link \.guide-section-link-arrow\s*\{[\s\S]*?opacity:\s*0/.test(shellCss) &&
-    !/\.site-footer-legal-links a\.guide-section-link \.guide-section-link-arrow,\s*\n\s*\.site-footer-official-links a\.guide-section-link \.guide-section-link-arrow\s*\{[\s\S]*?opacity:\s*0/.test(shellCss)) {
+if (!/\.site-footer-official-links a\.guide-section-link \.guide-section-link-arrow\s*\{[\s\S]*?opacity:\s*0/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'official resource arrows must be hidden by default');
 }
 if (!/\.site-footer-list a\s*\{[\s\S]*?font-weight:\s*400/.test(shellCss)) {
-  fail('css/shroffin-shell.css', 'footer sublinks must use Apple footer weight');
+  fail('css/shroffin-shell.css', 'footer sublinks must use site footer weight');
 }
-if (!/\.site-footer-legal-links a,\s*\n\s*\.site-footer-official-links a\s*\{[\s\S]*?text-decoration:\s*none/.test(shellCss) &&
-    !/\.site-footer-legal-links a\s*\{[\s\S]*?text-decoration:\s*none/.test(shellCss)) {
-  fail('css/shroffin-shell.css', 'bottom legal links must not be underlined by default');
+if (!/\.site-footer-official-links a\s*\{[\s\S]*?text-decoration:\s*none/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'official resource links must not be underlined by default');
 }
-if (!/\.site-footer-official-links li:not\(:last-child\)::after\s*\{[\s\S]*?background:\s*var\(--shroffin-rule\)/.test(shellCss) &&
-    !/\.site-footer-legal-links li:not\(:last-child\)::after,\s*\n\s*\.site-footer-official-links li:not\(:last-child\)::after\s*\{[\s\S]*?background:\s*var\(--shroffin-rule\)/.test(shellCss)) {
-  fail('css/shroffin-shell.css', 'wide legal strip must use trailing Apple-style dividers');
+if (/\.site-footer-official-links li:not\(:last-child\)::after\s*\{/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'official resource strip must not use pipe dividers between links');
+}
+if (/\.site-footer-legal-links\s*[,{]/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'obsolete bottom legal-links styles remain');
 }
 if (!/@container footer-legal \(min-width:/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'legal strip must use progressive container queries');
@@ -413,6 +432,88 @@ if (!/\.site-footer-accordion \.site-footer-panel\s*\{[\s\S]*?grid-template-rows
 }
 if (!/\.site-footer-accordion \.site-footer-group\.is-open \.site-footer-panel\s*\{[\s\S]*?grid-template-rows:\s*1fr/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'open accordion panels must expand on small screens');
+}
+
+const editorialCss = fs.readFileSync(path.join(root, 'css', 'shroffin-editorial.css'), 'utf8');
+if (!/--guide-index-strip-row:\s*var\(--shroffin-btn-touch/.test(editorialCss)) {
+  fail(
+    'css/shroffin-editorial.css',
+    'phone chapter strip row must share --shroffin-btn-touch'
+  );
+}
+if (
+  !/--guide-index-on-photo:\s*var\(\s*--guide-chapter-strip-band/.test(editorialCss)
+) {
+  fail(
+    'css/shroffin-editorial.css',
+    'phone chapter strip pull must match sticky strip band height'
+  );
+}
+if (/--guide-index-pull:/.test(editorialCss)) {
+  fail(
+    'css/shroffin-editorial.css',
+    'phone chapter strip must not use extra --guide-index-pull beyond band height'
+  );
+}
+if (
+  !/--guide-first-section-peek:\s*calc\(\s*var\(--guide-open-pause\)\s*\+\s*\(\(var\(--shroffin-type-display\)\s*-\s*3px\)\s*\*\s*1\.1\)\s*\)/.test(
+    editorialCss
+  )
+) {
+  fail(
+    'css/shroffin-editorial.css',
+    'phone first look must reserve half first-section title from display question size + open-pause'
+  );
+}
+if (
+  !/--guide-hero-max:\s*calc\(\s*100dvh\s*-\s*var\(--guide-chrome-block\)\s*-\s*var\(--guide-first-section-peek\)\s*\)/.test(
+    editorialCss
+  )
+) {
+  fail(
+    'css/shroffin-editorial.css',
+    'phone hero max must leave room for first-section title peek'
+  );
+}
+if (
+  !/@media \(max-width: 833px\)[\s\S]*?\.guide-hero \+ \.mag-index\s*\{[\s\S]*?margin-block-start:\s*calc\(-1 \* var\(--guide-index-on-photo\)\)/.test(
+    editorialCss
+  )
+) {
+  fail(
+    'css/shroffin-editorial.css',
+    'phone chapter strip must pull onto the hero photo by exactly --guide-index-on-photo'
+  );
+}
+if (
+  (editorialCss.match(
+    /margin-block-start:\s*calc\(-1 \* var\(--guide-index-on-photo\)\)/g
+  ) || []).length !== 1
+) {
+  fail(
+    'css/shroffin-editorial.css',
+    'phone chapter strip photo pull must have exactly one owner'
+  );
+}
+if (
+  !/@media \(max-width: 833px\)[\s\S]*?body\.guide-reading \.mag-index-link\s*\{[\s\S]*?min-width:\s*var\(--guide-index-strip-row\)/.test(
+    editorialCss
+  )
+) {
+  fail(
+    'css/shroffin-editorial.css',
+    'phone chapter labels must enforce min-width touch floor'
+  );
+}
+if (
+  !/@media \(max-width: 1199px\)[\s\S]*?body\.guide-reading \.mag-index-link\s*\{[\s\S]*?min-width:\s*var\(--shroffin-btn-touch/.test(
+    editorialCss
+  )
+) {
+  fail(
+    'css/shroffin-editorial.css',
+    'horizontal chapter strip must enforce --shroffin-btn-touch min-width'
+  );
 }
 
 const navJs = fs.readFileSync(path.join(root, 'js', 'shroffin-nav.js'), 'utf8');

@@ -21,6 +21,10 @@
                 <span class="calc-prefix" aria-hidden="true">₹</span>
                 <input type="text" class="calc-input" autocomplete="off" id="principal" name="principal" inputmode="decimal" value="40,00,000">
               </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="principalRange" min="100000" max="9999999999" step="50000" value="4000000" aria-label="Loan amount slider">
+              </div>
             </div>
             <div class="calc-field">
               <div class="calc-label-row">
@@ -29,6 +33,10 @@
               <div class="calc-input-shell">
                 <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
               </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="Interest rate (% a year) slider">
+              </div>
             </div>
             <div class="calc-field">
               <div class="calc-label-row">
@@ -36,6 +44,10 @@
               </div>
               <div class="calc-input-shell">
                 <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="15" data-format="plain">
+              </div>
+              <div class="calc-slider-wrap">
+                <span class="calc-slider-caption">Or drag to adjust</span>
+                <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="15" aria-label="Years left slider">
               </div>
             </div>
             <div class="calc-field">
@@ -95,7 +107,7 @@
             <p class="calc-result-num" id="out-saved">—</p>
             <p class="calc-result-label">Interest difference after fee</p>
           </div>
-          <ul class="calc-stats">
+          <ul class="calc-stats calc-stats--compare">
             <li><span>New EMI</span><strong id="out-new-emi">—</strong></li>
             <li><span>New tenure</span><strong id="out-new-tenure">—</strong></li>
             <li><span>Months fewer</span><strong id="out-months-saved">—</strong></li>
@@ -141,6 +153,8 @@
             <li><a href="emi.html">EMI</a></li>
             <li><a href="loan-amount.html">Loan from EMI</a></li>
             <li><a href="how-much-loan.html">Eligibility</a></li>
+            <li><a href="balance-transfer.html">Balance transfer</a></li>
+            <li><a href="tenure.html">Tenure</a></li>
         </ul>
       </nav>
     </div>

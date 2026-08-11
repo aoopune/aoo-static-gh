@@ -17,9 +17,9 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=chapters-3">
-  <link rel="stylesheet" href="../css/shroffin-guide.css?v=chapters-3">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=guide-first-static-1">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=seg-radius-1">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=seg-radius-1">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=card-flip-no-white-1">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -72,15 +72,6 @@
             aria-controls="nav-guide-flyout" aria-current="page"
           >Guide</a>
         </li>
-        <li class="globalnav-item globalnav-item-support" id="nav-support">
-          <button
-            type="button"
-            class="globalnav-flyout-trigger"
-            id="nav-support-trigger"
-            aria-expanded="false"
-            aria-controls="nav-support-flyout"
-          >Support</button>
-        </li>
         <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
           <button
             type="button"
@@ -89,6 +80,15 @@
             aria-expanded="false"
             aria-controls="nav-tools-flyout"
           >Tools</button>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >Support</button>
         </li>
         <li class="globalnav-item">
           <a class="globalnav-link" href="/pages/about.html">About</a>
@@ -136,37 +136,6 @@
       </div>
     </div>
 
-    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
-      <div class="globalnav-flyout-content">
-        <h2 class="globalnav-submenu-header">Get support</h2>
-        <ul class="globalnav-submenu-list">
-          <li>
-            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
-              <span class="globalnav-submenu-label">Email</span>
-              <span class="globalnav-submenu-value">support@shroffin.com</span>
-            </a>
-          </li>
-          <li>
-            <a class="globalnav-submenu-link" href="tel:+919112334367">
-              <span class="globalnav-submenu-label">Call</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-          <li>
-            <a
-              class="globalnav-submenu-link"
-              href="https://wa.me/919112334367"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span class="globalnav-submenu-label">Chat on WhatsApp ↗</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
     <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content globalnav-flyout-content--guide">
         <div class="globalnav-submenu-column">
@@ -184,6 +153,54 @@
             </li>
           </ul>
         </div>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content">
+        <h2 class="globalnav-submenu-header">Get support</h2>
+        <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
+              <span class="globalnav-submenu-label">Email us</span>
+              <span class="globalnav-submenu-value">support@shroffin.com</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="tel:+919112334367">
+              <span class="globalnav-submenu-label">Call us</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="globalnav-submenu-link"
+              href="https://wa.me/919112334367"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="globalnav-submenu-label globalnav-submenu-label--with-icon">
+                Message us
+                <svg
+                  class="globalnav-whatsapp-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                  />
+                </svg>
+                <span class="visually-hidden"> (opens WhatsApp)</span>
+              </span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -275,42 +292,58 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-gold guide-tile-question">What proves who you are?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                KYC — identity and address for the applicant and co-applicant(s).
+                KYC — proof of identity and address for the applicant and co-applicant(s).
               </p>
           <div class="guide-chapter-card">
-<div class="guide-doc-rows guide-doc-rows--cols">
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">PAN Card <span class="guide-doc-req">Mandatory</span></p>
-              <p class="guide-doc-note">Or Form 60, if the customer does not have a PAN Card.</p>
+<div class="guide-seg" role="tablist" aria-label="What proves who you are" data-guide-seg-mobile="true">
+              <button type="button" class="guide-seg-btn" role="tab" id="kyc-tab-mandatory" aria-selected="true" aria-controls="kyc-panel-mandatory">Mandatory</button>
+              <button type="button" class="guide-seg-btn" role="tab" id="kyc-tab-any" aria-selected="false" aria-controls="kyc-panel-any" tabindex="-1">Any one of these</button>
             </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Passport</p>
-              <p class="guide-doc-note">Validity of which has not expired.</p>
+
+            <div class="guide-seg-panels guide-seg-panels--mobile-only" data-guide-seg-mobile-panels>
+            <div class="guide-seg-panel" role="tabpanel" id="kyc-panel-mandatory" aria-labelledby="kyc-tab-mandatory">
+            <p class="guide-doc-sub guide-doc-sub--desktop-only">Mandatory</p>
+            <div class="guide-doc-rows guide-doc-rows--cols">
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">PAN Card</p>
+                <p class="guide-doc-note">Or Form 60, if the PAN Card is not available.</p>
+              </div>
             </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Driving Licence</p>
-              <p class="guide-doc-note">Which has not expired.</p>
             </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Election / Voters Identification Card</p>
-              <p class="guide-doc-note">Issued by the Election Commission of India.</p>
+
+            <div class="guide-seg-panel" role="tabpanel" id="kyc-panel-any" aria-labelledby="kyc-tab-any">
+            <p class="guide-doc-sub guide-doc-sub--desktop-only">Any one of these</p>
+            <div class="guide-doc-rows guide-doc-rows--cols">
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Passport</p>
+                <p class="guide-doc-note">Validity of which has not expired.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Driving Licence</p>
+                <p class="guide-doc-note">Which has not expired.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Election / Voters Identification Card</p>
+                <p class="guide-doc-note">Issued by the Election Commission of India.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">NREGA Job Card</p>
+                <p class="guide-doc-note">Issued by NREGA and duly signed by the officer of the State Government.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">National Population Register Letter</p>
+                <p class="guide-doc-note">Containing details of name and address.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Proof of Possession of Aadhaar Number</p>
+                <p class="guide-doc-note">To be obtained voluntarily.</p>
+              </div>
             </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">NREGA Job Card</p>
-              <p class="guide-doc-note">Issued by NREGA and duly signed by the officer of the State Government.</p>
             </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">National Population Register Letter</p>
-              <p class="guide-doc-note">Containing details of name and address.</p>
             </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Proof of Possession of Aadhaar Number</p>
-              <p class="guide-doc-note">To be obtained voluntarily.</p>
-            </div>
-          </div>
-          <p class="guide-callout">
-            If your name changed, the same ID still works with a marriage certificate or a Gazette for that change.
-          </p>
+            <p class="guide-callout">
+              If your name changed, the same ID still works with a marriage certificate or a Gazette for that change.
+            </p>
           </div>
         </div>
       </section>
@@ -319,78 +352,146 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">What proves your income?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Income papers for the applicant and co-applicant(s).
+                Income documents for the applicant and co-applicant(s).
               </p>
           <div class="guide-chapter-card">
-<div class="guide-seg" role="tablist" aria-label="Income profile">
-            <button type="button" class="guide-seg-btn" role="tab" id="income-tab-salaried" aria-selected="true" aria-controls="income-panel-salaried">Salaried</button>
-            <button type="button" class="guide-seg-btn" role="tab" id="income-tab-self" aria-selected="false" aria-controls="income-panel-self" tabindex="-1">Self-employed</button>
-          </div>
+            <div class="guide-seg" role="tablist" aria-label="Income profile">
+              <button type="button" class="guide-seg-btn" role="tab" id="income-tab-salaried" aria-selected="true" aria-controls="income-panel-salaried">Salaried</button>
+              <button type="button" class="guide-seg-btn" role="tab" id="income-tab-self" aria-selected="false" aria-controls="income-panel-self" tabindex="-1">Self-employed</button>
+            </div>
 
-          <div class="guide-seg-panel" role="tabpanel" id="income-panel-salaried" aria-labelledby="income-tab-salaried">
-            <div class="guide-doc-rows guide-doc-rows--cols">
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Salary Slips</p>
-                <p class="guide-doc-note">Last 3 months.</p>
+            <div class="guide-seg-panels">
+              <div class="guide-seg-panel" role="tabpanel" id="income-panel-salaried" aria-labelledby="income-tab-salaried">
+                <div class="guide-doc-rows guide-doc-rows--cols">
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Salary Slips</p>
+                    <p class="guide-doc-note">Last 3 months.</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Bank Statements</p>
+                    <p class="guide-doc-note">Last 6 months, showing salary credits.</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Form-16 and IT Returns</p>
+                    <p class="guide-doc-note">Latest Form-16 and IT returns.</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Employment Contract / Appointment Letter</p>
+                    <p class="guide-doc-note">If current employment is less than one year old.</p>
+                  </div>
+                </div>
               </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Bank Statements</p>
-                <p class="guide-doc-note">Last 6 months, showing salary credits.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Form-16 and IT Returns</p>
-                <p class="guide-doc-note">Latest Form-16 and IT returns.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Employment Contract / Appointment Letter</p>
-                <p class="guide-doc-note">If current employment is less than one year old.</p>
+
+              <div class="guide-seg-panel" role="tabpanel" id="income-panel-self" aria-labelledby="income-tab-self" hidden>
+                <div class="guide-seg" role="tablist" aria-label="Business setup">
+                  <button type="button" class="guide-seg-btn" role="tab" id="entity-tab-proprietor" aria-selected="true" aria-controls="entity-panel-proprietor">Proprietor</button>
+                  <button type="button" class="guide-seg-btn" role="tab" id="entity-tab-partnership" aria-selected="false" aria-controls="entity-panel-partnership" tabindex="-1">Partnership</button>
+                  <button type="button" class="guide-seg-btn" role="tab" id="entity-tab-company" aria-selected="false" aria-controls="entity-panel-company" tabindex="-1">Company</button>
+                </div>
+                <div class="guide-seg-panels guide-seg-panels--fit">
+                  <div class="guide-seg-panel" role="tabpanel" id="entity-panel-proprietor" aria-labelledby="entity-tab-proprietor">
+                    <div class="guide-doc-rows guide-doc-rows--cols">
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Income Tax Returns with Computation</p>
+                        <p class="guide-doc-note">For at least the last 2 assessment years (individual and business entity), attested by a Chartered Accountant.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Balance Sheet and Profit &amp; Loss Account</p>
+                        <p class="guide-doc-note">At least last 2 years, with annexures / schedules (individual and business entity), attested by a Chartered Accountant.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Bank Account Statements</p>
+                        <p class="guide-doc-note">Last 12 months’ current account statements of the business entity and savings account statements of the individual.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Business Profile</p>
+                        <p class="guide-doc-note">Business profile of the applicant.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Form 26AS</p>
+                        <p class="guide-doc-note">Latest Form 26AS.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Details of Ongoing Loans</p>
+                        <p class="guide-doc-note">Of the individual and the business entity, including outstanding amount, instalments, security, purpose and balance loan term.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="guide-seg-panel" role="tabpanel" id="entity-panel-partnership" aria-labelledby="entity-tab-partnership" hidden>
+                    <div class="guide-doc-rows guide-doc-rows--cols">
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Income Tax Returns with Computation</p>
+                        <p class="guide-doc-note">For at least the last 2 assessment years (individual and business entity), attested by a Chartered Accountant.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Balance Sheet and Profit &amp; Loss Account</p>
+                        <p class="guide-doc-note">At least last 2 years, with annexures / schedules (individual and business entity), attested by a Chartered Accountant.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Bank Account Statements</p>
+                        <p class="guide-doc-note">Last 12 months’ current account statements of the business entity and savings account statements of the individual.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Business Profile</p>
+                        <p class="guide-doc-note">Business profile of the applicant.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Form 26AS</p>
+                        <p class="guide-doc-note">Latest Form 26AS.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Partnership Deed</p>
+                        <p class="guide-doc-note">Of the partnership firm.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Details of Ongoing Loans</p>
+                        <p class="guide-doc-note">Of the individual and the business entity, including outstanding amount, instalments, security, purpose and balance loan term.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="guide-seg-panel" role="tabpanel" id="entity-panel-company" aria-labelledby="entity-tab-company" hidden>
+                    <div class="guide-doc-rows guide-doc-rows--cols">
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Income Tax Returns with Computation</p>
+                        <p class="guide-doc-note">For at least the last 2 assessment years (individual and business entity), attested by a Chartered Accountant.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Balance Sheet and Profit &amp; Loss Account</p>
+                        <p class="guide-doc-note">At least last 2 years, with annexures / schedules (individual and business entity), attested by a Chartered Accountant.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Bank Account Statements</p>
+                        <p class="guide-doc-note">Last 12 months’ current account statements of the business entity and savings account statements of the individual.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Business Profile</p>
+                        <p class="guide-doc-note">Business profile of the applicant.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Form 26AS</p>
+                        <p class="guide-doc-note">Latest Form 26AS.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Memorandum and Articles of Association</p>
+                        <p class="guide-doc-note">Of the company.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">List of Directors and Shareholders</p>
+                        <p class="guide-doc-note">With individual shareholding, certified by a CA / CS.</p>
+                      </div>
+                      <div class="guide-doc-row">
+                        <p class="guide-doc-name">Details of Ongoing Loans</p>
+                        <p class="guide-doc-note">Of the individual and the business entity, including outstanding amount, instalments, security, purpose and balance loan term.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="guide-seg-panel" role="tabpanel" id="income-panel-self" aria-labelledby="income-tab-self" hidden>
-            <div class="guide-doc-rows guide-doc-rows--cols">
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Income Tax Returns with Computation</p>
-                <p class="guide-doc-note">For at least the last 2 assessment years (individual and business entity), attested by a Chartered Accountant.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Balance Sheet and Profit &amp; Loss Account</p>
-                <p class="guide-doc-note">At least last 2 years, with annexures / schedules (individual and business entity), attested by a Chartered Accountant.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Bank Account Statements</p>
-                <p class="guide-doc-note">Last 12 months’ current account statements of the business entity and savings account statements of the individual.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Business Profile</p>
-                <p class="guide-doc-note">Business profile of the applicant.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Form 26AS</p>
-                <p class="guide-doc-note">Latest Form 26AS.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Partnership Deed</p>
-                <p class="guide-doc-note">Where the business entity is a partnership firm.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Memorandum and Articles of Association</p>
-                <p class="guide-doc-note">Where the business entity is a company.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">List of Directors and Shareholders</p>
-                <p class="guide-doc-note">With individual shareholding, certified by a CA / CS — where the business entity is a company.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Details of Ongoing Loans</p>
-                <p class="guide-doc-note">Of the individual and the business entity, including outstanding amount, instalments, security, purpose and balance loan term.</p>
-              </div>
-            </div>
-          </div>
-          <p class="guide-callout guide-callout--tight">
-            Keep about 6 months between each year’s ITR filing. Filing several years together just before applying can look like income made for the loan.
-          </p>
+            <p class="guide-callout guide-callout--tight">
+              <span class="guide-skim">Keep about 6 months between each year’s ITR filing.</span> Filing several years together just before applying can look like income made for the loan.
+            </p>
           </div>
         </div>
       </section>
@@ -399,72 +500,74 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea guide-tile-question">What property papers do you need?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Property papers for the home you are buying.
+                The property documents for the home you are buying.
               </p>
           <div class="guide-chapter-card">
-<div class="guide-seg" role="tablist" aria-label="Property type">
-            <button type="button" class="guide-seg-btn" role="tab" id="property-tab-new" aria-selected="true" aria-controls="property-panel-new">New Home</button>
-            <button type="button" class="guide-seg-btn" role="tab" id="property-tab-resale" aria-selected="false" aria-controls="property-panel-resale" tabindex="-1">Resale Home</button>
-            <button type="button" class="guide-seg-btn" role="tab" id="property-tab-construction" aria-selected="false" aria-controls="property-panel-construction" tabindex="-1">Constructing a Home on a N.A. Plot</button>
-          </div>
+            <div class="guide-seg" role="tablist" aria-label="Property type">
+              <button type="button" class="guide-seg-btn" role="tab" id="property-tab-new" aria-selected="true" aria-controls="property-panel-new">New Home</button>
+              <button type="button" class="guide-seg-btn" role="tab" id="property-tab-resale" aria-selected="false" aria-controls="property-panel-resale" tabindex="-1">Resale Home</button>
+              <button type="button" class="guide-seg-btn" role="tab" id="property-tab-construction" aria-selected="false" aria-controls="property-panel-construction" tabindex="-1">Build on N.A. plot</button>
+            </div>
 
-          <div class="guide-seg-panel" role="tabpanel" id="property-panel-new" aria-labelledby="property-tab-new">
-            <div class="guide-doc-rows guide-doc-rows--cols">
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Allotment Letter / Buyer Agreement</p>
-                <p class="guide-doc-note">Copy of the allotment letter / buyer agreement.</p>
+            <div class="guide-seg-panels">
+              <div class="guide-seg-panel" role="tabpanel" id="property-panel-new" aria-labelledby="property-tab-new">
+                <div class="guide-doc-rows guide-doc-rows--cols">
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Allotment Letter / Buyer Agreement</p>
+                    <p class="guide-doc-note">Copy of the allotment letter / buyer agreement.</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Payment Receipts</p>
+                    <p class="guide-doc-note">Receipt(s) of payment(s) made to the developer.</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Occupancy Certificate</p>
+                    <p class="guide-doc-note">If the property is ready to move in.</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Cost Sheet</p>
+                    <p class="guide-doc-note">Showing your total property acquisition cost.</p>
+                  </div>
+                </div>
               </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Payment Receipts</p>
-                <p class="guide-doc-note">Receipt(s) of payment(s) made to the developer.</p>
+
+              <div class="guide-seg-panel" role="tabpanel" id="property-panel-resale" aria-labelledby="property-tab-resale" hidden>
+                <div class="guide-doc-rows guide-doc-rows--cols">
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Title Deeds</p>
+                    <p class="guide-doc-note">Including previous chain of the property documents.</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Payment Receipts</p>
+                    <p class="guide-doc-note">Receipt(s) of initial payment(s) made to the seller.</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Agreement to Sell</p>
+                    <p class="guide-doc-note">Copy of the agreement to sell (if already executed).</p>
+                  </div>
+                </div>
               </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Occupancy Certificate</p>
-                <p class="guide-doc-note">If the property is ready to move in.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Cost Sheet</p>
-                <p class="guide-doc-note">Showing your total property acquisition cost.</p>
+
+              <div class="guide-seg-panel" role="tabpanel" id="property-panel-construction" aria-labelledby="property-tab-construction" hidden>
+                <div class="guide-doc-rows guide-doc-rows--cols">
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Title Deeds of the Plot</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Proof of No Encumbrances</p>
+                    <p class="guide-doc-note">On the property.</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Approved Plans</p>
+                    <p class="guide-doc-note">Copy of the plans, approved by the local authorities.</p>
+                  </div>
+                  <div class="guide-doc-row">
+                    <p class="guide-doc-name">Construction Estimate</p>
+                    <p class="guide-doc-note">By an architect / civil engineer.</p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div class="guide-seg-panel" role="tabpanel" id="property-panel-resale" aria-labelledby="property-tab-resale" hidden>
-            <div class="guide-doc-rows guide-doc-rows--cols">
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Title Deeds</p>
-                <p class="guide-doc-note">Including previous chain of the property documents.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Payment Receipts</p>
-                <p class="guide-doc-note">Receipt(s) of initial payment(s) made to the seller.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Agreement to Sell</p>
-                <p class="guide-doc-note">Copy of the agreement to sell (if already executed).</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="guide-seg-panel" role="tabpanel" id="property-panel-construction" aria-labelledby="property-tab-construction" hidden>
-            <div class="guide-doc-rows guide-doc-rows--cols">
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Title Deeds of the Plot</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Proof of No Encumbrances</p>
-                <p class="guide-doc-note">On the property.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Approved Plans</p>
-                <p class="guide-doc-note">Copy of the plans, approved by the local authorities.</p>
-              </div>
-              <div class="guide-doc-row">
-                <p class="guide-doc-name">Construction Estimate</p>
-                <p class="guide-doc-note">By an architect / civil engineer.</p>
-              </div>
-            </div>
-          </div>
           </div>
         </div>
       </section>
@@ -473,34 +576,30 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-siri guide-tile-question">What else might they ask for?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Other papers usually filed with the application.
+                Other documents usually filed with the application.
               </p>
           <div class="guide-chapter-card">
-<div class="guide-doc-rows guide-doc-rows--cols">
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Own Contribution Proof</p>
-              <p class="guide-doc-note">Receipts for amounts already paid, plus any valid document showing funds for the unpaid share.</p>
+            <div class="guide-doc-rows guide-doc-rows--cols guide-doc-rows--compact">
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Own Contribution Proof</p>
+                <p class="guide-doc-note">Receipts for amounts already paid, plus any valid document showing funds for the unpaid share.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Ongoing Loan Bank Statements</p>
+                <p class="guide-doc-note">Last 6 months’ bank statements showing repayment of any ongoing loans.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Passport Size Photograph</p>
+                <p class="guide-doc-note">Of all the applicants / co-applicants, to be affixed on the application form and signed across.</p>
+              </div>
+              <div class="guide-doc-row">
+                <p class="guide-doc-name">Processing Fee Cheque</p>
+                <p class="guide-doc-note">Cheque for processing fee favouring the lender.</p>
+              </div>
             </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Ongoing Loan Bank Statements</p>
-              <p class="guide-doc-note">Last 6 months’ bank statements showing repayment of any ongoing loans.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Passport Size Photograph</p>
-              <p class="guide-doc-note">Of all the applicants / co-applicants, to be affixed on the application form and signed across.</p>
-            </div>
-            <div class="guide-doc-row">
-              <p class="guide-doc-name">Processing Fee Cheque</p>
-              <p class="guide-doc-note">Cheque for processing fee favouring the lender.</p>
-            </div>
-          </div>
           </div>
         </div>
       </section>
-    </div>
-
-    <div class="guide-related-wrap">
-      <p class="guide-related-links">When your folder is ready, compare lenders. <a href="explore-banks.html">Explore banks</a><span aria-hidden="true"> · </span><a href="guide.html">Guide overview</a></p>
     </div>
 
     <div class="guide-fine-wrap">
@@ -573,14 +672,26 @@
               <li><a href="/pages/about.html">About</a></li>
               <li><a href="/privacy-policy.html">Privacy Policy</a></li>
               <li><a href="/terms-of-use.html">Terms of Use</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
             </ul>
           </nav>
 
           <section class="site-footer-group" aria-labelledby="footer-support-title">
             <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
             <ul class="site-footer-list">
-              <li><a href="mailto:support@shroffin.com">Email</a></li>
-              <li><a href="tel:+919112334367">Call</a></li>
+              <li>
+                <a href="mailto:support@shroffin.com">Email us</a>
+              </li>
+              <li>
+                <a href="tel:+919112334367">Call us</a>
+              </li>
+              <li>
+                <a
+                  href="https://wa.me/919112334367"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Message us<span class="visually-hidden"> (opens WhatsApp)</span></a>
+              </li>
             </ul>
           </section>
 
@@ -603,12 +714,14 @@
               <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
               <details class="site-footer-disclaimer-more">
                 <summary>Read the full disclaimer</summary>
-                <div class="site-footer-disclaimer-full">
-                  <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-                  <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-                  <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-                  <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-                  <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                <div class="site-footer-disclaimer-panel">
+                  <div class="site-footer-disclaimer-full">
+                    <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+                    <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+                    <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+                    <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+                    <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                  </div>
                 </div>
               </details>
             </div>
@@ -617,12 +730,7 @@
           <div class="site-footer-bottom">
             <div class="site-footer-bottom-row">
               <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
-              <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
-                <ul class="site-footer-legal-links">
-                  <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-                  <li><a href="/terms-of-use.html">Terms of Use</a></li>
-                  <li><a href="/sitemap.html">Site Map</a></li>
-                </ul>
+              <nav class="site-footer-legal-nav" aria-label="Official resources">
                 <ul class="site-footer-official-links">
                   <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
                   <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
@@ -639,10 +747,10 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/guide-page-overview.js?v=soft-1"></script>
-  <script src="../js/shroffin-nav.js?v=chapters-3"></script>
-  <script src="../js/shroffin-guide.js?v=disclosure-close-1"></script>
+  <script src="../js/guide-page-overview.js?v=card-only-flip-1"></script>
+  <script src="../js/shroffin-nav.js?v=guide-top-1"></script>
+  <script src="../js/shroffin-guide.js?v=card-elev-1"></script>
   <script src="../js/shroffin-scrub.js?v=chapters-3"></script>
-  <script src="../js/shroffin-guide-soft-nav.js?v=chapters-3"></script>
+  <script src="../js/shroffin-guide-soft-nav.js?v=guide-top-1"></script>
 </body>
 </html>

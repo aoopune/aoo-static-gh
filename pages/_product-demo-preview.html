@@ -8,8 +8,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=type-ladder-5">
-  <link rel="stylesheet" href="../css/shroffin-product-demo.css?v=77">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=disclaimer-3">
+  <link rel="stylesheet" href="../css/shroffin-product-demo.css?v=104">
   <style>
     body { margin: 0; background: var(--shroffin-surface, #fcfcfd); }
     .preview-banner {
@@ -25,8 +25,8 @@
 </head>
 <body>
   <p class="preview-banner">
-    <strong>Preview only</strong> — Mac window · full flow.
-    <a href="_product-demo-mobile-preview.html">Mobile iPhone preview</a>
+    <strong>Preview only</strong> — macOS Tahoe Safari · Compact · centered search.
+    <a href="_product-demo-mobile-preview.html">Mobile preview</a>
   </p>
 
   <section class="spd-section" data-spd-preview aria-labelledby="spd-heading">
@@ -43,17 +43,42 @@
         <div class="spd-stage-scaler">
           <div class="spd-window-slot" data-spd-slot>
             <div class="spd-window" data-spd-window>
-              <div class="spd-titlebar">
-                <div class="spd-traffic" aria-hidden="true"><span></span><span></span><span></span></div>
-                <div class="spd-titlebar-label">Explore banks</div>
+              <div class="spd-safari" aria-hidden="true">
+                <div class="spd-safari-toolbar">
+                  <div class="spd-safari-tools spd-safari-tools--lead">
+                    <div class="spd-traffic"><span></span><span></span><span></span></div>
+                    <span class="spd-safari-cluster spd-safari-cluster--sidebar">
+                      <span class="spd-safari-btn spd-safari-btn--sidebar"></span>
+                      <span class="spd-safari-btn spd-safari-btn--chevron"></span>
+                    </span>
+                    <span class="spd-safari-cluster spd-safari-cluster--nav">
+                      <span class="spd-safari-btn spd-safari-btn--back"></span>
+                      <span class="spd-safari-btn spd-safari-btn--forward is-dim"></span>
+                    </span>
+                  </div>
+                  <div class="spd-safari-center">
+                    <span class="spd-safari-btn spd-safari-btn--shield"></span>
+                    <div class="spd-safari-field">
+                      <span class="spd-lock"></span>
+                      <span class="spd-url">shroffin.com</span>
+                    </div>
+                  </div>
+                  <div class="spd-safari-tools spd-safari-tools--trail">
+                    <span class="spd-safari-cluster spd-safari-cluster--actions">
+                      <span class="spd-safari-btn spd-safari-btn--share"></span>
+                      <span class="spd-safari-btn spd-safari-btn--plus"></span>
+                      <span class="spd-safari-btn spd-safari-btn--tabs"></span>
+                    </span>
+                  </div>
+                </div>
               </div>
               <iframe
                 class="spd-frame"
                 data-spd-frame
                 title="Explore banks product demo"
-                src="_product-demo-frame.html?v=56"
+                src="_product-demo-frame.html?v=71"
                 width="1640"
-                height="728"
+                height="1025"
                 loading="eager"
                 tabindex="-1"
               ></iframe>
@@ -64,6 +89,6 @@
     </div>
   </section>
 
-  <script src="../js/shroffin-product-demo-chrome.js?v=78"></script>
+  <script src="../js/shroffin-product-demo-chrome.js?v=96"></script>
 </body>
 </html>

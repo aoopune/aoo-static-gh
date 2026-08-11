@@ -17,9 +17,9 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=chapters-3">
-  <link rel="stylesheet" href="../css/shroffin-guide.css?v=chapters-3">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=guide-first-static-1">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=seg-radius-1">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=seg-radius-1">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=card-flip-no-white-1">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -72,15 +72,6 @@
             aria-controls="nav-guide-flyout" aria-current="page"
           >Guide</a>
         </li>
-        <li class="globalnav-item globalnav-item-support" id="nav-support">
-          <button
-            type="button"
-            class="globalnav-flyout-trigger"
-            id="nav-support-trigger"
-            aria-expanded="false"
-            aria-controls="nav-support-flyout"
-          >Support</button>
-        </li>
         <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
           <button
             type="button"
@@ -89,6 +80,15 @@
             aria-expanded="false"
             aria-controls="nav-tools-flyout"
           >Tools</button>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >Support</button>
         </li>
         <li class="globalnav-item">
           <a class="globalnav-link" href="/pages/about.html">About</a>
@@ -136,37 +136,6 @@
       </div>
     </div>
 
-    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
-      <div class="globalnav-flyout-content">
-        <h2 class="globalnav-submenu-header">Get support</h2>
-        <ul class="globalnav-submenu-list">
-          <li>
-            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
-              <span class="globalnav-submenu-label">Email</span>
-              <span class="globalnav-submenu-value">support@shroffin.com</span>
-            </a>
-          </li>
-          <li>
-            <a class="globalnav-submenu-link" href="tel:+919112334367">
-              <span class="globalnav-submenu-label">Call</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-          <li>
-            <a
-              class="globalnav-submenu-link"
-              href="https://wa.me/919112334367"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span class="globalnav-submenu-label">Chat on WhatsApp ↗</span>
-              <span class="globalnav-submenu-value">+91 91123 34367</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
     <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
       <div class="globalnav-flyout-content globalnav-flyout-content--guide">
         <div class="globalnav-submenu-column">
@@ -184,6 +153,54 @@
             </li>
           </ul>
         </div>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-support-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content">
+        <h2 class="globalnav-submenu-header">Get support</h2>
+        <ul class="globalnav-submenu-list">
+          <li>
+            <a class="globalnav-submenu-link" href="mailto:support@shroffin.com">
+              <span class="globalnav-submenu-label">Email us</span>
+              <span class="globalnav-submenu-value">support@shroffin.com</span>
+            </a>
+          </li>
+          <li>
+            <a class="globalnav-submenu-link" href="tel:+919112334367">
+              <span class="globalnav-submenu-label">Call us</span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="globalnav-submenu-link"
+              href="https://wa.me/919112334367"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="globalnav-submenu-label globalnav-submenu-label--with-icon">
+                Message us
+                <svg
+                  class="globalnav-whatsapp-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                  />
+                </svg>
+                <span class="visually-hidden"> (opens WhatsApp)</span>
+              </span>
+              <span class="globalnav-submenu-value">+91 91123 34367</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -278,27 +295,37 @@
       </ul>
     </nav>
 
-    <div class="guide-story">
+    <div class="guide-story guide-story--loan-cover">
       <section class="mag-section guide-moment" id="coverage">
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky guide-tile-question">What does it pay for?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                The outstanding home loan if that borrower dies.
+                The outstanding home loan if the borrower dies.
               </p>
           <div class="guide-chapter-card">
-<div class="guide-compare-strip" data-guide-scrub="on">
-            <div class="guide-compare-col">
-              <h3 class="guide-limit-title">Often covered</h3>
-              <p class="guide-compare-body">Death of the borrower named on the cover. Serious illness, permanent disability, or accidental death when those events are named on your policy papers.</p>
-            </div>
-            <div class="guide-compare-col">
-              <h3 class="guide-limit-title">Usually not covered</h3>
-              <p class="guide-compare-body">Anything not named on your policy papers. Illness before the waiting period ends. Claims in the first year often pay less than the full amount.</p>
+<div class="guide-seg" role="tablist" aria-label="What does it pay for">
+            <button type="button" class="guide-seg-btn" role="tab" id="coverage-tab-events" aria-selected="true" aria-controls="coverage-panel-events">Covered or not</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="coverage-tab-term" aria-selected="false" aria-controls="coverage-panel-term" tabindex="-1">Use your life cover</button>
+          </div>
+
+          <div class="guide-seg-panels">
+          <div class="guide-seg-panel" role="tabpanel" id="coverage-panel-events" aria-labelledby="coverage-tab-events">
+            <div class="guide-compare-strip" data-guide-scrub="on">
+              <div class="guide-compare-col">
+                <h3 class="guide-limit-title">Often covered</h3>
+                <p class="guide-compare-body"><span class="guide-skim">Death of the borrower named on the cover.</span> Serious illness, permanent disability, or accidental death when those events are named on your policy papers.</p>
+              </div>
+              <div class="guide-compare-col">
+                <h3 class="guide-limit-title">Usually not covered</h3>
+                <p class="guide-compare-body"><span class="guide-skim">Anything not named on your policy papers.</span> Illness before the waiting period ends. Claims in the first year often pay less than the full amount.</p>
+              </div>
             </div>
           </div>
-          <p class="guide-callout">
-            Already have term insurance? The bank may accept assignment of that cover to the loan instead of new loan cover.
-          </p>
+
+          <div class="guide-seg-panel" role="tabpanel" id="coverage-panel-term" aria-labelledby="coverage-tab-term" hidden>
+            <p class="guide-share-then">Already have term insurance? <span class="guide-skim">The bank may accept assignment of that cover to the loan instead of new loan cover.</span></p>
+          </div>
+          </div>
           </div>
         </div>
       </section>
@@ -307,27 +334,36 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-gold guide-tile-question">How is the cover set up?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                The written details sit on your Certificate of Insurance.
+                The written details are found on your Certificate of Insurance.
               </p>
           <div class="guide-chapter-card">
-<ol class="guide-flow" data-guide-scrub="on">
-            <li data-step="1">
-              <span class="guide-share-when">When cover starts</span>
-              <span class="guide-share-then">Usually when the loan is disbursed and the insurer has received payment.</span>
-            </li>
-            <li data-step="2">
-              <span class="guide-share-when">The loan</span>
-              <span class="guide-share-then">The home loan named on that certificate must match the loan account. A mismatch means no cover.</span>
-            </li>
-            <li data-step="3">
-              <span class="guide-share-when">Reducing or level</span>
-              <span class="guide-share-then">Reducing goes down as the loan is repaid. Level stays the same, and costs more. While the house is being built, cover often stays flat until EMIs begin.</span>
-            </li>
-            <li data-step="4">
-              <span class="guide-share-when">How long cover runs</span>
-              <span class="guide-share-then">Should match the loan term. A few plans renew every year instead. That is not the same as cover matched to the full loan.</span>
-            </li>
-          </ol>
+<div class="guide-seg" role="tablist" aria-label="How is the cover set up">
+            <button type="button" class="guide-seg-btn" role="tab" id="setup-tab-check" aria-selected="true" aria-controls="setup-panel-check">What to check</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="setup-tab-type" aria-selected="false" aria-controls="setup-panel-type" tabindex="-1">Cover goes down?</button>
+          </div>
+
+          <div class="guide-seg-panels">
+          <div class="guide-seg-panel" role="tabpanel" id="setup-panel-check" aria-labelledby="setup-tab-check">
+            <ol class="guide-flow" data-guide-scrub="on">
+              <li data-step="1">
+                <span class="guide-share-when">When cover starts</span>
+                <span class="guide-share-then">Usually when the loan is disbursed and the insurer has received payment.</span>
+              </li>
+              <li data-step="2">
+                <span class="guide-share-when">The loan</span>
+                <span class="guide-share-then"><span class="guide-skim">The home loan named on that certificate must match the loan account.</span> A mismatch means no cover.</span>
+              </li>
+              <li data-step="3">
+                <span class="guide-share-when">How long cover runs</span>
+                <span class="guide-share-then"><span class="guide-skim">Should match the loan term.</span> A few plans renew every year instead. That is not the same as cover matched to the full loan.</span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="setup-panel-type" aria-labelledby="setup-tab-type" hidden>
+            <p class="guide-share-then"><span class="guide-skim">Reducing goes down as the loan is repaid. Level stays the same, and costs more.</span> While the house is being built, cover often stays flat until EMIs begin.</p>
+          </div>
+          </div>
           </div>
         </div>
       </section>
@@ -336,34 +372,46 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea guide-tile-question">How big is the premium?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Usually larger than property cover.
+                It is usually higher than property cover.
               </p>
           <div class="guide-chapter-card">
-<div class="guide-disclosure-stack">
-            <details class="guide-disclosure" open>
-              <summary>When you pay</summary>
-              <p class="guide-share-then">Most often once at the start, paid outside the loan. Some plans take yearly or monthly payments instead.</p>
-            </details>
-            <details class="guide-disclosure">
-              <summary>Premium inside the home loan</summary>
-              <p class="guide-share-then">The premium is added to the loan principal and repaid through instalments. Interest applies on that premium for the remaining tenure, so the same cover can cost more this way. Needs clear consent. Buying stays voluntary.</p>
-            </details>
-            <details class="guide-disclosure">
-              <summary>Use term cover bought separately</summary>
-              <p class="guide-share-then">Premium is paid to the insurer directly. The bank may ask to be named on the policy. That is assignment. It is not the same as bank-bundled loan cover.</p>
-            </details>
-            <details class="guide-disclosure">
-              <summary>Free-look window</summary>
-              <p class="guide-share-then">Many life policies allow a short cancel period after issue. Confirm the days, the refund path, and where the money returns if the premium sat inside the loan.</p>
-            </details>
-            <details class="guide-disclosure">
-              <summary>Tax on the premium</summary>
-              <p class="guide-share-then">Life cover premiums may qualify under Section 80C in the old tax regime, within the overall limit. When the premium is borrowed and repaid through instalments, that path often does not qualify. Keep the receipt.</p>
-            </details>
-            <details class="guide-disclosure">
-              <summary>GST on the premium</summary>
-              <p class="guide-share-then">Individual life cover premiums are currently <a class="guide-section-link" href="https://taxinformation.cbic.gov.in/view-pdf/1010454/ENG/Notifications" target="_blank" rel="noopener noreferrer">exempt from GST<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official CBIC GST notification)</span></a>. Confirm what shows on your premium receipt.</p>
-            </details>
+<div class="guide-seg" role="tablist" aria-label="How big is the premium">
+            <button type="button" class="guide-seg-btn" role="tab" id="pay-tab-when" aria-selected="true" aria-controls="pay-panel-when">When you pay</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="pay-tab-loan" aria-selected="false" aria-controls="pay-panel-loan" tabindex="-1">In the loan</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="pay-tab-term" aria-selected="false" aria-controls="pay-panel-term" tabindex="-1">Your own policy</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="pay-tab-freelook" aria-selected="false" aria-controls="pay-panel-freelook" tabindex="-1">Can I cancel?</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="pay-tab-taxes" aria-selected="false" aria-controls="pay-panel-taxes" tabindex="-1">Taxes</button>
+          </div>
+
+          <div class="guide-seg-panels">
+          <div class="guide-seg-panel" role="tabpanel" id="pay-panel-when" aria-labelledby="pay-tab-when">
+            <p class="guide-share-then"><span class="guide-skim">Most often once at the start, paid outside the loan.</span> Some plans take yearly or monthly payments instead.</p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="pay-panel-loan" aria-labelledby="pay-tab-loan" hidden>
+            <p class="guide-share-then">The premium is added to the loan principal and repaid through instalments. <span class="guide-skim">Interest applies on that premium for the remaining tenure, so the same cover can cost more this way.</span> Needs clear consent. Buying stays voluntary.</p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="pay-panel-term" aria-labelledby="pay-tab-term" hidden>
+            <p class="guide-share-then">Premium is paid to the insurer directly. The bank may ask to be named on the policy. That is assignment. <span class="guide-skim">It is not the same as bank-bundled loan cover.</span></p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="pay-panel-freelook" aria-labelledby="pay-tab-freelook" hidden>
+            <p class="guide-share-then"><span class="guide-skim">Many life policies allow a short cancel period after issue.</span> Confirm the days, the refund path, and where the money returns if the premium sat inside the loan.</p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="pay-panel-taxes" aria-labelledby="pay-tab-taxes" hidden>
+            <div class="guide-compare-strip" data-guide-scrub="on">
+              <div class="guide-compare-col">
+                <h3 class="guide-limit-title">Tax</h3>
+                <p class="guide-compare-body"><span class="guide-skim">Life cover premiums may qualify under Section 80C in the old tax regime, within the overall limit.</span> When the premium is borrowed and repaid through instalments, that path often does not qualify. Keep the receipt.</p>
+              </div>
+              <div class="guide-compare-col">
+                <h3 class="guide-limit-title">GST</h3>
+                <p class="guide-compare-body"><span class="guide-skim">Individual life cover premiums are currently <a class="guide-section-link" href="https://taxinformation.cbic.gov.in/view-pdf/1010454/ENG/Notifications" target="_blank" rel="noopener noreferrer">exempt from GST<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official CBIC GST notification)</span></a>.</span> Confirm what shows on your premium receipt.</p>
+              </div>
+            </div>
+          </div>
           </div>
           </div>
         </div>
@@ -373,45 +421,54 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-ember guide-tile-question">How does a claim work?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                The payout clears or cuts the loan.
+                The payout clears or reduces the loan.
               </p>
           <div class="guide-chapter-card">
-<figure class="guide-teach" data-guide-scrub="on">
-            <div
-              class="guide-teach-flow"
-              role="img"
-              aria-label="Insurer payout goes to the bank first, up to the outstanding loan. Any leftover goes to the nominee only if the Certificate of Insurance allows it."
-            >
-              <div class="guide-teach-step">
-                <p class="guide-teach-from">Insurer payout</p>
+<div class="guide-seg" role="tablist" aria-label="How does a claim work">
+            <button type="button" class="guide-seg-btn" role="tab" id="claim-tab-who" aria-selected="true" aria-controls="claim-panel-who">Who gets paid</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="claim-tab-amount" aria-selected="false" aria-controls="claim-panel-amount" tabindex="-1">How much</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="claim-tab-how" aria-selected="false" aria-controls="claim-panel-how" tabindex="-1">How to claim</button>
+            <button type="button" class="guide-seg-btn" role="tab" id="claim-tab-prepay" aria-selected="false" aria-controls="claim-panel-prepay" tabindex="-1">If you close the loan</button>
+          </div>
+
+          <div class="guide-seg-panels">
+          <div class="guide-seg-panel" role="tabpanel" id="claim-panel-who" aria-labelledby="claim-tab-who">
+            <figure class="guide-teach" data-guide-scrub="on">
+              <div
+                class="guide-teach-flow"
+                role="img"
+                aria-label="Insurer payout goes to the bank first, up to the outstanding loan. Any leftover goes to the nominee only if the Certificate of Insurance allows it."
+              >
+                <div class="guide-teach-step">
+                  <p class="guide-teach-from">Insurer payout</p>
+                </div>
+                <span class="guide-teach-arrow" aria-hidden="true"></span>
+                <div class="guide-teach-step">
+                  <p class="guide-teach-from">Bank first</p>
+                  <p class="guide-teach-note">Up to the outstanding loan</p>
+                </div>
+                <span class="guide-teach-arrow" aria-hidden="true"></span>
+                <div class="guide-teach-step">
+                  <p class="guide-teach-from">Nominee</p>
+                  <p class="guide-teach-note">Leftover only if the Certificate allows it</p>
+                </div>
               </div>
-              <span class="guide-teach-arrow" aria-hidden="true"></span>
-              <div class="guide-teach-step">
-                <p class="guide-teach-from">Bank first</p>
-                <p class="guide-teach-note">Up to the outstanding loan</p>
-              </div>
-              <span class="guide-teach-arrow" aria-hidden="true"></span>
-              <div class="guide-teach-step">
-                <p class="guide-teach-from">Nominee</p>
-                <p class="guide-teach-note">Leftover only if the Certificate allows it</p>
-              </div>
-            </div>
-            <figcaption class="guide-teach-caption">Unlike a term plan, the family is not first in line.</figcaption>
-          </figure>
-          <ul class="guide-share-list">
-            <li>
-              <span class="guide-share-when">What gets paid out</span>
-              <span class="guide-share-then">Many plans pay the amount written on the certificate, not today's exact loan balance. Some plans track the live loan balance only if that certificate says so.</span>
-            </li>
-            <li>
-              <span class="guide-share-when">How to claim</span>
-              <span class="guide-share-then">The nominee or the bank submits the papers. If approved, the loan is reduced or cleared.</span>
-            </li>
-            <li>
-              <span class="guide-share-when">If the loan is prepaid or transferred</span>
-              <span class="guide-share-then">If you close the loan early or move it to another bank, cover does not always end. This cover often cannot come with you, and you may get only some of the premium back — some plans return nothing. Any refund follows the surrender terms on your certificate. Ask for the refund and cover status in writing.</span>
-            </li>
-          </ul>
+              <figcaption class="guide-teach-caption">Unlike a term plan, the family is not first in line.</figcaption>
+            </figure>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="claim-panel-amount" aria-labelledby="claim-tab-amount" hidden>
+            <p class="guide-share-then"><span class="guide-skim">Many plans pay the amount written on the certificate, not today's exact loan balance.</span> Some plans track the live loan balance only if that certificate says so.</p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="claim-panel-how" aria-labelledby="claim-tab-how" hidden>
+            <p class="guide-share-then">The nominee or the bank submits the papers. <span class="guide-skim">If approved, the loan is reduced or cleared.</span></p>
+          </div>
+
+          <div class="guide-seg-panel" role="tabpanel" id="claim-panel-prepay" aria-labelledby="claim-tab-prepay" hidden>
+            <p class="guide-share-then"><span class="guide-skim">If you close the loan early or move it to another bank, cover does not always end.</span> This cover often cannot come with you, and you may get only some of the premium back — some plans return nothing. Any refund follows the surrender terms on your certificate. Ask for the refund and cover status in writing.</p>
+          </div>
+          </div>
           </div>
         </div>
       </section>
@@ -420,7 +477,7 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">Term plan or loan cover?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Two ways to clear the loan on death.
+                These are two ways to clear the loan upon death.
               </p>
           <div class="guide-chapter-card">
 <div class="guide-limits" data-guide-scrub="on">
@@ -429,11 +486,11 @@
               <ul class="guide-share-list">
                 <li>
                   <span class="guide-share-when">Cost</span>
-                  <span class="guide-share-then">Usually less per rupee of cover. Paid outside the loan.</span>
+                  <span class="guide-share-then"><span class="guide-skim">Usually less per rupee of cover.</span> Paid outside the loan.</span>
                 </li>
                 <li>
                   <span class="guide-share-when">Cover</span>
-                  <span class="guide-share-then">Stays level. Can outlast the loan.</span>
+                  <span class="guide-share-then"><span class="guide-skim">Stays level.</span> Can outlast the loan.</span>
                 </li>
                 <li>
                   <span class="guide-share-when">Early repay or switch</span>
@@ -441,7 +498,7 @@
                 </li>
                 <li>
                   <span class="guide-share-when">Who gets paid</span>
-                  <span class="guide-share-then">Your nominee. They can clear the loan and keep the rest.</span>
+                  <span class="guide-share-then"><span class="guide-skim">Your nominee.</span> They can clear the loan and keep the rest.</span>
                 </li>
               </ul>
             </div>
@@ -450,7 +507,7 @@
               <ul class="guide-share-list">
                 <li>
                   <span class="guide-share-when">Cost</span>
-                  <span class="guide-share-then">Often a single premium. Costs more when it sits inside the loan.</span>
+                  <span class="guide-share-then">Often a single premium. <span class="guide-skim">Costs more when it sits inside the loan.</span></span>
                 </li>
                 <li>
                   <span class="guide-share-when">Cover</span>
@@ -458,7 +515,7 @@
                 </li>
                 <li>
                   <span class="guide-share-when">Early repay or switch</span>
-                  <span class="guide-share-then">Often cannot move. May return only part of the premium.</span>
+                  <span class="guide-share-then"><span class="guide-skim">Often cannot move.</span> May return only part of the premium.</span>
                 </li>
                 <li>
                   <span class="guide-share-when">Who gets paid</span>
@@ -468,15 +525,11 @@
             </div>
             </div>
             <p class="guide-glance">
-              If age or health makes a term plan hard to get, loan cover can be easier to buy, and can be paid through the loan.
+              <span class="guide-skim">If age or health makes a term plan hard to get, loan cover can be easier to buy, and can be paid through the loan.</span>
             </p>
           </div>
         </div>
       </section>
-    </div>
-
-    <div class="guide-related-wrap">
-      <p class="guide-related-links">Property cover and loan cover are separate products. One does not replace the other. <a href="home-loan-insurance.html">Both covers overview</a><span aria-hidden="true"> · </span><a href="property-home-insurance.html">Property cover</a></p>
     </div>
 
     <div class="guide-fine-wrap">
@@ -549,14 +602,26 @@
               <li><a href="/pages/about.html">About</a></li>
               <li><a href="/privacy-policy.html">Privacy Policy</a></li>
               <li><a href="/terms-of-use.html">Terms of Use</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
             </ul>
           </nav>
 
           <section class="site-footer-group" aria-labelledby="footer-support-title">
             <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
             <ul class="site-footer-list">
-              <li><a href="mailto:support@shroffin.com">Email</a></li>
-              <li><a href="tel:+919112334367">Call</a></li>
+              <li>
+                <a href="mailto:support@shroffin.com">Email us</a>
+              </li>
+              <li>
+                <a href="tel:+919112334367">Call us</a>
+              </li>
+              <li>
+                <a
+                  href="https://wa.me/919112334367"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Message us<span class="visually-hidden"> (opens WhatsApp)</span></a>
+              </li>
             </ul>
           </section>
 
@@ -579,12 +644,14 @@
               <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
               <details class="site-footer-disclaimer-more">
                 <summary>Read the full disclaimer</summary>
-                <div class="site-footer-disclaimer-full">
-                  <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-                  <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-                  <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-                  <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-                  <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                <div class="site-footer-disclaimer-panel">
+                  <div class="site-footer-disclaimer-full">
+                    <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+                    <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+                    <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+                    <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+                    <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                  </div>
                 </div>
               </details>
             </div>
@@ -593,12 +660,7 @@
           <div class="site-footer-bottom">
             <div class="site-footer-bottom-row">
               <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
-              <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
-                <ul class="site-footer-legal-links">
-                  <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-                  <li><a href="/terms-of-use.html">Terms of Use</a></li>
-                  <li><a href="/sitemap.html">Site Map</a></li>
-                </ul>
+              <nav class="site-footer-legal-nav" aria-label="Official resources">
                 <ul class="site-footer-official-links">
                   <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
                   <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
@@ -615,10 +677,10 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/guide-page-overview.js?v=soft-1"></script>
-  <script src="../js/shroffin-nav.js?v=chapters-3"></script>
-  <script src="../js/shroffin-guide.js?v=disclosure-close-1"></script>
+  <script src="../js/guide-page-overview.js?v=card-only-flip-1"></script>
+  <script src="../js/shroffin-nav.js?v=guide-top-1"></script>
+  <script src="../js/shroffin-guide.js?v=card-elev-1"></script>
   <script src="../js/shroffin-scrub.js?v=chapters-3"></script>
-  <script src="../js/shroffin-guide-soft-nav.js?v=chapters-3"></script>
+  <script src="../js/shroffin-guide-soft-nav.js?v=guide-top-1"></script>
 </body>
 </html>

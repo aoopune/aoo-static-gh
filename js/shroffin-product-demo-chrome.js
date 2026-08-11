@@ -1,12 +1,19 @@
 /**
- * Fit Mac window or iPhone stage to rim + matching outer corners.
- * Rim from CSS paddingTop=Y, paddingLeft=X (desktop final: 60 / 130).
+ * Fit Safari-framed product demo to the stage (desktop or phone canvas).
+ * Desktop: macOS Tahoe Safari Compact (centered search field).
+ * Phone: iOS 26 Safari Compact (status + bottom floating bar).
  * Never use scrollIntoView here.
- * Home: iframe product demo + Apple-style play/pause in the bottom rim (play once, no loop).
+ * Home: iframe product demo + calm play/pause.
+ * First full demo view: plays through once without interruption, then stops.
+ * Only the Pause control stops it early. No auto-repeat.
  */
 (function () {
-  var IFRAME_W = 1640;
-  var IFRAME_H = 760;
+  var DESKTOP_W = 1640;
+  /* Product canvas 1025 + Compact Safari toolbar 52. */
+  var DESKTOP_H = 1077;
+  /* iPhone 17 Pro CSS viewport (402×874). Safari chrome overlays inside. */
+  var PHONE_W = 402;
+  var PHONE_H = 874;
 
   function reducedMotion() {
     try {
@@ -16,52 +23,56 @@
     }
   }
 
-  function fitMac(stage, slot, win, marginX, marginY, parentW) {
-    var scale = Math.min((parentW - marginX * 2) / IFRAME_W, 1);
+  function fitPlain(stage, slot, win, canvasW, canvasH, marginX, marginY, parentW, isPhone) {
+    var scale = Math.min((parentW - marginX * 2) / canvasW, 1);
     if (!isFinite(scale) || scale <= 0) scale = 0.4;
 
-    var onHome = !!(stage.closest && stage.closest(".spd-section--home"));
-    var maxH = onHome
-      ? Math.min(window.innerHeight * 0.92, 900)
-      : Math.min(window.innerHeight * 0.82, 760);
-    if (scale * IFRAME_H + marginY * 2 > maxH) {
-      scale = Math.min((maxH - marginY * 2) / IFRAME_H, 1);
+    var onHome = !!(stage.closest && stage.closest(".spd-section--home, .spd-section--home-phone"));
+    var phoneViewport =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(max-width: 833px)").matches;
+    /*
+     * Home desktop: tall laptop-proportion stage.
+     * Mobile phone demo: allow a bit more height so wallpaper + phone scale up together.
+     */
+    var maxH;
+    if (isPhone && phoneViewport) {
+      maxH = onHome
+        ? Math.min(window.innerHeight * 0.98, 1100)
+        : Math.min(window.innerHeight * 0.9, 1000);
+    } else {
+      maxH = onHome
+        ? Math.min(window.innerHeight * 0.92, 1200)
+        : Math.min(window.innerHeight * 0.82, phoneViewport ? 900 : 980);
+    }
+    if (scale * canvasH + marginY * 2 > maxH) {
+      scale = Math.min((maxH - marginY * 2) / canvasH, 1);
       if (!isFinite(scale) || scale <= 0) scale = 0.4;
     }
 
-    var outerRadius = 12 * scale; /* same as window, not larger */
-    stage.style.width = Math.min(scale * IFRAME_W + marginX * 2, parentW) + "px";
-    stage.style.height = scale * IFRAME_H + marginY * 2 + "px";
-    stage.style.borderRadius = outerRadius + "px";
+    /* iPhone 17 Pro display corner radius is 62pt (continuous curve on device). */
+    var windowRadius = isPhone ? 62 : 16;
+    var outerRadius = windowRadius * scale;
+    stage.style.width = Math.min(scale * canvasW + marginX * 2, parentW) + "px";
+    stage.style.height = scale * canvasH + marginY * 2 + "px";
+    stage.style.borderRadius = Math.max(12, outerRadius) + "px";
     stage.style.setProperty("--spd-scale", String(scale));
     stage.style.setProperty("--spd-outer-radius", outerRadius + "px");
+    stage.style.setProperty("--spd-window-radius", windowRadius + "px");
     slot.style.setProperty("--spd-scale", String(scale));
     win.style.setProperty("--spd-scale", String(scale));
-  }
-
-  function fitPhone(stage, phone, marginX, marginY, parentW) {
-    var bezel = 14; /* titanium ring; CSS floors bezel at 8px when scaled small */
-    var phoneW = 390 + bezel * 2;
-    var phoneH = 844 + bezel * 2;
-    var maxH = Math.min(window.innerHeight * 0.88, 980);
-    var scale = Math.min(
-      (parentW - marginX * 2) / phoneW,
-      (maxH - marginY * 2) / phoneH,
-      1
-    );
-    if (!isFinite(scale) || scale <= 0) scale = 0.4;
-
-    /* Hug stage using painted size (bezel floored in CSS/JS together) */
-    var bezelPaint = Math.max(8, 14 * scale);
-    var phonePaintW = 390 * scale + bezelPaint * 2;
-    var phonePaintH = 844 * scale + bezelPaint * 2;
-    stage.style.width = Math.min(phonePaintW + marginX * 2, parentW) + "px";
-    stage.style.height = phonePaintH + marginY * 2 + "px";
-    stage.style.borderRadius = Math.max(28, 54 * scale) + "px";
-    phone.style.setProperty("--spd-scale", String(scale));
-    phone.style.setProperty("--spd-bezel", bezelPaint + "px");
-    phone.style.setProperty("--spd-phone-r", Math.max(28, 54 * scale) + "px");
-    phone.style.setProperty("--spd-screen-r", Math.max(22, 42 * scale) + "px");
+    /*
+     * Phone: round the scaled window itself (62px pre-scale) so the curve
+     * scales cleanly. Clipping only on the outer slot causes zigzag edges.
+     * Desktop: keep clipping on the slot.
+     */
+    if (isPhone) {
+      slot.style.borderRadius = "0";
+      win.style.borderRadius = windowRadius + "px";
+    } else {
+      slot.style.borderRadius = outerRadius + "px";
+      win.style.borderRadius = "0";
+    }
   }
 
   function fitStage(stage) {
@@ -74,17 +85,22 @@
     var parentW = parent ? parent.clientWidth : stage.clientWidth;
     if (parentW < 40) return;
 
-    if (stage.getAttribute("data-spd-device") === "phone") {
-      var phone = stage.querySelector("[data-spd-phone]");
-      if (!phone) return;
-      fitPhone(stage, phone, marginX, marginY, parentW);
-      return;
-    }
-
     var slot = stage.querySelector("[data-spd-slot]");
     var win = stage.querySelector("[data-spd-window]");
     if (!slot || !win) return;
-    fitMac(stage, slot, win, marginX, marginY, parentW);
+
+    var isPhone = stage.getAttribute("data-spd-device") === "phone";
+    fitPlain(
+      stage,
+      slot,
+      win,
+      isPhone ? PHONE_W : DESKTOP_W,
+      isPhone ? PHONE_H : DESKTOP_H,
+      marginX,
+      marginY,
+      parentW,
+      isPhone
+    );
   }
 
   function setPlaybackUi(btn, state) {
@@ -121,19 +137,6 @@
       return visible / rect.height >= 0.35;
     }
 
-    function tryAutoplay() {
-      if (hasAutoplayed || !frameReady) return;
-      inView = syncInView();
-      if (!inView) return;
-      hasAutoplayed = true;
-      if (reducedMotion()) {
-        setState("paused");
-        return;
-      }
-      postFrame(frame, "spd-replay");
-      setState("playing");
-    }
-
     function play() {
       postFrame(frame, "spd-replay");
       setState("playing");
@@ -143,6 +146,18 @@
       if (state !== "playing") return;
       postFrame(frame, "spd-pause");
       setState("paused");
+    }
+
+    function tryAutoplay() {
+      if (hasAutoplayed || !frameReady) return;
+      inView = syncInView();
+      if (!inView) return;
+      hasAutoplayed = true;
+      if (reducedMotion()) {
+        setState("paused");
+        return;
+      }
+      play();
     }
 
     function toggle() {
@@ -184,16 +199,17 @@
 
     setState("paused");
 
+    /*
+     * Start the first full play when the demo is in view.
+     * Do not pause on scroll-away or tab hide — that cut the first run short.
+     * Only the Pause button (or a finished playthrough) stops it.
+     */
     if ("IntersectionObserver" in window) {
       var io = new IntersectionObserver(
         function (entries) {
           entries.forEach(function (entry) {
             inView = !!entry.isIntersecting;
-            if (!inView) {
-              if (state === "playing") pause();
-              return;
-            }
-            tryAutoplay();
+            if (inView) tryAutoplay();
           });
         },
         { threshold: 0.35 }
@@ -203,10 +219,6 @@
       inView = syncInView();
       tryAutoplay();
     }
-
-    document.addEventListener("visibilitychange", function () {
-      if (document.hidden && state === "playing") pause();
-    });
   }
 
   function mountPlayback(stage) {
@@ -223,9 +235,7 @@
     if (!stage || stage.getAttribute("data-spd-chrome") === "true") return;
     stage.setAttribute("data-spd-chrome", "true");
 
-    var readyEl =
-      stage.querySelector("[data-spd-phone]") ||
-      stage.querySelector("[data-spd-window]");
+    var readyEl = stage.querySelector("[data-spd-window]");
 
     function run() {
       fitStage(stage);

@@ -1,10 +1,10 @@
 /**
  * Soft settle for About stance rows, home lead lines, Built around you, and home open band.
- * Home open: banks pop → swish → Shroffin once; Apple-style play/pause (no loop).
+ * Home open: banks pop → swish → Shroffin once; calm product-site play/pause (no loop).
  */
 (function () {
   var nodes = Array.prototype.slice.call(
-    document.querySelectorAll('.stance-settle, .home-moment, .home-reveal')
+    document.querySelectorAll('.stance-settle, .home-moment, .home-reveal, .home-zero')
   );
   if (!nodes.length) return;
 

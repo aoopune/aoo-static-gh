@@ -1,6 +1,5 @@
 /**
  * About page — soft section reveals.
- * Does not touch home stance JS.
  */
 (function () {
   'use strict';

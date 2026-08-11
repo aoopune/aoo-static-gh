@@ -54,6 +54,16 @@
     makeBackgroundInert(owner, veil);
   }
 
+  /* Soft-nav / page changes can retarget unlock while the menu is still easing
+     shut (Guide localnav holds the lock ~850ms). Without this, unlock restores
+     the pre-menu mid-page offset after the new page already scrolled to top. */
+  function adoptLockScroll(y) {
+    lockedScrollY = Math.max(0, Number(y) || 0);
+    if (document.body.classList.contains("shroffin-scroll-locked")) {
+      document.body.style.top = "-" + lockedScrollY + "px";
+    }
+  }
+
   function unlockPage() {
     if (!document.body.classList.contains("shroffin-scroll-locked")) {
       clearInert();
@@ -77,6 +87,10 @@
     },
     lock: lockPage,
     unlock: unlockPage,
+    getLockedScrollY: function () {
+      return lockedScrollY;
+    },
+    adoptLockScroll: adoptLockScroll,
     closeActive: function () {
       if (activeMenu) activeMenu.close(true);
     }
@@ -215,14 +229,14 @@
 
     if (!list || !brand || !guideItem || !supportItem || !toolsItem || !aboutItem) return;
 
-    // Keep Guide → Support → Tools → About first after the logo. Only move
+    // Keep Guide → Tools → Support → About first after the logo. Only move
     // nodes when markup is out of order so the bar does not visibly reshuffle.
-    var primaryOrder = [guideItem, supportItem, toolsItem, aboutItem];
+    var primaryOrder = [guideItem, toolsItem, supportItem, aboutItem];
     var needsReorder = primaryOrder.some(function (item, index) {
       return list.children[index + 1] !== item;
     });
     if (needsReorder) {
-      brand.after(guideItem, supportItem, toolsItem, aboutItem);
+      brand.after(guideItem, toolsItem, supportItem, aboutItem);
     }
 
     if (isCurrentHref(aboutLink.href)) aboutLink.setAttribute("aria-current", "page");
@@ -278,8 +292,8 @@
     var rootList = document.createElement("ul");
     rootList.className = "globalnav-compact-list";
     rootList.appendChild(buildCompactRootItem("Guide", "guide"));
-    rootList.appendChild(buildCompactRootItem("Support", "support"));
     rootList.appendChild(buildCompactRootItem("Tools", "tools"));
+    rootList.appendChild(buildCompactRootItem("Support", "support"));
     appendCompactLink(rootList, aboutLink.getAttribute("href"), "About", false);
     Array.prototype.forEach.call(list.children, function (item) {
       if (
@@ -632,85 +646,62 @@
     applyMode();
   }
 
-  function prefersReducedMotion() {
-    return (
+  function initFooterDisclaimer() {
+    var details = document.querySelector(".site-footer-disclaimer-more");
+    if (!details || details.dataset.smoothReady === "true") return;
+
+    var summary = details.querySelector(":scope > summary");
+    var panel = details.querySelector(":scope > .site-footer-disclaimer-panel");
+    if (!summary || !panel) return;
+
+    var reduceMotion =
       window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    );
-  }
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var CLOSE_MS = 900;
+    var closingTimer = null;
 
-  function softScrollToTop() {
-    var startY = window.pageYOffset || document.documentElement.scrollTop || 0;
-    if (startY < 2) return;
-
-    if (prefersReducedMotion()) {
-      window.scrollTo(0, 0);
-      return;
+    if (details.open) {
+      panel.classList.add("is-open");
     }
 
-    var duration = 1000;
-    var startTime = null;
+    if (reduceMotion) return;
 
-    function easeOutSoft(t) {
-      return 1 - Math.pow(1 - t, 3);
-    }
+    details.dataset.smoothReady = "true";
 
-    function step(now) {
-      if (startTime == null) startTime = now;
-      var progress = Math.min(1, (now - startTime) / duration);
-      window.scrollTo(0, startY * (1 - easeOutSoft(progress)));
-      if (progress < 1) window.requestAnimationFrame(step);
-    }
+    summary.addEventListener("click", function (event) {
+      event.preventDefault();
 
-    window.requestAnimationFrame(step);
-  }
+      if (closingTimer) {
+        clearTimeout(closingTimer);
+        closingTimer = null;
+      }
 
-  /**
-   * Industry pattern for long pages: a quiet “back to top” control that only
-   * appears after the reader has scrolled, then soft-scrolls to the masthead.
-   */
-  function initBackToTop() {
-    if (document.querySelector(".shroffin-to-top")) return;
+      var opening = !details.open;
 
-    var button = document.createElement("button");
-    button.type = "button";
-    button.className = "shroffin-to-top";
-    button.setAttribute("aria-label", "Back to top");
-    button.hidden = true;
-    button.innerHTML =
-      '<span class="shroffin-to-top-icon" aria-hidden="true"></span>';
-    document.body.appendChild(button);
+      if (opening) {
+        details.open = true;
+        panel.getBoundingClientRect();
+        panel.classList.add("is-open");
+        return;
+      }
 
-    var threshold = Math.max(480, Math.round(window.innerHeight * 0.7));
-    var visible = false;
-    var ticking = false;
+      panel.classList.remove("is-open");
 
-    function setVisible(next) {
-      if (visible === next) return;
-      visible = next;
-      button.hidden = !next;
-      button.classList.toggle("is-visible", next);
-    }
+      function finishClose() {
+        panel.removeEventListener("transitionend", onTransitionEnd);
+        details.open = false;
+        closingTimer = null;
+      }
 
-    function update() {
-      ticking = false;
-      threshold = Math.max(480, Math.round(window.innerHeight * 0.7));
-      setVisible(window.pageYOffset > threshold);
-    }
+      function onTransitionEnd(ev) {
+        if (ev.target !== panel) return;
+        if (ev.propertyName !== "grid-template-rows") return;
+        finishClose();
+      }
 
-    function onScroll() {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(update);
-    }
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    button.addEventListener("click", function () {
-      softScrollToTop();
-      button.blur();
+      panel.addEventListener("transitionend", onTransitionEnd);
+      closingTimer = setTimeout(finishClose, CLOSE_MS);
     });
-    update();
   }
 
   function initSelectionIndicators() {
@@ -751,7 +742,7 @@
   function init() {
     initGlobalNav();
     initFooterAccordion();
-    initBackToTop();
+    initFooterDisclaimer();
     initSelectionIndicators();
   }
 

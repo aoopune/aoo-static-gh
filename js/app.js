@@ -148,7 +148,7 @@
     { path: 'home-loan-insurance.html', label: 'Home loan insurance' },
     { path: 'faq.html', label: 'FAQ' },
     { path: 'document-checklist.html', label: 'Standardised document list' },
-    { path: 'about.html?v=apple1', label: 'About us' }
+    { path: 'about.html?v=1', label: 'About us' }
   ];
 
   function inPagesDir() {

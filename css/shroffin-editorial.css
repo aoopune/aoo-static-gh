@@ -162,8 +162,7 @@ a.localnav-title:hover {
 .mag-p a,
 .mag-def-desc a,
 .mag-lede a,
-.guide-breadcrumb a,
-.guide-related-links a {
+.guide-breadcrumb a {
   color: var(--shroffin-link, #3f62c8);
   text-decoration: none;
   text-decoration-thickness: 1px;
@@ -180,8 +179,7 @@ a.localnav-title:hover {
 .mag-p a:visited,
 .mag-def-desc a:visited,
 .mag-lede a:visited,
-.guide-breadcrumb a:visited,
-.guide-related-links a:visited {
+.guide-breadcrumb a:visited {
   color: var(--shroffin-link-visited, #5a4fcf);
 }
 
@@ -198,9 +196,7 @@ a.localnav-title:hover {
 .mag-lede a:hover,
 .mag-lede a:focus-visible,
 .guide-breadcrumb a:hover,
-.guide-breadcrumb a:focus-visible,
-.guide-related-links a:hover,
-.guide-related-links a:focus-visible {
+.guide-breadcrumb a:focus-visible {
   color: var(--shroffin-link, #3f62c8);
   text-decoration: underline;
   text-decoration-color: var(--shroffin-link, #3f62c8);
@@ -212,8 +208,7 @@ a.localnav-title:hover {
 .mag-p a:visited:hover,
 .mag-def-desc a:visited:hover,
 .mag-lede a:visited:hover,
-.guide-breadcrumb a:visited:hover,
-.guide-related-links a:visited:hover {
+.guide-breadcrumb a:visited:hover {
   color: var(--shroffin-link-visited, #5a4fcf);
   text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
 }
@@ -224,8 +219,7 @@ a.localnav-title:hover {
 .mag-p a:active,
 .mag-def-desc a:active,
 .mag-lede a:active,
-.guide-breadcrumb a:active,
-.guide-related-links a:active {
+.guide-breadcrumb a:active {
   color: var(--shroffin-link-active, #2f4ba0);
   text-decoration: underline;
   text-decoration-color: var(--shroffin-link-active, #2f4ba0);
@@ -244,6 +238,21 @@ a.localnav-title:hover {
   padding-block: var(--shroffin-space-masthead-start) var(--shroffin-space-masthead-end);
   text-align: center;
   box-sizing: border-box;
+}
+
+/* Hero line breaks: phone vs desktop (complaints masthead, etc.) */
+.guide-br--phone {
+  display: none;
+}
+
+@media (max-width: 833px) {
+  .guide-br--phone {
+    display: unset;
+  }
+
+  .guide-br--desktop {
+    display: none;
+  }
 }
 
 .guide-hero-title,
@@ -654,7 +663,7 @@ body.guide-reading .guide-hero {
 }
 
 /*
- * Hero illustration — Apple-style product frame:
+ * Hero illustration — calm product-site product frame:
  * photo spans the full viewport width, follows 16:9 art, title sits in the
  * designed empty upper field. No bottom fade / soft edge.
  * Title/lead type sizes and max-widths stay the shared masthead rules.
@@ -708,29 +717,56 @@ body.guide-reading .guide-hero-bg {
 }
 
 /*
- * Phone only: full portrait art; chapter strip sits ON the photo foot.
- * Desktop keeps the 16:9 / 68svh frame above — unchanged.
- *
- * Pull distance MUST equal the frosted strip height. If pull is larger, the
- * photo peeks as a line under the strip through the transparent story top.
+ * Phone only: first look = Guide chrome + hero + chapter strip + half the
+ * first chapter title. Hero fills what’s left; strip pulls onto the photo
+ * foot by exactly its own height. Desktop 16:9 frame stays above.
  */
 @media (max-width: 833px) {
   body.guide-reading {
     /*
-     * Bars above the hero. Use gn-height (not gn-offset): on phone the main
-     * bar is in-flow and gn-offset is 0, but it still takes height.
+     * Matched phone chrome: Guide menu + chapter strip share one shorter band.
+     * Pill height stays 2rem (desktop chip) so ~8px air sits above/below —
+     * never let the filled chip touch the strip edges.
+     */
+    --shroffin-ln-height: 48px;
+    --guide-chapter-strip-band: 48px;
+    --guide-index-pill-height: 2rem;
+    /*
+     * Bars above the hero. Use gn-height (not gn-offset): on Guide pages the
+     * main bar is in-flow and gn-offset is 0, but it still takes height.
      */
     --guide-chrome-block: calc(
-      var(--shroffin-gn-height, 48px) + var(--shroffin-ln-height, 52px)
+      var(--shroffin-gn-height, 48px) + var(--shroffin-ln-height, 48px)
     );
-    --guide-index-strip-pad-start: 0.35rem;
-    --guide-index-strip-pad-end: 0.45rem;
-    --guide-index-strip-row: 44px;
-    --guide-index-on-photo: calc(
-      var(--guide-index-strip-pad-start) + var(--guide-index-strip-row) +
-        var(--guide-index-strip-pad-end)
+    /* Width floor for short labels (EMI, Rates); height is the pill token. */
+    --guide-index-strip-row: var(--shroffin-btn-touch, 44px);
+    /*
+     * Pull distance = rendered sticky strip height (Guide bar band).
+     * Must stay equal — larger pull peeks photo under the strip.
+     */
+    --guide-index-on-photo: var(
+      --guide-chapter-strip-band,
+      var(--shroffin-ln-height, 48px)
     );
-    --guide-hero-max: calc(100svh - var(--guide-chrome-block));
+    /*
+     * First-section cue below the strip: air before the title (--guide-open-pause)
+     * + one line of the chapter question title. That size matches
+     * .guide-tile-title:has(.guide-tile-question) — calc(display − 3px) × 1.1 —
+     * about half of a typical two-line opener.
+     */
+    --guide-first-section-peek: calc(
+      var(--guide-open-pause) + ((var(--shroffin-type-display) - 3px) * 1.1)
+    );
+    /*
+     * Hero fills first look minus the title peek. Strip overlays the photo
+     * foot (pull === --guide-index-on-photo) and does not need a second reserve.
+     */
+    --guide-hero-max: calc(
+      100svh - var(--guide-chrome-block) - var(--guide-first-section-peek)
+    );
+    --guide-hero-max: calc(
+      100dvh - var(--guide-chrome-block) - var(--guide-first-section-peek)
+    );
   }
 
   body.guide-reading .guide-hero {
@@ -738,15 +774,20 @@ body.guide-reading .guide-hero-bg {
     max-height: var(--guide-hero-max);
   }
 
+  /*
+   * Fill the reserved hero band so the strip lands on the photo foot,
+   * not on empty paper under a shorter 9:16 frame. object-fit: cover crops.
+   */
   body.guide-reading .guide-hero--media {
-    aspect-ratio: 9 / 16;
-    height: min(calc(100vw * 16 / 9), var(--guide-hero-max));
-    min-height: min(clamp(22rem, 62svh, 36rem), var(--guide-hero-max));
+    aspect-ratio: auto;
+    height: var(--guide-hero-max);
+    min-height: var(--guide-hero-max);
     max-height: var(--guide-hero-max);
   }
 
   body.guide-reading .guide-hero-bg {
     height: 100%;
+    object-fit: cover;
     object-position: center center;
     transform: none;
   }
@@ -840,16 +881,6 @@ body.guide-reading .guide-hero + .mag-toc-shell {
   margin-block-start: 0;
 }
 
-/* Phone: pull the frosted chapter strip onto the photo foot. */
-@media (max-width: 833px) {
-  body.guide-reading .guide-hero + .mag-index,
-  body.guide-reading .guide-hero + .mag-toc-shell {
-    margin-block-start: calc(-1 * var(--guide-index-on-photo));
-    position: relative;
-    z-index: 2;
-  }
-}
-
 body.guide-reading .mag-index {
   padding-block-start: 0;
   /* Stacked layout (phone/tablet): air between chapter strip and first title. */
@@ -862,14 +893,10 @@ body.guide-reading .guide-hero + .guide-story {
   padding-block-start: clamp(0.5rem, 2vw, 1.25rem);
 }
 
-/* Phone: frosted band hugs the chapter row — padding tokens match the pull. */
+/* Phone: short labels keep a width floor; pill height is set in Guide phone block. */
 @media (max-width: 833px) {
-  body.guide-reading .mag-index {
-    padding-block: var(--guide-index-strip-pad-start) var(--guide-index-strip-pad-end);
-  }
-
   body.guide-reading .mag-index-link {
-    min-height: var(--guide-index-strip-row);
+    min-width: var(--guide-index-strip-row);
   }
 
   body.guide-reading .mag-index + .guide-story,
@@ -879,9 +906,13 @@ body.guide-reading .guide-hero + .guide-story {
   }
 }
 
-/* Slightly more air between chapters — reading, not denser chrome. */
+/* Air between chapters — reading pace, a touch tighter than the prior band. */
+body.guide-reading {
+  --guide-chapter-pad-block: clamp(2rem, 5vw, 4.25rem);
+}
+
 body.guide-reading .guide-story > .mag-section {
-  padding-block: clamp(2.5rem, 6vw, 5rem);
+  padding-block: var(--guide-chapter-pad-block);
 }
 
 body.guide-reading .guide-story > .mag-section:first-child,
@@ -895,20 +926,17 @@ body.guide-reading .guide-tile-copy {
 
 /* Keep reading mode on the same card ladder — do not reintroduce mixed gaps. */
 body.guide-reading .guide-share-list,
-body.guide-reading .mag-defs {
+body.guide-reading .mag-defs,
+body.guide-reading .guide-doc-rows,
+body.guide-reading .mag-docs {
   margin-top: var(--guide-card-gap-stack, 18px);
 }
 
 body.guide-reading .guide-share-list li,
-body.guide-reading .mag-def {
+body.guide-reading .mag-def,
+body.guide-reading .guide-doc-row,
+body.guide-reading .mag-doc {
   padding-block: var(--guide-card-row-pad, 14px);
-}
-
-body.guide-reading .guide-share-list li:first-child,
-body.guide-reading .mag-defs > *:first-child,
-body.guide-reading .mag-def:first-child,
-body.guide-reading .guide-share-list--plain li:first-child {
-  padding-top: 0;
 }
 
 body.guide-reading .guide-disclosure-stack {
@@ -925,6 +953,10 @@ body.guide-reading .guide-flow {
 
 body.guide-reading .guide-flow li {
   padding-block: 20px;
+}
+
+body.guide-reading .guide-flow li:first-child {
+  padding-top: 0;
 }
 
 /* Chapter ordinals: never on desktop Guide. Phone strip already hides
@@ -961,10 +993,10 @@ body.guide-reading .mag-index-label {
   font-weight: 500;
 }
 
-/* Phone / tablet: horizontal chapter strip — same slide + selection chrome
-   as the Guide localnav row (Overview, Documents, …).
-   Underline is an inset shadow on the label row so it cannot paint into the
-   page margin (absolute ::after was anchoring to the full-bleed shell). */
+/* Phone / tablet: horizontal chapter strip.
+   ≤833 then swaps selection to desktop pill chips (see Guide phone block).
+   834–1199 keeps layout helpers; ≥834 owns the pill chrome.
+   Underline below is the interim tablet path until ≥834 overrides. */
 @media (max-width: 1199px) {
   body.guide-reading .mag-index {
     position: relative;
@@ -1058,9 +1090,10 @@ body.guide-reading .mag-index-label {
     gap: 0;
     width: fit-content;
     max-width: none;
-    min-width: 0;
-    min-height: 44px;
-    padding: 0 0.125rem;
+    /* Short labels (EMI, Rates) still need a full touch floor. */
+    min-width: var(--shroffin-btn-touch, 44px);
+    min-height: var(--shroffin-btn-touch, 44px);
+    padding: 0 0.5rem;
     box-sizing: border-box;
     color: var(--mag-muted);
     font-size: var(--shroffin-type-body);
@@ -1263,9 +1296,35 @@ body.guide-reading .mag-index-more:focus-visible {
   border-top: 0;
 }
 
-/* Overview opener — title + lead sit in the middle of the page. */
-.mag-section--intro {
-  text-align: center;
+/* Overview opener — desktop: title + lead sit in the middle of the page. */
+.mag-section--intro .guide-tile--hero,
+.mag-section--intro .mag-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mag-section--intro .guide-tile-title {
+  text-wrap: balance;
+}
+
+.mag-section--intro .guide-tile-copy {
+  max-width: 32em;
+}
+
+@media (min-width: 834px) {
+  .mag-section--intro {
+    text-align: center;
+  }
+
+  .mag-section--intro .guide-tile--hero,
+  .mag-section--intro .mag-content {
+    align-items: center;
+  }
+
+  .mag-section--intro .guide-tile-copy {
+    margin-inline: auto;
+  }
 }
 
 /* When JS lifts the opener above Contents, keep the same page rail. */
@@ -1275,22 +1334,6 @@ body.guide-reading .mag-index-more:focus-visible {
   margin-inline: auto;
   padding-inline: var(--mag-inline) var(--mag-inline-end);
   box-sizing: border-box;
-}
-
-.mag-section--intro .guide-tile--hero,
-.mag-section--intro .mag-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.mag-section--intro .guide-tile-title {
-  text-wrap: balance;
-}
-
-.mag-section--intro .guide-tile-copy {
-  margin-inline: auto;
-  max-width: 32em;
 }
 
 /* Reveal — fade settles slightly ahead of the move. */
@@ -1382,6 +1425,14 @@ body.guide-reading {
   }
 }
 
+body.guide-reading {
+  /* One surface + elevation language for every grey card / flip scene. */
+  --guide-card-surface: #f7f7f7;
+  --guide-card-elev:
+    0 3px 10px rgba(0, 0, 0, 0.03),
+    0 10px 28px rgba(0, 0, 0, 0.05);
+}
+
 .guide-chapter-card {
   /* One spacing ladder for every chapter card (proximity + uniformity).
      Title hugs its body a touch tighter; body regions share one stack gap;
@@ -1389,19 +1440,72 @@ body.guide-reading {
   --guide-card-gap-title: 14px;
   --guide-card-gap-stack: 18px;
   --guide-card-row-pad: 14px;
+  /* Air under card switches → first line of content (phone + desktop).
+     Matches the air between ledger rows (row-pad above + below a hairline). */
+  --guide-switch-gap: 28px;
   display: block;
   width: 100%;
   margin-block-start: clamp(32px, 4.5vw, 48px);
   padding: clamp(40px, 5.5vw, 64px);
   box-sizing: border-box;
   border-radius: var(--guide-radius);
-  background: #f7f7f7;
+  background: var(--guide-card-surface, #f7f7f7);
+  /* Soft downward float — no perimeter ring (that made corners read as a hard box). */
+  box-shadow: var(--guide-card-elev);
+}
+
+/*
+ * Scroll rise: grey card surface only (large-surface travel).
+ * Titles stay put — never rise with the card.
+ * Flip: rise .guide-flip-scene (layout shell). Elevation lives on the
+ * rotating faces — a shadowed scene with a clear fill reads as a white
+ * card behind the flip.
+ */
+body.guide-reading .guide-chapter-card {
+  transform: translateY(48px);
+  transition: transform 1.45s var(--ease);
+}
+
+body.guide-reading .guide-chapter-card.is-in {
+  transform: translateY(0);
+}
+
+body.guide-reading .guide-flip-scene {
+  transform: translateY(48px);
+  transition:
+    transform 1.45s var(--ease),
+    height var(--guide-flip-duration) var(--ease);
+}
+
+body.guide-reading .guide-flip-scene.is-in {
+  transform: translateY(0);
+}
+
+body.guide-reading .guide-flip-scene .guide-chapter-card,
+body.guide-reading .guide-flip-scene .guide-chapter-card.is-in {
   box-shadow: none;
+  transform: none;
+  transition: none;
 }
 
 @media (max-width: 833px) {
   .guide-chapter-card {
     padding: 20px 20px 28px;
+  }
+
+  body.guide-reading .guide-chapter-card,
+  body.guide-reading .guide-flip-scene {
+    transform: translateY(40px);
+  }
+
+  body.guide-reading .guide-chapter-card.is-in,
+  body.guide-reading .guide-flip-scene.is-in {
+    transform: translateY(0);
+  }
+
+  body.guide-reading .guide-flip-scene .guide-chapter-card,
+  body.guide-reading .guide-flip-scene .guide-chapter-card.is-in {
+    transform: none;
   }
 }
 
@@ -1409,12 +1513,31 @@ body.guide-reading {
   margin-block-start: 0;
 }
 
+/*
+ * Guide body copy: left on phone, centered on tablet/desktop.
+ * Page hero (.guide-hero) stays centered at every width.
+ */
 body.guide-reading .guide-tile-title,
+body.guide-reading .guide-tile-copy,
 body.guide-reading .guide-tile-copy--rule,
 body.guide-reading .guide-tile-copy--muted,
-body.guide-reading .guide-tile-note {
-  text-align: center;
-  margin-inline: auto;
+body.guide-reading .guide-tile-note,
+body.guide-reading .guide-tile-kicker,
+body.guide-reading .mag-h,
+body.guide-reading .mag-lede,
+body.guide-reading .mag-p {
+  text-align: left;
+  margin-inline: 0;
+}
+
+@media (min-width: 834px) {
+  body.guide-reading .guide-tile-title,
+  body.guide-reading .guide-tile-copy--rule,
+  body.guide-reading .guide-tile-copy--muted,
+  body.guide-reading .guide-tile-note {
+    text-align: center;
+    margin-inline: auto;
+  }
 }
 
 /* Section headings / copy inside content */
@@ -1519,10 +1642,17 @@ body.guide-reading .guide-tile-note {
   line-height: 1.5;
 }
 
-/* After .guide-tile-copy so lead size cannot override. */
+/*
+ * After .guide-tile-copy so lead size cannot override.
+ * Rule lines are the answer under the section title — one heading unit.
+ * Same content rail as .guide-tile-title (no second, narrower em box).
+ * Body / lede keep .guide-tile-copy’s 34em reading measure.
+ * pretty: when the rail is too narrow, avoid orphan last words.
+ */
 .guide-tile-copy.guide-tile-copy--rule {
   margin-top: 0.45rem;
-  max-width: 36em;
+  max-width: none;
+  text-wrap: pretty;
   color: var(--mag-ink, #1d1d1f);
   font-size: var(--shroffin-type-lead);
   font-weight: 500;
@@ -1576,6 +1706,7 @@ body.guide-reading .guide-tile-note {
   --guide-card-gap-title: 14px;
   --guide-card-gap-stack: 18px;
   --guide-card-row-pad: 14px;
+  --guide-switch-gap: 28px;
 }
 
 .guide-limit-kicker {
@@ -1658,17 +1789,10 @@ body.guide-reading .guide-tile-note {
   border-top: 1px solid var(--mag-hair-soft);
 }
 
-.guide-share-list li:first-child,
-.mag-defs > *:first-child,
-.mag-def:first-child {
-  border-top: 0;
-  padding-top: 0;
-}
-
 .guide-share-when,
 .mag-def-term {
   margin: 0;
-  color: var(--mag-muted);
+  color: var(--mag-ink);
   font-size: var(--shroffin-type-body);
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -1685,7 +1809,40 @@ body.guide-reading .guide-tile-note {
   line-height: 1.4;
 }
 
-/* Two-column ledger: label left (primary), answer right. */
+/*
+  Skim line — one contiguous sentence you can catch with the row heading.
+  Rest of the block drops two font-weight steps; the skim line keeps full body weight.
+  Do not sprinkle weight on single words.
+*/
+.guide-share-then:has(.guide-skim),
+.guide-flow .guide-share-then:has(.guide-skim),
+.guide-share-list--plain .guide-share-then:has(.guide-skim) {
+  font-weight: 400;
+}
+
+.guide-share-then .guide-skim,
+.guide-flow .guide-share-then .guide-skim,
+.guide-share-list--plain .guide-share-then .guide-skim {
+  font-weight: 600;
+}
+
+.guide-compare-body:has(.guide-skim),
+.guide-disclosure .guide-share-then:has(.guide-skim),
+.guide-glance:has(.guide-skim) {
+  font-weight: 300;
+}
+
+.guide-compare-body .guide-skim,
+.guide-disclosure .guide-share-then .guide-skim,
+.guide-glance .guide-skim {
+  font-weight: 500;
+}
+
+/*
+  Two-column ledger layout only.
+  Label/answer colour and weight come from .guide-share-when / .guide-share-then
+  (muted label, ink answer) — same as default lists and flows.
+*/
 .guide-share-list--split li {
   display: grid;
   grid-template-columns: minmax(8.5rem, 12.5rem) minmax(0, 1fr);
@@ -1693,24 +1850,6 @@ body.guide-reading .guide-tile-note {
   row-gap: 0;
   align-items: start;
   padding-block: 0.85rem;
-}
-
-.guide-share-list--split li:first-child {
-  padding-top: 0;
-}
-
-.guide-share-list--split .guide-share-when {
-  color: var(--mag-ink);
-  font-size: var(--shroffin-type-lead);
-  font-weight: 600;
-  line-height: 1.35;
-}
-
-.guide-share-list--split .guide-share-then {
-  color: var(--mag-ink);
-  font-size: var(--shroffin-type-body);
-  font-weight: 500;
-  line-height: 1.45;
 }
 
 @media (max-width: 833px) {
@@ -1737,11 +1876,6 @@ body.guide-reading .guide-tile-note {
   border-top: 1px solid var(--mag-hair-soft);
 }
 
-.guide-share-list--plain li:first-child {
-  border-top: 0;
-  padding-top: 0;
-}
-
 /* Charges front: then-label above a muted note */
 .guide-share-list--plain .guide-share-then {
   display: block;
@@ -1757,7 +1891,7 @@ body.guide-reading .guide-tile-note {
 
 .guide-glance {
   margin: var(--guide-card-gap-stack, 18px) 0 0;
-  color: var(--mag-ink-soft);
+  color: var(--mag-ink);
   font-size: var(--shroffin-type-body);
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -1774,7 +1908,7 @@ body.guide-reading .guide-tile-note {
   align-items: flex-start;
   gap: 10px;
   margin: var(--guide-card-gap-stack, 18px) 0 0;
-  color: var(--mag-ink-soft);
+  color: var(--mag-ink);
   font-size: var(--shroffin-type-body);
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -1870,6 +2004,10 @@ body.guide-reading .guide-tile-note {
   }
 }
 
+/*
+  Side note — same ink as body; size/weight carry hierarchy
+  (plain text, skim, or when/then).
+*/
 .guide-callout,
 .mag-note {
   margin: clamp(22px, 4vw, 30px) 0 0;
@@ -1877,7 +2015,7 @@ body.guide-reading .guide-tile-note {
   border-block-start: 1px solid var(--mag-hair-soft);
   background: transparent;
   border-radius: 0;
-  color: var(--mag-ink-soft);
+  color: var(--mag-ink);
   font-size: var(--shroffin-type-body);
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -1887,18 +2025,31 @@ body.guide-reading .guide-tile-note {
 .guide-callout .guide-share-when,
 .guide-callout .guide-share-then {
   display: block;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
 }
 
 .guide-callout .guide-share-when {
   margin-bottom: 4px;
+  color: var(--mag-ink);
 }
 
 .guide-callout .guide-share-then {
-  color: var(--mag-ink);
-  font-size: var(--shroffin-type-lead);
+  color: inherit;
+}
+
+/* Callout rest stays in the note register; skim sits one step heavier. */
+.guide-callout .guide-share-then:has(.guide-skim) {
+  color: inherit;
+  font-weight: inherit;
+}
+
+.guide-callout .guide-skim,
+.guide-callout .guide-share-then .guide-skim {
+  color: inherit;
   font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.4;
 }
 
 .guide-callout--tight {
@@ -1924,19 +2075,13 @@ body.guide-reading .guide-tile-note {
 .guide-doc-rows,
 .mag-docs {
   width: 100%;
-  margin-top: clamp(16px, 3vw, 24px);
+  margin-top: var(--guide-card-gap-stack, 18px);
 }
 
 .guide-doc-row,
 .mag-doc {
-  padding: 14px 0;
+  padding: var(--guide-card-row-pad, 14px) 0;
   border-top: 1px solid var(--mag-hair-soft);
-}
-
-.guide-doc-rows .guide-doc-row:first-child,
-.mag-docs .mag-doc:first-child {
-  border-top: 0;
-  padding-top: 0;
 }
 
 .guide-doc-name,
@@ -2068,8 +2213,10 @@ body.guide-reading .guide-tile-note {
   line-height: 1.4;
 }
 
+/* First step is the start — no rule above it; sit flush, keep air below for step 2 */
 .guide-flow li:first-child {
   border-top: 0;
+  padding-top: 0;
 }
 
 .guide-flow li::before {
@@ -2082,6 +2229,65 @@ body.guide-reading .guide-tile-note {
   font-weight: 600;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+}
+
+.guide-flow li:first-child::before {
+  top: 0;
+}
+
+/*
+ * Opening ledgers — no hairline above the first row.
+ * Between-row rules stay. A top rule is only for separation from content above;
+ * when the list / stack / note opens the card (or a band already drew the rule),
+ * a first-row top border is redundant.
+ */
+.guide-chapter-card > .guide-share-list > li:first-child,
+.guide-chapter-card > .mag-defs > .mag-def:first-child,
+.guide-chapter-card > .guide-doc-rows > .guide-doc-row:first-child,
+.guide-chapter-card > .guide-doc-rows > .mag-doc:first-child,
+.guide-chapter-card > .guide-quiet-facts > li:first-child,
+.guide-chapter-card > .guide-rate-notes > p:first-child,
+.guide-chapter-card > .guide-perk-grid > :first-child,
+.guide-chapter-card > .guide-status-grid > :first-child,
+.guide-story--property-cover #pay .guide-share-list > li:first-child,
+#bank-rates .guide-perk-grid > .guide-perk:first-child,
+.guide-story--insurance-hub .guide-status-grid > .guide-status:first-child,
+.guide-story--complaints .guide-status-grid > :first-child,
+.guide-story--complaints .guide-perk-grid > :first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.guide-chapter-card > .guide-disclosure-stack > .guide-disclosure:first-child,
+.guide-chapter-card > .guide-disclosure:first-child,
+.guide-chapter-card > .guide-callout:first-child,
+.guide-chapter-card > .mag-note:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* Band already drew the rule — don’t stack a second on the first ledger row */
+.guide-answer-pair + .guide-share-list > li:first-child,
+.guide-answer--hero + .guide-share-list > li:first-child,
+.guide-answer-stage > .guide-doc-sub + .guide-share-list > li:first-child,
+.guide-answer-stage > .guide-doc-sub + .guide-doc-rows > .guide-doc-row:first-child,
+.guide-answer-stage > .guide-doc-sub + .guide-doc-rows > .mag-doc:first-child {
+  border-top: 0;
+}
+
+@media (min-width: 834px) {
+  /* Two-column grids: clear the top rule on both opening cells */
+  .guide-chapter-card > .guide-perk-grid > :nth-child(-n+2),
+  .guide-chapter-card > .guide-status-grid > :nth-child(-n+2),
+  .guide-chapter-card > .guide-doc-rows--cols > :nth-child(-n+2),
+  #bank-rates .guide-perk-grid > .guide-perk:nth-child(-n+2),
+  .guide-story--insurance-hub .guide-status-grid > .guide-status:nth-child(-n+2),
+  .guide-story--complaints .guide-status-grid > :nth-child(-n+2),
+  .guide-story--complaints .guide-perk-grid > :nth-child(-n+2) {
+    border-top: 0;
+    padding-top: 0;
+  }
 }
 
 .guide-flow .guide-share-when {
@@ -2145,7 +2351,7 @@ body.guide-reading .guide-tile-note {
   color: var(--mag-ghost);
 }
 
-/* ---- Card flip: fixed front box; docked control; back scrolls inside ---- */
+/* ---- Card flip: fixed front box; docked control; page scrolls (no inner trap) ---- */
 
 .guide-flip {
   --guide-flip-duration: 1.25s; /* default mid; overridden per id below */
@@ -2156,7 +2362,7 @@ body.guide-reading .guide-tile-note {
   perspective: 1600px;
 }
 
-/* Weight by job — one rotate language, different settle times (Apple-style) */
+/* Weight by job — one rotate language, different settle times (calm product-site) */
 #rate-flip,
 #structure-flip {
   --guide-flip-duration: 1.05s;
@@ -2175,7 +2381,18 @@ body.guide-reading .guide-tile-note {
 .guide-flip-scene {
   position: relative;
   width: 100%;
-  overflow: hidden;
+  /* Space between static chapter title and the flipping card */
+  margin-block-start: clamp(32px, 4.5vw, 48px);
+  /*
+   * Layout + height shell only — not a painted card.
+   * overflow:hidden + clear fill made a white rounded portal behind the flip.
+   */
+  overflow: visible;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  /* Height here; guide-reading also adds transform for scroll rise. */
+  transition: height var(--guide-flip-duration) var(--ease);
 }
 
 .guide-flip-inner {
@@ -2192,21 +2409,67 @@ body.guide-reading .guide-tile-note {
 
 .guide-flip-face {
   width: 100%;
+  height: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   padding: 0;
   border: 0;
-  border-radius: 0;
-  background: transparent;
+  /*
+   * This is the card: grey slab + elevation rotate together.
+   * Nothing card-shaped sits behind it.
+   */
+  border-radius: var(--guide-radius, 10px);
+  background: var(--guide-card-surface, #f7f7f7);
+  box-shadow: var(--guide-card-elev);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
 .guide-flip-face--front {
   position: relative;
+  /* Fills the scene once JS sets a shared height — keeps Open/Close on one baseline */
+  height: 100%;
+  /* Own compositor layer so the grey fill doesn’t drop out mid-turn. */
+  transform: translateZ(0.1px);
+}
+
+/* Card fills the face; no extra top margin inside the scene */
+.guide-flip-face > .guide-chapter-card,
+.guide-flip-back-scroll > .guide-chapter-card {
+  margin-block-start: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: var(--guide-card-surface, #f7f7f7);
+  box-shadow: none;
+}
+
+.guide-flip-face--front > .guide-chapter-card {
+  flex: 0 0 auto;
+  height: 100%;
+}
+
+/*
+ * Back: grey card fills the scene (JS sizes open scene to back content).
+ * Body is not a nested scrollport — wheel/trackpad must scroll the page.
+ * Markup: .guide-chapter-card > (.guide-flip-back-scroll + .guide-flip-dock)
+ */
+.guide-flip-face--back > .guide-chapter-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  overflow: visible;
+}
+
+.guide-flip-face--back > .guide-chapter-card > .guide-flip-back-scroll {
+  flex: 1 1 0;
+  min-height: 0;
   height: auto;
-  background: transparent;
+  overflow: visible;
 }
 
 .guide-flip-face--back {
@@ -2214,41 +2477,131 @@ body.guide-reading .guide-tile-note {
   inset: 0;
   width: 100%;
   height: 100%;
-  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  transform: rotateY(180deg) translateZ(0.1px);
   text-align: left;
   align-items: stretch;
   pointer-events: none;
   overflow: hidden;
-  scroll-margin-block-start: calc(
-    var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height, 52px) + 1.25rem
-  );
 }
 
 .guide-flip.is-flipped .guide-flip-face--back {
   pointer-events: auto;
+  /* Open face matches scene height — don’t keep a clipped scrollport. */
+  overflow: visible;
 }
 
+/* ---- Flip focus: calm product-site blur; only the open card stays sharp ---- */
+
+.guide-flip-focus-scrim {
+  position: fixed;
+  inset: 0;
+  /* Below chapter strip + localnav; card section lifts above this */
+  z-index: 8700;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(252, 252, 253, 0.42);
+  -webkit-backdrop-filter: saturate(140%) blur(24px);
+  backdrop-filter: saturate(140%) blur(24px);
+  cursor: default;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.85s var(--ease),
+    visibility 0.85s var(--ease);
+}
+
+.guide-flip-focus-scrim.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .guide-flip-focus-scrim {
+    background: rgba(252, 252, 253, 0.88);
+  }
+}
+
+/*
+ * Moments use transform for scroll reveal (stacking context). Lift the open
+ * section above the scrim so the card can stay sharp; transparent gaps show
+ * the blurred scrim underneath.
+ */
+body.guide-flip-focus .mag-section:has(.guide-flip.is-flipped),
+body.guide-flip-focus .guide-moment:has(.guide-flip.is-flipped) {
+  position: relative;
+  z-index: 8701;
+}
+
+/* Chapter index stays sharp and tappable above the blur */
+body.guide-flip-focus .mag-index,
+body.guide-flip-focus .mag-toc-shell > .mag-index,
+body.guide-flip-focus .guide-hero + .mag-index {
+  z-index: 8720;
+}
+
+/* Title / lead / try-row sit with the card but recede into the blur */
+.guide-flip > :not(.guide-flip-scene) {
+  transition:
+    filter 0.9s var(--ease),
+    opacity 0.75s var(--ease);
+}
+
+body.guide-flip-focus .guide-flip.is-flipped > :not(.guide-flip-scene) {
+  filter: blur(20px);
+  opacity: 0.4;
+  pointer-events: none;
+  user-select: none;
+}
+
+body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
+  position: relative;
+  z-index: 1;
+}
+
+/* Back body wrapper; Close sits under it in the card (not inside this region) */
 .guide-flip-back-scroll {
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  padding-inline-end: 0.15rem;
+  flex: 1 1 auto;
+  min-height: 0;
+  /* Never trap page scroll — open height is sized in JS to fit this body. */
+  overflow: visible;
 }
 
-.guide-flip-face--back .guide-calc-main,
-.guide-flip-face--back .guide-chapter-card {
-  max-width: 100%;
+/* Legacy: scroll still wrapping a nested card (complaints page article face) */
+.guide-flip-back-scroll > .guide-chapter-card {
+  height: auto;
+  min-height: 100%;
 }
 
-.guide-flip-face--back .guide-tile-title {
+/* Back titles live inside the grey card — keep them left with card copy */
+.guide-flip-face--back .guide-chapter-card > .guide-tile-title,
+.guide-flip-face--back .guide-chapter-card > .guide-tile-copy,
+.guide-flip-face--back .guide-flip-back-scroll > .guide-tile-title,
+.guide-flip-face--back .guide-flip-back-scroll > .guide-tile-copy {
+  text-align: left;
+  margin-inline: 0;
+  max-width: none;
+}
+
+.guide-flip-face--back .guide-chapter-card > .guide-tile-title,
+.guide-flip-face--back .guide-flip-back-scroll > .guide-tile-title {
+  margin-block-start: 0;
   margin-block-end: 0.35rem;
 }
 
-.guide-flip-face--back .guide-calc-lead {
+.guide-flip-face--back .guide-chapter-card > .guide-calc-lead,
+.guide-flip-face--back .guide-chapter-card > .guide-tile-copy--rule,
+.guide-flip-face--back .guide-flip-back-scroll > .guide-calc-lead,
+.guide-flip-face--back .guide-flip-back-scroll > .guide-tile-copy--rule {
   margin-block-end: 0.75rem;
 }
 
@@ -2329,38 +2682,69 @@ body.guide-reading .guide-tile-note {
   transform: translateX(0.12em);
 }
 
-/* Docked flip control — outside the rotate; same place open or closed */
+/* Cards that host a dock (front open or back Close): flex so dock can pin to bottom */
+.guide-chapter-card:has(> .guide-flip-dock) {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Docked flip control — same bottom slot on both faces; left phone / centre desktop */
 .guide-flip-dock.guide-flip-link {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
   align-self: flex-start;
   margin: 0;
-  padding-top: clamp(28px, 4vw, 48px);
+  margin-inline: 0;
+  margin-block-start: auto;
+  padding-block-start: clamp(20px, 3vw, 28px);
   flex: 0 0 auto;
-  scroll-margin-block-start: calc(
-    var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + var(--shroffin-ln-height, 52px) + 1.25rem
-  );
 }
 
-.guide-flip-dock.guide-flip-link .guide-flip-link-arrow {
-  transform: rotate(90deg);
+.guide-chapter-card > .guide-flip-dock.guide-flip-link {
+  margin-block-start: auto;
 }
 
+/* Back card already flexes scroll + dock — keep Close under the scrollport */
+.guide-flip-face--back > .guide-chapter-card > .guide-flip-dock.guide-flip-link {
+  margin-block-start: 0;
+  flex: 0 0 auto;
+}
+
+@media (min-width: 834px) {
+  .guide-flip-dock.guide-flip-link,
+  .guide-chapter-card > .guide-flip-dock.guide-flip-link {
+    align-self: center;
+    margin-inline: auto;
+  }
+
+  /* Beat mag-pair’s left-only CTA rule for in-card flip docks */
+  .mag-pair .guide-chapter-card > .guide-flip-dock.guide-flip-link {
+    align-self: center;
+    margin-inline: auto;
+  }
+}
+
+/* Flip docks use the same sideways chevron as other guide links */
 .guide-flip-dock.guide-flip-link:hover .guide-flip-link-arrow,
 .guide-flip-dock.guide-flip-link:focus-visible .guide-flip-link-arrow {
-  transform: rotate(90deg) translateY(var(--shroffin-disclose-nudge, 0.2em));
+  transform: translateX(var(--shroffin-disclose-nudge, 0.2em));
 }
 
-.guide-flip.is-flipped .guide-flip-dock.guide-flip-link .guide-flip-link-arrow {
-  transform: rotate(-90deg);
+.guide-flip-dock.guide-flip-link:active .guide-flip-link-arrow {
+  transform: translateX(0.12em);
 }
 
-.guide-flip.is-flipped .guide-flip-dock.guide-flip-link:hover .guide-flip-link-arrow,
-.guide-flip.is-flipped .guide-flip-dock.guide-flip-link:focus-visible .guide-flip-link-arrow {
-  transform: rotate(-90deg) translateY(calc(var(--shroffin-disclose-nudge, 0.2em) * -1));
-}
-
-/* Borrow: try-row stays under the dock (same order as before) */
+/* Borrow: try-row stays under the flip scene (same order as before) */
 .guide-flip > .guide-try-row {
   margin-top: clamp(14px, 2.5vw, 18px);
+}
+
+@media (min-width: 834px) {
+  .guide-flip > .guide-try-row {
+    align-items: center;
+  }
 }
 
 /* Department openers / cross-page CTAs (insurance hub, project link, calculators) */
@@ -2368,6 +2752,20 @@ body.guide-reading .guide-tile-note {
 .guide-flip-link.guide-open-link {
   align-self: flex-start;
   margin-top: clamp(20px, 3vw, 28px);
+}
+
+/* Tenure opener — left on phone, centred on desktop (matches in-card flip docks) */
+#tenure .guide-flip-link.guide-open-link {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: 0;
+}
+
+@media (min-width: 834px) {
+  #tenure .guide-flip-link.guide-open-link {
+    margin-inline: auto;
+  }
 }
 
 /* Quiet secondary “try it” links under an on-page Estimate. */
@@ -2439,8 +2837,8 @@ body.guide-reading .guide-tile-note {
 }
 
 /* Calculator worksheets: fields left, result right; reserve both columns from the start. */
-#borrow-calc .guide-calc-main,
-#emi-calc .guide-calc-main {
+#borrow-calc .guide-calc-body--split,
+#emi-calc .guide-calc-body--split {
   max-width: none;
 }
 
@@ -2578,11 +2976,6 @@ body.guide-reading .guide-tile-note {
   line-height: 1.5;
 }
 
-.guide-rate-notes > p:first-child {
-  border-top: 0;
-  padding-top: 0;
-}
-
 /* ---- Fee schedule → price list / statement ----------------------------- */
 
 .guide-fee-schedule {
@@ -2632,11 +3025,6 @@ body.guide-reading .guide-tile-note {
   margin: 0;
   padding: 10px 0;
   border-top: 1px solid var(--mag-hair-soft);
-}
-
-.guide-fee-rows > li:first-child {
-  border-top: 0;
-  padding-top: 0;
 }
 
 .guide-fee-cluster,
@@ -2728,11 +3116,13 @@ body.guide-reading .guide-tile-note {
   padding: 4px;
   border: 0;
   border-bottom: 0;
-  border-radius: 12px;
+  border-radius: var(--shroffin-seg-radius, 12px);
   background: color-mix(in srgb, var(--mag-ink, #1d1d1f) 6%, #fff);
   max-width: 100%;
   position: relative;
+  /* overflow-x:auto alone computes overflow-y to auto and steals page wheel. */
   overflow-x: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   box-sizing: border-box;
@@ -2753,7 +3143,7 @@ body.guide-reading .guide-tile-note {
   min-height: 44px;
   padding: 0.45em 1.05em;
   border: 0;
-  border-radius: 9px;
+  border-radius: var(--shroffin-seg-option-radius, 9px);
   background: transparent;
   color: color-mix(in srgb, var(--mag-ink, #1d1d1f) 55%, transparent);
   font-family: var(--font-brand);
@@ -2794,7 +3184,7 @@ body.guide-reading .guide-tile-note {
 .guide-seg .shroffin-sel-thumb--pill {
   background: #fff;
   box-shadow: 0 1px 2px rgba(29, 29, 31, 0.06);
-  border-radius: 9px;
+  border-radius: var(--shroffin-seg-option-radius, 9px);
 }
 
 .guide-seg-btn:focus-visible {
@@ -2809,7 +3199,489 @@ body.guide-reading .guide-tile-note {
 .guide-seg-panel .guide-doc-rows,
 .guide-seg-panel .guide-doc-table,
 .guide-seg-panel .guide-limit-copy {
-  margin-top: 18px;
+  margin-top: var(--guide-card-gap-stack, 18px);
+}
+
+.guide-chapter-card > .guide-seg {
+  margin-top: 0;
+  margin-inline: 0;
+}
+
+/*
+ * Standard air under every card switch → content (mobile + desktop).
+ * One gap only: panels/limits carry it; first child inside must not add more.
+ */
+.guide-chapter-card .guide-seg + .guide-seg-panels,
+.guide-chapter-card .guide-seg + .guide-limits,
+.guide-seg + .guide-seg-panels {
+  margin-top: var(--guide-switch-gap, 28px);
+}
+
+.guide-chapter-card .guide-seg-panels > .guide-seg-panel > :first-child,
+.guide-seg-panels > .guide-seg-panel > :first-child {
+  margin-top: 0;
+}
+
+/*
+ * List opening under a switch — same as opening ledgers: no hairline above
+ * the first row (the switch already separates). Between-row rules stay.
+ */
+.guide-seg-panel > .guide-share-list:first-child > li:first-child,
+.guide-seg-panel > .mag-defs:first-child > .mag-def:first-child,
+.guide-seg-panel > .guide-doc-rows:first-child > .guide-doc-row:first-child,
+.guide-seg-panel > .guide-doc-rows:first-child > .mag-doc:first-child,
+.guide-seg-panel > .guide-quiet-facts:first-child > li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.guide-chapter-card .guide-flow + .guide-doc-sub {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--mag-hair-soft);
+}
+
+/* Heading → tabs → answer share one left edge (one eye path). */
+.guide-chapter-card .guide-doc-sub + .guide-seg {
+  margin-top: 12px;
+  margin-inline: 0;
+}
+
+.guide-chapter-card .guide-seg-panels .guide-limit-copy {
+  margin-top: var(--guide-card-gap-stack, 18px);
+  max-width: none;
+  margin-inline: 0;
+  text-align: left;
+}
+
+/* ---- Answer stage (hero number / phrase) -------------------------------- */
+/*
+ * Eye path (guide reading):
+ * 1. One left edge inside the card — tabs, labels, answers, rules.
+ * 2. Number / phrase is loudest; labels and units stay quieter.
+ * 3. Comparison columns share the same row structure.
+ * 4. Secondary facts under a hairline, full width, skim first.
+ * Never mix centered tabs with left headings or centered body.
+ */
+
+.guide-answer-stage {
+  width: 100%;
+}
+
+.guide-answer-pair {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+}
+
+@media (min-width: 834px) {
+  .guide-answer-pair {
+    grid-template-columns: 1fr 1fr;
+    gap: 0 40px;
+    max-width: none;
+    margin-inline: 0;
+  }
+}
+
+.guide-answer {
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  justify-items: start;
+  row-gap: 4px;
+  min-width: 0;
+  text-align: left;
+}
+
+.guide-answer-prefix--spacer,
+.guide-answer-unit--spacer {
+  visibility: hidden;
+  user-select: none;
+}
+
+@media (min-width: 834px) {
+  .guide-answer-pair > .guide-answer:first-child {
+    padding-inline-end: 40px;
+    border-inline-end: 1px solid var(--mag-hair-soft);
+  }
+}
+
+@media (max-width: 833px) {
+  .guide-answer-pair > .guide-answer + .guide-answer {
+    padding-top: 24px;
+    border-top: 1px solid var(--mag-hair-soft);
+  }
+}
+
+.guide-answer-label {
+  margin: 0;
+  color: var(--mag-muted);
+  font-size: var(--shroffin-type-body);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  text-transform: none;
+}
+
+.guide-answer-prefix {
+  margin: 0;
+  color: var(--mag-muted);
+  font-size: var(--shroffin-type-body);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.guide-answer-num {
+  margin: 0;
+  color: var(--mag-ink);
+  font-size: clamp(2rem, 5.5vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Phrases are answers too — same weight as numbers, not a quiet aside. */
+.guide-answer-num--phrase {
+  max-width: none;
+  font-size: clamp(1.35rem, 3.4vw, 1.65rem);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.25;
+  color: var(--mag-ink);
+}
+
+.guide-answer--soft .guide-answer-num,
+.guide-answer--soft .guide-answer-num--phrase {
+  color: var(--mag-ink);
+  font-weight: 600;
+}
+
+.guide-answer-unit {
+  margin: 0;
+  color: var(--mag-muted);
+  font-size: var(--shroffin-type-body);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.guide-answer-stage--solo {
+  max-width: none;
+  margin-inline: 0;
+}
+
+.guide-answer-stage--solo .guide-answer--hero {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  justify-items: start;
+  row-gap: 4px;
+  text-align: left;
+}
+
+.guide-answer-stage--solo .guide-answer-num {
+  font-size: clamp(2.25rem, 6vw, 3.25rem);
+}
+
+/* Secondary band under the focal answer */
+.guide-answer-pair + .guide-doc-sub,
+.guide-answer-pair + .guide-quiet-facts,
+.guide-answer-pair + .guide-glance,
+.guide-answer--hero + .guide-quiet-facts {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--mag-hair-soft);
+}
+
+/* Band already draws the rule — don’t stack a second on the first row */
+.guide-answer-pair + .guide-quiet-facts > li:first-child,
+.guide-answer--hero + .guide-quiet-facts > li:first-child {
+  border-top: 0;
+}
+
+.guide-answer-stage > .guide-doc-sub {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--mag-hair-soft);
+  margin-bottom: 0;
+  color: var(--mag-muted);
+  font-size: var(--shroffin-type-body);
+  font-weight: 500;
+}
+
+.guide-answer-stage > .guide-doc-sub + .guide-quiet-facts {
+  margin-top: 12px;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.guide-answer-stage > .guide-glance {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.guide-chapter-card > .guide-glance {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--mag-hair-soft);
+  text-align: left;
+}
+
+/* Quiet secondary facts — full row width; skim first, then rest. */
+
+.guide-quiet-facts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: none;
+}
+
+.guide-answer-stage--solo .guide-quiet-facts {
+  margin-inline: 0;
+  max-width: none;
+}
+
+.guide-quiet-facts li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin: 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--mag-hair-soft);
+  text-align: left;
+}
+
+.guide-quiet-facts .guide-share-when {
+  display: block;
+}
+
+.guide-quiet-facts .guide-share-then {
+  display: block;
+  width: 100%;
+  max-width: none;
+}
+
+/*
+  Colour and weight come from .guide-share-when / .guide-share-then / .guide-skim
+  (muted label, ink answer, skim 600 / rest 400) — same as lists and flows.
+*/
+
+.guide-answer-stage--solo .guide-callout {
+  margin-top: 24px;
+}
+
+/*
+ * Phone answer stage (≤833): one idea settles first.
+ * Primary = hero. Contrast = quiet companion (not a second hero stack).
+ * Desktop (≥834) keeps equal side-by-side columns — unchanged above.
+ */
+@media (max-width: 833px) {
+  /*
+   * Phone card switches — same type as every other guide control
+   * (--shroffin-type-body). Layout only: full-width equal segments,
+   * single line, slim track. No per-switch font sizes.
+   */
+  .guide-chapter-card .guide-seg {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    align-items: stretch;
+    gap: 0;
+    padding: 2px;
+    /* Same corner roundness as desktop Term loan / Regular / Overdraft. */
+    border-radius: var(--shroffin-seg-radius, 12px);
+    min-height: var(--shroffin-btn-touch, 44px);
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .guide-chapter-card .guide-seg::-webkit-scrollbar {
+    display: none;
+  }
+
+  .guide-chapter-card .guide-seg-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    align-self: stretch;
+    padding: 0 0.65em;
+    border-radius: var(--shroffin-seg-option-radius, 9px);
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .guide-chapter-card .guide-seg .shroffin-sel-thumb--pill {
+    border-radius: var(--shroffin-seg-option-radius, 9px);
+  }
+
+  .guide-answer-pair {
+    gap: 0;
+  }
+
+  .guide-answer-pair > .guide-answer--primary {
+    row-gap: 2px;
+  }
+
+  /* Primary phrase (rent): clear, not towering. */
+  .guide-answer-pair > .guide-answer--primary .guide-answer-num--phrase {
+    font-size: clamp(1.28rem, 5.4vw, 1.5rem);
+    line-height: 1.22;
+  }
+
+  /*
+   * Contrast answer: compact companion under a hairline.
+   * Hide alignment spacers — they only exist for desktop column grid.
+   */
+  .guide-answer-pair > .guide-answer--contrast,
+  .guide-answer-pair > .guide-answer + .guide-answer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-items: start;
+    gap: 2px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--mag-hair-soft);
+    row-gap: 0;
+  }
+
+  .guide-answer-pair > .guide-answer--contrast .guide-answer-prefix--spacer,
+  .guide-answer-pair > .guide-answer--contrast .guide-answer-unit--spacer,
+  .guide-answer-pair > .guide-answer + .guide-answer .guide-answer-prefix--spacer,
+  .guide-answer-pair > .guide-answer + .guide-answer .guide-answer-unit--spacer {
+    display: none;
+  }
+
+  .guide-answer-pair > .guide-answer--contrast .guide-answer-label,
+  .guide-answer-pair > .guide-answer + .guide-answer .guide-answer-label {
+    /* Size: phone sheet head at file end (--guide-sheet-head). */
+    font-weight: 500;
+    color: var(--mag-muted);
+  }
+
+  .guide-answer-pair > .guide-answer--contrast .guide-answer-num,
+  .guide-answer-pair > .guide-answer--contrast .guide-answer-num--phrase,
+  .guide-answer-pair > .guide-answer + .guide-answer .guide-answer-num,
+  .guide-answer-pair > .guide-answer + .guide-answer .guide-answer-num--phrase {
+    /* Size: phone sheet body ladder at file end (--guide-sheet-body). */
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
+    max-width: none;
+    color: var(--mag-ink);
+  }
+
+  /* Secondary rules band: closer to the answer, still below it. */
+  .guide-answer-pair + .guide-doc-sub,
+  .guide-answer-pair + .guide-quiet-facts,
+  .guide-answer-pair + .guide-glance,
+  .guide-answer--hero + .guide-quiet-facts,
+  .guide-answer-stage > .guide-doc-sub {
+    margin-top: 24px;
+    padding-top: 18px;
+  }
+
+  .guide-answer-stage > .guide-doc-sub + .guide-quiet-facts {
+    margin-top: 10px;
+  }
+
+  .guide-quiet-facts li {
+    padding: 11px 0;
+    gap: 2px;
+  }
+
+  .guide-answer-stage > .guide-glance {
+    margin-top: 14px;
+  }
+
+  .guide-chapter-card > .guide-glance {
+    margin-top: 18px;
+    padding-top: 14px;
+  }
+
+  /* Solo hero (principal): number first; unit can wrap without bloating. */
+  .guide-answer-stage--solo .guide-answer-num {
+    font-size: clamp(2.05rem, 9vw, 2.7rem);
+  }
+
+  .guide-answer-stage--solo .guide-answer-unit {
+    max-width: 13.5rem;
+    line-height: 1.35;
+  }
+
+  .guide-answer-stage--solo .guide-quiet-facts {
+    margin-top: 0;
+  }
+
+  .guide-answer-stage--solo .guide-callout {
+    margin-top: 18px;
+  }
+
+  /* Under-construction: timeline → fork without a long dead gap. */
+  .guide-chapter-card .guide-flow + .guide-doc-sub {
+    margin-top: 26px;
+    padding-top: 20px;
+  }
+
+  .guide-chapter-card .guide-seg-panels .guide-limit-copy {
+    margin-top: var(--guide-card-gap-stack, 18px);
+    /* Size: phone sheet body ladder at file end (--guide-sheet-body). */
+    line-height: 1.45;
+  }
+
+  /* First line under the switch — gap lives on panels, not a second margin. */
+  .guide-chapter-card .guide-seg-panels > .guide-seg-panel > .guide-limit-copy:first-child {
+    margin-top: 0;
+  }
+
+  /*
+   * Section settle: readable sooner on phone (was fully invisible → washout).
+   * Still fades in; travel stays modest.
+   */
+  body.guide-reading .guide-moment,
+  body.guide-reading .mag-reveal {
+    opacity: 0.24;
+    transform: translateY(12px);
+  }
+
+  body.guide-reading .guide-moment.is-in,
+  body.guide-reading .mag-reveal.is-in,
+  body.guide-reading .guide-moment[id]:target {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Sparse facts outside a chapter card (e.g. joint loan breath). */
+
+.guide-quiet-facts--bare {
+  max-width: 36rem;
+  margin-block-start: 28px;
+  margin-inline: auto;
+}
+
+@media (min-width: 834px) {
+  .guide-quiet-facts--bare li {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .guide-quiet-facts--bare .guide-share-then {
+    max-width: none;
+  }
+}
+
+.guide-quiet-facts--bare li {
+  border-top-color: color-mix(in srgb, var(--mag-hair-soft) 70%, transparent);
 }
 
 /* ---- Source note / accordion disclosures -------------------------------- */
@@ -2973,47 +3845,6 @@ body.guide-reading .guide-tile-note {
   margin-top: 8px;
 }
 
-/* ---- See-also cross links (insurance sub-pages) — a note, not chips ----- */
-
-.guide-related-wrap {
-  max-width: var(--mag-wrap);
-  margin: 0 auto;
-  padding-inline: var(--mag-inline) var(--mag-inline-end);
-  box-sizing: border-box;
-}
-
-.guide-related-links {
-  max-width: 44em;
-  margin: 0;
-  padding-top: 22px;
-  border-top: 1px solid var(--mag-hair);
-  color: var(--mag-muted);
-  font-size: var(--shroffin-type-body);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.5;
-}
-
-.guide-related-links a {
-  color: var(--shroffin-link, #3f62c8);
-  text-decoration: none;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-  font-weight: 500;
-}
-
-.guide-related-links a:hover,
-.guide-related-links a:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
-  text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
-}
-
-.guide-related-links a:active {
-  color: var(--shroffin-link-active, #2f4ba0);
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
-}
-
 /* ---- Escalation ladder / climb (complaints) ---------------------------- */
 
 .guide-climb {
@@ -3027,14 +3858,15 @@ body.guide-reading .guide-tile-note {
   min-width: 0;
 }
 
+/* Same support-step type as .guide-limit-title; border is climb layout only. */
 .guide-climb-label {
   margin: 0 0 8px;
   padding: 0 0 14px;
   border-bottom: 1px solid var(--mag-hair);
   color: var(--mag-ink);
-  font-size: var(--shroffin-type-title);
+  font-size: var(--shroffin-type-support);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
   line-height: 1.2;
 }
 
@@ -3137,11 +3969,6 @@ body.guide-reading .guide-tile-note {
   align-items: center;
   padding: 14px 0 0;
   border-block-start: 1px solid var(--mag-hair-soft);
-}
-
-.guide-teach-path:first-child {
-  padding-top: 0;
-  border-block-start: 0;
 }
 
 .guide-teach-from,
@@ -3287,7 +4114,7 @@ a.guide-note-ref:hover {
 .guide-seg-panels {
   display: grid;
   width: 100%;
-  margin-top: 18px;
+  margin-top: var(--guide-card-gap-stack, 18px);
 }
 
 .guide-seg-panels > .guide-seg-panel {
@@ -3303,6 +4130,58 @@ a.guide-note-ref:hover {
 
 .guide-seg-panels > .guide-seg-panel:not([hidden]) {
   visibility: visible;
+}
+
+/*
+ * Phone-only switches (borrow / charges / KYC): tablist hidden on desktop;
+ * both panels stay visible in the original layout. Phone JS toggles [hidden].
+ */
+@media (min-width: 834px) {
+  .guide-seg[data-guide-seg-mobile="true"] {
+    display: none !important;
+  }
+
+  .guide-seg-panels--mobile-only[data-guide-seg-mobile-panels] {
+    display: block;
+    margin-top: 0;
+  }
+
+  .guide-seg-panels--mobile-only[data-guide-seg-mobile-panels] > .guide-seg-panel {
+    grid-area: auto;
+    display: block;
+    width: 100%;
+    visibility: visible;
+  }
+
+  .guide-seg-panels--mobile-only[data-guide-seg-mobile-panels] > .guide-seg-panel + .guide-seg-panel {
+    margin-top: var(--guide-card-gap-stack, 18px);
+  }
+}
+
+@media (max-width: 833px) {
+  .guide-doc-sub--desktop-only {
+    display: none;
+  }
+
+  .guide-limits[data-guide-seg-mobile-panels] {
+    grid-template-columns: 1fr;
+    margin-top: var(--guide-switch-gap, 28px);
+  }
+
+  .guide-limits[data-guide-seg-mobile-panels]::before {
+    content: none;
+  }
+
+  /* Switch already names the group — don’t repeat the column title on phone */
+  #loan-amount .guide-limits[data-guide-seg-mobile-panels] > .guide-limit > .guide-limit-title,
+  #charges .guide-limits[data-guide-seg-mobile-panels] > .guide-limit > .guide-limit-title {
+    display: none;
+  }
+
+  #loan-amount .guide-limits[data-guide-seg-mobile-panels] > .guide-limit > .guide-limit-copy,
+  #charges .guide-limits[data-guide-seg-mobile-panels] > .guide-limit > .guide-limit-copy {
+    margin-top: 0;
+  }
 }
 
 /* ---- Endnotes / colophon ----------------------------------------------- */
@@ -3387,13 +4266,6 @@ a.guide-note-ref:hover {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: clamp(28px, 4vw, 48px);
-  }
-
-  /* Top of each column — no hairline (first-child alone only clears the left). */
-  .guide-doc-rows--cols > .guide-doc-row:nth-child(-n + 2),
-  .guide-doc-rows--cols > .mag-doc:nth-child(-n + 2) {
-    border-top: 0;
-    padding-top: 0;
   }
 
   .mag-pair {
@@ -3482,7 +4354,6 @@ a.guide-note-ref:hover {
   .guide-story,
   .mag-wrap,
   .guide-breadcrumb,
-  .guide-related-wrap,
   .guide-fine-wrap,
   .mag-fine-wrap {
     padding-inline: var(--mag-inline) var(--mag-inline-end);
@@ -3519,8 +4390,7 @@ a.guide-note-ref:hover {
 
   .guide-tile-title,
   .mag-h,
-  .mag-pair .guide-tile-title,
-  .guide-climb-label {
+  .mag-pair .guide-tile-title {
     font-size: 1.75rem;
     font-weight: 600;
     letter-spacing: -0.025em;
@@ -3531,9 +4401,10 @@ a.guide-note-ref:hover {
     font-size: calc(var(--shroffin-type-display) - 3px);
   }
 
-  /* Situation heads — clearly under the chapter title, above facts. */
+  /* Situation / column heads — under the chapter title, above facts. */
   .guide-limit-title,
-  .mag-compare-title {
+  .mag-compare-title,
+  .guide-climb-label {
     font-size: 1.125rem;
     font-weight: 600;
     letter-spacing: -0.012em;
@@ -3561,6 +4432,19 @@ a.guide-note-ref:hover {
   }
 
   .guide-share-list--plain .guide-share-then {
+    font-weight: 500;
+  }
+
+  /* Skim contrast: rest two steps below body, skim at body weight. */
+  .guide-share-then:has(.guide-skim),
+  .guide-flow .guide-share-then:has(.guide-skim),
+  .guide-share-list--plain .guide-share-then:has(.guide-skim) {
+    font-weight: 300;
+  }
+
+  .guide-share-then .guide-skim,
+  .guide-flow .guide-share-then .guide-skim,
+  .guide-share-list--plain .guide-share-then .guide-skim {
     font-weight: 500;
   }
 
@@ -3592,13 +4476,21 @@ a.guide-note-ref:hover {
 
   .guide-tile,
   .guide-tile--stage,
-  .guide-tile--hero,
-  .guide-flip-face {
+  .guide-tile--hero {
     padding: 0;
     border: 0;
     border-radius: 0;
     box-shadow: none;
     background: transparent;
+  }
+
+  .guide-flip-face {
+    padding: 0;
+    border: 0;
+    /* Keep card surface + elevation — do not clear to a white portal. */
+    border-radius: var(--guide-radius, 10px);
+    background: var(--guide-card-surface, #f7f7f7);
+    box-shadow: var(--guide-card-elev);
   }
 
   /* Front stays in flow for height measurement; back stays absolute fill */
@@ -3619,6 +4511,22 @@ a.guide-note-ref:hover {
     transition: none !important;
   }
 
+  .guide-flip-focus-scrim,
+  .guide-flip > :not(.guide-flip-scene) {
+    transition: none !important;
+  }
+
+  .guide-flip-focus-scrim {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(252, 252, 253, 0.88);
+  }
+
+  body.guide-flip-focus .guide-flip.is-flipped > :not(.guide-flip-scene) {
+    filter: none;
+    opacity: 0.35;
+  }
+
   .guide-flip.is-flipped .guide-flip-inner {
     transform: none !important;
   }
@@ -3634,16 +4542,33 @@ a.guide-note-ref:hover {
   }
 
   .guide-flip.is-flipped .guide-flip-face--back {
-    position: absolute !important;
-    inset: 0 !important;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
     transform: none !important;
     visibility: visible !important;
     pointer-events: auto !important;
+    overflow: visible !important;
+  }
+
+  .guide-flip.is-flipped .guide-flip-face--back > .guide-chapter-card,
+  .guide-flip.is-flipped .guide-flip-face--back > .guide-chapter-card > .guide-flip-back-scroll {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    flex: 0 0 auto !important;
   }
 
   .guide-moment,
   .mag-reveal {
     opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  body.guide-reading .guide-chapter-card,
+  body.guide-reading .guide-flip-scene {
     transform: none;
     transition: none;
   }
@@ -3662,7 +4587,8 @@ a.guide-note-ref:hover {
 
 /* =====================================================================
    Guide desktop (≥834): sticky chapter strip + story reclaims TOC width.
-   Phone ≤833: see Guide phone block (same Overview / strip headroom).
+   Phone ≤833: see Guide phone block (same Overview / strip handoff).
+   Guide bar stays until the chapter strip arrives, then yields the top.
    ===================================================================== */
 @media (min-width: 834px) {
   body.guide-reading {
@@ -3821,6 +4747,8 @@ a.guide-note-ref:hover {
   /*
    * Fixed chip box on every link — active only changes colour/background.
    * Same pad/height/weight always, so selection never shifts neighbours.
+   * Desktop pointer chips can be the standard visual tier; width still
+   * respects a readable minimum so short labels stay easy to aim at.
    */
   body.guide-reading .mag-index-link,
   body.guide-reading .mag-toc-shell .mag-index-link {
@@ -3831,6 +4759,7 @@ a.guide-note-ref:hover {
     justify-content: center;
     gap: 0;
     width: fit-content;
+    min-width: var(--shroffin-btn-standard-min, 36px);
     height: 2rem;
     min-height: 2rem;
     padding: 0 0.75rem;
@@ -3958,13 +4887,28 @@ a.guide-note-ref:hover {
 
 /* =====================================================================
    Guide phone (≤833): same Overview / chapter-strip stack as desktop.
-   Guide bar hides on scroll down; chapter strip sticks and fills the top.
-   Horizontal strip chrome (scroller, cues) stays from the ≤1199 block.
+   Guide bar yields when the chapter strip arrives; strip fills the top.
+   Chapter chips match desktop pill tabs (not Guide-bar underlines).
+   Scroller + edge cues stay from the ≤1199 block.
    ===================================================================== */
 @media (max-width: 833px) {
   body.guide-reading {
-    --guide-chapter-strip-band: var(--shroffin-ln-height, 52px);
-    --shroffin-ln-offset: var(--shroffin-ln-height, 52px);
+    /* Keep in sync with the first phone token block (matched 48px chrome). */
+    --shroffin-ln-height: 48px;
+    --guide-chapter-strip-band: 48px;
+    --guide-index-pill-height: 2rem;
+    --shroffin-ln-offset: var(--shroffin-ln-height, 48px);
+  }
+
+  /*
+   * Phone only: complaints Guide title wraps to two lines — match bar height
+   * here so editorial’s 48px phone token does not clip it. Other Guide pages
+   * keep 48px.
+   */
+  body.guide-reading:has(
+    .localnav-link[aria-current="page"][href$="home-loan-complaints.html"]
+  ) {
+    --shroffin-ln-height: 58px;
   }
 
   body.guide-reading.guide-ln-away {
@@ -3984,11 +4928,21 @@ a.guide-note-ref:hover {
     pointer-events: none;
   }
 
-  /* Drawer open: keep Guide bar usable even if headroom hid it. */
-  body.guide-reading.guide-ln-away .localnav.is-open {
+  /* Drawer open/closing: keep Guide bar usable even if handoff hid it.
+     Do not clear guide-ln-away — that would slide the chapter strip’s top. */
+  body.guide-reading.guide-ln-away .localnav.is-open,
+  body.guide-reading.guide-ln-away .localnav.is-closing {
     transform: none;
     opacity: 1;
     pointer-events: auto;
+  }
+
+  /* While the Guide pages menu is open, freeze strip top (no handoff fight). */
+  body.guide-reading:has(.localnav.is-open) .mag-index,
+  body.guide-reading:has(.localnav.is-closing) .mag-index,
+  body.guide-reading:has(.localnav.is-open) .guide-hero + .mag-index,
+  body.guide-reading:has(.localnav.is-closing) .guide-hero + .mag-index {
+    transition: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -4000,13 +4954,16 @@ a.guide-note-ref:hover {
   body.guide-reading .mag-index,
   body.guide-reading .guide-hero + .mag-index {
     position: sticky;
-    top: var(--shroffin-ln-offset, var(--shroffin-ln-height, 52px));
+    top: var(--shroffin-ln-offset, var(--shroffin-ln-height, 48px));
     z-index: 8500;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     width: 100%;
     max-width: none;
+    height: var(--guide-chapter-strip-band);
     min-height: var(--guide-chapter-strip-band);
-    margin-block-start: 0;
-    /* Kill stacked air that travels with sticky. */
+    /* Height = --guide-index-on-photo; pull uses that same token. */
     padding-block: 0;
     padding-inline: var(--mag-inline) var(--mag-inline-end);
     background: rgba(255, 255, 255, 0.82);
@@ -4017,6 +4974,14 @@ a.guide-note-ref:hover {
     transition: top 0.85s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  /*
+   * First look: one owner for the photo pull. Distance = strip band only.
+   * Sticky `top` still wins after the strip pins while scrolling.
+   */
+  body.guide-reading .guide-hero + .mag-index {
+    margin-block-start: calc(-1 * var(--guide-index-on-photo));
+  }
+
   @media (prefers-reduced-motion: reduce) {
     body.guide-reading .mag-index,
     body.guide-reading .guide-hero + .mag-index {
@@ -4024,9 +4989,113 @@ a.guide-note-ref:hover {
     }
   }
 
-  /* Photo pull only before the strip sticks — once sticky, sit flush. */
-  body.guide-reading .guide-hero + .mag-index {
-    margin-block-start: 0;
+  /*
+   * Same pill language as desktop ≥834: 2rem chip in a 48px band → ~8px air
+   * above/below so the filled active state never kisses the strip edges.
+   * Width still uses the touch floor for short labels.
+   */
+  body.guide-reading .mag-index-list {
+    align-items: center;
+    gap: 0.35rem;
+    min-height: var(--guide-chapter-strip-band);
+  }
+
+  body.guide-reading .mag-index-list > li {
+    display: flex;
+    align-items: center;
+  }
+
+  body.guide-reading .mag-index-link {
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: fit-content;
+    min-width: var(--guide-index-strip-row);
+    height: var(--guide-index-pill-height, 2rem);
+    min-height: var(--guide-index-pill-height, 2rem);
+    padding: 0 0.75rem;
+    border: 0;
+    border-radius: 6px;
+    box-sizing: border-box;
+    background: transparent;
+    color: var(--mag-muted);
+    font-size: var(--shroffin-type-body);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    text-decoration: none;
+    box-shadow: none;
+    transition:
+      color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  body.guide-reading .mag-index-link:link,
+  body.guide-reading .mag-index-link:visited {
+    color: var(--mag-muted);
+  }
+
+  body.guide-reading .mag-index-link::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  body.guide-reading .mag-index-label {
+    flex: 0 0 auto;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+    white-space: nowrap;
+  }
+
+  /*
+   * Include :link/:visited on the active rule — same specificity as the muted
+   * :link/:visited chips above, so ink must win or the label stays grey.
+   */
+  body.guide-reading .mag-index-link.is-active,
+  body.guide-reading .mag-index-link[aria-current="true"],
+  body.guide-reading .mag-index-link.is-active:link,
+  body.guide-reading .mag-index-link[aria-current="true"]:link,
+  body.guide-reading .mag-index-link.is-active:visited,
+  body.guide-reading .mag-index-link[aria-current="true"]:visited {
+    color: var(--mag-ink);
+    cursor: default;
+    background: rgba(0, 0, 0, 0.08);
+    box-shadow: none;
+  }
+
+  body.guide-reading .mag-index-link.is-active .mag-index-label,
+  body.guide-reading .mag-index-link[aria-current="true"] .mag-index-label {
+    color: var(--mag-ink);
+    font-weight: 400;
+  }
+
+  body.guide-reading .mag-index-link:hover,
+  body.guide-reading .mag-index-link:focus-visible {
+    color: var(--mag-ink);
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  body.guide-reading .mag-index-link.is-active:hover,
+  body.guide-reading .mag-index-link.is-active:focus-visible,
+  body.guide-reading .mag-index-link[aria-current="true"]:hover,
+  body.guide-reading .mag-index-link[aria-current="true"]:focus-visible,
+  body.guide-reading .mag-index-link.is-active:hover:link,
+  body.guide-reading .mag-index-link[aria-current="true"]:hover:link,
+  body.guide-reading .mag-index-link.is-active:focus-visible:link,
+  body.guide-reading .mag-index-link[aria-current="true"]:focus-visible:link {
+    color: var(--mag-ink);
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body.guide-reading .mag-index-link {
+      transition: none;
+    }
   }
 
   /* Gap lives on the first chapter — avoid double air under the strip. */
@@ -4045,10 +5114,1081 @@ a.guide-note-ref:hover {
   body.guide-reading .guide-fine-notes [id],
   body.guide-reading .guide-flip-face--back,
   body.guide-reading .guide-flip-dock.guide-flip-link {
+    /* Section boxes have top padding before the title. Subtract it so a
+       chapter #hash lands the title just under the strip, not the padding. */
     scroll-margin-block-start: calc(
       var(--shroffin-ln-offset, var(--shroffin-ln-height, 52px)) +
-        var(--guide-chapter-strip-band) + 1rem
+        var(--guide-chapter-strip-band) + 1rem -
+        var(--guide-chapter-pad-block)
     );
+  }
+
+  body.guide-reading .guide-story > .mag-section:first-child[id],
+  body.guide-reading .mag-toc-shell .guide-story > .mag-section:first-child[id] {
+    scroll-margin-block-start: calc(
+      var(--shroffin-ln-offset, var(--shroffin-ln-height, 52px)) +
+        var(--guide-chapter-strip-band) + 1rem -
+        var(--guide-open-pause)
+    );
+  }
+
+  /* Chapter tap: snap Guide bar / strip top without the calm handoff tween. */
+  body.guide-reading.guide-ln-jump .localnav,
+  body.guide-reading.guide-ln-jump .mag-index,
+  body.guide-reading.guide-ln-jump .guide-hero + .mag-index {
+    transition: none !important;
   }
 }
 
+/* Documents cast: group headings inside KYC / Income / Property cards only */
+#kyc .guide-chapter-card > .guide-doc-sub:first-child,
+#income .guide-seg-panel > .guide-doc-sub:first-child {
+  margin-top: 0;
+}
+
+#kyc .guide-chapter-card .guide-doc-rows + .guide-doc-sub,
+#income .guide-seg-panel .guide-doc-rows + .guide-doc-sub {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--mag-hair-soft);
+}
+
+#kyc .guide-chapter-card .guide-doc-sub + .guide-doc-rows,
+#income .guide-seg-panel .guide-doc-sub + .guide-doc-rows {
+  margin-top: 12px;
+}
+
+/* Self-employed: entity switch is the first control in the panel. */
+#income #income-panel-self > .guide-seg {
+  margin-top: 0;
+}
+
+/*
+ * Nested entity lists differ in length. Fit to the active list — do not keep
+ * Company height when Proprietor is selected.
+ */
+.guide-seg-panels--fit {
+  display: block;
+}
+
+.guide-seg-panels--fit > .guide-seg-panel {
+  grid-area: auto;
+}
+
+.guide-seg-panels--fit > .guide-seg-panel[hidden] {
+  display: none;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#income #income-panel-self > .guide-seg + .guide-seg-panels--fit {
+  margin-top: var(--guide-switch-gap, 28px);
+}
+
+#income #income-panel-self .guide-seg-panels--fit > .guide-seg-panel > .guide-doc-rows {
+  margin-top: 0;
+}
+
+.guide-doc-rows--compact .guide-doc-row {
+  padding: 12px 0;
+}
+
+.guide-doc-rows--compact .guide-doc-name {
+  font-size: var(--shroffin-type-body);
+  font-weight: 600;
+}
+
+/* Overview exclusive-choice segs: hug labels on desktop only (phone uses equal/compact). */
+@media (min-width: 834px) {
+  #emi .guide-chapter-card > .guide-seg,
+  #emi #emi-panel-starts > .guide-seg,
+  #rates .guide-chapter-card > .guide-seg,
+  #loan-structure .guide-chapter-card > .guide-seg,
+  #project-bank-approval .guide-chapter-card > .guide-seg {
+    display: inline-flex;
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  #emi .guide-chapter-card > .guide-seg .guide-seg-btn,
+  #emi #emi-panel-starts > .guide-seg .guide-seg-btn,
+  #rates .guide-chapter-card > .guide-seg .guide-seg-btn,
+  #loan-structure .guide-chapter-card > .guide-seg .guide-seg-btn,
+  #project-bank-approval .guide-chapter-card > .guide-seg .guide-seg-btn {
+    flex: 0 0 auto;
+  }
+}
+
+/* Project: air under “It depends…” (beat chapter-card > .guide-seg { margin-top: 0 }) */
+#project-bank-approval .guide-chapter-card > .guide-seg {
+  margin-top: 18px;
+}
+
+/*
+ * Phone only: unequal segments so “New / under-construction” has room;
+ * “Resale” stays shorter. Desktop (≥834) still hugs labels via flex: 0 0 auto.
+ */
+@media (max-width: 833px) {
+  #project-bank-approval .guide-chapter-card > .guide-seg #apf-tab-new {
+    flex: 2.2 1 0;
+  }
+
+  #project-bank-approval .guide-chapter-card > .guide-seg #apf-tab-resale {
+    flex: 1 1 0;
+  }
+
+  /*
+   * Property papers: New + Resale on row 1; Build on N.A. plot on row 2.
+   * Same touch height / type as other card switches (wrap must not slim them).
+   * Desktop keeps the default single-row hug — unchanged.
+   */
+  #property .guide-chapter-card > .guide-seg {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    min-height: 0;
+  }
+
+  #property .guide-chapter-card > .guide-seg .guide-seg-btn {
+    min-height: var(--shroffin-btn-touch, 44px);
+    min-block-size: var(--shroffin-btn-touch, 44px);
+    font-size: var(--shroffin-type-body);
+    line-height: 1.2;
+    padding: 0 0.65em;
+  }
+
+  #property .guide-chapter-card > .guide-seg #property-tab-new,
+  #property .guide-chapter-card > .guide-seg #property-tab-resale {
+    flex: 1 1 50%;
+    max-width: 50%;
+  }
+
+  #property .guide-chapter-card > .guide-seg #property-tab-construction {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  /*
+   * Regulator (stuck): 2×2 cells — Time limits | Filing with RBI
+   *                    Money limits | Filing with NHB
+   * Same touch height / type as other card switches. Desktop unchanged.
+   */
+  #stuck .guide-chapter-card > .guide-seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow-x: visible;
+    min-height: 0;
+  }
+
+  #stuck .guide-chapter-card > .guide-seg .guide-seg-btn {
+    flex: unset;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    min-height: var(--shroffin-btn-touch, 44px);
+    min-block-size: var(--shroffin-btn-touch, 44px);
+    font-size: var(--shroffin-type-body);
+    line-height: 1.2;
+    padding: 0 0.65em;
+  }
+
+  /*
+   * Outside this path (limits): 3 equal cells — Not a complaint | Go elsewhere | Courts.
+   * Labels wrap so the row stays on one phone width. Desktop unchanged.
+   */
+  #limits .guide-chapter-card > .guide-seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    overflow-x: visible;
+    min-height: 0;
+  }
+
+  #limits .guide-chapter-card > .guide-seg .guide-seg-btn {
+    flex: unset;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    min-height: var(--shroffin-btn-touch, 44px);
+    min-block-size: var(--shroffin-btn-touch, 44px);
+    font-size: var(--shroffin-type-body);
+    line-height: 1.2;
+    padding: 0 0.4em;
+    white-space: normal;
+  }
+
+  /*
+   * Property cover (coverage): 3 equal cells — When to insure | What is insured | Covered or not.
+   * Labels wrap so the row stays on one phone width. Desktop unchanged.
+   */
+  .guide-story--property-cover #coverage .guide-chapter-card > .guide-seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    overflow-x: visible;
+    min-height: 0;
+  }
+
+  .guide-story--property-cover #coverage .guide-chapter-card > .guide-seg .guide-seg-btn {
+    flex: unset;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    min-height: var(--shroffin-btn-touch, 44px);
+    min-block-size: var(--shroffin-btn-touch, 44px);
+    font-size: var(--shroffin-type-body);
+    line-height: 1.2;
+    padding: 0 0.4em;
+    white-space: normal;
+  }
+
+  /*
+   * Claim after damage (property): 3 equal cells — Claim steps | How payout works | If the bank is named.
+   * Labels wrap so the row stays on one phone width. Desktop unchanged.
+   */
+  .guide-story--property-cover #claim .guide-chapter-card > .guide-seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    overflow-x: visible;
+    min-height: 0;
+  }
+
+  .guide-story--property-cover #claim .guide-chapter-card > .guide-seg .guide-seg-btn {
+    flex: unset;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    min-height: var(--shroffin-btn-touch, 44px);
+    min-block-size: var(--shroffin-btn-touch, 44px);
+    font-size: var(--shroffin-type-body);
+    line-height: 1.2;
+    padding: 0 0.35em;
+    white-space: normal;
+  }
+
+  /*
+   * Premium (property pay): 2×2 cells — When you pay | In the loan
+   *                                    Missed renewal | GST
+   * Same touch height / type as other card switches. Desktop unchanged.
+   */
+  .guide-story--property-cover #pay .guide-chapter-card > .guide-seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow-x: visible;
+    min-height: 0;
+  }
+
+  .guide-story--property-cover #pay .guide-chapter-card > .guide-seg .guide-seg-btn {
+    flex: unset;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    min-height: var(--shroffin-btn-touch, 44px);
+    min-block-size: var(--shroffin-btn-touch, 44px);
+    font-size: var(--shroffin-type-body);
+    line-height: 1.2;
+    padding: 0 0.4em;
+    white-space: normal;
+  }
+
+  /*
+   * Loan cover premium: wrap row — When you pay | In the loan | Your own policy
+   *                      Can I cancel? | Taxes
+   * First three on row 1; last two share row 2. Desktop unchanged.
+   */
+  .guide-story--loan-cover #pay .guide-chapter-card > .guide-seg {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: visible;
+    min-height: 0;
+  }
+
+  .guide-story--loan-cover #pay .guide-chapter-card > .guide-seg .guide-seg-btn {
+    flex: 1 1 calc(33.333% - 2px);
+    max-width: calc(33.333% - 2px);
+    min-width: 0;
+    min-height: var(--shroffin-btn-touch, 44px);
+    min-block-size: var(--shroffin-btn-touch, 44px);
+    font-size: var(--shroffin-type-body);
+    line-height: 1.2;
+    padding: 0 0.35em;
+    white-space: normal;
+  }
+
+  .guide-story--loan-cover #pay .guide-chapter-card > .guide-seg #pay-tab-freelook,
+  .guide-story--loan-cover #pay .guide-chapter-card > .guide-seg #pay-tab-taxes {
+    flex: 1 1 calc(50% - 2px);
+    max-width: calc(50% - 2px);
+  }
+
+  /*
+   * Loan cover claim: 2×2 cells — Who gets paid | How much
+   *                               How to claim | If you close the loan
+   */
+  .guide-story--loan-cover #claim .guide-chapter-card > .guide-seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow-x: visible;
+    min-height: 0;
+  }
+
+  .guide-story--loan-cover #claim .guide-chapter-card > .guide-seg .guide-seg-btn {
+    flex: unset;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    min-height: var(--shroffin-btn-touch, 44px);
+    min-block-size: var(--shroffin-btn-touch, 44px);
+    font-size: var(--shroffin-type-body);
+    line-height: 1.2;
+    padding: 0 0.4em;
+    white-space: normal;
+  }
+}
+
+#project-bank-approval .guide-chapter-card > .guide-glance {
+  margin-top: 18px;
+  padding-top: 24px;
+}
+
+/*
+ * EMI: same switch → content gap as every other card (--guide-card-gap-stack).
+ */
+#emi-flip .guide-flip-face--front > .guide-chapter-card > .guide-share-list {
+  margin-top: 12px;
+}
+
+#emi-flip .guide-flip-face--front > .guide-chapter-card > .guide-share-list + .guide-limit-title {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--mag-hair-soft);
+}
+
+#emi-flip .guide-flip-face--front .guide-limit-copy + .guide-seg {
+  margin-top: var(--guide-switch-gap, 28px);
+}
+
+#emi-flip .guide-flip-face--front .guide-seg + .guide-seg-panels,
+#emi-flip .guide-flip-face--front .guide-chapter-card .guide-seg + .guide-seg-panels {
+  margin-top: var(--guide-switch-gap, 28px);
+}
+
+#emi-flip .guide-flip-face--front .guide-seg-panels .guide-share-list {
+  margin-top: 0;
+}
+
+/* Ready / under-construction answers only — one short line each, not the How EMI works ledger */
+#emi-panel-ready .guide-share-list--plain li,
+#emi-panel-uc .guide-share-list--plain li {
+  border-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#emi-panel-how .guide-share-list--plain > li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+#emi-panel-starts > .guide-seg-panels + .guide-tip {
+  margin-top: 22px;
+}
+
+/* Rates / structure / borrow / EMI: column card so dock sits under content */
+#rate-flip .guide-flip-face--front > .guide-chapter-card,
+#structure-flip .guide-flip-face--front > .guide-chapter-card,
+#borrow-flip .guide-flip-face--front > .guide-chapter-card,
+#charges-flip .guide-flip-face--front > .guide-chapter-card,
+#emi-flip .guide-flip-face--front > .guide-chapter-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Never crush the switch when a taller tab (e.g. Overdraft) overflows the scene */
+#rate-flip .guide-flip-face--front > .guide-chapter-card > .guide-seg,
+#structure-flip .guide-flip-face--front > .guide-chapter-card > .guide-seg,
+#borrow-flip .guide-flip-face--front > .guide-chapter-card > .guide-seg,
+#charges-flip .guide-flip-face--front > .guide-chapter-card > .guide-seg,
+#rate-flip .guide-flip-face--front > .guide-chapter-card > .guide-flip-dock,
+#structure-flip .guide-flip-face--front > .guide-chapter-card > .guide-flip-dock,
+#borrow-flip .guide-flip-face--front > .guide-chapter-card > .guide-flip-dock,
+#charges-flip .guide-flip-face--front > .guide-chapter-card > .guide-flip-dock,
+#emi-flip .guide-flip-face--front > .guide-chapter-card > .guide-flip-dock {
+  flex: 0 0 auto;
+}
+
+#rate-flip .guide-flip-face--front > .guide-chapter-card > .guide-seg-panels,
+#structure-flip .guide-flip-face--front > .guide-chapter-card > .guide-seg-panels {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+#borrow-flip .guide-flip-face--front > .guide-chapter-card > .guide-limits,
+#charges-flip .guide-flip-face--front > .guide-chapter-card > .guide-limits,
+#emi-flip .guide-flip-face--front > .guide-chapter-card > .guide-limits,
+#emi-flip .guide-flip-face--front > .guide-chapter-card > .guide-limit-title,
+#emi-flip .guide-flip-face--front > .guide-chapter-card > .guide-limit-copy,
+#emi-flip .guide-flip-face--front > .guide-chapter-card > .guide-share-list,
+#emi-flip .guide-flip-face--front > .guide-chapter-card > .guide-seg,
+#emi-flip .guide-flip-face--front > .guide-chapter-card > .guide-seg-panels,
+#emi-flip .guide-flip-face--front > .guide-chapter-card > .guide-tip {
+  flex: 0 0 auto;
+}
+
+/*
+ * When open, JS sizes the scene to the back’s natural height — pin Close under
+ * the body and keep flex from shrinking the scroll wrapper into a trap.
+ */
+#emi-flip .guide-flip-face--back > .guide-chapter-card,
+#borrow-flip .guide-flip-face--back > .guide-chapter-card,
+#rate-flip .guide-flip-face--back > .guide-chapter-card,
+#structure-flip .guide-flip-face--back > .guide-chapter-card,
+#charges-flip .guide-flip-face--back > .guide-chapter-card,
+#talk-flip .guide-flip-face--back > .guide-chapter-card {
+  overflow: visible;
+  max-height: none;
+}
+
+#emi-flip .guide-flip-face--back > .guide-chapter-card > .guide-flip-back-scroll,
+#borrow-flip .guide-flip-face--back > .guide-chapter-card > .guide-flip-back-scroll,
+#rate-flip .guide-flip-face--back > .guide-chapter-card > .guide-flip-back-scroll,
+#structure-flip .guide-flip-face--back > .guide-chapter-card > .guide-flip-back-scroll,
+#charges-flip .guide-flip-face--back > .guide-chapter-card > .guide-flip-back-scroll,
+#talk-flip .guide-flip-face--back > .guide-chapter-card > .guide-flip-back-scroll {
+  flex: 0 0 auto;
+  overflow: visible;
+  min-height: 0;
+}
+
+/*
+ * Same bottom slot as the front open control (Estimate your EMI, etc.).
+ * When open, the scene matches the back height — pin Close under the body.
+ */
+#emi-flip .guide-flip-face--back > .guide-chapter-card > .guide-flip-dock.guide-flip-link,
+#borrow-flip .guide-flip-face--back > .guide-chapter-card > .guide-flip-dock.guide-flip-link,
+#rate-flip .guide-flip-face--back > .guide-chapter-card > .guide-flip-dock.guide-flip-link,
+#structure-flip .guide-flip-face--back > .guide-chapter-card > .guide-flip-dock.guide-flip-link,
+#charges-flip .guide-flip-face--back > .guide-chapter-card > .guide-flip-dock.guide-flip-link,
+#talk-flip .guide-flip-face--back > .guide-chapter-card > .guide-flip-dock.guide-flip-link {
+  margin-block-start: auto;
+}
+
+
+/* ---- Concessions cast (concessions-cast-2) ------------------------------ */
+/*
+ * Perk cards are stacked (not a left|right ledger).
+ * Scan: perk name first. Study: answer under it. Skim = weight accent only, not a fake hero.
+ */
+
+#bank-rates .guide-perk-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+  width: 100%;
+}
+
+#bank-rates .guide-perk {
+  margin: 0;
+  padding: 18px 0;
+  border-top: 1px solid var(--mag-hair-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+#bank-rates .guide-perk-grid > .guide-perk:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+#bank-rates .guide-perk .guide-share-when {
+  margin: 0;
+  color: var(--mag-ink);
+  font-size: var(--shroffin-type-lead);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+#bank-rates .guide-perk .guide-share-then {
+  margin: 0;
+  color: var(--mag-ink-soft);
+  font-size: var(--shroffin-type-body);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+#bank-rates .guide-perk .guide-share-then .guide-skim {
+  color: var(--mag-ink);
+  font-weight: 500;
+}
+
+#bank-rates .guide-chapter-card > .guide-glance {
+  margin-top: clamp(16px, 2.5vw, 22px);
+}
+
+#pmay .guide-chapter-card > .guide-doc-sub:first-of-type {
+  margin-top: 0;
+}
+
+#pmay .guide-flow {
+  margin-top: clamp(8px, 1.5vw, 12px);
+}
+
+#pmay .guide-doc-sub + .guide-flow {
+  margin-top: clamp(4px, 1vw, 8px);
+}
+
+#fees .guide-disclosure summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
+
+@media (min-width: 834px) {
+  #bank-rates .guide-perk-grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(28px, 4vw, 40px);
+    row-gap: 0;
+  }
+
+  #bank-rates .guide-perk {
+    border-top: 1px solid var(--mag-hair-soft);
+    padding: 20px 0;
+  }
+
+  #bank-rates .guide-perk-grid > .guide-perk:nth-child(-n+2) {
+    border-top: 0;
+    padding-top: 0;
+  }
+}
+
+/* ---- Insurance cast (insurance-cast-1) --------------------------------- */
+/* Stacked status/pay = name loud (Concessions post-build fix). No denser pass.
+   Do NOT redeclare .mag-pair / .guide-compare-strip desktop columns here. */
+
+.guide-story--insurance-hub .guide-status-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+  width: 100%;
+}
+
+.guide-story--insurance-hub .guide-status {
+  margin: 0;
+  padding: 18px 0;
+  border-top: 1px solid var(--mag-hair-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.guide-story--insurance-hub .guide-status-grid > .guide-status:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.guide-story--insurance-hub .guide-status .guide-share-when {
+  margin: 0;
+  color: var(--mag-ink);
+  font-size: var(--shroffin-type-lead);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.guide-story--insurance-hub .guide-status .guide-share-then {
+  margin: 0;
+  color: var(--mag-ink-soft);
+  font-size: var(--shroffin-type-body);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+.guide-story--insurance-hub .guide-status .guide-share-then .guide-skim {
+  color: var(--mag-ink);
+  font-weight: 500;
+}
+
+.guide-story--insurance-hub #must-buy .guide-chapter-card > .guide-glance {
+  margin-top: clamp(16px, 2.5vw, 22px);
+}
+
+.guide-story--insurance-hub #must-buy .guide-disclosure {
+  margin-top: clamp(16px, 2.5vw, 22px);
+}
+
+.guide-story--insurance-hub #must-buy .guide-disclosure summary,
+.guide-story--loan-cover .guide-disclosure summary,
+.guide-story--property-cover .guide-disclosure summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
+
+.guide-story--insurance-hub #key-points .guide-flow {
+  margin-top: 0;
+}
+
+.guide-story--property-cover #pay .guide-share-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.guide-story--property-cover #pay .guide-share-list > li {
+  margin: 0;
+  padding: 18px 0;
+  border-top: 1px solid var(--mag-hair-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.guide-story--property-cover #pay .guide-share-list > li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.guide-story--property-cover #pay .guide-share-when {
+  color: var(--mag-ink);
+  font-size: var(--shroffin-type-lead);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.guide-story--property-cover #pay .guide-share-then {
+  color: var(--mag-ink-soft);
+  font-size: var(--shroffin-type-body);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+.guide-story--property-cover #pay .guide-share-then .guide-skim {
+  color: var(--mag-ink);
+  font-weight: 500;
+}
+
+@media (min-width: 834px) {
+  .guide-story--insurance-hub .guide-status-grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(28px, 4vw, 40px);
+  }
+
+  .guide-story--insurance-hub .guide-status {
+    border-top: 1px solid var(--mag-hair-soft);
+    padding: 20px 0;
+  }
+
+  .guide-story--insurance-hub .guide-status-grid > .guide-status:nth-child(-n+2) {
+    border-top: 0;
+    padding-top: 0;
+  }
+}
+
+/* ---- Complaints cast (complaints-cast-1) ------------------------------- */
+/* Stacked status/perk/talk = name loud (Concessions post-build fix). No denser pass.
+   Talk front stays single-column (not 2-col). Do NOT redeclare climb/mag-pair/compare. */
+
+.guide-story--complaints .guide-status-grid,
+.guide-story--complaints .guide-perk-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+  width: 100%;
+}
+
+.guide-story--complaints .guide-status,
+.guide-story--complaints .guide-perk {
+  margin: 0;
+  padding: 18px 0;
+  border-top: 1px solid var(--mag-hair-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.guide-story--complaints .guide-status-grid > :first-child,
+.guide-story--complaints .guide-perk-grid > :first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.guide-story--complaints .guide-status .guide-share-when,
+.guide-story--complaints .guide-perk .guide-share-when {
+  margin: 0;
+  color: var(--mag-ink);
+  font-size: var(--shroffin-type-lead);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.guide-story--complaints .guide-status .guide-share-then,
+.guide-story--complaints .guide-perk .guide-share-then {
+  margin: 0;
+  color: var(--mag-ink-soft);
+  font-size: var(--shroffin-type-body);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+.guide-story--complaints #write .guide-callout {
+  margin-top: clamp(16px, 2.5vw, 22px);
+}
+
+/* Talk front: unnumbered stack — invert default muted-when/loud-then to name-loud */
+.guide-story--complaints #talk-flip .guide-flip-face--front .guide-share-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.guide-story--complaints #talk-flip .guide-flip-face--front .guide-share-list > li {
+  margin: 0;
+  padding: 18px 0;
+  border-top: 1px solid var(--mag-hair-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.guide-story--complaints #talk-flip .guide-flip-face--front .guide-share-list > li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.guide-story--complaints #talk-flip .guide-flip-face--front .guide-share-when {
+  color: var(--mag-ink);
+  font-size: var(--shroffin-type-lead);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.guide-story--complaints #talk-flip .guide-flip-face--front .guide-share-then {
+  color: var(--mag-ink-soft);
+  font-size: var(--shroffin-type-body);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+@media (min-width: 834px) {
+  .guide-story--complaints .guide-status-grid,
+  .guide-story--complaints .guide-perk-grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(28px, 4vw, 40px);
+    row-gap: 0;
+  }
+
+  .guide-story--complaints .guide-status,
+  .guide-story--complaints .guide-perk {
+    border-top: 1px solid var(--mag-hair-soft);
+    padding: 20px 0;
+  }
+
+  .guide-story--complaints .guide-status-grid > :nth-child(-n+2),
+  .guide-story--complaints .guide-perk-grid > :nth-child(-n+2) {
+    border-top: 0;
+    padding-top: 0;
+  }
+}
+
+/*
+ * Phone sheet type (≤833) — one ladder for every grey card.
+ * Body = loan-structures size under Term loan (--shroffin-type-lead).
+ * Heads (not switches) = body + two 0.125rem steps.
+ * Covers front, flip back, and disclosure panels. Desktop unchanged.
+ *
+ * Heading → body pairs:
+ *   default / split / flow / quiet / perk / status: when = head, then = body
+ *   plain fee rows (name then note): then = head, when = body
+ *   fees / docs: name = head, note·value·detail = body
+ */
+@media (max-width: 833px) {
+  .guide-chapter-card {
+    --guide-sheet-body: var(--shroffin-type-lead);
+    --guide-sheet-head: calc(var(--shroffin-type-lead) + 0.25rem);
+  }
+
+  /* ---- Sheet body -------------------------------------------------------- */
+  .guide-chapter-card .guide-limit-copy,
+  .guide-chapter-card .guide-share-then,
+  .guide-chapter-card .mag-def-desc,
+  .guide-chapter-card .guide-share-list--plain,
+  .guide-chapter-card .guide-share-list--plain li,
+  .guide-chapter-card .guide-share-list--plain .guide-share-when,
+  .guide-chapter-card .guide-tile-copy,
+  .guide-chapter-card .guide-calc-lead,
+  .guide-chapter-card .guide-rate-notes > p,
+  .guide-chapter-card .guide-glance,
+  .guide-chapter-card .guide-tip,
+  .guide-chapter-card .guide-callout,
+  .guide-chapter-card .guide-compare-body,
+  .guide-chapter-card .guide-compare-shared,
+  .guide-chapter-card .guide-doc-note,
+  .guide-chapter-card .mag-doc-note,
+  .guide-chapter-card .guide-doc-legend,
+  .guide-chapter-card .guide-doc-req,
+  .guide-chapter-card .guide-quiet-facts .guide-share-then,
+  .guide-chapter-card .guide-disclosure .guide-share-then,
+  .guide-chapter-card .guide-disclosure-panel-inner,
+  .guide-chapter-card .guide-flow li,
+  .guide-chapter-card .guide-flow .guide-share-then,
+  .guide-chapter-card .guide-fee-value,
+  .guide-chapter-card .guide-fee-detail,
+  .guide-chapter-card .guide-fee-nested .guide-fee-value,
+  .guide-chapter-card .guide-teach-caption,
+  .guide-chapter-card .guide-teach-note,
+  .guide-chapter-card .guide-tile-note,
+  .guide-chapter-card .guide-tile-list li,
+  .guide-chapter-card .guide-factor-list,
+  .guide-chapter-card .mag-p,
+  .guide-chapter-card .guide-source,
+  .guide-chapter-card .guide-source-cite,
+  .guide-chapter-card .guide-source-caption,
+  .guide-chapter-card .guide-source-quote,
+  .guide-chapter-card .guide-perk .guide-share-then,
+  .guide-chapter-card .guide-status .guide-share-then,
+  .guide-chapter-card .guide-answer-pair > .guide-answer--contrast .guide-answer-num,
+  .guide-chapter-card .guide-answer-pair > .guide-answer--contrast .guide-answer-num--phrase,
+  .guide-chapter-card .guide-answer-pair > .guide-answer + .guide-answer .guide-answer-num,
+  .guide-chapter-card .guide-answer-pair > .guide-answer + .guide-answer .guide-answer-num--phrase,
+  /* Beat page casts that still set then to --shroffin-type-body */
+  #bank-rates .guide-chapter-card .guide-perk .guide-share-then,
+  .guide-story--insurance-hub .guide-chapter-card .guide-status .guide-share-then,
+  .guide-story--property-cover #pay .guide-share-then,
+  .guide-story--complaints .guide-chapter-card .guide-status .guide-share-then,
+  .guide-story--complaints .guide-chapter-card .guide-perk .guide-share-then,
+  .guide-story--complaints #talk-flip .guide-flip-face--front .guide-share-then {
+    font-size: var(--guide-sheet-body);
+  }
+
+  /* ---- Sheet heads (not switches) ---------------------------------------- */
+  .guide-chapter-card .guide-limit-title,
+  .guide-chapter-card .mag-compare-title,
+  .guide-chapter-card .guide-climb-label,
+  .guide-chapter-card .guide-disclosure summary,
+  .guide-chapter-card .guide-tile-title,
+  .guide-chapter-card .mag-h,
+  .guide-chapter-card .guide-doc-sub,
+  .guide-chapter-card .mag-subhead,
+  .guide-chapter-card .guide-fee-heading,
+  .guide-chapter-card .guide-fee-name,
+  .guide-chapter-card .guide-fee-nested .guide-fee-name,
+  .guide-chapter-card .guide-doc-name,
+  .guide-chapter-card .mag-doc-name,
+  .guide-chapter-card .guide-doc-rows--compact .guide-doc-name,
+  .guide-chapter-card .guide-answer-stage > .guide-doc-sub,
+  .guide-chapter-card .guide-share-when,
+  .guide-chapter-card .mag-def-term,
+  .guide-chapter-card .guide-quiet-facts .guide-share-when,
+  .guide-chapter-card .guide-flow .guide-share-when,
+  .guide-chapter-card .guide-perk .guide-share-when,
+  .guide-chapter-card .guide-status .guide-share-when,
+  .guide-chapter-card .guide-share-list--plain .guide-share-then,
+  #bank-rates .guide-chapter-card .guide-perk .guide-share-when,
+  .guide-story--insurance-hub .guide-chapter-card .guide-status .guide-share-when,
+  .guide-story--property-cover #pay .guide-share-when,
+  .guide-story--complaints .guide-chapter-card .guide-status .guide-share-when,
+  .guide-story--complaints .guide-chapter-card .guide-perk .guide-share-when,
+  .guide-story--complaints #talk-flip .guide-flip-face--front .guide-share-when {
+    font-size: var(--guide-sheet-head);
+  }
+
+  /* Plain fee rows invert classes: note under the name must stay body. */
+  .guide-chapter-card .guide-share-list--plain .guide-share-when {
+    font-size: var(--guide-sheet-body);
+  }
+
+  /*
+   * Answer stage: label = head, quiet companion = body.
+   * Exception — primary/hero figures (₹2 lakh etc.) may exceed the head.
+   */
+  .guide-chapter-card .guide-answer-label,
+  .guide-chapter-card .guide-answer-pair .guide-answer-label,
+  .guide-chapter-card .guide-calc-result-kicker {
+    font-size: var(--guide-sheet-head);
+  }
+
+  .guide-chapter-card .guide-answer-prefix,
+  .guide-chapter-card .guide-answer-unit {
+    font-size: var(--guide-sheet-body);
+  }
+
+  /* Non-hero phrases stay on body so they never outrank the label. */
+  .guide-chapter-card .guide-answer-num--phrase {
+    font-size: var(--guide-sheet-body);
+  }
+
+  /* Exception: the main answer may sit above the head (₹2 lakh, primary phrases). */
+  .guide-chapter-card .guide-answer--primary .guide-answer-num--phrase,
+  .guide-chapter-card .guide-answer--hero .guide-answer-num--phrase,
+  .guide-chapter-card .guide-answer-pair > .guide-answer--primary .guide-answer-num--phrase {
+    font-size: clamp(1.45rem, 5.8vw, 1.75rem);
+  }
+
+  /* In-card situation line above switches — head over the body under the switch. */
+  .guide-chapter-card > .guide-tile-copy.guide-tile-copy--rule {
+    font-size: var(--guide-sheet-head);
+  }
+}
+
+/*
+ * Reading text: one ink (#1d1d1f). Size and weight carry hierarchy —
+ * not grey headings vs black body. Links and fine print stay separate.
+ */
+.guide-content .guide-share-when,
+.guide-content .mag-def-term,
+.guide-content .guide-share-then,
+.guide-content .mag-def-desc,
+.guide-content .guide-limit-copy,
+.guide-content .guide-limit-title,
+.guide-content .mag-compare-title,
+.guide-content .guide-climb-label,
+.guide-content .guide-limit-kicker,
+.guide-content .guide-limit-note,
+.guide-content .mag-tag,
+.guide-content .guide-tile-kicker,
+.guide-content .guide-tile-title,
+.guide-content .mag-h,
+.guide-content .guide-tile-copy,
+.guide-content .guide-tile-copy--muted,
+.guide-content .guide-tile-copy--rule,
+.guide-content .guide-tile-note,
+.guide-content .guide-calc-lead,
+.guide-content .guide-doc-sub,
+.guide-content .mag-subhead,
+.guide-content .guide-doc-name,
+.guide-content .mag-doc-name,
+.guide-content .guide-doc-note,
+.guide-content .mag-doc-note,
+.guide-content .guide-doc-req,
+.guide-content .guide-doc-legend,
+.guide-content .guide-doc-table thead th,
+.guide-content .guide-doc-table td,
+.guide-content .guide-answer-label,
+.guide-content .guide-answer-prefix,
+.guide-content .guide-answer-unit,
+.guide-content .guide-answer-num,
+.guide-content .guide-answer-num--phrase,
+.guide-content .guide-fee-heading,
+.guide-content .guide-fee-name,
+.guide-content .guide-fee-value,
+.guide-content .guide-fee-detail,
+.guide-content .guide-fee-nested .guide-fee-name,
+.guide-content .guide-fee-nested .guide-fee-value,
+.guide-content .guide-glance,
+.guide-content .guide-tip,
+.guide-content .guide-callout,
+.guide-content .mag-note,
+.guide-content .guide-callout .guide-share-when,
+.guide-content .guide-callout .guide-share-then,
+.guide-content .guide-rate-notes > p,
+.guide-content .guide-compare-body,
+.guide-content .guide-compare-shared,
+.guide-content .guide-teach-caption,
+.guide-content .guide-teach-note,
+.guide-content .guide-teach-to-label,
+.guide-content .guide-teach-from,
+.guide-content .guide-teach-to,
+.guide-content .guide-source-cite,
+.guide-content .guide-source-caption,
+.guide-content .guide-source-body,
+.guide-content .guide-source-quote,
+.guide-content .guide-calc-result-kicker,
+.guide-content .guide-calc-result-num,
+.guide-content .guide-calc-split,
+.guide-content .guide-disclosure summary,
+.guide-content .guide-disclosure .guide-share-then,
+.guide-content .guide-flow li,
+.guide-content .guide-flow .guide-share-when,
+.guide-content .guide-flow .guide-share-then,
+.guide-content .guide-share-list--plain,
+.guide-content .guide-share-list--plain li,
+.guide-content .guide-tile-list li,
+.guide-content .guide-factor-list,
+.guide-content .mag-p,
+.guide-content .mag-lede,
+.guide-content .guide-perk .guide-share-when,
+.guide-content .guide-perk .guide-share-then,
+.guide-content .guide-status .guide-share-when,
+.guide-content .guide-status .guide-share-then,
+.guide-content .guide-hero-lead,
+.guide-content .mag-standfirst,
+.guide-content h2.guide-hero-lead,
+.mag .guide-share-when,
+.mag .mag-def-term,
+.mag .guide-share-then,
+.mag .mag-def-desc,
+.mag .guide-limit-copy,
+.mag .guide-limit-title,
+.mag .mag-compare-title,
+.mag .guide-climb-label,
+.mag .guide-tile-title,
+.mag .mag-h,
+.mag .guide-tile-copy,
+.mag .guide-tile-copy--muted,
+.mag .guide-doc-sub,
+.mag .mag-subhead,
+.mag .guide-doc-name,
+.mag .mag-doc-name,
+.mag .guide-doc-note,
+.mag .mag-doc-note,
+.mag .guide-glance,
+.mag .guide-tip,
+.mag .guide-callout,
+.mag .mag-note,
+.mag .guide-answer-label,
+.mag .guide-answer-prefix,
+.mag .guide-answer-unit,
+.mag .guide-answer-num,
+.mag .guide-perk .guide-share-when,
+.mag .guide-perk .guide-share-then,
+.mag .guide-status .guide-share-when,
+.mag .guide-status .guide-share-then,
+.mag .guide-hero-lead,
+.mag .mag-standfirst,
+#bank-rates .guide-perk .guide-share-when,
+#bank-rates .guide-perk .guide-share-then,
+.guide-story--insurance-hub .guide-status .guide-share-when,
+.guide-story--insurance-hub .guide-status .guide-share-then,
+.guide-story--property-cover #pay .guide-share-when,
+.guide-story--property-cover #pay .guide-share-then,
+.guide-story--complaints .guide-status .guide-share-when,
+.guide-story--complaints .guide-status .guide-share-then,
+.guide-story--complaints .guide-perk .guide-share-when,
+.guide-story--complaints .guide-perk .guide-share-then,
+.guide-story--complaints #talk-flip .guide-flip-face--front .guide-share-when,
+.guide-story--complaints #talk-flip .guide-flip-face--front .guide-share-then {
+  color: #1d1d1f;
+}
+
+/* Skim lines stay the same ink; weight alone marks the skim. */
+.guide-content .guide-skim,
+.guide-content .guide-share-then .guide-skim,
+.guide-content .guide-perk .guide-share-then .guide-skim,
+.guide-content .guide-status .guide-share-then .guide-skim,
+.mag .guide-skim,
+#bank-rates .guide-perk .guide-share-then .guide-skim,
+.guide-story--insurance-hub .guide-status .guide-share-then .guide-skim,
+.guide-story--property-cover #pay .guide-share-then .guide-skim {
+  color: #1d1d1f;
+}
