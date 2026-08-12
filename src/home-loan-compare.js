@@ -169,18 +169,325 @@ function floatingPrepayNoteHtml() {
   );
 }
 
+const CHARGES_NOTE_CHEVRON_SVG =
+  '<svg class="hlc-charges-note-chevron" viewBox="0 0 10 10" aria-hidden="true" focusable="false">' +
+  '<path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+  "</svg>";
+
+const DRAWER_CHEVRON_SVG =
+  '<svg class="hlc-drawer-chevron" viewBox="0 0 10 10" aria-hidden="true" focusable="false">' +
+  '<path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+  "</svg>";
+
+/**
+ * Soft open/close for <details> groups — same motion as charges notes / form more.
+ * options: groupSelector, panelSelector, toggleAllSelector
+ */
+function bindDetailsAccordion(container, options) {
+  if (!container) return;
+  const settings = options || {};
+  const groupSelector = settings.groupSelector || ".hlc-charges-note-group";
+  const panelSelector = settings.panelSelector || ".hlc-charges-note-panel";
+  const toggleAllSelector =
+    settings.toggleAllSelector || ".hlc-charges-note-toggle-all";
+  const groups = container.querySelectorAll(groupSelector);
+  if (!groups.length) return;
+
+  const reduceMotion =
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const supportsDetailsContent =
+    typeof CSS !== "undefined" &&
+    CSS.supports &&
+    CSS.supports("selector(::details-content)");
+  const useNativeMotion = reduceMotion || supportsDetailsContent;
+  const duration = 900;
+  const ease = "cubic-bezier(0.22, 1, 0.36, 1)";
+  const busyGroups = new WeakMap();
+  const toggleAllBtn = container.querySelector(toggleAllSelector);
+
+  function allGroupsOpen() {
+    for (let i = 0; i < groups.length; i++) {
+      if (!groups[i].open) return false;
+    }
+    return true;
+  }
+
+  function syncToggleAllLabel() {
+    if (!toggleAllBtn) return;
+    const collapse = allGroupsOpen();
+    toggleAllBtn.textContent = collapse ? "Collapse all" : "Expand all";
+    toggleAllBtn.setAttribute("aria-expanded", collapse ? "true" : "false");
+  }
+
+  function clearInline(panel, details) {
+    details.classList.remove("is-animating");
+    panel.style.height = "";
+    panel.style.opacity = "";
+    panel.style.overflow = "";
+    panel.style.transition = "";
+  }
+
+  function animateDetails(details, open, panel, done) {
+    if (useNativeMotion) {
+      details.open = open;
+      syncToggleAllLabel();
+      if (done) done();
+      return;
+    }
+    if (busyGroups.get(details)) return;
+    busyGroups.set(details, true);
+    details.classList.add("is-animating");
+
+    if (open) {
+      details.open = true;
+      panel.style.overflow = "hidden";
+      panel.style.height = "0px";
+      panel.style.opacity = "0";
+      panel.style.transition = "none";
+      void panel.offsetHeight;
+      panel.style.transition =
+        "height " +
+        duration +
+        "ms " +
+        ease +
+        ", opacity " +
+        Math.round(duration * 0.85) +
+        "ms " +
+        ease;
+      panel.style.height = panel.scrollHeight + "px";
+      panel.style.opacity = "1";
+    } else {
+      panel.style.overflow = "hidden";
+      panel.style.height = panel.scrollHeight + "px";
+      panel.style.opacity = "1";
+      panel.style.transition = "none";
+      void panel.offsetHeight;
+      panel.style.transition =
+        "height " +
+        duration +
+        "ms " +
+        ease +
+        ", opacity " +
+        Math.round(duration * 0.75) +
+        "ms " +
+        ease;
+      panel.style.height = "0px";
+      panel.style.opacity = "0";
+    }
+
+    function onEnd(event) {
+      if (event.propertyName !== "height") return;
+      panel.removeEventListener("transitionend", onEnd);
+      if (!open) details.open = false;
+      clearInline(panel, details);
+      busyGroups.set(details, false);
+      syncToggleAllLabel();
+      if (done) done();
+    }
+
+    panel.addEventListener("transitionend", onEnd);
+  }
+
+  groups.forEach(function (details) {
+    const panel = details.querySelector(panelSelector);
+    if (!panel) return;
+
+    details.addEventListener("toggle", syncToggleAllLabel);
+
+    if (!useNativeMotion) {
+      details.addEventListener("click", function (event) {
+        const summary = event.target.closest("summary");
+        if (!summary || summary.parentElement !== details) return;
+        event.preventDefault();
+        animateDetails(details, !details.open, panel);
+      });
+    }
+  });
+
+  if (toggleAllBtn) {
+    toggleAllBtn.addEventListener("click", function () {
+      const open = !allGroupsOpen();
+      // Bulk toggle sets open state directly so nested groups stay in sync
+      // (animated height on a parent while children also change is unreliable).
+      groups.forEach(function (details) {
+        const panel = details.querySelector(panelSelector);
+        details.open = open;
+        if (panel) clearInline(panel, details);
+      });
+      syncToggleAllLabel();
+    });
+  }
+
+  syncToggleAllLabel();
+}
+
+function bindChargesNoteDropdowns(container) {
+  bindDetailsAccordion(container, {
+    groupSelector: ".hlc-charges-note-group",
+    panelSelector: ".hlc-charges-note-panel",
+    toggleAllSelector: ".hlc-charges-note-toggle-all"
+  });
+}
+
+function bindDrawerDropdowns(container) {
+  bindDetailsAccordion(container, {
+    groupSelector: ".hlc-drawer-group",
+    panelSelector: ".hlc-drawer-panel",
+    toggleAllSelector: ".hlc-drawer-toggle-all"
+  });
+}
+
+function drawerToolbarHtml(controlsId) {
+  return (
+    '<div class="hlc-drawer-toolbar">' +
+    '<h3 class="hlc-drawer-toolbar-heading">More details</h3>' +
+    '<div class="hlc-drawer-actions">' +
+    '<button type="button" class="hlc-drawer-toggle-all" aria-controls="' +
+    escapeHtml(controlsId || "hlc-drawer-body") +
+    '" aria-expanded="false">Expand all</button>' +
+    "</div></div>"
+  );
+}
+
+function drawerDiscloseHtml(title, bodyHtml, options) {
+  const settings = options || {};
+  const openAttr = settings.open === true ? " open" : "";
+  const nestedClass = settings.nested ? " hlc-drawer-group--nested" : "";
+  return (
+    '<details class="hlc-drawer-group' +
+    nestedClass +
+    '"' +
+    openAttr +
+    ">" +
+    '<summary class="hlc-drawer-toggle">' +
+    '<span class="hlc-drawer-title-row">' +
+    '<span class="hlc-drawer-label">' +
+    escapeHtml(title) +
+    "</span>" +
+    DRAWER_CHEVRON_SVG +
+    "</span></summary>" +
+    '<div class="hlc-drawer-panel">' +
+    bodyHtml +
+    "</div></details>"
+  );
+}
+
+function chargesNoteGroupId(heading) {
+  return (
+    "hlc-charge-note-" +
+    String(heading || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+  );
+}
+
+/**
+ * Footnote mark in the table (* ° ‡ ^ …). Opens the matching Notes dropdown.
+ * Use plain=true inside another control (e.g. charge slab button) so we never
+ * nest buttons. Underline sits tight under the glyph; colour turns blue on
+ * hover / press.
+ */
+function footnoteRefHtml(marker, noteGroupId, options) {
+  if (!marker) return "";
+  const opts = options || {};
+  const safeMarker = escapeHtml(marker);
+  if (!noteGroupId) {
+    return (
+      '<sup class="hlc-col-footnote" aria-hidden="true">' +
+      safeMarker +
+      "</sup>"
+    );
+  }
+  if (opts.plain) {
+    return (
+      '<sup class="hlc-col-footnote" data-note-target="' +
+      escapeHtml(noteGroupId) +
+      '">' +
+      safeMarker +
+      "</sup>"
+    );
+  }
+  return (
+    '<button type="button" class="hlc-col-footnote" data-note-target="' +
+    escapeHtml(noteGroupId) +
+    '" aria-label="Open note for mark ' +
+    safeMarker +
+    '">' +
+    safeMarker +
+    "</button>"
+  );
+}
+
+/**
+ * Leading footnote glyphs from note lines, in first-seen order (no duplicates).
+ * Automatic: any future note that starts with "SYMBOL text" (symbol + space) is
+ * picked up for the heading brackets — no hardcoded marker list to maintain.
+ */
+function footnoteMarkersFromNoteParts(noteParts) {
+  const markers = [];
+  const seen = Object.create(null);
+  (noteParts || []).forEach(function (part) {
+    const plain = String(part || "")
+      .replace(/<[^>]*>/g, "")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .trim();
+    const chars = Array.from(plain);
+    if (chars.length < 2 || chars[1] !== " ") return;
+    const marker = chars[0];
+    if (/^[A-Za-z0-9]$/.test(marker)) return;
+    if (seen[marker]) return;
+    seen[marker] = true;
+    markers.push(marker);
+  });
+  return markers;
+}
+
 /** Footnote block under the table — heading matches the column charge name. */
 function chargesNoteGroupHtml(heading, noteParts) {
   if (!noteParts || !noteParts.length) return "";
+  const groupId = chargesNoteGroupId(heading);
+  const markers = footnoteMarkersFromNoteParts(noteParts);
+  const markerHtml = markers.length
+    ? ' <span class="hlc-charges-note-markers" aria-hidden="true">(' +
+      escapeHtml(markers.join(" ")) +
+      ")</span>" +
+      '<span class="visually-hidden"> (symbols ' +
+      escapeHtml(markers.join(", ")) +
+      ")</span>"
+    : "";
   return (
-    '<section class="hlc-charges-note-group">' +
-    '<h3 class="hlc-charges-note-heading">' +
+    '<details class="hlc-charges-note-group" id="' +
+    escapeHtml(groupId) +
+    '">' +
+    '<summary class="hlc-charges-note-toggle">' +
+    '<span class="hlc-charges-note-title">' +
+    '<span class="hlc-charges-note-label">' +
     escapeHtml(heading) +
-    "</h3>" +
+    markerHtml +
+    "</span>" +
+    CHARGES_NOTE_CHEVRON_SVG +
+    "</span></summary>" +
+    '<div class="hlc-charges-note-panel">' +
     '<div class="hlc-charges-note-body">' +
     noteParts.join("<br><br>") +
-    "</div>" +
-    "</section>"
+    "</div></div></details>"
+  );
+}
+
+function chargesNoteToolbarHtml() {
+  return (
+    '<div class="hlc-charges-note-toolbar">' +
+    '<h3 class="hlc-charges-note-heading" id="hlc-charges-note-heading">Notes</h3>' +
+    '<div class="hlc-charges-note-actions">' +
+    '<button type="button" class="hlc-charges-note-toggle-all" aria-controls="hlc-charges-note" aria-expanded="false">Expand all</button>' +
+    "</div></div>"
   );
 }
 
@@ -714,6 +1021,30 @@ function prefilterAfterOfferCharge(charge, query, offer) {
     return false;
   }
   return true;
+}
+
+/**
+ * Drawer scope: this bank + scheme/purpose/facility (Any allowed).
+ * Does not use the user's occupation, rate filter, loan size, or tenure —
+ * More details is the full scheme fee book; the table stays selection-wise.
+ */
+function matchesSchemeBookScope(charge, offer) {
+  if (!charge || !offer) return false;
+  if (normalizeText(charge.bank_key) !== normalizeText(offer.bank_key)) return false;
+  if (!matchesOptionalField(charge.purpose, offer.purpose)) return false;
+  if (!matchesOptionalField(charge.facility_type, offer.facility_type)) return false;
+  if (!matchesOptionalField(charge.scheme, offer.scheme)) return false;
+  return true;
+}
+
+function prefilterChargeForSchemeBook(charge, offer) {
+  if (!charge || charge.when_it_matters !== "Before offer") return false;
+  return matchesSchemeBookScope(charge, offer);
+}
+
+function prefilterAfterOfferChargeForSchemeBook(charge, offer) {
+  if (!charge || charge.when_it_matters !== "After offer") return false;
+  return matchesSchemeBookScope(charge, offer);
 }
 
 function afterOfferSpecificityScore(charge) {
@@ -2075,6 +2406,24 @@ function formatChargeSlabBand(charge) {
   return "";
 }
 
+function formatNumericBandLabel(minValue, maxValue) {
+  const min = minValue == null || minValue === "" ? null : Number(minValue);
+  const max = maxValue == null || maxValue === "" ? null : Number(maxValue);
+  if (min != null && !Number.isFinite(min) && max != null && !Number.isFinite(max)) {
+    return "";
+  }
+  const safeMin = min != null && Number.isFinite(min) ? min : null;
+  const safeMax = max != null && Number.isFinite(max) ? max : null;
+  if (safeMin == null && safeMax != null) {
+    return "Up to " + formatChargeThreshold(safeMax);
+  }
+  if (safeMin != null && safeMax != null) {
+    return formatChargeThreshold(safeMin) + "–" + formatChargeThreshold(safeMax);
+  }
+  if (safeMin != null) return "From " + formatChargeThreshold(safeMin);
+  return "";
+}
+
 function formatEmiBounceSlabBand(charge) {
   const band = formatChargeSlabBand(charge);
   if (!band) return "";
@@ -2637,7 +2986,28 @@ function withGstAsterisk(amount, hasGst) {
   return text.charAt(text.length - 1) === "*" ? text : text + "*";
 }
 
-/** Short supporting line: basis, unit, min/max (GST uses * + shared footnote). */
+/** Shared unit label when every row uses the same published unit. */
+function commonChargeUnitLabel(charges) {
+  const units = (charges || [])
+    .map(function (charge) {
+      return formatChargeUnit(charge && charge.charge_unit);
+    })
+    .filter(Boolean);
+  if (!units.length) return "";
+  const first = units[0];
+  return units.every(function (unit) {
+    return unit === first;
+  })
+    ? first
+    : "";
+}
+
+/** Charge column title; GST * sits on the header, not on each amount. */
+function chargeColumnTitle(hasGst) {
+  return hasGst ? "Charge*" : "Charge";
+}
+
+/** Short supporting line: basis, unit, min/max (GST uses * on the Charge header). */
 function formatChargeMetaLine(charge, options) {
   if (!charge) return "";
   const settings = options || {};
@@ -2709,6 +3079,456 @@ function formatSlabColumnHeader(charge) {
   return basis.charAt(0).toUpperCase() + basis.slice(1);
 }
 
+function formatSlabTableChargeAmount(charge) {
+  if (
+    charge &&
+    normalizeText(charge.charge_type) === "percentage" &&
+    charge.percentage != null
+  ) {
+    return formatChargePercentageValue(charge);
+  }
+  if (charge && charge.fixed_amount != null) {
+    return formatInr(Number(charge.fixed_amount));
+  }
+  return formatChargeDisplayText(
+    formatChargeDisplay(charge, {
+      hideBasis: true,
+      hideUnit: true,
+      hideGst: true
+    })
+  );
+}
+
+function drawerColumnHeaderHtml(label) {
+  return (
+    '<th scope="col">' +
+    '<span class="hlc-fee-col-title">' +
+    escapeHtml(label || "") +
+    "</span></th>"
+  );
+}
+
+/**
+ * Fee table head: Particulars / Charge* on one row; optional unit on the
+ * next row (still above the divider), under the Charge column.
+ */
+function drawerFeeTableHeadHtml(labels, options) {
+  const settings = options || {};
+  const headers = (labels || []).filter(function (label) {
+    return label != null && String(label).trim() !== "";
+  });
+  if (!headers.length) return "<thead></thead>";
+  const unit = String(settings.unit || "").trim();
+  const titleRow =
+    '<tr class="hlc-fee-head-titles">' +
+    headers
+      .map(function (label) {
+        return drawerColumnHeaderHtml(label);
+      })
+      .join("") +
+    "</tr>";
+  if (!unit) {
+    return "<thead>" + titleRow + "</thead>";
+  }
+  const unitRow =
+    '<tr class="hlc-fee-head-unit-row">' +
+    headers
+      .map(function (_label, index) {
+        if (index < headers.length - 1) {
+          return '<th class="hlc-fee-head-unit-pad" aria-hidden="true"></th>';
+        }
+        return (
+          '<th scope="col" class="hlc-fee-head-unit">' +
+          '<span class="hlc-fee-col-sub">' +
+          escapeHtml(unit) +
+          "</span></th>"
+        );
+      })
+      .join("") +
+    "</tr>";
+  return "<thead>" + titleRow + unitRow + "</thead>";
+}
+
+function drawerFeeTableShellHtml(labels, options, bodyRowsHtml) {
+  return (
+    drawerFeeTableHeadHtml(labels, options) +
+    "<tbody>" +
+    (bodyRowsHtml || "") +
+    "</tbody>"
+  );
+}
+
+function listOverduePercentageSlabRows(candidates, selectedCharge) {
+  if (!candidates.length || !selectedCharge) return [];
+  const identityFields = [
+    "bank_key",
+    "charge_name",
+    "purpose",
+    "facility_type",
+    "scheme",
+    "rate_type",
+    "occupation",
+    "borrower_category"
+  ];
+  return dedupeChargesByRule(
+    candidates.filter(function (charge) {
+      return (
+        normalizeText(charge.has_slab_wise_charges) === "yes" &&
+        normalizeText(charge.charge_type) === "percentage" &&
+        identityFields.every(function (field) {
+          return normalizeText(charge[field]) === normalizeText(selectedCharge[field]);
+        })
+      );
+    })
+  ).sort(function (a, b) {
+    return chargeSlabStart(a) - chargeSlabStart(b);
+  });
+}
+
+function buildSlabTableBlockFromCharges(title, charges, basisFallback) {
+  if (!charges || !charges.length) return null;
+  const slabSeed = charges.find(function (charge) {
+    return normalizeText(charge.has_slab_wise_charges) === "yes";
+  });
+  if (!slabSeed) return null;
+
+  const slabs = listMatchingChargeSlabs(charges, slabSeed);
+  if (slabs.length < 2) return null;
+
+  const first = slabs[0];
+  const sharedUnit = commonChargeUnitLabel(slabs);
+  const anyGst = slabs.some(chargeGstApplicable);
+  return {
+    title: title,
+    leftHeader: formatSlabColumnHeader(first),
+    rightHeader: chargeColumnTitle(anyGst),
+    chargeHeaderUnit: sharedUnit,
+    gstApplicable: anyGst,
+    rows: slabs.map(function (charge) {
+      const cell = feeAmountCell(charge, {
+        hideUnit: !!sharedUnit,
+        hideBasis: true
+      });
+      return {
+        range: formatChargeSlabBand(charge) || "Range",
+        amount: cell.amount,
+        meta: cell.meta
+      };
+    }),
+    notes: uniqueStrings(
+      slabs.reduce(function (all, charge) {
+        return all.concat(collectChargeNotes(charge));
+      }, [])
+    )
+  };
+}
+
+function buildOverdueDrawerSlabBlocks(overdueChargeSlabs, overdueCharge, candidates) {
+  const blocks = [];
+  if (overdueChargeSlabs && overdueChargeSlabs.length > 1) {
+    const first = overdueChargeSlabs[0];
+    const isDcbBank =
+      overdueCharge && normalizeText(overdueCharge.bank_name) === "dcb bank";
+    blocks.push({
+      title: "Overdue charge by range",
+      leftHeader: formatSlabColumnHeader(first),
+      rightHeader: isDcbBank ? "Monthly charge" : "Charge",
+      rows: overdueChargeSlabs.map(function (charge) {
+        return {
+          range: formatChargeSlabBand(charge) || "Range",
+          amount: formatInr(Number(charge.fixed_amount)),
+          meta: ""
+        };
+      }),
+      notes: [formatSlabBasisSentence(first, "overdue amount")]
+    });
+    return blocks;
+  }
+
+  const pctSlabs = listOverduePercentageSlabRows(candidates || [], overdueCharge);
+  if (pctSlabs.length > 1) {
+    const first = pctSlabs[0];
+    blocks.push({
+      title: "Overdue charge by range",
+      leftHeader: formatSlabColumnHeader(first),
+      rightHeader: "Charge",
+      rows: pctSlabs.map(function (charge) {
+        const notes = [charge.note_1, charge.note_2]
+          .map(formatEncodedChargeNote)
+          .filter(Boolean);
+        return {
+          range: formatChargeSlabBand(charge) || "Range",
+          amount: formatChargePercentageValue(charge),
+          meta: notes.join(" · ")
+        };
+      }),
+      notes: [formatSlabBasisSentence(first, "overdue amount")]
+    });
+  }
+  return blocks;
+}
+
+function buildEmiBounceFlatDrawerRows(candidates, summaryCharge) {
+  const rows = [];
+  const summaryName = summaryCharge && summaryCharge.charge_name;
+  const summaryGroup = summaryCharge && summaryCharge.charge_group_id;
+  dedupeChargesByRule(candidates || []).forEach(function (charge) {
+    if (normalizeText(charge.has_slab_wise_charges) === "yes") return;
+    if (
+      summaryCharge &&
+      charge.charge_name === summaryName &&
+      charge.charge_group_id === summaryGroup
+    ) {
+      return;
+    }
+    const sharedUnit = commonChargeUnitLabel([charge]);
+    const cell = feeAmountCell(charge, { hideUnit: !!sharedUnit });
+    rows.push({
+      range: charge.charge_name,
+      amount: cell.amount,
+      meta: cell.meta,
+      chargeHeaderUnit: sharedUnit,
+      gstApplicable: cell.gstApplicable
+    });
+  });
+  return rows;
+}
+
+function buildEmiBounceDrawerSlabBlocks(candidates) {
+  if (!candidates || !candidates.length) return [];
+  const blocks = [];
+  const byName = new Map();
+  candidates.forEach(function (charge) {
+    if (!charge || !charge.charge_name) return;
+    if (!byName.has(charge.charge_name)) byName.set(charge.charge_name, []);
+    byName.get(charge.charge_name).push(charge);
+  });
+
+  byName.forEach(function (list, chargeName) {
+    const areas = uniqueStrings(
+      list
+        .map(function (charge) {
+          return charge.charge_by_area;
+        })
+        .filter(Boolean)
+    );
+    if (areas.length >= 2) {
+      const byArea = Object.create(null);
+      areas.forEach(function (area) {
+        byArea[area] = list
+          .filter(function (charge) {
+            return (
+              charge.charge_by_area === area &&
+              normalizeText(charge.has_slab_wise_charges) === "yes"
+            );
+          })
+          .sort(function (a, b) {
+            return chargeSlabStart(a) - chargeSlabStart(b);
+          });
+      });
+      const bandKeys = [];
+      const bandSeen = Object.create(null);
+      areas.forEach(function (area) {
+        (byArea[area] || []).forEach(function (charge) {
+          const band = formatChargeSlabBand(charge) || "Range";
+          if (!bandSeen[band]) {
+            bandSeen[band] = true;
+            bandKeys.push(band);
+          }
+        });
+      });
+      if (bandKeys.length && areas.every(function (area) {
+        return (byArea[area] || []).length;
+      })) {
+        const first = byArea[areas[0]][0];
+        const areaCharges = areas.reduce(function (all, area) {
+          return all.concat(byArea[area] || []);
+        }, []);
+        const sharedUnit = commonChargeUnitLabel(areaCharges);
+        const anyGst = areaCharges.some(chargeGstApplicable);
+        blocks.push({
+          title: chargeName,
+          leftHeader: formatSlabColumnHeader(first) || "Particulars",
+          rightHeader: chargeColumnTitle(anyGst),
+          chargeHeaderUnit: sharedUnit,
+          gstApplicable: anyGst,
+          kind: "area-matrix",
+          matrixColumns: areas,
+          matrixRows: bandKeys.map(function (band) {
+            return {
+              label: band,
+              cells: areas.map(function (area) {
+                const match = (byArea[area] || []).find(function (charge) {
+                  return (formatChargeSlabBand(charge) || "Range") === band;
+                });
+                return match
+                  ? feeAmountCell(match, { hideUnit: !!sharedUnit, hideBasis: true })
+                  : { amount: "—", meta: "", gstApplicable: false };
+              })
+            };
+          }),
+          notes: uniqueStrings(
+            list.reduce(function (all, charge) {
+              return all.concat(collectChargeNotes(charge));
+            }, [])
+          )
+        });
+        return;
+      }
+    }
+
+    if (areas.length) {
+      areas.forEach(function (area) {
+        const block = buildSlabTableBlockFromCharges(
+          chargeName,
+          list.filter(function (charge) {
+            return charge.charge_by_area === area;
+          }),
+          "bounce amount"
+        );
+        if (block) {
+          // Area belongs in the table identity (title), not as a note.
+          block.title = chargeName + " — " + area;
+          blocks.push(block);
+        }
+      });
+      return;
+    }
+
+    const block = buildSlabTableBlockFromCharges(
+      chargeName,
+      list,
+      "bounce amount"
+    );
+    if (block) blocks.push(block);
+  });
+
+  return blocks;
+}
+
+function renderDrawerSlabTableBlock(block) {
+  if (!block) return "";
+  if (block.kind === "area-matrix") {
+    const columns = block.matrixColumns || [];
+    const rows = block.matrixRows || [];
+    if (!columns.length || !rows.length) return "";
+    const notesHtml = (block.notes || [])
+      .filter(Boolean)
+      .map(function (note) {
+        return '<p class="hlc-fee-note">' + escapeHtml(note) + "</p>";
+      })
+      .join("");
+    const showRowLabels =
+      String(block.leftHeader || "").trim() &&
+      rows.some(function (row) {
+        return String(row.label || "").trim();
+      });
+    const columnGst = columns.map(function (col, index) {
+      return rows.some(function (row) {
+        const cell = (row.cells || [])[index];
+        return cell && cell.gstApplicable;
+      });
+    });
+    const bodyRows = rows
+      .map(function (row) {
+        return (
+          "<tr>" +
+          (showRowLabels
+            ? '<th scope="row">' + escapeHtml(row.label || "") + "</th>"
+            : "") +
+          (row.cells || [])
+            .map(function (cell) {
+              return (
+                "<td>" +
+                '<span class="hlc-fee-amount">' +
+                escapeHtml((cell && cell.amount) || "—") +
+                "</span>" +
+                (cell && cell.meta
+                  ? '<span class="hlc-fee-meta">' +
+                    escapeHtml(cell.meta) +
+                    "</span>"
+                  : "") +
+                "</td>"
+              );
+            })
+            .join("") +
+          "</tr>"
+        );
+      })
+      .join("");
+    return (
+      '<div class="hlc-fee-slab-block">' +
+      (block.title
+        ? '<h6 class="hlc-fee-slab-title">' + escapeHtml(block.title) + "</h6>"
+        : "") +
+      '<div class="hlc-drawer-card hlc-slab-card">' +
+      '<table class="hlc-slab-table hlc-fee-table hlc-fee-matrix">' +
+      drawerFeeTableShellHtml(
+        (showRowLabels ? [block.leftHeader || "Particulars"] : []).concat(
+          columns.map(function (col, index) {
+            return col + (columnGst[index] || block.gstApplicable ? "*" : "");
+          })
+        ),
+        { unit: block.chargeHeaderUnit || "" },
+        bodyRows
+      ) +
+      "</table></div>" +
+      notesHtml +
+      "</div>"
+    );
+  }
+  if (!block.rows || !block.rows.length) return "";
+  const notesHtml = (block.notes || [])
+    .filter(Boolean)
+    .map(function (note) {
+      return '<p class="hlc-fee-note">' + escapeHtml(note) + "</p>";
+    })
+    .join("");
+  const rightHeader =
+    block.rightHeader || chargeColumnTitle(block.gstApplicable);
+  const bodyRows = block.rows
+    .map(function (row) {
+      return (
+        "<tr><td>" +
+        escapeHtml(row.range) +
+        "</td><td>" +
+        '<span class="hlc-fee-amount">' +
+        escapeHtml(row.amount || "—") +
+        "</span>" +
+        (row.meta
+          ? '<span class="hlc-fee-meta">' + escapeHtml(row.meta) + "</span>"
+          : "") +
+        "</td></tr>"
+      );
+    })
+    .join("");
+  return (
+    '<div class="hlc-fee-slab-block">' +
+    (block.title
+      ? '<h6 class="hlc-fee-slab-title">' + escapeHtml(block.title) + "</h6>"
+      : "") +
+    '<div class="hlc-drawer-card hlc-slab-card">' +
+    '<table class="hlc-slab-table hlc-fee-table">' +
+    drawerFeeTableShellHtml(
+      [block.leftHeader || "Particulars", rightHeader],
+      { unit: block.chargeHeaderUnit || "" },
+      bodyRows
+    ) +
+    "</table></div>" +
+    notesHtml +
+    "</div>"
+  );
+}
+
+function renderDrawerSlabTableBlocks(blocks) {
+  if (!blocks || !blocks.length) return "";
+  return (
+    '<div class="hlc-drawer-slab-sections">' +
+    blocks.map(renderDrawerSlabTableBlock).join("") +
+    "</div>"
+  );
+}
+
 function uniqueStrings(values) {
   const seen = Object.create(null);
   const out = [];
@@ -2739,6 +3559,36 @@ function chargeRuleFingerprint(charge) {
     charge.slab_from,
     charge.slab_to,
     normalizeText(charge.charge_by_area),
+    normalizeText(charge.customer_type),
+    normalizeText(charge.interest_rate_type_switch_from),
+    normalizeText(charge.interest_rate_type_switch_to),
+    normalizeText(charge.benchmark_switch_from),
+    normalizeText(charge.benchmark_switch_to),
+    normalizeText(charge.interest_rate_repricing_type),
+    normalizeText(charge.occupation),
+    normalizeText(charge.borrower_category),
+    normalizeText(charge.rate_type),
+    normalizeText(charge.loan_amount_band_applicable),
+    charge.loan_amount_min,
+    charge.loan_amount_max,
+    normalizeText(charge.tenure_band_applicable),
+    charge.tenure_months_min,
+    charge.tenure_months_max,
+    charge.cibil_band_score_min,
+    charge.cibil_band_score_max,
+    normalizeText(charge.charge_frequency_other),
+    normalizeText(charge.property_valuation_scope),
+    normalizeText(charge.fixed_amount_at_branch),
+    normalizeText(charge.fixed_amount_at_net_mobile_banking),
+    normalizeText(charge.charged_for_physical_copy),
+    normalizeText(charge.charged_for_digital_copy),
+    normalizeText(charge.charged_for_original_copy_or_first_issue),
+    charge.months_from_event_min,
+    charge.months_from_event_max,
+    normalizeText(charge.months_from_event_basis),
+    normalizeText(charge.facility_conversion_from),
+    normalizeText(charge.facility_conversion_to),
+    normalizeText(charge.valid_till),
     normalizeText(charge.note_1),
     normalizeText(charge.note_2)
   ].join("|");
@@ -2753,15 +3603,142 @@ function dedupeChargesByRule(charges) {
   return Array.from(byPrint.values());
 }
 
-/** Plain “when” label so two amounts under one fee stay distinct. */
-function chargeWhenLabel(charge) {
+/** Published fields only — never invent labels outside the sheet. */
+function chargeCustomerTypeLabel(charge) {
+  const customer = String((charge && charge.customer_type) || "").trim();
+  if (!customer || normalizeText(customer) === "any") return "";
+  return customer;
+}
+
+function chargeAreaLabel(charge) {
+  return String((charge && charge.charge_by_area) || "").trim();
+}
+
+function chargeCibilBandLabel(charge) {
   if (!charge) return "";
-  const parts = [];
-  if (charge.charge_by_area) parts.push(String(charge.charge_by_area).trim());
-  const customer = String(charge.customer_type || "").trim();
-  if (customer && normalizeText(customer) !== "any") {
-    parts.push(customer);
+  const min =
+    charge.cibil_band_score_min != null &&
+    Number.isFinite(Number(charge.cibil_band_score_min))
+      ? Math.round(Number(charge.cibil_band_score_min))
+      : null;
+  const max =
+    charge.cibil_band_score_max != null &&
+    Number.isFinite(Number(charge.cibil_band_score_max))
+      ? Math.round(Number(charge.cibil_band_score_max))
+      : null;
+  if (min == null && max == null) return "";
+  // Sheet sentinel for “no CIBIL band” — do not show as a score range.
+  if (min != null && min < 0) return "";
+  if (min != null && max != null) return "CIBIL " + min + "–" + max;
+  if (min != null) return "CIBIL from " + min;
+  if (max != null && max > 0) return "CIBIL up to " + max;
+  return "";
+}
+
+function chargeChannelLabel(charge) {
+  if (!charge) return "";
+  const branch = normalizeText(charge.fixed_amount_at_branch) === "yes";
+  const net =
+    normalizeText(charge.fixed_amount_at_net_mobile_banking) === "yes";
+  if (branch && net) return "Branch or net / mobile banking";
+  if (branch) return "At branch";
+  if (net) return "Net / mobile banking";
+  return "";
+}
+
+function chargeValidTillLabel(charge) {
+  const raw = String((charge && charge.valid_till) || "").trim();
+  if (!raw) return "";
+  return "Valid till " + raw;
+}
+
+/** Notes that appear on every charge in the list — show once under the table. */
+function sharedNotesAcrossCharges(charges) {
+  const list = (charges || []).filter(Boolean);
+  if (!list.length) return [];
+  let shared = collectChargeNotes(list[0]);
+  for (let i = 1; i < list.length; i += 1) {
+    const notes = collectChargeNotes(list[i]);
+    shared = shared.filter(function (note) {
+      return notes.indexOf(note) >= 0;
+    });
   }
+  return uniqueStrings(shared);
+}
+
+/**
+ * Extra What-column text from the sheet (case splits + published extras).
+ * Values come from data fields only — never from the user's form inputs.
+ */
+function chargeDetailFromData(charge, options) {
+  if (!charge) return "";
+  const settings = options || {};
+  const omitCustomer = settings.omitCustomer === true;
+  const omitNotes = settings.omitNotes || [];
+  const omitNoteSet = Object.create(null);
+  omitNotes.forEach(function (note) {
+    omitNoteSet[String(note)] = true;
+  });
+  const parts = [];
+  const customer = chargeCustomerTypeLabel(charge);
+  // Area labels belong in matrix column headers — never as Particulars/note text.
+  if (customer && !omitCustomer) parts.push(customer);
+
+  const switchFrom = String(charge.interest_rate_type_switch_from || "").trim();
+  const switchTo = String(charge.interest_rate_type_switch_to || "").trim();
+  if (switchFrom && switchTo) {
+    parts.push(switchFrom + " to " + switchTo);
+  }
+  const benchmarkFrom = String(charge.benchmark_switch_from || "").trim();
+  const benchmarkTo = String(charge.benchmark_switch_to || "").trim();
+  if (benchmarkFrom && benchmarkTo) {
+    parts.push(benchmarkFrom + " to " + benchmarkTo);
+  }
+  const repricingType = String(charge.interest_rate_repricing_type || "").trim();
+  if (repricingType) parts.push(repricingType);
+
+  const facFrom = String(charge.facility_conversion_from || "").trim();
+  const facTo = String(charge.facility_conversion_to || "").trim();
+  if (facFrom && facTo) {
+    parts.push(facFrom + " to " + facTo);
+  }
+
+  function pushSpecific(value) {
+    const text = String(value || "").trim();
+    if (!text || normalizeText(text) === "any") return;
+    parts.push(text);
+  }
+  pushSpecific(charge.occupation);
+  pushSpecific(charge.borrower_category);
+  pushSpecific(charge.rate_type);
+
+  const cibil = chargeCibilBandLabel(charge);
+  if (cibil) parts.push(cibil);
+
+  if (normalizeText(charge.loan_amount_band_applicable) === "yes") {
+    const loanBand = formatNumericBandLabel(
+      charge.loan_amount_min,
+      charge.loan_amount_max
+    );
+    if (loanBand) parts.push(loanBand);
+  }
+  if (normalizeText(charge.tenure_band_applicable) === "yes") {
+    const tenureBand = formatNumericBandLabel(
+      charge.tenure_months_min,
+      charge.tenure_months_max
+    );
+    if (tenureBand) parts.push(tenureBand + " months");
+  }
+
+  const monthsDetail = formatMonthsFromEventDetail(charge);
+  if (monthsDetail) parts.push(monthsDetail);
+
+  const valuationScope = String(charge.property_valuation_scope || "").trim();
+  if (valuationScope) parts.push(valuationScope);
+
+  const channel = chargeChannelLabel(charge);
+  if (channel) parts.push(channel);
+
   if (normalizeText(charge.charged_for_physical_copy) === "yes") {
     parts.push("Physical copy");
   }
@@ -2769,16 +3746,32 @@ function chargeWhenLabel(charge) {
     parts.push("Digital copy");
   }
   if (normalizeText(charge.charged_for_original_copy_or_first_issue) === "yes") {
-    parts.push("First / original issue");
+    parts.push("Original / first issue");
   }
-  if (parts.length) return parts.join(" · ");
-  const note = formatEncodedChargeNote(charge.note_1);
-  if (!note) return "";
-  if (/first time|first issue|original/i.test(note)) return "First issue";
-  if (/subsequent|later issue|additional copy/i.test(note)) return "Later issues";
-  if (/priority sector/i.test(note)) return "Priority sector";
-  if (note.length <= 72) return note;
-  return "";
+
+  const frequency = String(charge.charge_frequency_other || "").trim();
+  if (frequency) parts.push(frequency);
+
+  const validTill = chargeValidTillLabel(charge);
+  if (validTill) parts.push(validTill);
+
+  const n1 = formatEncodedChargeNote(charge.note_1);
+  const n2 = formatEncodedChargeNote(charge.note_2);
+  if (n1 && !omitNoteSet[n1]) parts.push(n1);
+  if (n2 && !omitNoteSet[n2]) parts.push(n2);
+  return parts.join(" · ");
+}
+
+function feeAmountCell(charge, options) {
+  const settings = options || {};
+  return {
+    amount: formatChargeAmountHeadline(charge),
+    meta: formatChargeMetaLine(charge, {
+      hideUnit: settings.hideUnit,
+      hideBasis: settings.hideBasis
+    }),
+    gstApplicable: chargeGstApplicable(charge)
+  };
 }
 
 /** Fixed + % rows with the same note → one “₹X or Y%” line (common bank pattern). */
@@ -2799,21 +3792,59 @@ function tryMergeFixedAndPercentage(charges) {
     );
   });
   if (!fixed || !pct) return null;
+  // Same money alternatives only — never merge different switch directions,
+  // areas, customer types, or other published case splits.
+  const sameCaseFields = [
+    "interest_rate_type_switch_from",
+    "interest_rate_type_switch_to",
+    "benchmark_switch_from",
+    "benchmark_switch_to",
+    "interest_rate_repricing_type",
+    "charge_by_area",
+    "customer_type",
+    "occupation",
+    "borrower_category",
+    "rate_type",
+    "cibil_band_score_min",
+    "cibil_band_score_max",
+    "property_valuation_scope",
+    "charge_frequency_other",
+    "fixed_amount_at_branch",
+    "fixed_amount_at_net_mobile_banking",
+    "valid_till",
+    "facility_conversion_from",
+    "facility_conversion_to",
+    "months_from_event_min",
+    "months_from_event_max",
+    "months_from_event_basis",
+    "loan_amount_min",
+    "loan_amount_max"
+  ];
+  for (let i = 0; i < sameCaseFields.length; i += 1) {
+    const field = sameCaseFields[i];
+    if (normalizeText(fixed[field]) !== normalizeText(pct[field])) return null;
+  }
   const fixedPrimary = formatEncodedChargeNote(fixed.note_1);
   const pctPrimary = formatEncodedChargeNote(pct.note_1);
   if (fixedPrimary !== pctPrimary) return null;
   const hasGst = chargeGstApplicable(fixed) || chargeGstApplicable(pct);
+  const sharedUnit =
+    commonChargeUnitLabel([fixed, pct]) ||
+    formatChargeUnit(fixed.charge_unit) ||
+    formatChargeUnit(pct.charge_unit);
   return {
     entries: [
       {
         what: fixed.charge_name || pct.charge_name || "Charge",
-        amount: withGstAsterisk(
+        detail: chargeDetailFromData(fixed),
+        amount:
           formatChargeAmountHeadline(fixed) +
-            " or " +
-            formatChargeAmountHeadline(pct),
-          hasGst
-        ),
-        meta: "Whichever applies as per bank rule",
+          " or " +
+          formatChargeAmountHeadline(pct),
+        meta:
+          formatChargeMetaLine(fixed, { hideUnit: !!sharedUnit }) ||
+          formatChargeMetaLine(pct, { hideUnit: !!sharedUnit }),
+        chargeHeaderUnit: sharedUnit,
         hint: "",
         gstApplicable: hasGst
       }
@@ -2821,6 +3852,341 @@ function tryMergeFixedAndPercentage(charges) {
     notes: uniqueStrings(
       collectChargeNotes(fixed).concat(collectChargeNotes(pct))
     )
+  };
+}
+
+/**
+ * Area (and optional customer-type / amount-slab) matrix: one column per area
+ * from the sheet — never park Metro/Rural/etc. in notes or Particulars text.
+ */
+function buildAreaMatrixFeeEntry(name, charges) {
+  const list = dedupeChargesByRule(charges);
+  const areas = uniqueStrings(list.map(chargeAreaLabel).filter(Boolean));
+  if (areas.length < 2) return null;
+
+  const byArea = Object.create(null);
+  areas.forEach(function (area) {
+    byArea[area] = list
+      .filter(function (charge) {
+        return chargeAreaLabel(charge) === area;
+      })
+      .sort(function (a, b) {
+        return chargeSlabStart(a) - chargeSlabStart(b);
+      });
+  });
+
+  const slabAreas = areas.filter(function (area) {
+    return (byArea[area] || []).some(function (charge) {
+      return normalizeText(charge.has_slab_wise_charges) === "yes";
+    });
+  });
+
+  // Area × amount-band matrix (Legal Opinion / ECS bounce by metro vs rural).
+  if (slabAreas.length >= 2) {
+    const bandKeys = [];
+    const bandSeen = Object.create(null);
+    slabAreas.forEach(function (area) {
+      (byArea[area] || []).forEach(function (charge) {
+        if (normalizeText(charge.has_slab_wise_charges) !== "yes") return;
+        const band = formatChargeSlabBand(charge) || "Range";
+        if (!bandSeen[band]) {
+          bandSeen[band] = true;
+          bandKeys.push(band);
+        }
+      });
+    });
+    if (bandKeys.length) {
+      const areaCharges = slabAreas.reduce(function (all, area) {
+        return all.concat(byArea[area] || []);
+      }, []);
+      const sharedUnit = commonChargeUnitLabel(areaCharges);
+      const anyGst = areaCharges.some(chargeGstApplicable);
+      const firstSlab = areaCharges.find(function (charge) {
+        return normalizeText(charge.has_slab_wise_charges) === "yes";
+      });
+      return {
+        entries: [
+          {
+            what: name,
+            detail: "",
+            kind: "area-matrix",
+            amount: "",
+            meta: "",
+            slabLeftHeader: formatSlabColumnHeader(firstSlab) || "Particulars",
+            matrixColumns: slabAreas,
+            matrixRows: bandKeys.map(function (band) {
+              return {
+                label: band,
+                cells: slabAreas.map(function (area) {
+                  const match = (byArea[area] || []).find(function (charge) {
+                    return (
+                      normalizeText(charge.has_slab_wise_charges) === "yes" &&
+                      (formatChargeSlabBand(charge) || "Range") === band
+                    );
+                  });
+                  return match
+                    ? feeAmountCell(match, {
+                        hideUnit: !!sharedUnit,
+                        hideBasis: true
+                      })
+                    : { amount: "—", meta: "", gstApplicable: false };
+                })
+              };
+            }),
+            chargeHeaderUnit: sharedUnit,
+            gstApplicable: anyGst
+          }
+        ],
+        notes: sharedNotesAcrossCharges(areaCharges)
+      };
+    }
+  }
+
+  const customers = uniqueStrings(list.map(chargeCustomerTypeLabel).filter(Boolean));
+  const rowKeys = customers.length ? customers : [""];
+  const cells = Object.create(null);
+  let anyGst = false;
+  const sharedUnit = commonChargeUnitLabel(list);
+
+  list.forEach(function (charge) {
+    const area = chargeAreaLabel(charge);
+    if (!area) return;
+    const rowKey = chargeCustomerTypeLabel(charge);
+    const key = rowKey + "||" + area;
+    const cell = feeAmountCell(charge, { hideUnit: !!sharedUnit });
+    cells[key] = cell;
+    if (cell.gstApplicable) anyGst = true;
+  });
+
+  const matrixRows = rowKeys.map(function (rowKey) {
+    return {
+      label: rowKey,
+      cells: areas.map(function (area) {
+        return (
+          cells[rowKey + "||" + area] || {
+            amount: "—",
+            meta: "",
+            gstApplicable: false
+          }
+        );
+      })
+    };
+  });
+
+  return {
+    entries: [
+      {
+        what: name,
+        detail: "",
+        kind: "area-matrix",
+        amount: "",
+        meta: "",
+        slabLeftHeader: customers.length ? "Customer type" : "",
+        matrixColumns: areas,
+        matrixRows: matrixRows,
+        chargeHeaderUnit: sharedUnit,
+        gstApplicable: anyGst
+      }
+    ],
+    notes: sharedNotesAcrossCharges(list)
+  };
+}
+
+/**
+ * Expand one fee name into scannable What | Charge rows (slabs / area matrices),
+ * after dropping identical duplicate sheet rows.
+ */
+function buildFeeTableEntries(name, charges) {
+  const list = dedupeChargesByRule(charges);
+  if (!list.length) {
+    return { entries: [], notes: [] };
+  }
+
+  // Metro / Rural / city category / network splits → columns, not notes.
+  const areaRows = list.filter(function (charge) {
+    return !!chargeAreaLabel(charge);
+  });
+  const nonAreaRows = list.filter(function (charge) {
+    return !chargeAreaLabel(charge);
+  });
+  const areaMatrix = buildAreaMatrixFeeEntry(name, areaRows.length ? areaRows : list);
+  if (areaMatrix) {
+    if (!nonAreaRows.length) return areaMatrix;
+    const rest = buildFeeTableEntries(name, nonAreaRows);
+    return {
+      entries: areaMatrix.entries.concat(rest.entries),
+      notes: uniqueStrings(areaMatrix.notes.concat(rest.notes))
+    };
+  }
+
+  const allSlabRows = list
+    .filter(function (charge) {
+      return normalizeText(charge.has_slab_wise_charges) === "yes";
+    })
+    .sort(function (a, b) {
+      return (
+        String(a.charge_group_id || "").localeCompare(
+          String(b.charge_group_id || ""),
+          "en",
+          { sensitivity: "base" }
+        ) || chargeSlabStart(a) - chargeSlabStart(b)
+      );
+    });
+  if (allSlabRows.length) {
+    const groupIds = uniqueStrings(
+      allSlabRows
+        .map(function (charge) {
+          return charge.charge_group_id;
+        })
+        .filter(Boolean)
+    );
+    const slabGroups = (groupIds.length ? groupIds : [allSlabRows[0].charge_group_id]).map(
+      function (groupId) {
+        return allSlabRows.filter(function (charge) {
+          return charge.charge_group_id === groupId;
+        });
+      }
+    );
+    const multiGroupEntries = [];
+    const multiGroupNotes = [];
+    slabGroups.forEach(function (slabs) {
+      if (slabs.length > 1) {
+        const first = slabs[0];
+        const basisLabel = formatSlabColumnHeader(first);
+        const sharedUnit = commonChargeUnitLabel(slabs);
+        const anyGst = slabs.some(chargeGstApplicable);
+        multiGroupEntries.push({
+          what: name,
+          detail: chargeDetailFromData(first, {
+            omitNotes: sharedNotesAcrossCharges(slabs)
+          }),
+          kind: "slab-table",
+          amount: "",
+          meta: "",
+          slabLeftHeader: basisLabel,
+          slabRightHeader: chargeColumnTitle(anyGst),
+          chargeHeaderUnit: sharedUnit,
+          slabRows: slabs.map(function (charge) {
+            const cell = feeAmountCell(charge, {
+              hideUnit: !!sharedUnit,
+              hideBasis: true
+            });
+            return {
+              range: formatChargeSlabBand(charge) || "Range",
+              amount: cell.amount,
+              meta: cell.meta
+            };
+          }),
+          hint: basisLabel,
+          gstApplicable: anyGst
+        });
+        multiGroupNotes.push.apply(multiGroupNotes, sharedNotesAcrossCharges(slabs));
+      } else if (slabs.length === 1) {
+        const charge = slabs[0];
+        const sharedUnit = commonChargeUnitLabel([charge]);
+        const cell = feeAmountCell(charge, { hideUnit: !!sharedUnit });
+        multiGroupEntries.push({
+          what: name,
+          detail: chargeDetailFromData(charge),
+          amount: cell.amount,
+          meta: cell.meta,
+          chargeHeaderUnit: sharedUnit,
+          hint: "",
+          gstApplicable: cell.gstApplicable
+        });
+      }
+    });
+    if (multiGroupEntries.length) {
+      const nonSlab = list.filter(function (charge) {
+        return normalizeText(charge.has_slab_wise_charges) !== "yes";
+      });
+      if (nonSlab.length) {
+        const sharedUnit = commonChargeUnitLabel(nonSlab);
+        nonSlab.forEach(function (charge) {
+          const cell = feeAmountCell(charge, { hideUnit: !!sharedUnit });
+          multiGroupEntries.push({
+            what: name,
+            detail: chargeDetailFromData(charge),
+            amount: cell.amount,
+            meta: cell.meta,
+            chargeHeaderUnit: sharedUnit,
+            hint: "",
+            gstApplicable: cell.gstApplicable
+          });
+        });
+      }
+      return {
+        entries: multiGroupEntries,
+        notes: uniqueStrings(multiGroupNotes)
+      };
+    }
+  }
+
+  if (list.length === 1) {
+    const charge = list[0];
+    const sharedUnit = commonChargeUnitLabel([charge]);
+    const cell = feeAmountCell(charge, { hideUnit: !!sharedUnit });
+    return {
+      entries: [
+        {
+          what: name,
+          detail: chargeDetailFromData(charge),
+          amount: cell.amount,
+          meta: cell.meta,
+          chargeHeaderUnit: sharedUnit,
+          hint: "",
+          gstApplicable: cell.gstApplicable
+        }
+      ],
+      notes: []
+    };
+  }
+
+  const mergedPair = tryMergeFixedAndPercentage(list);
+  if (mergedPair) {
+    mergedPair.entries[0].what = name;
+    return mergedPair;
+  }
+
+  const sharedUnit = commonChargeUnitLabel(list);
+  const anyGst = list.some(chargeGstApplicable);
+  const sharedNotes = sharedNotesAcrossCharges(list);
+  const showCustomerType = list.some(function (charge) {
+    return !!chargeCustomerTypeLabel(charge);
+  });
+  const ordered = list.slice().sort(function (a, b) {
+    const cibilA =
+      a.cibil_band_score_min != null ? Number(a.cibil_band_score_min) : -1;
+    const cibilB =
+      b.cibil_band_score_min != null ? Number(b.cibil_band_score_min) : -1;
+    if (cibilA !== cibilB) return cibilA - cibilB;
+    const loanA =
+      a.loan_amount_min != null ? Number(a.loan_amount_min) : -1;
+    const loanB =
+      b.loan_amount_min != null ? Number(b.loan_amount_min) : -1;
+    if (loanA !== loanB) return loanA - loanB;
+    return String(a.rate_type || "").localeCompare(String(b.rate_type || ""), "en", {
+      sensitivity: "base"
+    });
+  });
+  return {
+    entries: ordered.map(function (charge) {
+      const cell = feeAmountCell(charge, { hideUnit: !!sharedUnit });
+      return {
+        what: name,
+        detail: chargeDetailFromData(charge, {
+          omitCustomer: showCustomerType,
+          omitNotes: sharedNotes
+        }),
+        customerType: chargeCustomerTypeLabel(charge),
+        amount: cell.amount,
+        meta: cell.meta,
+        chargeHeaderUnit: sharedUnit,
+        hint: "",
+        gstApplicable: cell.gstApplicable
+      };
+    }),
+    notes: sharedNotes
   };
 }
 
@@ -2880,150 +4246,89 @@ function earlyFeeCategory(name) {
 }
 
 /**
- * Expand one fee name into scannable What | Charge rows (slabs / area variants),
- * after dropping identical duplicate sheet rows.
- */
-function buildFeeTableEntries(name, charges) {
-  const list = dedupeChargesByRule(charges);
-  if (!list.length) {
-    return { entries: [], notes: [] };
-  }
-
-  const slabSeed = list.find(function (charge) {
-    return normalizeText(charge.has_slab_wise_charges) === "yes";
-  });
-  if (slabSeed) {
-    const slabs = list
-      .filter(function (charge) {
-        return (
-          charge.charge_group_id === slabSeed.charge_group_id &&
-          normalizeText(charge.has_slab_wise_charges) === "yes"
-        );
-      })
-      .sort(function (a, b) {
-        return chargeSlabStart(a) - chargeSlabStart(b);
-      });
-    if (slabs.length > 1) {
-      const first = slabs[0];
-      const basisLabel = formatSlabColumnHeader(first);
-      return {
-        entries: slabs.map(function (charge) {
-          const band = formatChargeSlabBand(charge) || "Range";
-          const hasGst = chargeGstApplicable(charge);
-          return {
-            what: name + " · " + band,
-            amount: withGstAsterisk(
-              formatChargeAmountHeadline(charge),
-              hasGst
-            ),
-            meta: formatChargeMetaLine(charge, { hideBasis: true }),
-            hint: basisLabel,
-            gstApplicable: hasGst
-          };
-        }),
-        notes: uniqueStrings(
-          [formatSlabBasisSentence(first, "amount")].concat(
-            slabs.reduce(function (all, charge) {
-              return all.concat(collectChargeNotes(charge));
-            }, [])
-          )
-        )
-      };
-    }
-  }
-
-  if (list.length === 1) {
-    const charge = list[0];
-    const hasGst = chargeGstApplicable(charge);
-    return {
-      entries: [
-        {
-          what: name,
-          amount: withGstAsterisk(formatChargeAmountHeadline(charge), hasGst),
-          meta: formatChargeMetaLine(charge),
-          hint: "",
-          gstApplicable: hasGst
-        }
-      ],
-      notes: collectChargeNotes(charge)
-    };
-  }
-
-  const mergedPair = tryMergeFixedAndPercentage(list);
-  if (mergedPair) {
-    mergedPair.entries[0].what = name;
-    return mergedPair;
-  }
-
-  return {
-    entries: list.map(function (charge) {
-      const when = chargeWhenLabel(charge);
-      const hasGst = chargeGstApplicable(charge);
-      return {
-        what: when ? name + " · " + when : name,
-        amount: withGstAsterisk(formatChargeAmountHeadline(charge), hasGst),
-        meta: formatChargeMetaLine(charge),
-        hint: "",
-        gstApplicable: hasGst
-      };
-    }),
-    notes: uniqueStrings(
-      list.reduce(function (all, charge) {
-        const when = chargeWhenLabel(charge);
-        return all.concat(
-          collectChargeNotes(charge).filter(function (note) {
-            return note !== when;
-          })
-        );
-      }, [])
-    )
-  };
-}
-
-/**
- * For a fee name: keep the best matching rule, plus true slabs / distinct cases —
- * never every duplicate sheet row.
+ * For a fee name: keep every distinct published variant the drawer can show
+ * (areas, directions, customer types, all slab schedules, and non-slab
+ * siblings) — never identical duplicate sheet rows.
  */
 function selectChargesForFeeName(matchedRows) {
   const list = (matchedRows || []).filter(Boolean);
   if (!list.length) return [];
 
+  const areas = uniqueStrings(list.map(chargeAreaLabel).filter(Boolean));
+  if (areas.length >= 2) {
+    // Keep every area row for columns, plus any no-area sibling cases.
+    return dedupeChargesByRule(list);
+  }
+
   const slabRows = list.filter(function (charge) {
     return normalizeText(charge.has_slab_wise_charges) === "yes";
   });
   if (slabRows.length) {
-    slabRows.sort(function (a, b) {
-      return (
-        afterOfferSpecificityScore(b) - afterOfferSpecificityScore(a) ||
-        specificityScore(b, [
-          "scheme",
-          "occupation",
-          "purpose",
-          "rate_type",
-          "facility_type",
-          "borrower_category"
-        ]) -
-          specificityScore(a, [
+    const groupIds = uniqueStrings(
+      slabRows
+        .map(function (charge) {
+          return charge.charge_group_id;
+        })
+        .filter(Boolean)
+    );
+    let selectedSlabs;
+    if (groupIds.length > 1) {
+      selectedSlabs = dedupeChargesByRule(slabRows).sort(function (a, b) {
+        return (
+          String(a.charge_group_id || "").localeCompare(
+            String(b.charge_group_id || ""),
+            "en",
+            { sensitivity: "base" }
+          ) || chargeSlabStart(a) - chargeSlabStart(b)
+        );
+      });
+    } else {
+      slabRows.sort(function (a, b) {
+        return (
+          afterOfferSpecificityScore(b) - afterOfferSpecificityScore(a) ||
+          specificityScore(b, [
             "scheme",
             "occupation",
             "purpose",
             "rate_type",
             "facility_type",
             "borrower_category"
-          ])
-      );
-    });
-    const best = slabRows[0];
-    return list
-      .filter(function (charge) {
-        return (
-          charge.charge_group_id === best.charge_group_id &&
-          normalizeText(charge.has_slab_wise_charges) === "yes"
+          ]) -
+            specificityScore(a, [
+              "scheme",
+              "occupation",
+              "purpose",
+              "rate_type",
+              "facility_type",
+              "borrower_category"
+            ])
         );
-      })
-      .sort(function (a, b) {
-        return chargeSlabStart(a) - chargeSlabStart(b);
       });
+      const best = slabRows[0];
+      selectedSlabs = list
+        .filter(function (charge) {
+          return (
+            charge.charge_group_id === best.charge_group_id &&
+            normalizeText(charge.has_slab_wise_charges) === "yes"
+          );
+        })
+        .sort(function (a, b) {
+          return chargeSlabStart(a) - chargeSlabStart(b);
+        });
+      // Multiple slab schedules still present under other groups — keep them.
+      if (groupIds.length <= 1) {
+        const otherSlabs = slabRows.filter(function (charge) {
+          return charge.charge_group_id !== best.charge_group_id;
+        });
+        if (otherSlabs.length) {
+          selectedSlabs = selectedSlabs.concat(otherSlabs);
+        }
+      }
+    }
+    const nonSlab = list.filter(function (charge) {
+      return normalizeText(charge.has_slab_wise_charges) !== "yes";
+    });
+    return dedupeChargesByRule(selectedSlabs.concat(nonSlab));
   }
 
   return dedupeChargesByRule(list);
@@ -3041,104 +4346,123 @@ function collectMatchedChargesByName(charges) {
 
 function buildFeeSectionsFromMatched(matchedCharges, categorize) {
   const byName = collectMatchedChargesByName(matchedCharges);
-  const sectionMap = new Map();
+  const sections = [];
 
   byName.forEach(function (list, name) {
     const selected = selectChargesForFeeName(list);
     const built = buildFeeTableEntries(name, selected);
     if (!built.entries.length) return;
-    const cat = categorize(name);
-    if (!sectionMap.has(cat.id)) {
-      sectionMap.set(cat.id, {
-        id: cat.id,
-        label: cat.label,
-        entries: [],
-        notes: []
-      });
-    }
-    const section = sectionMap.get(cat.id);
-    built.entries.forEach(function (entry) {
-      section.entries.push(entry);
-    });
-    built.notes.forEach(function (note) {
-      section.notes.push(name + ": " + note);
+    sections.push({
+      id: name,
+      label: name,
+      entries: built.entries.slice(),
+      notes: uniqueStrings(built.notes)
     });
   });
 
-  const order =
-    categorize === earlyFeeCategory
-      ? ["processing", "credit", "property", "admin", "early-other"]
-      : LATER_FEE_CATEGORY_ORDER;
-
-  return order
-    .map(function (id) {
-      return sectionMap.get(id);
-    })
-    .filter(function (section) {
-      return section && section.entries.length;
-    })
-    .map(function (section) {
-      section.notes = uniqueStrings(section.notes);
-      const anyGst = section.entries.some(function (entry) {
-        return entry.gstApplicable;
-      });
-      if (anyGst) section.notes.push(GST_APPLICABLE_FOOTNOTE);
-      section.entries.sort(function (a, b) {
-        return String(a.what).localeCompare(String(b.what), "en", {
-          sensitivity: "base"
-        });
-      });
-      return section;
+  sections.sort(function (a, b) {
+    return String(a.label).localeCompare(String(b.label), "en", {
+      sensitivity: "base"
     });
+  });
+
+  return sections;
+}
+
+function feeSectionsHaveGst(sections) {
+  return (sections || []).some(function (section) {
+    return (section.entries || []).some(function (entry) {
+      return entry.gstApplicable;
+    });
+  });
 }
 
 /**
- * Upfront fees for the drawer — one row per real fee (processing once),
- * grouped so you can see what each fee is for.
+ * Upfront fees for the drawer — full scheme fee book for this bank/scheme/
+ * purpose/facility (not filtered by the user's occupation, rate, or loan size).
  */
 function listSchemeChargePanelSections(charges, offer) {
   const matched = (charges || []).filter(function (charge) {
-    return prefilterChargeForScheme(charge, offer);
+    return prefilterChargeForSchemeBook(charge, offer);
   });
-  // One best row per fee name, then re-attach true slab siblings only.
-  const bestByName = listSchemeCharges(charges, offer);
-  const selected = [];
-  bestByName.forEach(function (best) {
-    if (normalizeText(best.has_slab_wise_charges) === "yes") {
-      const slabs = matched
-        .filter(function (charge) {
-          return (
-            charge.charge_name === best.charge_name &&
-            charge.charge_group_id === best.charge_group_id &&
-            normalizeText(charge.has_slab_wise_charges) === "yes"
-          );
-        })
-        .sort(function (a, b) {
-          return chargeSlabStart(a) - chargeSlabStart(b);
-        });
-      if (slabs.length) {
-        slabs.forEach(function (row) {
-          selected.push(row);
-        });
-        return;
-      }
-    }
-    selected.push(best);
-  });
-  return buildFeeSectionsFromMatched(selected, earlyFeeCategory);
+  return buildFeeSectionsFromMatched(matched, earlyFeeCategory);
 }
 
 /**
- * Later fees not on the table — grouped by purpose, What | Charge rows,
- * duplicates removed.
+ * Later fees not on the table — full scheme book for this offer’s scope,
+ * still excluding names that already appear under Other charges / the table.
  */
 function listAdditionalAfterOfferPanelSections(charges, query, offer) {
   const matched = (charges || []).filter(function (charge) {
-    if (!prefilterAfterOfferCharge(charge, query, offer)) return false;
+    if (!prefilterAfterOfferChargeForSchemeBook(charge, offer)) return false;
     if (isShownOnExploreTable(charge)) return false;
     return true;
   });
   return buildFeeSectionsFromMatched(matched, laterFeeCategory);
+}
+
+function notListedFeeSection(label) {
+  return {
+    id: label,
+    label: label,
+    entries: [
+      {
+        what: label,
+        detail: "",
+        amount: "Not listed",
+        meta: "",
+        chargeHeaderUnit: "",
+        gstApplicable: false
+      }
+    ],
+    notes: []
+  };
+}
+
+/**
+ * Table-column fees in the drawer: every published variant for this scheme
+ * (both rate-switch directions, all bounce area columns, full overdue slabs).
+ */
+function listDrawerOtherChargeSections(charges, offer) {
+  const matched = (charges || []).filter(function (charge) {
+    return (
+      prefilterAfterOfferChargeForSchemeBook(charge, offer) &&
+      isShownOnExploreTable(charge)
+    );
+  });
+  const built = buildFeeSectionsFromMatched(matched, laterFeeCategory);
+  const byLabel = Object.create(null);
+  built.forEach(function (section) {
+    byLabel[section.label] = section;
+  });
+
+  const preferred = [
+    "Prepayment charges",
+    "Prepayment charges (takeover)",
+    RATE_CHANGE_CHARGE_TYPE_SWITCH,
+    RATE_CHANGE_CHARGE_REPRICING,
+    RATE_CHANGE_CHARGE_BENCHMARK,
+    "Overdue charges"
+  ];
+  const ordered = [];
+  const seen = Object.create(null);
+  preferred.forEach(function (label) {
+    seen[label] = true;
+    ordered.push(byLabel[label] || notListedFeeSection(label));
+  });
+  built
+    .slice()
+    .sort(function (a, b) {
+      return String(a.label).localeCompare(String(b.label), "en", {
+        sensitivity: "base"
+      });
+    })
+    .forEach(function (section) {
+      if (seen[section.label]) return;
+      seen[section.label] = true;
+      ordered.push(section);
+    });
+  return ordered;
 }
 
 /** @deprecated Compatibility: flatten sections to old block-like rows. */
@@ -3222,35 +4546,48 @@ function buildChargePanelVariant(rows) {
     rows && rows[0] && rows[0].charge_name ? rows[0].charge_name : "Charge";
   const built = buildFeeTableEntries(name, rows || []);
   const first = built.entries[0];
+  const slabEntry =
+    first && first.kind === "slab-table" ? first : null;
   return {
     label: "",
-    summary: first ? first.amount : "Not listed",
-    meta: first ? first.meta : "",
+    summary: slabEntry ? "" : first ? first.amount : "Not listed",
+    meta: slabEntry ? "" : first ? first.meta : "",
     slabIntro: "",
-    slabLeftHeader: "Range",
-    slabRightHeader: "Charge",
-    slabs: built.entries.slice(1).map(function (entry) {
-      return [entry.what, entry.amount];
-    }),
+    slabLeftHeader: slabEntry ? slabEntry.slabLeftHeader : "Range",
+    slabRightHeader: slabEntry ? slabEntry.slabRightHeader : "Charge",
+    slabs: slabEntry
+      ? slabEntry.slabRows.map(function (row) {
+          return [row.range, row.amount];
+        })
+      : built.entries.slice(1).map(function (entry) {
+          return [entry.what, entry.amount];
+        }),
     notes: built.notes
   };
 }
 
 function buildChargePanelBlock(name, charges) {
   const built = buildFeeTableEntries(name, charges || []);
+  const first = built.entries[0];
+  const slabEntry =
+    first && first.kind === "slab-table" ? first : null;
   return {
     name: name,
     variants: [
       {
         label: "",
-        summary: built.entries[0] ? built.entries[0].amount : "Not listed",
-        meta: built.entries[0] ? built.entries[0].meta : "",
+        summary: slabEntry ? "" : first ? first.amount : "Not listed",
+        meta: slabEntry ? "" : first ? first.meta : "",
         slabIntro: "",
-        slabLeftHeader: "Range",
-        slabRightHeader: "Charge",
-        slabs: built.entries.map(function (entry) {
-          return [entry.what, entry.amount];
-        }),
+        slabLeftHeader: slabEntry ? slabEntry.slabLeftHeader : "Range",
+        slabRightHeader: slabEntry ? slabEntry.slabRightHeader : "Charge",
+        slabs: slabEntry
+          ? slabEntry.slabRows.map(function (row) {
+              return [row.range, row.amount];
+            })
+          : built.entries.map(function (entry) {
+              return [entry.what, entry.amount];
+            }),
         notes: built.notes
       }
     ]
@@ -3543,6 +4880,10 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges) {
     offerQuery,
     offer
   );
+  const drawerOtherChargeSections = listDrawerOtherChargeSections(
+    bankCharges,
+    offer
+  );
 
   return {
     id: offer.offer_row_id,
@@ -3635,6 +4976,7 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges) {
     feeBlocks: listSchemeChargePanelBlocks(bankCharges, offer),
     feeRows: listSchemeChargePanelRows(bankCharges, offer),
     additionalAfterOfferSections: additionalAfterOfferSections,
+    drawerOtherChargeSections: drawerOtherChargeSections,
     additionalAfterOfferBlocks: listAdditionalAfterOfferPanelBlocks(
       bankCharges,
       offerQuery,
@@ -3668,6 +5010,8 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges) {
     prepayCharge: prepayOwnFundsCharge,
     overdueCharge: overdueCharge,
     overdueChargeSlabs: overdueChargeSlabs,
+    overdueCandidates: overdueCandidates,
+    emiBounceCandidates: emiBounceCandidates,
     emiBounceCharge: emiBounceCharge
   };
 }
@@ -3761,7 +5105,8 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function chargeDisplayHtml(display) {
+function chargeDisplayHtml(display, noteGroupId, options) {
+  const opts = options || {};
   const value = display || { main: "Not listed", details: [], note: "" };
   const details = (value.details || [])
     .map(function (detail) {
@@ -3781,14 +5126,37 @@ function chargeDisplayHtml(display) {
         escapeHtml(value.mainSuffix) +
         "</span>"
       : "") +
-    (value.marker
-      ? '<sup class="hlc-col-footnote" aria-hidden="true">' +
-        escapeHtml(value.marker) +
-        "</sup>"
-      : "") +
+    footnoteRefHtml(value.marker, noteGroupId, {
+      plain: !!opts.plainMarker
+    }) +
     "</span>" +
     details +
     "</span>"
+  );
+}
+
+/**
+ * Charge cell markup. Markers inside the slab button use plain superscripts
+ * (data-note-target) so we never nest interactive elements.
+ */
+function chargeCellHtml(row, column) {
+  const display = row[column.key];
+  const noteGroupId = chargesNoteGroupId(column.label);
+  if (!(display && display.action)) {
+    return chargeDisplayHtml(display, noteGroupId);
+  }
+  return (
+    '<button type="button" class="hlc-charge-detail-button" data-charge-detail="' +
+    escapeHtml(display.action) +
+    '" data-row-id="' +
+    escapeHtml(row.id) +
+    '" aria-label="Show ' +
+    escapeHtml(column.label.toLowerCase()) +
+    " slabs for " +
+    escapeHtml(row.bankName) +
+    '">' +
+    chargeDisplayHtml(display, noteGroupId, { plainMarker: true }) +
+    '<svg class="hlc-charge-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
   );
 }
 
@@ -3901,8 +5269,12 @@ function initPage() {
     applyDockBtn: document.getElementById("hlc-apply-dock-btn"),
     drawer: document.getElementById("hlc-drawer"),
     drawerBackdrop: document.getElementById("hlc-drawer-backdrop"),
+    drawerHeading: document.getElementById("hlc-drawer-heading"),
     drawerTitle: document.getElementById("hlc-drawer-title"),
     drawerSub: document.getElementById("hlc-drawer-sub"),
+    drawerActionsBar: document.getElementById("hlc-drawer-actions-bar"),
+    drawerToggleAll: document.getElementById("hlc-drawer-toggle-all"),
+    drawerScroll: document.getElementById("hlc-drawer-scroll"),
     drawerBody: document.getElementById("hlc-drawer-body"),
     drawerClose: document.getElementById("hlc-drawer-close"),
     toast: document.getElementById("hlc-toast"),
@@ -4340,7 +5712,7 @@ function initPage() {
     if (!isExploreMobile()) {
       clearMobileFiltersPosition();
       setFiltersOpen(true);
-      document.documentElement.style.removeProperty("--hlc-sticky-tools-h");
+      syncStickyToolsHeight();
       return;
     }
     if (!isFiltersOpen()) {
@@ -4361,15 +5733,29 @@ function initPage() {
   }
 
   function syncStickyToolsHeight() {
-    if (!isExploreMobile()) {
+    if (!el.resultsHead) {
       document.documentElement.style.removeProperty("--hlc-sticky-tools-h");
       return;
     }
-    if (!el.resultsHead) return;
     var shell = document.getElementById("hlc-results-shell");
-    if (!shell || shell.hidden) return;
+    if (!shell || shell.hidden) {
+      document.documentElement.style.removeProperty("--hlc-sticky-tools-h");
+      return;
+    }
     function applyHeight() {
-      var h = Math.ceil(el.resultsHead.getBoundingClientRect().height);
+      /*
+       * Height of the sticky tools strip only (padding + actions). Using the
+       * full head box can overshoot when empty a11y shells affect layout, which
+       * parks column titles too low and leaves a hole bank rows show through.
+       */
+      var styles = window.getComputedStyle(el.resultsHead);
+      var padTop = parseFloat(styles.paddingTop) || 0;
+      var padBot = parseFloat(styles.paddingBottom) || 0;
+      var actions = el.resultsHead.querySelector(".hlc-results-actions");
+      var actionsH = actions
+        ? actions.getBoundingClientRect().height
+        : el.resultsHead.getBoundingClientRect().height;
+      var h = Math.round(padTop + actionsH + padBot);
       if (h > 0) {
         document.documentElement.style.setProperty("--hlc-sticky-tools-h", h + "px");
       }
@@ -4576,11 +5962,8 @@ function initPage() {
         : "";
       const isPrepayment = column.key === "prepaymentChargeDisplay";
       const isRateChange = column.key === "rateChangeChargeDisplay";
-      const footnoteHtml = footnoteMarker
-        ? '<sup class="hlc-col-footnote" aria-hidden="true">' +
-          escapeHtml(footnoteMarker) +
-          "</sup>"
-        : "";
+      const noteGroupId = chargesNoteGroupId(column.label);
+      const footnoteHtml = footnoteRefHtml(footnoteMarker, noteGroupId);
       const prepaymentMethods =
         isPrepayment
           ? '<select class="hlc-header-select hlc-prepay-header-select" data-prepay-method="' +
@@ -4697,19 +6080,7 @@ function initPage() {
               column.key === "governmentCharges";
             const cellContent =
               column.type === "charge"
-                ? row[column.key] && row[column.key].action
-                  ? '<button type="button" class="hlc-charge-detail-button" data-charge-detail="' +
-                    escapeHtml(row[column.key].action) +
-                    '" data-row-id="' +
-                    escapeHtml(row.id) +
-                    '" aria-label="Show ' +
-                    escapeHtml(column.label.toLowerCase()) +
-                    " slabs for " +
-                    escapeHtml(row.bankName) +
-                    '">' +
-                    chargeDisplayHtml(row[column.key]) +
-                    '<svg class="hlc-charge-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
-                  : chargeDisplayHtml(row[column.key])
+                ? chargeCellHtml(row, column)
                 : hasCalculation
                   ? '<button type="button" class="hlc-charge-amount" data-calculation-detail="' +
                     column.key +
@@ -5192,8 +6563,56 @@ function initPage() {
 
   function updateChargesFootnote(noteHtml) {
     if (!el.chargesNote) return;
-    el.chargesNote.hidden = !noteHtml;
-    el.chargesNote.innerHTML = noteHtml || "";
+    if (!noteHtml) {
+      el.chargesNote.hidden = true;
+      el.chargesNote.innerHTML = "";
+      el.chargesNote.removeAttribute("aria-labelledby");
+      return;
+    }
+    el.chargesNote.hidden = false;
+    el.chargesNote.setAttribute("aria-labelledby", "hlc-charges-note-heading");
+    el.chargesNote.innerHTML = chargesNoteToolbarHtml() + noteHtml;
+    bindChargesNoteDropdowns(el.chargesNote);
+  }
+
+  function openChargesNoteGroup(groupId) {
+    if (!el.chargesNote || !groupId || el.chargesNote.hidden) return false;
+    const group =
+      (typeof CSS !== "undefined" && CSS.escape
+        ? el.chargesNote.querySelector("#" + CSS.escape(groupId))
+        : null) || document.getElementById(groupId);
+    if (!group || !el.chargesNote.contains(group)) return false;
+
+    // Open through the summary control so the accordion animation runs
+    // (setting .open alone can leave the polyfill / ::details-content closed).
+    if (!group.open) {
+      const summary = group.querySelector(":scope > summary, summary");
+      if (summary) {
+        summary.click();
+      } else {
+        group.open = true;
+      }
+    }
+
+    const reduceMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function scrollToNote() {
+      if (typeof group.scrollIntoView !== "function") return;
+      group.scrollIntoView({
+        block: "nearest",
+        behavior: reduceMotion ? "auto" : "smooth"
+      });
+    }
+    // Let the dropdown start opening, then bring it into view.
+    if (reduceMotion) {
+      scrollToNote();
+    } else {
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(scrollToNote);
+      });
+    }
+    return true;
   }
 
   var tableInView = false;
@@ -5236,9 +6655,44 @@ function initPage() {
     if (isExploreMobile() && isFiltersOpen()) {
       setFiltersOpen(false);
     }
-    el.drawerTitle.textContent = title;
-    el.drawerSub.textContent = subtitle || "";
-    el.drawerBody.innerHTML = bodyHtml;
+    const hasGroups = String(bodyHtml || "").indexOf("hlc-drawer-group") >= 0;
+    if (hasGroups) {
+      el.drawerTitle.textContent = "More details";
+      el.drawerSub.textContent = "";
+      el.drawerSub.hidden = true;
+      el.drawerBody.innerHTML = bodyHtml;
+      if (el.drawerActionsBar) {
+        el.drawerActionsBar.hidden = false;
+      }
+      if (el.drawerToggleAll) {
+        const fresh = el.drawerToggleAll.cloneNode(true);
+        fresh.hidden = false;
+        fresh.textContent = "Expand all";
+        fresh.setAttribute("aria-expanded", "false");
+        el.drawerToggleAll.parentNode.replaceChild(fresh, el.drawerToggleAll);
+        el.drawerToggleAll = fresh;
+      }
+      el.drawer.classList.add("hlc-drawer--sections");
+      bindDrawerDropdowns(el.drawer);
+    } else {
+      el.drawerTitle.textContent = title;
+      el.drawerSub.textContent = subtitle || "";
+      el.drawerSub.hidden = !String(subtitle || "").trim();
+      el.drawerBody.innerHTML = bodyHtml;
+      if (el.drawerActionsBar) {
+        el.drawerActionsBar.hidden = true;
+      }
+      if (el.drawerToggleAll) {
+        el.drawerToggleAll.hidden = true;
+      }
+      el.drawer.classList.remove("hlc-drawer--sections");
+    }
+
+    if (el.drawerScroll) {
+      el.drawerScroll.scrollTop = 0;
+    } else if (el.drawerBody) {
+      el.drawerBody.scrollTop = 0;
+    }
 
     el.drawerBackdrop.hidden = false;
     requestAnimationFrame(function () {
@@ -5316,47 +6770,29 @@ function initPage() {
     });
     if (!row) return;
 
-    const rateTypeForLabels = state.productFilters.fixedRate
-      ? "Fixed"
-      : "Floating";
-    const laterChargeRows = [
-      [
-        "Prepayment · Own funds",
-        formatPrepaymentChargeDetail(row.prepayOwnFundsCharge)
-      ],
-      [
-        "Prepayment · Balance transfer",
-        formatPrepaymentChargeDetail(row.prepayTakeoverCharge)
-      ],
-      [
-        rateChangeTypeSwitchLabel(rateTypeForLabels),
-        formatRateChangePanelText(row.rateChangeTypeSwitchCharge)
-      ],
-      [
-        "Repricing",
-        formatRateChangePanelText(row.rateChangeRepricingCharge)
-      ],
-      [
-        "Benchmark switch",
-        formatBenchmarkSwitchDetail(row.rateChangeBenchmarkCharge)
-      ],
-      ["Overdue", formatChargeDisplayText(row.overdueChargeDisplay)],
-      ["EMI bounce", formatChargeDisplayText(row.emiBounceChargeDisplay)]
-    ];
-    if (row.overdueDetailFootnote) {
-      laterChargeRows.push(["Overdue details", row.overdueDetailFootnote]);
-    }
-    if (row.emiBounceDetailFootnote) {
-      laterChargeRows.push(["Charge details", row.emiBounceDetailFootnote]);
-    }
+    const otherChargeSections =
+      row.drawerOtherChargeSections && row.drawerOtherChargeSections.length
+        ? row.drawerOtherChargeSections
+        : [];
+
+    const feeGst =
+      feeSectionsHaveGst(row.feeSections) ||
+      feeSectionsHaveGst(row.additionalAfterOfferSections) ||
+      feeSectionsHaveGst(otherChargeSections);
 
     const bodyHtml =
-      drawerSection("Scheme", [
-        ["Facility", row.facilityLabel || "—"],
-        ["Purpose", row.purpose || "—"],
-        ["Rate type", row.rateType || "—"],
-        ["Borrower category", row.borrowerCategoryLabel || "—"]
-      ]) +
+      drawerSection(
+        "Scheme",
+        [
+          ["Bank", row.bankName || "—"],
+          ["Scheme name", row.scheme || "—"],
+          ["Facility", row.facilityLabel || "—"],
+          ["Purpose", row.purpose || "—"],
+          ["Rate type", row.rateType || "—"],
+          ["Borrower category", row.borrowerCategoryLabel || "—"]
+        ],
+        { open: true }
+      ) +
       drawerSection("Eligibility", [
         ["CIBIL", row.cibilLabel],
         ["Age", row.ageRange],
@@ -5372,7 +6808,10 @@ function initPage() {
         "Charges at the start",
         row.feeSections && row.feeSections.length ? row.feeSections : null
       ) +
-      drawerSection("Other charges", laterChargeRows) +
+      drawerFeeSections(
+        "Other charges",
+        otherChargeSections.length ? otherChargeSections : null
+      ) +
       drawerFeeSections(
         "Fees that may apply later",
         row.additionalAfterOfferSections &&
@@ -5381,6 +6820,11 @@ function initPage() {
           : null,
         { hideWhenEmpty: true }
       ) +
+      (feeGst
+        ? '<p class="hlc-fee-note">' +
+          escapeHtml(GST_APPLICABLE_FOOTNOTE) +
+          "</p>"
+        : "") +
       '<p class="hlc-drawer-foot">Published rules are shown without estimating an event-specific amount. Figures are indicative. The bank decides final terms.</p>';
 
     showDrawer(row.bankName, row.scheme || "", bodyHtml);
@@ -5938,25 +7382,23 @@ function initPage() {
     }
   }
 
-  function drawerSection(title, pairs) {
-    return (
-      '<section class="hlc-drawer-section">' +
-      "<h4>" +
-      title +
-      "</h4>" +
+  function drawerSection(title, pairs, options) {
+    return drawerDiscloseHtml(
+      title,
       '<div class="hlc-drawer-card">' +
-      pairs
-        .map(function (pair) {
-          return (
-            '<div class="hlc-kv"><span class="hlc-kv-label">' +
-            escapeHtml(pair[0]) +
-            '</span><span class="hlc-kv-value">' +
-            escapeHtml(pair[1]) +
-            "</span></div>"
-          );
-        })
-        .join("") +
-      "</div></section>"
+        pairs
+          .map(function (pair) {
+            return (
+              '<div class="hlc-kv"><span class="hlc-kv-label">' +
+              escapeHtml(pair[0]) +
+              '</span><span class="hlc-kv-value">' +
+              escapeHtml(pair[1]) +
+              "</span></div>"
+            );
+          })
+          .join("") +
+        "</div>",
+      options
     );
   }
 
@@ -5971,38 +7413,208 @@ function initPage() {
     );
   }
 
-  function drawerFeeCategoryHtml(section) {
+  function drawerFeeWhatHtml(entry) {
+    return (
+      '<span class="hlc-fee-what">' +
+      escapeHtml(entry.what || "") +
+      "</span>" +
+      (entry.detail
+        ? '<span class="hlc-fee-detail">' + escapeHtml(entry.detail) + "</span>"
+        : "")
+    );
+  }
+
+  function drawerFeeSlabEntryHtml(entry) {
+    return renderDrawerSlabTableBlock({
+      title: "",
+      leftHeader: entry.slabLeftHeader || "Particulars",
+      rightHeader:
+        entry.slabRightHeader || chargeColumnTitle(entry.gstApplicable),
+      chargeHeaderUnit: entry.chargeHeaderUnit || "",
+      gstApplicable: entry.gstApplicable,
+      rows: entry.slabRows || [],
+      notes: []
+    });
+  }
+
+  function drawerFeeMatrixEntryHtml(entry) {
+    const rows = entry.matrixRows || [];
+    const showRowLabels = rows.some(function (row) {
+      return String(row.label || "").trim();
+    });
+    return renderDrawerSlabTableBlock({
+      title: "",
+      leftHeader: showRowLabels
+        ? entry.slabLeftHeader || "Particulars"
+        : "",
+      chargeHeaderUnit: entry.chargeHeaderUnit || "",
+      gstApplicable: entry.gstApplicable,
+      kind: "area-matrix",
+      matrixColumns: entry.matrixColumns || [],
+      matrixRows: rows,
+      notes: []
+    });
+  }
+
+  function drawerFeeSimpleTableHtml(entries) {
+    if (!entries || !entries.length) return "";
+    const anyGst = entries.some(function (entry) {
+      return entry.gstApplicable;
+    });
+    const sharedUnit =
+      entries[0] && entries[0].chargeHeaderUnit
+        ? entries[0].chargeHeaderUnit
+        : "";
+    const showCustomerType = entries.some(function (entry) {
+      return String(entry.customerType || "").trim();
+    });
+    const sharedWhat = String((entries[0] && entries[0].what) || "").trim();
+    const detailsOnlyParticulars =
+      !showCustomerType &&
+      !!sharedWhat &&
+      entries.length > 1 &&
+      entries.every(function (entry) {
+        return (
+          String(entry.what || "").trim() === sharedWhat &&
+          !!String(entry.detail || "").trim()
+        );
+      });
+    const showParticulars = !entries.every(function (entry) {
+      return !String(entry.detail || "").trim();
+    })
+      ? true
+      : !showCustomerType;
+    const headLabels = []
+      .concat(showParticulars ? ["Particulars"] : [])
+      .concat(showCustomerType ? ["Customer type"] : [])
+      .concat([chargeColumnTitle(anyGst)]);
+    const bodyRows = entries
+      .map(function (entry) {
+        const name = String(entry.what || "").trim();
+        const detail = String(entry.detail || "").trim();
+        const customer = String(entry.customerType || "").trim();
+        let cells = "";
+        if (showParticulars) {
+          if (showCustomerType || detailsOnlyParticulars) {
+            cells +=
+              "<td>" +
+              (detail
+                ? '<span class="hlc-fee-particular-name">' +
+                  escapeHtml(detail) +
+                  "</span>"
+                : "—") +
+              "</td>";
+          } else {
+            const nameHtml =
+              '<span class="hlc-fee-particular-name">' +
+              escapeHtml(name || detail || "—") +
+              "</span>";
+            const detailHtml =
+              detail && name && detail !== name
+                ? '<span class="hlc-fee-detail">' +
+                  escapeHtml(detail) +
+                  "</span>"
+                : "";
+            cells += "<td>" + nameHtml + detailHtml + "</td>";
+          }
+        }
+        if (showCustomerType) {
+          cells +=
+            '<td class="hlc-fee-col-customer">' +
+            '<span class="hlc-fee-particular-name">' +
+            escapeHtml(customer || "—") +
+            "</span></td>";
+        }
+        cells += "<td>" + drawerFeeEntryAmountHtml(entry) + "</td>";
+        return "<tr>" + cells + "</tr>";
+      })
+      .join("");
+    return (
+      '<div class="hlc-drawer-card hlc-slab-card">' +
+      '<table class="hlc-slab-table hlc-fee-table' +
+      (showCustomerType ? " hlc-fee-table--customer" : "") +
+      '">' +
+      drawerFeeTableShellHtml(headLabels, { unit: sharedUnit }, bodyRows) +
+      "</table></div>"
+    );
+  }
+
+  function feeEntryAmountIsNotListed(entry) {
+    const amount = String((entry && entry.amount) || "")
+      .replace(/\u2014/g, "—")
+      .trim();
+    if (!amount || amount === "—") return true;
+    return /^not listed$/i.test(amount);
+  }
+
+  function feeSectionIsNotListedOnly(section) {
+    if (!section || !section.entries || !section.entries.length) return false;
+    if (
+      section.entries.some(function (entry) {
+        return entry.kind === "slab-table" || entry.kind === "area-matrix";
+      })
+    ) {
+      return false;
+    }
+    if ((section.notes || []).length) return false;
+    return section.entries.every(feeEntryAmountIsNotListed);
+  }
+
+  function drawerFeeNotListedRowHtml(label) {
+    return (
+      '<div class="hlc-fee-flat-row">' +
+      '<span class="hlc-fee-flat-name">' +
+      escapeHtml(label || "Charge") +
+      "</span>" +
+      '<span class="hlc-fee-flat-value">Not listed</span>' +
+      "</div>"
+    );
+  }
+
+  function drawerFeeChargeBlockHtml(section) {
     if (!section || !section.entries || !section.entries.length) return "";
+    if (section.label && feeSectionIsNotListedOnly(section)) {
+      return drawerFeeNotListedRowHtml(section.label);
+    }
     const notesHtml = (section.notes || [])
       .map(function (note) {
         return '<p class="hlc-fee-note">' + escapeHtml(note) + "</p>";
       })
       .join("");
-    return (
-      '<div class="hlc-fee-category">' +
-      (section.label
-        ? '<h5 class="hlc-fee-category-title">' +
-          escapeHtml(section.label) +
-          "</h5>"
-        : "") +
-      '<div class="hlc-drawer-card hlc-slab-card">' +
-      '<table class="hlc-slab-table hlc-fee-table">' +
-      '<thead><tr><th scope="col">What</th><th scope="col">Charge</th></tr></thead><tbody>' +
-      section.entries
+    const simpleEntries = section.entries.filter(function (entry) {
+      return entry.kind !== "slab-table" && entry.kind !== "area-matrix";
+    });
+    const specialEntries = section.entries.filter(function (entry) {
+      return entry.kind === "slab-table" || entry.kind === "area-matrix";
+    });
+    const body =
+      (simpleEntries.length ? drawerFeeSimpleTableHtml(simpleEntries) : "") +
+      specialEntries
         .map(function (entry) {
-          return (
-            "<tr><td>" +
-            escapeHtml(entry.what) +
-            "</td><td>" +
-            drawerFeeEntryAmountHtml(entry) +
-            "</td></tr>"
-          );
+          return entry.kind === "area-matrix"
+            ? drawerFeeMatrixEntryHtml(entry)
+            : drawerFeeSlabEntryHtml(entry);
         })
         .join("") +
-      "</tbody></table></div>" +
-      notesHtml +
-      "</div>"
-    );
+      notesHtml;
+    if (!section.label) {
+      return '<div class="hlc-fee-charge-block">' + body + "</div>";
+    }
+    return drawerDiscloseHtml(section.label, body, { nested: true });
+  }
+
+  function orderFeeSectionsListedFirst(sections) {
+    const listed = [];
+    const notListed = [];
+    (sections || []).forEach(function (section) {
+      if (feeSectionIsNotListedOnly(section)) notListed.push(section);
+      else listed.push(section);
+    });
+    return listed.concat(notListed);
+  }
+
+  function drawerFeeCategoryHtml(section) {
+    return drawerFeeChargeBlockHtml(section);
   }
 
   function drawerFeeSections(title, sections, options) {
@@ -6011,43 +7623,48 @@ function initPage() {
     if (!sections || !sections.length) {
       return drawerSection(title, [["Applicable charges", "None listed"]]);
     }
-    return (
-      '<section class="hlc-drawer-section">' +
-      "<h4>" +
-      escapeHtml(title) +
-      "</h4>" +
+    const ordered = orderFeeSectionsListedFirst(sections);
+    const gstNote =
+      settings.showGstNote && feeSectionsHaveGst(ordered)
+        ? '<p class="hlc-fee-note">' +
+          escapeHtml(GST_APPLICABLE_FOOTNOTE) +
+          "</p>"
+        : "";
+    const inner =
       '<div class="hlc-fee-sections">' +
-      sections
+      ordered
         .map(function (section) {
           return drawerFeeCategoryHtml(section);
         })
         .join("") +
-      "</div></section>"
-    );
+      gstNote +
+      "</div>";
+    if (!title) return inner;
+    return drawerDiscloseHtml(title, inner);
   }
 
   function drawerSlabTable(leftHeader, rightHeader, pairs) {
-    return (
-      '<section class="hlc-drawer-section">' +
+    return drawerDiscloseHtml(
+      leftHeader + " · " + rightHeader,
       '<div class="hlc-drawer-card hlc-slab-card">' +
-      '<table class="hlc-slab-table">' +
-      '<thead><tr><th scope="col">' +
-      escapeHtml(leftHeader) +
-      '</th><th scope="col">' +
-      escapeHtml(rightHeader) +
-      "</th></tr></thead><tbody>" +
-      pairs
-        .map(function (pair) {
-          return (
-            "<tr><td>" +
-            escapeHtml(pair[0]) +
-            "</td><td>" +
-            escapeHtml(pair[1]) +
-            "</td></tr>"
-          );
-        })
-        .join("") +
-      "</tbody></table></div></section>"
+        '<table class="hlc-slab-table">' +
+        '<thead><tr><th scope="col">' +
+        escapeHtml(leftHeader) +
+        '</th><th scope="col">' +
+        escapeHtml(rightHeader) +
+        "</th></tr></thead><tbody>" +
+        pairs
+          .map(function (pair) {
+            return (
+              "<tr><td>" +
+              escapeHtml(pair[0]) +
+              "</td><td>" +
+              escapeHtml(pair[1]) +
+              "</td></tr>"
+            );
+          })
+          .join("") +
+        "</tbody></table></div>"
     );
   }
 
@@ -6201,21 +7818,39 @@ function initPage() {
     state.showAllBanks = true;
     renderTable();
 
-    const toHeight = Math.round(wrap.scrollHeight);
-    void wrap.offsetHeight;
-
-    requestAnimationFrame(function () {
-      wrap.style.height = toHeight + "px";
+    const revealedRows = el.body
+      ? Array.prototype.slice.call(
+          el.body.querySelectorAll("tr.hlc-selectable-row")
+        ).slice(INITIAL_VISIBLE_BANKS)
+      : [];
+    revealedRows.forEach(function (row) {
+      row.classList.add("is-bank-reveal");
     });
 
+    const toHeight = Math.round(wrap.scrollHeight);
+    const expandMs = 1500;
+    const expandEase = "cubic-bezier(0.22, 1, 0.36, 1)";
+    let expandAnim = null;
     let finished = false;
+
     function finishExpand() {
       if (finished) return;
       finished = true;
       wrap.removeEventListener("transitionend", onExpandEnd);
+      if (expandAnim) {
+        try {
+          expandAnim.cancel();
+        } catch (err) {
+          /* ignore */
+        }
+        expandAnim = null;
+      }
       wrap.classList.remove("is-expanding-banks");
       wrap.style.height = "";
       wrap.style.overflow = "";
+      revealedRows.forEach(function (row) {
+        row.classList.remove("is-bank-reveal");
+      });
     }
 
     function onExpandEnd(event) {
@@ -6223,8 +7858,34 @@ function initPage() {
       finishExpand();
     }
 
-    wrap.addEventListener("transitionend", onExpandEnd);
-    window.setTimeout(finishExpand, 1800);
+    if (toHeight <= fromHeight) {
+      finishExpand();
+      return;
+    }
+
+    /*
+     * Paint the locked start height first, then grow. A single rAF often sets
+     * both heights before paint, so the browser skips the transition and snaps.
+     */
+    if (typeof wrap.animate === "function") {
+      expandAnim = wrap.animate(
+        [{ height: fromHeight + "px" }, { height: toHeight + "px" }],
+        { duration: expandMs, easing: expandEase, fill: "forwards" }
+      );
+      expandAnim.onfinish = function () {
+        finishExpand();
+      };
+    } else {
+      void wrap.offsetHeight;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          wrap.style.height = toHeight + "px";
+        });
+      });
+      wrap.addEventListener("transitionend", onExpandEnd);
+    }
+
+    window.setTimeout(finishExpand, expandMs + 400);
   }
 
   if (el.showMoreBtn) {
@@ -6466,6 +8127,7 @@ function initPage() {
 
     el.head.addEventListener("click", function (event) {
       if (event.target.closest(".hlc-header-select")) return;
+      if (event.target.closest(".hlc-col-footnote[data-note-target]")) return;
       const header = event.target.closest("th.hlc-sortable");
       if (!header) return;
       const key = header.getAttribute("data-sort");
@@ -6484,6 +8146,22 @@ function initPage() {
       renderTable();
     });
   }
+
+  // Capture phase so marks win over row-select / slab-detail buttons.
+  document.body.addEventListener(
+    "click",
+    function (event) {
+      const footnoteRef = event.target.closest(
+        ".hlc-col-footnote[data-note-target]"
+      );
+      if (!footnoteRef) return;
+      const groupId = footnoteRef.getAttribute("data-note-target") || "";
+      if (!groupId || !openChargesNoteGroup(groupId)) return;
+      event.preventDefault();
+      event.stopPropagation();
+    },
+    true
+  );
 
   document.body.addEventListener("click", function (event) {
     const selectAll = event.target.closest(".hlc-select-all");
@@ -6995,7 +8673,16 @@ module.exports = {
   FIXED_FORECLOSURE_NOTE,
   PROCESSING_FEE_LOGIN_NOTE,
   floatingPrepayNoteHtml,
+  footnoteMarkersFromNoteParts,
+  chargesNoteGroupId,
+  footnoteRefHtml,
   chargesNoteGroupHtml,
+  chargesNoteToolbarHtml,
+  bindChargesNoteDropdowns,
+  bindDrawerDropdowns,
+  bindDetailsAccordion,
+  drawerToolbarHtml,
+  drawerDiscloseHtml,
   laterChargesColumns,
   columnsForGroup,
   DEFAULT_FOIR_PCT,
@@ -7105,10 +8792,19 @@ module.exports = {
   formatChargeAmountHeadline,
   formatChargeMetaLine,
   buildFeeTableEntries,
+  chargeColumnTitle,
+  commonChargeUnitLabel,
   buildChargePanelBlock,
   buildChargePanelVariant,
+  buildOverdueDrawerSlabBlocks,
+  buildEmiBounceDrawerSlabBlocks,
+  buildEmiBounceFlatDrawerRows,
+  buildAreaMatrixFeeEntry,
+  renderDrawerSlabTableBlock,
+  feeSectionsHaveGst,
   listSchemeChargePanelSections,
   listAdditionalAfterOfferPanelSections,
+  listDrawerOtherChargeSections,
   listSchemeChargePanelBlocks,
   listAdditionalAfterOfferPanelBlocks,
   listSchemeChargePanelRows,

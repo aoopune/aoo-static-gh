@@ -7,10 +7,38 @@
   --calc-line-soft: rgba(29, 29, 31, 0.06);
   --calc-wash: var(--shroffin-footer, #f5f7f9);
   --calc-paper: rgba(255, 255, 255, 0.55);
+  /* Hub tiles — guide surface + spacing ladder. */
+  --calc-hub-radius: 10px;
+  --calc-hub-surface: #f5f5f7;
+  --calc-hub-elev:
+    0 3px 10px rgba(0, 0, 0, 0.03),
+    0 10px 28px rgba(0, 0, 0, 0.05);
+  /* Match guide chapter-card gaps: title hugs body; regions share one stack. */
+  --calc-hub-gap-kicker: 8px;
+  --calc-hub-gap-title: 14px;
+  --calc-hub-gap-stack: 18px;
+  --calc-hub-gap-copy: 8px;
+  --calc-hub-pad: 20px;
+  /* Air between tiles — roomier than section stack. */
+  --calc-hub-gap: clamp(1.75rem, 4.5vw, 2.75rem);
   background: var(--shroffin-surface);
   color: var(--calc-ink);
   font-family: var(--shroffin-font);
   min-height: 100vh;
+}
+
+@media (min-width: 735px) {
+  .calc-page {
+    --calc-hub-radius: 28px;
+    --calc-hub-pad: 28px;
+  }
+}
+
+@media (min-width: 1069px) {
+  .calc-page {
+    --calc-hub-radius: 36px;
+    --calc-hub-pad: 32px;
+  }
 }
 
 .calc-main {
@@ -94,56 +122,73 @@
   opacity: 0.75;
 }
 
-/* Hub */
+/* Hub — rectangle cards in a side-by-side grid */
 .calc-hub-section {
-  margin-top: clamp(0.5rem, 2vw, 1rem);
-}
-
-.calc-hub-label {
-  margin: 0 0 1.15rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--calc-muted);
+  margin-top: var(--shroffin-space-stack);
 }
 
 .calc-hub-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--calc-line);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--calc-hub-gap);
+  align-items: stretch;
+  border: 0;
 }
 
 .calc-hub-item {
-  border-bottom: 1px solid var(--calc-line);
+  border: 0;
+  min-width: 0;
+  display: flex;
+  height: 100%;
 }
 
-.calc-hub-link {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  column-gap: 0.85rem;
-  row-gap: 0.45rem;
-  align-items: center;
-  padding: 1.55rem 0.1rem;
+.calc-hub-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: var(--calc-hub-pad);
+  padding-inline-end: calc(var(--calc-hub-pad) + 1.25rem);
   text-decoration: none;
   color: inherit;
-  transition: opacity var(--shroffin-micro-duration) var(--shroffin-color-ease);
+  background: var(--calc-hub-surface);
+  border-radius: var(--calc-hub-radius);
+  box-shadow: var(--calc-hub-elev);
+  transition:
+    transform var(--shroffin-ui-duration, 0.8s) var(--shroffin-ease),
+    box-shadow var(--shroffin-micro-duration) var(--shroffin-ease);
 }
 
-.calc-hub-link:hover {
-  opacity: 0.78;
+.calc-hub-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.04),
+    0 16px 36px rgba(0, 0, 0, 0.06);
 }
 
-.calc-hub-link::after {
+.calc-hub-card:focus-visible {
+  outline: 2px solid var(--shroffin-blue, #0071e3);
+  outline-offset: 3px;
+}
+
+/* Site-style chevron — not an Apple + circle. */
+.calc-hub-card::after {
   content: "";
-  grid-column: 2;
-  grid-row: 1 / -1;
+  position: absolute;
+  top: calc(var(--calc-hub-pad) + 0.35rem);
+  inset-inline-end: var(--calc-hub-pad);
   width: 0.5em;
   height: 0.5em;
-  margin-inline-end: 0.15rem;
-  border-block-start: 1.6px solid var(--calc-muted);
-  border-inline-end: 1.6px solid var(--calc-muted);
+  border-block-start: 1.6px solid var(--calc-ink);
+  border-inline-end: 1.6px solid var(--calc-ink);
   transform: rotate(45deg);
   opacity: 0.55;
   transition:
@@ -151,31 +196,45 @@
     transform var(--shroffin-micro-duration) var(--shroffin-ease);
 }
 
-.calc-hub-link:hover::after {
+.calc-hub-card:hover::after {
   opacity: 0.9;
   transform: rotate(45deg) translate(2px, -2px);
 }
 
-.calc-hub-name {
-  grid-column: 1;
-  font-size: var(--shroffin-type-title);
+.calc-hub-eyebrow {
+  display: block;
+  margin: 0 0 var(--calc-hub-gap-kicker);
+  font-size: var(--shroffin-type-body);
   font-weight: 500;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--calc-ink);
+}
+
+.calc-hub-name {
+  display: block;
+  margin: 0 0 var(--calc-hub-gap-title);
+  padding-inline-end: 0.75rem;
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
   color: var(--calc-ink);
 }
 
 .calc-hub-copy {
-  grid-column: 1;
   display: grid;
-  gap: 0.35rem;
+  gap: var(--calc-hub-gap-copy);
   min-width: 0;
+  margin-top: 0;
+  flex: 1 1 auto;
 }
 
 .calc-hub-lead {
   margin: 0;
   font-size: var(--shroffin-type-lead);
   line-height: 1.45;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--calc-ink);
 }
@@ -186,30 +245,33 @@
   line-height: 1.45;
   font-weight: 400;
   letter-spacing: -0.005em;
-  color: var(--calc-muted);
+  color: var(--calc-ink);
 }
 
 @media (min-width: 834px) {
-  .calc-hub-link {
-    grid-template-columns: minmax(12rem, 17rem) minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: 2rem;
-    row-gap: 0;
-    padding-block: 1.75rem;
+  .calc-hub-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
   }
 
-  .calc-hub-name {
-    grid-column: 1;
+  .calc-hub-card {
+    /* Shared height from content, not an oversized empty box. */
+    min-height: 15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calc-hub-card,
+  .calc-hub-card::after {
+    transition: none;
   }
 
-  .calc-hub-copy {
-    grid-column: 2;
+  .calc-hub-card:hover {
+    transform: none;
   }
 
-  .calc-hub-link::after {
-    grid-column: 3;
-    grid-row: 1;
-    align-self: center;
+  .calc-hub-card:hover::after {
+    transform: rotate(45deg);
   }
 }
 
@@ -1250,7 +1312,7 @@
   .calc-out-label,
   .calc-amort-toggle,
   .calc-slider-caption,
-  .calc-hub-label,
+  .calc-hub-eyebrow,
   .calc-crumb,
   .calc-choice-sub,
   .calc-formula-title,
@@ -1279,7 +1341,7 @@
 .calc-page--cast-1 .calc-controls-title,
 .calc-page--cast-1 .calc-readout-title,
 .calc-page--cast-1 .calc-field-group-title,
-.calc-page--cast-1 .calc-hub-label,
+.calc-page--cast-1 .calc-hub-eyebrow,
 .calc-page--cast-1 .calc-choice-sub,
 .calc-page--cast-1 .calc-crumb,
 .calc-page--cast-1 .calc-field-meta,
@@ -1324,25 +1386,24 @@
   letter-spacing: -0.03em;
 }
 
-.calc-page--cast-1 .calc-hub-group + .calc-hub-group {
-  margin-top: clamp(1.75rem, 4vw, 2.5rem);
-}
-
-.calc-page--cast-1 .calc-hub-label {
-  margin: 0 0 0.85rem;
-}
-
-.calc-page--cast-1 .calc-hub-group .calc-hub-list {
-  border-top: 1px solid var(--calc-line);
-}
-
 .calc-page--cast-1 .calc-hub-name {
   font-weight: 600;
+  color: var(--calc-ink);
+}
+
+.calc-page--cast-1 .calc-hub-eyebrow {
+  font-weight: 500;
+  color: var(--calc-ink);
 }
 
 .calc-page--cast-1 .calc-hub-lead {
-  color: var(--calc-muted);
+  font-weight: 500;
+  color: var(--calc-ink);
+}
+
+.calc-page--cast-1 .calc-hub-desc {
   font-weight: 400;
+  color: var(--calc-ink);
 }
 
 .calc-page--cast-1 .calc-assumptions,

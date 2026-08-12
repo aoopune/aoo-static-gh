@@ -11,8 +11,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="../images/logos/favicon-16.png?v=6">
   <link rel="apple-touch-icon" href="../apple-touch-icon.png?v=6">
   <link rel="manifest" href="../site.webmanifest?v=6">
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=3cf22f3044">
-  <link rel="stylesheet" href="../css/shroffin-calculators.css?v=calc-cast-5">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=disclaimer-3">
+  <link rel="stylesheet" href="../css/shroffin-calculators.css?v=calc-cast-19">
 </head>
 <body class="calc-page calc-page--cast-1">
   <!-- SHROFFIN_NAV_START -->
@@ -65,15 +65,6 @@
             aria-controls="nav-guide-flyout"
           >Guide</a>
         </li>
-        <li class="globalnav-item globalnav-item-support" id="nav-support">
-          <button
-            type="button"
-            class="globalnav-flyout-trigger"
-            id="nav-support-trigger"
-            aria-expanded="false"
-            aria-controls="nav-support-flyout"
-          >Support</button>
-        </li>
         <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
           <button
             type="button"
@@ -82,6 +73,15 @@
             aria-expanded="false"
             aria-controls="nav-tools-flyout"
           >Tools</button>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >Support</button>
         </li>
         <li class="globalnav-item">
           <a class="globalnav-link" href="/pages/about.html">About</a>
@@ -122,6 +122,26 @@
             <li>
               <a class="globalnav-submenu-link" href="/pages/home-loan-complaints.html">
                 <span class="globalnav-submenu-label">If something goes wrong</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore tools</h2>
+          <ul class="globalnav-submenu-list">
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/calculators.html" aria-current="page">
+                <span class="globalnav-submenu-label">Calculators</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/project-approvals.html">
+                <span class="globalnav-submenu-label">Project Bank Finder</span>
               </a>
             </li>
           </ul>
@@ -176,26 +196,6 @@
         </ul>
       </div>
     </div>
-
-    <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
-      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
-        <div class="globalnav-submenu-column">
-          <h2 class="globalnav-submenu-header">Explore tools</h2>
-          <ul class="globalnav-submenu-list">
-            <li>
-              <a class="globalnav-submenu-link" href="/pages/calculators.html" aria-current="page">
-                <span class="globalnav-submenu-label">Calculators</span>
-              </a>
-            </li>
-            <li>
-              <a class="globalnav-submenu-link" href="/pages/project-approvals.html">
-                <span class="globalnav-submenu-label">Project Bank Finder</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
   </nav>
   <!-- SHROFFIN_NAV_END -->
 
@@ -206,89 +206,78 @@
         <p class="calc-hero-lead">Estimates for EMI, eligibility, and more.</p>
       </header>
       <section class="calc-hub-section calc-reveal" aria-label="Calculator list">
-        <div class="calc-hub-group">
-          <h2 class="calc-hub-label">Pay</h2>
-          <ul class="calc-hub-list">
-            <li class="calc-hub-item">
-              <a class="calc-hub-link" href="calculators/emi.html">
-                <span class="calc-hub-name">Equated Monthly Instalment (EMI)</span>
-                <span class="calc-hub-copy">
-                  <p class="calc-hub-lead">Equated Monthly Instalment (EMI) — interest and principal together.</p>
-                  <p class="calc-hub-desc">Monthly payment, total interest, and year-by-year schedule.</p>
-                </span>
-              </a>
-            </li>
-            <li class="calc-hub-item">
-              <a class="calc-hub-link" href="calculators/tenure.html">
-                <span class="calc-hub-name">Tenure</span>
-                <span class="calc-hub-copy">
-                  <p class="calc-hub-lead">Years until the loan clears.</p>
-                  <p class="calc-hub-desc">Tenure from loan amount, rate, and EMI.</p>
-                </span>
-              </a>
-            </li>
-            <li class="calc-hub-item">
-              <a class="calc-hub-link" href="calculators/loan-amount.html">
-                <span class="calc-hub-name">Loan from EMI</span>
-                <span class="calc-hub-copy">
-                  <p class="calc-hub-lead">Loan size from the monthly payment you can afford.</p>
-                  <p class="calc-hub-desc">Works backwards from monthly payment, rate, and tenure.</p>
-                </span>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="calc-hub-group">
-          <h2 class="calc-hub-label">Borrow</h2>
-          <ul class="calc-hub-list">
-            <li class="calc-hub-item">
-              <a class="calc-hub-link" href="calculators/how-much-loan.html">
-                <span class="calc-hub-name">Eligibility</span>
-                <span class="calc-hub-copy">
-                  <p class="calc-hub-lead">Depends on Property value and income, whichever is lower.</p>
-                  <p class="calc-hub-desc">Lower of Agreement Value cap and income capacity. Same as the Guide.</p>
-                </span>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="calc-hub-group">
-          <h2 class="calc-hub-label">Change</h2>
-          <ul class="calc-hub-list">
-            <li class="calc-hub-item">
-              <a class="calc-hub-link" href="calculators/prepayment.html">
-                <span class="calc-hub-name">Prepayment</span>
-                <span class="calc-hub-copy">
-                  <p class="calc-hub-lead">Interest saved after any fee.</p>
-                  <p class="calc-hub-desc">Interest and tenure change after a lump sum or extra EMI.</p>
-                </span>
-              </a>
-            </li>
-            <li class="calc-hub-item">
-              <a class="calc-hub-link" href="calculators/balance-transfer.html">
-                <span class="calc-hub-name">Balance transfer</span>
-                <span class="calc-hub-copy">
-                  <p class="calc-hub-lead">Interest saved after switch costs.</p>
-                  <p class="calc-hub-desc">Current rate versus a new rate after switch costs.</p>
-                </span>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="calc-hub-group">
-          <h2 class="calc-hub-label">Tax</h2>
-          <ul class="calc-hub-list">
-            <li class="calc-hub-item">
-              <a class="calc-hub-link" href="calculators/tax-savings.html">
-                <span class="calc-hub-name">Tax claims</span>
-                <span class="calc-hub-copy">
-                  <p class="calc-hub-lead">First-year interest and principal claims.</p>
-                  <p class="calc-hub-desc">First-year interest and principal claims under the Tax benefits guide.</p>
-                </span>
-              </a>
-            </li>
-          </ul>
-        </div>
+        <ul class="calc-hub-list">
+          <li class="calc-hub-item">
+            <a class="calc-hub-card" href="calculators/emi.html">
+              <span class="calc-hub-eyebrow">Pay</span>
+              <span class="calc-hub-name">Equated Monthly Instalment (EMI)</span>
+              <span class="calc-hub-copy">
+                <p class="calc-hub-lead">Equated Monthly Instalment (EMI) — interest and principal together.</p>
+                <p class="calc-hub-desc">Monthly payment, total interest, and year-by-year schedule.</p>
+              </span>
+            </a>
+          </li>
+          <li class="calc-hub-item">
+            <a class="calc-hub-card" href="calculators/tenure.html">
+              <span class="calc-hub-eyebrow">Pay</span>
+              <span class="calc-hub-name">Tenure</span>
+              <span class="calc-hub-copy">
+                <p class="calc-hub-lead">Years until the loan clears.</p>
+                <p class="calc-hub-desc">Tenure from loan amount, rate, and EMI.</p>
+              </span>
+            </a>
+          </li>
+          <li class="calc-hub-item">
+            <a class="calc-hub-card" href="calculators/loan-amount.html">
+              <span class="calc-hub-eyebrow">Pay</span>
+              <span class="calc-hub-name">Loan from EMI</span>
+              <span class="calc-hub-copy">
+                <p class="calc-hub-lead">Loan size from the monthly payment you can afford.</p>
+                <p class="calc-hub-desc">Works backwards from monthly payment, rate, and tenure.</p>
+              </span>
+            </a>
+          </li>
+          <li class="calc-hub-item">
+            <a class="calc-hub-card" href="calculators/how-much-loan.html">
+              <span class="calc-hub-eyebrow">Borrow</span>
+              <span class="calc-hub-name">Eligibility</span>
+              <span class="calc-hub-copy">
+                <p class="calc-hub-lead">Depends on Property value and income, whichever is lower.</p>
+                <p class="calc-hub-desc">Lower of Agreement Value cap and income capacity. Same as the Guide.</p>
+              </span>
+            </a>
+          </li>
+          <li class="calc-hub-item">
+            <a class="calc-hub-card" href="calculators/prepayment.html">
+              <span class="calc-hub-eyebrow">Change</span>
+              <span class="calc-hub-name">Prepayment</span>
+              <span class="calc-hub-copy">
+                <p class="calc-hub-lead">Interest saved after any fee.</p>
+                <p class="calc-hub-desc">Interest and tenure change after a lump sum or extra EMI.</p>
+              </span>
+            </a>
+          </li>
+          <li class="calc-hub-item">
+            <a class="calc-hub-card" href="calculators/balance-transfer.html">
+              <span class="calc-hub-eyebrow">Change</span>
+              <span class="calc-hub-name">Balance transfer</span>
+              <span class="calc-hub-copy">
+                <p class="calc-hub-lead">Interest saved after switch costs.</p>
+                <p class="calc-hub-desc">Current rate versus a new rate after switch costs.</p>
+              </span>
+            </a>
+          </li>
+          <li class="calc-hub-item">
+            <a class="calc-hub-card" href="calculators/tax-savings.html">
+              <span class="calc-hub-eyebrow">Tax</span>
+              <span class="calc-hub-name">Tax claims</span>
+              <span class="calc-hub-copy">
+                <p class="calc-hub-lead">First-year interest and principal claims.</p>
+                <p class="calc-hub-desc">First-year interest and principal claims under the Tax benefits guide.</p>
+              </span>
+            </a>
+          </li>
+        </ul>
       </section>
     </div>
   </main>
@@ -328,7 +317,6 @@
             >
           </a>
         </section>
-
         <div class="site-footer-directory">
           <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
             <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
@@ -341,7 +329,6 @@
               <li><a href="/pages/home-loan-complaints.html">If something goes wrong</a></li>
             </ul>
           </nav>
-
           <nav class="site-footer-group" aria-labelledby="footer-tools-title">
             <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
             <ul class="site-footer-list">
@@ -349,16 +336,15 @@
               <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
             </ul>
           </nav>
-
           <nav class="site-footer-group" aria-labelledby="footer-company-title">
             <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
             <ul class="site-footer-list">
               <li><a href="/pages/about.html">About</a></li>
               <li><a href="/privacy-policy.html">Privacy Policy</a></li>
               <li><a href="/terms-of-use.html">Terms of Use</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
             </ul>
           </nav>
-
           <section class="site-footer-group" aria-labelledby="footer-support-title">
             <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
             <ul class="site-footer-list">
@@ -377,7 +363,6 @@
               </li>
             </ul>
           </section>
-
           <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
             <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
             <ul class="site-footer-list">
@@ -388,7 +373,6 @@
           </nav>
         </div>
       </div>
-
       <div class="site-footer-meta">
         <div class="site-footer-meta-main">
           <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
@@ -397,26 +381,22 @@
               <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
               <details class="site-footer-disclaimer-more">
                 <summary>Read the full disclaimer</summary>
-                <div class="site-footer-disclaimer-full">
-                  <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-                  <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-                  <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-                  <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-                  <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                <div class="site-footer-disclaimer-panel">
+                  <div class="site-footer-disclaimer-full">
+                    <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
+                    <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
+                    <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
+                    <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
+                    <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                  </div>
                 </div>
               </details>
             </div>
           </section>
-
           <div class="site-footer-bottom">
             <div class="site-footer-bottom-row">
               <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
-              <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
-                <ul class="site-footer-legal-links">
-                  <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-                  <li><a href="/terms-of-use.html">Terms of Use</a></li>
-                  <li><a href="/sitemap.html">Site Map</a></li>
-                </ul>
+              <nav class="site-footer-legal-nav" aria-label="Official resources">
                 <ul class="site-footer-official-links">
                   <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
                   <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
@@ -434,7 +414,7 @@
   <!-- SHROFFIN_FOOTER_END -->
 
 
-  <script src="../js/shroffin-calculators.js?v=calc-cast-5"></script>
-  <script src="../js/shroffin-nav.js?v=chapters-1"></script>
+  <script src="../js/shroffin-calculators.js?v=calc-cast-19"></script>
+  <script src="../js/shroffin-nav.js?v=guide-top-1"></script>
 </body>
 </html>

@@ -6,6 +6,7 @@ const pageRegistry = require(path.join(root, 'data', 'redesigned-pages.json'));
 const globalNav = require(path.join(root, 'data', 'global-nav.json'));
 const {
   SKIP_EXPLORE_BANKS_PREFOOTER_CTA,
+  SKIP_SITE_HELP_STRIP,
   EXPLORE_BANKS_PREFOOTER_TITLE,
   EXPLORE_BANKS_PREFOOTER_LEAD
 } = require(path.join(root, 'scripts', 'lib', 'site-chrome'));
@@ -132,17 +133,26 @@ for (const entry of pageRegistry) {
   if (!/<footer class="site-footer"[^>]+aria-label="Shroffin Footer"/.test(activeSource)) {
     fail(file, 'missing canonical footer landmark');
   }
-  if (!/<aside class="site-help-strip"[^>]+aria-label="Get help"/.test(activeSource)) {
-    fail(file, 'missing pre-footer help strip');
-  }
-  if (!/Need some help\?/.test(activeSource)) {
-    fail(file, 'help strip must include Need some help?');
-  }
-  if (
-    !/class="site-help-strip-phone"[^>]+href="tel:\+919112334367"/.test(activeSource) &&
-    !/href="tel:\+919112334367"[^>]*class="site-help-strip-phone"/.test(activeSource)
-  ) {
-    fail(file, 'help strip must include the support phone link');
+  const hasHelpStrip = /<aside class="site-help-strip"[^>]+aria-label="Get help"/.test(
+    activeSource
+  );
+  if (SKIP_SITE_HELP_STRIP.has(file)) {
+    if (hasHelpStrip) {
+      fail(file, 'pre-footer help strip must be omitted on this page');
+    }
+  } else {
+    if (!hasHelpStrip) {
+      fail(file, 'missing pre-footer help strip');
+    }
+    if (!/Need some help\?/.test(activeSource)) {
+      fail(file, 'help strip must include Need some help?');
+    }
+    if (
+      !/class="site-help-strip-phone"[^>]+href="tel:\+919112334367"/.test(activeSource) &&
+      !/href="tel:\+919112334367"[^>]*class="site-help-strip-phone"/.test(activeSource)
+    ) {
+      fail(file, 'help strip must include the support phone link');
+    }
   }
   const hasPrefooterCta = /class="site-prefooter-cta"/.test(activeSource);
   if (SKIP_EXPLORE_BANKS_PREFOOTER_CTA.has(file)) {

@@ -3,6 +3,7 @@ const { test, expect } = require('@playwright/test');
 const AxeBuilder = require('@axe-core/playwright').default;
 const pageRegistry = require('../data/redesigned-pages.json');
 const globalNav = require('../data/global-nav.json');
+const { SKIP_SITE_HELP_STRIP } = require('../scripts/lib/site-chrome');
 
 /** Full geometry matrix — keep cost bounded; calculators covered by contract lint. */
 const matrixPaths = new Set([
@@ -165,22 +166,28 @@ async function expectSharedShell(page, entry) {
   expect((await h1.innerText()).toLowerCase()).toContain(entry.heading.toLowerCase());
   await expect(page.locator('main')).toHaveCount(1);
   await expect(page.locator('footer.site-footer')).toHaveCount(1);
-  await expect(page.locator('.site-help-strip')).toHaveCount(1);
-  await expect(page.locator('.site-help-strip')).toContainText('Need some help?');
-  await expect(
-    page.locator('.site-help-strip a.guide-section-link[href="https://wa.me/919112334367"]')
-  ).toHaveCount(1);
-  await expect(
-    page.locator('.site-help-strip a.site-help-strip-phone[href="tel:+919112334367"]')
-  ).toHaveText('91123 34367');
+  const fileRel = String(entry.path || '').replace(/^\//, '');
+  const omitHelpStrip = SKIP_SITE_HELP_STRIP.has(fileRel);
+  if (omitHelpStrip) {
+    await expect(page.locator('.site-help-strip')).toHaveCount(0);
+  } else {
+    await expect(page.locator('.site-help-strip')).toHaveCount(1);
+    await expect(page.locator('.site-help-strip')).toContainText('Need some help?');
+    await expect(
+      page.locator('.site-help-strip a.guide-section-link[href="https://wa.me/919112334367"]')
+    ).toHaveCount(1);
+    await expect(
+      page.locator('.site-help-strip a.site-help-strip-phone[href="tel:+919112334367"]')
+    ).toHaveText('91123 34367');
+    await expect(page.locator('.site-help-strip')).toHaveCSS('border-top-width', '1px');
+    await expect(page.locator('.site-help-strip')).toHaveCSS('border-bottom-width', '1px');
+  }
   await expect(page.locator('.site-footer-directory')).toHaveCount(1);
   await expect(page.locator('.site-footer-heading')).toHaveCount(5);
   await expect(page.locator('.site-footer')).not.toContainText(
     'Regulators and official resources'
   );
   await expect(page.locator('.site-footer-rule')).toHaveCount(0);
-  await expect(page.locator('.site-help-strip')).toHaveCSS('border-top-width', '1px');
-  await expect(page.locator('.site-help-strip')).toHaveCSS('border-bottom-width', '1px');
   await expect(page.locator('footer.site-footer')).toHaveCSS('border-top-width', '1px');
   await expect(page.locator('.site-footer-legal')).toHaveCSS('border-top-width', '0px');
   await expect(page.locator('.site-footer-legal')).toHaveCSS('border-bottom-width', '0px');
@@ -752,6 +759,20 @@ test.describe('adaptive component behavior', function () {
     await expect(openDock).toHaveAttribute('aria-expanded', 'true');
     await expect(closeDock).toHaveAttribute('aria-expanded', 'true');
 
+    /* Phone: corner X + scroll so the open card top is in view. */
+    const cornerClose = flip.locator('.guide-flip-close[data-flip]');
+    await expect(cornerClose).toBeVisible();
+    await expect(cornerClose).toHaveAttribute('aria-label', 'Close this panel');
+    await page.waitForFunction(
+      function () {
+        var sceneEl = document.querySelector('#borrow-flip .guide-flip-scene');
+        if (!sceneEl) return false;
+        return sceneEl.getBoundingClientRect().top < 120;
+      },
+      null,
+      { timeout: 2500 }
+    );
+
     /* Wait for open-height settle (same duration band as the flip). */
     await page.waitForTimeout(1400);
 
@@ -760,7 +781,8 @@ test.describe('adaptive component behavior', function () {
     const titleAfter = await title.boundingBox();
     /* Borrow Estimate is taller than the front — scene grows to fit. */
     expect(after.height).toBeGreaterThan(before.height + 40);
-    expect(Math.abs(titleAfter.y - titleBefore.y)).toBeLessThanOrEqual(2);
+    /* Outside title may move with page scroll-to-card-top on phone. */
+    expect(titleAfter.y).toBeLessThan(titleBefore.y + 2);
     /* Close stays left-aligned on phone and pinned under the back body. */
     expect(Math.abs(dockAfter.x - dockBefore.x)).toBeLessThanOrEqual(8);
     expect(dockAfter.y).toBeGreaterThan(dockBefore.y);

@@ -103,10 +103,16 @@
     );
   }
 
+  function playbackAriaLabel(state) {
+    if (state === "playing") return "Pause";
+    if (state === "ended") return "Replay";
+    return "Play";
+  }
+
   function setPlaybackUi(btn, state) {
     if (!btn) return;
     btn.setAttribute("data-spd-state", state);
-    btn.setAttribute("aria-label", state === "playing" ? "Pause" : "Play");
+    btn.setAttribute("aria-label", playbackAriaLabel(state));
   }
 
   function postFrame(frame, type) {

@@ -193,10 +193,37 @@
        Home story lines under the product demo. */
     .home-lead {
       width: 100%;
-      padding: clamp(80px, 12vw, 140px) 22px clamp(48px, 7vw, 80px);
       box-sizing: border-box;
       background: transparent;
       color: #f5f5f7;
+    }
+
+    .home-lead-track {
+      width: 100%;
+    }
+
+    .js .home-lead-track {
+      /* Hold the re-engineered intro so it is not skipped. */
+      min-height: 185svh;
+    }
+
+    .home-lead-pin {
+      width: 100%;
+      min-height: 72vh;
+      min-height: 72svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(80px, 12vw, 140px) 22px clamp(48px, 7vw, 80px);
+      box-sizing: border-box;
+    }
+
+    .js .home-lead-pin {
+      position: sticky;
+      /* Sit under the fixed global nav so copy keeps its top padding. */
+      top: var(--gn-height);
+      min-height: calc(100vh - var(--gn-height));
+      min-height: calc(100svh - var(--gn-height));
     }
 
     .home-lead-inner {
@@ -253,6 +280,28 @@
       transition-delay: 0.2s;
     }
 
+    .js .home-lead[data-home-scrub="lead"] .home-lead-line.home-moment {
+      --hl-line-progress: 1;
+      opacity: var(--hl-line-progress);
+      transform: translate3d(0, calc((1 - var(--hl-line-progress)) * 14px), 0);
+    }
+
+    .js .home-lead[data-home-scrub="lead"] .home-lead-line.home-moment:nth-child(1) {
+      --hl-line-progress: var(--hl-line-1, 1);
+    }
+
+    .js .home-lead[data-home-scrub="lead"] .home-lead-line.home-moment:nth-child(2) {
+      --hl-line-progress: var(--hl-line-2, 0);
+    }
+
+    .js .home-lead[data-home-scrub="lead"] .home-lead-line.home-moment:nth-child(3) {
+      --hl-line-progress: var(--hl-line-3, 0);
+    }
+
+    .js .home-lead[data-home-scrub="lead"] .home-lead-line.home-moment:nth-child(4) {
+      --hl-line-progress: var(--hl-line-4, 0);
+    }
+
     @media only screen and (max-width: 1068px) {
       .home-lead-line {
         font-size: 24px;
@@ -277,6 +326,10 @@
     /* Primary pill focus lives in shroffin-shell.css */
 
     @media (max-width: 833px) {
+      .js .home-lead-track {
+        min-height: 165svh;
+      }
+
       .home-hero-copy {
         width: min(1068px, calc(100% - 32px));
         padding: 40px 0 3.5rem;
@@ -287,7 +340,7 @@
         margin-top: 14px;
       }
 
-      .home-lead {
+      .home-lead-pin {
         padding-left: 16px;
         padding-right: 16px;
       }
@@ -314,6 +367,11 @@
       width: 100%;
     }
 
+    .js .home-clear-track {
+      /* Hold Transparent long enough to read before moving on. */
+      min-height: 175svh;
+    }
+
     .home-clear-pin {
       width: 100%;
       min-height: 72vh;
@@ -323,6 +381,14 @@
       justify-content: center;
       padding: clamp(56px, 8vh, 96px) 22px;
       box-sizing: border-box;
+    }
+
+    .js .home-clear-pin {
+      position: sticky;
+      /* Sit under the fixed global nav so copy keeps its top padding. */
+      top: var(--gn-height);
+      min-height: calc(100vh - var(--gn-height));
+      min-height: calc(100svh - var(--gn-height));
     }
 
     .home-clear-inner {
@@ -480,6 +546,10 @@
     }
 
     @media (max-width: 833px) {
+      .js .home-clear-track {
+        min-height: 155svh;
+      }
+
       .home-clear-pin {
         padding-left: 16px;
         padding-right: 16px;
@@ -568,6 +638,11 @@
       width: 100%;
     }
 
+    .js .home-zero-track {
+      /* Hold the Zero section longer so staged lines can play out. */
+      min-height: 185svh;
+    }
+
     .home-zero-pin {
       width: 100%;
       min-height: 72vh;
@@ -577,6 +652,14 @@
       justify-content: center;
       padding: clamp(56px, 8vh, 96px) 22px;
       box-sizing: border-box;
+    }
+
+    .js .home-zero-pin {
+      position: sticky;
+      /* Sit under the fixed global nav so “Zero” keeps its top padding. */
+      top: var(--gn-height);
+      min-height: calc(100vh - var(--gn-height));
+      min-height: calc(100svh - var(--gn-height));
     }
 
     .home-zero-inner {
@@ -678,6 +761,10 @@
     }
 
     @media (max-width: 833px) {
+      .js .home-zero-track {
+        min-height: 165svh;
+      }
+
       .home-zero-pin {
         padding-left: 16px;
         padding-right: 16px;
@@ -728,6 +815,11 @@
       width: 100%;
     }
 
+    .js .home-best-track {
+      /* Hold spam-free closer so users can absorb it. */
+      min-height: 175svh;
+    }
+
     .home-best-pin {
       width: 100%;
       min-height: 72vh;
@@ -737,6 +829,14 @@
       justify-content: center;
       padding: clamp(56px, 8vh, 96px) 22px;
       box-sizing: border-box;
+    }
+
+    .js .home-best-pin {
+      position: sticky;
+      /* Sit under the fixed global nav so copy keeps its top padding. */
+      top: var(--gn-height);
+      min-height: calc(100vh - var(--gn-height));
+      min-height: calc(100svh - var(--gn-height));
     }
 
     .home-best-inner {
@@ -849,6 +949,10 @@
     }
 
     @media (max-width: 833px) {
+      .js .home-best-track {
+        min-height: 155svh;
+      }
+
       .home-best-pin {
         padding-left: 16px;
         padding-right: 16px;
@@ -2609,6 +2713,20 @@
         min-height: 0;
       }
 
+      .js .home-lead-pin,
+      .js .home-clear-pin,
+      .js .home-best-pin {
+        position: static;
+        min-height: 0;
+      }
+
+      .js .home-lead[data-home-scrub="lead"] {
+        --hl-line-1: 1;
+        --hl-line-2: 1;
+        --hl-line-3: 1;
+        --hl-line-4: 1;
+      }
+
       .js .home-clear-display .home-clear-word,
       .js .home-clear-display.is-in .home-clear-word,
       .js .home-clear-display:not(.is-in) .home-clear-word {
@@ -2653,7 +2771,7 @@
     }
   </style>
   <link rel="stylesheet" href="css/shroffin-shell.css?v=disclaimer-3">
-  <link rel="stylesheet" href="css/shroffin-product-demo.css?v=104">
+  <link rel="stylesheet" href="css/shroffin-product-demo.css?v=105">
   <!-- shroffin-home.css: stance styles moved to about; file kept for now -->
   <!-- <link rel="stylesheet" href="css/shroffin-home.css?v=stance-34"> -->
 </head>
@@ -2708,15 +2826,6 @@
             aria-controls="nav-guide-flyout"
           >Guide</a>
         </li>
-        <li class="globalnav-item globalnav-item-support" id="nav-support">
-          <button
-            type="button"
-            class="globalnav-flyout-trigger"
-            id="nav-support-trigger"
-            aria-expanded="false"
-            aria-controls="nav-support-flyout"
-          >Support</button>
-        </li>
         <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
           <button
             type="button"
@@ -2725,6 +2834,15 @@
             aria-expanded="false"
             aria-controls="nav-tools-flyout"
           >Tools</button>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >Support</button>
         </li>
         <li class="globalnav-item">
           <a class="globalnav-link" href="/pages/about.html">About</a>
@@ -2765,6 +2883,26 @@
             <li>
               <a class="globalnav-submenu-link" href="/pages/home-loan-complaints.html">
                 <span class="globalnav-submenu-label">If something goes wrong</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore tools</h2>
+          <ul class="globalnav-submenu-list">
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/calculators.html">
+                <span class="globalnav-submenu-label">Calculators</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/project-approvals.html">
+                <span class="globalnav-submenu-label">Project Bank Finder</span>
               </a>
             </li>
           </ul>
@@ -2819,33 +2957,12 @@
         </ul>
       </div>
     </div>
-
-    <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
-      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
-        <div class="globalnav-submenu-column">
-          <h2 class="globalnav-submenu-header">Explore tools</h2>
-          <ul class="globalnav-submenu-list">
-            <li>
-              <a class="globalnav-submenu-link" href="/pages/calculators.html">
-                <span class="globalnav-submenu-label">Calculators</span>
-              </a>
-            </li>
-            <li>
-              <a class="globalnav-submenu-link" href="/pages/project-approvals.html">
-                <span class="globalnav-submenu-label">Project Bank Finder</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
   </nav>
   <!-- SHROFFIN_NAV_END -->
 
   {{BODY_HTML}}
 
   <!-- SHROFFIN_FOOTER_START -->
-
   <aside class="site-help-strip" aria-label="Get help">
     <p class="site-help-strip-text">
       Need some help?
@@ -2872,7 +2989,6 @@
             >
           </a>
         </section>
-
         <div class="site-footer-directory">
           <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
             <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
@@ -2885,7 +3001,6 @@
               <li><a href="/pages/home-loan-complaints.html">If something goes wrong</a></li>
             </ul>
           </nav>
-
           <nav class="site-footer-group" aria-labelledby="footer-tools-title">
             <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
             <ul class="site-footer-list">
@@ -2893,7 +3008,6 @@
               <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
             </ul>
           </nav>
-
           <nav class="site-footer-group" aria-labelledby="footer-company-title">
             <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
             <ul class="site-footer-list">
@@ -2903,7 +3017,6 @@
               <li><a href="/sitemap.html">Site Map</a></li>
             </ul>
           </nav>
-
           <section class="site-footer-group" aria-labelledby="footer-support-title">
             <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
             <ul class="site-footer-list">
@@ -2922,7 +3035,6 @@
               </li>
             </ul>
           </section>
-
           <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
             <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
             <ul class="site-footer-list">
@@ -2933,7 +3045,6 @@
           </nav>
         </div>
       </div>
-
       <div class="site-footer-meta">
         <div class="site-footer-meta-main">
           <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
@@ -2954,7 +3065,6 @@
               </details>
             </div>
           </section>
-
           <div class="site-footer-bottom">
             <div class="site-footer-bottom-row">
               <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
@@ -2978,9 +3088,9 @@
   <script src="js/shroffin-home-boot.js?v=1"></script>
   <script src="js/shroffin-nav.js?v=guide-top-1"></script>
   <script src="js/shroffin-guide.js?v=flip-grow-1"></script>
-  <script src="js/shroffin-product-demo-chrome.js?v=96"></script>
-  <script src="js/shroffin-home-stance.js?v=home-zero-5"></script>
-  <script src="js/shroffin-scrub.js?v=home-zero-6"></script>
+  <script src="js/shroffin-product-demo-chrome.js?v=97"></script>
+  <script src="js/shroffin-home-stance.js?v=home-zero-6"></script>
+  <script src="js/shroffin-scrub.js?v=home-zero-15"></script>
   <script src="js/shroffin-home-built.js?v=1"></script>
 </body>
 </html>

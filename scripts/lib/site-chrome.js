@@ -31,12 +31,15 @@ const INSURANCE_PAGES = new Set([
 
 const SKIP_EXPLORE_BANKS_PREFOOTER_CTA = new Set([
   'index.html',
+  'pages/about.html',
   'pages/explore-banks.html',
   'pages/apply.html',
   'privacy-policy.html',
   'terms-of-use.html',
   'sitemap.html'
 ]);
+
+const SKIP_SITE_HELP_STRIP = new Set(['pages/about.html']);
 
 const EXPLORE_BANKS_PREFOOTER_TITLE = 'Get started with Shroffin.';
 const EXPLORE_BANKS_PREFOOTER_LEAD =
@@ -60,6 +63,24 @@ function renderExploreBanksPrefooterCta(fileRel) {
     '    <a class="home-hero-cta home-hero-cta-primary site-prefooter-cta-action" href="/pages/explore-banks.html">Explore banks</a>',
     '  </div>',
     '</section>'
+  ].join('\n');
+}
+
+function renderSiteHelpStrip(fileRel) {
+  if (SKIP_SITE_HELP_STRIP.has(fileRel)) return '';
+  return [
+    '<aside class="site-help-strip" aria-label="Get help">',
+    '  <p class="site-help-strip-text">',
+    '    Need some help?',
+    '    <a',
+    '      class="guide-section-link"',
+    '      href="{{CONTACT_WHATSAPP_URL}}"',
+    '      target="_blank"',
+    '      rel="noopener noreferrer"',
+    '    >Chat now<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new window)</span></a>',
+    '    or call <a class="site-help-strip-phone" href="tel:{{CONTACT_PHONE_TEL}}">{{CONTACT_PHONE_DISPLAY_SHORT}}</a>',
+    '  </p>',
+    '</aside>'
   ].join('\n');
 }
 
@@ -112,6 +133,7 @@ function renderFooter(fileRel) {
     '{{EXPLORE_BANKS_PREFOOTER_CTA}}',
     renderExploreBanksPrefooterCta(fileRel)
   );
+  html = html.replaceAll('{{SITE_HELP_STRIP}}', renderSiteHelpStrip(fileRel));
   html = html
     .replaceAll(
       '{{PRIVACY_CURRENT}}',
@@ -125,6 +147,8 @@ function renderFooter(fileRel) {
       '{{SITEMAP_CURRENT}}',
       fileRel === 'sitemap.html' ? ' aria-current="page"' : ''
     );
+  /* Drop blank lines left by omitted optional chrome slots. */
+  html = html.replace(/\n(?:[ \t]*\n)+/g, '\n');
   return indentBlock(applyContacts(html), 2);
 }
 
@@ -228,6 +252,7 @@ function applySiteChrome(html, fileRel) {
 module.exports = {
   GUIDE_PAGES,
   SKIP_EXPLORE_BANKS_PREFOOTER_CTA,
+  SKIP_SITE_HELP_STRIP,
   EXPLORE_BANKS_PREFOOTER_TITLE,
   EXPLORE_BANKS_PREFOOTER_LEAD,
   applyNav,
@@ -238,5 +263,6 @@ module.exports = {
   renderNav,
   renderFooter,
   renderGuideLocalnav,
-  renderExploreBanksPrefooterCta
+  renderExploreBanksPrefooterCta,
+  renderSiteHelpStrip
 };

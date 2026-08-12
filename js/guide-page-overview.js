@@ -1,5 +1,6 @@
 /**
- * Overview Guide page behaviours (borrow / EMI calculators + flip Escape).
+ * Overview Guide page behaviours (borrow / EMI calculators).
+ * Card flip open/close lives in shroffin-guide.js — do not bind flips here.
  * Safe no-op when calculator markup is absent (other Guide pages).
  */
 (function () {
@@ -74,44 +75,78 @@
     return (principal * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
   }
 
-  function setupFlip(flipId, formId, onReady) {
-    var flip = document.getElementById(flipId);
-    if (!flip) return null;
+  function bindBorrowCalc() {
+    var form = document.getElementById("borrow-calc-form");
+    if (!form) return;
+    var result = document.getElementById("borrow-calc-result");
+    var outTotal = document.getElementById("borrow-calc-total");
+    var outProp = document.getElementById("borrow-calc-prop");
+    var outInc = document.getElementById("borrow-calc-inc");
 
-    var back = flip.querySelector(".guide-flip-face--back");
-    var form = formId ? document.getElementById(formId) : null;
+    bindIndianMoneyInputs(form, ["price", "income", "emis", "cards"]);
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var price = parseMoney(form.price.value);
+      var income = parseMoney(form.income.value);
+      var emis = parseMoney(form.emis.value);
+      var cards = parseMoney(form.cards.value);
+      var years = parseMoney(form.years.value);
+      var rate = parseMoney(form.rate.value);
+      var foirPct = parseMoney(form.foir.value);
+      if ([50, 55, 60, 65, 70].indexOf(foirPct) === -1) foirPct = 55;
 
-    function setFlipped(open) {
-      flip.classList.toggle("is-flipped", open);
-      if (back) back.setAttribute("aria-hidden", open ? "false" : "true");
-      flip.querySelectorAll("[data-flip]").forEach(function (btn) {
-        btn.setAttribute("aria-expanded", open ? "true" : "false");
-      });
-      if (open && form) {
-        window.requestAnimationFrame(function () {
-          var first = form.querySelector("input, select");
-          if (first) first.focus({ preventScroll: true });
-        });
+      if (!(price > 0) || !(income > 0) || !(years > 0) || !(rate > 0)) {
+        if (result) result.hidden = true;
+        return;
       }
-    }
+      if (!Number.isFinite(emis) || emis < 0) emis = 0;
+      if (!Number.isFinite(cards) || cards < 0) cards = 0;
 
-    flip.dataset.flipBound = "true";
+      var fromProperty = propertyCap(price);
+      var maxAllEmis = income * (foirPct / 100);
+      var cardLoad = cards * 0.1;
+      var homeEmiRoom = Math.max(0, maxAllEmis - emis - cardLoad);
+      var fromIncome = loanFromEmi(homeEmiRoom, rate, years);
+      var estimate = Math.min(fromProperty, fromIncome);
 
-    flip.querySelectorAll("[data-flip]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        setFlipped(!flip.classList.contains("is-flipped"));
-      });
+      if (outProp) outProp.textContent = formatRupee(fromProperty);
+      if (outInc) outInc.textContent = formatRupee(fromIncome);
+      if (outTotal) outTotal.textContent = formatRupee(estimate);
+      if (result) result.hidden = false;
     });
+  }
 
-    if (typeof onReady === "function") {
-      onReady({
-        flip: flip,
-        form: form,
-        setFlipped: setFlipped
-      });
-    }
+  function bindEmiCalc() {
+    var form = document.getElementById("emi-calc-form");
+    if (!form) return;
+    var result = document.getElementById("emi-calc-result");
+    var outTotal = document.getElementById("emi-calc-total");
+    var outPayable = document.getElementById("emi-calc-payable");
+    var outInterest = document.getElementById("emi-calc-interest");
 
-    return { flip: flip, setFlipped: setFlipped };
+    bindIndianMoneyInputs(form, ["amount"]);
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var amount = parseMoney(form.amount.value);
+      var years = parseMoney(form.years.value);
+      var rate = parseMoney(form.rate.value);
+
+      if (!(amount > 0) || !(years > 0) || !(rate > 0)) {
+        if (result) result.hidden = true;
+        return;
+      }
+
+      years = Math.min(40, years);
+      var monthly = emiFromLoan(amount, rate, years);
+      var months = Math.round(years * 12);
+      var totalPayable = monthly * months;
+      var totalInterest = Math.max(0, totalPayable - amount);
+
+      if (outTotal) outTotal.textContent = formatRupee(monthly);
+      if (outPayable) outPayable.textContent = formatRupee(totalPayable);
+      if (outInterest) outInterest.textContent = formatRupee(totalInterest);
+      if (result) result.hidden = false;
+    });
   }
 
   function initOverviewCalculators() {
@@ -119,100 +154,10 @@
       return function () {};
     }
 
-    var flips = [];
+    bindBorrowCalc();
+    bindEmiCalc();
 
-    var borrow = setupFlip("borrow-flip", "borrow-calc-form", function (ctx) {
-      var form = ctx.form;
-      if (!form) return;
-      var result = document.getElementById("borrow-calc-result");
-      var outTotal = document.getElementById("borrow-calc-total");
-      var outProp = document.getElementById("borrow-calc-prop");
-      var outInc = document.getElementById("borrow-calc-inc");
-
-      bindIndianMoneyInputs(form, ["price", "income", "emis", "cards"]);
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        var price = parseMoney(form.price.value);
-        var income = parseMoney(form.income.value);
-        var emis = parseMoney(form.emis.value);
-        var cards = parseMoney(form.cards.value);
-        var years = parseMoney(form.years.value);
-        var rate = parseMoney(form.rate.value);
-        var foirPct = parseMoney(form.foir.value);
-        if ([50, 55, 60, 65, 70].indexOf(foirPct) === -1) foirPct = 55;
-
-        if (!(price > 0) || !(income > 0) || !(years > 0) || !(rate > 0)) {
-          if (result) result.hidden = true;
-          return;
-        }
-        if (!Number.isFinite(emis) || emis < 0) emis = 0;
-        if (!Number.isFinite(cards) || cards < 0) cards = 0;
-
-        var fromProperty = propertyCap(price);
-        var maxAllEmis = income * (foirPct / 100);
-        var cardLoad = cards * 0.1;
-        var homeEmiRoom = Math.max(0, maxAllEmis - emis - cardLoad);
-        var fromIncome = loanFromEmi(homeEmiRoom, rate, years);
-        var estimate = Math.min(fromProperty, fromIncome);
-
-        if (outProp) outProp.textContent = formatRupee(fromProperty);
-        if (outInc) outInc.textContent = formatRupee(fromIncome);
-        if (outTotal) outTotal.textContent = formatRupee(estimate);
-        if (result) result.hidden = false;
-      });
-    });
-    if (borrow) flips.push(borrow);
-
-    var emi = setupFlip("emi-flip", "emi-calc-form", function (ctx) {
-      var form = ctx.form;
-      if (!form) return;
-      var result = document.getElementById("emi-calc-result");
-      var outTotal = document.getElementById("emi-calc-total");
-      var outPayable = document.getElementById("emi-calc-payable");
-      var outInterest = document.getElementById("emi-calc-interest");
-
-      bindIndianMoneyInputs(form, ["amount"]);
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        var amount = parseMoney(form.amount.value);
-        var years = parseMoney(form.years.value);
-        var rate = parseMoney(form.rate.value);
-
-        if (!(amount > 0) || !(years > 0) || !(rate > 0)) {
-          if (result) result.hidden = true;
-          return;
-        }
-
-        years = Math.min(40, years);
-        var monthly = emiFromLoan(amount, rate, years);
-        var months = Math.round(years * 12);
-        var totalPayable = monthly * months;
-        var totalInterest = Math.max(0, totalPayable - amount);
-
-        if (outTotal) outTotal.textContent = formatRupee(monthly);
-        if (outPayable) outPayable.textContent = formatRupee(totalPayable);
-        if (outInterest) outInterest.textContent = formatRupee(totalInterest);
-        if (result) result.hidden = false;
-      });
-    });
-    if (emi) flips.push(emi);
-
-    ["structure-flip", "rate-flip", "charges-flip"].forEach(function (id) {
-      var item = setupFlip(id);
-      if (item) flips.push(item);
-    });
-
-    function onKey(event) {
-      if (event.key !== "Escape") return;
-      flips.forEach(function (item) {
-        if (item.flip.classList.contains("is-flipped")) item.setFlipped(false);
-      });
-    }
-
-    window.addEventListener("keydown", onKey);
-    return function cleanup() {
-      window.removeEventListener("keydown", onKey);
-    };
+    return function cleanup() {};
   }
 
   window.ShroffinGuidePages = window.ShroffinGuidePages || {};

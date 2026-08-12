@@ -1269,10 +1269,94 @@
   }
 
   function initFlipToggles() {
+    var phoneMq =
+      window.matchMedia && window.matchMedia("(max-width: 833px)");
+
+    function isPhoneFlip() {
+      /* Prefer live width — matches the mobile CSS band and avoids mq lag after resize. */
+      if (typeof window.innerWidth === "number" && window.innerWidth > 0) {
+        return window.innerWidth <= 833;
+      }
+      return phoneMq ? phoneMq.matches : false;
+    }
+
+    /*
+     * Mobile-only corner close on the back face. One control for every flip
+     * card so overview + complaints stay in sync without duplicated markup.
+     * Label differs from the focus scrim (“Close card”) on purpose.
+     */
+    function ensureFlipClose(flip) {
+      var backFace = flip.querySelector(".guide-flip-face--back");
+      if (!backFace) return null;
+      var existing = backFace.querySelector(".guide-flip-close");
+      if (existing) return existing;
+
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "guide-flip-close";
+      if (flip.id) btn.setAttribute("data-flip", flip.id);
+      if (backFace.id) btn.setAttribute("aria-controls", backFace.id);
+      btn.setAttribute(
+        "aria-expanded",
+        flip.classList.contains("is-flipped") ? "true" : "false"
+      );
+      btn.setAttribute("aria-label", "Close this panel");
+
+      var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("class", "guide-flip-close-icon");
+      svg.setAttribute("viewBox", "0 0 12 12");
+      svg.setAttribute("aria-hidden", "true");
+      svg.setAttribute("focusable", "false");
+      var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", "M2.5 2.5 9.5 9.5M9.5 2.5 2.5 9.5");
+      path.setAttribute("fill", "none");
+      path.setAttribute("stroke", "currentColor");
+      path.setAttribute("stroke-width", "1.5");
+      path.setAttribute("stroke-linecap", "round");
+      svg.appendChild(path);
+      btn.appendChild(svg);
+      /* Direct child of the face so absolute corners track the grey slab. */
+      backFace.appendChild(btn);
+      return btn;
+    }
+
+    /* Land the grey card under the sticky chapter strip (or Guide bar). */
+    function flipChromeOffset() {
+      var rail = document.querySelector(
+        ".mag-toc-shell .mag-index, .guide-hero + .mag-index, .mag-index"
+      );
+      if (rail) {
+        var rect = rail.getBoundingClientRect();
+        if (rect.height > 0 && rect.bottom > 0 && rect.bottom < window.innerHeight) {
+          return Math.round(rect.bottom + 12);
+        }
+      }
+      var localnav = document.querySelector(".localnav");
+      if (localnav) {
+        var lnBottom = localnav.getBoundingClientRect().bottom;
+        if (lnBottom > 0) return Math.round(lnBottom + 12);
+      }
+      return 72;
+    }
+
+    function scrollOpenCardToTop(flip) {
+      var scene = flip.querySelector(".guide-flip-scene") || flip;
+      var delta = Math.round(
+        scene.getBoundingClientRect().top - flipChromeOffset()
+      );
+      if (Math.abs(delta) < 2) return;
+      /*
+       * Instant land — the flip turn already carries the calm motion.
+       * Smooth scroll was racing focus/inert and often left the top off-screen.
+       */
+      window.scrollBy(0, delta);
+    }
+
     document.querySelectorAll(".guide-flip").forEach(function (flip) {
       if (flip.dataset.flipBound === "true") return;
       flip.dataset.flipBound = "true";
       var back = flip.querySelector(".guide-flip-face--back");
+      ensureFlipClose(flip);
 
       function setFlipped(open) {
         flip.classList.toggle("is-flipped", open);
@@ -1286,16 +1370,41 @@
         btn.addEventListener("click", function () {
           var nextOpen = !flip.classList.contains("is-flipped");
           setFlipped(nextOpen);
-          /* Keep keyboard focus on the visible dock without sliding the page. */
-          var next = nextOpen
-            ? flip.querySelector(".guide-flip-face--back .guide-flip-dock[data-flip]")
-            : flip.querySelector(".guide-flip-face--front .guide-flip-dock[data-flip]");
+          /*
+           * Keep keyboard focus on the visible control without an extra browser
+           * scroll jump — phone open uses our own scroll-to-card-top instead.
+           */
+          var next = null;
+          if (nextOpen && isPhoneFlip()) {
+            next = flip.querySelector(".guide-flip-close[data-flip]");
+          }
+          if (!next && nextOpen && !isPhoneFlip()) {
+            /* Desktop: land keyboard in the first field when the back has a form. */
+            var form = flip.querySelector(".guide-flip-face--back form");
+            next =
+              form &&
+              form.querySelector("input, select, textarea, button[type='submit']");
+          }
+          if (!next) {
+            next = nextOpen
+              ? flip.querySelector(".guide-flip-face--back .guide-flip-dock[data-flip]")
+              : flip.querySelector(".guide-flip-face--front .guide-flip-dock[data-flip]");
+          }
           if (next && typeof next.focus === "function") {
             try {
               next.focus({ preventScroll: true });
             } catch (err) {
               next.focus();
             }
+          }
+          if (nextOpen && isPhoneFlip()) {
+            /* After inert/focus settle, land the card top under sticky chrome. */
+            requestAnimationFrame(function () {
+              scrollOpenCardToTop(flip);
+              window.setTimeout(function () {
+                scrollOpenCardToTop(flip);
+              }, 120);
+            });
           }
         });
       });

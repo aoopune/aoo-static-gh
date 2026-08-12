@@ -28,6 +28,12 @@
   --hlc-radius: 1.1rem;
   /* Cool soft blue canvas — shared shell tokens (site-wide). */
   --hlc-page-bg: var(--shroffin-surface, #fcfcfd);
+  /* Whisper wash so column titles sit slightly apart from body rows. */
+  --hlc-header-bg: color-mix(
+    in srgb,
+    rgb(108 128 155) 2.5%,
+    var(--hlc-page-bg)
+  );
   /* Nav: solid frosted white — reads as its own bar above the cool canvas. */
   --hlc-nav-bg: rgba(255, 255, 255, 0.92);
   --hlc-nav-bg-solid: #fff;
@@ -48,7 +54,7 @@
   width: 100%;
   max-width: min(100%, var(--hlc-main-max));
   margin-inline: auto;
-  --hlc-shell-pad-top: clamp(1.65rem, 4vw, 2.5rem);
+  --hlc-shell-pad-top: clamp(0.85rem, 2.6vw, 1.5rem);
   padding:
     var(--hlc-shell-pad-top)
     max(1rem, env(safe-area-inset-right))
@@ -63,7 +69,7 @@
   max-width: min(48rem, 100%);
   margin: 0 auto;
   /* Equal air above/below the title — bottom clamp is the standard. */
-  padding-block: clamp(2.85rem, 7.5vw, 4.75rem);
+  padding-block: clamp(1.75rem, 5vw, 3.15rem);
   margin-bottom: clamp(2.35rem, 6vw, 4rem);
   text-align: center;
 }
@@ -786,7 +792,7 @@
   }
 
   .hlc-shell {
-    --hlc-shell-pad-top: clamp(1.25rem, 3.5vw, 1.85rem);
+    --hlc-shell-pad-top: clamp(0.55rem, 2.2vw, 1rem);
     padding:
       var(--hlc-shell-pad-top)
       max(1rem, env(safe-area-inset-right))
@@ -796,7 +802,7 @@
 
   .hlc-hero {
     max-width: min(100%, 36rem);
-    padding-block: clamp(2.5rem, 8vw, 3.75rem);
+    padding-block: clamp(1.4rem, 5.5vw, 2.4rem);
   }
 
   .hlc-inputs-card {
@@ -862,6 +868,22 @@
   }
 
   .hlc-form-more::details-content {
+    transition: none;
+  }
+
+  .hlc-charges-note-chevron {
+    transition: none;
+  }
+
+  .hlc-charges-note-group::details-content {
+    transition: none;
+  }
+
+  .hlc-drawer-chevron {
+    transition: none;
+  }
+
+  .hlc-drawer-group::details-content {
     transition: none;
   }
 }
@@ -1453,13 +1475,90 @@
 }
 
 @media (min-width: 834px) {
+  /*
+   * Desktop only:
+   * - Input card stays centered in the normal content column.
+   * - Table sits in that same column (directly under the inputs).
+   * - Filters hang only in the left side space (always open).
+   * - Bank type / Rate / Facility stay side-by-side (segmented pills).
+   * Mobile (<834px) is unchanged.
+   */
+  .explore-banks-page {
+    --hlc-filter-width: 15rem;
+    --hlc-filter-gap: 1.25rem;
+    --hlc-filter-pull: calc(var(--hlc-filter-width) + var(--hlc-filter-gap));
+  }
+
+  .explore-banks-page .hlc-shell {
+    max-width: min(100%, var(--hlc-main-max));
+    margin-inline: auto;
+    /* Shared with tabs so Overview sits over the table, not over filters. */
+    --hlc-left-gutter: max(
+      0px,
+      calc((100vw - 100%) / 2 - max(1rem, env(safe-area-inset-left)))
+    );
+    --hlc-pull: min(var(--hlc-filter-pull), var(--hlc-left-gutter));
+    --hlc-tabs-indent: max(
+      0px,
+      calc(var(--hlc-filter-width) + var(--hlc-filter-gap) - var(--hlc-pull))
+    );
+  }
+
+  /*
+   * Only the tools row moves right — filters + table stay where they are.
+   * Stops Overview/Charges and the sticky line from cutting through filters.
+   */
+  .explore-banks-page .hlc-results-head {
+    box-sizing: border-box;
+    margin-left: var(--hlc-tabs-indent);
+    margin-right: 0;
+    max-width: none;
+    width: auto;
+  }
+
   .hlc-compare-stage {
     display: grid;
     grid-template-columns: var(--hlc-filter-width) minmax(0, 1fr);
+    /* Base rule sets gap:1.5rem — keep only the column gutter on desktop. */
+    gap: 0;
     column-gap: var(--hlc-filter-gap);
     align-items: start;
-    margin-left: calc(-1 * (var(--hlc-filter-width) + var(--hlc-filter-gap)));
-    width: calc(100% + var(--hlc-filter-width) + var(--hlc-filter-gap));
+    margin-left: calc(-1 * var(--hlc-pull));
+    width: calc(100% + var(--hlc-pull));
+  }
+}
+
+/*
+ * Narrow desktop: shell is nearly full-bleed, so there is no real left gutter.
+ * Keep filters in-flow beside the table (no hang / no clip).
+ */
+@media (min-width: 834px) and (max-width: 1099px) {
+  .explore-banks-page .hlc-shell {
+    --hlc-pull: 0px;
+  }
+
+  .explore-banks-page .hlc-compare-stage {
+    margin-left: 0;
+    width: 100%;
+    grid-template-columns: var(--hlc-filter-width) minmax(0, 1fr);
+  }
+}
+
+/*
+ * Desktop only: slightly less side padding in cells; tighter air after Bank.
+ * Mobile unchanged.
+ */
+@media (min-width: 834px) {
+  .explore-banks-page .hlc-compare th,
+  .explore-banks-page .hlc-compare td {
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+  }
+
+  .explore-banks-page .hlc-compare th.hlc-sticky-col,
+  .explore-banks-page .hlc-compare td.hlc-sticky-col {
+    padding-left: 0.35rem;
+    padding-right: 0.25rem;
   }
 }
 
@@ -1481,15 +1580,16 @@
 }
 
 /*
- * Column titles pin to the page under the site nav. They must live outside the
- * body’s overflow-x scroller — otherwise overflow-x creates a scrollport and
+ * Column titles pin under the site nav (and under the sticky tabs / Apply once
+ * row when that tools bar is sticky). They must live outside the body’s
+ * overflow-x scroller — otherwise overflow-x creates a scrollport and
  * position:sticky top never engages while the page scrolls.
  */
 .hlc-table-pin {
   position: sticky;
   top: var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px));
   z-index: 4;
-  background: var(--hlc-page-bg);
+  background: var(--hlc-header-bg);
 }
 
 /* Desktop: filters always visible in the left rail. Mobile: click-to-open. */
@@ -1527,9 +1627,11 @@
   margin: 0;
 }
 
-/* Sheet chrome is mobile-only; desktop left rail unchanged. */
+/* Sheet chrome is mobile-only; desktop left rail unchanged.
+ * Use .hlc-icon-btn.hlc-filters-close so later .hlc-icon-btn { display }
+ * cannot resurrect the close control on desktop. */
 .hlc-filters-handle,
-.hlc-filters-close,
+.hlc-icon-btn.hlc-filters-close,
 .hlc-filters-foot,
 .hlc-filters-scrim {
   display: none;
@@ -1649,13 +1751,18 @@
 
 @media (max-width: 833px) {
   /* --- Sticky results tools (Filters + tabs) --- */
+  /*
+   * Hidden heading/status still sit above the switch as a flex sibling.
+   * Drop the default 1rem column gap so only light padding remains.
+   */
   #hlc-results-shell:not([hidden]) .hlc-results-head {
     position: sticky;
     top: var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px));
     z-index: 5;
+    gap: 0;
     margin-inline: calc(-1 * max(1rem, env(safe-area-inset-left, 0px)))
       calc(-1 * max(1rem, env(safe-area-inset-right, 0px)));
-    padding-block: 0.35rem 0.55rem;
+    padding-block: 0.2rem 0.3rem;
     padding-inline: max(1rem, env(safe-area-inset-left, 0px))
       max(1rem, env(safe-area-inset-right, 0px));
     background: var(--hlc-page-bg, #fcfcfd);
@@ -1666,7 +1773,7 @@
   .hlc-table-pin {
     top: calc(
       var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) +
-        var(--hlc-sticky-tools-h, 3.25rem)
+        var(--hlc-sticky-tools-h, 2.75rem)
     );
   }
 
@@ -1674,7 +1781,7 @@
   #hlc-compare-heading {
     scroll-margin-top: calc(
       var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) +
-        var(--hlc-sticky-tools-h, 3.25rem) + 0.75rem
+        var(--hlc-sticky-tools-h, 2.75rem) + 0.75rem
     );
   }
 
@@ -1832,7 +1939,7 @@
     background: color-mix(in srgb, var(--shroffin-ink, #1d1d1f) 22%, transparent);
   }
 
-  .hlc-filters-close {
+  .hlc-icon-btn.hlc-filters-close {
     display: inline-flex;
   }
 
@@ -1943,17 +2050,41 @@
     display: block;
   }
 
-  /* Desktop: table headers pin under nav only — never under a Filters sticky bar */
-  .hlc-table-pin {
+  /*
+   * Desktop: tabs + Apply once pin under the site nav; column titles pin under
+   * that tools row (same stack as mobile, without the full-bleed sheet chrome).
+   */
+  #hlc-results-shell:not([hidden]) .hlc-results-head {
+    position: sticky;
     top: var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px));
+    z-index: 5;
+    /* Keep tabs over the table only — do not span the filter rail. */
+    margin-left: var(--hlc-tabs-indent, 0px);
+    margin-right: 0;
+    /* Tight bottom so column titles can sit flush under the switch row. */
+    padding-block: 0.35rem;
+    padding-inline: 0;
+    box-shadow: 0 1px 0 var(--hlc-line-soft, rgba(0, 0, 0, 0.06));
+    background: var(--hlc-page-bg, #fcfcfd);
   }
 
-  #hlc-results-shell:not([hidden]) .hlc-results-head {
-    position: static;
-    margin-inline: 0;
-    padding: 0;
-    box-shadow: none;
-    background: transparent;
+  /*
+   * Column titles pin exactly under the measured tools row. Fallback matches a
+   * single desktop tools line — oversized fallback left a hole bank rows showed through.
+   */
+  .hlc-table-pin {
+    top: calc(
+      var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) +
+        var(--hlc-sticky-tools-h, 2.75rem)
+    );
+  }
+
+  .hlc-results-head,
+  #hlc-compare-heading {
+    scroll-margin-top: calc(
+      var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) +
+        var(--hlc-sticky-tools-h, 2.75rem) + 0.75rem
+    );
   }
 }
 
@@ -2154,25 +2285,171 @@
   margin: 0.95rem 0 0;
   max-width: none;
   width: 100%;
-  font-size: 0.8125rem;
-  line-height: 1.55;
+  font-size: 1rem;
+  line-height: 1.5;
   color: #5c5c5c;
 }
 
-.hlc-charges-note-group + .hlc-charges-note-group {
-  margin-top: 1.1rem;
+.hlc-charges-note-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem 0.85rem;
+  margin: 0 0 0.5rem;
 }
 
 .hlc-charges-note-heading {
-  margin: 0 0 0.35rem;
-  font-size: 0.8125rem;
+  margin: 0;
+  font-size: 1.125rem;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
   color: #1d1d1f;
+}
+
+.hlc-charges-note-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem 0.85rem;
+  margin-left: auto;
+}
+
+.hlc-charges-note-toggle-all {
+  margin: 0;
+  padding: 0.25rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--shroffin-link, #3f62c8);
+  font: inherit;
+  font-size: inherit;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  min-height: 0;
+  transition: color var(--shroffin-micro-duration, 0.5s)
+    var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.hlc-charges-note-toggle-all:hover,
+.hlc-charges-note-toggle-all:focus-visible {
+  color: var(--shroffin-link-active, #2f4ba0);
+}
+
+.hlc-charges-note-toggle-all:focus-visible {
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline-offset: var(--shroffin-focus-offset, 3px);
+  border-radius: 0.35rem;
+}
+
+.hlc-charges-note-group + .hlc-charges-note-group {
+  margin-top: 0;
+  border-top: 1px solid rgba(29, 29, 31, 0.1);
+  padding-top: 0.15rem;
+}
+
+.hlc-charges-note-toggle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0.2rem 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: #1d1d1f;
+  min-height: 0;
+  list-style: none;
+  transition: color var(--shroffin-micro-duration, 0.5s)
+    var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.hlc-charges-note-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.hlc-charges-note-toggle::marker {
+  content: "";
+}
+
+.hlc-charges-note-toggle:hover {
+  color: #1d1d1f;
+}
+
+.hlc-charges-note-toggle:focus-visible {
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline-offset: var(--shroffin-focus-offset, 3px);
+  border-radius: 0.35rem;
+}
+
+.hlc-charges-note-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.hlc-charges-note-label {
+  font-size: inherit;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: inherit;
+}
+
+.hlc-charges-note-markers {
+  font-weight: 500;
+  color: var(--shroffin-muted, #6e6e73);
+  letter-spacing: 0.02em;
+}
+
+.hlc-charges-note-chevron {
+  flex: 0 0 auto;
+  width: 0.55rem;
+  height: 0.55rem;
+  opacity: 0.7;
+  transform: rotate(90deg);
+  transition: transform var(--shroffin-ui-duration, 0.85s)
+    var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.hlc-charges-note-group[open] .hlc-charges-note-chevron {
+  transform: rotate(-90deg);
+}
+
+.hlc-charges-note-panel {
+  padding: 0;
+}
+
+.hlc-charges-note-group.is-animating > .hlc-charges-note-panel {
+  overflow: hidden;
+}
+
+.hlc-charges-note-group::details-content {
+  block-size: 0;
+  overflow: clip;
+  opacity: 0;
+  transition:
+    block-size var(--shroffin-move-duration, 1s)
+      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity var(--shroffin-ui-duration, 0.85s)
+      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    content-visibility var(--shroffin-move-duration, 1s) allow-discrete;
+}
+
+.hlc-charges-note-group[open]::details-content {
+  block-size: auto;
+  opacity: 1;
+  overflow: visible;
 }
 
 .hlc-charges-note-body {
   margin: 0;
+  padding: 0 0 0.3rem;
 }
 
 .hlc-charges-note .guide-section-link {
@@ -2230,9 +2507,78 @@
 .hlc-col-footnote {
   font-size: 0.75em;
   font-weight: 500;
-  line-height: 0;
-  margin-left: 0.1em;
+  line-height: 1.15;
+  margin-left: 0.12em;
   vertical-align: super;
+}
+
+/* Tappable marks: tight underline + a little padding for hit area / air. */
+button.hlc-col-footnote,
+sup.hlc-col-footnote[data-note-target] {
+  display: inline-block;
+  box-sizing: content-box;
+  margin: 0 0.05em 0 0.1em;
+  padding: 0.14em 0.2em;
+  border: 0;
+  border-radius: 0.2rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.75em;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: normal;
+  vertical-align: super;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.05em;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    color var(--shroffin-micro-duration, 0.5s)
+      var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+    text-decoration-color var(--shroffin-micro-duration, 0.5s)
+      var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+button.hlc-col-footnote:hover,
+button.hlc-col-footnote:active,
+sup.hlc-col-footnote[data-note-target]:hover,
+sup.hlc-col-footnote[data-note-target]:active {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: currentColor;
+}
+
+button.hlc-col-footnote:focus-visible,
+sup.hlc-col-footnote[data-note-target]:focus-visible {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: currentColor;
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline-offset: var(--shroffin-focus-offset, 3px);
+}
+
+/*
+ * Inside the blue slab-control button, keep the mark’s own colour rules so it
+ * does not turn blue with the amount — only when the mark itself is hovered.
+ */
+.hlc-charge-detail-button .hlc-col-footnote {
+  color: var(--shroffin-ink, #1d1d1f);
+  text-decoration-color: currentColor;
+}
+
+.hlc-charge-detail-button:hover .hlc-col-footnote,
+.hlc-charge-detail-button:focus-visible .hlc-col-footnote,
+.hlc-charge-detail-button:active .hlc-col-footnote {
+  color: var(--shroffin-ink, #1d1d1f);
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+.hlc-charge-detail-button .hlc-col-footnote:hover,
+.hlc-charge-detail-button .hlc-col-footnote:active {
+  color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: currentColor;
 }
 
 /*
@@ -2307,6 +2653,13 @@
   min-width: 0;
   max-width: none;
   padding: 0;
+}
+
+.hlc-compare th.hlc-col-fill {
+  background: var(--hlc-header-bg);
+}
+
+.hlc-compare td.hlc-col-fill {
   background: var(--hlc-page-bg);
 }
 
@@ -2361,8 +2714,8 @@
 }
 
 .hlc-compare th {
-  background: var(--hlc-page-bg);
-  color: var(--shroffin-muted, #6e6e73);
+  background: var(--hlc-header-bg);
+  color: var(--shroffin-ink, #1d1d1f);
   font-size: 0.9375rem;
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -2375,7 +2728,7 @@
   /* Vertical freeze comes from .hlc-table-pin; only Bank uses sticky left. */
   position: relative;
   z-index: 3;
-  background: var(--hlc-page-bg);
+  background: var(--hlc-header-bg);
   border-bottom: 1px solid rgba(29, 29, 31, 0.18);
 }
 
@@ -2467,7 +2820,7 @@
   left: 0;
   top: auto;
   z-index: 5;
-  background: var(--hlc-page-bg);
+  background: var(--hlc-header-bg);
 }
 
 .hlc-compare td.hlc-sticky-col {
@@ -3045,7 +3398,23 @@
 
 .hlc-table-wrap.is-expanding-banks {
   overflow: hidden;
-  transition: height 1.35s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  /* Fallback when Web Animations API is unavailable — JS uses double-rAF. */
+  transition: height 1.5s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+/* Opacity only — transform on td would break sticky Bank column. */
+@keyframes hlc-bank-reveal-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hlc-table-wrap.is-expanding-banks .hlc-compare tbody tr.is-bank-reveal td {
+  animation: hlc-bank-reveal-fade 1.15s
+    var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
 }
 
 .hlc-show-more-wrap {
@@ -3116,6 +3485,26 @@
   margin-top: 0.85rem;
 }
 
+/* Mobile: paddles sit under the table; notes follow below the paddles. */
+@media (max-width: 833px) {
+  .hlc-compare-table-area {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hlc-table-wrap {
+    order: 1;
+  }
+
+  .hlc-paddles {
+    order: 2;
+  }
+
+  .hlc-charges-note {
+    order: 3;
+  }
+}
+
 @media (min-width: 834px) {
   .hlc-paddles {
     display: none;
@@ -3175,6 +3564,8 @@
   border-radius: 1.15rem 1.15rem 0 0;
   padding: 0;
   overflow: hidden;
+  --hlc-drawer-pad-x: 1.5rem;
+  --hlc-drawer-card-pad-x: 1.05rem;
 }
 
 @media (min-width: 834px) {
@@ -3189,6 +3580,7 @@
     border-radius: 0;
     transform: translateX(110%);
     box-shadow: -12px 0 48px rgba(0, 0, 0, 0.12);
+    --hlc-drawer-pad-x: 1.85rem;
   }
 
   .hlc-drawer.open {
@@ -3201,13 +3593,14 @@
 }
 
 .hlc-drawer-top {
+  position: relative;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
   flex: 0 0 auto;
   margin: 0;
-  padding: 1.35rem 1.5rem 1.15rem;
+  padding: 1.35rem var(--hlc-drawer-pad-x) 1.15rem;
   border-bottom: 1px solid var(--hlc-line-soft);
   background: #fff;
   z-index: 2;
@@ -3215,11 +3608,17 @@
 
 @media (min-width: 834px) {
   .hlc-drawer-top {
-    padding: 1.75rem 1.85rem 1.35rem;
+    padding: 1.75rem var(--hlc-drawer-pad-x) 1.35rem;
   }
 }
 
 .hlc-drawer-top > div {
+  min-width: 0;
+  flex: 1 1 auto;
+  padding-right: 0.25rem;
+}
+
+.hlc-drawer-heading {
   min-width: 0;
   flex: 1 1 auto;
   padding-right: 0.25rem;
@@ -3232,6 +3631,12 @@
   letter-spacing: -0.03em;
   line-height: 1.25;
   color: var(--shroffin-ink, #1d1d1f);
+  text-align: left;
+}
+
+.hlc-drawer--sections .hlc-drawer-top h3 {
+  font-size: 1.75rem;
+  letter-spacing: -0.03em;
 }
 
 .hlc-drawer-top p {
@@ -3239,6 +3644,43 @@
   color: var(--shroffin-muted, #6e6e73);
   font-size: 0.9375rem;
   line-height: 1.4;
+}
+
+.hlc-drawer-actions-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0.85rem var(--hlc-drawer-pad-x) 0.25rem;
+  background: transparent;
+  border: 0;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+@media (min-width: 834px) {
+  .hlc-drawer-actions-bar {
+    padding: 0.95rem var(--hlc-drawer-pad-x) 0.3rem;
+  }
+}
+
+.hlc-drawer-actions-bar[hidden] {
+  display: none;
+}
+
+.hlc-drawer-actions-bar .hlc-drawer-toggle-all {
+  min-height: 0;
+  padding: 0;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+.hlc-drawer--sections .hlc-drawer-body {
+  padding-top: 0.15rem;
 }
 
 .hlc-icon-btn {
@@ -3259,37 +3701,45 @@
   margin-top: 0;
 }
 
-.hlc-drawer-body {
-  overflow-x: hidden;
-  overflow-y: auto;
+.hlc-drawer-scroll {
   flex: 1 1 auto;
   min-height: 0;
-  padding: 1.35rem 1.5rem calc(1.75rem + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: rgba(29, 29, 31, 0.28) transparent;
   -webkit-overflow-scrolling: touch;
 }
 
-@media (min-width: 834px) {
-  .hlc-drawer-body {
-    padding: 1.5rem 1.85rem 2rem;
-  }
-}
-
-.hlc-drawer-body::-webkit-scrollbar {
+.hlc-drawer-scroll::-webkit-scrollbar {
   width: 0.5rem;
 }
 
-.hlc-drawer-body::-webkit-scrollbar-track {
+.hlc-drawer-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.hlc-drawer-body::-webkit-scrollbar-thumb {
+.hlc-drawer-scroll::-webkit-scrollbar-thumb {
   background: rgba(29, 29, 31, 0.22);
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: content-box;
+}
+
+.hlc-drawer-body {
+  overflow: visible;
+  flex: 0 0 auto;
+  min-height: 0;
+  padding: 1.35rem var(--hlc-drawer-pad-x) calc(1.75rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 834px) {
+  .hlc-drawer-body {
+    padding: 1.5rem var(--hlc-drawer-pad-x) 2rem;
+  }
 }
 
 .hlc-drawer-section {
@@ -3310,10 +3760,206 @@
   color: var(--shroffin-ink, #1d1d1f);
 }
 
+.hlc-drawer-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem 0.85rem;
+  margin: 0 0 0.85rem;
+}
+
+.hlc-drawer-toolbar-heading {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: var(--shroffin-ink, #1d1d1f);
+}
+
+.hlc-drawer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem 0.85rem;
+  margin-left: auto;
+}
+
+.hlc-drawer-toggle-all {
+  margin: 0;
+  padding: 0.25rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--shroffin-link, #3f62c8);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  min-height: 44px;
+  transition: color var(--shroffin-micro-duration, 0.5s)
+    var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.hlc-drawer-toggle-all:hover,
+.hlc-drawer-toggle-all:focus-visible {
+  color: var(--shroffin-link-active, #2f4ba0);
+}
+
+.hlc-drawer-toggle-all:focus-visible {
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline-offset: var(--shroffin-focus-offset, 3px);
+  border-radius: 0.35rem;
+}
+
+.hlc-drawer-group {
+  margin: 0;
+  border-top: 1px solid rgba(29, 29, 31, 0.1);
+}
+
+.hlc-drawer-group:last-of-type {
+  border-bottom: 1px solid rgba(29, 29, 31, 0.1);
+}
+
+.hlc-drawer-group--nested {
+  margin: 0 0 0 0.9rem;
+  border-top: 1px solid rgba(29, 29, 31, 0.08);
+  border-bottom: 0;
+}
+
+.hlc-drawer-group--nested > .hlc-drawer-toggle {
+  padding: 0.5rem 0.15rem 0.5rem 0.1rem;
+}
+
+.hlc-drawer-group--nested > .hlc-drawer-panel {
+  padding: 0.45rem 0 0.5rem 0.1rem;
+}
+
+.hlc-drawer-group--nested[open] > .hlc-drawer-toggle {
+  border-bottom: 1px solid rgba(29, 29, 31, 0.08);
+}
+
+.hlc-drawer-toggle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0.85rem 0.15rem;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: var(--shroffin-ink, #1d1d1f);
+  list-style: none;
+}
+
+.hlc-drawer-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.hlc-drawer-toggle::marker {
+  content: "";
+}
+
+.hlc-drawer-toggle:hover {
+  color: var(--shroffin-ink, #1d1d1f);
+}
+
+.hlc-drawer-toggle:focus-visible {
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline-offset: var(--shroffin-focus-offset, 3px);
+  border-radius: 0.35rem;
+}
+
+.hlc-drawer-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.hlc-drawer-label {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: inherit;
+}
+
+.hlc-drawer-group--nested .hlc-drawer-label {
+  font-size: 1rem;
+  letter-spacing: -0.015em;
+  color: #3a3a3c;
+}
+
+.hlc-drawer-group--nested > .hlc-drawer-toggle {
+  color: #3a3a3c;
+}
+
+.hlc-drawer-group--nested > .hlc-drawer-toggle:hover {
+  color: #3a3a3c;
+}
+
+.hlc-drawer-chevron {
+  flex: 0 0 auto;
+  width: 0.55rem;
+  height: 0.55rem;
+  opacity: 0.7;
+  transform: rotate(90deg);
+  transition: transform var(--shroffin-ui-duration, 0.85s)
+    var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.hlc-drawer-group[open]:not(.hlc-drawer-group--nested) > .hlc-drawer-toggle {
+  border-bottom: 1px solid rgba(29, 29, 31, 0.1);
+}
+
+.hlc-drawer-group[open]:not(.hlc-drawer-group--nested):has(.hlc-fee-sections)
+  > .hlc-drawer-toggle {
+  border-bottom: 0;
+}
+
+.hlc-drawer-group[open] > .hlc-drawer-toggle .hlc-drawer-chevron {
+  transform: rotate(-90deg);
+}
+
+.hlc-drawer-panel {
+  padding: 0.85rem 0;
+}
+
+.hlc-drawer-panel:has(> .hlc-fee-sections) {
+  padding: 0;
+}
+
+.hlc-drawer-group.is-animating > .hlc-drawer-panel {
+  overflow: hidden;
+}
+
+.hlc-drawer-group::details-content {
+  block-size: 0;
+  overflow: clip;
+  opacity: 0;
+  transition:
+    block-size var(--shroffin-move-duration, 1s)
+      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity var(--shroffin-ui-duration, 0.85s)
+      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    content-visibility var(--shroffin-move-duration, 1s) allow-discrete;
+}
+
+.hlc-drawer-group[open]::details-content {
+  block-size: auto;
+  opacity: 1;
+  overflow: visible;
+}
+
 .hlc-drawer-card {
   border-radius: 0.9rem;
   background: rgba(29, 29, 31, 0.035);
-  padding: 0.2rem 1.05rem;
+  padding: 0.2rem var(--hlc-drawer-card-pad-x);
 }
 
 .hlc-slab-card {
@@ -3339,6 +3985,50 @@
   font-weight: 600;
   line-height: 1.35;
   text-align: left;
+}
+
+.hlc-fee-table th {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  vertical-align: baseline;
+}
+
+.hlc-fee-col-title {
+  display: block;
+}
+
+.hlc-fee-col-sub {
+  display: block;
+  margin-top: 0;
+  color: var(--shroffin-muted, #6e6e73);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+/*
+  Row 1: Particulars | Charge* (same baseline, no divider yet)
+  Row 2: unit under Charge (divider sits under this row)
+*/
+.hlc-fee-table thead tr.hlc-fee-head-titles th {
+  border-bottom: 0;
+  padding-bottom: 0.12rem;
+  vertical-align: baseline;
+}
+
+.hlc-fee-table thead tr.hlc-fee-head-unit-row th {
+  padding-top: 0.08rem;
+  padding-bottom: 0.75rem;
+  font-weight: 400;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(29, 29, 31, 0.14);
+}
+
+.hlc-fee-table thead tr.hlc-fee-head-unit-row th.hlc-fee-head-unit {
+  text-align: right;
 }
 
 .hlc-slab-table td {
@@ -3585,11 +4275,111 @@
 .hlc-fee-sections {
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
+  gap: 0;
+  border-bottom: 1px solid rgba(29, 29, 31, 0.08);
+}
+
+.hlc-fee-sections:has(> .hlc-fee-charge-block):not(:has(> .hlc-drawer-group--nested)):not(
+    :has(> .hlc-fee-flat-row)
+  ) {
+  border-bottom: 0;
+  gap: 0;
+}
+
+.hlc-fee-sections > .hlc-drawer-group--nested,
+.hlc-fee-sections > .hlc-fee-charge-block {
+  order: 0;
+}
+
+.hlc-fee-sections > .hlc-fee-flat-row {
+  order: 1;
+}
+
+.hlc-fee-flat-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin: 0 0 0 0.9rem;
+  padding: 0.5rem 0.15rem 0.5rem 0.1rem;
+  border-top: 1px solid rgba(29, 29, 31, 0.08);
+  box-sizing: border-box;
+}
+
+.hlc-fee-flat-name {
+  min-width: 0;
+  color: #3a3a3c;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+}
+
+.hlc-fee-flat-value {
+  flex: 0 0 auto;
+  color: #3a3a3c;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.hlc-drawer-slab-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.35rem;
+}
+
+.hlc-fee-slab-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.hlc-fee-slab-title {
+  margin: 0;
+  padding: 0 0.15rem;
+  color: var(--shroffin-ink, #1d1d1f);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.hlc-fee-matrix-unit {
+  margin: 0.2rem 0 0.45rem;
+  padding: 0 0.15rem;
+  color: var(--shroffin-muted, #6e6e73);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.35;
 }
 
 .hlc-fee-category-title {
   margin: 0 0 0.5rem;
+  padding: 0 0.15rem;
+  color: var(--shroffin-ink, #1d1d1f);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.hlc-fee-charge-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.hlc-fee-charge-block + .hlc-fee-charge-block {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(29, 29, 31, 0.08);
+}
+
+.hlc-fee-charge-title {
+  margin: 0;
   padding: 0 0.15rem;
   color: var(--shroffin-ink, #1d1d1f);
   font-size: 0.875rem;
@@ -3603,12 +4393,46 @@
   vertical-align: top;
 }
 
+.hlc-fee-table--customer td.hlc-fee-col-customer {
+  width: 30%;
+  vertical-align: top;
+}
+
+.hlc-fee-table--customer td:last-child {
+  width: 34%;
+}
+
 .hlc-fee-amount {
   display: block;
   color: var(--shroffin-ink, #1d1d1f);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   line-height: 1.35;
+}
+
+.hlc-fee-what {
+  display: block;
+  color: var(--shroffin-ink, #1d1d1f);
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.hlc-fee-detail {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--shroffin-muted, #6e6e73);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.hlc-fee-particular-name {
+  display: block;
+  color: var(--shroffin-ink, #1d1d1f);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
 }
 
 .hlc-fee-meta {
@@ -3618,6 +4442,24 @@
   font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.4;
+}
+
+.hlc-fee-matrix th[scope="row"] {
+  width: auto;
+  padding-right: 0.75rem;
+  color: var(--shroffin-muted, #6e6e73);
+  font-weight: 500;
+  text-align: left;
+}
+
+.hlc-fee-matrix td {
+  width: auto;
+  text-align: right;
+  vertical-align: top;
+}
+
+.hlc-fee-matrix thead th:not(:first-child) {
+  text-align: right;
 }
 
 .hlc-fee-note {
@@ -3724,9 +4566,24 @@
     box-sizing: border-box;
     padding-inline: 1.55rem;
     border: none;
+    /* Phone elevated token is 14px — too small for this primary CTA. */
+    font-size: 19px;
+    line-height: 1.2;
+    background: rgba(0, 113, 227, 0.52);
+    -webkit-backdrop-filter: saturate(1.2) blur(16px);
+    backdrop-filter: saturate(1.2) blur(16px);
     box-shadow:
-      0 8px 28px rgba(0, 113, 227, 0.32),
-      0 2px 8px rgba(29, 29, 31, 0.1);
+      0 8px 28px rgba(0, 113, 227, 0.16),
+      0 2px 8px rgba(29, 29, 31, 0.06);
+  }
+
+  .hlc-apply-dock:not([hidden]) .hlc-btn-primary:hover:not(:disabled),
+  .hlc-apply-dock:not([hidden]) .hlc-btn-primary:focus-visible:not(:disabled) {
+    background: rgba(0, 118, 223, 0.62);
+  }
+
+  .hlc-apply-dock:not([hidden]) .hlc-btn-primary:active:not(:disabled) {
+    background: rgba(0, 110, 219, 0.72);
   }
 
   /* Mobile: never show the long header Apply once — only the floating button. */
@@ -3909,6 +4766,10 @@
 @media (prefers-reduced-motion: reduce) {
   .hlc-table-wrap.is-expanding-banks {
     transition: none;
+  }
+
+  .hlc-table-wrap.is-expanding-banks .hlc-compare tbody tr.is-bank-reveal td {
+    animation: none;
   }
 
   .hlc-drawer,

@@ -817,6 +817,13 @@ body.guide-reading .guide-hero--media .mag-standfirst {
   z-index: 1;
 }
 
+/* Photo heroes: paper muted gray washes out — darken lead only. */
+body.guide-reading .guide-hero--media .guide-hero-lead,
+body.guide-reading .guide-hero--media .mag-standfirst,
+body.guide-reading .guide-hero--media h2.guide-hero-lead {
+  color: #3a3a40;
+}
+
 /*
  * Path trail on the photo (insurance sub-pages): sits in the art’s upper
  * field, not on the paper band above the frame. Art shifts slightly up so
@@ -2734,6 +2741,65 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 
 .guide-flip-dock.guide-flip-link:active .guide-flip-link-arrow {
   transform: translateX(0.12em);
+}
+
+/*
+ * Mobile-only corner close on the flipped back face.
+ * Hidden on desktop — bottom Close dock remains the desktop control.
+ */
+.guide-flip-close {
+  display: none;
+}
+
+@media (max-width: 833px) {
+  .guide-flip-close {
+    appearance: none;
+    -webkit-appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 4;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--mag-ink-soft, #6e6e73);
+    cursor: pointer;
+    /* Keep the mark upright while the face is mid-rotate. */
+    transform: translateZ(1px);
+    transition: color var(--mag-micro, 0.5s) var(--ease-color, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+
+  .guide-flip.is-flipped .guide-flip-close {
+    pointer-events: auto;
+  }
+
+  .guide-flip-close:hover,
+  .guide-flip-close:focus-visible {
+    color: var(--mag-ink, #1d1d1f);
+  }
+
+  .guide-flip-close:focus-visible {
+    outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+    outline-offset: var(--shroffin-focus-offset, 3px);
+  }
+
+  .guide-flip-close-icon {
+    display: block;
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Keep the back title clear of the X hit area */
+  .guide-flip-face--back .guide-flip-back-scroll > .guide-tile-title {
+    padding-inline-end: 2.75rem;
+  }
 }
 
 /* Borrow: try-row stays under the flip scene (same order as before) */

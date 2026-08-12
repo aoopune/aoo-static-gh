@@ -53,7 +53,10 @@
   box-sizing: border-box;
   min-height: calc(100svh - var(--about-nav-bar));
   min-height: calc(100dvh - var(--about-nav-bar));
-  padding: var(--shroffin-space-section) 0;
+  padding:
+    calc(var(--shroffin-space-section) - clamp(24px, 4.2vh, 44px))
+    0
+    calc(var(--shroffin-space-section) + clamp(24px, 4.2vh, 44px));
   text-align: center;
 }
 
@@ -64,6 +67,16 @@
   font-size: 17px;
   font-weight: 600;
   line-height: 1.33337;
+}
+
+.about-page-title {
+  margin: 0 0 24px;
+  color: #1d1d1f;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.33337;
+  transform: translateY(-96px);
 }
 
 .about-hero-title {
@@ -196,6 +209,10 @@
 .about-band--founder {
   text-align: center;
   padding-top: calc(var(--shroffin-space-masthead-start) + clamp(1.5rem, 4vw, 2.5rem));
+  padding-bottom: calc(
+    var(--shroffin-space-masthead-end) + var(--shroffin-space-section)
+  );
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .about-founder-section-title {
@@ -223,14 +240,16 @@
   margin: 0 auto 8px;
   max-width: 14em;
   color: var(--about-ink);
-  font-size: var(--shroffin-type-display-xl);
+  font-size: clamp(1.2rem, 5vw, 1.6rem);
   font-weight: 600;
   line-height: 1.12;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  white-space: nowrap;
 }
 
 .about-founder-role {
   margin: 0;
+  display: inline;
   color: var(--about-muted);
   font-size: 13px;
   font-weight: 600;
@@ -238,10 +257,65 @@
   overflow-wrap: anywhere;
 }
 
+@media (max-width: 833px) {
+  .about-page main {
+    padding-top: calc(var(--about-nav) + clamp(4rem, 13vw, 5rem));
+  }
+
+  .about-hero {
+    min-height: auto;
+    padding:
+      clamp(1.25rem, 4.5vw, 2rem)
+      0
+      clamp(1rem, 3.8vw, 1.75rem);
+  }
+
+  .about-hero-title {
+    font-size: clamp(1.6rem, 6.6vw, 1.95rem);
+    max-width: 24ch;
+    line-height: 1.16;
+  }
+
+  .about-band--founder {
+    padding-top: clamp(3.25rem, 10vw, 4.4rem);
+  }
+
+  .about-founder-people {
+    gap: clamp(2.25rem, 11vw, 4rem);
+  }
+
+  .about-page .site-prefooter-cta {
+    margin-block-start: clamp(5.5rem, 16vw, 7.5rem);
+  }
+}
+
 @media (min-width: 834px) {
+  .about-hero {
+    min-height: clamp(26rem, 56dvh, 34rem);
+    padding: clamp(1.5rem, 3.2vh, 2.5rem) 0 clamp(1rem, 2.2vh, 1.75rem);
+  }
+
+  .about-band--founder {
+    padding-top: clamp(1.5rem, 3vh, 2.5rem);
+  }
+
   .about-founder-people {
     grid-template-columns: repeat(2, auto);
+    gap: clamp(3.5rem, 12vw, 6.5rem);
     width: fit-content;
+  }
+
+  /*
+   * Same label→content stack as Our mission → title. Shared CSS margin is 20px,
+   * but the display title’s line box adds extra air above the glyphs; founder
+   * names need a matching optical gap on desktop.
+   */
+  .about-founder-section-title {
+    margin-block-end: 28px;
+  }
+
+  .about-founder-name {
+    font-size: clamp(1.75rem, 2.4vw, 2.1rem);
   }
 
   .about-founder-name,
@@ -255,10 +329,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 12px;
-  min-width: 44px;
-  min-height: 44px;
+  margin-top: 0;
+  margin-left: 6px;
+  min-width: 18px;
+  min-height: 18px;
   color: var(--about-muted);
+  vertical-align: text-bottom;
   transition: color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -267,8 +343,8 @@
 }
 
 .about-founder-linkedin-icon {
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
 }
 
 /* ——— How we work ——— */

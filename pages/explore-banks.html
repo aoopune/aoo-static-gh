@@ -18,7 +18,7 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="../css/shroffin-shell.css?v=c6fe1dcb7b">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=3fa287b216">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=8957c79fe2">
 </head>
 <body class="explore-banks-page">
   <!-- SHROFFIN_NAV_START -->
@@ -850,13 +850,24 @@
   <div class="hlc-drawer-backdrop" id="hlc-drawer-backdrop" hidden></div>
   <aside class="hlc-drawer" id="hlc-drawer" aria-hidden="true" role="dialog" aria-labelledby="hlc-drawer-title">
     <div class="hlc-drawer-top">
-      <div>
+      <div class="hlc-drawer-heading" id="hlc-drawer-heading">
         <h3 id="hlc-drawer-title">Bank</h3>
         <p id="hlc-drawer-sub"></p>
       </div>
       <button type="button" class="hlc-icon-btn" id="hlc-drawer-close" aria-label="Close">×</button>
     </div>
-    <div class="hlc-drawer-body" id="hlc-drawer-body"></div>
+    <div class="hlc-drawer-scroll" id="hlc-drawer-scroll">
+      <div class="hlc-drawer-actions-bar" id="hlc-drawer-actions-bar" hidden>
+        <button
+          type="button"
+          class="hlc-drawer-toggle-all"
+          id="hlc-drawer-toggle-all"
+          aria-controls="hlc-drawer-body"
+          aria-expanded="false"
+        >Expand all</button>
+      </div>
+      <div class="hlc-drawer-body" id="hlc-drawer-body"></div>
+    </div>
   </aside>
 
   <div class="hlc-toast" id="hlc-toast" role="status"></div>
@@ -867,7 +878,6 @@
   </div>
 
   <!-- SHROFFIN_FOOTER_START -->
-
   <aside class="site-help-strip" aria-label="Get help">
     <p class="site-help-strip-text">
       Need some help?
@@ -894,7 +904,6 @@
             >
           </a>
         </section>
-
         <div class="site-footer-directory">
           <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
             <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
@@ -907,7 +916,6 @@
               <li><a href="/pages/home-loan-complaints.html">If something goes wrong</a></li>
             </ul>
           </nav>
-
           <nav class="site-footer-group" aria-labelledby="footer-tools-title">
             <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
             <ul class="site-footer-list">
@@ -915,7 +923,6 @@
               <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
             </ul>
           </nav>
-
           <nav class="site-footer-group" aria-labelledby="footer-company-title">
             <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
             <ul class="site-footer-list">
@@ -925,7 +932,6 @@
               <li><a href="/sitemap.html">Site Map</a></li>
             </ul>
           </nav>
-
           <section class="site-footer-group" aria-labelledby="footer-support-title">
             <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
             <ul class="site-footer-list">
@@ -944,7 +950,6 @@
               </li>
             </ul>
           </section>
-
           <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
             <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
             <ul class="site-footer-list">
@@ -955,7 +960,6 @@
           </nav>
         </div>
       </div>
-
       <div class="site-footer-meta">
         <div class="site-footer-meta-main">
           <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
@@ -976,7 +980,6 @@
               </details>
             </div>
           </section>
-
           <div class="site-footer-bottom">
             <div class="site-footer-bottom-row">
               <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
@@ -997,10 +1000,10 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/shroffin-home-stance.js?v=202d58af51"></script>
+  <script src="../js/shroffin-home-stance.js?v=d45fb1db51"></script>
   <script src="../js/shroffin-nav.js?v=69b8861330"></script>
   <script src="../js/hlc-data-url.generated.js?v=4fce1ee0e3"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=5ed172397e"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=b3013ac9f9"></script>
   <script src="../js/hlc-field-help.js?v=305f463f51"></script>
   <script>
     (function () {
@@ -1053,34 +1056,36 @@
       }
 
       function optionsScrollTop() {
-        var heading = document.getElementById("hlc-compare-heading");
-        if (!heading) return null;
+        var head = document.querySelector(
+          "#hlc-results-shell .hlc-results-head"
+        );
+        if (!head) return null;
 
         var rootStyles = getComputedStyle(document.documentElement);
         var navOffset =
           parseFloat(rootStyles.getPropertyValue("--shroffin-gn-offset")) ||
           parseFloat(rootStyles.getPropertyValue("--shroffin-gn-height")) ||
           48;
-        var toolsH = 0;
-        if (window.matchMedia("(max-width: 833px)").matches) {
-          toolsH =
-            parseFloat(rootStyles.getPropertyValue("--hlc-sticky-tools-h")) || 0;
-          if (!toolsH) {
-            var head = document.querySelector(
-              "#hlc-results-shell .hlc-results-head"
-            );
-            if (head) toolsH = head.getBoundingClientRect().height;
-          }
-        }
-        var gap = toolsH ? 12 : 52;
-        return Math.max(
+
+        /* Park Overview / tools flush under the nav. */
+        var y = Math.max(
           0,
-          heading.getBoundingClientRect().top +
-            window.pageYOffset -
-            navOffset -
-            toolsH -
-            gap
+          head.getBoundingClientRect().top + window.pageYOffset - navOffset
         );
+
+        /* Guarantee the input card is fully clear of the content area. */
+        var inputs = document.querySelector(".hlc-inputs-card");
+        if (inputs) {
+          var inputsBottom =
+            inputs.getBoundingClientRect().bottom + window.pageYOffset;
+          y = Math.max(y, inputsBottom - navOffset + 8);
+        }
+
+        var maxY = Math.max(
+          0,
+          document.documentElement.scrollHeight - window.innerHeight
+        );
+        return Math.min(y, maxY);
       }
 
       function softScrollToOptions() {
@@ -1099,7 +1104,11 @@
 
         var start = window.pageYOffset;
         var distance = target - start;
-        if (Math.abs(distance) < 4) return;
+        if (Math.abs(distance) < 4) {
+          var snapped = optionsScrollTop();
+          if (snapped != null) window.scrollTo(0, snapped);
+          return;
+        }
 
         var startedAt = null;
         function step(now) {
@@ -1110,6 +1119,9 @@
             scrollRaf = window.requestAnimationFrame(step);
           } else {
             scrollRaf = null;
+            /* Final settle — sticky tools / layout may have shifted mid-scroll. */
+            var settled = optionsScrollTop();
+            if (settled != null) window.scrollTo(0, settled);
           }
         }
         scrollRaf = window.requestAnimationFrame(step);

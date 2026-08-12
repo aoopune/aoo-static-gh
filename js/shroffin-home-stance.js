@@ -90,7 +90,10 @@
     function setState(next) {
       state = next;
       btn.setAttribute('data-spd-state', next);
-      btn.setAttribute('aria-label', next === 'playing' ? 'Pause' : 'Play');
+      btn.setAttribute(
+        'aria-label',
+        next === 'playing' ? 'Pause' : next === 'ended' ? 'Replay' : 'Play'
+      );
     }
 
     function stop() {

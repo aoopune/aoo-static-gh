@@ -38,7 +38,9 @@
 
     var nodes = Array.prototype.slice
       .call(
-        document.querySelectorAll('[data-guide-scrub="on"], [data-home-scrub="zero"]')
+        document.querySelectorAll(
+          '[data-guide-scrub="on"], [data-home-scrub="zero"], [data-home-scrub="lead"]'
+        )
       )
       .filter(function (el) {
         return !el.closest("[hidden]");
@@ -49,6 +51,13 @@
       if (el.getAttribute("data-home-scrub") === "zero") {
         el.style.setProperty("--hz-rest", "0");
         el.style.setProperty("--hz-body", "0");
+        return;
+      }
+      if (el.getAttribute("data-home-scrub") === "lead") {
+        el.style.setProperty("--hl-line-1", "1");
+        el.style.setProperty("--hl-line-2", "0");
+        el.style.setProperty("--hl-line-3", "0");
+        el.style.setProperty("--hl-line-4", "0");
         return;
       }
       el.classList.add("guide-scrub");
@@ -62,13 +71,22 @@
       var vh = window.innerHeight || 1;
 
       if (el.getAttribute("data-home-scrub") === "zero") {
-        /* Short nudge — commissions / bias after a little more scroll */
+        /* Use the whole sticky runway as progress so reveals feel controlled. */
         if (!el.classList.contains("is-in")) return 0;
-        var pin = el.querySelector(".home-zero-pin") || el;
-        var rect = pin.getBoundingClientRect();
-        var start = vh * 0.72;
-        var end = vh * 0.48;
-        return clamp01((start - rect.top) / (start - end));
+        var track = el.querySelector(".home-zero-track") || el;
+        var trackRect = track.getBoundingClientRect();
+        var runway = Math.max(1, track.offsetHeight - vh);
+        var traveled = Math.max(0, -trackRect.top);
+        return clamp01(traveled / runway);
+      }
+      if (el.getAttribute("data-home-scrub") === "lead") {
+        var leadTrack = el.querySelector(".home-lead-track") || el;
+        var leadRect = leadTrack.getBoundingClientRect();
+        var leadRunway = Math.max(1, leadTrack.offsetHeight - vh);
+        var leadTraveled = Math.max(0, -leadRect.top);
+        /* Finish reveal before the runway ends, then hold fully visible. */
+        var revealRunway = leadRunway * 0.78;
+        return clamp01(leadTraveled / Math.max(1, revealRunway));
       }
 
       var moment = el.closest(".guide-moment");
@@ -80,10 +98,22 @@
     }
 
     function applyHomeZero(el, p) {
-      var rest = segment(p, 0.12, 0.58);
-      var body = segment(p, 0.45, 0.92);
+      /* Soft stagger: commissions/bias first, body after more scroll. */
+      var rest = segment(p, 0.42, 0.94);
+      var body = segment(p, 0.74, 1.0);
       el.style.setProperty("--hz-rest", rest.toFixed(4));
       el.style.setProperty("--hz-body", body.toFixed(4));
+    }
+
+    function applyHomeLead(el, p) {
+      /* Keep the hook visible, then reveal each line as scroll progresses. */
+      var line2 = segment(p, 0.28, 0.62);
+      var line3 = segment(p, 0.56, 0.84);
+      var line4 = segment(p, 0.80, 1.0);
+      el.style.setProperty("--hl-line-1", "1");
+      el.style.setProperty("--hl-line-2", line2.toFixed(4));
+      el.style.setProperty("--hl-line-3", line3.toFixed(4));
+      el.style.setProperty("--hl-line-4", line4.toFixed(4));
     }
 
     function tick() {
@@ -92,6 +122,10 @@
         var p = progressFor(el);
         if (el.getAttribute("data-home-scrub") === "zero") {
           applyHomeZero(el, p);
+          return;
+        }
+        if (el.getAttribute("data-home-scrub") === "lead") {
+          applyHomeLead(el, p);
           return;
         }
         el.style.setProperty("--guide-scrub", p.toFixed(4));
@@ -117,6 +151,13 @@
         if (el.getAttribute("data-home-scrub") === "zero") {
           el.style.removeProperty("--hz-rest");
           el.style.removeProperty("--hz-body");
+          return;
+        }
+        if (el.getAttribute("data-home-scrub") === "lead") {
+          el.style.removeProperty("--hl-line-1");
+          el.style.removeProperty("--hl-line-2");
+          el.style.removeProperty("--hl-line-3");
+          el.style.removeProperty("--hl-line-4");
           return;
         }
         el.classList.remove("guide-scrub", "is-scrub-done");

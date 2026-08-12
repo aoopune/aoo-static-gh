@@ -718,14 +718,13 @@
   display: block;
 }
 
-.spd-playback[data-spd-state="paused"] .spd-playback-icon--play,
-.spd-playback[data-spd-state="ended"] .spd-playback-icon--play {
+.spd-playback[data-spd-state="paused"] .spd-playback-icon--play {
   display: block;
+  transform: translateX(1px);
 }
 
-.spd-playback[data-spd-state="paused"] .spd-playback-icon--play,
-.spd-playback[data-spd-state="ended"] .spd-playback-icon--play {
-  transform: translateX(1px);
+.spd-playback[data-spd-state="ended"] .spd-playback-icon--replay {
+  display: block;
 }
 
 .spd-sr-only {

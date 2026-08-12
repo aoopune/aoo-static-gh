@@ -488,15 +488,75 @@ async function testHomeLoanCompare() {
     'floating prepayment note links Part E to the RBI page'
   );
   ok(
+    compare.footnoteRefHtml('*', 'hlc-charge-note-processing-fees').indexOf(
+      'hlc-col-footnote'
+    ) !== -1 &&
+      compare.footnoteRefHtml('*', 'hlc-charge-note-processing-fees').indexOf(
+        'data-note-target="hlc-charge-note-processing-fees"'
+      ) !== -1 &&
+      compare.footnoteRefHtml('*', 'hlc-charge-note-processing-fees').indexOf(
+        'type="button"'
+      ) !== -1 &&
+      compare.footnoteRefHtml('*', 'hlc-charge-note-emi-bounce-charge', {
+        plain: true
+      }).indexOf('data-note-target="hlc-charge-note-emi-bounce-charge"') !== -1 &&
+      compare.footnoteRefHtml('*', 'hlc-charge-note-emi-bounce-charge', {
+        plain: true
+      }).indexOf('<button') === -1 &&
+      compare.footnoteRefHtml('', 'hlc-charge-note-x') === '' &&
+      compare.chargesNoteGroupId('Processing fees') ===
+        'hlc-charge-note-processing-fees',
+    'footnote marks link to the matching notes group'
+  );
+  ok(
     compare.chargesNoteGroupHtml('Rate change charge', ['° Note one', '° Note two'])
-      .indexOf('hlc-charges-note-heading') !== -1 &&
+      .indexOf('hlc-charges-note-group') !== -1 &&
+      compare.chargesNoteGroupHtml('Rate change charge', ['° Note one', '° Note two'])
+        .indexOf('hlc-charges-note-toggle') !== -1 &&
       compare.chargesNoteGroupHtml('Rate change charge', ['° Note one', '° Note two'])
         .indexOf('Rate change charge') !== -1 &&
+      compare.chargesNoteGroupHtml('Rate change charge', ['° Note one', '° Note two'])
+        .indexOf('hlc-charges-note-chevron') !== -1 &&
       compare.chargesNoteGroupHtml('Rate change charge', []) === '' &&
       compare.chargesNoteGroupHtml('Overdue charge', ['‡ Note']).indexOf(
         'Overdue charge'
-      ) !== -1,
+      ) !== -1 &&
+      compare.chargesNoteGroupHtml('Rate change charge', [
+        '° Note one',
+        '¤ Bank note',
+        '° Dup'
+      ]).indexOf('(° ¤)') !== -1 &&
+      compare
+        .footnoteMarkersFromNoteParts(['° A', '‡ B', '° C', 'plain'])
+        .join('') === '°‡' &&
+      compare.chargesNoteToolbarHtml().indexOf('Notes') !== -1 &&
+      compare.chargesNoteToolbarHtml().indexOf('Expand all') !== -1 &&
+      compare.chargesNoteToolbarHtml().indexOf('Collapse all') === -1 &&
+      compare.chargesNoteToolbarHtml().split('hlc-charges-note-toggle-all')
+        .length === 2,
     'charges footnotes group under the matching column charge name'
+  );
+  ok(
+    compare.drawerDiscloseHtml('Scheme', '<div>body</div>', { open: true }).indexOf(
+      'hlc-drawer-group'
+    ) !== -1 &&
+      compare.drawerDiscloseHtml('Scheme', '<div>body</div>', { open: true }).indexOf(
+        'hlc-drawer-chevron'
+      ) !== -1 &&
+      compare.drawerDiscloseHtml('Scheme', '<div>body</div>', { open: true }).indexOf(
+        ' open'
+      ) !== -1 &&
+      compare.drawerDiscloseHtml('Eligibility', '<div>body</div>').indexOf(
+        ' open'
+      ) === -1 &&
+      compare.drawerToolbarHtml('hlc-drawer-body').indexOf(
+        'hlc-drawer-toggle-all'
+      ) !== -1 &&
+      compare.drawerToolbarHtml('hlc-drawer-body').indexOf('More details') !==
+        -1 &&
+      compare.drawerToolbarHtml('hlc-drawer-body').indexOf('Expand all') !==
+        -1,
+    'side panel sections use disclose chevrons with Expand/Collapse all on the right'
   );
   ok(
     compare.formatPrepaymentChargeDisplay(null).main === 'Not listed',
@@ -1151,10 +1211,444 @@ async function testHomeLoanCompare() {
     }
   ]);
   ok(
-    panelFee.entries[0].amount === '₹500*' &&
+    panelFee.entries[0].amount === '₹500' &&
       panelFee.entries[0].gstApplicable === true &&
-      panelFee.entries[0].meta.indexOf('GST') === -1,
-    'side panel marks GST with * on the amount instead of repeating GST extra'
+      panelFee.entries[0].chargeHeaderUnit === 'Per instance' &&
+      panelFee.entries[0].meta === '' &&
+      compare.chargeColumnTitle(true) === 'Charge*',
+    'side panel marks GST on the Charge header and puts the unit there too'
+  );
+  var panelSlabs = compare.buildFeeTableEntries('Property Valuation Report Charges', [
+    {
+      charge_name: 'Property Valuation Report Charges',
+      has_slab_wise_charges: 'Yes',
+      charge_group_id: 'g1',
+      slab_from: 0,
+      slab_to: 1000000,
+      fixed_amount: 750,
+      gst_applicable: 'Yes'
+    },
+    {
+      charge_name: 'Property Valuation Report Charges',
+      has_slab_wise_charges: 'Yes',
+      charge_group_id: 'g1',
+      slab_from: 1000001,
+      slab_to: null,
+      fixed_amount: 4400,
+      gst_applicable: 'Yes'
+    }
+  ]);
+  ok(
+    panelSlabs.entries.length === 1 &&
+      panelSlabs.entries[0].kind === 'slab-table' &&
+      panelSlabs.entries[0].what === 'Property Valuation Report Charges' &&
+      panelSlabs.entries[0].slabRows.length === 2 &&
+      panelSlabs.entries[0].slabRows[0].amount === '₹750' &&
+      panelSlabs.entries[0].slabRightHeader === 'Charge*' &&
+      panelSlabs.entries[0].what.indexOf(' · ') === -1,
+    'side panel slab fees use a range/charge table instead of one long line per row'
+  );
+  var panelArea = compare.buildFeeTableEntries('No Dues Certificate Charge', [
+    {
+      charge_name: 'No Dues Certificate Charge',
+      charge_by_area: 'Metro / Urban',
+      customer_type: 'Individual',
+      fixed_amount: 100,
+      charge_unit: 'Certificate',
+      gst_applicable: 'Yes',
+      note_1: 'No charges for Government sponsored schemes'
+    },
+    {
+      charge_name: 'No Dues Certificate Charge',
+      charge_by_area: 'Metro / Urban',
+      customer_type: 'Non-Individual',
+      fixed_amount: 150,
+      charge_unit: 'Certificate',
+      gst_applicable: 'Yes',
+      note_1: 'No charges for Government sponsored schemes'
+    },
+    {
+      charge_name: 'No Dues Certificate Charge',
+      charge_by_area: 'Rural / Semi-urban',
+      customer_type: 'Individual',
+      fixed_amount: 25,
+      charge_unit: 'Certificate',
+      gst_applicable: 'Yes',
+      note_1: 'No charges for Government sponsored schemes'
+    },
+    {
+      charge_name: 'No Dues Certificate Charge',
+      charge_by_area: 'Rural / Semi-urban',
+      customer_type: 'Non-Individual',
+      fixed_amount: 75,
+      charge_unit: 'Certificate',
+      gst_applicable: 'Yes',
+      note_1: 'No charges for Government sponsored schemes'
+    }
+  ]);
+  ok(
+    panelArea.entries.length === 1 &&
+      panelArea.entries[0].kind === 'area-matrix' &&
+      panelArea.entries[0].what === 'No Dues Certificate Charge' &&
+      panelArea.entries[0].matrixColumns.join('|') ===
+        'Metro / Urban|Rural / Semi-urban' &&
+      panelArea.entries[0].matrixRows.length === 2 &&
+      panelArea.entries[0].matrixRows[0].label === 'Individual' &&
+      panelArea.entries[0].matrixRows[0].cells[0].amount === '₹100' &&
+      panelArea.entries[0].chargeHeaderUnit === 'Per certificate' &&
+      panelArea.entries[0].gstApplicable === true,
+    'side panel area fees use one column per area from the sheet'
+  );
+  var panelAreaSlabs = compare.buildFeeTableEntries('Legal Opinion Fees', [
+    {
+      charge_name: 'Legal Opinion Fees',
+      charge_by_area: 'Metro',
+      has_slab_wise_charges: 'Yes',
+      charge_group_id: 'g-metro',
+      slab_from: null,
+      slab_to: 10000000,
+      fixed_amount: 3000
+    },
+    {
+      charge_name: 'Legal Opinion Fees',
+      charge_by_area: 'Metro',
+      has_slab_wise_charges: 'Yes',
+      charge_group_id: 'g-metro',
+      slab_from: 10000001,
+      slab_to: null,
+      fixed_amount: 4000
+    },
+    {
+      charge_name: 'Legal Opinion Fees',
+      charge_by_area: 'Rural',
+      has_slab_wise_charges: 'Yes',
+      charge_group_id: 'g-rural',
+      slab_from: null,
+      slab_to: 10000000,
+      fixed_amount: 1000
+    },
+    {
+      charge_name: 'Legal Opinion Fees',
+      charge_by_area: 'Rural',
+      has_slab_wise_charges: 'Yes',
+      charge_group_id: 'g-rural',
+      slab_from: 10000001,
+      slab_to: null,
+      fixed_amount: 1500
+    }
+  ]);
+  ok(
+    panelAreaSlabs.entries.length === 1 &&
+      panelAreaSlabs.entries[0].kind === 'area-matrix' &&
+      panelAreaSlabs.entries[0].matrixColumns.join('|') === 'Metro|Rural' &&
+      panelAreaSlabs.entries[0].matrixRows.length === 2 &&
+      panelAreaSlabs.entries[0].slabLeftHeader &&
+      panelAreaSlabs.entries[0].matrixRows[0].cells[0].amount === '₹3,000' &&
+      panelAreaSlabs.entries[0].matrixRows[0].cells[1].amount === '₹1,000',
+    'side panel area+slab fees use area column headers with amount bands as rows'
+  );
+  var schemeAreaOffer = {
+    bank_key: 'central bank of india',
+    purpose: 'Regular Home Loan',
+    occupation: 'Any',
+    facility_type: 'Term Loan',
+    borrower_category: 'Any',
+    rate_type: 'Floating',
+    scheme: 'Cent Home loan'
+  };
+  var schemeAreaSections = compare.listSchemeChargePanelSections(
+    [
+      {
+        charge_name: 'Legal Opinion Fees',
+        when_it_matters: 'Before offer',
+        bank_key: 'central bank of india',
+        purpose: 'Any',
+        facility_type: 'Any',
+        charge_by_area: 'Metro',
+        has_slab_wise_charges: 'Yes',
+        charge_group_id: 'g-metro',
+        slab_from: null,
+        slab_to: 10000000,
+        fixed_amount: 3000
+      },
+      {
+        charge_name: 'Legal Opinion Fees',
+        when_it_matters: 'Before offer',
+        bank_key: 'central bank of india',
+        purpose: 'Any',
+        facility_type: 'Any',
+        charge_by_area: 'Metro',
+        has_slab_wise_charges: 'Yes',
+        charge_group_id: 'g-metro',
+        slab_from: 10000001,
+        slab_to: null,
+        fixed_amount: 4000
+      },
+      {
+        charge_name: 'Legal Opinion Fees',
+        when_it_matters: 'Before offer',
+        bank_key: 'central bank of india',
+        purpose: 'Any',
+        facility_type: 'Any',
+        charge_by_area: 'Rural',
+        has_slab_wise_charges: 'Yes',
+        charge_group_id: 'g-rural',
+        slab_from: null,
+        slab_to: 10000000,
+        fixed_amount: 1000
+      },
+      {
+        charge_name: 'Legal Opinion Fees',
+        when_it_matters: 'Before offer',
+        bank_key: 'central bank of india',
+        purpose: 'Any',
+        facility_type: 'Any',
+        charge_by_area: 'Rural',
+        has_slab_wise_charges: 'Yes',
+        charge_group_id: 'g-rural',
+        slab_from: 10000001,
+        slab_to: null,
+        fixed_amount: 1500
+      },
+      {
+        charge_name: 'Legal Audit Fee',
+        when_it_matters: 'Before offer',
+        bank_key: 'central bank of india',
+        purpose: 'Any',
+        facility_type: 'Any',
+        charge_by_area: 'Category A Cities',
+        has_slab_wise_charges: 'No',
+        fixed_amount: 3500
+      },
+      {
+        charge_name: 'Legal Audit Fee',
+        when_it_matters: 'Before offer',
+        bank_key: 'central bank of india',
+        purpose: 'Any',
+        facility_type: 'Any',
+        charge_by_area: 'Category B Cities',
+        has_slab_wise_charges: 'No',
+        fixed_amount: 3000
+      }
+    ],
+    schemeAreaOffer
+  );
+  var schemeLegal = schemeAreaSections.find(function (section) {
+    return section.label === 'Legal Opinion Fees';
+  });
+  var schemeAudit = schemeAreaSections.find(function (section) {
+    return section.label === 'Legal Audit Fee';
+  });
+  ok(
+    schemeLegal &&
+      schemeLegal.entries[0].kind === 'area-matrix' &&
+      schemeLegal.entries[0].matrixColumns.join('|') === 'Metro|Rural' &&
+      schemeAudit &&
+      schemeAudit.entries[0].kind === 'area-matrix' &&
+      schemeAudit.entries[0].matrixColumns.join('|') ===
+        'Category A Cities|Category B Cities',
+    'scheme panel keeps every area row so Metro/category names become column headers'
+  );
+  var panelCopy = compare.buildFeeTableEntries('Loan Document Copy Charges', [
+    {
+      charge_name: 'Loan Document Copy Charges',
+      fixed_amount: 0,
+      charge_unit: 'Request',
+      gst_applicable: 'Yes',
+      note_1: 'First Time Issue of copies of loan documents.'
+    },
+    {
+      charge_name: 'Loan Document Copy Charges',
+      fixed_amount: 10,
+      charge_unit: 'leaf (loan document page)',
+      charge_min: 100,
+      gst_applicable: 'Yes',
+      note_1: 'Subsequent Issue, irrespective of amount.'
+    }
+  ]);
+  ok(
+    panelCopy.entries.length === 2 &&
+      panelCopy.entries.every(function (entry) {
+        return entry.what === 'Loan Document Copy Charges';
+      }) &&
+      panelCopy.entries[0].detail.indexOf('First Time Issue') >= 0 &&
+      panelCopy.entries[0].amount === '₹0' &&
+      panelCopy.entries[0].meta.indexOf('Per request') >= 0 &&
+      panelCopy.entries[0].gstApplicable === true &&
+      !panelCopy.entries[0].chargeHeaderUnit &&
+      panelCopy.entries[0].what.indexOf('First issue') === -1,
+    'side panel keeps the sheet charge name and puts note text in Particulars'
+  );
+  var panelCustomer = compare.buildFeeTableEntries(
+    'No-Dues / Balance Confirmation Certificate Charge',
+    [
+      {
+        charge_name: 'No-Dues / Balance Confirmation Certificate Charge',
+        customer_type: 'Individual',
+        fixed_amount: 100,
+        charge_unit: 'Occasion',
+        gst_applicable: 'Yes',
+        note_1:
+          'Issuance of Any Other Certificate i.e. No Dues, Balance Confirmation.'
+      },
+      {
+        charge_name: 'No-Dues / Balance Confirmation Certificate Charge',
+        customer_type: 'Non-Individual',
+        fixed_amount: 150,
+        charge_unit: 'Occasion',
+        gst_applicable: 'Yes',
+        note_1:
+          'Issuance of Any Other Certificate i.e. No Dues, Balance Confirmation.'
+      }
+    ]
+  );
+  ok(
+    panelCustomer.entries.length === 2 &&
+      panelCustomer.entries[0].customerType === 'Individual' &&
+      panelCustomer.entries[1].customerType === 'Non-Individual' &&
+      panelCustomer.entries[0].detail === '' &&
+      panelCustomer.entries[1].detail === '' &&
+      panelCustomer.notes.length === 1 &&
+      panelCustomer.notes[0].indexOf('Issuance of Any Other Certificate') >= 0 &&
+      panelCustomer.entries[0].amount === '₹100' &&
+      panelCustomer.entries[1].amount === '₹150',
+    'side panel puts customer type in its own field and shared wording in notes'
+  );
+  var laterSections = compare.listAdditionalAfterOfferPanelSections(
+    require('../data/home-loans-compare.json').bank_charges.filter(function (charge) {
+      return charge.bank_name === 'Bank of Maharashtra';
+    }),
+    compare.queryFromInputs({
+      age: 35,
+      cibilScore: 780,
+      monthlyIncome: 100000,
+      occupation: 'Salaried',
+      propertyValue: 6250000
+    }),
+    {
+      bank_key: 'bank of maharashtra',
+      bank_name: 'Bank of Maharashtra',
+      scheme: 'Maha Super Housing Loan',
+      purpose: 'Regular Home Loan',
+      facility_type: 'Term Loan',
+      rate_type: 'Floating',
+      occupation: 'Salaried',
+      borrower_category: 'Any'
+    }
+  );
+  ok(
+    laterSections.length >= 4 &&
+      laterSections.every(function (section) {
+        return section.label && section.entries.length;
+      }) &&
+      laterSections.every(function (section) {
+        return section.entries.every(function (entry) {
+          return !entry.what || entry.what === section.label || entry.kind;
+        });
+      }) &&
+      laterSections.filter(function (section) {
+        return section.label === 'Loan Document Copy Charges';
+      }).length === 1,
+    'side panel lists each charge name in its own block, not mixed in one table'
+  );
+  var hdfcCharges = require('../data/home-loans-compare.json').bank_charges.filter(
+    function (charge) {
+      return charge.bank_name === 'HDFC Bank';
+    }
+  );
+  var hdfcOffer = {
+    bank_key: 'hdfc bank',
+    bank_name: 'HDFC Bank',
+    scheme: 'Home Loan',
+    purpose: 'Regular Home Loan',
+    facility_type: 'Term Loan',
+    rate_type: 'Floating',
+    occupation: 'Salaried',
+    borrower_category: 'Any'
+  };
+  var hdfcOther = compare.listDrawerOtherChargeSections(hdfcCharges, hdfcOffer);
+  var hdfcSwitch = hdfcOther.find(function (section) {
+    return section.label === 'Interest Rate Type Switch Fees';
+  });
+  ok(
+    hdfcSwitch &&
+      hdfcSwitch.entries.length === 2 &&
+      hdfcSwitch.entries.some(function (entry) {
+        return String(entry.detail).indexOf('Floating to Fixed') >= 0;
+      }) &&
+      hdfcSwitch.entries.some(function (entry) {
+        return String(entry.detail).indexOf('Fixed to Floating') >= 0;
+      }),
+    'drawer Other charges shows both Floating→Fixed and Fixed→Floating for the scheme'
+  );
+  var hdfcLater = compare.listAdditionalAfterOfferPanelSections(
+    hdfcCharges,
+    compare.queryFromInputs({
+      age: 35,
+      cibilScore: 780,
+      monthlyIncome: 100000,
+      occupation: 'Salaried',
+      propertyValue: 6250000
+    }),
+    hdfcOffer
+  );
+  var hdfcShown = {};
+  hdfcLater.concat(hdfcOther).forEach(function (section) {
+    var amount =
+      section.entries && section.entries[0] && section.entries[0].amount;
+    if (amount === 'Not listed') return;
+    hdfcShown[section.label] = true;
+  });
+  var hdfcAfterNames = {};
+  hdfcCharges.forEach(function (charge) {
+    if (charge.when_it_matters !== 'After offer') return;
+    if (String(charge.bank_key || '').toLowerCase() !== 'hdfc bank') return;
+    if (
+      charge.purpose &&
+      charge.purpose !== 'Any' &&
+      charge.purpose !== hdfcOffer.purpose
+    ) {
+      return;
+    }
+    if (
+      charge.facility_type &&
+      charge.facility_type !== 'Any' &&
+      charge.facility_type !== hdfcOffer.facility_type
+    ) {
+      return;
+    }
+    if (charge.scheme && charge.scheme !== hdfcOffer.scheme) return;
+    hdfcAfterNames[charge.charge_name] = true;
+  });
+  ok(
+    Object.keys(hdfcAfterNames).every(function (name) {
+      return hdfcShown[name];
+    }),
+    'drawer lists every after-offer charge name for the scheme, not only user-selected matches'
+  );
+  var hdfcEarly = compare.listSchemeChargePanelSections(hdfcCharges, hdfcOffer);
+  var hdfcProcessing = hdfcEarly.find(function (section) {
+    return section.label === 'Processing fee';
+  });
+  ok(
+    hdfcProcessing &&
+      hdfcProcessing.entries.length >= 6 &&
+      hdfcProcessing.entries.every(function (entry) {
+        return String(entry.detail || '').indexOf('CIBIL') >= 0;
+      }),
+    'drawer processing fee keeps every CIBIL band from the sheet, not the user score'
+  );
+  var freqDetail = compare.buildFeeTableEntries('Administrative Charges', [
+    {
+      charge_name: 'Administrative Charges',
+      fixed_amount: 0,
+      charge_unit: 'Sanction',
+      charge_frequency_other: 'At sanction/disbursement'
+    }
+  ]);
+  ok(
+    freqDetail.entries[0].detail.indexOf('At sanction/disbursement') >= 0,
+    'drawer particulars include published charge frequency from the sheet'
   );
   var metaOnly = compare.formatChargeMetaLine({
     fixed_amount: 500,
