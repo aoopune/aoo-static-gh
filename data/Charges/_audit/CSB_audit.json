@@ -1,0 +1,514 @@
+{
+  "bank_code": "CSB",
+  "bank_key": "csb bank",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 15,
+    "master_bank_charges_rows": 22,
+    "matched_ok": 2,
+    "matched_rename_only": 12,
+    "value_mismatches": 0,
+    "missing_in_master": 1,
+    "extra_in_master": 8,
+    "duplicate_issues": 0
+  },
+  "matched_ok": [
+    {
+      "source_name": "Advance Account Service Charge",
+      "source_facility": "Any",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-89",
+      "master_name": "Service charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 10; slab None–25000; fixed_amount_unit=annum; charge_unit=account; freq=Quarterly auto-debit",
+        "slab_basis master='Sanctioned loan amount' (source slab is loan-amount band from published schedule; treated equivalent)",
+        "gst_applicable: source notes Service tax/Swachh Bharat Cess/levies (14.50%); master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "source_facility": "Any",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-90",
+      "master_name": "Service charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 25; slab 25001–200000; fixed_amount_unit=annum; charge_unit=account; freq=Quarterly auto-debit",
+        "slab_basis master='Sanctioned loan amount' (source slab is loan-amount band from published schedule; treated equivalent)",
+        "gst_applicable: source notes Service tax/Swachh Bharat Cess/levies (14.50%); master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "source_facility": "Any",
+      "source_excel_row": 4,
+      "master_id": "CHG-OC-91",
+      "master_name": "Service charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 75; slab 200001–300000; fixed_amount_unit=annum; charge_unit=account; freq=Quarterly auto-debit",
+        "slab_basis master='Sanctioned loan amount' (source slab is loan-amount band from published schedule; treated equivalent)",
+        "gst_applicable: source notes Service tax/Swachh Bharat Cess/levies (14.50%); master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "source_facility": "Any",
+      "source_excel_row": 5,
+      "master_id": "CHG-OC-92",
+      "master_name": "Service charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 125; slab 300001–500000; fixed_amount_unit=annum; charge_unit=account; freq=Quarterly auto-debit",
+        "slab_basis master='Sanctioned loan amount' (source slab is loan-amount band from published schedule; treated equivalent)",
+        "gst_applicable: source notes Service tax/Swachh Bharat Cess/levies (14.50%); master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "source_facility": "Any",
+      "source_excel_row": 6,
+      "master_id": "CHG-OC-93",
+      "master_name": "Service charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 175; slab 500001–1000000; fixed_amount_unit=annum; charge_unit=account; freq=Quarterly auto-debit",
+        "slab_basis master='Sanctioned loan amount' (source slab is loan-amount band from published schedule; treated equivalent)",
+        "gst_applicable: source notes Service tax/Swachh Bharat Cess/levies (14.50%); master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "source_facility": "Any",
+      "source_excel_row": 7,
+      "master_id": "CHG-OC-94",
+      "master_name": "Service charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 250; slab 1000001–2500000; fixed_amount_unit=annum; charge_unit=account; freq=Quarterly auto-debit",
+        "slab_basis master='Sanctioned loan amount' (source slab is loan-amount band from published schedule; treated equivalent)",
+        "gst_applicable: source notes Service tax/Swachh Bharat Cess/levies (14.50%); master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "source_facility": "Any",
+      "source_excel_row": 8,
+      "master_id": "CHG-OC-95",
+      "master_name": "Service charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; slab 2500001–5000000; fixed_amount_unit=annum; charge_unit=account; freq=Quarterly auto-debit",
+        "slab_basis master='Sanctioned loan amount' (source slab is loan-amount band from published schedule; treated equivalent)",
+        "gst_applicable: source notes Service tax/Swachh Bharat Cess/levies (14.50%); master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "source_facility": "Any",
+      "source_excel_row": 9,
+      "master_id": "CHG-OC-96",
+      "master_name": "Service charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 750; slab 5000001–7500000; fixed_amount_unit=annum; charge_unit=account; freq=Quarterly auto-debit",
+        "slab_basis master='Sanctioned loan amount' (source slab is loan-amount band from published schedule; treated equivalent)",
+        "gst_applicable: source notes Service tax/Swachh Bharat Cess/levies (14.50%); master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "source_facility": "Any",
+      "source_excel_row": 10,
+      "master_id": "CHG-OC-97",
+      "master_name": "Service charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1000; slab 7500001–10000000; fixed_amount_unit=annum; charge_unit=account; freq=Quarterly auto-debit",
+        "slab_basis master='Sanctioned loan amount' (source slab is loan-amount band from published schedule; treated equivalent)",
+        "gst_applicable: source notes Service tax/Swachh Bharat Cess/levies (14.50%); master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "source_facility": "Any",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-98",
+      "master_name": "Service charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2000; slab 10000001–None; fixed_amount_unit=annum; charge_unit=account; freq=Quarterly auto-debit",
+        "slab_basis master='Sanctioned loan amount' (source slab is loan-amount band from published schedule; treated equivalent)",
+        "gst_applicable: source notes Service tax/Swachh Bharat Cess/levies (14.50%); master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Additional Housing Loan Service Charge at Disbursal",
+      "source_facility": "Term Loan",
+      "source_excel_row": 12,
+      "master_id": "CHG-OC-99",
+      "master_name": "Additional Housing Loan Service Charge at Disbursal",
+      "rename": false,
+      "soft_notes": [
+        "source Amount_Type=Formula 'Rs 100 per Rs 1 lakh of loan amount' encoded as master Fixed Amount 100 + fixed_amount_per_lakh_or_part=Yes",
+        "pct_base wording: source='Loan amount' master='Sanctioned loan amount' (treated equivalent)",
+        "frequency: source='At disbursal' master='At disbursement' (treated equivalent)",
+        "gst_applicable: source notes applicable taxes/levies; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Valuation Expenses",
+      "source_facility": "Any",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-100",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed At actuals",
+        "frequency: source='Each time' master='At Sanction' (soft note only; amount shape matches)",
+        "charge_unit: source='Per instance' master='Property'",
+        "property_valuation_scope master='Both' (source unspecified)",
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Inspection Charge",
+      "source_facility": "Any",
+      "source_excel_row": 15,
+      "master_id": "CHG-OC-101",
+      "master_name": "Inspection Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed At actuals; frequency Each time; charge_unit≈Instance",
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Cheque Bounce Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-102",
+      "master_name": "Cheque Bounce Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 500; frequency Each time; charge_unit=Instance",
+        "facility_type: source='Term Loan' master='Any' (broadening; amounts match — not counted as mismatch)",
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)"
+      ]
+    }
+  ],
+  "mismatches": [],
+  "missing_in_master": [
+    {
+      "source_name": "CERSAI Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 13,
+      "product": "Housing Loan",
+      "amount_type": "Fixed amount",
+      "amount": "100",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per property",
+      "frequency": "Each time",
+      "conditions": "Non-refundable charges under Central Registry of Securitization Asset Reconstruction and Security Interest of India. GST extra as published."
+    }
+  ],
+  "extra_in_master": [
+    {
+      "origin": "Offers.processing",
+      "count": 6,
+      "sample_charge_row_ids": [
+        "CHG-PROC-1157",
+        "CHG-PROC-1158",
+        "CHG-PROC-1159",
+        "CHG-PROC-1160",
+        "CHG-PROC-1161",
+        "CHG-PROC-1162"
+      ],
+      "all_charge_row_ids": [
+        "CHG-PROC-1157",
+        "CHG-PROC-1158",
+        "CHG-PROC-1159",
+        "CHG-PROC-1160",
+        "CHG-PROC-1161",
+        "CHG-PROC-1162"
+      ],
+      "detail": "summary",
+      "schemes": {
+        "Housing Loan": 6
+      },
+      "facilities": {
+        "Term Loan": 6
+      },
+      "rate_types": {
+        "Floating": 6
+      },
+      "percentage_min_max_fingerprints": {
+        "(0.006, 10000, None)": 6
+      },
+      "cibil_bands": [
+        {
+          "min": 800,
+          "max": 900,
+          "id": "CHG-PROC-1157"
+        },
+        {
+          "min": 750,
+          "max": 799,
+          "id": "CHG-PROC-1158"
+        },
+        {
+          "min": 700,
+          "max": 749,
+          "id": "CHG-PROC-1159"
+        },
+        {
+          "min": 650,
+          "max": 699,
+          "id": "CHG-PROC-1160"
+        },
+        {
+          "min": 600,
+          "max": 649,
+          "id": "CHG-PROC-1161"
+        },
+        {
+          "min": 300,
+          "max": 599,
+          "id": "CHG-PROC-1162"
+        }
+      ],
+      "internal_clone_groups_multiplicity_gt1": 0,
+      "internal_clone_rows": 0,
+      "reason": "Not in Structured_Data (source has advance-account service slabs / disbursal service / CERSAI / valuation / inspection / cheque bounce only — no processing-fee rows)"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1157",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.006,
+      "charge_min": 10000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "cibil_band": "800–900",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1158",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.006,
+      "charge_min": 10000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "cibil_band": "750–799",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1159",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.006,
+      "charge_min": 10000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "cibil_band": "700–749",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1160",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.006,
+      "charge_min": 10000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "cibil_band": "650–699",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1161",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.006,
+      "charge_min": 10000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "cibil_band": "600–649",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1162",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.006,
+      "charge_min": 10000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "cibil_band": "300–599",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-OD-99",
+      "charge_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.24,
+      "percentage_per_annum": "Yes",
+      "percentage_base_value": "Default_Amount",
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-85",
+      "charge_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility_type": "Term Loan",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0,
+      "percentage": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    }
+  ],
+  "renames": [
+    {
+      "source_name": "Advance Account Service Charge",
+      "master_name": "Service charges",
+      "master_id": "CHG-OC-89",
+      "source_excel_row": 2
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "master_name": "Service charges",
+      "master_id": "CHG-OC-90",
+      "source_excel_row": 3
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "master_name": "Service charges",
+      "master_id": "CHG-OC-91",
+      "source_excel_row": 4
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "master_name": "Service charges",
+      "master_id": "CHG-OC-92",
+      "source_excel_row": 5
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "master_name": "Service charges",
+      "master_id": "CHG-OC-93",
+      "source_excel_row": 6
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "master_name": "Service charges",
+      "master_id": "CHG-OC-94",
+      "source_excel_row": 7
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "master_name": "Service charges",
+      "master_id": "CHG-OC-95",
+      "source_excel_row": 8
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "master_name": "Service charges",
+      "master_id": "CHG-OC-96",
+      "source_excel_row": 9
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "master_name": "Service charges",
+      "master_id": "CHG-OC-97",
+      "source_excel_row": 10
+    },
+    {
+      "source_name": "Advance Account Service Charge",
+      "master_name": "Service charges",
+      "master_id": "CHG-OC-98",
+      "source_excel_row": 11
+    },
+    {
+      "source_name": "Valuation Expenses",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-100",
+      "source_excel_row": 14
+    },
+    {
+      "source_name": "Inspection Charge",
+      "master_name": "Inspection Charges",
+      "master_id": "CHG-OC-101",
+      "source_excel_row": 15
+    }
+  ],
+  "notes": [
+    "Source of truth: CSB_Home_Loan_Charges_Official.xlsx sheet Structured_Data (15 rows).",
+    "Master filter: Bank_charges where bank_key == 'csb bank' (22 rows).",
+    "Semantic matching used; renames allowed when amounts/slabs match.",
+    "Advance Account Service Charge → Service charges: all 10 published slabs present with identical fixed amounts and loan-amount bands.",
+    "Formula 'Rs 100 per Rs 1 lakh' correctly encoded as Fixed Amount + fixed_amount_per_lakh_or_part=Yes.",
+    "CERSAI Charge ₹100/property is the only Structured_Data row absent from master.",
+    "No Other-charges redundant/duplicate rows vs Structured_Data (all 14 OC rows map to source).",
+    "No Slab_Table origin rows for this bank.",
+    "No CSV.fixed_prepay origin rows for this bank.",
+    "Offers.processing: 6 CIBIL-banded rows share the same 0.60%/min ₹10,000 fee — distinct bands, not internal duplicates (clone groups multiplicity>1 = 0)."
+  ],
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 1,
+    "missing_bank_service_actionable": 0,
+    "extras_processing_not_error": 7,
+    "extras_prepay_ignored": 1,
+    "extras_overdue_no_action": 1,
+    "extras_other_charges_review": 0,
+    "value_mismatches": 0
+  },
+  "verdict_under_rules": "PASS"
+}

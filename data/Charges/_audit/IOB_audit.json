@@ -1,0 +1,1050 @@
+{
+  "bank_code": "IOB",
+  "bank_key": "indian overseas bank",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 41,
+    "master_bank_charges_rows": 83,
+    "matched_ok": 15,
+    "matched_rename_only": 11,
+    "value_mismatches": 0,
+    "missing_in_master": 15,
+    "extra_in_master": 56,
+    "duplicate_issues": 0
+  },
+  "matched_ok": [
+    {
+      "source_name": "Loan Documentation Charges",
+      "source_facility": "Any",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-473",
+      "master_name": "Loan Documentation Charges",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; slab None–200000; slab_basis=Sanctioned loan amount; charge_unit=loan; freq=Once at documentation",
+        "boundary 200000 shared with next slab (source 'Up to Rs 2L NIL' / 'Above Rs 2L'); gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Loan Documentation Charges",
+      "source_facility": "Any",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-474",
+      "master_name": "Loan Documentation Charges",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 1250; slab 200000–1000000; slab_basis=Sanctioned loan amount; charge_unit=loan; freq=Once at documentation; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Loan Documentation Charges",
+      "source_facility": "Any",
+      "source_excel_row": 4,
+      "master_id": "CHG-OC-475",
+      "master_name": "Loan Documentation Charges",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 2500; slab 1000000–2500000; slab_basis=Sanctioned loan amount; charge_unit=loan; freq=Once at documentation; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Loan Documentation Charges",
+      "source_facility": "Any",
+      "source_excel_row": 5,
+      "master_id": "CHG-OC-476",
+      "master_name": "Loan Documentation Charges",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 5000; slab 2500000–10000000; slab_basis=Sanctioned loan amount; charge_unit=loan; freq=Once at documentation; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Loan Documentation Charges",
+      "source_facility": "Any",
+      "source_excel_row": 6,
+      "master_id": "CHG-OC-477",
+      "master_name": "Loan Documentation Charges",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 50000; slab 10000000–100000000; slab_basis=Sanctioned loan amount; charge_unit=loan; freq=Once at documentation; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Loan Documentation Charges",
+      "source_facility": "Any",
+      "source_excel_row": 7,
+      "master_id": "CHG-OC-478",
+      "master_name": "Loan Documentation Charges",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 200000; slab 100000000–None; slab_basis=Sanctioned loan amount; charge_unit=loan; freq=Once at documentation; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Document Copy with Bank Official Present",
+      "source_facility": "Any",
+      "source_excel_row": 8,
+      "master_id": "CHG-OC-479",
+      "master_name": "Document Copy with Bank Official Present",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Formula 'Actual photocopying charges plus Rs.1000' → Fixed amount 1000 + actuals_in_addition_to_charge=Yes; charge_unit=Request; freq=Each time",
+        "note_1 preserves bank-official-present wording; note_2 states actual photocopying in addition; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Document Copy Sought by Customer",
+      "source_facility": "Any",
+      "source_excel_row": 9,
+      "master_id": "CHG-OC-480",
+      "master_name": "Loan Document Copy Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Formula 'Actual photocopying charges plus Rs.500' → Fixed amount 500 + actuals_in_addition_to_charge=Yes; charge_unit=Request; freq=Each time",
+        "rename Document Copy Sought by Customer → Loan Document Copy Charges; note_1 preserves customer-sought copies; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Rephasement or Deferment of Loan Installments",
+      "source_facility": "Any",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-481",
+      "master_name": "Rephasing or Deferment of Loan Installments",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.10%→0.001; charge_min=5000; charge_max=200000; charge_unit=Instance; freq=Each time",
+        "pct_base: source='limit' master='Outstanding loan amount' (soft approximation); rename Rephasement→Rephasing; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Substitution of Collateral Security or Personal Guarantee",
+      "source_facility": "Any",
+      "source_excel_row": 15,
+      "master_id": "CHG-OC-482",
+      "master_name": "Substitution of Collateral Security or Personal Guarantee Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.10%→0.001; charge_min=5000; charge_max=500000; charge_unit=Instance; freq=Each time",
+        "pct_base: source='limit' master='Outstanding loan amount' (soft); rename adds 'Charges'; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Release of Personal Guarantee or Collateral Security",
+      "source_facility": "Any",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-483",
+      "master_name": "Release of Personal Guarantee or Collateral Security",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Percentage 0.10%→0.001; charge_min=5000; charge_max=500000; charge_unit=Instance; freq=Each time",
+        "pct_base: source='limit' master='Outstanding loan amount' (soft); gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Search Report",
+      "source_facility": "Any",
+      "source_excel_row": 17,
+      "master_id": "CHG-OC-484",
+      "master_name": "Title Search Report Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1000; customer=Individual; charge_unit: source=per report master=Property (soft unit); freq=Each time",
+        "rename Search Report → Title Search Report Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Search Report",
+      "source_facility": "Any",
+      "source_excel_row": 18,
+      "master_id": "CHG-OC-485",
+      "master_name": "Title Search Report Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1500; customer Non-individual→Non-Individual; charge_unit=Property (soft vs per report); freq=Each time",
+        "rename Search Report → Title Search Report Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "No Dues Certificate",
+      "source_facility": "Any",
+      "source_excel_row": 20,
+      "master_id": "CHG-OC-486",
+      "master_name": "No Dues Certificate",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; charge_unit=Certificate; freq=on request; note_1='Priority sector customers.'; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "No Dues Certificate",
+      "source_facility": "Any",
+      "source_excel_row": 21,
+      "master_id": "CHG-OC-487",
+      "master_name": "No Dues Certificate",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charge_unit=Certificate; freq=on request; note_1 preserves non-priority Individual/Firm/Non-Individuals; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Documentation Fees",
+      "source_facility": "Term Loan",
+      "source_excel_row": 22,
+      "master_id": "CHG-OC-488",
+      "master_name": "Documentation Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; freq=At documentation; note_1='Nil as per State Government Guideline.'",
+        "product/scheme: source='MO GHARA Housing Scheme for State of Odisha' facility=Term Loan — master scheme unset / facility=Any (soft attribution); rename Documentation Fees → Documentation Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "CIC Fees",
+      "source_facility": "Term Loan",
+      "source_excel_row": 23,
+      "master_id": "CHG-OC-489",
+      "master_name": "CIC Fees",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; freq=Each report; note_1='Nil as per State Government Guideline.'",
+        "product/scheme: source='MO GHARA Housing Scheme for State of Odisha' facility=Term Loan — master scheme unset / facility=Any (soft); gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Floating to Fixed or Fixed to Floating Rate Switch",
+      "source_facility": "Term Loan",
+      "source_excel_row": 27,
+      "master_id": "CHG-OC-490",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.10%→0.001; charge_max=5000; charge_unit=Switch; freq=At the time of exercising the option",
+        "source single Vice Versa row expanded to 2 master rows: CHG-OC-490 Fixed→Floating + CHG-OC-491 Floating→Fixed; pct_base master='Outstanding loan amount' (source also allows sanctioned if not fully disbursed — soft partial); facility Term Loan→Any (soft); rename Floating to Fixed or Fixed to Floating Rate Switch → Interest Rate Type Switch Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Floating to Fixed or Fixed to Floating Rate Switch",
+      "source_facility": "Term Loan",
+      "source_excel_row": 27,
+      "master_id": "CHG-OC-491",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.10%→0.001; charge_max=5000; charge_unit=Switch; freq=At the time of exercising the option",
+        "source single Vice Versa row expanded to 2 master rows: CHG-OC-490 Fixed→Floating + CHG-OC-491 Floating→Fixed; pct_base master='Outstanding loan amount' (source also allows sanctioned if not fully disbursed — soft partial); facility Term Loan→Any (soft); rename Floating to Fixed or Fixed to Floating Rate Switch → Interest Rate Type Switch Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Duplicate Loan Account Statement",
+      "source_facility": "Any",
+      "source_excel_row": 29,
+      "master_id": "CHG-OC-492",
+      "master_name": "Statement of Account Charges - Duplicate",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 150; charge_unit=40 entries; freq=Each request; fixed_amount_unit=40 entries",
+        "rename Duplicate Loan Account Statement → Statement of Account Charges - Duplicate; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "CIBIL Charges",
+      "source_facility": "Any",
+      "source_excel_row": 32,
+      "master_id": "CHG-OC-493",
+      "master_name": "CIBIL Charges",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 100; customer=Individual; charge_unit=Report; freq=Each report; gst master='Yes' (soft; source Plus GST)"
+      ]
+    },
+    {
+      "source_name": "CIBIL Charges",
+      "source_facility": "Any",
+      "source_excel_row": 33,
+      "master_id": "CHG-OC-494",
+      "master_name": "CIBIL Charges",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 900; customer Non-individual→Non-Individual; charge_unit=Report; freq=Each report; gst master='Yes' (soft; source plus GST)"
+      ]
+    },
+    {
+      "source_name": "Cheque Return - Inward Return",
+      "source_facility": "Any",
+      "source_excel_row": 34,
+      "master_id": "CHG-OC-495",
+      "master_name": "Cheque Return - Inward Return",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 250; slab None–100000; slab_basis=Transaction amount; charge_unit=occasion; freq=Each return; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Cheque Return - Inward Return",
+      "source_facility": "Any",
+      "source_excel_row": 35,
+      "master_id": "CHG-OC-496",
+      "master_name": "Cheque Return - Inward Return",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 500; slab 100000–None; slab_basis=Transaction amount; charge_unit=occasion; freq=Each return; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "ECS/NACH Mandate Registration",
+      "source_facility": "Any",
+      "source_excel_row": 38,
+      "master_id": "CHG-OC-497",
+      "master_name": "ECS / NACH Mandate Registration Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 125; charge_unit=Mandate; freq=on registration",
+        "rename ECS/NACH Mandate Registration → ECS / NACH Mandate Registration Charge; FREEDOM SB/CD / Startup Current NIL exemptions in source Conditions not copied to master note/exemption (soft omission); gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "ECS Return - Inward Return",
+      "source_facility": "Any",
+      "source_excel_row": 39,
+      "master_id": "CHG-OC-498",
+      "master_name": "ECS / NACH Debit Return Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 200; slab None–100000; slab_basis=Transaction amount; charge_unit=occasion; freq=Each return; note_1='ECS Return Charges - Inward Return.'",
+        "rename ECS Return - Inward Return → ECS / NACH Debit Return Charge; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "ECS Return - Inward Return",
+      "source_facility": "Any",
+      "source_excel_row": 40,
+      "master_id": "CHG-OC-499",
+      "master_name": "ECS / NACH Debit Return Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; slab 100000–None; slab_basis=Transaction amount; charge_unit=occasion; freq=Each return; note_1='ECS Return Charges - Inward Return.'",
+        "rename ECS Return - Inward Return → ECS / NACH Debit Return Charge; gst master='Yes' (soft)"
+      ]
+    }
+  ],
+  "mismatches": [],
+  "missing_in_master": [
+    {
+      "source_name": "Mortgage Charges",
+      "source_excel_row": 10,
+      "facility": "Any",
+      "product": "Housing loans/ Subhagruha Loans",
+      "amount_type": "Nil",
+      "amount": "Nil",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": null,
+      "customer_type": "Any",
+      "location": null,
+      "charged_per": null,
+      "frequency": "once",
+      "conditions": "Mortgage charges are not applicable for Housing loans/ Subhagruha Loans. Schedule mortgage slabs apply only where land and building is taken as prime security (MCC/LAP accounts)."
+    },
+    {
+      "source_name": "Release of Mortgaged Securities on Closure",
+      "source_excel_row": 11,
+      "facility": "Any",
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "3000",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": 2500000,
+      "loan_amount_to": 5000000,
+      "customer_type": "Any",
+      "location": null,
+      "charged_per": "per release",
+      "frequency": "on closure",
+      "conditions": "Only for Registered Mortgage, not Equitable Mortgage. Loans of Rs 25 lacs and above."
+    },
+    {
+      "source_name": "Release of Mortgaged Securities on Closure",
+      "source_excel_row": 12,
+      "facility": "Any",
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "5000",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": 5000000,
+      "loan_amount_to": null,
+      "customer_type": "Any",
+      "location": null,
+      "charged_per": "per release",
+      "frequency": "on closure",
+      "conditions": "Only for Registered Mortgage, not Equitable Mortgage. Loans of Rs 25 lacs and above."
+    },
+    {
+      "source_name": "Change in Terms and Conditions",
+      "source_excel_row": 13,
+      "facility": "Any",
+      "product": "Any",
+      "amount_type": "Percentage",
+      "amount": "0.10%",
+      "min_amount": "10000",
+      "max_amount": "1000000",
+      "percentage_calculated_on": "Loan Amount",
+      "loan_amount_from": null,
+      "loan_amount_to": null,
+      "customer_type": "Any",
+      "location": null,
+      "charged_per": "per instance",
+      "frequency": "each time",
+      "conditions": "Recovery of service charges for services other than sanction of credit facilities. Row also covers change in items of machinery (corporate context)."
+    },
+    {
+      "source_name": "NOC for Takeover of Loan",
+      "source_excel_row": 19,
+      "facility": "Term Loan",
+      "product": "Housing Loans & Term Loans with floating interest rate in the name of individuals",
+      "amount_type": "Nil",
+      "amount": "Nil",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": null,
+      "customer_type": "Individual",
+      "location": null,
+      "charged_per": null,
+      "frequency": "on request",
+      "conditions": "Takeover NOC charge schedule applies other than Housing Loans and Term Loans with floating interest rate in the name of individuals."
+    },
+    {
+      "source_name": "All Bank Charges",
+      "source_excel_row": 24,
+      "facility": "Term Loan",
+      "product": "IOB EASY PLOT",
+      "amount_type": "Nil",
+      "amount": "Nil",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": null,
+      "customer_type": "Any",
+      "location": null,
+      "charged_per": null,
+      "frequency": null,
+      "conditions": "Staff/Ex Staff: No bank charges of any type."
+    },
+    {
+      "source_name": "Loan Documentation Charges",
+      "source_excel_row": 25,
+      "facility": "Term Loan",
+      "product": "IOB EASY PLOT",
+      "amount_type": "Formula",
+      "amount": "As applicable",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": null,
+      "customer_type": "Any",
+      "location": null,
+      "charged_per": null,
+      "frequency": null,
+      "conditions": "Non-Staff: Documentation Charges as applicable (see No. 10 Loan Documentation Charges slabs). Processing charge excluded from Structured_Data."
+    },
+    {
+      "source_name": "Loan Documentation Charges",
+      "source_excel_row": 26,
+      "facility": "Term Loan",
+      "product": "IOB HARIT SUBHAGRUHA",
+      "amount_type": "Formula",
+      "amount": "As applicable",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": null,
+      "customer_type": "Any",
+      "location": null,
+      "charged_per": null,
+      "frequency": null,
+      "conditions": "Documentation Charges as applicable (see No. 10 Loan Documentation Charges slabs). Processing charge excluded from Structured_Data."
+    },
+    {
+      "source_name": "Monthly Loan Account Statement (First/Original)",
+      "source_excel_row": 28,
+      "facility": "Any",
+      "product": "Any",
+      "amount_type": "Nil",
+      "amount": "Free",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": null,
+      "customer_type": null,
+      "location": null,
+      "charged_per": null,
+      "frequency": null,
+      "conditions": "Monthly statement of account (First/original). Through Internet - Free."
+    },
+    {
+      "source_name": "CERSAI Charges",
+      "source_excel_row": 30,
+      "facility": "Any",
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "50",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": 500000,
+      "customer_type": "Any",
+      "location": null,
+      "charged_per": "per registration",
+      "frequency": null,
+      "conditions": "LOAN LIMIT up to Rs 5 lacs."
+    },
+    {
+      "source_name": "CERSAI Charges",
+      "source_excel_row": 31,
+      "facility": "Any",
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "100",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": 500000,
+      "loan_amount_to": null,
+      "customer_type": "Any",
+      "location": null,
+      "charged_per": "per registration",
+      "frequency": null,
+      "conditions": "LOAN LIMIT greater than Rs 5 lacs."
+    },
+    {
+      "source_name": "Cheque Return - Outward return",
+      "source_excel_row": 36,
+      "facility": "Any",
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "250",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": 100000,
+      "customer_type": "Any",
+      "location": null,
+      "charged_per": "per occasion",
+      "frequency": "each return",
+      "conditions": "Outward return (Cheque deposited by our customer and returned by other Bank). GST applicable (bank states it is not a penal charge). Cheque return charges shall be levied only where the customer is at fault."
+    },
+    {
+      "source_name": "Cheque Return - Outward return",
+      "source_excel_row": 37,
+      "facility": "Any",
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "500",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": 100000,
+      "loan_amount_to": null,
+      "customer_type": "Any",
+      "location": null,
+      "charged_per": "per occasion",
+      "frequency": "each return",
+      "conditions": "Outward return (Cheque deposited by our customer and returned by other Bank). GST applicable (bank states it is not a penal charge). Cheque return charges shall be levied only where the customer is at fault."
+    },
+    {
+      "source_name": "ECS Return - Outward Return",
+      "source_excel_row": 41,
+      "facility": "Any",
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "150",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": 100000,
+      "customer_type": "Any",
+      "location": null,
+      "charged_per": "per occasion",
+      "frequency": "each return",
+      "conditions": "ECS Return Charges - Outward Return."
+    },
+    {
+      "source_name": "ECS Return - Outward Return",
+      "source_excel_row": 42,
+      "facility": "Any",
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "400",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": 100000,
+      "loan_amount_to": null,
+      "customer_type": "Any",
+      "location": null,
+      "charged_per": "per occasion",
+      "frequency": "each return",
+      "conditions": "ECS Return Charges - Outward Return."
+    }
+  ],
+  "extra_in_master": [
+    {
+      "kind": "Offers.processing",
+      "count": 46,
+      "sample_ids": [
+        "CHG-PROC-526",
+        "CHG-PROC-527",
+        "CHG-PROC-528",
+        "CHG-PROC-529",
+        "CHG-PROC-530",
+        "CHG-PROC-531",
+        "CHG-PROC-532",
+        "CHG-PROC-533"
+      ],
+      "all_ids": [
+        "CHG-PROC-526",
+        "CHG-PROC-527",
+        "CHG-PROC-528",
+        "CHG-PROC-529",
+        "CHG-PROC-530",
+        "CHG-PROC-531",
+        "CHG-PROC-532",
+        "CHG-PROC-533",
+        "CHG-PROC-534",
+        "CHG-PROC-535",
+        "CHG-PROC-536",
+        "CHG-PROC-537",
+        "CHG-PROC-538",
+        "CHG-PROC-539",
+        "CHG-PROC-540",
+        "CHG-PROC-541",
+        "CHG-PROC-542",
+        "CHG-PROC-543",
+        "CHG-PROC-544",
+        "CHG-PROC-545",
+        "CHG-PROC-546",
+        "CHG-PROC-547",
+        "CHG-PROC-548",
+        "CHG-PROC-549",
+        "CHG-PROC-550",
+        "CHG-PROC-551",
+        "CHG-PROC-552",
+        "CHG-PROC-553",
+        "CHG-PROC-554",
+        "CHG-PROC-555",
+        "CHG-PROC-556",
+        "CHG-PROC-557",
+        "CHG-PROC-558",
+        "CHG-PROC-559",
+        "CHG-PROC-560",
+        "CHG-PROC-561",
+        "CHG-PROC-562",
+        "CHG-PROC-563",
+        "CHG-PROC-564",
+        "CHG-PROC-565",
+        "CHG-PROC-566",
+        "CHG-PROC-567",
+        "CHG-PROC-568",
+        "CHG-PROC-569",
+        "CHG-PROC-570",
+        "CHG-PROC-571"
+      ],
+      "schemes": {
+        "Subhagruha Housing Loan": 30,
+        "Subhagruha Top Up Loan": 16
+      },
+      "fingerprints": [
+        {
+          "percentage": 0.005,
+          "charge_max": 20000,
+          "facility_type": "Term Loan",
+          "rate_type": "Floating",
+          "scheme": "Subhagruha Housing Loan",
+          "loan_amount_min": 1,
+          "loan_amount_max": 7500000,
+          "occupation": "Salaried",
+          "purpose": "Regular Home Loan",
+          "count": 7
+        },
+        {
+          "percentage": 0.005,
+          "charge_max": 20000,
+          "facility_type": "Term Loan",
+          "rate_type": "Floating",
+          "scheme": "Subhagruha Housing Loan",
+          "loan_amount_min": 1,
+          "loan_amount_max": 7500000,
+          "occupation": "Self-Employed",
+          "purpose": "Regular Home Loan",
+          "count": 7
+        },
+        {
+          "percentage": 0.005,
+          "charge_max": 20000,
+          "facility_type": "Term Loan",
+          "rate_type": "Floating",
+          "scheme": "Subhagruha Top Up Loan",
+          "loan_amount_min": 1,
+          "loan_amount_max": 7500000,
+          "occupation": "Any",
+          "purpose": "Top-up Loan",
+          "count": 7
+        },
+        {
+          "percentage": 0.005,
+          "charge_max": 25000,
+          "facility_type": "Term Loan",
+          "rate_type": "Floating",
+          "scheme": "Subhagruha Housing Loan",
+          "loan_amount_min": 7500001,
+          "loan_amount_max": 1000000000,
+          "occupation": "Salaried",
+          "purpose": "Regular Home Loan",
+          "count": 7
+        },
+        {
+          "percentage": 0.005,
+          "charge_max": 25000,
+          "facility_type": "Term Loan",
+          "rate_type": "Floating",
+          "scheme": "Subhagruha Housing Loan",
+          "loan_amount_min": 7500001,
+          "loan_amount_max": 1000000000,
+          "occupation": "Self-Employed",
+          "purpose": "Regular Home Loan",
+          "count": 7
+        },
+        {
+          "percentage": 0.005,
+          "charge_max": 25000,
+          "facility_type": "Term Loan",
+          "rate_type": "Floating",
+          "scheme": "Subhagruha Top Up Loan",
+          "loan_amount_min": 7500001,
+          "loan_amount_max": 1000000000,
+          "occupation": "Any",
+          "purpose": "Top-up Loan",
+          "count": 7
+        },
+        {
+          "percentage": 0.005,
+          "charge_max": 20000,
+          "facility_type": "Term Loan",
+          "rate_type": "Fixed",
+          "scheme": "Subhagruha Housing Loan",
+          "loan_amount_min": 1,
+          "loan_amount_max": 7500000,
+          "occupation": "Any",
+          "purpose": "Regular Home Loan",
+          "count": 1
+        },
+        {
+          "percentage": 0.005,
+          "charge_max": 20000,
+          "facility_type": "Term Loan",
+          "rate_type": "Fixed",
+          "scheme": "Subhagruha Top Up Loan",
+          "loan_amount_min": 1,
+          "loan_amount_max": 7500000,
+          "occupation": "Any",
+          "purpose": "Top-up Loan",
+          "count": 1
+        },
+        {
+          "percentage": 0.005,
+          "charge_max": 25000,
+          "facility_type": "Term Loan",
+          "rate_type": "Fixed",
+          "scheme": "Subhagruha Housing Loan",
+          "loan_amount_min": 7500001,
+          "loan_amount_max": 1000000000,
+          "occupation": "Any",
+          "purpose": "Regular Home Loan",
+          "count": 1
+        },
+        {
+          "percentage": 0.005,
+          "charge_max": 25000,
+          "facility_type": "Term Loan",
+          "rate_type": "Fixed",
+          "scheme": "Subhagruha Top Up Loan",
+          "loan_amount_min": 7500001,
+          "loan_amount_max": 1000000000,
+          "occupation": "Any",
+          "purpose": "Top-up Loan",
+          "count": 1
+        }
+      ],
+      "cibil_bands": [
+        {
+          "min": -1,
+          "max": 0
+        },
+        {
+          "min": 680,
+          "max": 699
+        },
+        {
+          "min": 700,
+          "max": 724
+        },
+        {
+          "min": 725,
+          "max": 749
+        },
+        {
+          "min": 750,
+          "max": 774
+        },
+        {
+          "min": 775,
+          "max": 799
+        },
+        {
+          "min": 800,
+          "max": 900
+        }
+      ],
+      "internal_clone_groups_with_cibil": 0,
+      "note": "Not in Structured_Data (IOB SOC covers documentation, copies, mortgage/release, T&C change, rephasement, collateral, search, NOC, no-dues, MO GHARA nils, Easy Plot/Harit pointers, rate switch, statements, CERSAI, CIBIL, cheque/ECS returns, mandate — no processing-fee rows). Floating rows use cibil_band_score_*; Fixed rows have no CIBIL band."
+    },
+    {
+      "kind": "Offers.overdue",
+      "master_id": "CHG-OD-48",
+      "charge_name": "Overdue charges",
+      "facility_type": "Term Loan",
+      "scheme": "Subhagruha Housing Loan",
+      "rate_type": "Floating",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Default_Amount",
+      "note_1": null,
+      "purpose": "Regular Home Loan"
+    },
+    {
+      "kind": "Offers.overdue",
+      "master_id": "CHG-OD-49",
+      "charge_name": "Overdue charges",
+      "facility_type": "Term Loan",
+      "scheme": "Subhagruha Top Up Loan",
+      "rate_type": "Floating",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Default_Amount",
+      "note_1": null,
+      "purpose": "Top-up Loan"
+    },
+    {
+      "kind": "Offers.overdue",
+      "master_id": "CHG-OD-50",
+      "charge_name": "Overdue charges",
+      "facility_type": "Term Loan",
+      "scheme": "Subhagruha Housing Loan",
+      "rate_type": "Fixed",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Default_Amount",
+      "note_1": null,
+      "purpose": "Regular Home Loan"
+    },
+    {
+      "kind": "Offers.overdue",
+      "master_id": "CHG-OD-51",
+      "charge_name": "Overdue charges",
+      "facility_type": "Term Loan",
+      "scheme": "Subhagruha Top Up Loan",
+      "rate_type": "Fixed",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Default_Amount",
+      "note_1": null,
+      "purpose": "Top-up Loan"
+    },
+    {
+      "kind": "Offers.prepayment",
+      "master_id": "CHG-PRE-37",
+      "charge_name": "Prepayment charges",
+      "facility_type": "Term Loan",
+      "scheme": "Subhagruha Housing Loan",
+      "rate_type": "Floating",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0,
+      "percentage": null,
+      "percentage_base_value": null,
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "purpose": "Regular Home Loan"
+    },
+    {
+      "kind": "Offers.prepayment",
+      "master_id": "CHG-PRE-38",
+      "charge_name": "Prepayment charges",
+      "facility_type": "Term Loan",
+      "scheme": "Subhagruha Top Up Loan",
+      "rate_type": "Floating",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0,
+      "percentage": null,
+      "percentage_base_value": null,
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "purpose": "Top-up Loan"
+    },
+    {
+      "kind": "CSV.fixed_prepay",
+      "master_id": "CHG-PRE-194",
+      "charge_name": "Prepayment charges",
+      "facility_type": "Term Loan",
+      "scheme": null,
+      "rate_type": "Fixed",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0,
+      "percentage": null,
+      "percentage_base_value": null,
+      "note_1": "Prepayment nil (CSV NIL)",
+      "purpose": "Regular Home Loan"
+    },
+    {
+      "kind": "CSV.fixed_prepay",
+      "master_id": "CHG-PRE-195",
+      "charge_name": "Prepayment charges (takeover)",
+      "facility_type": "Term Loan",
+      "scheme": null,
+      "rate_type": "Fixed",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Amount_Being_Paid",
+      "note_1": null,
+      "purpose": "Regular Home Loan"
+    },
+    {
+      "kind": "CSV.fixed_prepay",
+      "master_id": "CHG-PRE-196",
+      "charge_name": "Prepayment charges",
+      "facility_type": "Overdraft",
+      "scheme": null,
+      "rate_type": "Fixed",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0,
+      "percentage": null,
+      "percentage_base_value": null,
+      "note_1": "Prepayment nil (CSV NIL)",
+      "purpose": "Regular Home Loan"
+    },
+    {
+      "kind": "CSV.fixed_prepay",
+      "master_id": "CHG-PRE-197",
+      "charge_name": "Prepayment charges (takeover)",
+      "facility_type": "Overdraft",
+      "scheme": null,
+      "rate_type": "Fixed",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Amount_Being_Paid",
+      "note_1": null,
+      "purpose": "Regular Home Loan"
+    }
+  ],
+  "renames": [
+    {
+      "from": "Document Copy Sought by Customer",
+      "to": "Loan Document Copy Charges",
+      "source_excel_row": 9,
+      "master_id": "CHG-OC-480"
+    },
+    {
+      "from": "Rephasement or Deferment of Loan Installments",
+      "to": "Rephasing or Deferment of Loan Installments",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-481"
+    },
+    {
+      "from": "Substitution of Collateral Security or Personal Guarantee",
+      "to": "Substitution of Collateral Security or Personal Guarantee Charges",
+      "source_excel_row": 15,
+      "master_id": "CHG-OC-482"
+    },
+    {
+      "from": "Search Report",
+      "to": "Title Search Report Fees",
+      "source_excel_row": 17,
+      "master_id": "CHG-OC-484"
+    },
+    {
+      "from": "Search Report",
+      "to": "Title Search Report Fees",
+      "source_excel_row": 18,
+      "master_id": "CHG-OC-485"
+    },
+    {
+      "from": "Documentation Fees",
+      "to": "Documentation Charges",
+      "source_excel_row": 22,
+      "master_id": "CHG-OC-488"
+    },
+    {
+      "from": "Floating to Fixed or Fixed to Floating Rate Switch",
+      "to": "Interest Rate Type Switch Fees",
+      "source_excel_row": 27,
+      "master_id": "CHG-OC-490"
+    },
+    {
+      "from": "Floating to Fixed or Fixed to Floating Rate Switch",
+      "to": "Interest Rate Type Switch Fees",
+      "source_excel_row": 27,
+      "master_id": "CHG-OC-491"
+    },
+    {
+      "from": "Duplicate Loan Account Statement",
+      "to": "Statement of Account Charges - Duplicate",
+      "source_excel_row": 29,
+      "master_id": "CHG-OC-492"
+    },
+    {
+      "from": "ECS/NACH Mandate Registration",
+      "to": "ECS / NACH Mandate Registration Charge",
+      "source_excel_row": 38,
+      "master_id": "CHG-OC-497"
+    },
+    {
+      "from": "ECS Return - Inward Return",
+      "to": "ECS / NACH Debit Return Charge",
+      "source_excel_row": 39,
+      "master_id": "CHG-OC-498"
+    },
+    {
+      "from": "ECS Return - Inward Return",
+      "to": "ECS / NACH Debit Return Charge",
+      "source_excel_row": 40,
+      "master_id": "CHG-OC-499"
+    }
+  ],
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 4,
+    "missing_bank_service_actionable": 11,
+    "extras_processing_not_error": 1,
+    "extras_prepay_ignored": 6,
+    "extras_overdue_no_action": 0,
+    "extras_other_charges_review": 0,
+    "value_mismatches": 0
+  },
+  "verdict_under_rules": "FAIL"
+}

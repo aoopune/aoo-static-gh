@@ -1,0 +1,545 @@
+{
+  "bank_code": "JKB",
+  "bank_key": "jammu and kashmir bank",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 27,
+    "master_bank_charges_rows": 31,
+    "matched_ok": 8,
+    "matched_rename_only": 13,
+    "value_mismatches": 2,
+    "missing_in_master": 4,
+    "extra_in_master": 9,
+    "duplicate_issues": 0
+  },
+  "matched_ok": [
+    {
+      "source_name": "Ceding of Charge on Security including Pari Passu Charge",
+      "source_facility": "Any",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-520",
+      "master_name": "Ceding of Charge on Security including Pari Passu Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Percentage 0.05%→0.0005; charge_min=3000; charge_max=20000; charge_unit=Request; freq=Each approval; pct_base: source='Limit' master='Sanctioned loan amount' (soft); exemptions 1–3 preserved; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Issue of Certificates (No Dues / Balance / Interest / Account Maintaining)",
+      "source_facility": "Any",
+      "source_excel_row": 18,
+      "master_id": "CHG-OC-523",
+      "master_name": "Issue of Certificates",
+      "rename": false,
+      "soft_notes": [
+        "Priority Sector Nil encoded as exemption_1='Priority sector loans' on CHG-OC-523 (₹200 Issue of Certificates) rather than separate Fixed amount 0 row; values semantically present (soft encoding)"
+      ]
+    },
+    {
+      "source_name": "Signature Verification / Photo Attestation",
+      "source_facility": "Any",
+      "source_excel_row": 20,
+      "master_id": "CHG-OC-525",
+      "master_name": "Signature Verification / Photo Attestation",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 200; charge_unit=Instance; freq: source='Each instance' master='Each time' (soft equivalent); gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Exchange / Remittance Charges on Term Loan Disbursement Drafts",
+      "source_facility": "Term Loan",
+      "source_excel_row": 22,
+      "master_id": "CHG-OC-526",
+      "master_name": "Exchange / Remittance Charges on Term Loan Disbursement Drafts",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; facility=Term Loan; charge_unit=Disbursement remittance; freq=At disbursement; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NACH / ECS Mandate Registration Charge",
+      "source_facility": "Any",
+      "source_excel_row": 23,
+      "master_id": "CHG-OC-527",
+      "master_name": "NACH / ECS Mandate Registration Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 50; charge_unit=Mandate; freq=One time; note_1 preserves NACH/ECS including E-mandate; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Cheque Return Unpaid — Local Cheque Returned by Other Banks",
+      "source_facility": "Any",
+      "source_excel_row": 25,
+      "master_id": "CHG-OC-532",
+      "master_name": "Cheque Return Unpaid - Local Cheque Returned by Other Banks",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 200; charge_unit: source=Per instrument master=Instance (soft unit); freq=Each return; em dash→hyphen normalize; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Cheque Return Unpaid — Outstation Cheque",
+      "source_facility": "Any",
+      "source_excel_row": 27,
+      "master_id": "CHG-OC-530",
+      "master_name": "Cheque Return Unpaid - Outstation Cheque",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Formula ₹500 + out of pocket → Fixed amount 500 + out_of_pocket_expenses_additional=Yes; charge_unit=Instrument; freq=Each return; em dash→hyphen normalize; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Over the Counter Cheque Return Charge",
+      "source_facility": "Any",
+      "source_excel_row": 28,
+      "master_id": "CHG-OC-531",
+      "master_name": "Over the Counter Cheque Return Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 100; charge_unit=Instrument; freq=Each return; notes preserve OTC/manual-deduct / no-fault wording; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Inspection Charge",
+      "source_facility": "Any",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-511",
+      "master_name": "Inspection Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Formula 'Actual expenses + Rs.1000' → Fixed amount 1000 + actuals_in_addition_to_charge=Yes; slab None–1000000; slab_basis=Sanctioned loan amount; charge_frequency_per_financial_year=1; charge_unit: source=Per borrower entity master=Instance (soft); rename Inspection Charge→Inspection Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Inspection Charge",
+      "source_facility": "Any",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-512",
+      "master_name": "Inspection Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Formula 'Actual expenses + Rs.2000' → Fixed amount 2000 + actuals_in_addition_to_charge=Yes; slab 1000001–10000000; slab_basis=Sanctioned loan amount; charge_frequency_per_financial_year=1; rename Inspection Charge→Inspection Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Inspection Charge",
+      "source_facility": "Any",
+      "source_excel_row": 4,
+      "master_id": "CHG-OC-513",
+      "master_name": "Inspection Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Formula 'Actual expenses + Rs.3000' → Fixed amount 3000 + actuals_in_addition_to_charge=Yes; slab 10000001–50000000; slab_basis=Sanctioned loan amount; charge_frequency_per_financial_year=1; rename Inspection Charge→Inspection Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Inspection Charge",
+      "source_facility": "Any",
+      "source_excel_row": 5,
+      "master_id": "CHG-OC-514",
+      "master_name": "Inspection Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Formula 'Actual expenses + Rs.6000' → Fixed amount 6000 + actuals_in_addition_to_charge=Yes; slab 50000001–None; slab_basis=Sanctioned loan amount; charge_frequency_per_financial_year=1; rename Inspection Charge→Inspection Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Commitment Charge — Delayed Drawdown",
+      "source_facility": "Term Loan",
+      "source_excel_row": 6,
+      "master_id": "CHG-OC-515",
+      "master_name": "Commitment Charge - Delayed drawdown",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 1.00%→0.01; slab 10000001–None; facility=Term Loan; grace_period_months=3; charge_unit=delayed drawdown event; pct_base master='Delayed drawdown amount' (source wording soft); rename em dash/Drawdown casing; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Term Loan Review Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 7,
+      "master_id": "CHG-OC-516",
+      "master_name": "Term Loan Review Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.05%→0.0005; charge_max=250000; slab None–500000000; facility=Term Loan; pct_base: source='Loan Limit' master='Sanctioned loan amount' (soft); rename Term Loan Review Charge→Term Loan Review Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Term Loan Review Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 8,
+      "master_id": "CHG-OC-517",
+      "master_name": "Term Loan Review Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.10%→0.001; charge_max=500000; slab 500000001–None; facility=Term Loan; pct_base: source='Loan Limit' master='Sanctioned loan amount' (soft); rename Term Loan Review Charge→Term Loan Review Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Credit Information Report (Consumer CIR)",
+      "source_facility": "Any",
+      "source_excel_row": 9,
+      "master_id": "CHG-OC-518",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 50; charge_unit=Report; freq=Each time CIR is obtained; rename Credit Information Report (Consumer CIR)→Credit Information Report (CIC) Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Modification in Terms & Conditions of Sanction",
+      "source_facility": "Any",
+      "source_excel_row": 13,
+      "master_id": "CHG-OC-519",
+      "master_name": "Sanction Amendment / Modification Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.05%→0.0005; charge_min=3000; charge_max=20000; charge_unit=Request; freq=Each approval; pct_base: source='Limit' master='Sanctioned loan amount' (soft); exemptions 1–3 preserved; rename Modification in Terms & Conditions of Sanction→Sanction Amendment / Modification Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Revalidation of Sanction",
+      "source_facility": "Any",
+      "source_excel_row": 15,
+      "master_id": "CHG-OC-521",
+      "master_name": "Revalidation of Sanction Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.05%→0.0005; charge_min=3000; charge_max=20000; charge_unit=Request; freq=Each approval; same Z1 exemptions; rename Revalidation of Sanction→Revalidation of Sanction Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Other Miscellaneous Approvals (Advances)",
+      "source_facility": "Any",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-522",
+      "master_name": "Other miscellaneous approvals not specified",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.05%→0.0005; charge_min=3000; charge_max=20000; charge_unit=Request; freq=Each approval; same Z1 exemptions; rename Other Miscellaneous Approvals (Advances)→Other miscellaneous approvals not specified; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Issue of Certificates (No Dues / Balance / Interest / Account Maintaining)",
+      "source_facility": "Any",
+      "source_excel_row": 17,
+      "master_id": "CHG-OC-523",
+      "master_name": "Issue of Certificates",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 200; charge_unit=Certificate; freq=Each issuance; note_1 preserves No dues/Balance/Interest/Account maintaining; exemption_1 Priority sector; rename long Issue of Certificates title→Issue of Certificates; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NACH / ECS Failed Mandate (Insufficient Funds)",
+      "source_facility": "Any",
+      "source_excel_row": 24,
+      "master_id": "CHG-OC-528",
+      "master_name": "ECS / NACH Debit Return Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 200; charge_unit=Return; freq=Each return; note_1='Failed Mandate(Debit) on account of Insufficient Funds.'; rename NACH / ECS Failed Mandate (Insufficient Funds)→ECS / NACH Debit Return Charge; gst master='Yes' (soft)"
+      ]
+    }
+  ],
+  "mismatches": [
+    {
+      "source_name": "Solvency Certificate",
+      "source_facility": "Any",
+      "source_excel_row": 19,
+      "master_id": "CHG-OC-524",
+      "master_name": "Solvency Certificate Charges",
+      "field_diffs": [
+        {
+          "field": "fixed_amount_per_lakh_or_part",
+          "source": "Formula ₹200/- + GST per Lakh (requires Fixed amount 200 + fixed_amount_per_lakh_or_part=Yes)",
+          "master": null,
+          "note": "Master stores flat Fixed amount 200 with charge_min=1000 charge_max=15000 but omits fixed_amount_per_lakh_or_part=Yes; without the flag the ₹200/lakh formula is incorrect"
+        }
+      ],
+      "soft_notes": [
+        "rename Solvency Certificate→Solvency Certificate Charges would be OK if per-lakh flag set",
+        "min/max 1000/15000 match source"
+      ]
+    },
+    {
+      "source_name": "Cheque Return Unpaid — Cheque Drawn on Us",
+      "source_facility": "Any",
+      "source_excel_row": 26,
+      "master_id": "CHG-OC-529",
+      "master_name": "Cheque Return Unpaid - Cheque Drawn on Us",
+      "field_diffs": [
+        {
+          "field": "fixed_amount",
+          "source": 500,
+          "master": 200,
+          "note": "Source F1 Local Cheques ii. Cheque (drawn on us) returned unpaid: ₹500; master has ₹200 (same as Local Cheque Returned by Other Banks)"
+        }
+      ],
+      "soft_notes": [
+        "name em dash→hyphen normalize OK; notes preserve local-cheque / no-fault wording"
+      ]
+    }
+  ],
+  "missing_in_master": [
+    {
+      "source_name": "CERSAI Creation or Modification of Security Interest",
+      "source_facility": "Any",
+      "source_product": "Housing Loan",
+      "source_excel_row": 10,
+      "amount_type": "Fixed amount",
+      "amount": "100",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": 500000,
+      "customer_type": "Any",
+      "charged_per": "Per creation or modification",
+      "frequency": "On creation or modification of security interest",
+      "conditions": "For loans up to Rs.5.00 Lacs. Plus 18% GST."
+    },
+    {
+      "source_name": "CERSAI Creation or Modification of Security Interest",
+      "source_facility": "Any",
+      "source_product": "Housing Loan",
+      "source_excel_row": 11,
+      "amount_type": "Fixed amount",
+      "amount": "200",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": 500000,
+      "loan_amount_to": null,
+      "customer_type": "Any",
+      "charged_per": "Per creation or modification",
+      "frequency": "On creation or modification of security interest",
+      "conditions": "For loans of ₹ 5.00 Lacs & above. Plus 18% GST."
+    },
+    {
+      "source_name": "CERSAI Search",
+      "source_facility": "Any",
+      "source_product": "Housing Loan",
+      "source_excel_row": 12,
+      "amount_type": "Fixed amount",
+      "amount": "20",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": null,
+      "customer_type": "Any",
+      "charged_per": "Per search",
+      "frequency": "Each search",
+      "conditions": "Search for an information on CERSAI. Plus 18% GST."
+    },
+    {
+      "source_name": "Out of Pocket Expenses (Courier, Inspection Conveyance, Special Audit, etc.)",
+      "source_facility": "Any",
+      "source_product": "Housing Loan",
+      "source_excel_row": 21,
+      "amount_type": "At actuals",
+      "amount": "At actuals",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": null,
+      "customer_type": "Any",
+      "charged_per": "Per service",
+      "frequency": "As incurred",
+      "conditions": "Recovered in full on actual cost basis for Courier/dispatch of documents/outstation cheques, telecommunication, swift operations, local conveyance onsite inspections/special audit of borrowers etc."
+    }
+  ],
+  "extra_in_master": [
+    {
+      "kind": "Offers.processing",
+      "count": 5,
+      "sample_ids": [
+        "CHG-PROC-753",
+        "CHG-PROC-754",
+        "CHG-PROC-755",
+        "CHG-PROC-756",
+        "CHG-PROC-757"
+      ],
+      "schemes": [
+        "Housing Loan"
+      ],
+      "fingerprints": {
+        "percentage_min_max": {
+          "(0.0025, 2000, 50000)": 5
+        },
+        "cibil_bands": [
+          [
+            750,
+            900
+          ],
+          [
+            726,
+            749
+          ],
+          [
+            701,
+            725
+          ],
+          [
+            675,
+            700
+          ],
+          [
+            300,
+            674
+          ]
+        ],
+        "internal_clone_groups_multiplicity_gt1": 0
+      },
+      "note": "Not in Structured_Data (source is JKB SOC Annexure-I — inspection, commitment/review, CIR, CERSAI, sanction amendments, certificates, remittance nil, NACH/cheque returns; no processing-fee rows)."
+    },
+    {
+      "kind": "Offers.overdue",
+      "master_id": "CHG-OD-69",
+      "master_name": "Overdue charges",
+      "facility_type": "Term Loan",
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "percentage": 0.002,
+      "percentage_per_annum": "Yes",
+      "percentage_base_value": "Default_Amount",
+      "charge_min": 200,
+      "note": "overdue_whichever_higher=Yes"
+    },
+    {
+      "kind": "Offers.prepayment",
+      "master_id": "CHG-PRE-54",
+      "master_name": "Prepayment charges",
+      "facility_type": "Term Loan",
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "fixed_amount": 0,
+      "note": "Prepayment not charged (prepayment_applicable=No)"
+    },
+    {
+      "kind": "CSV.fixed_prepay",
+      "master_id": "CHG-PRE-246",
+      "master_name": "Prepayment charges",
+      "facility_type": "Term Loan",
+      "rate_type": "Fixed",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Amount_Being_Paid",
+      "source_ref": "Jammu and Kashmir Bank|TL_self"
+    },
+    {
+      "kind": "CSV.fixed_prepay",
+      "master_id": "CHG-PRE-247",
+      "master_name": "Prepayment charges (takeover)",
+      "facility_type": "Term Loan",
+      "rate_type": "Fixed",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Amount_Being_Paid",
+      "source_ref": "Jammu and Kashmir Bank|TL_take"
+    }
+  ],
+  "renames": [
+    {
+      "source_name": "Inspection Charge",
+      "master_name": "Inspection Charges",
+      "master_id": "CHG-OC-511",
+      "source_excel_row": 2
+    },
+    {
+      "source_name": "Inspection Charge",
+      "master_name": "Inspection Charges",
+      "master_id": "CHG-OC-512",
+      "source_excel_row": 3
+    },
+    {
+      "source_name": "Inspection Charge",
+      "master_name": "Inspection Charges",
+      "master_id": "CHG-OC-513",
+      "source_excel_row": 4
+    },
+    {
+      "source_name": "Inspection Charge",
+      "master_name": "Inspection Charges",
+      "master_id": "CHG-OC-514",
+      "source_excel_row": 5
+    },
+    {
+      "source_name": "Commitment Charge — Delayed Drawdown",
+      "master_name": "Commitment Charge - Delayed drawdown",
+      "master_id": "CHG-OC-515",
+      "source_excel_row": 6
+    },
+    {
+      "source_name": "Term Loan Review Charge",
+      "master_name": "Term Loan Review Charges",
+      "master_id": "CHG-OC-516",
+      "source_excel_row": 7
+    },
+    {
+      "source_name": "Term Loan Review Charge",
+      "master_name": "Term Loan Review Charges",
+      "master_id": "CHG-OC-517",
+      "source_excel_row": 8
+    },
+    {
+      "source_name": "Credit Information Report (Consumer CIR)",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "master_id": "CHG-OC-518",
+      "source_excel_row": 9
+    },
+    {
+      "source_name": "Modification in Terms & Conditions of Sanction",
+      "master_name": "Sanction Amendment / Modification Charges",
+      "master_id": "CHG-OC-519",
+      "source_excel_row": 13
+    },
+    {
+      "source_name": "Revalidation of Sanction",
+      "master_name": "Revalidation of Sanction Charges",
+      "master_id": "CHG-OC-521",
+      "source_excel_row": 15
+    },
+    {
+      "source_name": "Other Miscellaneous Approvals (Advances)",
+      "master_name": "Other miscellaneous approvals not specified",
+      "master_id": "CHG-OC-522",
+      "source_excel_row": 16
+    },
+    {
+      "source_name": "Issue of Certificates (No Dues / Balance / Interest / Account Maintaining)",
+      "master_name": "Issue of Certificates",
+      "master_id": "CHG-OC-523",
+      "source_excel_row": 17
+    },
+    {
+      "source_name": "NACH / ECS Failed Mandate (Insufficient Funds)",
+      "master_name": "ECS / NACH Debit Return Charge",
+      "master_id": "CHG-OC-528",
+      "source_excel_row": 24
+    },
+    {
+      "source_name": "Solvency Certificate",
+      "master_name": "Solvency Certificate Charges",
+      "master_id": "CHG-OC-524",
+      "source_excel_row": 19,
+      "note": "rename only; values FAIL (missing fixed_amount_per_lakh_or_part)"
+    }
+  ],
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 3,
+    "missing_bank_service_actionable": 1,
+    "extras_processing_not_error": 1,
+    "extras_prepay_ignored": 3,
+    "extras_overdue_no_action": 0,
+    "extras_other_charges_review": 0,
+    "value_mismatches": 2
+  },
+  "verdict_under_rules": "FAIL"
+}

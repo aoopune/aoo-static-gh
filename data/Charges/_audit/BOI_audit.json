@@ -1,0 +1,851 @@
+{
+  "bank_code": "BOI",
+  "bank_key": "bank of india",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 34,
+    "master_bank_charges_rows": 162,
+    "matched_ok": 1,
+    "matched_rename_only": 8,
+    "value_mismatches": 0,
+    "missing_in_master": 25,
+    "extra_in_master": 153,
+    "duplicate_issues": 1
+  },
+  "matched_ok": [
+    {
+      "source_name": "Conversion / Rate Switch Charge",
+      "source_facility": "Both",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-57",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-59",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true
+    },
+    {
+      "source_name": "Legal / Technical Verification Fee",
+      "source_facility": "Both",
+      "source_excel_row": 4,
+      "master_id": "CHG-OC-60",
+      "master_name": "Legal / Technical Verification Fee",
+      "rename": false
+    },
+    {
+      "source_name": "Credit Report (CIBIL/CIC) Charge",
+      "source_facility": "Both",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-61",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "rename": true
+    },
+    {
+      "source_name": "Credit Report (All Four CIC) Charge",
+      "source_facility": "Both",
+      "source_excel_row": 12,
+      "master_id": "CHG-OC-62",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "rename": true
+    },
+    {
+      "source_name": "Credit Report Copy Charge",
+      "source_facility": "Both",
+      "source_excel_row": 13,
+      "master_id": "CHG-OC-63",
+      "master_name": "Credit Information Report (CIC) Charges - Copy",
+      "rename": true
+    },
+    {
+      "source_name": "EMI Bounce / NACH-ECS-SI Failure Charge",
+      "source_facility": "Both",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-64",
+      "master_name": "EMI / Cheque / ECS / ACH Bounce Charge",
+      "rename": true
+    },
+    {
+      "source_name": "EMI Bounce / NACH-ECS-SI Failure Charge",
+      "source_facility": "Both",
+      "source_excel_row": 15,
+      "master_id": "CHG-OC-65",
+      "master_name": "EMI / Cheque / ECS / ACH Bounce Charge",
+      "rename": true
+    },
+    {
+      "source_name": "EMI Bounce / NACH-ECS-SI Failure Charge",
+      "source_facility": "Both",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-66",
+      "master_name": "EMI / Cheque / ECS / ACH Bounce Charge",
+      "rename": true
+    }
+  ],
+  "renames": [
+    {
+      "source_name": "Conversion / Rate Switch Charge",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-57",
+      "master_name": "Interest Rate Type Switch Fees",
+      "notes": "Percentage 0.10% (=0.001 fraction); min=15000; max=50000; pct_on≈Outstanding loan amount and undisbursed amount; facility Both→Any. Source covers Floating↔Fixed; master encodes Fixed→Floating on this row."
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-59",
+      "master_name": "Property Valuation Report Charges",
+      "notes": "At actuals; gst_applicable Yes."
+    },
+    {
+      "source_name": "Credit Report (CIBIL/CIC) Charge",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-61",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "notes": "Fixed amount 50."
+    },
+    {
+      "source_name": "Credit Report (All Four CIC) Charge",
+      "source_excel_row": 12,
+      "master_id": "CHG-OC-62",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "notes": "Fixed amount 200; note_1='When all four CIC reports generated'."
+    },
+    {
+      "source_name": "Credit Report Copy Charge",
+      "source_excel_row": 13,
+      "master_id": "CHG-OC-63",
+      "master_name": "Credit Information Report (CIC) Charges - Copy",
+      "notes": "Fixed amount 50."
+    },
+    {
+      "source_name": "EMI Bounce / NACH-ECS-SI Failure Charge",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-64",
+      "master_name": "EMI / Cheque / ECS / ACH Bounce Charge",
+      "notes": "Nil → Fixed Amount 0; slab_to=25000 (source loan_from=0 loan_to=25000); slab_basis=Sanctioned loan amount."
+    },
+    {
+      "source_name": "EMI Bounce / NACH-ECS-SI Failure Charge",
+      "source_excel_row": 15,
+      "master_id": "CHG-OC-65",
+      "master_name": "EMI / Cheque / ECS / ACH Bounce Charge",
+      "notes": "Fixed amount 250; slab 25001–1000000."
+    },
+    {
+      "source_name": "EMI Bounce / NACH-ECS-SI Failure Charge",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-66",
+      "master_name": "EMI / Cheque / ECS / ACH Bounce Charge",
+      "notes": "Fixed amount 500; slab_from=1000001 open upper."
+    }
+  ],
+  "mismatches": [],
+  "missing_in_master": [
+    {
+      "source_name": "Sub-Registrar Registration Charge",
+      "source_excel_row": 5,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "At actuals",
+      "amount": "At actuals",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Charge to be borne by the borrower.",
+      "charged_per": null
+    },
+    {
+      "source_name": "ROC Registration Charge",
+      "source_excel_row": 6,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "At actuals",
+      "amount": "At actuals",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Charge to be borne by the borrower.",
+      "charged_per": null
+    },
+    {
+      "source_name": "Stamping Charge",
+      "source_excel_row": 7,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "At actuals",
+      "amount": "At actuals",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Charge to be borne by the borrower.",
+      "charged_per": null
+    },
+    {
+      "source_name": "Charge Creation Fee",
+      "source_excel_row": 8,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "At actuals",
+      "amount": "At actuals",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Charge to be borne by the borrower.",
+      "charged_per": null
+    },
+    {
+      "source_name": "Property / Asset Insurance Premium",
+      "source_excel_row": 9,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "At actuals",
+      "amount": "At actuals",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Premia for Insurance of property/assets charged to the bank to be borne by the borrower.",
+      "charged_per": null
+    },
+    {
+      "source_name": "Property Inspection Out-of-Pocket Expenses",
+      "source_excel_row": 10,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "At actuals",
+      "amount": "At actuals",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "No Inspection charges on Retail Loan Schemes. Actual out of pocket expenses to be recovered from the borrower.",
+      "charged_per": null
+    },
+    {
+      "source_name": "CERSAI Registration / Modification Fee",
+      "source_excel_row": 17,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "100",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": 500001,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Particulars of creation or modification of security interest by way of mortgage by deposit of title deeds. Rule: Sub-rule (2) of rule 4.. Form: Form I.",
+      "charged_per": "Per creation or modification"
+    },
+    {
+      "source_name": "CERSAI Registration / Modification Fee",
+      "source_excel_row": 18,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "50",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": 500000,
+      "customer": null,
+      "conditions": "Particulars of creation or modification of security interest by way of mortgage by deposit of title deeds. Rule: Sub-rule (2) of rule 4.. Form: Form I.",
+      "charged_per": "Per creation or modification"
+    },
+    {
+      "source_name": "CERSAI Registration / Modification Fee",
+      "source_excel_row": 19,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "100",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": 500001,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Particulars of creation or modification of security interest by way of mortgage of immovable property other than by deposit of title deeds Rule: Sub-rule (2A) of rule 4.. Form: Form I.",
+      "charged_per": "Per creation or modification"
+    },
+    {
+      "source_name": "CERSAI Registration / Modification Fee",
+      "source_excel_row": 20,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "50",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": 500000,
+      "customer": null,
+      "conditions": "Particulars of creation or modification of security interest by way of mortgage of immovable property other than by deposit of title deeds Rule: Sub-rule (2A) of rule 4.. Form: Form I.",
+      "charged_per": "Per creation or modification"
+    },
+    {
+      "source_name": "CERSAI Registration / Modification Fee",
+      "source_excel_row": 21,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "100",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": 500001,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Particulars of creation or modification of security interest in hypothecation of plant and machinery, stocks, debt including book debt or receivables, whether existing or future. Rule: Sub-rule (2B) of rule 4.. Form: Form I.",
+      "charged_per": "Per creation or modification"
+    },
+    {
+      "source_name": "CERSAI Registration / Modification Fee",
+      "source_excel_row": 22,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "50",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": 500000,
+      "customer": null,
+      "conditions": "Particulars of creation or modification of security interest in hypothecation of plant and machinery, stocks, debt including book debt or receivables, whether existing or future. Rule: Sub-rule (2B) of rule 4.. Form: Form I.",
+      "charged_per": "Per creation or modification"
+    },
+    {
+      "source_name": "CERSAI Registration / Modification Fee",
+      "source_excel_row": 23,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "100",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": 500001,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Particulars of creation or modification of security interest in intangible assets, being know-how, patent, copyright, trade mark, licence, franchise or any other business or commercial right of similar nature Rule: Sub-rule (2C) of rule 4.. Form: Form I.",
+      "charged_per": "Per creation or modification"
+    },
+    {
+      "source_name": "CERSAI Registration / Modification Fee",
+      "source_excel_row": 24,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "50",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": 500000,
+      "customer": null,
+      "conditions": "Particulars of creation or modification of security interest in intangible assets, being know-how, patent, copyright, trade mark, licence, franchise or any other business or commercial right of similar nature Rule: Sub-rule (2C) of rule 4.. Form: Form I.",
+      "charged_per": "Per creation or modification"
+    },
+    {
+      "source_name": "CERSAI Registration / Modification Fee",
+      "source_excel_row": 25,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "100",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": 500001,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Particulars of creation or modification of security interest in any under construction residential or commercial building or a part thereof by an agreement or instrument other than by mortgage. Rule: Sub-rule (2D) of rule 4.. Form: Form I.",
+      "charged_per": "Per creation or modification"
+    },
+    {
+      "source_name": "CERSAI Registration / Modification Fee",
+      "source_excel_row": 26,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "50",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": 500000,
+      "customer": null,
+      "conditions": "Particulars of creation or modification of security interest in any under construction residential or commercial building or a part thereof by an agreement or instrument other than by mortgage. Rule: Sub-rule (2D) of rule 4.. Form: Form I.",
+      "charged_per": "Per creation or modification"
+    },
+    {
+      "source_name": "CERSAI Satisfaction of Charge Fee",
+      "source_excel_row": 27,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Nil",
+      "amount": "Nil",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Particulars of satisfaction of charge for security interest. Form II.",
+      "charged_per": null
+    },
+    {
+      "source_name": "CERSAI Fee — Particulars of securitization or reconst",
+      "source_excel_row": 28,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "500",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Particulars of securitization or reconstruction of financial assets",
+      "charged_per": "Per transaction"
+    },
+    {
+      "source_name": "CERSAI Fee — Particulars of satisfaction of securitiz",
+      "source_excel_row": 29,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "50",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Particulars of satisfaction of securitization or reconstruction transactions",
+      "charged_per": "Per transaction"
+    },
+    {
+      "source_name": "CERSAI Fee — Any application for information recorded",
+      "source_excel_row": 30,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "10",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Any application for information recorded/maintained in the Register by any person",
+      "charged_per": "Per transaction"
+    },
+    {
+      "source_name": "CERSAI Condonation of Delay Fee",
+      "source_excel_row": 31,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Formula",
+      "amount": "Not exceeding 10 times of the basic fee, as applicable",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Any application for condonation of delay up to 30 days",
+      "charged_per": "Per application up to 30 days delay"
+    },
+    {
+      "source_name": "CERSAI Delay in Filing Additional Fee",
+      "source_excel_row": 32,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Formula",
+      "amount": "Twice the amount of applicable fee",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Delay in filing of chargeable transaction: From 31 to 40 days. If the applicable fee is Rs.100/- then additional fee applicable will be Rs.200/-",
+      "charged_per": null
+    },
+    {
+      "source_name": "CERSAI Delay in Filing Additional Fee",
+      "source_excel_row": 33,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Formula",
+      "amount": "Five times the amount of applicable fee",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Delay in filing of chargeable transaction: From 41 days to 50 days. If the applicable fee is Rs.100/- then additional fee applicable will be Rs.500/-",
+      "charged_per": null
+    },
+    {
+      "source_name": "CERSAI Delay in Filing Additional Fee",
+      "source_excel_row": 34,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Formula",
+      "amount": "Ten times the amount of applicable fee",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": null,
+      "conditions": "Delay in filing of chargeable transaction: From 51 days to 60 days. If the applicable fee is Rs.100/- then additional fee applicable will be Rs.1000/-",
+      "charged_per": null
+    },
+    {
+      "source_name": "CERSAI Multiple Security Interest Fee Rule",
+      "source_excel_row": 35,
+      "facility": "Both",
+      "product": "Star Home Loan",
+      "amount_type": "Formula",
+      "amount": "Highest applicable fee among filed security interests",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "conditions": "When more than one security interest creation/modification is filed together, pay the highest fee among applicable security interests.",
+      "charged_per": "Per filing"
+    }
+  ],
+  "extra_in_master": [
+    {
+      "charge_row_id": "CHG-OC-58",
+      "charge_name": "Interest Rate Type Switch Fees",
+      "origin": "Other charges",
+      "facility_type": "Any",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.001,
+      "charge_min": 15000,
+      "charge_max": 50000,
+      "slab_from": null,
+      "slab_to": null,
+      "interest_rate_type_switch_from": "Floating",
+      "interest_rate_type_switch_to": "Fixed",
+      "note_1": null,
+      "detail": "other_charges_extra",
+      "reason": "Directional duplicate of conversion fee already matched via CHG-OC-57 (same 0.10%/min₹15,000/max₹50,000; only Floating→Fixed vs Fixed→Floating). Structured_Data has a single Conversion / Rate Switch Charge row covering both directions."
+    },
+    {
+      "origin": "Offers.processing",
+      "count": 128,
+      "detail": "summarized_by_origin",
+      "sample_charge_row_ids": [
+        "CHG-PROC-76",
+        "CHG-PROC-77",
+        "CHG-PROC-78",
+        "CHG-PROC-79",
+        "CHG-PROC-80",
+        "CHG-PROC-81",
+        "CHG-PROC-82",
+        "CHG-PROC-83",
+        "CHG-PROC-84",
+        "CHG-PROC-85",
+        "CHG-PROC-86",
+        "CHG-PROC-87"
+      ],
+      "charge_names": {
+        "Processing fee": 128
+      },
+      "schemes": [
+        "Star Home Loan",
+        "Star Smart Home Loan",
+        "Star Top Up Loan"
+      ],
+      "facilities": {
+        "Term Loan": 64,
+        "Overdraft": 64
+      },
+      "rate_types": {
+        "Floating": 64,
+        "Fixed": 64
+      },
+      "pct_bands": [
+        {
+          "percentage": 0.002,
+          "min": 2000,
+          "max": 10000,
+          "count": 96
+        },
+        {
+          "percentage": 0.0035,
+          "min": 3500,
+          "max": 30000,
+          "count": 32
+        }
+      ],
+      "unique_fingerprints": 128,
+      "clone_groups_multiplicity_gt1": 0,
+      "rows_in_clone_groups": 0
+    },
+    {
+      "origin": "Offers.overdue",
+      "count": 16,
+      "detail": "summarized_by_origin",
+      "sample_charge_row_ids": [
+        "CHG-OD-15",
+        "CHG-OD-16",
+        "CHG-OD-17",
+        "CHG-OD-18",
+        "CHG-OD-19",
+        "CHG-OD-20",
+        "CHG-OD-21",
+        "CHG-OD-22",
+        "CHG-OD-23",
+        "CHG-OD-24",
+        "CHG-OD-25",
+        "CHG-OD-26"
+      ],
+      "charge_names": {
+        "Overdue charges": 16
+      },
+      "schemes": [
+        "Star Home Loan",
+        "Star Smart Home Loan",
+        "Star Top Up Loan"
+      ],
+      "facilities": {
+        "Term Loan": 8,
+        "Overdraft": 8
+      },
+      "rate_types": {
+        "Floating": 8,
+        "Fixed": 8
+      },
+      "pct_values": {
+        "0.01": 8,
+        "0.02": 8
+      },
+      "percentage_base_value": [
+        "Default_Amount"
+      ],
+      "all_ids": [
+        "CHG-OD-15",
+        "CHG-OD-16",
+        "CHG-OD-17",
+        "CHG-OD-18",
+        "CHG-OD-19",
+        "CHG-OD-20",
+        "CHG-OD-21",
+        "CHG-OD-22",
+        "CHG-OD-23",
+        "CHG-OD-24",
+        "CHG-OD-25",
+        "CHG-OD-26",
+        "CHG-OD-27",
+        "CHG-OD-28",
+        "CHG-OD-29",
+        "CHG-OD-30"
+      ]
+    },
+    {
+      "origin": "Offers.prepayment",
+      "count": 4,
+      "detail": "summarized_by_origin",
+      "sample_charge_row_ids": [
+        "CHG-PRE-16",
+        "CHG-PRE-17",
+        "CHG-PRE-18",
+        "CHG-PRE-19"
+      ],
+      "charge_names": {
+        "Prepayment charges": 4
+      },
+      "schemes": [
+        "Star Home Loan",
+        "Star Smart Home Loan",
+        "Star Top Up Loan"
+      ],
+      "facilities": {
+        "Term Loan": 2,
+        "Overdraft": 2
+      },
+      "rate_types": {
+        "Floating": 4
+      },
+      "rows": [
+        {
+          "charge_row_id": "CHG-PRE-16",
+          "charge_name": "Prepayment charges",
+          "facility_type": "Term Loan",
+          "scheme": "Star Home Loan",
+          "rate_type": "Floating",
+          "charge_type": "Fixed Amount",
+          "fixed_amount": 0,
+          "percentage": null,
+          "percentage_base_value": null,
+          "note_1": "Prepayment not charged (prepayment_applicable=No)"
+        },
+        {
+          "charge_row_id": "CHG-PRE-17",
+          "charge_name": "Prepayment charges",
+          "facility_type": "Overdraft",
+          "scheme": "Star Smart Home Loan",
+          "rate_type": "Floating",
+          "charge_type": "Fixed Amount",
+          "fixed_amount": 0,
+          "percentage": null,
+          "percentage_base_value": null,
+          "note_1": "Prepayment not charged (prepayment_applicable=No)"
+        },
+        {
+          "charge_row_id": "CHG-PRE-18",
+          "charge_name": "Prepayment charges",
+          "facility_type": "Term Loan",
+          "scheme": "Star Top Up Loan",
+          "rate_type": "Floating",
+          "charge_type": "Fixed Amount",
+          "fixed_amount": 0,
+          "percentage": null,
+          "percentage_base_value": null,
+          "note_1": "Prepayment not charged (prepayment_applicable=No)"
+        },
+        {
+          "charge_row_id": "CHG-PRE-19",
+          "charge_name": "Prepayment charges",
+          "facility_type": "Overdraft",
+          "scheme": "Star Top Up Loan",
+          "rate_type": "Floating",
+          "charge_type": "Fixed Amount",
+          "fixed_amount": 0,
+          "percentage": null,
+          "percentage_base_value": null,
+          "note_1": "Prepayment not charged (prepayment_applicable=No)"
+        }
+      ]
+    },
+    {
+      "origin": "CSV.fixed_prepay",
+      "count": 4,
+      "detail": "summarized_by_origin",
+      "sample_charge_row_ids": [
+        "CHG-PRE-174",
+        "CHG-PRE-175",
+        "CHG-PRE-176",
+        "CHG-PRE-177"
+      ],
+      "charge_names": {
+        "Prepayment charges": 2,
+        "Prepayment charges (takeover)": 2
+      },
+      "schemes": [],
+      "facilities": {
+        "Term Loan": 2,
+        "Overdraft": 2
+      },
+      "rate_types": {
+        "Fixed": 4
+      },
+      "rows": [
+        {
+          "charge_row_id": "CHG-PRE-174",
+          "charge_name": "Prepayment charges",
+          "facility_type": "Term Loan",
+          "scheme": null,
+          "rate_type": "Fixed",
+          "charge_type": "Fixed Amount",
+          "fixed_amount": 0,
+          "percentage": null,
+          "percentage_base_value": null,
+          "note_1": "Prepayment nil (CSV NIL)"
+        },
+        {
+          "charge_row_id": "CHG-PRE-175",
+          "charge_name": "Prepayment charges (takeover)",
+          "facility_type": "Term Loan",
+          "scheme": null,
+          "rate_type": "Fixed",
+          "charge_type": "Percentage",
+          "fixed_amount": null,
+          "percentage": 0.02,
+          "percentage_base_value": "Highest_Outstanding_90_Days",
+          "note_1": null
+        },
+        {
+          "charge_row_id": "CHG-PRE-176",
+          "charge_name": "Prepayment charges",
+          "facility_type": "Overdraft",
+          "scheme": null,
+          "rate_type": "Fixed",
+          "charge_type": "Fixed Amount",
+          "fixed_amount": 0,
+          "percentage": null,
+          "percentage_base_value": null,
+          "note_1": "Prepayment nil (CSV NIL)"
+        },
+        {
+          "charge_row_id": "CHG-PRE-177",
+          "charge_name": "Prepayment charges (takeover)",
+          "facility_type": "Overdraft",
+          "scheme": null,
+          "rate_type": "Fixed",
+          "charge_type": "Percentage",
+          "fixed_amount": null,
+          "percentage": 0.02,
+          "percentage_base_value": "Highest_Outstanding_90_Days",
+          "note_1": null
+        }
+      ]
+    }
+  ],
+  "duplicate_notes": [
+    {
+      "ids": [
+        "CHG-OC-57",
+        "CHG-OC-58"
+      ],
+      "description": "Same conversion fee 0.10% / min ₹15,000 / max ₹50,000 split into Fixed→Floating and Floating→Fixed; Structured_Data has one row covering both directions. CHG-OC-57 matched; CHG-OC-58 flagged extra/redundant."
+    }
+  ],
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 20,
+    "missing_bank_service_actionable": 5,
+    "extras_processing_not_error": 1,
+    "extras_prepay_ignored": 2,
+    "extras_overdue_no_action": 1,
+    "extras_other_charges_review": 1,
+    "value_mismatches": 0
+  },
+  "verdict_under_rules": "FAIL"
+}

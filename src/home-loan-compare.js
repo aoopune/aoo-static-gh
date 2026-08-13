@@ -118,6 +118,10 @@ const RATE_CHANGE_COMMON_MARKER = "°";
 const GST_APPLICABLE_NOTE = "GST applicable.";
 /** Side-panel fee rows: mark with * and explain once under the list (not “GST extra” on every row). */
 const GST_APPLICABLE_FOOTNOTE = "* " + GST_APPLICABLE_NOTE;
+/** Out-of-pocket on top of / instead of a fixed fee — mark on amount, wording under the fee block. */
+const OOP_EXPENSES_MARKER = "†";
+const OOP_EXPENSES_NOTE = "Out-of-pocket expenses.";
+const OOP_EXPENSES_FOOTNOTE = OOP_EXPENSES_MARKER + " " + OOP_EXPENSES_NOTE;
 /** One stable marker per bank — must not reuse * ‡ ^ † § ◊ °. */
 const RATE_CHANGE_BANK_MARKERS = {
   "hdfc bank": "⁕",
@@ -2255,22 +2259,69 @@ function formatChargeDisplay(charge, options) {
     charge.percentage != null && Number.isFinite(Number(charge.percentage))
       ? Number(charge.percentage)
       : null;
+  const percentageMin =
+    charge.percentage_min != null && Number.isFinite(Number(charge.percentage_min))
+      ? Number(charge.percentage_min)
+      : null;
+  const percentageMax =
+    charge.percentage_max != null && Number.isFinite(Number(charge.percentage_max))
+      ? Number(charge.percentage_max)
+      : null;
   const fixed =
     charge.fixed_amount != null && Number.isFinite(Number(charge.fixed_amount))
       ? Number(charge.fixed_amount)
       : null;
+  const chargeMin =
+    charge.charge_min != null && Number.isFinite(Number(charge.charge_min))
+      ? Number(charge.charge_min)
+      : null;
+  const chargeMax =
+    charge.charge_max != null && Number.isFinite(Number(charge.charge_max))
+      ? Number(charge.charge_max)
+      : null;
+  const perAnnumSuffix =
+    normalizeText(charge.percentage_per_annum) === "yes" ? " p.a." : "";
 
-  if (percentage != null) {
+  // % band (min+max) or "Up to X%" (max only) before a single flat percentage.
+  let percentageShownAsBandOrCap = false;
+  if (percentageMin != null && percentageMax != null) {
     mainParts.push(
-      formatPct(percentage * 100) +
-        (normalizeText(charge.percentage_per_annum) === "yes" ? " p.a." : "")
+      formatPct(percentageMin * 100) + " – " + formatPct(percentageMax * 100) + perAnnumSuffix
     );
+    percentageShownAsBandOrCap = true;
+  } else if (percentageMax != null && percentageMin == null) {
+    mainParts.push("Up to " + formatPct(percentageMax * 100) + perAnnumSuffix);
+    percentageShownAsBandOrCap = true;
+  } else if (percentage != null) {
+    mainParts.push(formatPct(percentage * 100) + perAnnumSuffix);
   } else if (normalizeText(charge.special_rule) === "as_per_roi") {
     mainParts.push("At home loan interest rate");
+  } else if (normalizeText(charge.charge_type) === "at actuals") {
+    // Published as at-actuals with no fixed ₹ / % — say that on the amount line.
+    mainParts.push("At actuals");
   }
   let fixedLabel = "";
   let fixedBasisDetail = "";
-  if (fixed != null && !(settings.zeroAsPercentage && fixed === 0 && percentage == null)) {
+  // ₹X – ₹Y band: no flat fee, only rupee min+max (same idea as % bands).
+  const rupeeBandOnly =
+    fixed == null &&
+    chargeMin != null &&
+    chargeMax != null &&
+    !percentageShownAsBandOrCap &&
+    percentage == null &&
+    normalizeText(charge.charge_type) !== "at actuals" &&
+    !(
+      normalizeText(charge.special_rule) &&
+      normalizeText(charge.special_rule) !== "as_per_roi"
+    );
+  // "Up to ₹X": no flat fee, only a rupee ceiling.
+  const uptoRupeeOnly =
+    fixed == null && chargeMax != null && chargeMin == null && !percentageShownAsBandOrCap && percentage == null;
+  if (rupeeBandOnly) {
+    mainParts.push(formatInr(chargeMin) + " – " + formatInr(chargeMax));
+  } else if (uptoRupeeOnly) {
+    mainParts.push("Up to " + formatInr(chargeMax));
+  } else if (fixed != null && !(settings.zeroAsPercentage && fixed === 0 && percentage == null && !percentageShownAsBandOrCap)) {
     fixedLabel = formatInr(fixed);
     if (normalizeText(charge.fixed_amount_per_1000_rs) === "yes") {
       fixedBasisDetail = "per ₹1,000";
@@ -2278,7 +2329,7 @@ function formatChargeDisplay(charge, options) {
       fixedBasisDetail = "per ₹1 lakh or part";
     }
   }
-  if (settings.zeroAsPercentage && fixed === 0 && percentage == null) {
+  if (settings.zeroAsPercentage && fixed === 0 && percentage == null && !percentageShownAsBandOrCap) {
     mainParts.push("0%");
   }
   const whicheverHigherRule = [charge.note_1, charge.note_2, charge.special_rule].some(
@@ -2289,13 +2340,11 @@ function formatChargeDisplay(charge, options) {
   const alternativeAmount =
     whicheverHigherRule && fixedLabel
       ? [fixedLabel, fixedBasisDetail].filter(Boolean).join(" ")
-      : whicheverHigherRule &&
-          charge.charge_min != null &&
-          Number.isFinite(Number(charge.charge_min))
-        ? formatInr(Number(charge.charge_min))
+      : whicheverHigherRule && chargeMin != null
+        ? formatInr(chargeMin)
         : "";
   const hasWhicheverHigherAlternatives =
-    whicheverHigherRule && percentage != null && !!alternativeAmount;
+    whicheverHigherRule && (percentage != null || percentageShownAsBandOrCap) && !!alternativeAmount;
   if (fixedLabel && !hasWhicheverHigherAlternatives) {
     mainParts.push(fixedLabel);
   }
@@ -2305,7 +2354,10 @@ function formatChargeDisplay(charge, options) {
     details.push("or " + alternativeAmount + ", whichever is higher");
   }
   const mainSuffix =
-    !hasWhicheverHigherAlternatives && percentage == null && fixedLabel
+    !hasWhicheverHigherAlternatives &&
+    percentage == null &&
+    !percentageShownAsBandOrCap &&
+    fixedLabel
       ? fixedBasisDetail
       : "";
   const basis = settings.hideBasis ? "" : formatChargeBasis(charge.percentage_base_value);
@@ -2313,15 +2365,12 @@ function formatChargeDisplay(charge, options) {
   if (basis || unit) details.push([basis, unit].filter(Boolean).join(" · "));
 
   const limits = [];
-  if (
-    !hasWhicheverHigherAlternatives &&
-    charge.charge_min != null &&
-    Number.isFinite(Number(charge.charge_min))
-  ) {
-    limits.push("Min " + formatInr(Number(charge.charge_min)));
+  if (!hasWhicheverHigherAlternatives && chargeMin != null && !rupeeBandOnly) {
+    limits.push("Min " + formatInr(chargeMin));
   }
-  if (charge.charge_max != null && Number.isFinite(Number(charge.charge_max))) {
-    limits.push("Max " + formatInr(Number(charge.charge_max)));
+  // Skip redundant Min/Max when main already says "₹X – ₹Y" or "Up to ₹X".
+  if (chargeMax != null && !uptoRupeeOnly && !rupeeBandOnly) {
+    limits.push("Max " + formatInr(chargeMax));
   }
   if (limits.length) details.push(limits.join(" · "));
 
@@ -2892,12 +2941,12 @@ function formatChargeValue(charge, loanAmount) {
   if (!charge) return "—";
   const amount = computeProcessingFee(charge, loanAmount);
   if (amount != null && Number.isFinite(amount)) return formatInr(amount);
-  if (charge.percentage != null && Number.isFinite(Number(charge.percentage))) {
-    return formatPct(Number(charge.percentage) * 100);
-  }
-  if (charge.fixed_amount != null && Number.isFinite(Number(charge.fixed_amount))) {
-    return formatInr(Number(charge.fixed_amount));
-  }
+  const display = formatChargeDisplay(charge, {
+    hideGst: true,
+    hideBasis: true,
+    hideUnit: true
+  });
+  if (display.main && display.main !== "Not listed") return display.main;
   if (charge.note_1) return charge.note_1;
   return "See bank rules";
 }
@@ -2905,22 +2954,15 @@ function formatChargeValue(charge, loanAmount) {
 /** Fee rule from bank data — not computed from the customer's loan amount. */
 function formatChargeRule(charge) {
   if (!charge) return "—";
-  const parts = [];
-  if (charge.percentage != null && Number.isFinite(Number(charge.percentage))) {
-    parts.push(formatPct(Number(charge.percentage) * 100));
+  const display = formatChargeDisplay(charge, { hideGst: true });
+  if (!display.main || display.main === "Not listed") {
+    if (charge.note_1) return charge.note_1;
+    return "See bank rules";
   }
-  if (charge.fixed_amount != null && Number.isFinite(Number(charge.fixed_amount))) {
-    parts.push(formatInr(Number(charge.fixed_amount)));
-  }
-  if (charge.charge_min != null && Number.isFinite(Number(charge.charge_min))) {
-    parts.push("min " + formatInr(Number(charge.charge_min)));
-  }
-  if (charge.charge_max != null && Number.isFinite(Number(charge.charge_max))) {
-    parts.push("max " + formatInr(Number(charge.charge_max)));
-  }
-  if (parts.length) return parts.join(" · ");
-  if (charge.note_1) return charge.note_1;
-  return "See bank rules";
+  const extras = (display.details || []).filter(function (part) {
+    return part && !/^GST extra$/i.test(part);
+  });
+  return [display.main].concat(extras).filter(Boolean).join(" · ");
 }
 
 /** After-offer charge names that already have a table column (or EMI bounce slot). */
@@ -2965,6 +3007,7 @@ function formatChargeAmountHeadline(charge) {
   const main =
     (display.main || "") + (display.mainSuffix ? " " + display.mainSuffix : "");
   if (main && main !== "See bank rule") return main.trim();
+  if (normalizeText(charge.charge_type) === "at actuals") return "At actuals";
   if (
     normalizeText(charge.special_rule) &&
     normalizeText(charge.special_rule) !== "as_per_roi"
@@ -2977,6 +3020,17 @@ function formatChargeAmountHeadline(charge) {
 
 function chargeGstApplicable(charge) {
   return normalizeText(charge && charge.gst_applicable) === "yes";
+}
+
+function chargeOopApplicable(charge) {
+  return normalizeText(charge && charge.out_of_pocket_expenses_additional) === "yes";
+}
+
+/** Shared fee-block footnote when any row carries out-of-pocket expenses. */
+function notesWithOopFootnote(notes, charges) {
+  const list = uniqueStrings(notes || []);
+  if (!(charges || []).some(chargeOopApplicable)) return list;
+  return uniqueStrings(list.concat([OOP_EXPENSES_FOOTNOTE]));
 }
 
 /** Append * when GST applies; footnote text lives under the fee list. */
@@ -3035,7 +3089,10 @@ function formatChargeMetaLine(charge, options) {
   if (normalizeText(charge.actuals_in_addition_to_charge) === "yes") {
     parts.push("+ Actual expenses");
   }
-  if (normalizeText(charge.out_of_pocket_expenses_additional) === "yes") {
+  if (
+    !settings.hideOop &&
+    normalizeText(charge.out_of_pocket_expenses_additional) === "yes"
+  ) {
     parts.push("Out-of-pocket expenses extra");
   }
   return parts.join(" · ");
@@ -3546,6 +3603,8 @@ function chargeRuleFingerprint(charge) {
   if (!charge) return "";
   return [
     charge.percentage,
+    charge.percentage_min,
+    charge.percentage_max,
     charge.fixed_amount,
     charge.charge_min,
     charge.charge_max,
@@ -3764,13 +3823,18 @@ function chargeDetailFromData(charge, options) {
 
 function feeAmountCell(charge, options) {
   const settings = options || {};
+  const oop = chargeOopApplicable(charge);
+  const amount = formatChargeAmountHeadline(charge);
   return {
-    amount: formatChargeAmountHeadline(charge),
+    // † on the amount; full “Out-of-pocket expenses.” lives under the fee block.
+    amount: oop && amount ? amount + OOP_EXPENSES_MARKER : amount,
     meta: formatChargeMetaLine(charge, {
       hideUnit: settings.hideUnit,
-      hideBasis: settings.hideBasis
+      hideBasis: settings.hideBasis,
+      hideOop: true
     }),
-    gstApplicable: chargeGstApplicable(charge)
+    gstApplicable: chargeGstApplicable(charge),
+    oopApplicable: oop
   };
 }
 
@@ -3937,7 +4001,7 @@ function buildAreaMatrixFeeEntry(name, charges) {
             gstApplicable: anyGst
           }
         ],
-        notes: sharedNotesAcrossCharges(areaCharges)
+        notes: notesWithOopFootnote(sharedNotesAcrossCharges(areaCharges), areaCharges)
       };
     }
   }
@@ -3988,7 +4052,7 @@ function buildAreaMatrixFeeEntry(name, charges) {
         gstApplicable: anyGst
       }
     ],
-    notes: sharedNotesAcrossCharges(list)
+    notes: notesWithOopFootnote(sharedNotesAcrossCharges(list), list)
   };
 }
 
@@ -4117,7 +4181,7 @@ function buildFeeTableEntries(name, charges) {
       }
       return {
         entries: multiGroupEntries,
-        notes: uniqueStrings(multiGroupNotes)
+        notes: notesWithOopFootnote(uniqueStrings(multiGroupNotes), list)
       };
     }
   }
@@ -4126,11 +4190,14 @@ function buildFeeTableEntries(name, charges) {
     const charge = list[0];
     const sharedUnit = commonChargeUnitLabel([charge]);
     const cell = feeAmountCell(charge, { hideUnit: !!sharedUnit });
+    // Same rule as multi-row groups: sheet prose lives under the fee block,
+    // not jammed into Particulars (keeps long at-actuals notes readable).
+    const sharedNotes = sharedNotesAcrossCharges([charge]);
     return {
       entries: [
         {
           what: name,
-          detail: chargeDetailFromData(charge),
+          detail: chargeDetailFromData(charge, { omitNotes: sharedNotes }),
           amount: cell.amount,
           meta: cell.meta,
           chargeHeaderUnit: sharedUnit,
@@ -4138,13 +4205,14 @@ function buildFeeTableEntries(name, charges) {
           gstApplicable: cell.gstApplicable
         }
       ],
-      notes: []
+      notes: notesWithOopFootnote(sharedNotes, [charge])
     };
   }
 
   const mergedPair = tryMergeFixedAndPercentage(list);
   if (mergedPair) {
     mergedPair.entries[0].what = name;
+    mergedPair.notes = notesWithOopFootnote(mergedPair.notes || [], list);
     return mergedPair;
   }
 
@@ -4186,7 +4254,7 @@ function buildFeeTableEntries(name, charges) {
         gstApplicable: cell.gstApplicable
       };
     }),
-    notes: sharedNotes
+    notes: notesWithOopFootnote(sharedNotes, list)
   };
 }
 
@@ -8812,6 +8880,8 @@ module.exports = {
   isShownOnExploreTable,
   formatPct,
   formatTenureYears,
+  OOP_EXPENSES_MARKER,
+  OOP_EXPENSES_FOOTNOTE,
   initPage
 };
 

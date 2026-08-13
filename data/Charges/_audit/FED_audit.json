@@ -1,0 +1,915 @@
+{
+  "bank_code": "FED",
+  "bank_key": "federal bank",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 31,
+    "master_bank_charges_rows": 47,
+    "matched_ok": 13,
+    "matched_rename_only": 20,
+    "value_mismatches": 4,
+    "missing_in_master": 2,
+    "extra_in_master": 10,
+    "duplicate_issues": 0
+  },
+  "matched_ok": [
+    {
+      "source_name": "Rate Switch Fee",
+      "source_facility": "Both",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-288",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.0025 (=0.25%); facility=Term Loan; Fixed→Floating; pct_base=Balance outstanding; charge_unit=Switch; frequency Each time",
+        "rename Rate Switch Fee → Interest Rate Type Switch Fees",
+        "source Facility=Both + 'balance outstanding / Drawing power whichever is higher' split into TL (Balance outstanding) + OD (Drawing Power) direction pairs (treated equivalent encoding; 'whichever is higher' not encoded as max-of rule — soft)",
+        "gst_applicable: source notes GST additional on applicable charges; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Rate Switch Fee",
+      "source_facility": "Both",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-289",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.0025 (=0.25%); facility=Term Loan; Floating→Fixed; pct_base=Balance outstanding; charge_unit=Switch; frequency Each time",
+        "rename Rate Switch Fee → Interest Rate Type Switch Fees",
+        "source Facility=Both + 'balance outstanding / Drawing power whichever is higher' split into TL (Balance outstanding) + OD (Drawing Power) direction pairs (treated equivalent encoding; 'whichever is higher' not encoded as max-of rule — soft)",
+        "gst_applicable: source notes GST additional on applicable charges; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Rate Switch Fee",
+      "source_facility": "Both",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-290",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.0025 (=0.25%); facility=Overdraft; Fixed→Floating; pct_base=Drawing Power; charge_unit=Switch; frequency Each time",
+        "rename Rate Switch Fee → Interest Rate Type Switch Fees",
+        "source Facility=Both + 'balance outstanding / Drawing power whichever is higher' split into TL (Balance outstanding) + OD (Drawing Power) direction pairs (treated equivalent encoding; 'whichever is higher' not encoded as max-of rule — soft)",
+        "gst_applicable: source notes GST additional on applicable charges; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Rate Switch Fee",
+      "source_facility": "Both",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-291",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.0025 (=0.25%); facility=Overdraft; Floating→Fixed; pct_base=Drawing Power; charge_unit=Switch; frequency Each time",
+        "rename Rate Switch Fee → Interest Rate Type Switch Fees",
+        "source Facility=Both + 'balance outstanding / Drawing power whichever is higher' split into TL (Balance outstanding) + OD (Drawing Power) direction pairs (treated equivalent encoding; 'whichever is higher' not encoded as max-of rule — soft)",
+        "gst_applicable: source notes GST additional on applicable charges; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "CIBIL Report Charge",
+      "source_facility": "Both",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-292",
+      "master_name": "CIBIL Report Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; charge_unit=Report; frequency Each time",
+        "facility Both→Any broadening (amounts match — not counted as mismatch)",
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "NOC / Credit Opinion Charge",
+      "source_facility": "Both",
+      "source_excel_row": 8,
+      "master_id": "CHG-OC-295",
+      "master_name": "No Objection Certificate Issuance Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 20000; slab_from=50000001; slab_to=None",
+        "rename NOC / Credit Opinion Charge → No Objection Certificate Issuance Fees",
+        "source combined NOC/Credit Opinion split into separate NOC + Credit Opinion master series",
+        "slab_basis master='Sanctioned loan amount' (source credit-limit band; treated equivalent)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NOC / Credit Opinion Charge",
+      "source_facility": "Both",
+      "source_excel_row": 8,
+      "master_id": "CHG-OC-298",
+      "master_name": "Credit Opinion Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 20000; slab_from=50000001; slab_to=None",
+        "rename NOC / Credit Opinion Charge → Credit Opinion Report Charges",
+        "source combined NOC/Credit Opinion split into separate NOC + Credit Opinion master series",
+        "slab_basis master='Sanctioned loan amount' (source credit-limit band; treated equivalent)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 9,
+      "master_id": "CHG-OC-299",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1300; slab None–500000; charge_by_area='Network I'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 10,
+      "master_id": "CHG-OC-300",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1200; slab None–500000; charge_by_area='Network II'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-301",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1950; slab 500001–1000000; charge_by_area='Network I'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 12,
+      "master_id": "CHG-OC-302",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1800; slab 500001–1000000; charge_by_area='Network II'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 13,
+      "master_id": "CHG-OC-303",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 3900; slab 1000001–5000000; charge_by_area='Network I'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-304",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 6500; slab 1000001–5000000; charge_by_area='Network II'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 15,
+      "master_id": "CHG-OC-305",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 6500; slab 5000001–10000000; charge_by_area='Network I'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-306",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 7800; slab 5000001–10000000; charge_by_area='Network II'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 17,
+      "master_id": "CHG-OC-307",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 7800; slab 10000001–50000000; charge_by_area='Network I'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 18,
+      "master_id": "CHG-OC-308",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 9750; slab 10000001–50000000; charge_by_area='Network II'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 19,
+      "master_id": "CHG-OC-309",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 9750; slab 50000001–250000000; charge_by_area='Network I'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 20,
+      "master_id": "CHG-OC-310",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 13000; slab 50000001–250000000; charge_by_area='Network II'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 21,
+      "master_id": "CHG-OC-311",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 13000; slab 250000001–None; charge_by_area='Network I'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 22,
+      "master_id": "CHG-OC-312",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 19500; slab 250000001–None; charge_by_area='Network II'; charge_unit=Property; frequency Each time",
+        "rename Valuation Fee → Property Valuation Report Charges",
+        "slab_basis master='Realizable value of assets' (source property-value band; treated equivalent)",
+        "property_valuation_scope master='Both' (source unspecified — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Property Inspection Fee",
+      "source_facility": "Both",
+      "source_excel_row": 23,
+      "master_id": "CHG-OC-313",
+      "master_name": "Property Inspection Fee",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; slab None–25000; charge_by_area=Within same Panchayat/Municipality/Corporation/10km limits; charge_unit=annum; freq=Per annum",
+        "slab_basis master='Sanctioned loan amount' (source loan-amount band; treated equivalent)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Property Inspection Fee",
+      "source_facility": "Both",
+      "source_excel_row": 24,
+      "master_id": "CHG-OC-314",
+      "master_name": "Property Inspection Fee",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 100; slab 25001–200000; charge_by_area=Within same…/10km limits; charge_unit=annum; freq=Per annum",
+        "slab_basis master='Sanctioned loan amount' (source loan-amount band; treated equivalent)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Property Inspection Fee",
+      "source_facility": "Both",
+      "source_excel_row": 25,
+      "master_id": "CHG-OC-315",
+      "master_name": "Property Inspection Fee",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Percentage 5e-05 (=0.005%); min=100 max=500; slab_from=200001; charge_unit=Inspection",
+        "pct_base: source='limit' master='Sanctioned loan amount' (treated equivalent)",
+        "frequency: source='per inspection' master='Per annum' (soft note only — not counted as mismatch)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal and Pre-Credit Inspection / Verification Charge",
+      "source_facility": "Both",
+      "source_excel_row": 26,
+      "master_id": "CHG-OC-316",
+      "master_name": "Legal and Pre-Credit Inspection / Verification Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed At actuals; charge_unit=Instance; frequency Each time",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Property Inspection Fee (Beyond Local Limits)",
+      "source_facility": "Both",
+      "source_excel_row": 27,
+      "master_id": "CHG-OC-317",
+      "master_name": "Property Inspection Fee (Beyond Local Limits)",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Formula 'Normal Charges + Actual Expenses…' encoded as Fixed amount 0 (normal Nil slab) + actuals_in_addition_to_charge=Yes; slab None–25000; area=Beyond same…/10km limits",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Property Inspection Fee (Beyond Local Limits)",
+      "source_facility": "Both",
+      "source_excel_row": 27,
+      "master_id": "CHG-OC-318",
+      "master_name": "Property Inspection Fee (Beyond Local Limits)",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Formula expanded: Fixed amount 100 (normal charges twin) + actuals_in_addition_to_charge=Yes; slab 25001–200000; area=Beyond…",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Property Inspection Fee (Beyond Local Limits)",
+      "source_facility": "Both",
+      "source_excel_row": 27,
+      "master_id": "CHG-OC-319",
+      "master_name": "Property Inspection Fee (Beyond Local Limits)",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Formula expanded: Percentage 5e-05 (=0.005%) (normal charges twin) + actuals_in_addition_to_charge=Yes; slab_from=200001; area=Beyond…",
+        "soft: CHG-OC-319 lacks charge_min=100 / charge_max=500 present on within-limits twin CHG-OC-315 (not counted as mismatch — formula expansion omits caps)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Loan Repayment Mandate Return Charge",
+      "source_facility": "Both",
+      "source_excel_row": 28,
+      "master_id": "CHG-OC-320",
+      "master_name": "Loan Repayment Mandate Return Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 200; charge_unit=Return; frequency='first return in a month only'",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "ECS/NACH Return Charge",
+      "source_facility": "Both",
+      "source_excel_row": 29,
+      "master_id": "CHG-OC-321",
+      "master_name": "ECS/NACH Return Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 350; charge_unit=Return; frequency='first return of a particular mandate' (Savings Bank EMI collection)",
+        "soft: source Account_Type=Savings Bank not stored in a master column — amount+frequency fingerprint distinguishes from Current/OD/CC twin",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "ECS/NACH Return Charge",
+      "source_facility": "Both",
+      "source_excel_row": 30,
+      "master_id": "CHG-OC-322",
+      "master_name": "ECS/NACH Return Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 500; frequency='subsequent returns' (Savings Bank)",
+        "soft: Savings Bank account type not in master column",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "ECS/NACH Return Charge",
+      "source_facility": "Both",
+      "source_excel_row": 31,
+      "master_id": "CHG-OC-323",
+      "master_name": "ECS/NACH Return Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 400; frequency='first return of a particular mandate' (Current/OD/CC)",
+        "soft: Current/OD/CC account type not in master column — distinguished by amount vs SB ₹350 twin",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "ECS/NACH Return Charge",
+      "source_facility": "Both",
+      "source_excel_row": 32,
+      "master_id": "CHG-OC-324",
+      "master_name": "ECS/NACH Return Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 750; frequency='subsequent returns' (Current/OD/CC)",
+        "soft: Current/OD/CC account type not in master column",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    }
+  ],
+  "mismatches": [
+    {
+      "source_name": "NOC / Credit Opinion Charge",
+      "source_facility": "Both",
+      "source_excel_row": 6,
+      "master_id": "CHG-OC-293",
+      "master_name": "No Objection Certificate Issuance Fees",
+      "rename": true,
+      "soft_notes": [
+        "rename NOC / Credit Opinion Charge → No Objection Certificate Issuance Fees",
+        "source combined NOC/Credit Opinion split into separate NOC + Credit Opinion master series (CUB Duplicate NOC/No Dues precedent)",
+        "fixed amount 1000 matches; facility Both→Any; gst master='Yes' (soft)"
+      ],
+      "diffs": [
+        {
+          "field": "slab_to / Loan_Amount_To",
+          "source": "999999 (wording: credit limit less than Rs.10 L)",
+          "master": "1000000 (inclusive ≤ ₹10,00,000)"
+        }
+      ]
+    },
+    {
+      "source_name": "NOC / Credit Opinion Charge",
+      "source_facility": "Both",
+      "source_excel_row": 6,
+      "master_id": "CHG-OC-296",
+      "master_name": "Credit Opinion Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "rename NOC / Credit Opinion Charge → Credit Opinion Report Charges",
+        "source combined NOC/Credit Opinion split into separate NOC + Credit Opinion master series (CUB Duplicate NOC/No Dues precedent)",
+        "fixed amount 1000 matches; facility Both→Any; gst master='Yes' (soft)"
+      ],
+      "diffs": [
+        {
+          "field": "slab_to / Loan_Amount_To",
+          "source": "999999 (wording: credit limit less than Rs.10 L)",
+          "master": "1000000 (inclusive ≤ ₹10,00,000)"
+        }
+      ]
+    },
+    {
+      "source_name": "NOC / Credit Opinion Charge",
+      "source_facility": "Both",
+      "source_excel_row": 7,
+      "master_id": "CHG-OC-294",
+      "master_name": "No Objection Certificate Issuance Fees",
+      "rename": true,
+      "soft_notes": [
+        "rename NOC / Credit Opinion Charge → No Objection Certificate Issuance Fees",
+        "source combined NOC/Credit Opinion split into separate NOC + Credit Opinion master series",
+        "fixed amount 5000 and slab_to=50000000 match; facility Both→Any; gst master='Yes' (soft)"
+      ],
+      "diffs": [
+        {
+          "field": "slab_from / Loan_Amount_From",
+          "source": "1000000 (wording: Rs.10 L and above to Rs.500 L including Rs.500 L)",
+          "master": "1000001"
+        }
+      ]
+    },
+    {
+      "source_name": "NOC / Credit Opinion Charge",
+      "source_facility": "Both",
+      "source_excel_row": 7,
+      "master_id": "CHG-OC-297",
+      "master_name": "Credit Opinion Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "rename NOC / Credit Opinion Charge → Credit Opinion Report Charges",
+        "source combined NOC/Credit Opinion split into separate NOC + Credit Opinion master series",
+        "fixed amount 5000 and slab_to=50000000 match; facility Both→Any; gst master='Yes' (soft)"
+      ],
+      "diffs": [
+        {
+          "field": "slab_from / Loan_Amount_From",
+          "source": "1000000 (wording: Rs.10 L and above to Rs.500 L including Rs.500 L)",
+          "master": "1000001"
+        }
+      ]
+    }
+  ],
+  "missing_in_master": [
+    {
+      "source_name": "CERSAI Registration / Modification Charge",
+      "source_facility": "Both",
+      "source_excel_row": 4,
+      "product": "Housing loan",
+      "amount_type": "Nil",
+      "amount": "Nil",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "per registration or modification",
+      "frequency": "each time",
+      "conditions": "Cersai registration/modification charges for Housing loan are Nil under latest Retail Loan Charges product table."
+    },
+    {
+      "source_name": "CERSAI Property Search Charge",
+      "source_facility": "Both",
+      "source_excel_row": 5,
+      "product": "Housing loan",
+      "amount_type": "Fixed amount",
+      "amount": "15",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "per search",
+      "frequency": "each time",
+      "conditions": "Charge for searching security interest on properties."
+    }
+  ],
+  "extra_in_master": [
+    {
+      "origin": "Other charges",
+      "count": 0,
+      "rows": [],
+      "note": "All 37 Other charges rows map to Structured_Data (33 value-OK matches/renames + 4 value mismatches on NOC/Credit Opinion 10L boundary). No unmatched OC orphan rows."
+    },
+    {
+      "origin": "Offers.processing",
+      "count": 6,
+      "sample_charge_row_ids": [
+        "CHG-PROC-885",
+        "CHG-PROC-886",
+        "CHG-PROC-887",
+        "CHG-PROC-888",
+        "CHG-PROC-889",
+        "CHG-PROC-890"
+      ],
+      "all_charge_row_ids": [
+        "CHG-PROC-885",
+        "CHG-PROC-886",
+        "CHG-PROC-887",
+        "CHG-PROC-888",
+        "CHG-PROC-889",
+        "CHG-PROC-890"
+      ],
+      "schemes": {
+        "Home Loan": 6
+      },
+      "facilities": {
+        "Term Loan": 6
+      },
+      "rate_types": {
+        "Floating": 6
+      },
+      "percentage_min_max_fingerprints": {
+        "(0.005, 10000, None)": 6
+      },
+      "cibil_bands": [
+        {
+          "min": 300,
+          "max": 599
+        },
+        {
+          "min": 600,
+          "max": 649
+        },
+        {
+          "min": 650,
+          "max": 699
+        },
+        {
+          "min": 700,
+          "max": 749
+        },
+        {
+          "min": 750,
+          "max": 799
+        },
+        {
+          "min": 800,
+          "max": 900
+        }
+      ],
+      "internal_clone_groups_multiplicity_gt1": 0,
+      "note": "Not in Structured_Data (source is Federal Bank retail/housing schedule — rate switch / CIBIL / CERSAI / NOC-Credit Opinion / valuation / inspection / bounce; no processing-fee rows)."
+    },
+    {
+      "origin": "Offers.overdue",
+      "count": 1,
+      "rows": [
+        {
+          "charge_row_id": "CHG-OD-85",
+          "charge_name": "Overdue charges",
+          "facility_type": "Term Loan",
+          "scheme": "Home Loan",
+          "rate_type": "Floating",
+          "charge_type": "Percentage",
+          "fixed_amount": null,
+          "percentage": 0.18,
+          "percentage_per_annum": "Yes",
+          "percentage_base_value": "Default_Amount",
+          "charge_min": null,
+          "charge_max": null,
+          "gst_applicable": null,
+          "note_1": null,
+          "source_ref": "Offers!1201"
+        }
+      ]
+    },
+    {
+      "origin": "Offers.prepayment",
+      "count": 1,
+      "rows": [
+        {
+          "charge_row_id": "CHG-PRE-71",
+          "charge_name": "Prepayment charges",
+          "facility_type": "Term Loan",
+          "scheme": "Home Loan",
+          "rate_type": "Floating",
+          "charge_type": "Fixed Amount",
+          "fixed_amount": 0,
+          "percentage": null,
+          "percentage_per_annum": null,
+          "percentage_base_value": null,
+          "charge_min": null,
+          "charge_max": null,
+          "gst_applicable": null,
+          "note_1": "Prepayment not charged (prepayment_applicable=No)",
+          "source_ref": "Offers!1201"
+        }
+      ]
+    },
+    {
+      "origin": "CSV.fixed_prepay",
+      "count": 2,
+      "rows": [
+        {
+          "charge_row_id": "CHG-PRE-216",
+          "charge_name": "Prepayment charges",
+          "facility_type": "Term Loan",
+          "scheme": null,
+          "rate_type": "Fixed",
+          "charge_type": "Percentage",
+          "fixed_amount": null,
+          "percentage": 0.03,
+          "percentage_per_annum": null,
+          "percentage_base_value": "Amount_Being_Paid",
+          "charge_min": null,
+          "charge_max": null,
+          "gst_applicable": "Yes",
+          "note_1": null,
+          "source_ref": "Federal Bank|TL_self"
+        },
+        {
+          "charge_row_id": "CHG-PRE-217",
+          "charge_name": "Prepayment charges (takeover)",
+          "facility_type": "Term Loan",
+          "scheme": null,
+          "rate_type": "Fixed",
+          "charge_type": "Percentage",
+          "fixed_amount": null,
+          "percentage": 0.03,
+          "percentage_per_annum": null,
+          "percentage_base_value": "Amount_Being_Paid",
+          "charge_min": null,
+          "charge_max": null,
+          "gst_applicable": "Yes",
+          "note_1": null,
+          "source_ref": "Federal Bank|TL_take"
+        }
+      ]
+    },
+    {
+      "origin": "Slab_Table",
+      "count": 0,
+      "rows": []
+    }
+  ],
+  "renames": [
+    {
+      "from": "Rate Switch Fee",
+      "to": "Interest Rate Type Switch Fees",
+      "master_id": "CHG-OC-288",
+      "source_excel_row": 2
+    },
+    {
+      "from": "Rate Switch Fee",
+      "to": "Interest Rate Type Switch Fees",
+      "master_id": "CHG-OC-289",
+      "source_excel_row": 2
+    },
+    {
+      "from": "Rate Switch Fee",
+      "to": "Interest Rate Type Switch Fees",
+      "master_id": "CHG-OC-290",
+      "source_excel_row": 2
+    },
+    {
+      "from": "Rate Switch Fee",
+      "to": "Interest Rate Type Switch Fees",
+      "master_id": "CHG-OC-291",
+      "source_excel_row": 2
+    },
+    {
+      "from": "NOC / Credit Opinion Charge",
+      "to": "No Objection Certificate Issuance Fees",
+      "master_id": "CHG-OC-293",
+      "source_excel_row": 6
+    },
+    {
+      "from": "NOC / Credit Opinion Charge",
+      "to": "Credit Opinion Report Charges",
+      "master_id": "CHG-OC-296",
+      "source_excel_row": 6
+    },
+    {
+      "from": "NOC / Credit Opinion Charge",
+      "to": "No Objection Certificate Issuance Fees",
+      "master_id": "CHG-OC-294",
+      "source_excel_row": 7
+    },
+    {
+      "from": "NOC / Credit Opinion Charge",
+      "to": "Credit Opinion Report Charges",
+      "master_id": "CHG-OC-297",
+      "source_excel_row": 7
+    },
+    {
+      "from": "NOC / Credit Opinion Charge",
+      "to": "No Objection Certificate Issuance Fees",
+      "master_id": "CHG-OC-295",
+      "source_excel_row": 8
+    },
+    {
+      "from": "NOC / Credit Opinion Charge",
+      "to": "Credit Opinion Report Charges",
+      "master_id": "CHG-OC-298",
+      "source_excel_row": 8
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-299",
+      "source_excel_row": 9
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-300",
+      "source_excel_row": 10
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-301",
+      "source_excel_row": 11
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-302",
+      "source_excel_row": 12
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-303",
+      "source_excel_row": 13
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-304",
+      "source_excel_row": 14
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-305",
+      "source_excel_row": 15
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-306",
+      "source_excel_row": 16
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-307",
+      "source_excel_row": 17
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-308",
+      "source_excel_row": 18
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-309",
+      "source_excel_row": 19
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-310",
+      "source_excel_row": 20
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-311",
+      "source_excel_row": 21
+    },
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-312",
+      "source_excel_row": 22
+    }
+  ],
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 2,
+    "missing_bank_service_actionable": 0,
+    "extras_processing_not_error": 1,
+    "extras_prepay_ignored": 2,
+    "extras_overdue_no_action": 1,
+    "extras_other_charges_review": 2,
+    "value_mismatches": 4
+  },
+  "verdict_under_rules": "FAIL"
+}

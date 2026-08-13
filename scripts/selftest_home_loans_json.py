@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "data" / "HOME_LOANS_COMPARE_v1.xlsx"
 JSON_PATH = ROOT / "data" / "home-loans-compare.json"
-LOCKED = {"offers": 806, "bank_charges": 2337, "government_charges": 18}
+LOCKED = {"offers": 806, "bank_charges": 2347, "government_charges": 18}
 
 
 def sha256_file(path: Path) -> str:

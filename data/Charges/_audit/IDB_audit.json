@@ -1,0 +1,2112 @@
+{
+  "bank_code": "IDB",
+  "bank_key": "idbi bank",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 47,
+    "master_bank_charges_rows": 141,
+    "matched_ok": 29,
+    "matched_rename_only": 16,
+    "value_mismatches": 0,
+    "missing_in_master": 2,
+    "extra_in_master": 96,
+    "duplicate_issues": 0
+  },
+  "matched_ok": [
+    {
+      "source_name": "Legal Charge",
+      "source_facility": "Both",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-366",
+      "master_name": "Legal Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2500; charge_by_area Metro / Urban; charge_unit=Instance; freq=As applicable",
+        "rename Legal Charge → Legal Charges; facility Both→Any; gst master='Yes' (source Plus taxes — soft)"
+      ]
+    },
+    {
+      "source_name": "Technical Charge",
+      "source_facility": "Both",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-368",
+      "master_name": "Legal & Technical Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2500; charge_by_area Metro / Urban; charge_unit=Instance; freq=As applicable",
+        "rename Technical Charge → Legal & Technical Charges (master uses published table umbrella for Technical column; amount matches)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal Charge",
+      "source_facility": "Both",
+      "source_excel_row": 4,
+      "master_id": "CHG-OC-367",
+      "master_name": "Legal Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2500; charge_by_area Semi Urban & Rural≈source Semi Urban / Rural; charge_unit=Instance; freq=As applicable",
+        "rename Legal Charge → Legal Charges; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Technical Charge",
+      "source_facility": "Both",
+      "source_excel_row": 5,
+      "master_id": "CHG-OC-369",
+      "master_name": "Legal & Technical Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2500; charge_by_area Semi Urban & Rural≈source Semi Urban / Rural; charge_unit=Instance; freq=As applicable",
+        "rename Technical Charge → Legal & Technical Charges (umbrella name for Technical column; amount matches)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Interest Rate Conversion Charge (BR/BPLR/MCLR to RLLR)",
+      "source_facility": "Both",
+      "source_excel_row": 6,
+      "master_id": "CHG-OC-370",
+      "master_name": "Interest Rate Benchmark Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 5000; customer=Individual; charge_unit=Switch; freq=Per conversion request",
+        "benchmark_switch Base Rate / MCLR / BPLR → RLLR (source BR/BPLR/MCLR to RLLR)",
+        "rename Interest Rate Conversion Charge (BR/BPLR/MCLR to RLLR) → Interest Rate Benchmark Switch Fees",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Interest Rate Conversion Charge (BR/BPLR/MCLR to RLLR)",
+      "source_facility": "Both",
+      "source_excel_row": 7,
+      "master_id": "CHG-OC-371",
+      "master_name": "Interest Rate Benchmark Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.0025 (=0.25%); customer=Non-Individual; charge_unit=Switch; freq=Per conversion request",
+        "pct_base: source='Outstanding amount' master='Outstanding loan amount' (treated equivalent)",
+        "benchmark_switch Base Rate / MCLR / BPLR → RLLR",
+        "rename Interest Rate Conversion Charge (BR/BPLR/MCLR to RLLR) → Interest Rate Benchmark Switch Fees",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Interest Rate Conversion Charge (Interest Saver to Home Loan)",
+      "source_facility": "Both",
+      "source_excel_row": 8,
+      "master_id": "CHG-OC-372",
+      "master_name": "Facility Conversion fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.005 (=0.50%); pct_base=Outstanding loan amount; charge_unit=Conversion; freq=Per conversion request",
+        "facility_conversion Home Loan Interest Saver → Home Loan",
+        "rename Interest Rate Conversion Charge (Interest Saver to Home Loan) → Facility Conversion fees",
+        "facility: source=Both master=Overdraft (Interest Saver is OD product — soft, amounts match); gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Property Inspection Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 9,
+      "master_id": "CHG-OC-373",
+      "master_name": "Property Inspection Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 750; slab None–3500000; charge_unit=Property; freq=Once at sanction; facility=Term Loan",
+        "slab_basis master='Sanctioned loan amount' (source loan-amount band; treated equivalent); gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Property Inspection Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 10,
+      "master_id": "CHG-OC-374",
+      "master_name": "Property Inspection Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 1500; slab 3500001–7500000; charge_unit=Property; freq=Once at sanction; facility=Term Loan",
+        "slab_basis master='Sanctioned loan amount' (treated equivalent); gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Property Inspection Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-375",
+      "master_name": "Property Inspection Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 2000; slab 7500001–None; charge_unit=Property; freq=Once at sanction; facility=Term Loan",
+        "slab_basis master='Sanctioned loan amount' (treated equivalent); gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Property Swapping Charge",
+      "source_facility": "Both",
+      "source_excel_row": 12,
+      "master_id": "CHG-OC-376",
+      "master_name": "Property Swapping Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 25000; charge_unit=Instance; freq=Per request; note_1 documents-separately",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Partial Property Release Charge",
+      "source_facility": "Both",
+      "source_excel_row": 13,
+      "master_id": "CHG-OC-377",
+      "master_name": "Partial Property Release Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 10000; charge_unit=Instance; freq=Per request",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NEFT Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-378",
+      "master_name": "NEFT Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Nil/Free→Fixed amount 0; fixed_amount_at_branch=Yes; slab None–5000; slab_basis=Transaction amount; facility=Overdraft; cu=transaction",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NEFT Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 15,
+      "master_id": "CHG-OC-379",
+      "master_name": "NEFT Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 2; fixed_amount_at_branch=Yes; slab 5001–10000; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NEFT Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-380",
+      "master_name": "NEFT Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 5; fixed_amount_at_branch=Yes; slab 10001–100000; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NEFT Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 17,
+      "master_id": "CHG-OC-381",
+      "master_name": "NEFT Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 15; fixed_amount_at_branch=Yes; slab 100001–200000; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NEFT Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 18,
+      "master_id": "CHG-OC-382",
+      "master_name": "NEFT Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 25; fixed_amount_at_branch=Yes; slab 200001–None; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NEFT Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 19,
+      "master_id": "CHG-OC-383",
+      "master_name": "NEFT Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Nil/Free→Fixed amount 0; fixed_amount_at_net_mobile_banking=Yes; slab None–5000; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NEFT Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 20,
+      "master_id": "CHG-OC-384",
+      "master_name": "NEFT Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 3; fixed_amount_at_net_mobile_banking=Yes; slab 5001–10000; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NEFT Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 21,
+      "master_id": "CHG-OC-385",
+      "master_name": "NEFT Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 6; fixed_amount_at_net_mobile_banking=Yes; slab 10001–100000; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NEFT Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 22,
+      "master_id": "CHG-OC-386",
+      "master_name": "NEFT Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 12; fixed_amount_at_net_mobile_banking=Yes; slab 100001–200000; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NEFT Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 23,
+      "master_id": "CHG-OC-387",
+      "master_name": "NEFT Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 12; fixed_amount_at_net_mobile_banking=Yes; slab 200001–None; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "RTGS Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 24,
+      "master_id": "CHG-OC-388",
+      "master_name": "RTGS Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 24.5; fixed_amount_at_branch=Yes; slab 200000–500000; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "RTGS Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 25,
+      "master_id": "CHG-OC-389",
+      "master_name": "RTGS Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 49.5; fixed_amount_at_branch=Yes; slab 500001–None; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "RTGS Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 26,
+      "master_id": "CHG-OC-390",
+      "master_name": "RTGS Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 15; fixed_amount_at_net_mobile_banking=Yes; slab 200000–500000; channel source='Net banking'; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "RTGS Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 27,
+      "master_id": "CHG-OC-391",
+      "master_name": "RTGS Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 30; fixed_amount_at_net_mobile_banking=Yes; slab 500001–None; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "IMPS Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 28,
+      "master_id": "CHG-OC-392",
+      "master_name": "IMPS Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 1; slab None–1000; facility=Overdraft; channel Net banking / Mobile / Branch",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "IMPS Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 29,
+      "master_id": "CHG-OC-393",
+      "master_name": "IMPS Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 5; slab 1001–25000; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "IMPS Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 30,
+      "master_id": "CHG-OC-394",
+      "master_name": "IMPS Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 10; slab 25001–100000; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "IMPS Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 31,
+      "master_id": "CHG-OC-395",
+      "master_name": "IMPS Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 15; slab 100001–500000; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Cash Deposit Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 32,
+      "master_id": "CHG-OC-396",
+      "master_name": "Cash Deposit Amount Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Formula Rs.4.00/1000 → Fixed amount 4 + fixed_amount_per_1000_rs=Yes; slab None–300000; facility=Overdraft",
+        "rename Cash Deposit Charge → Cash Deposit Amount Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Cash Deposit Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 33,
+      "master_id": "CHG-OC-397",
+      "master_name": "Cash Deposit Amount Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Formula Rs.5.00/1000 → Fixed amount 5 + fixed_amount_per_1000_rs=Yes; slab 300001–None; facility=Overdraft",
+        "rename Cash Deposit Charge → Cash Deposit Amount Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Cheque Book Issuance Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 34,
+      "master_id": "CHG-OC-398",
+      "master_name": "Cheque Book Issuance Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 5; fixed_amount_unit=Leaf; charge_unit=leaf; freq=Per issuance; facility=Overdraft",
+        "rename Cheque Book Issuance Charge → Cheque Book Issuance Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Omni Pay Issuance Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 35,
+      "master_id": "CHG-OC-399",
+      "master_name": "Omni Pay Issuance Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Formula Rs.1.10/1000 → Fixed amount 1.1 + fixed_amount_per_1000_rs=Yes; charge_min=53; cu=issuance; facility=Overdraft",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Digital Documentation Charge",
+      "source_facility": "Both",
+      "source_excel_row": 36,
+      "master_id": "CHG-OC-400",
+      "master_name": "Digital Documentation Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 100; charge_unit=Instance; freq=As applicable",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Copy of Property Documents Charge",
+      "source_facility": "Both",
+      "source_excel_row": 37,
+      "master_id": "CHG-OC-401",
+      "master_name": "Property Document Retrieval Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 225; charge_unit=Instance; freq=Per request",
+        "rename Copy of Property Documents Charge → Property Document Retrieval Charge",
+        "soft: source 'Other than Natural Amortization' applies to Document Retrieval sibling (r38), not this copy charge; master note unset on both",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Document Retrieval Charge",
+      "source_facility": "Both",
+      "source_excel_row": 38,
+      "master_id": "CHG-OC-402",
+      "master_name": "Property Document Retrieval Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2500; charge_unit=Instance; freq=Per request",
+        "rename Document Retrieval Charge → Property Document Retrieval Charge",
+        "soft: source Conditions 'Other than Natural Amortization' not stored in master note_1; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Repayment Mode Change / ECS-ACH Swap Charge",
+      "source_facility": "Both",
+      "source_excel_row": 39,
+      "master_id": "CHG-OC-403",
+      "master_name": "Repayment Mode Change / ECS ACH Swap Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 575; charge_unit=Instance; freq=Per request; note_1 swap wording",
+        "rename Repayment Mode Change / ECS-ACH Swap Charge → Repayment Mode Change / ECS ACH Swap Charge (hyphen→space)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "EMI / Cheque / ECS / ACH Bounce Charge",
+      "source_facility": "Both",
+      "source_excel_row": 40,
+      "master_id": "CHG-OC-404",
+      "master_name": "EMI / Cheque / ECS / ACH Bounce Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 300; charge_unit=Instance; frequency: source='Per instance' master='Each time' (treated equivalent)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Duplicate Statement Charge",
+      "source_facility": "Both",
+      "source_excel_row": 41,
+      "master_id": "CHG-OC-405",
+      "master_name": "Statement of Account Charges - Duplicate",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 115; charge_unit=Request; frequency: source='Per request' master='Each time' (treated equivalent)",
+        "rename Duplicate Statement Charge → Statement of Account Charges - Duplicate",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Re-issuance of PO/DD Charge",
+      "source_facility": "Both",
+      "source_excel_row": 42,
+      "master_id": "CHG-OC-406",
+      "master_name": "Re-issuance of PO/DD Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 115; charge_unit=Instance; freq=Per request",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Duplicate Certificate / Interest Paid Certificate Charge",
+      "source_facility": "Both",
+      "source_excel_row": 43,
+      "master_id": "CHG-OC-407",
+      "master_name": "Duplicate Certificate / Interest Paid Certificate Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 150; charge_unit=Instance; freq=Per request",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "CIBIL Credit Information Copy Charge",
+      "source_facility": "Both",
+      "source_excel_row": 44,
+      "master_id": "CHG-OC-408",
+      "master_name": "Credit Information Report (CIC) Charges - Copy",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 50; charge_unit=Report; freq=Per request",
+        "rename CIBIL Credit Information Copy Charge → Credit Information Report (CIC) Charges - Copy",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Non-collection of Original Documents Charge",
+      "source_facility": "Both",
+      "source_excel_row": 45,
+      "master_id": "CHG-OC-409",
+      "master_name": "Non-collection of Original Documents Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 1000; charge_unit=Instance; freq='After 30 days from loan closure'; note_1 preserves wording",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Rate Switch Charge (Floating ROI to Fixed ROI)",
+      "source_facility": "Both",
+      "source_excel_row": 46,
+      "master_id": "CHG-OC-410",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.005 (=0.50%); charge_max=100000; pct_base=Outstanding loan amount; charge_unit=Switch",
+        "interest_rate_type_switch Floating→Fixed; freq=Per conversion request",
+        "rename Rate Switch Charge (Floating ROI to Fixed ROI) → Interest Rate Type Switch Fees",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    }
+  ],
+  "mismatches": [],
+  "missing_in_master": [
+    {
+      "source_name": "CERSAI Registration Charge",
+      "source_excel_row": 47,
+      "facility": "Both",
+      "product": "Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "100",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": 500000,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per registration",
+      "frequency": "At registration",
+      "conditions": "For loan amount up to Rs 5 Lakh. Plus taxes."
+    },
+    {
+      "source_name": "CERSAI Registration Charge",
+      "source_excel_row": 48,
+      "facility": "Both",
+      "product": "Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "200",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": 500001,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per registration",
+      "frequency": "At registration",
+      "conditions": "For loan amount above Rs 5 Lakh. Plus taxes."
+    }
+  ],
+  "extra_in_master": [
+    {
+      "master_id": "CHG-PRE-222",
+      "master_name": "Prepayment charges",
+      "origin": "CSV.fixed_prepay",
+      "facility": "Term Loan",
+      "rate_type": "Fixed",
+      "percentage": 0.02,
+      "pct_base": "Amount_Being_Paid",
+      "note_1": "Within 6 months from final disbursement",
+      "reason": "Not in Structured_Data (CSV.fixed_prepay clone)"
+    },
+    {
+      "master_id": "CHG-PRE-223",
+      "master_name": "Prepayment charges",
+      "origin": "CSV.fixed_prepay",
+      "facility": "Term Loan",
+      "rate_type": "Fixed",
+      "fixed_amount": 0,
+      "note_1": "After 6 months from final disbursement — nil",
+      "reason": "Not in Structured_Data (CSV.fixed_prepay clone)"
+    },
+    {
+      "master_id": "CHG-PRE-224",
+      "master_name": "Prepayment charges (takeover)",
+      "origin": "CSV.fixed_prepay",
+      "facility": "Term Loan",
+      "rate_type": "Fixed",
+      "percentage": 0.02,
+      "pct_base": "Amount_Being_Paid",
+      "reason": "Not in Structured_Data (CSV.fixed_prepay clone)"
+    },
+    {
+      "master_id": "CHG-PRE-225",
+      "master_name": "Prepayment charges",
+      "origin": "CSV.fixed_prepay",
+      "facility": "Overdraft",
+      "rate_type": "Fixed",
+      "percentage": 0.02,
+      "pct_base": "Amount_Being_Paid",
+      "note_1": "Within 6 months from final disbursement",
+      "reason": "Not in Structured_Data (CSV.fixed_prepay clone)"
+    },
+    {
+      "master_id": "CHG-PRE-226",
+      "master_name": "Prepayment charges",
+      "origin": "CSV.fixed_prepay",
+      "facility": "Overdraft",
+      "rate_type": "Fixed",
+      "fixed_amount": 0,
+      "note_1": "After 6 months from final disbursement — nil",
+      "reason": "Not in Structured_Data (CSV.fixed_prepay clone)"
+    },
+    {
+      "master_id": "CHG-PRE-227",
+      "master_name": "Prepayment charges (takeover)",
+      "origin": "CSV.fixed_prepay",
+      "facility": "Overdraft",
+      "rate_type": "Fixed",
+      "percentage": 0.02,
+      "pct_base": "Amount_Being_Paid",
+      "reason": "Not in Structured_Data (CSV.fixed_prepay clone)"
+    },
+    {
+      "master_id": "CHG-OD-86",
+      "master_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "percentage": 0.02,
+      "pct_base": "Default_Amount",
+      "reason": "Not in Structured_Data (Offers.overdue clone)"
+    },
+    {
+      "master_id": "CHG-OD-87",
+      "master_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "percentage": 0.02,
+      "pct_base": "Default_Amount",
+      "reason": "Not in Structured_Data (Offers.overdue clone)"
+    },
+    {
+      "master_id": "CHG-OD-88",
+      "master_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "percentage": 0.02,
+      "pct_base": "Default_Amount",
+      "reason": "Not in Structured_Data (Offers.overdue clone)"
+    },
+    {
+      "master_id": "CHG-PRE-72",
+      "master_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "fixed_amount": 0,
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "reason": "Not in Structured_Data (Offers.prepayment clone)"
+    },
+    {
+      "master_id": "CHG-PRE-73",
+      "master_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "fixed_amount": 0,
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "reason": "Not in Structured_Data (Offers.prepayment clone)"
+    },
+    {
+      "master_id": "CHG-PRE-74",
+      "master_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "fixed_amount": 0,
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "reason": "Not in Structured_Data (Offers.prepayment clone)"
+    },
+    {
+      "master_id": "CHG-PROC-891",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 825,
+      "cibil_max": 900,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-892",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 825,
+      "cibil_max": 900,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-893",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 781,
+      "cibil_max": 824,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-894",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 781,
+      "cibil_max": 824,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-895",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 761,
+      "cibil_max": 780,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-896",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 761,
+      "cibil_max": 780,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-897",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 741,
+      "cibil_max": 760,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-898",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 741,
+      "cibil_max": 760,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-899",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 721,
+      "cibil_max": 740,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-900",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 721,
+      "cibil_max": 740,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-901",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 700,
+      "cibil_max": 720,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-902",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 700,
+      "cibil_max": 720,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-903",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 650,
+      "cibil_max": 699,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-904",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 650,
+      "cibil_max": 699,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-905",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 825,
+      "cibil_max": 900,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-906",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 825,
+      "cibil_max": 900,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-907",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 781,
+      "cibil_max": 824,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-908",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 781,
+      "cibil_max": 824,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-909",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 761,
+      "cibil_max": 780,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-910",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 761,
+      "cibil_max": 780,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-911",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 741,
+      "cibil_max": 760,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-912",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 741,
+      "cibil_max": 760,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-913",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 721,
+      "cibil_max": 740,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-914",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 721,
+      "cibil_max": 740,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-915",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 700,
+      "cibil_max": 720,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-916",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 700,
+      "cibil_max": 720,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-917",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 650,
+      "cibil_max": 699,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-918",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 650,
+      "cibil_max": 699,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-919",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 825,
+      "cibil_max": 900,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-920",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 825,
+      "cibil_max": 900,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-921",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 781,
+      "cibil_max": 824,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-922",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 781,
+      "cibil_max": 824,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-923",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 761,
+      "cibil_max": 780,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-924",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 761,
+      "cibil_max": 780,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-925",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 741,
+      "cibil_max": 760,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-926",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 741,
+      "cibil_max": 760,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-927",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 721,
+      "cibil_max": 740,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-928",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 721,
+      "cibil_max": 740,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-929",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 700,
+      "cibil_max": 720,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-930",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 700,
+      "cibil_max": 720,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-931",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 10000,
+      "cibil_min": 650,
+      "cibil_max": 699,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-932",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 10000,
+      "cibil_min": 650,
+      "cibil_max": 699,
+      "loan_amount_min": 1,
+      "loan_amount_max": 7500000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-933",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 825,
+      "cibil_max": 900,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-934",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 825,
+      "cibil_max": 900,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-935",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 781,
+      "cibil_max": 824,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-936",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 781,
+      "cibil_max": 824,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-937",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 761,
+      "cibil_max": 780,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-938",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 761,
+      "cibil_max": 780,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-939",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 741,
+      "cibil_max": 760,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-940",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 741,
+      "cibil_max": 760,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-941",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 721,
+      "cibil_max": 740,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-942",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 721,
+      "cibil_max": 740,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-943",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 700,
+      "cibil_max": 720,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-944",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 700,
+      "cibil_max": 720,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-945",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 650,
+      "cibil_max": 699,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-946",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Plain Vanilla Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 650,
+      "cibil_max": 699,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-947",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 825,
+      "cibil_max": 900,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-948",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 825,
+      "cibil_max": 900,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-949",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 781,
+      "cibil_max": 824,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-950",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 781,
+      "cibil_max": 824,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-951",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 761,
+      "cibil_max": 780,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-952",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 761,
+      "cibil_max": 780,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-953",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 741,
+      "cibil_max": 760,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-954",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 741,
+      "cibil_max": 760,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-955",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 721,
+      "cibil_max": 740,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-956",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 721,
+      "cibil_max": 740,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-957",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 700,
+      "cibil_max": 720,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-958",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 700,
+      "cibil_max": 720,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-959",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 650,
+      "cibil_max": 699,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-960",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "scheme": "Home Loan Ultra Saver",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 650,
+      "cibil_max": 699,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-961",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 825,
+      "cibil_max": 900,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-962",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 825,
+      "cibil_max": 900,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-963",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 781,
+      "cibil_max": 824,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-964",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 781,
+      "cibil_max": 824,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-965",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 761,
+      "cibil_max": 780,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-966",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 761,
+      "cibil_max": 780,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-967",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 741,
+      "cibil_max": 760,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-968",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 741,
+      "cibil_max": 760,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-969",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 721,
+      "cibil_max": 740,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-970",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 721,
+      "cibil_max": 740,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-971",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 700,
+      "cibil_max": 720,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-972",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 700,
+      "cibil_max": 720,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-973",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "fixed_amount": 15000,
+      "cibil_min": 650,
+      "cibil_max": 699,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    },
+    {
+      "master_id": "CHG-PROC-974",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "scheme": "Home Loan Top Up",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "fixed_amount": 15000,
+      "cibil_min": 650,
+      "cibil_max": 699,
+      "loan_amount_min": 7500001,
+      "loan_amount_max": 1000000000,
+      "reason": "Not in Structured_Data (Offers.processing clone)"
+    }
+  ],
+  "renames": [
+    {
+      "from": "Legal Charge",
+      "to": "Legal Charges",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-366"
+    },
+    {
+      "from": "Technical Charge",
+      "to": "Legal & Technical Charges",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-368"
+    },
+    {
+      "from": "Legal Charge",
+      "to": "Legal Charges",
+      "source_excel_row": 4,
+      "master_id": "CHG-OC-367"
+    },
+    {
+      "from": "Technical Charge",
+      "to": "Legal & Technical Charges",
+      "source_excel_row": 5,
+      "master_id": "CHG-OC-369"
+    },
+    {
+      "from": "Interest Rate Conversion Charge (BR/BPLR/MCLR to RLLR)",
+      "to": "Interest Rate Benchmark Switch Fees",
+      "source_excel_row": 6,
+      "master_id": "CHG-OC-370"
+    },
+    {
+      "from": "Interest Rate Conversion Charge (BR/BPLR/MCLR to RLLR)",
+      "to": "Interest Rate Benchmark Switch Fees",
+      "source_excel_row": 7,
+      "master_id": "CHG-OC-371"
+    },
+    {
+      "from": "Interest Rate Conversion Charge (Interest Saver to Home Loan)",
+      "to": "Facility Conversion fees",
+      "source_excel_row": 8,
+      "master_id": "CHG-OC-372"
+    },
+    {
+      "from": "Cash Deposit Charge",
+      "to": "Cash Deposit Amount Charges",
+      "source_excel_row": 32,
+      "master_id": "CHG-OC-396"
+    },
+    {
+      "from": "Cash Deposit Charge",
+      "to": "Cash Deposit Amount Charges",
+      "source_excel_row": 33,
+      "master_id": "CHG-OC-397"
+    },
+    {
+      "from": "Cheque Book Issuance Charge",
+      "to": "Cheque Book Issuance Charges",
+      "source_excel_row": 34,
+      "master_id": "CHG-OC-398"
+    },
+    {
+      "from": "Copy of Property Documents Charge",
+      "to": "Property Document Retrieval Charge",
+      "source_excel_row": 37,
+      "master_id": "CHG-OC-401"
+    },
+    {
+      "from": "Document Retrieval Charge",
+      "to": "Property Document Retrieval Charge",
+      "source_excel_row": 38,
+      "master_id": "CHG-OC-402"
+    },
+    {
+      "from": "Repayment Mode Change / ECS-ACH Swap Charge",
+      "to": "Repayment Mode Change / ECS ACH Swap Charge",
+      "source_excel_row": 39,
+      "master_id": "CHG-OC-403"
+    },
+    {
+      "from": "Duplicate Statement Charge",
+      "to": "Statement of Account Charges - Duplicate",
+      "source_excel_row": 41,
+      "master_id": "CHG-OC-405"
+    },
+    {
+      "from": "CIBIL Credit Information Copy Charge",
+      "to": "Credit Information Report (CIC) Charges - Copy",
+      "source_excel_row": 44,
+      "master_id": "CHG-OC-408"
+    },
+    {
+      "from": "Rate Switch Charge (Floating ROI to Fixed ROI)",
+      "to": "Interest Rate Type Switch Fees",
+      "source_excel_row": 46,
+      "master_id": "CHG-OC-410"
+    }
+  ],
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 2,
+    "missing_bank_service_actionable": 0,
+    "extras_processing_not_error": 84,
+    "extras_prepay_ignored": 9,
+    "extras_overdue_no_action": 3,
+    "extras_other_charges_review": 0,
+    "value_mismatches": 0
+  },
+  "verdict_under_rules": "PASS"
+}

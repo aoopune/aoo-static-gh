@@ -1,0 +1,586 @@
+{
+  "bank_code": "KOT",
+  "bank_key": "kotak mahindra bank",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 24,
+    "master_bank_charges_rows": 36,
+    "matched_ok": 7,
+    "matched_rename_only": 12,
+    "value_mismatches": 0,
+    "missing_in_master": 5,
+    "extra_in_master": 18,
+    "duplicate_issues": 0
+  },
+  "matched_ok": [
+    {
+      "source_name": "Hard Copy of Other Documents / Letters",
+      "source_facility": "Both",
+      "source_excel_row": 8,
+      "master_id": "CHG-OC-581",
+      "master_name": "Hard Copy of Other Documents / Letters",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charge_unit=Instance; freq=Each time",
+        "facility Both→Any broadening (amounts match — soft); gst master='Yes' (soft)",
+        "note_1 preserves examples (Subsidy Confirmation / Credit Opinion / Interest paid confirmation); trailing '))' typo in master note_1 (soft)"
+      ]
+    },
+    {
+      "source_name": "Repayment Mode / Account Swap Charge",
+      "source_facility": "Both",
+      "source_excel_row": 9,
+      "master_id": "CHG-OC-582",
+      "master_name": "Repayment Mode / Account Swap Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charge_unit=Instance; freq=Each time",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Instrument Dishonour Charge",
+      "source_facility": "Both",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-587",
+      "master_name": "Instrument Dishonour Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 750; charge_unit=Instance; freq=Each time; note_1='Cheque/ECS/Mandate dishonour.'",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Penal Charge for Non-Compliance of Sanction Terms",
+      "source_facility": "Both",
+      "source_excel_row": 15,
+      "master_id": "CHG-OC-588",
+      "master_name": "Penal Charge for Non-Compliance of Sanction Terms",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Formula ₹5.50 per day per lac → Fixed amount 5.5 + fixed_amount_unit=day + fixed_amount_per_lakh_or_part=Yes",
+        "percentage_base_value='Underlying exposure'; freq='From the day of breach until complied'; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Penal Charge for Delay or Non-Creation of Security",
+      "source_facility": "Both",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-589",
+      "master_name": "Penal Charge for Delay or Non-Creation of Security",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Formula ₹5.50 per day per lac → Fixed amount 5.5 + fixed_amount_unit=day + fixed_amount_per_lakh_or_part=Yes",
+        "freq='For delay beyond stipulated days up to 180 days from original due date (ODD)'; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Penal Charge for Delay or Non-Creation of Security",
+      "source_facility": "Both",
+      "source_excel_row": 17,
+      "master_id": "CHG-OC-590",
+      "master_name": "Penal Charge for Delay or Non-Creation of Security",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Formula ₹11 per day per lac → Fixed amount 11 + fixed_amount_unit=day + fixed_amount_per_lakh_or_part=Yes",
+        "freq='Beyond 180 days from original due date (ODD)'; pct_base sum of revolving limits + non-revolving outstanding; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Non-Utilization Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 20,
+      "master_id": "CHG-OC-591",
+      "master_name": "Non-Utilization Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Percentage 0.4% p.a.→0.004 + percentage_per_annum=Yes; utilisation_below_per_quarter=0.25; customer_type=Individual",
+        "pct_base: source='Under-utilized limit' master='Unutilized amount' (soft equivalent); facility=Overdraft; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Both",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-576",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount / Upto 5000 → fixed_amount=5000 + charge_max=5000; charge_unit=Property; freq='One time at loan disbursement'; refundable_if_not_sanctioned=No",
+        "property_valuation_scope master='Both'; rename Valuation Fee→Property Valuation Report Charges; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Interest Certificate / Statement of Account / Amortisation Schedule",
+      "source_facility": "Both",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-577",
+      "master_name": "Statement of Account Charges - Duplicate",
+      "rename": true,
+      "soft_notes": [
+        "Digital/self-service Nil covered by charged_for_digital_copy=No on physical SOA row (no separate Nil master row); paired with excel row 4 Physical ₹250 on same CHG-OC-577",
+        "rename Interest Certificate / Statement of Account / Amortisation Schedule → Statement of Account Charges - Duplicate (digital free via flag); channel source=Mobile/Net/WhatsApp; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Interest Certificate / Statement of Account / Amortisation Schedule",
+      "source_facility": "Both",
+      "source_excel_row": 4,
+      "master_id": "CHG-OC-577",
+      "master_name": "Statement of Account Charges - Duplicate",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 250; charged_for_physical_copy=Yes; charged_for_digital_copy=No; charge_unit=Request; freq=Each time",
+        "rename Interest Certificate / Statement of Account / Amortisation Schedule → Statement of Account Charges - Duplicate; channel source=Branch (physical); facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Duplicate No Objection Certificate",
+      "source_facility": "Both",
+      "source_excel_row": 5,
+      "master_id": "CHG-OC-578",
+      "master_name": "Duplicate No Objection Certificate Issuance Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 100; charge_unit=Instance; freq=Each time",
+        "rename Duplicate No Objection Certificate→Duplicate No Objection Certificate Issuance Fees; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Copy of Property Documents",
+      "source_facility": "Both",
+      "source_excel_row": 6,
+      "master_id": "CHG-OC-579",
+      "master_name": "Property Document Retrieval Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charge_unit=Instance; freq=Each time; note_1 preserves copy-of-property-documents wording",
+        "rename Copy of Property Documents→Property Document Retrieval Charge; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Duplicate List of Documents",
+      "source_facility": "Both",
+      "source_excel_row": 7,
+      "master_id": "CHG-OC-580",
+      "master_name": "List of Documents Charge - Duplicate",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charged_for_physical_copy=Yes; charged_for_digital_copy=No; charge_unit=Request; freq=Each time",
+        "rename Duplicate List of Documents→List of Documents Charge - Duplicate; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Switch Fee (Floating to Floating)",
+      "source_facility": "Both",
+      "source_excel_row": 10,
+      "master_id": "CHG-OC-583",
+      "master_name": "Interest Rate Benchmark Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.5%→0.005; charge_max=10000; pct_base Principal outstanding and undisbursed ≈ Outstanding principal loan amount and undisbursed amount",
+        "benchmark_switch_from/to encodes MCLR→External Benchmark Rate (Repo Rate); freq: source='Each time (multiple switches…)' master='Per request' (soft)",
+        "rename Switch Fee (Floating to Floating)→Interest Rate Benchmark Switch Fees; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Switch Fee (Floating to Fixed)",
+      "source_facility": "Both",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-584",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2500; interest_rate_type_switch Floating→Fixed; charge_unit=Switch; freq='Each time (multiple switches allowed during tenure)'",
+        "rename Switch Fee (Floating to Fixed)→Interest Rate Type Switch Fees; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Switch Fee (Fixed to Floating)",
+      "source_facility": "Both",
+      "source_excel_row": 12,
+      "master_id": "CHG-OC-585",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.5% p.a.→0.005 + percentage_per_annum=Yes; percentage_base_value='Each residual tenure (maximum cap of 3%)' preserves 3% cap in text (no numeric charge_max — soft)",
+        "interest_rate_type_switch Fixed→Floating; rename Switch Fee (Fixed to Floating)→Interest Rate Type Switch Fees; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Reschedulement of Loan Term",
+      "source_facility": "Both",
+      "source_excel_row": 13,
+      "master_id": "CHG-OC-586",
+      "master_name": "Rescheduling of Loan Term",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charge_unit=Instance; freq=Each time",
+        "rename Reschedulement of Loan Term→Rescheduling of Loan Term; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Commitment Charge (Non-Utilization)",
+      "source_facility": "Overdraft",
+      "source_excel_row": 21,
+      "master_id": "CHG-OC-592",
+      "master_name": "Non-Utilization Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Formula ₹5.50 per day per lac → Fixed amount 5.5 + fixed_amount_unit=day + fixed_amount_per_lakh_or_part=Yes; utilisation_below_per_quarter=0.6",
+        "customer_type: source='Non-individual' master='Non-Individual' (casing soft); special_rule preserves commitment-charge wording",
+        "rename Commitment Charge (Non-Utilization)→Non-Utilization Charge; facility=Overdraft; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Other Services (Revalidation of Sanction, Change in Property, Change in EMI Date, Solvency Charges, Legal Charges, etc.)",
+      "source_facility": "Both",
+      "source_excel_row": 25,
+      "master_id": "CHG-OC-593",
+      "master_name": "Other Services Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed At actuals; charge_unit≈service request; freq='When customer applies for the service'; note_1 lists revalidation/property/EMI date/solvency/legal",
+        "rename Other Services (…)→Other Services Charges; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    }
+  ],
+  "mismatches": [],
+  "missing_in_master": [
+    {
+      "source_name": "Annual Renewal Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 18,
+      "product": "Home Loan",
+      "amount_type": "Percentage",
+      "amount": "0.25%",
+      "min": null,
+      "max": null,
+      "pct_on": "Overdraft Limit (dropped limit after reduction of annual drop)",
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "loc": "Any",
+      "channel": "Any",
+      "charged_per": "Per year",
+      "frequency": "On the due date of renewal",
+      "conditions": "Collected on the due date of renewal on the Overdraft Limit (dropped limit after reduction of annual drop). Not applicable for Smart Home Loan Overdraft product."
+    },
+    {
+      "source_name": "Annual Renewal Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 19,
+      "product": "Home Loan",
+      "amount_type": "Nil",
+      "amount": "Not Applicable",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "loc": "Any",
+      "channel": "Any",
+      "charged_per": null,
+      "frequency": "On the due date of renewal",
+      "conditions": "Annual Renewal Charges are not applicable for Smart Home Loan Overdraft product."
+    },
+    {
+      "source_name": "Overline / Excess Drawal Penal Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 22,
+      "product": "Home Loan",
+      "amount_type": "Percentage",
+      "amount": "8% per annum",
+      "min": null,
+      "max": null,
+      "pct_on": "Overdue amount",
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "loc": "Any",
+      "channel": "Any",
+      "charged_per": "Per day on overdue amount",
+      "frequency": "While amount drawn is beyond maximum Overdraft Limit",
+      "conditions": "Penal charges where the amount drawn by the Borrower is beyond the maximum Overdraft Limit, or in case of overline accounts. 8% per annum on overdue amount."
+    },
+    {
+      "source_name": "Stamp Duty / Registration Charges",
+      "source_facility": "Both",
+      "source_excel_row": 23,
+      "product": "Home Loan",
+      "amount_type": "At actuals",
+      "amount": "At actuals (vary from State to State)",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "loc": "Any",
+      "channel": "Any",
+      "charged_per": "Per agreement / registration",
+      "frequency": "At documentation",
+      "conditions": "Stamp Duty on Home Loan Agreement, Overdraft Agreement, Guarantor Agreement, Registration Charges etc. vary from State to State. Stamping/Notarisation of RBI and other Affidavits are as applicable."
+    },
+    {
+      "source_name": "Priority Sector Loan Charge Exemption",
+      "source_facility": "Both",
+      "source_excel_row": 24,
+      "product": "Home Loan",
+      "amount_type": "Nil",
+      "amount": "Not applicable",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": "50000",
+      "customer": "Any",
+      "loc": "Any",
+      "channel": "Any",
+      "charged_per": null,
+      "frequency": "For eligible priority sector loans",
+      "conditions": "For priority sector loans up to ₹50,000, loan related charges (including guarantee fees of credit guarantee schemes) and ad hoc service charges/inspection charges are not applicable. For eligible priority sector loans to SHGs/JLGs, this limit is applicable per member and not to the group as a whole."
+    }
+  ],
+  "extra_in_master": [
+    {
+      "kind": "Offers.processing",
+      "count": 12,
+      "sample_ids": [
+        "CHG-PROC-1010",
+        "CHG-PROC-1011",
+        "CHG-PROC-1012",
+        "CHG-PROC-1013",
+        "CHG-PROC-1014",
+        "CHG-PROC-1015",
+        "CHG-PROC-1016",
+        "CHG-PROC-1017",
+        "CHG-PROC-1018",
+        "CHG-PROC-1019",
+        "CHG-PROC-1020",
+        "CHG-PROC-1021"
+      ],
+      "schemes": [
+        "Home Loan"
+      ],
+      "facility": "Term Loan",
+      "rate_type": "Floating",
+      "fingerprint": {
+        "(0.02, None, None)": 12
+      },
+      "fingerprint_note": "2% of sanctioned amount; Salaried×6 + Self-Employed×6 across 6 CIBIL bands",
+      "cibil_bands": [
+        {
+          "min": 800,
+          "max": 900,
+          "occupations": [
+            "Salaried",
+            "Self-Employed"
+          ]
+        },
+        {
+          "min": 750,
+          "max": 799,
+          "occupations": [
+            "Salaried",
+            "Self-Employed"
+          ]
+        },
+        {
+          "min": 700,
+          "max": 749,
+          "occupations": [
+            "Salaried",
+            "Self-Employed"
+          ]
+        },
+        {
+          "min": 650,
+          "max": 699,
+          "occupations": [
+            "Salaried",
+            "Self-Employed"
+          ]
+        },
+        {
+          "min": 600,
+          "max": 649,
+          "occupations": [
+            "Salaried",
+            "Self-Employed"
+          ]
+        },
+        {
+          "min": 300,
+          "max": 599,
+          "occupations": [
+            "Salaried",
+            "Self-Employed"
+          ]
+        }
+      ],
+      "internal_clone_groups_multiplicity_gt1": 0,
+      "note": "Not in Structured_Data (Kotak published fees/charges page — valuation/SOA/NOC/docs/switch/penal/non-util/other services; no processing-fee rows)."
+    },
+    {
+      "kind": "Offers.overdue",
+      "rows": [
+        {
+          "master_id": "CHG-OD-92",
+          "charge_name": "Overdue charges",
+          "facility": "Term Loan",
+          "scheme": "Home Loan",
+          "rate_type": "Floating",
+          "percentage": 0.08,
+          "percentage_per_annum": "Yes",
+          "percentage_base_value": "Default_Amount"
+        }
+      ]
+    },
+    {
+      "kind": "Offers.prepayment",
+      "rows": [
+        {
+          "master_id": "CHG-PRE-78",
+          "charge_name": "Prepayment charges",
+          "facility": "Term Loan",
+          "scheme": "Home Loan",
+          "rate_type": "Floating",
+          "fixed_amount": 0,
+          "note": "Prepayment not charged (prepayment_applicable=No)"
+        }
+      ]
+    },
+    {
+      "kind": "CSV.fixed_prepay",
+      "rows": [
+        {
+          "master_id": "CHG-PRE-230",
+          "charge_name": "Prepayment charges",
+          "facility": "Term Loan",
+          "rate_type": "Fixed",
+          "fixed_amount": 0,
+          "percentage": null,
+          "note": "Prepayment nil (CSV NIL)"
+        },
+        {
+          "master_id": "CHG-PRE-231",
+          "charge_name": "Prepayment charges (takeover)",
+          "facility": "Term Loan",
+          "rate_type": "Fixed",
+          "fixed_amount": null,
+          "percentage": 0.01,
+          "percentage_base_value": "Outstanding_Amount",
+          "note": "1% of outstanding per residual year to original maturity"
+        },
+        {
+          "master_id": "CHG-PRE-232",
+          "charge_name": "Prepayment charges",
+          "facility": "Overdraft",
+          "rate_type": "Fixed",
+          "fixed_amount": 0,
+          "percentage": null,
+          "note": "Prepayment nil (CSV NIL)"
+        },
+        {
+          "master_id": "CHG-PRE-233",
+          "charge_name": "Prepayment charges (takeover)",
+          "facility": "Overdraft",
+          "rate_type": "Fixed",
+          "fixed_amount": null,
+          "percentage": 0.01,
+          "percentage_base_value": "Outstanding_Amount",
+          "note": "1% of outstanding per residual year to original maturity"
+        }
+      ]
+    },
+    {
+      "kind": "Slab_Table",
+      "rows": []
+    },
+    {
+      "kind": "Other charges redundant/duplicate",
+      "rows": []
+    }
+  ],
+  "renames": [
+    {
+      "from": "Valuation Fee",
+      "to": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-576"
+    },
+    {
+      "from": "Interest Certificate / Statement of Account / Amortisation Schedule",
+      "to": "Statement of Account Charges - Duplicate",
+      "master_id": "CHG-OC-577"
+    },
+    {
+      "from": "Duplicate No Objection Certificate",
+      "to": "Duplicate No Objection Certificate Issuance Fees",
+      "master_id": "CHG-OC-578"
+    },
+    {
+      "from": "Copy of Property Documents",
+      "to": "Property Document Retrieval Charge",
+      "master_id": "CHG-OC-579"
+    },
+    {
+      "from": "Duplicate List of Documents",
+      "to": "List of Documents Charge - Duplicate",
+      "master_id": "CHG-OC-580"
+    },
+    {
+      "from": "Switch Fee (Floating to Floating)",
+      "to": "Interest Rate Benchmark Switch Fees",
+      "master_id": "CHG-OC-583"
+    },
+    {
+      "from": "Switch Fee (Floating to Fixed)",
+      "to": "Interest Rate Type Switch Fees",
+      "master_id": "CHG-OC-584"
+    },
+    {
+      "from": "Switch Fee (Fixed to Floating)",
+      "to": "Interest Rate Type Switch Fees",
+      "master_id": "CHG-OC-585"
+    },
+    {
+      "from": "Reschedulement of Loan Term",
+      "to": "Rescheduling of Loan Term",
+      "master_id": "CHG-OC-586"
+    },
+    {
+      "from": "Commitment Charge (Non-Utilization)",
+      "to": "Non-Utilization Charge",
+      "master_id": "CHG-OC-592"
+    },
+    {
+      "from": "Other Services (Revalidation of Sanction, Change in Property, Change in EMI Date, Solvency Charges, Legal Charges, etc.)",
+      "to": "Other Services Charges",
+      "master_id": "CHG-OC-593"
+    }
+  ],
+  "notes": [
+    "Source of truth: KOT_Home_Loan_Charges_Official.xlsx sheet Structured_Data (24 rows).",
+    "Master filter: Bank_charges where bank_key == 'kotak mahindra bank' (36 rows).",
+    "Semantic matching used; renames allowed when amounts/slabs match.",
+    "Nil digital Interest Certificate/SOA/Amortisation covered via charged_for_digital_copy=No on CHG-OC-577 physical ₹250 row.",
+    "Formula ₹/day/lac penal and commitment charges correctly use fixed_amount_per_lakh_or_part=Yes.",
+    "Missing: Annual Renewal 0.25% + Smart Home NA, Overline 8% p.a., Stamp Duty/Registration at actuals, Priority Sector ≤₹50k exemption.",
+    "No Other-charges redundant/duplicate vs Structured_Data (all 18 OC rows map).",
+    "No Slab_Table origin rows for this bank.",
+    "Offers.processing: 6 CIBIL bands × Salaried/Self-Employed (same 2% fee) — distinct occupation keys, not internal duplicates."
+  ],
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 1,
+    "missing_bank_service_actionable": 4,
+    "extras_processing_not_error": 1,
+    "extras_prepay_ignored": 2,
+    "extras_overdue_no_action": 0,
+    "extras_other_charges_review": 0,
+    "value_mismatches": 0
+  },
+  "verdict_under_rules": "FAIL"
+}

@@ -1,0 +1,771 @@
+{
+  "bank_code": "RBL",
+  "bank_key": "rbl bank",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 16,
+    "master_bank_charges_rows": 33,
+    "matched_ok": 5,
+    "matched_rename_only": 12,
+    "value_mismatches": 0,
+    "missing_in_master": 3,
+    "extra_in_master": 16,
+    "duplicate_issues": 0
+  },
+  "matched_ok": [
+    {
+      "source_name": "Repayment Mode Swap Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-687",
+      "master_name": "Repayment Mode Swap Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charge_unit=Instance; frequency Each time",
+        "gst_applicable: source notes Applicable GST and other statutory taxes over and above; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Duplicate Interest Certificate Issuance Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 4,
+      "master_id": "CHG-OC-689",
+      "master_name": "Duplicate Interest Certificate Issuance Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 250; charge_unit=Instance; frequency Each time",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "CIBIL Report Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 6,
+      "master_id": "CHG-OC-692",
+      "master_name": "CIBIL Report Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 100; charge_unit=Report; frequency Each time",
+        "source Conditions say levied only upon customer request (not mirrored as separate note field — soft)",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Field Collection Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-700",
+      "master_name": "Field Collection Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charge_unit=Instance; frequency Each time",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Non-Collection of Property Documents Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 15,
+      "master_id": "CHG-OC-701",
+      "master_name": "Non-Collection of Property Documents Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charge_unit=month; frequency monthly until documents collected",
+        "note_1/note_2 preserve post-60-days-from-closure and levied-till-collection language",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Cheque / ECS / NACH Dishonour Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-688",
+      "master_name": "Cheque/ECS/NACH Debit Return / Dishonour Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charge_unit=Instance; frequency Each time",
+        "rename Dishonour Charge → Debit Return / Dishonour Charges (spacing/slash normalized)",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Duplicate NOC / No Due Certificate Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 5,
+      "master_id": "CHG-OC-690",
+      "master_name": "Duplicate No Objection Certificate Issuance Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 250; charge_unit=Instance; frequency Each time",
+        "source combined Duplicate NOC/No Due split into NOC + No Due master series (CUB/DCB/ICI Duplicate NOC/No Dues precedent)",
+        "facility Term Loan→Any broadening (amounts match — not counted as mismatch)",
+        "rename Duplicate NOC / No Due Certificate Charge → Duplicate No Objection Certificate Issuance Fees",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Duplicate NOC / No Due Certificate Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 5,
+      "master_id": "CHG-OC-691",
+      "master_name": "No Due Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 250; No Due half of combined source certificate row",
+        "facility Term Loan→Any broadening (amounts match — not counted as mismatch)",
+        "rename → No Due Certificate Charges (master omits Duplicate in name — soft)",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Loan Cancellation / Rebooking Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 7,
+      "master_id": "CHG-OC-693",
+      "master_name": "Loan Cancellation / Re-booking Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2000; charge_unit=Instance; frequency Each time",
+        "note_2 preserves franking/stamping norms as per actuals if applicable (source Conditions; actuals_in_addition_to_charge blank — soft encoding via note)",
+        "rename Rebooking Charge → Re-booking Charges",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "List of Documents Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 8,
+      "master_id": "CHG-OC-694",
+      "master_name": "List of Documents Charge - Duplicate",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charge_unit=Request; frequency Each time",
+        "facility Term Loan→Any broadening (amounts match — not counted as mismatch)",
+        "master adds '- Duplicate' and charged_for_physical_copy=Yes (source schedule does not say Duplicate — soft rename/flag)",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Property Documents Retrieval / Photocopy Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 10,
+      "master_id": "CHG-OC-695",
+      "master_name": "Property Document Retrieval Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charge_unit=Instance; frequency Each time",
+        "facility Term Loan→Any broadening (amounts match — not counted as mismatch)",
+        "rename Property Documents Retrieval / Photocopy Charge → Property Document Retrieval Charge",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Rate Switch / Change Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-696",
+      "master_name": "Interest Rate Repricing Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Formula '0.5% on principal outstanding or INR 10000 whichever is lower' encoded as Percentage 0.005 (=0.50%) + charge_max=10000",
+        "pct_base: source='principal outstanding' master='Outstanding principal loan amount' (treated equivalent)",
+        "interest_rate_repricing Floating Higher→Lower; charge_unit=Instance; freq=Each Repricing",
+        "source single Rate Switch / Change row split into repricing + type-switch direction pairs (DCB Interest Rate Change Post Disbursal precedent)",
+        "rename Rate Switch / Change Charge → Interest Rate Repricing Fees",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Rate Switch / Change Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-697",
+      "master_name": "Interest Rate Repricing Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.005 + charge_max=10000; pct_base Outstanding principal loan amount",
+        "interest_rate_repricing Fixed Higher→Lower; paired with CHG-OC-696",
+        "rename Rate Switch / Change Charge → Interest Rate Repricing Fees",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Rate Switch / Change Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-698",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.005 + charge_max=10000; pct_base Outstanding principal loan amount",
+        "switch Fixed→Floating; charge_unit=Switch",
+        "rename Rate Switch / Change Charge → Interest Rate Type Switch Fees",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Rate Switch / Change Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-699",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.005 + charge_max=10000; pct_base Outstanding principal loan amount",
+        "switch Floating→Fixed; paired with CHG-OC-698",
+        "rename Rate Switch / Change Charge → Interest Rate Type Switch Fees",
+        "gst_applicable: source notes Applicable GST…; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Non-Submission of Post-Disbursement Documents Fee",
+      "source_facility": "Term Loan",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-702",
+      "master_name": "Non-Submission of Post Disbursement Documents Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 3000; slab None–3500000; slab_basis master='Sanctioned loan amount' (source loan-amount band — treated equivalent)",
+        "charge_unit=month; freq Monthly until documents submitted",
+        "note_1 preserves levied-from-due-till-not-submitted",
+        "rename Fee→Charges and Post-Disbursement→Post Disbursement",
+        "gst_applicable: source notes plus applicable taxes; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Non-Submission of Post-Disbursement Documents Fee",
+      "source_facility": "Term Loan",
+      "source_excel_row": 17,
+      "master_id": "CHG-OC-703",
+      "master_name": "Non-Submission of Post Disbursement Documents Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 5000; slab 3500001–None; slab_basis='Sanctioned loan amount'",
+        "charge_unit=month; freq Monthly until documents submitted",
+        "rename Fee→Charges",
+        "gst_applicable: source notes plus applicable taxes; master='Yes' (not counted as mismatch)"
+      ]
+    }
+  ],
+  "mismatches": [],
+  "missing_in_master": [
+    {
+      "source_name": "CERSAI Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 9,
+      "product": "Housing Loan",
+      "amount_type": "Fixed amount",
+      "amount": "100",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "per property",
+      "frequency": "each time",
+      "conditions": "CERSAI charge per property. Applicable GST and other statutory taxes charged over and above (Housing Loan^^ footnote)."
+    },
+    {
+      "source_name": "Statutory / Mortgage Creation Charges",
+      "source_facility": "Term Loan",
+      "source_excel_row": 12,
+      "product": "Housing Loan",
+      "amount_type": "At actuals",
+      "amount": "At actuals",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "per instance",
+      "frequency": "each time",
+      "conditions": "Stamp duty, MOD, MOE and other statutory / mortgage creation charges at actuals."
+    },
+    {
+      "source_name": "Legal, Repossession & Incidental Charges",
+      "source_facility": "Term Loan",
+      "source_excel_row": 13,
+      "product": "Housing Loan",
+      "amount_type": "At actuals",
+      "amount": "At actuals",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "per instance",
+      "frequency": "each time",
+      "conditions": "Legal, repossession and incidental charges at actuals."
+    }
+  ],
+  "extra_in_master": [
+    {
+      "origin": "Offers.processing",
+      "count": 12,
+      "sample_charge_row_ids": [
+        "CHG-PROC-1028",
+        "CHG-PROC-1029",
+        "CHG-PROC-1030",
+        "CHG-PROC-1031",
+        "CHG-PROC-1032",
+        "CHG-PROC-1033",
+        "CHG-PROC-1034",
+        "CHG-PROC-1035",
+        "CHG-PROC-1036",
+        "CHG-PROC-1037",
+        "CHG-PROC-1038",
+        "CHG-PROC-1039"
+      ],
+      "all_charge_row_ids": [
+        "CHG-PROC-1028",
+        "CHG-PROC-1029",
+        "CHG-PROC-1030",
+        "CHG-PROC-1031",
+        "CHG-PROC-1032",
+        "CHG-PROC-1033",
+        "CHG-PROC-1034",
+        "CHG-PROC-1035",
+        "CHG-PROC-1036",
+        "CHG-PROC-1037",
+        "CHG-PROC-1038",
+        "CHG-PROC-1039"
+      ],
+      "detail": "summary",
+      "schemes": {
+        "Housing Loan": 12
+      },
+      "facilities": {
+        "Term Loan": 12
+      },
+      "rate_types": {
+        "Floating": 12
+      },
+      "occupations": {
+        "Salaried": 6,
+        "Self-Employed": 6
+      },
+      "percentage_min_max_fingerprints": {
+        "(0.02, 15000, None)": 12
+      },
+      "cibil_bands": [
+        {
+          "min": 800,
+          "max": 900,
+          "ids": [
+            "CHG-PROC-1028",
+            "CHG-PROC-1029"
+          ],
+          "occupations": [
+            "Salaried",
+            "Self-Employed"
+          ]
+        },
+        {
+          "min": 750,
+          "max": 799,
+          "ids": [
+            "CHG-PROC-1030",
+            "CHG-PROC-1031"
+          ],
+          "occupations": [
+            "Salaried",
+            "Self-Employed"
+          ]
+        },
+        {
+          "min": 700,
+          "max": 749,
+          "ids": [
+            "CHG-PROC-1032",
+            "CHG-PROC-1033"
+          ],
+          "occupations": [
+            "Salaried",
+            "Self-Employed"
+          ]
+        },
+        {
+          "min": 650,
+          "max": 699,
+          "ids": [
+            "CHG-PROC-1034",
+            "CHG-PROC-1035"
+          ],
+          "occupations": [
+            "Salaried",
+            "Self-Employed"
+          ]
+        },
+        {
+          "min": 600,
+          "max": 649,
+          "ids": [
+            "CHG-PROC-1036",
+            "CHG-PROC-1037"
+          ],
+          "occupations": [
+            "Salaried",
+            "Self-Employed"
+          ]
+        },
+        {
+          "min": 300,
+          "max": 599,
+          "ids": [
+            "CHG-PROC-1038",
+            "CHG-PROC-1039"
+          ],
+          "occupations": [
+            "Salaried",
+            "Self-Employed"
+          ]
+        }
+      ],
+      "internal_clone_groups_multiplicity_gt1": 0,
+      "internal_clone_rows": 0,
+      "reason": "Not in Structured_Data (source has repayment-mode / bounce / certificates / CIBIL / cancellation / list-of-docs / CERSAI / retrieval / rate-switch / statutory-mortgage / legal-repossession / field-collection / non-collection / non-submission only — no processing-fee rows)"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1028",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": 15000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "cibil_band": "800–900",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1029",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": 15000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "cibil_band": "800–900",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1030",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": 15000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "cibil_band": "750–799",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1031",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": 15000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "cibil_band": "750–799",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1032",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": 15000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "cibil_band": "700–749",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1033",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": 15000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "cibil_band": "700–749",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1034",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": 15000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "cibil_band": "650–699",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1035",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": 15000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "cibil_band": "650–699",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1036",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": 15000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "cibil_band": "600–649",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1037",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": 15000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "cibil_band": "600–649",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1038",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": 15000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "occupation": "Salaried",
+      "cibil_band": "300–599",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-1039",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": 15000,
+      "charge_max": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "occupation": "Self-Employed",
+      "cibil_band": "300–599",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-OD-94",
+      "charge_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_per_annum": "Yes",
+      "percentage_base_value": "Default_Amount",
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-80",
+      "charge_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility_type": "Term Loan",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0,
+      "percentage": null,
+      "scheme": "Housing Loan",
+      "rate_type": "Floating",
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-236",
+      "charge_name": "Prepayment charges",
+      "origin": "CSV.fixed_prepay",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Amount_Being_Paid",
+      "purpose": "Regular Home Loan",
+      "rate_type": "Fixed",
+      "gst_applicable": "Yes",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-237",
+      "charge_name": "Prepayment charges (takeover)",
+      "origin": "CSV.fixed_prepay",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Amount_Being_Paid",
+      "purpose": "Regular Home Loan",
+      "rate_type": "Fixed",
+      "gst_applicable": "Yes",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    }
+  ],
+  "renames": [
+    {
+      "source_name": "Cheque / ECS / NACH Dishonour Charge",
+      "master_id": "CHG-OC-688",
+      "master_name": "Cheque/ECS/NACH Debit Return / Dishonour Charges"
+    },
+    {
+      "source_name": "Duplicate NOC / No Due Certificate Charge",
+      "master_id": "CHG-OC-690",
+      "master_name": "Duplicate No Objection Certificate Issuance Fees"
+    },
+    {
+      "source_name": "Duplicate NOC / No Due Certificate Charge",
+      "master_id": "CHG-OC-691",
+      "master_name": "No Due Certificate Charges"
+    },
+    {
+      "source_name": "Loan Cancellation / Rebooking Charge",
+      "master_id": "CHG-OC-693",
+      "master_name": "Loan Cancellation / Re-booking Charges"
+    },
+    {
+      "source_name": "List of Documents Charge",
+      "master_id": "CHG-OC-694",
+      "master_name": "List of Documents Charge - Duplicate"
+    },
+    {
+      "source_name": "Property Documents Retrieval / Photocopy Charge",
+      "master_id": "CHG-OC-695",
+      "master_name": "Property Document Retrieval Charge"
+    },
+    {
+      "source_name": "Rate Switch / Change Charge",
+      "master_id": "CHG-OC-696",
+      "master_name": "Interest Rate Repricing Fees"
+    },
+    {
+      "source_name": "Rate Switch / Change Charge",
+      "master_id": "CHG-OC-697",
+      "master_name": "Interest Rate Repricing Fees"
+    },
+    {
+      "source_name": "Rate Switch / Change Charge",
+      "master_id": "CHG-OC-698",
+      "master_name": "Interest Rate Type Switch Fees"
+    },
+    {
+      "source_name": "Rate Switch / Change Charge",
+      "master_id": "CHG-OC-699",
+      "master_name": "Interest Rate Type Switch Fees"
+    },
+    {
+      "source_name": "Non-Submission of Post-Disbursement Documents Fee",
+      "master_id": "CHG-OC-702",
+      "master_name": "Non-Submission of Post Disbursement Documents Charges"
+    },
+    {
+      "source_name": "Non-Submission of Post-Disbursement Documents Fee",
+      "master_id": "CHG-OC-703",
+      "master_name": "Non-Submission of Post Disbursement Documents Charges"
+    }
+  ],
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 2,
+    "missing_bank_service_actionable": 1,
+    "extras_processing_not_error": 13,
+    "extras_prepay_ignored": 3,
+    "extras_overdue_no_action": 1,
+    "extras_other_charges_review": 0,
+    "value_mismatches": 0
+  },
+  "verdict_under_rules": "FAIL"
+}

@@ -1,0 +1,1404 @@
+{
+  "bank_code": "PNB",
+  "bank_key": "punjab national bank",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 45,
+    "master_bank_charges_rows": 117,
+    "matched_ok": 5,
+    "matched_rename_only": 35,
+    "value_mismatches": 1,
+    "missing_in_master": 11,
+    "extra_in_master": 76,
+    "duplicate_issues": 0
+  },
+  "matched_ok": [
+    {
+      "source_name": "Documentation Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-618",
+      "master_name": "Documentation Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1350; purpose=Regular Home Loan; charge_unit=Instance; freq=At sanction/disbursement",
+        "rename Documentation Charge→Documentation Charges",
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)"
+      ]
+    },
+    {
+      "source_name": "Documentation Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-619",
+      "master_name": "Documentation Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1350; purpose=Regular Home Loan (Takeover); freq=At sanction/disbursement",
+        "source Loan_Type='Housing takeover'",
+        "rename Documentation Charge→Documentation Charges",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Max Saver One-Time Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 9,
+      "master_id": "CHG-OC-620",
+      "master_name": "Max Saver One-Time Conversion Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2500; charge_unit=Request; freq=At conversion/opening of Max Saver",
+        "note_1 preserves already-paid upfront & documentation condition",
+        "rename Max Saver One-Time Charge→Max Saver One-Time Conversion Charge",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Documentation Charge",
+      "source_facility": "Both",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-622",
+      "master_name": "Documentation Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 450; purpose=Top-up Loan",
+        "product 'Overdraft/ Term Loan to Existing Housing Loan Borrowers'; facility Both→Term Loan narrowing (amounts match — soft)",
+        "rename Documentation Charge→Documentation Charges",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Security Inspection / Verification Charge",
+      "source_facility": "Both",
+      "source_excel_row": 12,
+      "master_id": "CHG-OC-654",
+      "master_name": "Security Inspection / Verification Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 250 (source '250 + GST' → gst_applicable=Yes); freq='As per inspection/verification requirement'; charge_unit=Instance",
+        "facility Both→Any broadening (amounts match — not counted as mismatch)",
+        "soft: source Conditions say regular-account periodical inspection has been done away with; master note_1='Regular accounts - Once in two years' / note_2='NPA accounts - At least on half yearly basis…' (frequency notes differ — not counted as amount mismatch)"
+      ]
+    },
+    {
+      "source_name": "Rate Type Switchover Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-623",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.005 (=0.50%) + charge_max=10000 (whichever is lower); pct_base=Outstanding loan amount; switch Fixed→Floating; charge_unit=Switch",
+        "source one row 'switching between fixed and floating' split into direction pairs (treated equivalent encoding)",
+        "rename Rate Type Switchover Charge→Interest Rate Type Switch Fees",
+        "facility Term Loan→Any (soft); gst master='Yes' (source: GST levied as applicable — soft)"
+      ]
+    },
+    {
+      "source_name": "Rate Type Switchover Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-624",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.005 (=0.50%) + charge_max=10000; pct_base=Outstanding loan amount; switch Floating→Fixed",
+        "paired with CHG-OC-623",
+        "rename Rate Type Switchover Charge→Interest Rate Type Switch Fees",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Sanction Amendment / Modification Charge",
+      "source_facility": "Any",
+      "source_excel_row": 15,
+      "master_id": "CHG-OC-625",
+      "master_name": "Sanction Amendment / Modification Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.0005 (=0.05%); min=5000 max=1000000",
+        "pct_base: source='Loan amount' master='Sanctioned loan amount' (treated equivalent)",
+        "notes preserve CDR/restructuring exemption and ROI/service-charge-not-an-amendment",
+        "rename Charge→Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Revalidation of Sanction - Term Loan",
+      "source_facility": "Term Loan",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-626",
+      "master_name": "Revalidation of Sanction Charges",
+      "rename": true,
+      "soft_notes": [
+        "source Amount_Type=Formula '25% of applicable upfront fees' encoded as Percentage 0.25 + pct_base='Upfront fee' + charge_max=500000",
+        "facility=Term Loan",
+        "rename Revalidation of Sanction - Term Loan→Revalidation of Sanction Charges",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "NOC Issuance Charge",
+      "source_facility": "Any",
+      "source_excel_row": 17,
+      "master_id": "CHG-OC-627",
+      "master_name": "No Objection Certificate Issuance Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.0005 (=0.05%); min=2000 max=50000",
+        "pct_base: source='Limit' master='Sanctioned loan amount' (treated equivalent)",
+        "notes preserve within-consortium exemption",
+        "rename NOC Issuance Charge→No Objection Certificate Issuance Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Copy of Documents Charge",
+      "source_facility": "Any",
+      "source_excel_row": 18,
+      "master_id": "CHG-OC-628",
+      "master_name": "Loan Document Copy Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; slab None–10000000",
+        "slab_basis master='Sanctioned loan amount' (source limit/loan band — treated equivalent)",
+        "rename Copy of Documents Charge→Loan Document Copy Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Copy of Documents Charge",
+      "source_facility": "Any",
+      "source_excel_row": 19,
+      "master_id": "CHG-OC-629",
+      "master_name": "Loan Document Copy Charges",
+      "rename": true,
+      "soft_notes": [
+        "source Amount_Type=Formula '1000 plus actual photocopy charges' encoded as Fixed amount 1000 + actuals_in_addition_to_charge=Yes",
+        "slab_from=10000001 (source 'Over Rs. 100 Lakh' Loan_Amount_From=10000000 — exclusive+1 vs 'Above/Over' wording treated equivalent)",
+        "rename Copy of Documents Charge→Loan Document Copy Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Bank Official Presence With Document Copy",
+      "source_facility": "Any",
+      "source_excel_row": 20,
+      "master_id": "CHG-OC-630",
+      "master_name": "Bank Official Presence With Document Copy",
+      "rename": false,
+      "soft_notes": [
+        "source Amount_Type=Formula '2000 plus actual photocopy charges' encoded as Fixed amount 2000 + actuals_in_addition_to_charge=Yes",
+        "charge_unit=Request; freq when presence of bank official is required",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Credit Information / Opinion Charge",
+      "source_facility": "Any",
+      "source_excel_row": 21,
+      "master_id": "CHG-OC-631",
+      "master_name": "Credit Opinion Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1000; customer_type=Individual; charge_unit≈occasion; freq on request of borrower",
+        "rename Credit Information / Opinion Charge→Credit Opinion Report Charges",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Credit Information / Opinion Charge",
+      "source_facility": "Any",
+      "source_excel_row": 22,
+      "master_id": "CHG-OC-632",
+      "master_name": "Credit Opinion Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1500; customer_type: source='Non-individual' master='Non-Individual' (casing soft)",
+        "rename Credit Information / Opinion Charge→Credit Opinion Report Charges",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Credit Information Report (CIC) Charge",
+      "source_facility": "Any",
+      "source_excel_row": 23,
+      "master_id": "CHG-OC-633",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 100; charge_unit=Report; freq when CIC report drawn; customer_type=Individual",
+        "rename Charge→Charges",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Credit Information Report (CIC) Charge",
+      "source_facility": "Any",
+      "source_excel_row": 24,
+      "master_id": "CHG-OC-634",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; customer_type Non-Individual (casing soft); charge_unit=Report",
+        "rename Charge→Charges",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 29,
+      "master_id": "CHG-OC-641",
+      "master_name": "Legal Opinion Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 3000; slab None–10000000; charge_by_area=Metro; charge_unit=Property; actuals_in_addition_to_charge=Yes",
+        "source combined Legal Opinion / NEC split into Legal Opinion Fees + Non-Encumbrance Certificate Charges (DCB Duplicate NOC/No Dues / FED NOC/Credit Opinion precedent)",
+        "slab_basis master='Sanctioned loan amount' (source exposure band — treated equivalent)",
+        "rename Legal Opinion / NEC Charge→Legal Opinion Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 29,
+      "master_id": "CHG-OC-635",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 3000; slab None–10000000; charge_by_area=Metro; paired NEC half of combined source schedule; actuals=Yes",
+        "rename Legal Opinion / NEC Charge→Non-Encumbrance Certificate Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 30,
+      "master_id": "CHG-OC-642",
+      "master_name": "Legal Opinion Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1500; slab None–10000000; charge_by_area master='Urban & Semi-urban' (source 'Urban & Semi-Urban' — casing soft); actuals=Yes",
+        "rename Legal Opinion / NEC Charge→Legal Opinion Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 30,
+      "master_id": "CHG-OC-636",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1500; slab None–10000000; area=Urban & Semi-urban; paired NEC half",
+        "rename Legal Opinion / NEC Charge→Non-Encumbrance Certificate Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 31,
+      "master_id": "CHG-OC-643",
+      "master_name": "Legal Opinion Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1000; slab None–10000000; charge_by_area=Rural; actuals=Yes",
+        "rename Legal Opinion / NEC Charge→Legal Opinion Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 31,
+      "master_id": "CHG-OC-637",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1000; slab None–10000000; area=Rural; paired NEC half",
+        "rename Legal Opinion / NEC Charge→Non-Encumbrance Certificate Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 32,
+      "master_id": "CHG-OC-644",
+      "master_name": "Legal Opinion Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 4000; slab_from=10000001 (source 'Above Rs.1 Crore' Loan_Amount_From=10000000 — exclusive+1 vs 'Above' wording treated equivalent); area=Metro; actuals=Yes",
+        "rename Legal Opinion / NEC Charge→Legal Opinion Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 32,
+      "master_id": "CHG-OC-638",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 4000; slab_from=10000001; area=Metro; paired NEC half",
+        "rename Legal Opinion / NEC Charge→Non-Encumbrance Certificate Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 33,
+      "master_id": "CHG-OC-645",
+      "master_name": "Legal Opinion Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2500; slab_from=10000001; area=Urban & Semi-urban; actuals=Yes",
+        "rename Legal Opinion / NEC Charge→Legal Opinion Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 33,
+      "master_id": "CHG-OC-639",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2500; slab_from=10000001; area=Urban & Semi-urban; paired NEC half",
+        "rename Legal Opinion / NEC Charge→Non-Encumbrance Certificate Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 34,
+      "master_id": "CHG-OC-646",
+      "master_name": "Legal Opinion Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1500; slab_from=10000001; area=Rural; actuals=Yes",
+        "rename Legal Opinion / NEC Charge→Legal Opinion Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 34,
+      "master_id": "CHG-OC-640",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 1500; slab_from=10000001; area=Rural; paired NEC half",
+        "rename Legal Opinion / NEC Charge→Non-Encumbrance Certificate Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Any",
+      "source_excel_row": 35,
+      "master_id": "CHG-OC-647",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2000; slab None–2000000",
+        "slab_basis master='Realizable value of assets' (source 'Value of assets / realizable value' — equivalent)",
+        "property_valuation_scope master='Both' (source includes Property/Fixed Assets/Plant & Machinery — soft)",
+        "rename Valuation Fee→Property Valuation Report Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Any",
+      "source_excel_row": 36,
+      "master_id": "CHG-OC-648",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 3000; slab 2000001–5000000 (source 'Above Rs. 20 Lakh to Rs. 50 Lakh' Loan_Amount_From=2000000 — exclusive+1 vs 'Above' wording treated equivalent)",
+        "slab_basis='Realizable value of assets'",
+        "rename Valuation Fee→Property Valuation Report Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Any",
+      "source_excel_row": 37,
+      "master_id": "CHG-OC-649",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 4000; slab 5000001–10000000",
+        "rename Valuation Fee→Property Valuation Report Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Any",
+      "source_excel_row": 38,
+      "master_id": "CHG-OC-650",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 8000; slab 10000001–50000000",
+        "rename Valuation Fee→Property Valuation Report Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Any",
+      "source_excel_row": 39,
+      "master_id": "CHG-OC-651",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 12000; slab 50000001–100000000",
+        "rename Valuation Fee→Property Valuation Report Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Any",
+      "source_excel_row": 40,
+      "master_id": "CHG-OC-652",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 15000; slab 100000001–500000000",
+        "rename Valuation Fee→Property Valuation Report Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Any",
+      "source_excel_row": 41,
+      "master_id": "CHG-OC-653",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 25000; slab_from=500000001",
+        "rename Valuation Fee→Property Valuation Report Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Term Loan Disbursement Instrument Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 42,
+      "master_id": "CHG-OC-655",
+      "master_name": "Term Loan Disbursement Instrument Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Nil/'No charges' encoded as Fixed Amount 0 (Nil↔0 equivalent); charge_unit=Instrument",
+        "facility Term Loan→Any broadening (amounts match — soft)",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "ECS Debit Return Charge",
+      "source_facility": "Any",
+      "source_excel_row": 44,
+      "master_id": "CHG-OC-656",
+      "master_name": "ECS/NACH Debit Return Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 100 (ECS insufficient-funds return — distinct from NACH ₹250 on CHG-OC-658); charge_unit=Return",
+        "rename ECS Debit Return Charge→ECS/NACH Debit Return Charges (master name adds NACH; amount is the ECS ₹100 schedule)",
+        "gst master='Yes' (source: GST extra — soft)"
+      ]
+    },
+    {
+      "source_name": "NACH Mandate Verification Charge",
+      "source_facility": "Any",
+      "source_excel_row": 45,
+      "master_id": "CHG-OC-657",
+      "master_name": "NACH Mandate Verification Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 100; charge_unit=Mandate; freq inward NACH mandate verification physical/e-mandate",
+        "gst master='Yes' (source: GST extra — soft)"
+      ]
+    },
+    {
+      "source_name": "NACH Debit Return Charge",
+      "source_facility": "Any",
+      "source_excel_row": 46,
+      "master_id": "CHG-OC-658",
+      "master_name": "NACH Debit Return Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 250; charge_unit=Return; freq on return of NACH debit due to insufficient funds",
+        "gst master='Yes' (source: GST extra — soft)"
+      ]
+    }
+  ],
+  "mismatches": [
+    {
+      "source_name": "Max Saver Charge Rule",
+      "source_facility": "Overdraft",
+      "source_excel_row": 10,
+      "master_id": "CHG-OC-621",
+      "master_name": "Max Saver Charge Rule",
+      "rename": false,
+      "soft_notes": [
+        "name exact (Max Saver Charge Rule)",
+        "note_2 preserves unpaid-upfront-and-documentation condition",
+        "₹1,350 equals Housing Loan documentation only (CHG-OC-618); published housing scheme also has processing 0.35% min ₹2,500 max ₹15,000"
+      ],
+      "diffs": [
+        {
+          "field": "Amount_Type / charge_type",
+          "source": "Formula",
+          "master": "Fixed Amount"
+        },
+        {
+          "field": "Amount",
+          "source": "Charges as per Housing Loans",
+          "master": "fixed_amount=1350"
+        }
+      ],
+      "source_fingerprint": "type=Formula amount='Charges as per Housing Loans' min=None max=None pct_on=None slab=None–None facility=Overdraft loc=Any cust=Individual",
+      "master_fingerprint": "type=Fixed Amount fixed=1350 pct=None min=None max=None slab=None–None facility=Overdraft gst=Yes"
+    }
+  ],
+  "missing_in_master": [
+    {
+      "source_name": "Documentation Charge Waiver",
+      "source_facility": "Term Loan",
+      "source_excel_row": 4,
+      "product": "Pradhan Mantri Awas Yojna",
+      "amount_type": "Nil",
+      "amount": "Nil",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": 600000,
+      "customer": "Individual",
+      "location": "Any",
+      "charged_per": "One time",
+      "frequency": "At sanction/disbursement",
+      "conditions": "PMAY EWS/LIG housing loan row states nil up to Rs. 6 lakh."
+    },
+    {
+      "source_name": "Documentation Charge Waiver",
+      "source_facility": "Term Loan",
+      "source_excel_row": 5,
+      "product": "Pradhan Mantri Awas Yojna",
+      "amount_type": "Nil",
+      "amount": "Nil",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": 900000,
+      "customer": "Individual",
+      "location": "Any",
+      "charged_per": "One time",
+      "frequency": "At sanction/disbursement",
+      "conditions": "PMAY MIG-I: nil up to Rs. 9 lakh."
+    },
+    {
+      "source_name": "Documentation Charge Waiver",
+      "source_facility": "Term Loan",
+      "source_excel_row": 6,
+      "product": "Pradhan Mantri Awas Yojna",
+      "amount_type": "Nil",
+      "amount": "Nil",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": 1200000,
+      "customer": "Individual",
+      "location": "Any",
+      "charged_per": "One time",
+      "frequency": "At sanction/disbursement",
+      "conditions": "PMAY MIG-II: nil up to Rs. 12 lakh."
+    },
+    {
+      "source_name": "Documentation Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 7,
+      "product": "Pradhan Mantri Awas Yojna",
+      "amount_type": "Formula",
+      "amount": "As per existing housing loan scheme to public",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Individual",
+      "location": "Any",
+      "charged_per": "One time",
+      "frequency": "At sanction/disbursement",
+      "conditions": "For additional loan amount beyond eligible PMAY MIG amount."
+    },
+    {
+      "source_name": "Documentation Charge Waiver",
+      "source_facility": "Term Loan",
+      "source_excel_row": 8,
+      "product": "PNB Pride",
+      "amount_type": "Nil",
+      "amount": "Nil",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Individual",
+      "location": "Any",
+      "charged_per": "One time",
+      "frequency": "At sanction/disbursement",
+      "conditions": "PNB Pride row says nil; product page also confirms full waiver of documentation charges."
+    },
+    {
+      "source_name": "Documentation Charge Waiver",
+      "source_facility": "Term Loan",
+      "source_excel_row": 13,
+      "product": "PNB Pride",
+      "amount_type": "Nil",
+      "amount": "Nil",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Individual",
+      "location": "Any",
+      "charged_per": "One time",
+      "frequency": "At sanction/disbursement",
+      "conditions": "PNB Pride product page confirms full waiver of documentation charges. Same Pride Nil as excel row 8 from a second source URL."
+    },
+    {
+      "source_name": "CERSAI Creation / Modification Charge",
+      "source_facility": "Any",
+      "source_excel_row": 25,
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "50",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": 500000,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per creation/modification",
+      "frequency": "For creation or modification of security interest in favour of secured creditor",
+      "conditions": null
+    },
+    {
+      "source_name": "CERSAI Creation / Modification Charge",
+      "source_facility": "Any",
+      "source_excel_row": 26,
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "100",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": 500000,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per creation/modification",
+      "frequency": "For creation or modification of security interest in favour of secured creditor",
+      "conditions": null
+    },
+    {
+      "source_name": "CERSAI Search Charge",
+      "source_facility": "Any",
+      "source_excel_row": 27,
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "10",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per search/application",
+      "frequency": "For application for information recorded/maintained in the CERSAI register",
+      "conditions": null
+    },
+    {
+      "source_name": "CERSAI Satisfaction / Correction Charge",
+      "source_facility": "Any",
+      "source_excel_row": 28,
+      "product": "Any",
+      "amount_type": "Nil",
+      "amount": "NIL",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per satisfaction/correction",
+      "frequency": "For satisfaction or correction of existing security interest",
+      "conditions": null
+    },
+    {
+      "source_name": "Mortgage Creation Charge",
+      "source_facility": "Any",
+      "source_excel_row": 43,
+      "product": "Any",
+      "amount_type": "Nil",
+      "amount": "Not applicable for Retail Loans",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per instance",
+      "frequency": "Home loans are retail loans; PNB states mortgage creation charges are not applicable in case of Retail Loans.",
+      "conditions": null
+    }
+  ],
+  "extra_in_master": [
+    {
+      "origin": "Other charges",
+      "count": 0,
+      "rows": [],
+      "note": "All 41 Other charges rows map to Structured_Data (40 value-OK matches/renames + 1 value mismatch on Max Saver Charge Rule). No unmatched OC orphan rows. Legal Opinion / NEC combined source schedule is split into Legal Opinion Fees + Non-Encumbrance Certificate Charges (not an unmatched orphan)."
+    },
+    {
+      "origin": "Offers.processing",
+      "count": 60,
+      "sample_charge_row_ids": [
+        "CHG-PROC-1",
+        "CHG-PROC-2",
+        "CHG-PROC-3",
+        "CHG-PROC-4",
+        "CHG-PROC-5",
+        "CHG-PROC-6",
+        "CHG-PROC-7",
+        "CHG-PROC-8",
+        "CHG-PROC-9",
+        "CHG-PROC-10",
+        "CHG-PROC-11",
+        "CHG-PROC-12"
+      ],
+      "all_charge_row_ids": [
+        "CHG-PROC-1",
+        "CHG-PROC-2",
+        "CHG-PROC-3",
+        "CHG-PROC-4",
+        "CHG-PROC-5",
+        "CHG-PROC-6",
+        "CHG-PROC-7",
+        "CHG-PROC-8",
+        "CHG-PROC-9",
+        "CHG-PROC-10",
+        "CHG-PROC-11",
+        "CHG-PROC-12",
+        "CHG-PROC-13",
+        "CHG-PROC-14",
+        "CHG-PROC-15",
+        "CHG-PROC-16",
+        "CHG-PROC-17",
+        "CHG-PROC-18",
+        "CHG-PROC-19",
+        "CHG-PROC-20",
+        "CHG-PROC-21",
+        "CHG-PROC-22",
+        "CHG-PROC-23",
+        "CHG-PROC-24",
+        "CHG-PROC-25",
+        "CHG-PROC-26",
+        "CHG-PROC-27",
+        "CHG-PROC-28",
+        "CHG-PROC-29",
+        "CHG-PROC-30",
+        "CHG-PROC-31",
+        "CHG-PROC-32",
+        "CHG-PROC-33",
+        "CHG-PROC-34",
+        "CHG-PROC-35",
+        "CHG-PROC-36",
+        "CHG-PROC-37",
+        "CHG-PROC-38",
+        "CHG-PROC-39",
+        "CHG-PROC-40",
+        "CHG-PROC-41",
+        "CHG-PROC-42",
+        "CHG-PROC-43",
+        "CHG-PROC-44",
+        "CHG-PROC-45",
+        "CHG-PROC-46",
+        "CHG-PROC-47",
+        "CHG-PROC-48",
+        "CHG-PROC-49",
+        "CHG-PROC-50",
+        "CHG-PROC-51",
+        "CHG-PROC-52",
+        "CHG-PROC-53",
+        "CHG-PROC-54",
+        "CHG-PROC-55",
+        "CHG-PROC-56",
+        "CHG-PROC-57",
+        "CHG-PROC-58",
+        "CHG-PROC-59",
+        "CHG-PROC-60"
+      ],
+      "detail": "summary",
+      "schemes": {
+        "Housing Loan For Public": 27,
+        "PNB Max-Saver": 27,
+        "Top-up Loan": 6
+      },
+      "facilities": {
+        "Term Loan": 30,
+        "Overdraft": 30
+      },
+      "rate_types": {
+        "Floating": 20,
+        "Fixed": 40
+      },
+      "occupations": {
+        "Any": 48,
+        "Salaried": 12
+      },
+      "borrower_categories": {
+        "Any": 48,
+        "Central/State/PSU employees and Pensioners": 12
+      },
+      "percentage_min_max_loan_fingerprints": {
+        "(0.0035, 2500, 15000, 1, 3000000)": 18,
+        "(0.0035, 2500, 15000, 3000001, 1000000000)": 24,
+        "(0, None, None, 1, 3000000)": 6,
+        "(0, None, None, 3000001, 1000000000)": 6,
+        "(0.0035, 2500, 15000, None, None)": 6
+      },
+      "cibil_bands": [
+        {
+          "min": 600,
+          "max": 699
+        },
+        {
+          "min": 700,
+          "max": 749
+        },
+        {
+          "min": 750,
+          "max": 799
+        },
+        {
+          "min": 750,
+          "max": 900
+        },
+        {
+          "min": 800,
+          "max": 900
+        },
+        {
+          "applicable": "No",
+          "note": "govt-employee waiver rows and Top-up"
+        }
+      ],
+      "internal_clone_groups_multiplicity_gt1": 0,
+      "internal_clone_rows": 0,
+      "reason": "Not in Structured_Data (source documentation rows explicitly exclude processing; no processing-fee Structured_Data rows)"
+    },
+    {
+      "charge_row_id": "CHG-OD-1",
+      "charge_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_per_annum": "Yes",
+      "percentage_base_value": "Default_Amount",
+      "scheme": "Housing Loan For Public",
+      "purpose": "Regular Home Loan",
+      "rate_type": "Floating",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-OD-2",
+      "charge_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_per_annum": "Yes",
+      "percentage_base_value": "Default_Amount",
+      "scheme": "Housing Loan For Public",
+      "purpose": "Regular Home Loan",
+      "rate_type": "Fixed",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-OD-3",
+      "charge_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility_type": "Overdraft",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_per_annum": "Yes",
+      "percentage_base_value": "Default_Amount",
+      "scheme": "PNB Max-Saver",
+      "purpose": "Regular Home Loan",
+      "rate_type": "Floating",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-OD-4",
+      "charge_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility_type": "Overdraft",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_per_annum": "Yes",
+      "percentage_base_value": "Default_Amount",
+      "scheme": "PNB Max-Saver",
+      "purpose": "Regular Home Loan",
+      "rate_type": "Fixed",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-OD-5",
+      "charge_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_per_annum": "Yes",
+      "percentage_base_value": "Default_Amount",
+      "scheme": "Top-up Loan",
+      "purpose": "Top-up Loan",
+      "rate_type": "Floating",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-OD-6",
+      "charge_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility_type": "Overdraft",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_per_annum": "Yes",
+      "percentage_base_value": "Default_Amount",
+      "scheme": "Top-up Loan",
+      "purpose": "Top-up Loan",
+      "rate_type": "Floating",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-OD-7",
+      "charge_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_per_annum": "Yes",
+      "percentage_base_value": "Default_Amount",
+      "scheme": "Top-up Loan",
+      "purpose": "Top-up Loan",
+      "rate_type": "Fixed",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-OD-8",
+      "charge_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility_type": "Overdraft",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_per_annum": "Yes",
+      "percentage_base_value": "Default_Amount",
+      "scheme": "Top-up Loan",
+      "purpose": "Top-up Loan",
+      "rate_type": "Fixed",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-1",
+      "charge_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility_type": "Term Loan",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0,
+      "percentage": null,
+      "scheme": "Housing Loan For Public",
+      "purpose": "Regular Home Loan",
+      "rate_type": "Floating",
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-4",
+      "charge_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility_type": "Overdraft",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0,
+      "percentage": null,
+      "scheme": "PNB Max-Saver",
+      "purpose": "Regular Home Loan",
+      "rate_type": "Floating",
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-7",
+      "charge_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility_type": "Term Loan",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0,
+      "percentage": null,
+      "scheme": "Top-up Loan",
+      "purpose": "Top-up Loan",
+      "rate_type": "Floating",
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-8",
+      "charge_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility_type": "Overdraft",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0,
+      "percentage": null,
+      "scheme": "Top-up Loan",
+      "purpose": "Top-up Loan",
+      "rate_type": "Floating",
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-168",
+      "charge_name": "Prepayment charges",
+      "origin": "CSV.fixed_prepay",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Prepaid_Amount",
+      "purpose": "Regular Home Loan",
+      "rate_type": "Fixed",
+      "gst_applicable": "Yes",
+      "percentage_applies_per": "once",
+      "source_ref": "Punjab National Bank|TL_self",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-169",
+      "charge_name": "Prepayment charges (takeover)",
+      "origin": "CSV.fixed_prepay",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Amount_Being_Paid",
+      "purpose": "Regular Home Loan",
+      "rate_type": "Fixed",
+      "gst_applicable": "Yes",
+      "percentage_applies_per": "once",
+      "source_ref": "Punjab National Bank|TL_take",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-170",
+      "charge_name": "Prepayment charges",
+      "origin": "CSV.fixed_prepay",
+      "facility_type": "Overdraft",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Prepaid_Amount",
+      "purpose": "Regular Home Loan",
+      "rate_type": "Fixed",
+      "gst_applicable": "Yes",
+      "percentage_applies_per": "once",
+      "source_ref": "Punjab National Bank|OD_self",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-171",
+      "charge_name": "Prepayment charges (takeover)",
+      "origin": "CSV.fixed_prepay",
+      "facility_type": "Overdraft",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_base_value": "Sanctioned_Limit",
+      "purpose": "Regular Home Loan",
+      "rate_type": "Fixed",
+      "gst_applicable": "Yes",
+      "percentage_applies_per": "once",
+      "source_ref": "Punjab National Bank|OD_take",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "origin": "Slab_Table",
+      "count": 0,
+      "rows": [],
+      "note": "No Slab_Table origin rows for this bank."
+    }
+  ],
+  "renames": [
+    {
+      "source_name": "Documentation Charge",
+      "master_name": "Documentation Charges",
+      "master_id": "CHG-OC-618",
+      "source_excel_row": 2
+    },
+    {
+      "source_name": "Documentation Charge",
+      "master_name": "Documentation Charges",
+      "master_id": "CHG-OC-619",
+      "source_excel_row": 3
+    },
+    {
+      "source_name": "Max Saver One-Time Charge",
+      "master_name": "Max Saver One-Time Conversion Charge",
+      "master_id": "CHG-OC-620",
+      "source_excel_row": 9
+    },
+    {
+      "source_name": "Documentation Charge",
+      "master_name": "Documentation Charges",
+      "master_id": "CHG-OC-622",
+      "source_excel_row": 11
+    },
+    {
+      "source_name": "Rate Type Switchover Charge",
+      "master_name": "Interest Rate Type Switch Fees",
+      "master_id": "CHG-OC-623",
+      "source_excel_row": 14
+    },
+    {
+      "source_name": "Rate Type Switchover Charge",
+      "master_name": "Interest Rate Type Switch Fees",
+      "master_id": "CHG-OC-624",
+      "source_excel_row": 14
+    },
+    {
+      "source_name": "Sanction Amendment / Modification Charge",
+      "master_name": "Sanction Amendment / Modification Charges",
+      "master_id": "CHG-OC-625",
+      "source_excel_row": 15
+    },
+    {
+      "source_name": "Revalidation of Sanction - Term Loan",
+      "master_name": "Revalidation of Sanction Charges",
+      "master_id": "CHG-OC-626",
+      "source_excel_row": 16
+    },
+    {
+      "source_name": "NOC Issuance Charge",
+      "master_name": "No Objection Certificate Issuance Fees",
+      "master_id": "CHG-OC-627",
+      "source_excel_row": 17
+    },
+    {
+      "source_name": "Copy of Documents Charge",
+      "master_name": "Loan Document Copy Charges",
+      "master_id": "CHG-OC-628",
+      "source_excel_row": 18
+    },
+    {
+      "source_name": "Copy of Documents Charge",
+      "master_name": "Loan Document Copy Charges",
+      "master_id": "CHG-OC-629",
+      "source_excel_row": 19
+    },
+    {
+      "source_name": "Credit Information / Opinion Charge",
+      "master_name": "Credit Opinion Report Charges",
+      "master_id": "CHG-OC-631",
+      "source_excel_row": 21
+    },
+    {
+      "source_name": "Credit Information / Opinion Charge",
+      "master_name": "Credit Opinion Report Charges",
+      "master_id": "CHG-OC-632",
+      "source_excel_row": 22
+    },
+    {
+      "source_name": "Credit Information Report (CIC) Charge",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "master_id": "CHG-OC-633",
+      "source_excel_row": 23
+    },
+    {
+      "source_name": "Credit Information Report (CIC) Charge",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "master_id": "CHG-OC-634",
+      "source_excel_row": 24
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "master_name": "Legal Opinion Fees",
+      "master_id": "CHG-OC-641",
+      "source_excel_row": 29
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "master_id": "CHG-OC-635",
+      "source_excel_row": 29
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "master_name": "Legal Opinion Fees",
+      "master_id": "CHG-OC-642",
+      "source_excel_row": 30
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "master_id": "CHG-OC-636",
+      "source_excel_row": 30
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "master_name": "Legal Opinion Fees",
+      "master_id": "CHG-OC-643",
+      "source_excel_row": 31
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "master_id": "CHG-OC-637",
+      "source_excel_row": 31
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "master_name": "Legal Opinion Fees",
+      "master_id": "CHG-OC-644",
+      "source_excel_row": 32
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "master_id": "CHG-OC-638",
+      "source_excel_row": 32
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "master_name": "Legal Opinion Fees",
+      "master_id": "CHG-OC-645",
+      "source_excel_row": 33
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "master_id": "CHG-OC-639",
+      "source_excel_row": 33
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "master_name": "Legal Opinion Fees",
+      "master_id": "CHG-OC-646",
+      "source_excel_row": 34
+    },
+    {
+      "source_name": "Legal Opinion / NEC Charge",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "master_id": "CHG-OC-640",
+      "source_excel_row": 34
+    },
+    {
+      "source_name": "Valuation Fee",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-647",
+      "source_excel_row": 35
+    },
+    {
+      "source_name": "Valuation Fee",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-648",
+      "source_excel_row": 36
+    },
+    {
+      "source_name": "Valuation Fee",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-649",
+      "source_excel_row": 37
+    },
+    {
+      "source_name": "Valuation Fee",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-650",
+      "source_excel_row": 38
+    },
+    {
+      "source_name": "Valuation Fee",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-651",
+      "source_excel_row": 39
+    },
+    {
+      "source_name": "Valuation Fee",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-652",
+      "source_excel_row": 40
+    },
+    {
+      "source_name": "Valuation Fee",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-653",
+      "source_excel_row": 41
+    },
+    {
+      "source_name": "ECS Debit Return Charge",
+      "master_name": "ECS/NACH Debit Return Charges",
+      "master_id": "CHG-OC-656",
+      "source_excel_row": 44
+    }
+  ],
+  "notes": [
+    "Source of truth: PNB_Home_Loan_Charges_Official.xlsx sheet Structured_Data (45 rows).",
+    "Master filter: Bank_charges where bank_key == 'punjab national bank' (117 rows).",
+    "Semantic matching used; renames allowed when amounts/slabs match.",
+    "Percentages stored as fractions (0.50%→0.005, 0.05%→0.0005, 25%→0.25). Nil/'No charges'/'NIL' ↔ Fixed Amount 0.",
+    "Documentation Charge → Documentation Charges: Housing ₹1,350 / takeover ₹1,350 / existing-borrower OD-TL ₹450.",
+    "Rate Type Switchover Charge 0.50% of outstanding or ₹10,000 whichever lower split into Fixed→Floating and Floating→Fixed Interest Rate Type Switch Fees.",
+    "Legal Opinion / NEC Charge is one per-property maximum schedule; master splits into Legal Opinion Fees + Non-Encumbrance Certificate Charges with identical amounts.",
+    "Valuation Fee seven realizable-value slabs all present under Property Valuation Report Charges with identical fixed amounts.",
+    "Value mismatch: Max Saver Charge Rule Formula 'Charges as per Housing Loans' encoded as Fixed ₹1,350 (documentation only).",
+    "Missing: PMAY documentation Nil ×3 + PMAY additional Formula; PNB Pride documentation Nil ×2; CERSAI create/modify ₹50/₹100, search ₹10, satisfaction Nil; Mortgage Creation not applicable for retail.",
+    "No Other-charges redundant/orphan rows vs Structured_Data (all 41 OC rows map). No Slab_Table origin rows.",
+    "Offers.processing: 60 fee clones; full-key internal duplicates: 0. Offers.overdue ×8 at 2% p.a.; Offers.prepayment ×4 fixed 0; CSV.fixed_prepay ×4 at 2% Fixed rate.",
+    "openpyxl data_only=True used for both workbooks."
+  ],
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 5,
+    "missing_bank_service_actionable": 6,
+    "extras_processing_not_error": 1,
+    "extras_prepay_ignored": 8,
+    "extras_overdue_no_action": 8,
+    "extras_other_charges_review": 2,
+    "value_mismatches": 1
+  },
+  "verdict_under_rules": "FAIL"
+}

@@ -1,0 +1,438 @@
+{
+  "bank_code": "BAN",
+  "bank_key": "bandhan bank",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 34,
+    "master_bank_charges_rows": 23,
+    "matched_ok": 2,
+    "matched_rename_only": 8,
+    "value_mismatches": 3,
+    "missing_in_master": 21,
+    "extra_in_master": 10,
+    "duplicate_issues": 3
+  },
+  "mismatches": [
+    {
+      "source_name": "Administrative Fee",
+      "source_facility": "Both",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-27",
+      "master_name": "Administrative Charges",
+      "diffs": [
+        {
+          "field": "percentage",
+          "source": "0.25% to 2.00% (scheme-dependent range)",
+          "master": 0.0025
+        },
+        {
+          "field": "percentage_base_value / Percentage_Calculated_On",
+          "source": "Scheme-dependent (not further specified)",
+          "master": "Sanctioned loan amount"
+        }
+      ],
+      "rename_also": true,
+      "source_fingerprint": "type=Percentage amount='0.25% to 2.00%' min=None max=None pct_on='Scheme-dependent (not further specified)'",
+      "master_fingerprint": "fixed=None pct=0.0025 min=None max=None pct_base='Sanctioned loan amount' facility=Any"
+    },
+    {
+      "source_name": "Valuation Report Charge",
+      "source_facility": "Both",
+      "source_excel_row": 8,
+      "master_id": "CHG-OC-31",
+      "master_name": "Property Valuation Report Charges",
+      "diffs": [
+        {
+          "field": "amount_shape",
+          "source": "Upto 5000 (ceiling via Max_Amount=5000; not a flat fixed fee)",
+          "master": "fixed_amount=5000 (flat Fixed Amount); charge_max=null"
+        },
+        {
+          "field": "facility_type",
+          "source": "Both",
+          "master": "Term Loan"
+        }
+      ],
+      "rename_also": true,
+      "source_fingerprint": "type=Fixed amount amount='Upto 5000' min=None max=5000",
+      "master_fingerprint": "fixed=5000 pct=None min=None max=None facility=Term Loan"
+    },
+    {
+      "source_name": "Field Investigation Charge",
+      "source_facility": "Both",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-36",
+      "master_name": "Field Investigation Charge",
+      "diffs": [
+        {
+          "field": "amount_shape",
+          "source": "Up to 500 (ceiling via Max_Amount=500; depends on place of visit and loan amount)",
+          "master": "fixed_amount=500 (flat Fixed Amount); charge_max=null"
+        },
+        {
+          "field": "facility_type",
+          "source": "Both",
+          "master": "Term Loan"
+        }
+      ],
+      "rename_also": false,
+      "source_fingerprint": "type=Fixed amount amount='Up to 500' min=None max=500",
+      "master_fingerprint": "fixed=500 pct=None min=None max=None note_1='Depends on place of visit and loan amount.'"
+    }
+  ],
+  "missing_in_master": [
+    {
+      "source_name": "CERSAI Charge — Creation",
+      "source_facility": "Both",
+      "source_excel_row": 6,
+      "product": "Home Loan and Loan Against Property",
+      "detail": "type=Fixed amount amount=100 per account; freq=At charge creation/registration/modification; GST extra"
+    },
+    {
+      "source_name": "CERSAI Charge — Satisfaction",
+      "source_facility": "Both",
+      "source_excel_row": 7,
+      "product": "Home Loan and Loan Against Property",
+      "detail": "type=Nil amount=Nil; freq=At satisfaction/release of charge"
+    },
+    {
+      "source_name": "Mortgage Registration and Release Charge",
+      "source_facility": "Both",
+      "source_excel_row": 12,
+      "product": "Home Loan and Loan Against Property",
+      "detail": "type=At actuals; amount=On actual as per the prevalent guidelines of the state"
+    },
+    {
+      "source_name": "Legal/Miscellaneous Charges",
+      "source_facility": "Both",
+      "source_excel_row": 14,
+      "product": "Home Loan and Loan Against Property",
+      "detail": "type=At actuals amount=At Actuals; recovery/legal/SARFAESI/etc."
+    },
+    {
+      "source_name": "Stamp Duty and Statutory Charges",
+      "source_facility": "Both",
+      "source_excel_row": 15,
+      "product": "Home Loan and Loan Against Property",
+      "detail": "type=At actuals; as per applicable laws of the State"
+    },
+    {
+      "source_name": "Insurance Premium",
+      "source_facility": "Both",
+      "source_excel_row": 20,
+      "product": "Home Loan and Loan Against Property",
+      "detail": "type=At actuals; obtaining insurance from Bandhan Bank is not mandatory"
+    },
+    {
+      "source_name": "Document Retrieval Charge (Photocopy)",
+      "source_facility": "Term Loan",
+      "source_excel_row": 21,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=Nil amount=Nil"
+    },
+    {
+      "source_name": "Statement of Account",
+      "source_facility": "Term Loan",
+      "source_excel_row": 22,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=Nil amount=Nil (micro schedule; distinct from HL/LAP ₹500 SOA)"
+    },
+    {
+      "source_name": "Duplicate NOC",
+      "source_facility": "Term Loan",
+      "source_excel_row": 23,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=Nil amount=Nil"
+    },
+    {
+      "source_name": "All Other NOC",
+      "source_facility": "Term Loan",
+      "source_excel_row": 24,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=Nil amount='Not applicable'"
+    },
+    {
+      "source_name": "Stamp Duties",
+      "source_facility": "Term Loan",
+      "source_excel_row": 25,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=At actuals amount=On Actual"
+    },
+    {
+      "source_name": "Loan Cancellation",
+      "source_facility": "Term Loan",
+      "source_excel_row": 26,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=Nil; interim interest payable; PF/Stamp Duty/documentation retained"
+    },
+    {
+      "source_name": "Change of Address",
+      "source_facility": "Term Loan",
+      "source_excel_row": 27,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=Nil amount=Nil"
+    },
+    {
+      "source_name": "Agreement Copy",
+      "source_facility": "Term Loan",
+      "source_excel_row": 28,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=Nil amount=Nil"
+    },
+    {
+      "source_name": "Legal and Other Recovery Charges",
+      "source_facility": "Term Loan",
+      "source_excel_row": 29,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=At actuals amount=On Actual"
+    },
+    {
+      "source_name": "PDD Collection Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 30,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=Nil amount=Nil"
+    },
+    {
+      "source_name": "Valuation Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 31,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=Nil amount=Nil"
+    },
+    {
+      "source_name": "CERSAI Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 32,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=At actuals amount=On Actual"
+    },
+    {
+      "source_name": "Provisional / Final IT Certificate",
+      "source_facility": "Term Loan",
+      "source_excel_row": 33,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=Nil amount=Nil"
+    },
+    {
+      "source_name": "Equitable Mortgage Charge Creation",
+      "source_facility": "Term Loan",
+      "source_excel_row": 34,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=At actuals amount=On Actual-As Applicable in states"
+    },
+    {
+      "source_name": "Fore Closure Statement",
+      "source_facility": "Term Loan",
+      "source_excel_row": 35,
+      "product": "Micro Home Loan / Suawas Saral / Suniwas Home Loan",
+      "detail": "type=Nil amount=Nil (document fee, not foreclosure penalty)"
+    }
+  ],
+  "extra_in_master": [
+    {
+      "master_id": "CHG-PROC-800",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "excel_row": 1635,
+      "detail": "percentage=0.01; scheme=Suraksha Home Loan; CIBIL 800–900 — not in Structured_Data"
+    },
+    {
+      "master_id": "CHG-PROC-801",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "excel_row": 1636,
+      "detail": "percentage=0.01; CIBIL 750–799 — not in Structured_Data"
+    },
+    {
+      "master_id": "CHG-PROC-802",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "excel_row": 1637,
+      "detail": "percentage=0.01; CIBIL 700–749 — not in Structured_Data"
+    },
+    {
+      "master_id": "CHG-PROC-803",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "excel_row": 1638,
+      "detail": "percentage=0.01; CIBIL 650–699 — not in Structured_Data"
+    },
+    {
+      "master_id": "CHG-PROC-804",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "excel_row": 1639,
+      "detail": "percentage=0.01; CIBIL 600–649 — not in Structured_Data"
+    },
+    {
+      "master_id": "CHG-PROC-805",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "excel_row": 1640,
+      "detail": "percentage=0.01; CIBIL 300–599 — not in Structured_Data"
+    },
+    {
+      "master_id": "CHG-OD-72",
+      "master_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "excel_row": 2090,
+      "detail": "percentage=0.02 p.a. on Default_Amount; distinct from Structured_Data NPA Administration Charge (outstanding). Not in Structured_Data"
+    },
+    {
+      "master_id": "CHG-PRE-58",
+      "master_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "excel_row": 2232,
+      "detail": "fixed_amount=0; note Prepayment not charged — not in Structured_Data"
+    },
+    {
+      "master_id": "CHG-PRE-198",
+      "master_name": "Prepayment charges (takeover)",
+      "origin": "CSV.fixed_prepay",
+      "excel_row": 2289,
+      "detail": "percentage=0.04; loan age <12 months; Fixed rate takeover — not in Structured_Data"
+    },
+    {
+      "master_id": "CHG-PRE-199",
+      "master_name": "Prepayment charges (takeover)",
+      "origin": "CSV.fixed_prepay",
+      "excel_row": 2290,
+      "detail": "percentage=0.02; loan age ≥12 months; Fixed rate takeover — not in Structured_Data"
+    }
+  ],
+  "renames": [
+    {
+      "source_name": "ROI Reset Administrative Charge",
+      "source_facility": "Both",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-28",
+      "master_name": "Interest Rate Repricing Fees",
+      "master_facility": "Term Loan",
+      "confirmed": "Fixed amount 3000. Master encodes Floating Higher→Lower repricing fields; source is customer-initiated ROI reset. Facility narrowed Both→Term Loan."
+    },
+    {
+      "source_name": "Statement of Account",
+      "source_facility": "Both",
+      "source_excel_row": 5,
+      "master_id": "CHG-OC-30",
+      "master_name": "Statement of Account Charges - Duplicate",
+      "master_facility": "Any",
+      "confirmed": "Fixed amount 500; charged_for_physical_copy=Yes / digital=No matches branch physical-copy condition."
+    },
+    {
+      "source_name": "Technical Inspection Charge — Local",
+      "source_facility": "Both",
+      "source_excel_row": 9,
+      "master_id": "CHG-OC-32",
+      "master_name": "Technical Inspection Charges — Local",
+      "master_facility": "Term Loan",
+      "confirmed": "Fixed amount 250 per visit; frequency matches subsequent phase-wise inspection. Facility narrowed Both→Term Loan."
+    },
+    {
+      "source_name": "Technical Inspection Charge — Outstation",
+      "source_facility": "Both",
+      "source_excel_row": 10,
+      "master_id": "CHG-OC-33",
+      "master_name": "Technical Inspection Charges — Outstation",
+      "master_facility": "Term Loan",
+      "confirmed": "Fixed amount 350 per visit. Facility narrowed Both→Term Loan."
+    },
+    {
+      "source_name": "Search Report and TCC Charge",
+      "source_facility": "Both",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-34",
+      "master_name": "Title Search Report Fees",
+      "master_facility": "Any",
+      "confirmed": "At actuals with charge_max=5000; note_1 'Includes Total Cost of Credit Charges' maps TCC."
+    },
+    {
+      "source_name": "Copy of Property Documents",
+      "source_facility": "Both",
+      "source_excel_row": 13,
+      "master_id": "CHG-OC-35",
+      "master_name": "Property Document Retrieval Charge",
+      "master_facility": "Term Loan",
+      "confirmed": "Fixed amount 500. Facility narrowed Both→Term Loan."
+    },
+    {
+      "source_name": "Docket Release plus Account Closure Charge",
+      "source_facility": "Both",
+      "source_excel_row": 17,
+      "master_id": "CHG-OC-37",
+      "master_name": "Property Document Retrieval Charge",
+      "master_facility": "Any",
+      "confirmed": "Fixed amount 250; note_1 'Includes Account Closure Charges' supports docket-release/account-closure semantics despite shared master name with CHG-OC-35."
+    },
+    {
+      "source_name": "List of Documents / Foreclosure Statement",
+      "source_facility": "Both",
+      "source_excel_row": 18,
+      "master_id": "CHG-OC-38",
+      "master_name": "List of Documents Charge - Duplicate",
+      "master_facility": "Any",
+      "confirmed": "Fixed amount 1000; physical=Yes."
+    }
+  ],
+  "matched_ok": [
+    {
+      "source_name": "Cheque/SI/NACH Bounce Charge",
+      "source_facility": "Both",
+      "source_excel_row": 4,
+      "master_id": "CHG-OC-29",
+      "master_name": "Cheque/SI/NACH Bounce Charge",
+      "master_facility": "Term Loan",
+      "rename": false,
+      "confirmed": "Fixed amount 500; gst_applicable Yes aligns with source GST extra. Note: master facility narrowed to Term Loan (source Both)."
+    },
+    {
+      "source_name": "NPA Administration Charge",
+      "source_facility": "Both",
+      "source_excel_row": 19,
+      "master_id": "CHG-OC-39",
+      "master_name": "NPA Administration Charge",
+      "master_facility": "Term Loan",
+      "rename": false,
+      "confirmed": "Percentage 2% p.a. (0.02), pct_on=Outstanding loan amount; percentage_per_annum=Yes. Note: master facility narrowed to Term Loan (source Both)."
+    }
+  ],
+  "duplicate_issues": [
+    {
+      "issue": "Same master charge_name 'Property Document Retrieval Charge' used for two different Structured_Data fees",
+      "rows": [
+        "CHG-OC-35 (₹500 ← Copy of Property Documents)",
+        "CHG-OC-37 (₹250 ← Docket Release plus Account Closure Charge)"
+      ]
+    },
+    {
+      "issue": "Processing fee repeated 6× with identical 1% across CIBIL bands (Offers origin; not in Structured_Data)",
+      "rows": [
+        "CHG-PROC-800",
+        "CHG-PROC-801",
+        "CHG-PROC-802",
+        "CHG-PROC-803",
+        "CHG-PROC-804",
+        "CHG-PROC-805"
+      ]
+    },
+    {
+      "issue": "Prepayment charges (takeover) dual age-band rows (CSV origin; not in Structured_Data)",
+      "rows": [
+        "CHG-PRE-198",
+        "CHG-PRE-199"
+      ]
+    }
+  ],
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 6,
+    "missing_bank_service_actionable": 15,
+    "extras_processing_not_error": 6,
+    "extras_prepay_ignored": 3,
+    "extras_overdue_no_action": 1,
+    "extras_other_charges_review": 0,
+    "value_mismatches": 3
+  },
+  "verdict_under_rules": "FAIL"
+}

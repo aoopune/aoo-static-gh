@@ -60,8 +60,8 @@ def main() -> int:
     bh, banks = load_sheet(wb, "Bank_charges")
     gh, govt = load_sheet(wb, "Government_charges")
 
-    t.check("offers_1149", len(offers) == 1149, str(len(offers)))
-    t.check("bank_2281", len(banks) == 2281, str(len(banks)))
+    t.check("offers_806", len(offers) == 806, str(len(offers)))
+    t.check("bank_2347", len(banks) == 2347, str(len(banks)))
     t.check("govt_18", len(govt) == 18, str(len(govt)))
     t.check("offers_no_fee_cols", not any("processing_fee" in h or h.startswith("overdue_") or "prepayment" in h for h in oh), "")
     t.check("offers_has_roi", "roi" in oh and "bank_key" in oh, "")
@@ -106,7 +106,8 @@ def main() -> int:
     for o in offers:
         if "axis" not in str(o.get("bank_key") or ""):
             continue
-        if o.get("occupation") != "Salaried" or o.get("rate_type") != "Floating":
+        occ = o.get("occupation")
+        if occ not in (None, "", "Any", "Salaried") or o.get("rate_type") != "Floating":
             continue
         st = o.get("cibil_score_status")
         if st == "Not_Used":

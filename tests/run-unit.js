@@ -1202,6 +1202,66 @@ async function testHomeLoanCompare() {
     'later charge shows minimum and maximum below the main value'
   );
   ok(cappedCharge.details.indexOf('GST extra') >= 0, 'later charge shows GST when applicable');
+
+  var percentBand = compare.formatChargeDisplay({
+    percentage_min: 0.0025,
+    percentage_max: 0.02,
+    percentage_base_value: 'Sanctioned loan amount',
+    charge_unit: 'Sanction',
+    gst_applicable: 'Yes'
+  });
+  ok(percentBand.main === '0.25% – 2.00%', 'percentage band shows min – max on the main line');
+  ok(
+    percentBand.main.indexOf('0.25% – 2.00%') === 0,
+    'percentage band does not need the old single percentage field'
+  );
+  ok(
+    percentBand.details.indexOf('On sanctioned loan amount · At sanction') >= 0 ||
+      percentBand.details.some(function (d) {
+        return /sanctioned loan amount/i.test(d);
+      }),
+    'percentage band keeps the rupee basis in details'
+  );
+  ok(
+    !percentBand.details.some(function (d) {
+      return /^Min |^Max |Min ₹|Max ₹/.test(d);
+    }),
+    'percentage band does not misuse rupee Min/Max for the % ends'
+  );
+
+  var uptoPercent = compare.formatChargeDisplay({
+    percentage_max: 0.02,
+    percentage_base_value: 'Outstanding loan amount',
+    gst_applicable: 'Yes'
+  });
+  ok(uptoPercent.main === 'Up to 2.00%', 'percentage ceiling shows Up to X%');
+
+  var uptoRupee = compare.formatChargeDisplay({
+    charge_max: 5000,
+    charge_unit: 'Property',
+    gst_applicable: 'Yes',
+    note_1: 'Up to ₹5,000 per property'
+  });
+  ok(uptoRupee.main === 'Up to ₹5,000', 'rupee ceiling with no flat fee shows Up to ₹X');
+  ok(
+    !uptoRupee.details.some(function (d) {
+      return /Max ₹5,000/.test(d);
+    }),
+    'rupee Up to main line does not also repeat Max in details'
+  );
+  var rupeeBand = compare.formatChargeDisplay({
+    charge_min: 45,
+    charge_max: 150,
+    charge_unit: 'Report',
+    gst_applicable: 'Yes'
+  });
+  ok(rupeeBand.main === '₹45 – ₹150', 'rupee band shows min – max on the main line');
+  ok(
+    !rupeeBand.details.some(function (d) {
+      return /Min ₹45|Max ₹150/.test(d);
+    }),
+    'rupee band does not also repeat Min/Max in details'
+  );
   var panelFee = compare.buildFeeTableEntries('Documentation charges', [
     {
       charge_name: 'Documentation charges',
@@ -1572,14 +1632,14 @@ async function testHomeLoanCompare() {
   });
   ok(
     hdfcSwitch &&
-      hdfcSwitch.entries.length === 2 &&
-      hdfcSwitch.entries.some(function (entry) {
-        return String(entry.detail).indexOf('Floating to Fixed') >= 0;
-      }) &&
+      hdfcSwitch.entries.length === 1 &&
       hdfcSwitch.entries.some(function (entry) {
         return String(entry.detail).indexOf('Fixed to Floating') >= 0;
+      }) &&
+      !hdfcSwitch.entries.some(function (entry) {
+        return String(entry.detail).indexOf('Floating to Fixed') >= 0;
       }),
-    'drawer Other charges shows both Floating→Fixed and Fixed→Floating for the scheme'
+    'drawer Other charges shows published Fixed→Floating only'
   );
   var hdfcLater = compare.listAdditionalAfterOfferPanelSections(
     hdfcCharges,
@@ -1649,6 +1709,40 @@ async function testHomeLoanCompare() {
   ok(
     freqDetail.entries[0].detail.indexOf('At sanction/disbursement') >= 0,
     'drawer particulars include published charge frequency from the sheet'
+  );
+  var legalActuals = compare.buildFeeTableEntries('Legal/Miscellaneous Charges', [
+    {
+      charge_name: 'Legal/Miscellaneous Charges',
+      charge_type: 'At actuals',
+      actuals_in_addition_to_charge: 'Yes',
+      charge_frequency_other: 'As incurred',
+      note_1:
+        'Miscellaneous charges for legal suit, recovery, professionals (title search, valuation), SARFAESI, ads, auction, security guard, enforcement logistics, notices, and any other unbudgeted costs the bank incurs for the customer.'
+    }
+  ]);
+  ok(
+    legalActuals.entries.length === 1 &&
+      legalActuals.entries[0].amount === 'At actuals' &&
+      legalActuals.entries[0].meta === '+ Actual expenses' &&
+      legalActuals.entries[0].detail === 'As incurred' &&
+      legalActuals.notes.length === 1 &&
+      legalActuals.notes[0].indexOf('SARFAESI') >= 0 &&
+      legalActuals.entries[0].detail.indexOf('SARFAESI') === -1,
+    'at-actuals legal fee keeps a short line and puts the long bank note underneath'
+  );
+  var inspectionActuals = compare.buildFeeTableEntries('Property Inspection Charge', [
+    {
+      charge_name: 'Property Inspection Charge',
+      charge_type: 'At actuals',
+      out_of_pocket_expenses_additional: 'Yes'
+    }
+  ]);
+  ok(
+    inspectionActuals.entries[0].amount === 'At actuals†' &&
+      inspectionActuals.entries[0].meta === '' &&
+      inspectionActuals.notes.length === 1 &&
+      inspectionActuals.notes[0] === '† Out-of-pocket expenses.',
+    'property inspection shows At actuals† with out-of-pocket footnote'
   );
   var metaOnly = compare.formatChargeMetaLine({
     fixed_amount: 500,
@@ -1737,7 +1831,7 @@ async function testHomeLoanCompare() {
       canaraRow.emiBounceChargeDisplay.main === '₹300' &&
       canaraRow.emiBounceChargeDisplay.marker === '†' &&
       canaraRow.emiBounceChargeDisplay.details[0] ===
-        'for a bounce amount up to ₹1,000',
+        'for a bounce amount up to ₹999',
     'Canara Bank shows its first ECS and NACH return slab in the table'
   );
   ok(
@@ -1746,10 +1840,13 @@ async function testHomeLoanCompare() {
         'The charge depends on the bounce amount.'
       ) >= 0 &&
       canaraRow.emiBounceDetailFootnote.indexOf(
-        '₹750 from ₹1,001 to ₹1 lakh'
+        '₹500 from ₹1,000 to ₹99,999'
       ) >= 0 &&
       canaraRow.emiBounceDetailFootnote.indexOf(
-        '₹2,000 from ₹1,00,00,001'
+        '₹750 from ₹1 lakh to ₹49,99,999'
+      ) >= 0 &&
+      canaraRow.emiBounceDetailFootnote.indexOf(
+        '₹2,000 from ₹1 crore'
       ) >= 0,
     'Canara Bank footnote lists every higher ECS and NACH return slab'
   );
@@ -1769,9 +1866,8 @@ async function testHomeLoanCompare() {
     return row.bankName === 'IndusInd Bank';
   });
   ok(
-    indusindRow &&
-      indusindRow.emiBounceChargeDisplay.details.indexOf('+ Actual expenses') >= 0,
-    'IndusInd Bank displays additional actual expenses'
+    indusindRow && indusindRow.emiBounceChargeDisplay.main === '₹750',
+    'IndusInd Bank shows published bounce amount'
   );
 
   var pnbRow = rows.find(function (row) {

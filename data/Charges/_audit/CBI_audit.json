@@ -1,0 +1,1515 @@
+{
+  "bank_code": "CBI",
+  "bank_key": "central bank of india",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 49,
+    "master_bank_charges_rows": 71,
+    "matched_ok": 15,
+    "matched_rename_only": 26,
+    "value_mismatches": 1,
+    "missing_in_master": 7,
+    "extra_in_master": 33,
+    "duplicate_issues": 2
+  },
+  "matched_ok": [
+    {
+      "source_name": "Sanction Amendment / Modification Charge",
+      "source_facility": "Both",
+      "source_excel_row": 43,
+      "master_id": "CHG-OC-154",
+      "master_name": "Sanction Amendment / Modification Charges",
+      "rename": false,
+      "soft_notes": [
+        "pct_base wording: source='loan amount' master='Sanctioned loan amount' (treated equivalent)",
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='When accepted sanction terms are amended or modified' master='When accepted sanction terms are amended or modified'"
+      ]
+    },
+    {
+      "source_name": "ECS / Cheque Inward Return Charge",
+      "source_facility": "Any",
+      "source_excel_row": 33,
+      "master_id": "CHG-OC-144",
+      "master_name": "ECS / Cheque Debit Return Charge",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='Second and subsequent returns in the month' master='Second and subsequent returns in the month'"
+      ]
+    },
+    {
+      "source_name": "ECS / Cheque Inward Return Charge",
+      "source_facility": "Any",
+      "source_excel_row": 32,
+      "master_id": "CHG-OC-143",
+      "master_name": "ECS / Cheque Debit Return Charge",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='First return in the month' master='First return in the month'"
+      ]
+    },
+    {
+      "source_name": "Term Loan Disbursement Instrument Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 28,
+      "master_id": "CHG-OC-140",
+      "master_name": "Term Loan Disbursement Instrument Charge",
+      "rename": false,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='At disbursement' master='At disbursement'"
+      ]
+    },
+    {
+      "source_name": "Term Loan Disbursement Instrument Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 27,
+      "master_id": "CHG-OC-140",
+      "master_name": "Term Loan Disbursement Instrument Charge",
+      "rename": false,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='At disbursement' master='At disbursement'"
+      ]
+    },
+    {
+      "source_name": "LSR / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 21,
+      "master_id": "CHG-OC-128",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='As incurred' master='When required for property/security'"
+      ]
+    },
+    {
+      "source_name": "LSR / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 20,
+      "master_id": "CHG-OC-127",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='As incurred' master='When required for property/security'"
+      ]
+    },
+    {
+      "source_name": "LSR / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 19,
+      "master_id": "CHG-OC-126",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='As incurred' master='When required for property/security'"
+      ]
+    },
+    {
+      "source_name": "LSR / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 18,
+      "master_id": "CHG-OC-125",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='As incurred' master='When required for property/security'"
+      ]
+    },
+    {
+      "source_name": "LSR / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 17,
+      "master_id": "CHG-OC-124",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='As incurred' master='When required for property/security'"
+      ]
+    },
+    {
+      "source_name": "LSR / NEC Charge",
+      "source_facility": "Any",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-123",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='As incurred' master='When required for property/security'"
+      ]
+    },
+    {
+      "source_name": "No-Dues / Balance Confirmation Certificate Charge",
+      "source_facility": "Both",
+      "source_excel_row": 50,
+      "master_id": "CHG-OC-161",
+      "master_name": "No-Dues / Balance Confirmation Certificate Charge",
+      "rename": false,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='Each certificate' master='Each certificate'"
+      ]
+    },
+    {
+      "source_name": "No-Dues / Balance Confirmation Certificate Charge",
+      "source_facility": "Both",
+      "source_excel_row": 49,
+      "master_id": "CHG-OC-160",
+      "master_name": "No-Dues / Balance Confirmation Certificate Charge",
+      "rename": false,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='Each certificate' master='Each certificate'"
+      ]
+    },
+    {
+      "source_name": "Credit Information Report (CIC) Charge",
+      "source_facility": "Any",
+      "source_excel_row": 10,
+      "master_id": "CHG-OC-122",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "rename": false,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='Each time CIC is pulled' master='Each time CIC is pulled'"
+      ]
+    },
+    {
+      "source_name": "Credit Information Report (CIC) Charge",
+      "source_facility": "Any",
+      "source_excel_row": 9,
+      "master_id": "CHG-OC-121",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "rename": false,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='Each time CIC is pulled' master='Each time CIC is pulled'"
+      ]
+    },
+    {
+      "source_name": "API Integration Charge",
+      "source_facility": "Any",
+      "source_excel_row": 8,
+      "master_id": "CHG-OC-120",
+      "master_name": "API Integration Charge",
+      "rename": false,
+      "soft_notes": [
+        "frequency: source='At fresh proposal' master='At fresh proposal'"
+      ]
+    },
+    {
+      "source_name": "Documentation Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 6,
+      "master_id": "CHG-OC-119",
+      "master_name": "Documentation Charges",
+      "rename": false,
+      "soft_notes": [
+        "frequency: source='At sanction/disbursement' master='At sanction/disbursement'"
+      ]
+    },
+    {
+      "source_name": "Documentation Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 5,
+      "master_id": "CHG-OC-119",
+      "master_name": "Documentation Charges",
+      "rename": false,
+      "soft_notes": [
+        "frequency: source='At sanction/disbursement' master='At sanction/disbursement'"
+      ]
+    },
+    {
+      "source_name": "Documentation Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-117",
+      "master_name": "Documentation Charges",
+      "rename": false,
+      "soft_notes": [
+        "frequency: source='At sanction/disbursement' master='At sanction/disbursement'"
+      ]
+    },
+    {
+      "source_name": "Documentation Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-117",
+      "master_name": "Documentation Charges",
+      "rename": false,
+      "soft_notes": [
+        "frequency: source='At sanction/disbursement' master='At sanction/disbursement'"
+      ]
+    },
+    {
+      "source_name": "Documentation Charge",
+      "source_facility": "Overdraft",
+      "source_excel_row": 4,
+      "master_id": "CHG-OC-118",
+      "master_name": "Documentation Charges",
+      "rename": false,
+      "soft_notes": [
+        "frequency: source='At sanction/disbursement' master='At sanction/disbursement'"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee (Vacant Plot / Land / Residential Site)",
+      "source_facility": "Any",
+      "source_excel_row": 42,
+      "master_id": "CHG-OC-153",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "pct_base wording: source='actual valuer fee' master='Over Actual fee' (treated equivalent)",
+        "source Amount_Type=Formula encoded as master charge_type=Both; prop_scope=Vacant land",
+        "frequency: source='As incurred' master='Each valuation'"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee (Vacant Plot / Land / Residential Site)",
+      "source_facility": "Any",
+      "source_excel_row": 41,
+      "master_id": "CHG-OC-152",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "pct_base wording: source='actual valuer fee' master='Over Actual fee' (treated equivalent)",
+        "source Amount_Type=Formula encoded as master charge_type=Both; prop_scope=Vacant land",
+        "frequency: source='As incurred' master='Each valuation'"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee (Vacant Plot / Land / Residential Site)",
+      "source_facility": "Any",
+      "source_excel_row": 40,
+      "master_id": "CHG-OC-151",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "pct_base wording: source='actual valuer fee' master='Over Actual fee' (treated equivalent)",
+        "source Amount_Type=Formula encoded as master charge_type=Both; prop_scope=Vacant land",
+        "frequency: source='As incurred' master='Each valuation'"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee (Vacant Plot / Land / Residential Site)",
+      "source_facility": "Any",
+      "source_excel_row": 39,
+      "master_id": "CHG-OC-150",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "pct_base wording: source='actual valuer fee' master='Over Actual fee' (treated equivalent)",
+        "source Amount_Type=Formula encoded as master charge_type=Both; prop_scope=Vacant land",
+        "frequency: source='As incurred' master='Each valuation'"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee (Vacant Plot / Land / Residential Site)",
+      "source_facility": "Any",
+      "source_excel_row": 38,
+      "master_id": "CHG-OC-149",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "pct_base wording: source='actual valuer fee' master='Over Actual fee' (treated equivalent)",
+        "source Amount_Type=Formula encoded as master charge_type=Both; prop_scope=Vacant land",
+        "frequency: source='As incurred' master='Each valuation'"
+      ]
+    },
+    {
+      "source_name": "Credit Information / Opinion Charge",
+      "source_facility": "Both",
+      "source_excel_row": 48,
+      "master_id": "CHG-OC-159",
+      "master_name": "Credit Opinion Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='Each request' master='Each request'"
+      ]
+    },
+    {
+      "source_name": "Copy of Documents Charge",
+      "source_facility": "Both",
+      "source_excel_row": 47,
+      "master_id": "CHG-OC-158",
+      "master_name": "Loan Document Copy Charges",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "actual photocopy charges ↔ actuals_in_addition_to_charge=Yes",
+        "frequency: source='Each request' master='Each time'"
+      ]
+    },
+    {
+      "source_name": "Copy of Documents Charge",
+      "source_facility": "Both",
+      "source_excel_row": 46,
+      "master_id": "CHG-OC-157",
+      "master_name": "Loan Document Copy Charges",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "actual photocopy charges ↔ actuals_in_addition_to_charge=Yes",
+        "frequency: source='Each request' master='Each time'"
+      ]
+    },
+    {
+      "source_name": "Copy of Documents Charge",
+      "source_facility": "Both",
+      "source_excel_row": 45,
+      "master_id": "CHG-OC-156",
+      "master_name": "Loan Document Copy Charges",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='Each request' master='Each time'"
+      ]
+    },
+    {
+      "source_name": "NACH Debit Return Charge",
+      "source_facility": "Any",
+      "source_excel_row": 37,
+      "master_id": "CHG-OC-148",
+      "master_name": "NACH Debit Return Charge",
+      "rename": false,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='Each return' master='Each return'"
+      ]
+    },
+    {
+      "source_name": "NACH Mandate Verification Charge",
+      "source_facility": "Any",
+      "source_excel_row": 36,
+      "master_id": "CHG-OC-147",
+      "master_name": "NACH Mandate Verification Charge",
+      "rename": false,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='On acceptance' master='On acceptance'"
+      ]
+    },
+    {
+      "source_name": "ECS / Cheque Inward Return Charge",
+      "source_facility": "Any",
+      "source_excel_row": 34,
+      "master_id": "CHG-OC-145",
+      "master_name": "ECS / Cheque Debit Return Charge",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='Each return' master='Each return'"
+      ]
+    },
+    {
+      "source_name": "ECS / Cheque Inward Return Charge",
+      "source_facility": "Any",
+      "source_excel_row": 31,
+      "master_id": "CHG-OC-142",
+      "master_name": "ECS / Cheque Debit Return Charge",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='Each return' master='Each return'"
+      ]
+    },
+    {
+      "source_name": "ECS / Cheque Inward Return Charge",
+      "source_facility": "Any",
+      "source_excel_row": 30,
+      "master_id": "CHG-OC-141",
+      "master_name": "ECS / Cheque Debit Return Charge",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='Each return' master='Each return'"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Any",
+      "source_excel_row": 26,
+      "master_id": "CHG-OC-139",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "frequency: source='As incurred' master='Each valuation'"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Any",
+      "source_excel_row": 25,
+      "master_id": "CHG-OC-138",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "frequency: source='As incurred' master='Each valuation'"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Any",
+      "source_excel_row": 24,
+      "master_id": "CHG-OC-137",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "frequency: source='As incurred' master='Each valuation'"
+      ]
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Any",
+      "source_excel_row": 23,
+      "master_id": "CHG-OC-136",
+      "master_name": "Property Valuation Report Charges",
+      "rename": true,
+      "soft_notes": [
+        "frequency: source='As incurred' master='Each valuation'"
+      ]
+    },
+    {
+      "source_name": "ECS / Cheque Inward Return Charge Waiver",
+      "source_facility": "Any",
+      "source_excel_row": 35,
+      "master_id": "CHG-OC-146",
+      "master_name": "ECS / Cheque Debit Return Charge",
+      "rename": true,
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='Each return' master='Each return'"
+      ]
+    },
+    {
+      "source_name": "Credit Information Report (CIC) Charge Waiver",
+      "source_facility": "Any",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-121",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "rename": true,
+      "soft_notes": [
+        "encoded as exemption_1 on CHG-OC-121: Priority Sector Loans up to ₹25000"
+      ]
+    }
+  ],
+  "mismatches": [
+    {
+      "source_name": "NOC Issuance Charge",
+      "source_facility": "Both",
+      "source_excel_row": 44,
+      "master_id": "CHG-OC-155",
+      "master_name": "No Objection Certificate Issuance Fees",
+      "rename": true,
+      "diffs": [
+        {
+          "field": "percentage_base_value / Percentage_Calculated_On",
+          "source": "limit",
+          "master": "Sanctioned loan amount"
+        }
+      ],
+      "rename_also": true,
+      "source_fingerprint": "type=Percentage amount='0.05%' min=2000.0 max=50000.0 pct_on='limit' slab=None-None product='Any' facility=Both loc='Any' cust='Any' freq='Each time NOC is issued'",
+      "master_fingerprint": "fixed=None pct=0.0005 min=2000.0 max=50000.0 slab=None-None pct_base='Sanctioned loan amount' facility=Any gst=Yes purpose='Any' area=None cust=None scope=None",
+      "soft_notes": [
+        "gst_applicable: source unspecified; master='Yes' (not counted as mismatch)",
+        "frequency: source='Each time NOC is issued' master='Each request'"
+      ]
+    }
+  ],
+  "missing_in_master": [
+    {
+      "source_name": "Documentation Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 7,
+      "product": "Cent Swabhiman Scheme",
+      "amount_type": "Fixed amount",
+      "amount": "1000",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "conditions": "Reverse mortgage (Cent Swabhiman Scheme) documentation charge in retail credit schedule."
+    },
+    {
+      "source_name": "CERSAI Creation / Modification Charge",
+      "source_facility": "Any",
+      "source_excel_row": 12,
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "50",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": 500000.0,
+      "customer": "Any",
+      "location": "Any",
+      "conditions": "Creation or modification of Security Interest in favour of secured creditor — loan/security interest up to ₹5.00 lakh."
+    },
+    {
+      "source_name": "CERSAI Creation / Modification Charge",
+      "source_facility": "Any",
+      "source_excel_row": 13,
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "100",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": 500001.0,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "conditions": "Creation or modification of Security Interest in favour of secured creditor — above ₹5.00 lakh."
+    },
+    {
+      "source_name": "CERSAI Search Charge",
+      "source_facility": "Any",
+      "source_excel_row": 14,
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "10",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "conditions": "Any application for information recorded / maintained in the Register by any person (CERSAI Search)."
+    },
+    {
+      "source_name": "CERSAI Satisfaction / Correction Charge",
+      "source_facility": "Any",
+      "source_excel_row": 15,
+      "product": "Any",
+      "amount_type": "Nil",
+      "amount": "Nil",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "conditions": "Satisfaction or Correction of any existing security interest."
+    },
+    {
+      "source_name": "Valuation Fee",
+      "source_facility": "Any",
+      "source_excel_row": 22,
+      "product": "Any",
+      "amount_type": "Fixed amount",
+      "amount": "3300",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": 1000000.0,
+      "customer": "Any",
+      "location": "Any",
+      "conditions": "Amount recovered towards professional fees from borrower for property valuation under Retail/Agriculture advances, plus GST. Value parameters refer to property value slab."
+    },
+    {
+      "source_name": "Out of Pocket Expenses",
+      "source_facility": "Any",
+      "source_excel_row": 29,
+      "product": "Any",
+      "amount_type": "At actuals",
+      "amount": "At actuals",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "conditions": "Registration / Modification / Satisfaction of charges with RoC, postages, telegrams, telex, cable charges, fax etc. collected from the beneficiary, unless otherwise specified."
+    }
+  ],
+  "extra_in_master": [
+    {
+      "master_id": "CHG-OC-132",
+      "master_name": "Legal Opinion Fees",
+      "origin": "Other charges",
+      "facility": "Any",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 4000.0,
+      "percentage": null,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": 10000001.0,
+      "slab_to": null,
+      "charge_by_area": "Metro",
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Any",
+      "scheme": null,
+      "rate_type": null,
+      "note_1": null,
+      "dup_note": "identical duplicate of NEC/LSR amounts (twin CHG-OC-126); Structured_Data has only LSR / NEC Charge"
+    },
+    {
+      "master_id": "CHG-OC-129",
+      "master_name": "Legal Opinion Fees",
+      "origin": "Other charges",
+      "facility": "Any",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 3000.0,
+      "percentage": null,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": null,
+      "slab_to": 10000000.0,
+      "charge_by_area": "Metro",
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Any",
+      "scheme": null,
+      "rate_type": null,
+      "note_1": null,
+      "dup_note": "identical duplicate of NEC/LSR amounts (twin CHG-OC-123); Structured_Data has only LSR / NEC Charge"
+    },
+    {
+      "master_id": "CHG-OC-133",
+      "master_name": "Legal Opinion Fees",
+      "origin": "Other charges",
+      "facility": "Any",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 2500.0,
+      "percentage": null,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": 10000001.0,
+      "slab_to": null,
+      "charge_by_area": "Urban & Semi-urban",
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Any",
+      "scheme": null,
+      "rate_type": null,
+      "note_1": null,
+      "dup_note": "identical duplicate of NEC/LSR amounts (twin CHG-OC-127); Structured_Data has only LSR / NEC Charge"
+    },
+    {
+      "master_id": "CHG-OC-130",
+      "master_name": "Legal Opinion Fees",
+      "origin": "Other charges",
+      "facility": "Any",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 1500.0,
+      "percentage": null,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": null,
+      "slab_to": 10000000.0,
+      "charge_by_area": "Urban & Semi-urban",
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Any",
+      "scheme": null,
+      "rate_type": null,
+      "note_1": null,
+      "dup_note": "identical duplicate of NEC/LSR amounts (twin CHG-OC-124); Structured_Data has only LSR / NEC Charge"
+    },
+    {
+      "master_id": "CHG-OC-134",
+      "master_name": "Legal Opinion Fees",
+      "origin": "Other charges",
+      "facility": "Any",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 1500.0,
+      "percentage": null,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": 10000001.0,
+      "slab_to": null,
+      "charge_by_area": "Rural",
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Any",
+      "scheme": null,
+      "rate_type": null,
+      "note_1": null,
+      "dup_note": "identical duplicate of NEC/LSR amounts (twin CHG-OC-128); Structured_Data has only LSR / NEC Charge"
+    },
+    {
+      "master_id": "CHG-OC-131",
+      "master_name": "Legal Opinion Fees",
+      "origin": "Other charges",
+      "facility": "Any",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 1000.0,
+      "percentage": null,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": null,
+      "slab_to": 10000000.0,
+      "charge_by_area": "Rural",
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Any",
+      "scheme": null,
+      "rate_type": null,
+      "note_1": null,
+      "dup_note": "identical duplicate of NEC/LSR amounts (twin CHG-OC-125); Structured_Data has only LSR / NEC Charge"
+    },
+    {
+      "master_id": "CHG-OC-135",
+      "master_name": "Legal Opinion Fees",
+      "origin": "Other charges",
+      "facility": "Any",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 3300.0,
+      "percentage": null,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": null,
+      "slab_to": 1000000.0,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Any",
+      "scheme": null,
+      "rate_type": null,
+      "note_1": null,
+      "dup_note": "mislabeled: ₹3300 / slab ≤ ₹10L matches source Valuation Fee (Land & Building) first slab, but charge_name is Legal Opinion Fees; Property Valuation series starts at CHG-OC-136 (₹4400)"
+    },
+    {
+      "master_id": "CHG-PROC-61",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home loan",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-62",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home loan",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-63",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home loan",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-64",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home loan",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-65",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home loan",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-66",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home Double Plus",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-67",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home Double Plus",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-68",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home Double Plus",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-69",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home Double Plus",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-70",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Overdraft",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home Double Plus",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-71",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Top-up Loan",
+      "scheme": "Cent Top Up Loan",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-72",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Top-up Loan",
+      "scheme": "Cent Top Up Loan",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-73",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Top-up Loan",
+      "scheme": "Cent Top Up Loan",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-74",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Top-up Loan",
+      "scheme": "Cent Top Up Loan",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PROC-75",
+      "master_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": null,
+      "charge_max": 20000.0,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Top-up Loan",
+      "scheme": "Cent Top Up Loan",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-OD-9",
+      "master_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.0,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": 0.0,
+      "slab_to": 30000.0,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home loan",
+      "rate_type": "Floating",
+      "note_1": "overdue_tenure_months_max=23.0",
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-OD-10",
+      "master_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": 30001.0,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home loan",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-OD-11",
+      "master_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility": "Overdraft",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.0,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": 0.0,
+      "slab_to": 30000.0,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home Double Plus",
+      "rate_type": "Floating",
+      "note_1": "overdue_tenure_months_max=23.0",
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-OD-12",
+      "master_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility": "Overdraft",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": 30001.0,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home Double Plus",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-OD-13",
+      "master_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.0,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": 0.0,
+      "slab_to": 30000.0,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Top-up Loan",
+      "scheme": "Cent Top Up Loan",
+      "rate_type": "Floating",
+      "note_1": "overdue_tenure_months_max=23.0",
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-OD-14",
+      "master_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": 30001.0,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Top-up Loan",
+      "scheme": "Cent Top Up Loan",
+      "rate_type": "Floating",
+      "note_1": null,
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PRE-13",
+      "master_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility": "Term Loan",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0.0,
+      "percentage": null,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home loan",
+      "rate_type": "Floating",
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PRE-14",
+      "master_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility": "Overdraft",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0.0,
+      "percentage": null,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": "Cent Home Double Plus",
+      "rate_type": "Floating",
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PRE-15",
+      "master_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility": "Term Loan",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0.0,
+      "percentage": null,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Top-up Loan",
+      "scheme": "Cent Top Up Loan",
+      "rate_type": "Floating",
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PRE-172",
+      "master_name": "Prepayment charges",
+      "origin": "CSV.fixed_prepay",
+      "facility": "Term Loan",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0.0,
+      "percentage": null,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": null,
+      "rate_type": "Fixed",
+      "note_1": "Prepayment nil (CSV NIL)",
+      "dup_note": null
+    },
+    {
+      "master_id": "CHG-PRE-173",
+      "master_name": "Prepayment charges (takeover)",
+      "origin": "CSV.fixed_prepay",
+      "facility": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.04,
+      "charge_min": null,
+      "charge_max": null,
+      "slab_from": null,
+      "slab_to": null,
+      "charge_by_area": null,
+      "property_valuation_scope": null,
+      "customer_type": null,
+      "purpose": "Regular Home Loan",
+      "scheme": null,
+      "rate_type": "Fixed",
+      "note_1": null,
+      "dup_note": null
+    }
+  ],
+  "renames": [
+    {
+      "source_name": "ECS / Cheque Inward Return Charge",
+      "master_name": "ECS / Cheque Debit Return Charge",
+      "master_id": "CHG-OC-144",
+      "source_excel_row": 33
+    },
+    {
+      "source_name": "ECS / Cheque Inward Return Charge",
+      "master_name": "ECS / Cheque Debit Return Charge",
+      "master_id": "CHG-OC-143",
+      "source_excel_row": 32
+    },
+    {
+      "source_name": "LSR / NEC Charge",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "master_id": "CHG-OC-128",
+      "source_excel_row": 21
+    },
+    {
+      "source_name": "LSR / NEC Charge",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "master_id": "CHG-OC-127",
+      "source_excel_row": 20
+    },
+    {
+      "source_name": "LSR / NEC Charge",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "master_id": "CHG-OC-126",
+      "source_excel_row": 19
+    },
+    {
+      "source_name": "LSR / NEC Charge",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "master_id": "CHG-OC-125",
+      "source_excel_row": 18
+    },
+    {
+      "source_name": "LSR / NEC Charge",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "master_id": "CHG-OC-124",
+      "source_excel_row": 17
+    },
+    {
+      "source_name": "LSR / NEC Charge",
+      "master_name": "Non-Encumbrance Certificate Charges",
+      "master_id": "CHG-OC-123",
+      "source_excel_row": 16
+    },
+    {
+      "source_name": "Valuation Fee (Vacant Plot / Land / Residential Site)",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-153",
+      "source_excel_row": 42
+    },
+    {
+      "source_name": "Valuation Fee (Vacant Plot / Land / Residential Site)",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-152",
+      "source_excel_row": 41
+    },
+    {
+      "source_name": "Valuation Fee (Vacant Plot / Land / Residential Site)",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-151",
+      "source_excel_row": 40
+    },
+    {
+      "source_name": "Valuation Fee (Vacant Plot / Land / Residential Site)",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-150",
+      "source_excel_row": 39
+    },
+    {
+      "source_name": "Valuation Fee (Vacant Plot / Land / Residential Site)",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-149",
+      "source_excel_row": 38
+    },
+    {
+      "source_name": "Credit Information / Opinion Charge",
+      "master_name": "Credit Opinion Report Charges",
+      "master_id": "CHG-OC-159",
+      "source_excel_row": 48
+    },
+    {
+      "source_name": "Copy of Documents Charge",
+      "master_name": "Loan Document Copy Charges",
+      "master_id": "CHG-OC-158",
+      "source_excel_row": 47
+    },
+    {
+      "source_name": "Copy of Documents Charge",
+      "master_name": "Loan Document Copy Charges",
+      "master_id": "CHG-OC-157",
+      "source_excel_row": 46
+    },
+    {
+      "source_name": "Copy of Documents Charge",
+      "master_name": "Loan Document Copy Charges",
+      "master_id": "CHG-OC-156",
+      "source_excel_row": 45
+    },
+    {
+      "source_name": "ECS / Cheque Inward Return Charge",
+      "master_name": "ECS / Cheque Debit Return Charge",
+      "master_id": "CHG-OC-145",
+      "source_excel_row": 34
+    },
+    {
+      "source_name": "ECS / Cheque Inward Return Charge",
+      "master_name": "ECS / Cheque Debit Return Charge",
+      "master_id": "CHG-OC-142",
+      "source_excel_row": 31
+    },
+    {
+      "source_name": "ECS / Cheque Inward Return Charge",
+      "master_name": "ECS / Cheque Debit Return Charge",
+      "master_id": "CHG-OC-141",
+      "source_excel_row": 30
+    },
+    {
+      "source_name": "Valuation Fee",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-139",
+      "source_excel_row": 26
+    },
+    {
+      "source_name": "Valuation Fee",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-138",
+      "source_excel_row": 25
+    },
+    {
+      "source_name": "Valuation Fee",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-137",
+      "source_excel_row": 24
+    },
+    {
+      "source_name": "Valuation Fee",
+      "master_name": "Property Valuation Report Charges",
+      "master_id": "CHG-OC-136",
+      "source_excel_row": 23
+    },
+    {
+      "source_name": "ECS / Cheque Inward Return Charge Waiver",
+      "master_name": "ECS / Cheque Debit Return Charge",
+      "master_id": "CHG-OC-146",
+      "source_excel_row": 35
+    },
+    {
+      "source_name": "Credit Information Report (CIC) Charge Waiver",
+      "master_name": "Credit Information Report (CIC) Charges",
+      "master_id": "CHG-OC-121",
+      "source_excel_row": 11
+    }
+  ],
+  "extras_by_origin": {
+    "CSV.fixed_prepay": 2,
+    "Offers.overdue": 6,
+    "Offers.prepayment": 3,
+    "Offers.processing": 15,
+    "Other charges": 7
+  },
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 5,
+    "missing_bank_service_actionable": 2,
+    "extras_processing_not_error": 15,
+    "extras_prepay_ignored": 5,
+    "extras_overdue_no_action": 6,
+    "extras_other_charges_review": 7,
+    "value_mismatches": 1
+  },
+  "verdict_under_rules": "FAIL"
+}

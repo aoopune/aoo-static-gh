@@ -1,0 +1,855 @@
+{
+  "bank_code": "HDF",
+  "bank_key": "hdfc bank",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 35,
+    "master_bank_charges_rows": 28,
+    "matched_ok": 11,
+    "matched_rename_only": 5,
+    "value_mismatches": 0,
+    "missing_in_master": 19,
+    "extra_in_master": 13,
+    "duplicate_issues": 0
+  },
+  "matched_ok": [
+    {
+      "source_name": "Re-Appraisal Of Loan After 6 Months From Sanction",
+      "source_facility": "Both",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-337",
+      "master_name": "Re-Appraisal Of Loan After 6 Months From Sanction",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount / Upto 3300 encoded as fixed_amount=3300 (source Max_Amount=3300; master charge_max unset — soft; peer Upto rows use fixed+max)",
+        "employment_type master='Salaried' narrows source band 'Salaried / Self employed Professional' (amount matches — soft, not counted as mismatch)",
+        "facility Both→Any; gst master='Yes' (source exclusive of taxes; 10% senior-citizen discount not encoded — soft)"
+      ]
+    },
+    {
+      "source_name": "Re-Appraisal Of Loan After 6 Months From Sanction",
+      "source_facility": "Both",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-336",
+      "master_name": "Re-Appraisal Of Loan After 6 Months From Sanction",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount / Upto 5000 encoded as fixed_amount=5000 (source Max_Amount=5000; master charge_max unset — soft)",
+        "employment_type master='Self-Employed' approximates source band 'Self-Employed Non-Professionals / NRI / Value Plus Loans / HDFC Reach Scheme' (amount matches — soft)",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "List Of Documents (duplicate LOD post disbursement)",
+      "source_facility": "Both",
+      "source_excel_row": 4,
+      "master_id": "CHG-OC-325",
+      "master_name": "List of Documents Charge - Duplicate",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount / Upto 500 → fixed_amount=500 + charge_max=500; charge_unit=Request; charged_for_physical_copy=Yes",
+        "rename List Of Documents (duplicate LOD post disbursement) → List of Documents Charge - Duplicate",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Photocopy of Documents",
+      "source_facility": "Both",
+      "source_excel_row": 5,
+      "master_id": "CHG-OC-326",
+      "master_name": "Loan Document Copy Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount / Upto 500 → fixed_amount=500 + charge_max=500; charge_unit=Instance; frequency Each request",
+        "rename Photocopy of Documents → Loan Document Copy Charges",
+        "special_rule preserves 10% senior-citizen discount; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Repayment Mode Change Charges",
+      "source_facility": "Both",
+      "source_excel_row": 6,
+      "master_id": "CHG-OC-327",
+      "master_name": "Repayment Mode Change Charges",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount / Upto 500 → fixed_amount=500 + charge_max=500; frequency Each change; charge_unit=Instance",
+        "special_rule preserves 10% senior-citizen discount; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Administrative Charges",
+      "source_facility": "Both",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-328",
+      "master_name": "Administrative Charges",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount / Upto 5000 plus taxes → fixed_amount=5000 + charge_max=5000; charge_unit=Sanction; refundable_if_not_sanctioned=No",
+        "facility Both→Any; gst master='Yes' (source plus applicable taxes — soft)"
+      ]
+    },
+    {
+      "source_name": "Conversion Fees - Switch to lower rate in Variable rate loans (1st Conversion)",
+      "source_facility": "Term Loan",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-338",
+      "master_name": "Interest Rate Repricing Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Formula 'Upto 0.50% … or Rs 3000, whichever is lower' encoded as Percentage 0.005 (=0.50%) + charge_max=3000",
+        "rename Conversion Fees - Switch to lower rate in Variable rate loans (1st Conversion) → Interest Rate Repricing Fees",
+        "interest_rate_repricing Floating Higher→Lower; pct_base Outstanding principal + undisbursed ≈ source Principal Outstanding and undisbursed",
+        "frequency: source='1st Conversion with charges' master='Each Repricing' (soft); subsequent-conversion ₹2000 twin (excel row 15) not encoded here",
+        "facility Term Loan kept; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Conversion Fees - Switch from Combination/Fixed rate to Variable rate",
+      "source_facility": "Term Loan",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-340",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage Upto 1.50% → percentage=0.015; Fixed→Floating",
+        "rename Conversion Fees - Switch from Combination/Fixed rate to Variable rate → Interest Rate Type Switch Fees",
+        "pct_base master includes undisbursed (matches Conversion Charges section note on source); Combination/Fixed→Variable ≈ Fixed→Floating (soft)",
+        "facility Term Loan; frequency Once≈At conversion; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Payment Return Charges",
+      "source_facility": "Both",
+      "source_excel_row": 17,
+      "master_id": "CHG-OC-329",
+      "master_name": "Payment Return Charges",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 450; frequency Each payment return; charge_unit=Instance",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Payment Return Charges (Per Dishonor)",
+      "source_facility": "Both",
+      "source_excel_row": 18,
+      "master_id": "CHG-OC-330",
+      "master_name": "Payment Return Charges (Per Dishonor)",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 300; frequency Each dishonour; charge_unit=dishonour",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Property Document Retention charges",
+      "source_facility": "Both",
+      "source_excel_row": 19,
+      "master_id": "CHG-OC-331",
+      "master_name": "Property Document Retention charges",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 1000; charge_unit=calendar month; frequency='Monthly after free period'",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Switch to Lower Rate in Variable rate Loans",
+      "source_facility": "Term Loan",
+      "source_excel_row": 20,
+      "master_id": "CHG-OC-338",
+      "master_name": "Interest Rate Repricing Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed same Formula fingerprint as 1st-conversion twin (0.50% or ₹3000 whichever lower) → Percentage 0.005 + charge_max=3000 on shared CHG-OC-338",
+        "rename Switch to Lower Rate in Variable rate Loans → Interest Rate Repricing Fees",
+        "product wording Housing/Extension/Renovation/Plot/Top Up aligns with 1st-conversion cap; collapsed into same master row as excel row 14 (DHL CIC dual-source precedent)",
+        "facility Term Loan; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Interest on amount utilized above Operating Limit (DOD)",
+      "source_facility": "Overdraft",
+      "source_excel_row": 22,
+      "master_id": "CHG-OC-332",
+      "master_name": "Interest on amount utilized above Operating Limit (DOD)",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Percentage 0.18 (=18% p.a.); percentage_per_annum=Yes; facility=Overdraft",
+        "pct_base: source='Amount utilized above the Operating Limit of overdraft facility' master='Overutilised Amount' (treated equivalent)",
+        "charge_unit≈On excess utilization; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Check Dishonour Charges",
+      "source_facility": "Both",
+      "source_excel_row": 23,
+      "master_id": "CHG-OC-333",
+      "master_name": "Check Dishonour Charges",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 300; frequency Each dishonour; charge_unit=Instance",
+        "note_1 references bank-linked documents-charges page; facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "PDC Swap",
+      "source_facility": "Both",
+      "source_excel_row": 24,
+      "master_id": "CHG-OC-334",
+      "master_name": "PDC Swap",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount / Upto 500 → fixed_amount=500 + charge_max=500; frequency Each swap",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Disbursement Cheque Cancellation Charge Post Disbursement",
+      "source_facility": "Both",
+      "source_excel_row": 25,
+      "master_id": "CHG-OC-335",
+      "master_name": "Disbursement Cheque Cancellation Charge Post Disbursement",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount / Upto 500 → fixed_amount=500 + charge_max=500; frequency Each cancellation post disbursement",
+        "facility Both→Any; gst master='Yes' (soft)"
+      ]
+    }
+  ],
+  "mismatches": [],
+  "missing_in_master": [
+    {
+      "source_name": "Stamp Duty & Statutory / Regulatory Charges",
+      "source_facility": "Both",
+      "source_excel_row": 7,
+      "product": "Home Loan",
+      "amount_type": "At actuals",
+      "amount": "At actual",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "As applicable",
+      "frequency": "As applicable",
+      "conditions": "As applicable in the respective States for Stamp Duty/ MOD/ MOE/ Registration. Non-refundable. All government taxes applicable."
+    },
+    {
+      "source_name": "Incidental Charges",
+      "source_facility": "Both",
+      "source_excel_row": 8,
+      "product": "Home Loan",
+      "amount_type": "At actuals",
+      "amount": "At actual",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "As applicable",
+      "frequency": "As applicable",
+      "conditions": "Incidental charges and expenses are levied to cover the cost, charges, expense and other monies as per actuals applicable to a case."
+    },
+    {
+      "source_name": "CERSAI Charges",
+      "source_facility": "Both",
+      "source_excel_row": 9,
+      "product": "Home Loan",
+      "amount_type": "At actuals",
+      "amount": "At actual (upto Rs.100/-)",
+      "min": null,
+      "max": "100",
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per property / as levied",
+      "frequency": "On creation/modification as applicable",
+      "conditions": "At actual up to Rs.100/- on main Home Loan charges table. Fees/charges levied by regulatory/government entities such as CERSAI also stated as per actual charges/fee levied by regulatory bodies + applicable taxes/statutory levies. Non-refundable."
+    },
+    {
+      "source_name": "Mortgage Guarantee",
+      "source_facility": "Both",
+      "source_excel_row": 10,
+      "product": "Home Loan",
+      "amount_type": "At actuals",
+      "amount": "At actual",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "As levied by third party",
+      "frequency": "As applicable",
+      "conditions": "Fees/charges levied by third parties such as mortgage guarantee company as per actual fee/charges + applicable taxes/statutory levies."
+    },
+    {
+      "source_name": "Non Compliance of sanction / agreed Terms - Critical security related deferrals",
+      "source_facility": "Both",
+      "source_excel_row": 12,
+      "product": "Home Loan",
+      "amount_type": "Percentage",
+      "amount": "Upto 2% per annum on principal outstanding",
+      "min": null,
+      "max": "50000",
+      "pct_on": "Principal outstanding",
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per month",
+      "frequency": "Charged on monthly basis until fulfilment",
+      "conditions": "Upto 2% charges per annum on principal outstanding for non compliance of agreed terms upto its fulfillment. Subject to a Max of Rs 50000/- for Critical security related deferrals. All charges exclusive of taxes."
+    },
+    {
+      "source_name": "Non Compliance of sanction / agreed Terms - Other deferrals",
+      "source_facility": "Both",
+      "source_excel_row": 13,
+      "product": "Home Loan",
+      "amount_type": "Percentage",
+      "amount": "Upto 2% per annum on principal outstanding",
+      "min": null,
+      "max": "25000",
+      "pct_on": "Principal outstanding",
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per month",
+      "frequency": "Charged on monthly basis until fulfilment",
+      "conditions": "Upto 2% charges per annum on principal outstanding for non compliance of agreed terms upto its fulfillment. Max of Rs 25000/- for other deferrals. All charges exclusive of taxes."
+    },
+    {
+      "source_name": "Conversion Fees - Switch to lower rate in Variable rate loans (Subsequent conversions)",
+      "source_facility": "Term Loan",
+      "source_excel_row": 15,
+      "product": "Home Loan / HL Top UP / Plot Equity loan",
+      "amount_type": "Formula",
+      "amount": "Upto 0.50% of Principal Outstanding and undisbursed amount (if any) or Rs 2000, whichever is lower",
+      "min": null,
+      "max": "2000",
+      "pct_on": "Principal Outstanding and undisbursed amount (if any) at the time of Conversion",
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per conversion",
+      "frequency": "Subsequent conversions",
+      "conditions": "For Home Loan, HL Top UP & Plot Equity loan. Switch to lower rate in Variable rate loans. All charges exclusive of taxes; 10% discount to senior citizens on all service charges."
+    },
+    {
+      "source_name": "Fees on account of External Opinion (legal/technical verifications)",
+      "source_facility": "Both",
+      "source_excel_row": 21,
+      "product": "Home Loan",
+      "amount_type": "At actuals",
+      "amount": "As per actuals",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per opinion / verification",
+      "frequency": "As applicable",
+      "conditions": "Legal/technical verifications. Documents-charges page states fees payable on an actual basis directly to the concerned advocate / technical valuer."
+    },
+    {
+      "source_name": "Re-Appraisal Of Loan After 6 Months From Sanction",
+      "source_facility": "Both",
+      "source_excel_row": 26,
+      "product": "Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "Upto 2000 plus applicable taxes",
+      "min": null,
+      "max": "2000",
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per instance",
+      "frequency": "If re-appraised after 6 months from sanction",
+      "conditions": "Documents-charges page amount (Up to ₹2,000 plus applicable taxes). Main Home Loan product page publishes higher caps (Rs. 3300 / Rs. 5000 by customer type)."
+    },
+    {
+      "source_name": "Reversal of Provisional Prepayment under HDFC Maxvantage Scheme",
+      "source_facility": "Overdraft",
+      "source_excel_row": 27,
+      "product": "HDFC Maxvantage Scheme",
+      "amount_type": "Fixed amount",
+      "amount": "250 plus applicable taxes/statutory levies",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per reversal",
+      "frequency": "At the time of reversal",
+      "conditions": "Applies to HDFC Maxvantage Scheme (home loan overdraft-style product)."
+    },
+    {
+      "source_name": "Fees on account of external opinion from advocates/technical valuers",
+      "source_facility": "Both",
+      "source_excel_row": 28,
+      "product": "Home Loan",
+      "amount_type": "At actuals",
+      "amount": "On an actual basis",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per opinion",
+      "frequency": "As applicable",
+      "conditions": "Payable directly to the concerned advocate / technical valuer for the nature of assistance so rendered."
+    },
+    {
+      "source_name": "Property Insurance Premium",
+      "source_facility": "Both",
+      "source_excel_row": 29,
+      "product": "Home Loan",
+      "amount_type": "At actuals",
+      "amount": "Premium amounts as charged by insurer",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "As per policy",
+      "frequency": "Promptly and regularly during pendency of loan",
+      "conditions": "Customer pays premium amounts directly to the insurance provider so as to keep the policy/policies alive at all times during the pendency of the loan."
+    },
+    {
+      "source_name": "Stamp Duty / MOD / MOE / CERSAI and other statutory or regulatory charges",
+      "source_facility": "Both",
+      "source_excel_row": 30,
+      "product": "Home Loan",
+      "amount_type": "At actuals",
+      "amount": "As levied by statutory/regulatory bodies",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "As applicable",
+      "frequency": "As applicable",
+      "conditions": "Borne and paid (or refunded as the case may be) solely by the customer. CERSAI charges also published on CERSAI website www.cersai.org.in."
+    },
+    {
+      "source_name": "Conversion Fees - Switch to Lower Rate in Variable rate Loans",
+      "source_facility": "Term Loan",
+      "source_excel_row": 31,
+      "product": "Home Loan / Extension / Renovation",
+      "amount_type": "Formula",
+      "amount": "Upto 0.50% of Principal Outstanding and undisbursed amount (if any) or a cap ₹50000 plus taxes, whichever is lower",
+      "min": null,
+      "max": "50000",
+      "pct_on": "Principal Outstanding and undisbursed amount (if any) at the time of Conversion",
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per conversion",
+      "frequency": "On every Spread change",
+      "conditions": "Documents-charges page. Cap ₹50000 differs from main Home Loan product page cap of Rs 3000 (1st) / Rs 2000 (subsequent)."
+    },
+    {
+      "source_name": "Conversion Fees - Switching to Variable Rate Loan from Fixed Rate Loan",
+      "source_facility": "Term Loan",
+      "source_excel_row": 32,
+      "product": "Home Loan / Extension / Renovation",
+      "amount_type": "Formula",
+      "amount": "Upto 0.50% of Principal Outstanding and undisbursed amount (if any) or a cap ₹50000 plus taxes, whichever is lower",
+      "min": null,
+      "max": "50000",
+      "pct_on": "Principal Outstanding and undisbursed amount (if any) at the time of Conversion",
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per conversion",
+      "frequency": "Once",
+      "conditions": "Documents-charges page."
+    },
+    {
+      "source_name": "Conversion Fees - Switch from Combination Rate Home Loan fixed rate to Variable rate",
+      "source_facility": "Term Loan",
+      "source_excel_row": 33,
+      "product": "Combination Rate Home Loan",
+      "amount_type": "Percentage",
+      "amount": "1.75% of the Principal Outstanding and undisbursed amount (if any) plus taxes",
+      "min": null,
+      "max": null,
+      "pct_on": "Principal Outstanding and undisbursed amount (if any) at the time of Conversion",
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per conversion",
+      "frequency": "Once",
+      "conditions": "Documents-charges page publishes 1.75%; main Home Loan product page publishes Upto 1.50%."
+    },
+    {
+      "source_name": "Conversion Fees - Switch to Lower Rate (Plot Loans)",
+      "source_facility": "Term Loan",
+      "source_excel_row": 34,
+      "product": "Plot Loans",
+      "amount_type": "Percentage",
+      "amount": "0.5% of principal outstanding and undisbursed amount (if any) plus taxes",
+      "min": null,
+      "max": null,
+      "pct_on": "Principal outstanding and undisbursed amount (if any) at the time of Conversion",
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per conversion",
+      "frequency": "On every Spread change",
+      "conditions": "Plot Loans conversion on documents-charges page."
+    },
+    {
+      "source_name": "Conversion Fees - Switch to Lower Rate (Loans under HDFC Reach) Variable Rate",
+      "source_facility": "Term Loan",
+      "source_excel_row": 35,
+      "product": "HDFC Reach Scheme",
+      "amount_type": "Percentage",
+      "amount": "Upto 1.50% of the principal outstanding and undisbursed amount (if any) + applicable taxes/statutory levies",
+      "min": null,
+      "max": null,
+      "pct_on": "Principal outstanding and undisbursed amount (if any) at the time of conversion",
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "Per conversion",
+      "frequency": "On every Spread change",
+      "conditions": "Loans under HDFC Reach - Variable Rate."
+    },
+    {
+      "source_name": "Incidental Charges (recovery of dues from defaulting customer)",
+      "source_facility": "Both",
+      "source_excel_row": 36,
+      "product": "Home Loan",
+      "amount_type": "At actuals",
+      "amount": "As expended",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": "Any",
+      "charged_per": "As applicable",
+      "frequency": "As applicable",
+      "conditions": "Levied to cover costs, charges, expenses and other monies expended in connection with recovery of dues from a defaulting customer. Policy copy available from branch on request."
+    }
+  ],
+  "extra_in_master": [
+    {
+      "origin": "Other charges",
+      "count": 1,
+      "rows": [
+        {
+          "charge_row_id": "CHG-OC-339",
+          "charge_name": "Interest Rate Type Switch Fees",
+          "facility_type": "Term Loan",
+          "scheme": null,
+          "rate_type": null,
+          "charge_type": "Percentage",
+          "fixed_amount": null,
+          "percentage": 0.005,
+          "percentage_per_annum": null,
+          "percentage_base_value": "Outstanding principal loan amount and undisbursed amount",
+          "charge_min": null,
+          "charge_max": 3000,
+          "gst_applicable": "Yes",
+          "note_1": null,
+          "source_ref": "Other charges!340",
+          "interest_rate_type_switch_from": "Floating",
+          "interest_rate_type_switch_to": "Fixed",
+          "employment_type": null,
+          "charge_unit": "Switch",
+          "charge_frequency_other": "Once"
+        }
+      ],
+      "note": "CHG-OC-339 Floating→Fixed 0.50% cap ₹3000 has no Structured_Data counterpart (source has Fixed/Combination→Variable and Variable lower-rate conversion, not Floating→Fixed type switch)."
+    },
+    {
+      "origin": "Offers.processing",
+      "count": 6,
+      "sample_charge_row_ids": [
+        "CHG-PROC-872",
+        "CHG-PROC-873",
+        "CHG-PROC-874",
+        "CHG-PROC-875",
+        "CHG-PROC-876",
+        "CHG-PROC-877"
+      ],
+      "all_charge_row_ids": [
+        "CHG-PROC-872",
+        "CHG-PROC-873",
+        "CHG-PROC-874",
+        "CHG-PROC-875",
+        "CHG-PROC-876",
+        "CHG-PROC-877"
+      ],
+      "schemes": {
+        "Home Loan": 6
+      },
+      "facilities": {
+        "Term Loan": 6
+      },
+      "rate_types": {
+        "Floating": 6
+      },
+      "percentage_min_max_fingerprints": {
+        "(0.005, 4000, None)": 6
+      },
+      "cibil_bands": [
+        {
+          "min": 300,
+          "max": 599
+        },
+        {
+          "min": 600,
+          "max": 649
+        },
+        {
+          "min": 650,
+          "max": 699
+        },
+        {
+          "min": 700,
+          "max": 749
+        },
+        {
+          "min": 750,
+          "max": 799
+        },
+        {
+          "min": 800,
+          "max": 900
+        }
+      ],
+      "internal_clone_groups_multiplicity_gt1": 0,
+      "note": "Not in Structured_Data (HDFC official schedule is re-appraisal / document / repayment / statutory / admin / non-compliance / conversion / bounce / retention / DOD / PDC / cheque cancel etc.; no processing-fee rows)."
+    },
+    {
+      "origin": "Offers.overdue",
+      "count": 1,
+      "rows": [
+        {
+          "charge_row_id": "CHG-OD-83",
+          "charge_name": "Overdue charges",
+          "facility_type": "Term Loan",
+          "scheme": "Home Loan",
+          "rate_type": "Floating",
+          "charge_type": "Percentage",
+          "fixed_amount": null,
+          "percentage": 0.18,
+          "percentage_per_annum": "Yes",
+          "percentage_base_value": "Default_Amount",
+          "charge_min": null,
+          "charge_max": null,
+          "gst_applicable": null,
+          "note_1": null,
+          "source_ref": "Offers!1188",
+          "interest_rate_type_switch_from": null,
+          "interest_rate_type_switch_to": null,
+          "employment_type": null,
+          "charge_unit": null,
+          "charge_frequency_other": null
+        }
+      ]
+    },
+    {
+      "origin": "Offers.prepayment",
+      "count": 1,
+      "rows": [
+        {
+          "charge_row_id": "CHG-PRE-69",
+          "charge_name": "Prepayment charges",
+          "facility_type": "Term Loan",
+          "scheme": "Home Loan",
+          "rate_type": "Floating",
+          "charge_type": "Fixed Amount",
+          "fixed_amount": 0,
+          "percentage": null,
+          "percentage_per_annum": null,
+          "percentage_base_value": null,
+          "charge_min": null,
+          "charge_max": null,
+          "gst_applicable": null,
+          "note_1": "Prepayment not charged (prepayment_applicable=No)",
+          "source_ref": "Offers!1188",
+          "interest_rate_type_switch_from": null,
+          "interest_rate_type_switch_to": null,
+          "employment_type": null,
+          "charge_unit": null,
+          "charge_frequency_other": null
+        }
+      ]
+    },
+    {
+      "origin": "CSV.fixed_prepay",
+      "count": 4,
+      "rows": [
+        {
+          "charge_row_id": "CHG-PRE-204",
+          "charge_name": "Prepayment charges",
+          "facility_type": "Term Loan",
+          "scheme": null,
+          "rate_type": "Fixed",
+          "charge_type": "Fixed Amount",
+          "fixed_amount": 0,
+          "percentage": null,
+          "percentage_per_annum": null,
+          "percentage_base_value": null,
+          "charge_min": null,
+          "charge_max": null,
+          "gst_applicable": null,
+          "note_1": "Prepayment nil (CSV NIL)",
+          "source_ref": "HDFC Bank|TL_self",
+          "interest_rate_type_switch_from": null,
+          "interest_rate_type_switch_to": null,
+          "employment_type": null,
+          "charge_unit": null,
+          "charge_frequency_other": null
+        },
+        {
+          "charge_row_id": "CHG-PRE-205",
+          "charge_name": "Prepayment charges (takeover)",
+          "facility_type": "Term Loan",
+          "scheme": null,
+          "rate_type": "Fixed",
+          "charge_type": "Percentage",
+          "fixed_amount": null,
+          "percentage": 0.02,
+          "percentage_per_annum": null,
+          "percentage_base_value": "Amount_Being_Paid",
+          "charge_min": null,
+          "charge_max": null,
+          "gst_applicable": "Yes",
+          "note_1": null,
+          "source_ref": "HDFC Bank|TL_take",
+          "interest_rate_type_switch_from": null,
+          "interest_rate_type_switch_to": null,
+          "employment_type": null,
+          "charge_unit": null,
+          "charge_frequency_other": null
+        },
+        {
+          "charge_row_id": "CHG-PRE-206",
+          "charge_name": "Prepayment charges",
+          "facility_type": "Overdraft",
+          "scheme": null,
+          "rate_type": "Fixed",
+          "charge_type": "Fixed Amount",
+          "fixed_amount": 0,
+          "percentage": null,
+          "percentage_per_annum": null,
+          "percentage_base_value": null,
+          "charge_min": null,
+          "charge_max": null,
+          "gst_applicable": null,
+          "note_1": "Prepayment nil (CSV NIL)",
+          "source_ref": "HDFC Bank|OD_self",
+          "interest_rate_type_switch_from": null,
+          "interest_rate_type_switch_to": null,
+          "employment_type": null,
+          "charge_unit": null,
+          "charge_frequency_other": null
+        },
+        {
+          "charge_row_id": "CHG-PRE-207",
+          "charge_name": "Prepayment charges (takeover)",
+          "facility_type": "Overdraft",
+          "scheme": null,
+          "rate_type": "Fixed",
+          "charge_type": "Percentage",
+          "fixed_amount": null,
+          "percentage": 0.02,
+          "percentage_per_annum": null,
+          "percentage_base_value": "Amount_Being_Paid",
+          "charge_min": null,
+          "charge_max": null,
+          "gst_applicable": "Yes",
+          "note_1": null,
+          "source_ref": "HDFC Bank|OD_take",
+          "interest_rate_type_switch_from": null,
+          "interest_rate_type_switch_to": null,
+          "employment_type": null,
+          "charge_unit": null,
+          "charge_frequency_other": null
+        }
+      ]
+    },
+    {
+      "origin": "Slab_Table",
+      "count": 0,
+      "rows": []
+    }
+  ],
+  "renames": [
+    {
+      "from": "List Of Documents (duplicate LOD post disbursement)",
+      "to": "List of Documents Charge - Duplicate",
+      "master_id": "CHG-OC-325",
+      "source_excel_row": 4
+    },
+    {
+      "from": "Photocopy of Documents",
+      "to": "Loan Document Copy Charges",
+      "master_id": "CHG-OC-326",
+      "source_excel_row": 5
+    },
+    {
+      "from": "Conversion Fees - Switch to lower rate in Variable rate loans (1st Conversion)",
+      "to": "Interest Rate Repricing Fees",
+      "master_id": "CHG-OC-338",
+      "source_excel_row": 14
+    },
+    {
+      "from": "Conversion Fees - Switch from Combination/Fixed rate to Variable rate",
+      "to": "Interest Rate Type Switch Fees",
+      "master_id": "CHG-OC-340",
+      "source_excel_row": 16
+    },
+    {
+      "from": "Switch to Lower Rate in Variable rate Loans",
+      "to": "Interest Rate Repricing Fees",
+      "master_id": "CHG-OC-338",
+      "source_excel_row": 20
+    }
+  ],
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 6,
+    "missing_bank_service_actionable": 13,
+    "extras_processing_not_error": 1,
+    "extras_prepay_ignored": 2,
+    "extras_overdue_no_action": 1,
+    "extras_other_charges_review": 2,
+    "value_mismatches": 0
+  },
+  "verdict_under_rules": "FAIL"
+}

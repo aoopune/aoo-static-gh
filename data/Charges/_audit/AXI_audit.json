@@ -1,0 +1,45 @@
+{
+  "bank_code": "AXI",
+  "bank_key": "axis bank",
+  "verdict": "PASS",
+  "rechecked_at": "2026-08-13",
+  "rules_ref": "AUDIT_RULES.md",
+  "summary": {
+    "value_mismatches_actionable": 0,
+    "missing_bank_service_charges": 0,
+    "missing_govt_ignored": 9,
+    "true_oc_duplicates_remaining": 0,
+    "processing_from_offers_not_an_error": true,
+    "prepay_ignored": true,
+    "overdue_no_action": true
+  },
+  "section_a": {
+    "slab_from": "accepted_as_source_convention",
+    "note_1_bleed": "fixed_in_master",
+    "od_source_still_has_1001000_3001000_on_M37_M38": true
+  },
+  "section_b_govt_ignored": [
+    {"source_excel_row": 11, "charge": "Equitable Mortgage Creation Charge"},
+    {"source_excel_row": 13, "charge": "Stamp Duty and Other Statutory Charges"},
+    {"source_excel_row": 14, "charge": "Equitable Mortgage Cancellation Charge"},
+    {"source_excel_row": 22, "charge": "CERSAI Charges 50"},
+    {"source_excel_row": 23, "charge": "CERSAI Charges 100"},
+    {"source_excel_row": 30, "charge": "Equitable Mortgage Creation Charge OD"},
+    {"source_excel_row": 31, "charge": "Equitable Mortgage Cancellation Charge OD"},
+    {"source_excel_row": 41, "charge": "CERSAI Charges 50 OD"},
+    {"source_excel_row": 42, "charge": "CERSAI Charges 100 OD"}
+  ],
+  "section_c": {
+    "noc_merge": {
+      "status": "fixed",
+      "master_charge_row_id": "CHG-OC-10",
+      "master_excel_row": 11,
+      "charge_name": "Duplicate No Objection Certificate Issuance Fees / No Due Certificate Charges",
+      "chg_oc_11_present": false
+    },
+    "processing": {
+      "status": "not_from_structured_data",
+      "axis_offers_processing_rows": ["CHG-PROC-824", "CHG-PROC-847"]
+    }
+  }
+}

@@ -1,0 +1,594 @@
+{
+  "bank_code": "YES",
+  "bank_key": "yes bank",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 25,
+    "master_bank_charges_rows": 33,
+    "matched_ok": 2,
+    "matched_rename_only": 20,
+    "value_mismatches": 0,
+    "missing_in_master": 4,
+    "extra_in_master": 12,
+    "duplicate_issues": 0
+  },
+  "matched_ok": [
+    {
+      "source_name": "EMI Cycle Date Change Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-824",
+      "master_name": "EMI Cycle Date Change Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; charge_unit=change; freq=Per change",
+        "gst master='Yes' (source unspecified — soft)"
+      ]
+    },
+    {
+      "source_name": "Cheque Bounce / Return Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 24,
+      "master_id": "CHG-OC-832",
+      "master_name": "Cheque Bounce / Return Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Fixed amount 750; charge_unit=presentation; freq=Per presentation",
+        "gst master='Yes' (source unspecified — soft)"
+      ]
+    },
+    {
+      "source_name": "Repayment Mode Swap Charge (SI to NACH)",
+      "source_facility": "Term Loan",
+      "source_excel_row": 4,
+      "master_id": "CHG-OC-814",
+      "master_name": "Repayment Mode Swap Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charge_unit=transaction; freq=Per transaction",
+        "variant SI→NACH preserved in note_1; rename drops parenthetical variant from charge_name",
+        "gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Repayment Mode Swap Charge (NACH to New Bank)",
+      "source_facility": "Term Loan",
+      "source_excel_row": 5,
+      "master_id": "CHG-OC-815",
+      "master_name": "Repayment Mode Swap Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; note_1='NACH swap to new bank'",
+        "rename drops parenthetical variant; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Repayment Mode Swap Charge (NACH to SI)",
+      "source_facility": "Term Loan",
+      "source_excel_row": 6,
+      "master_id": "CHG-OC-816",
+      "master_name": "Repayment Mode Swap Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; note_1='NACH to Standing Instruction'",
+        "rename drops parenthetical variant; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Loan Cancellation / Re-booking Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 7,
+      "master_id": "CHG-OC-817",
+      "master_name": "Loan Cancellation / Re-booking Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2000; charge_unit=cancellation/re-booking; freq=Per cancellation/re-booking",
+        "note_1 preserves interim-period interest wording (source Conditions truncated trailing clause — soft)",
+        "rename Charge→Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Repayment / Amortization Schedule Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 8,
+      "master_id": "CHG-OC-818",
+      "master_name": "Amortisation Schedule Issuance Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charged_for_physical_copy=Yes; note_1='Physical mode or via Branch'",
+        "rename Amortization→Amortisation + Issuance Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Repayment / Amortization Schedule Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 9,
+      "master_id": "CHG-OC-819",
+      "master_name": "Amortisation Schedule Issuance Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; note_1='On registered e-mail id'",
+        "email/digital channel of amortisation schedule; rename as CHG-OC-818; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Duplicate NOC / No Due Certificate Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 10,
+      "master_id": "CHG-OC-820",
+      "master_name": "Duplicate No Objection Certificate Issuance Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charge_unit=Certificate; freq=Each certificate",
+        "source combined Duplicate NOC/No Due split into NOC + No Due master series (RBL/CUB/DCB/ICI precedent)",
+        "facility Term Loan→Any (soft); rename → Duplicate No Objection Certificate Issuance Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Duplicate NOC / No Due Certificate Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 10,
+      "master_id": "CHG-OC-821",
+      "master_name": "No Due Certificate Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; No Due half of combined source certificate row",
+        "facility Term Loan→Any (soft); rename → No Due Certificate Charges (master omits Duplicate in name — soft); gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Loan Account Statement Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 11,
+      "master_id": "CHG-OC-822",
+      "master_name": "Statement of Account Charges - Duplicate",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500; charged_for_physical_copy=Yes; charged_for_digital_copy=No; charge_unit=Statement",
+        "facility Term Loan→Any (soft); rename Loan Account Statement Charge → Statement of Account Charges - Duplicate; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Loan Account Statement Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 12,
+      "master_id": "CHG-OC-822",
+      "master_name": "Statement of Account Charges - Duplicate",
+      "rename": true,
+      "soft_notes": [
+        "source Nil on registered e-mail id encoded via charged_for_digital_copy=No on physical ₹500 row (soft encoding; amortisation email uses separate Fixed 0 row)",
+        "values semantically present; rename as physical SOA row; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Document Retrieval Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 13,
+      "master_id": "CHG-OC-823",
+      "master_name": "Property Document Retrieval Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 750; charge_unit=Instance; freq=Each time",
+        "facility Term Loan→Any (soft); rename Document Retrieval Charge → Property Document Retrieval Charge; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Duplicate List of Documents (LOD) Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 15,
+      "master_id": "CHG-OC-825",
+      "master_name": "List of Documents Charge - Duplicate",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 750; charge_unit=Request; charged_for_physical_copy=Yes; charged_for_digital_copy=No",
+        "facility Term Loan→Any (soft); rename Duplicate List of Documents (LOD) Charge → List of Documents Charge - Duplicate; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Rate Switch / Conversion (Floating to Fixed)",
+      "source_facility": "Term Loan",
+      "source_excel_row": 17,
+      "master_id": "CHG-OC-826",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.005 (=0.50%); pct_base: source='Loan amount outstanding' master='Outstanding loan amount' (treated equivalent)",
+        "interest_rate_type_switch Floating→Fixed; note_1 preserves permitted-by-bank wording; charge_unit=Switch",
+        "rename Rate Switch / Conversion (…) → Interest Rate Type Switch Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Rate Switch / Conversion (Fixed to Floating)",
+      "source_facility": "Term Loan",
+      "source_excel_row": 18,
+      "master_id": "CHG-OC-827",
+      "master_name": "Interest Rate Type Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.01 (=1%); pct_base Outstanding loan amount; switch Fixed→Floating",
+        "note_1 preserves permitted-by-bank wording; rename → Interest Rate Type Switch Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Rate Switch / Conversion (Higher Floating to Lower Floating)",
+      "source_facility": "Term Loan",
+      "source_excel_row": 19,
+      "master_id": "CHG-OC-828",
+      "master_name": "Interest Rate Repricing Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.005 (=0.50%); pct_base Outstanding loan amount; repricing Floating Higher→Lower",
+        "source Conditions 'Only if permitted…' not mirrored on repricing rows (soft); rename → Interest Rate Repricing Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Rate Switch / Conversion (Higher Fixed to Lower Fixed)",
+      "source_facility": "Term Loan",
+      "source_excel_row": 20,
+      "master_id": "CHG-OC-829",
+      "master_name": "Interest Rate Repricing Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.01 (=1%); pct_base Outstanding loan amount; repricing Fixed Higher→Lower",
+        "rename → Interest Rate Repricing Fees; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Property Swapping / Part Property Release Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 21,
+      "master_id": "CHG-OC-830",
+      "master_name": "Property Swapping / Part Property Release Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Percentage 0.001 (=0.10%) + charge_min=10000; pct_base Outstanding loan amount; charge_unit=swap/release",
+        "rename Charge→Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Non-Maintenance of Mode of Payment (NMMP) Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 22,
+      "master_id": "CHG-OC-831",
+      "master_name": "Non-Maintenance of Mode of Payment (NMMP) Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 750; freq=When mode of payment is not maintained",
+        "rename Charge→Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "PDD Non-Submission / Material Terms Non-Compliance Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 25,
+      "master_id": "CHG-OC-833",
+      "master_name": "Post Disbursement Documentation Non-Submission / Material Terms Non-Compliance Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 2000; charge_unit=month; monthly until PDDs submitted",
+        "note_1/note_2 preserve title-document satisfaction + discrepancies-not-submitted wording",
+        "rename PDD→Post Disbursement Documentation; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Benchmark Switch Charge (Base Rate/MCLR to External Benchmark)",
+      "source_facility": "Term Loan",
+      "source_excel_row": 26,
+      "master_id": "CHG-OC-834",
+      "master_name": "Interest Rate Benchmark Switch Fees",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; benchmark_switch Base Rate / MCLR → External Benchmark Rate; freq=Per request",
+        "source contact email yestouch@yesbank.in not mirrored (soft); rename → Interest Rate Benchmark Switch Fees; gst master='Yes' (soft)"
+      ]
+    }
+  ],
+  "mismatches": [],
+  "missing_in_master": [
+    {
+      "source_name": "Equitable Mortgage / Stamp Duty / Other Statutory Charges",
+      "source_facility": "Term Loan",
+      "source_excel_row": 2,
+      "product": "Home Loan",
+      "amount_type": "At actuals",
+      "amount": "At actuals as per state laws applicable from time to time",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": null,
+      "customer_type": null,
+      "location": null,
+      "charged_per": "Per transaction",
+      "frequency": null,
+      "conditions": "Statutory mortgage/stamp charges as per applicable state laws"
+    },
+    {
+      "source_name": "Stamp Paper / E-Stamp Paper Service Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 3,
+      "product": "Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "125",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": null,
+      "customer_type": null,
+      "location": null,
+      "charged_per": "Per stamp paper/e-stamp paper",
+      "frequency": null,
+      "conditions": "Inclusive of GST"
+    },
+    {
+      "source_name": "Legal / Incidental / Repossession / Collection Charges",
+      "source_facility": "Term Loan",
+      "source_excel_row": 16,
+      "product": "Home Loan",
+      "amount_type": "At actuals",
+      "amount": "At actuals",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": null,
+      "customer_type": null,
+      "location": null,
+      "charged_per": null,
+      "frequency": null,
+      "conditions": null
+    },
+    {
+      "source_name": "Foreclosure Statement Charge",
+      "source_facility": "Term Loan",
+      "source_excel_row": 23,
+      "product": "Home Loan",
+      "amount_type": "Fixed amount",
+      "amount": "500",
+      "min_amount": null,
+      "max_amount": null,
+      "percentage_calculated_on": null,
+      "loan_amount_from": null,
+      "loan_amount_to": null,
+      "customer_type": null,
+      "location": null,
+      "charged_per": "Per request",
+      "frequency": null,
+      "conditions": null
+    }
+  ],
+  "extra_in_master": [
+    {
+      "origin": "Offers.processing",
+      "count": 6,
+      "ids": [
+        "CHG-PROC-1151",
+        "CHG-PROC-1152",
+        "CHG-PROC-1153",
+        "CHG-PROC-1154",
+        "CHG-PROC-1155",
+        "CHG-PROC-1156"
+      ],
+      "detail": {
+        "schemes": {
+          "Home Loan": 6
+        },
+        "facility": "Term Loan",
+        "rate_type": "Floating",
+        "purpose": "Regular Home Loan",
+        "occupation": "Any",
+        "fingerprints": {
+          "(0.01, 10000, None)": 6
+        },
+        "fingerprint_meaning": "1.00% of sanctioned amount, min ₹10,000",
+        "cibil_bands": [
+          "800–900",
+          "750–799",
+          "700–749",
+          "650–699",
+          "600–649",
+          "300–599"
+        ],
+        "internal_clone_groups_multiplicity_gt1": 0,
+        "internal_clone_rows": 0
+      }
+    },
+    {
+      "origin": "Offers.overdue",
+      "count": 1,
+      "rows": [
+        {
+          "master_id": "CHG-OD-98",
+          "master_name": "Overdue charges",
+          "facility_type": "Term Loan",
+          "scheme": "Home Loan",
+          "purpose": "Regular Home Loan",
+          "rate_type": "Floating",
+          "percentage": null,
+          "percentage_per_annum": "Yes",
+          "percentage_base_value": "Default_Amount",
+          "special_rule": "As_Per_ROI"
+        }
+      ]
+    },
+    {
+      "origin": "Offers.prepayment",
+      "count": 1,
+      "rows": [
+        {
+          "master_id": "CHG-PRE-84",
+          "master_name": "Prepayment charges",
+          "facility_type": "Term Loan",
+          "scheme": "Home Loan",
+          "purpose": "Regular Home Loan",
+          "rate_type": "Floating",
+          "fixed_amount": 0,
+          "note_1": "Prepayment not charged (prepayment_applicable=No)"
+        }
+      ]
+    },
+    {
+      "origin": "CSV.fixed_prepay",
+      "count": 4,
+      "rows": [
+        {
+          "master_id": "CHG-PRE-242",
+          "master_name": "Prepayment charges",
+          "facility_type": "Term Loan",
+          "purpose": "Regular Home Loan",
+          "rate_type": "Fixed",
+          "fixed_amount": 0,
+          "note_1": "Prepayment nil (CSV NIL)"
+        },
+        {
+          "master_id": "CHG-PRE-243",
+          "master_name": "Prepayment charges (takeover)",
+          "facility_type": "Term Loan",
+          "purpose": "Regular Home Loan",
+          "rate_type": "Fixed",
+          "percentage": 0.02,
+          "percentage_base_value": "Amount_Being_Paid",
+          "gst_applicable": "Yes"
+        },
+        {
+          "master_id": "CHG-PRE-244",
+          "master_name": "Prepayment charges",
+          "facility_type": "Overdraft",
+          "purpose": "Regular Home Loan",
+          "rate_type": "Fixed",
+          "fixed_amount": 0,
+          "note_1": "Prepayment nil (CSV NIL)"
+        },
+        {
+          "master_id": "CHG-PRE-245",
+          "master_name": "Prepayment charges (takeover)",
+          "facility_type": "Overdraft",
+          "purpose": "Regular Home Loan",
+          "rate_type": "Fixed",
+          "percentage": 0.02,
+          "percentage_base_value": "Amount_Being_Paid",
+          "gst_applicable": "Yes"
+        }
+      ]
+    },
+    {
+      "origin": "Slab_Table",
+      "count": 0,
+      "rows": []
+    },
+    {
+      "origin": "Other charges",
+      "count": 0,
+      "note": "all 21 Other charges rows map to Structured_Data (3 repayment-mode swap variants; cancellation; amortisation physical+email; Duplicate NOC + No Due split; SOA physical+email soft; document retrieval; EMI cycle Nil; LOD duplicate; rate type-switch ×2; rate repricing ×2; property swap; NMMP; cheque bounce; PDD non-submission; benchmark switch Nil). Equitable-Mortgage/Stamp-Duty, Stamp-Paper ₹125, Legal-Incidental-Repossession, Foreclosure Statement are missing rather than duplicated."
+    }
+  ],
+  "renames": [
+    {
+      "from": "Repayment Mode Swap Charge (SI to NACH)",
+      "to": "Repayment Mode Swap Charge",
+      "master_id": "CHG-OC-814"
+    },
+    {
+      "from": "Repayment Mode Swap Charge (NACH to New Bank)",
+      "to": "Repayment Mode Swap Charge",
+      "master_id": "CHG-OC-815"
+    },
+    {
+      "from": "Repayment Mode Swap Charge (NACH to SI)",
+      "to": "Repayment Mode Swap Charge",
+      "master_id": "CHG-OC-816"
+    },
+    {
+      "from": "Loan Cancellation / Re-booking Charge",
+      "to": "Loan Cancellation / Re-booking Charges",
+      "master_id": "CHG-OC-817"
+    },
+    {
+      "from": "Repayment / Amortization Schedule Charge",
+      "to": "Amortisation Schedule Issuance Charges",
+      "master_id": "CHG-OC-818"
+    },
+    {
+      "from": "Repayment / Amortization Schedule Charge",
+      "to": "Amortisation Schedule Issuance Charges",
+      "master_id": "CHG-OC-819"
+    },
+    {
+      "from": "Duplicate NOC / No Due Certificate Charge",
+      "to": "Duplicate No Objection Certificate Issuance Fees",
+      "master_id": "CHG-OC-820"
+    },
+    {
+      "from": "Duplicate NOC / No Due Certificate Charge",
+      "to": "No Due Certificate Charges",
+      "master_id": "CHG-OC-821"
+    },
+    {
+      "from": "Loan Account Statement Charge",
+      "to": "Statement of Account Charges - Duplicate",
+      "master_id": "CHG-OC-822"
+    },
+    {
+      "from": "Document Retrieval Charge",
+      "to": "Property Document Retrieval Charge",
+      "master_id": "CHG-OC-823"
+    },
+    {
+      "from": "Duplicate List of Documents (LOD) Charge",
+      "to": "List of Documents Charge - Duplicate",
+      "master_id": "CHG-OC-825"
+    },
+    {
+      "from": "Rate Switch / Conversion (Floating to Fixed)",
+      "to": "Interest Rate Type Switch Fees",
+      "master_id": "CHG-OC-826"
+    },
+    {
+      "from": "Rate Switch / Conversion (Fixed to Floating)",
+      "to": "Interest Rate Type Switch Fees",
+      "master_id": "CHG-OC-827"
+    },
+    {
+      "from": "Rate Switch / Conversion (Higher Floating to Lower Floating)",
+      "to": "Interest Rate Repricing Fees",
+      "master_id": "CHG-OC-828"
+    },
+    {
+      "from": "Rate Switch / Conversion (Higher Fixed to Lower Fixed)",
+      "to": "Interest Rate Repricing Fees",
+      "master_id": "CHG-OC-829"
+    },
+    {
+      "from": "Property Swapping / Part Property Release Charge",
+      "to": "Property Swapping / Part Property Release Charges",
+      "master_id": "CHG-OC-830"
+    },
+    {
+      "from": "Non-Maintenance of Mode of Payment (NMMP) Charge",
+      "to": "Non-Maintenance of Mode of Payment (NMMP) Charges",
+      "master_id": "CHG-OC-831"
+    },
+    {
+      "from": "PDD Non-Submission / Material Terms Non-Compliance Charge",
+      "to": "Post Disbursement Documentation Non-Submission / Material Terms Non-Compliance Charge",
+      "master_id": "CHG-OC-833"
+    },
+    {
+      "from": "Benchmark Switch Charge (Base Rate/MCLR to External Benchmark)",
+      "to": "Interest Rate Benchmark Switch Fees",
+      "master_id": "CHG-OC-834"
+    }
+  ],
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 2,
+    "missing_bank_service_actionable": 2,
+    "extras_processing_not_error": 1,
+    "extras_prepay_ignored": 2,
+    "extras_overdue_no_action": 1,
+    "extras_other_charges_review": 2,
+    "value_mismatches": 0
+  },
+  "verdict_under_rules": "FAIL"
+}

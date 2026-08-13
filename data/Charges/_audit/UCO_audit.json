@@ -1,0 +1,770 @@
+{
+  "bank_code": "UCO",
+  "bank_key": "uco bank",
+  "verdict": "FAIL",
+  "summary": {
+    "source_structured_data_rows": 15,
+    "master_bank_charges_rows": 29,
+    "matched_ok": 1,
+    "matched_rename_only": 10,
+    "value_mismatches": 0,
+    "missing_in_master": 4,
+    "extra_in_master": 18,
+    "duplicate_issues": 0
+  },
+  "matched_ok": [
+    {
+      "source_name": "CIBIL Report Pulling Charge",
+      "source_facility": "Both",
+      "source_excel_row": 3,
+      "master_id": "CHG-OC-772",
+      "master_name": "CIBIL Report Pulling Charge",
+      "rename": false,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; freq=Each time",
+        "facility Both→Any (soft broadening)",
+        "purpose master='Any' (source product UCO Home Loan); gst master='Yes' (source retail schedule NIL row; GST note is separate excel row 5 — soft)"
+      ]
+    },
+    {
+      "source_name": "Documentation Charge",
+      "source_facility": "Both",
+      "source_excel_row": 2,
+      "master_id": "CHG-OC-771",
+      "master_name": "Documentation Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; freq=Each time",
+        "facility Both→Any (soft); purpose master='Regular Home Loan' (source product UCO Home Loan)",
+        "rename Charge→Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Inspection Charge",
+      "source_facility": "Both",
+      "source_excel_row": 4,
+      "master_id": "CHG-OC-773",
+      "master_name": "Inspection Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Nil→Fixed amount 0; freq=Each time",
+        "facility Both→Any (soft); purpose master='Any'",
+        "rename Charge→Charges; gst master='Yes' (soft)"
+      ]
+    },
+    {
+      "source_name": "Cheque Return Charge - Inward",
+      "source_facility": "Any",
+      "source_excel_row": 8,
+      "master_id": "CHG-OC-774",
+      "master_name": "Cheque Return Inward Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 250 (source '250 + GST' → gst_applicable=Yes)",
+        "slab None–100000; slab_basis=Transaction amount; charge_unit=Instrument; freq=Each time",
+        "rename 'Cheque Return Charge - Inward'→'Cheque Return Inward Charge'"
+      ]
+    },
+    {
+      "source_name": "Cheque Return Charge - Inward",
+      "source_facility": "Any",
+      "source_excel_row": 9,
+      "master_id": "CHG-OC-775",
+      "master_name": "Cheque Return Inward Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 500 (source '500 + GST')",
+        "slab 100001–1000000 (source Loan_Amount_From=100000 'above ₹1 lakh up to ₹10 lakh' — exclusive+1 treated equivalent); slab_basis=Transaction amount",
+        "charge_group_id=CHG-OC-774; rename→Cheque Return Inward Charge; gst='Yes'"
+      ]
+    },
+    {
+      "source_name": "Cheque Return Charge - Inward",
+      "source_facility": "Any",
+      "source_excel_row": 10,
+      "master_id": "CHG-OC-776",
+      "master_name": "Cheque Return Inward Charge",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 900 (source '900 + GST')",
+        "slab_from=10000001 (source Loan_Amount_From=10000000 'above ₹100 lakh' — exclusive+1 treated equivalent); slab_basis=Transaction amount",
+        "Source Conditions note: published PDF lists no separate amount for ₹10–100 lakh inward band — neither source nor master has that gap band",
+        "charge_group_id=CHG-OC-774; rename→Cheque Return Inward Charge; gst='Yes'"
+      ]
+    },
+    {
+      "source_name": "ECS/NACH Debit Return Charge",
+      "source_facility": "Any",
+      "source_excel_row": 12,
+      "master_id": "CHG-OC-777",
+      "master_name": "ECS/NACH Debit Return / Dishonour Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 250 (source '250 + GST'); slab None–100000; slab_basis=Transaction amount; charge_unit=Instrument",
+        "note_1 preserves insufficient-funds wording; rename Charge→'/ Dishonour Charges'; gst='Yes'"
+      ]
+    },
+    {
+      "source_name": "ECS/NACH Debit Return Charge",
+      "source_facility": "Any",
+      "source_excel_row": 13,
+      "master_id": "CHG-OC-778",
+      "master_name": "ECS/NACH Debit Return / Dishonour Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 250; slab 100000–1000000 (matches source Loan_Amount_From/To); charge_group_id=CHG-OC-777",
+        "rename→ECS/NACH Debit Return / Dishonour Charges; gst='Yes'"
+      ]
+    },
+    {
+      "source_name": "ECS/NACH Debit Return Charge",
+      "source_facility": "Any",
+      "source_excel_row": 14,
+      "master_id": "CHG-OC-779",
+      "master_name": "ECS/NACH Debit Return / Dishonour Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 250; slab 1000000–10000000; charge_group_id=CHG-OC-777",
+        "rename→ECS/NACH Debit Return / Dishonour Charges; gst='Yes'"
+      ]
+    },
+    {
+      "source_name": "ECS/NACH Debit Return Charge",
+      "source_facility": "Any",
+      "source_excel_row": 15,
+      "master_id": "CHG-OC-780",
+      "master_name": "ECS/NACH Debit Return / Dishonour Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 250; slab_from=10000000; charge_group_id=CHG-OC-777",
+        "rename→ECS/NACH Debit Return / Dishonour Charges; gst='Yes'"
+      ]
+    },
+    {
+      "source_name": "Standing Instruction Failure Charge",
+      "source_facility": "Any",
+      "source_excel_row": 16,
+      "master_id": "CHG-OC-781",
+      "master_name": "Standing Instruction Failure Charges",
+      "rename": true,
+      "soft_notes": [
+        "confirmed Fixed amount 100 (source '100 + GST'); charge_unit=Failure; freq=Each time",
+        "note_1/note_2 preserve insufficient-funds + home-loan EMI SI failure wording",
+        "rename Charge→Charges; gst='Yes'"
+      ]
+    }
+  ],
+  "mismatches": [],
+  "missing_in_master": [
+    {
+      "source_name": "GST on applicable charges",
+      "source_facility": "Both",
+      "source_excel_row": 5,
+      "product": "UCO Home Loan",
+      "amount_type": "Formula",
+      "amount": "GST as per government guidelines from time to time",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": null,
+      "charged_per": null,
+      "frequency": "each time",
+      "conditions": "GST is levied on all charges mentioned in the retail loan schemes service charges table as per government guidelines from time to time."
+    },
+    {
+      "source_name": "Stamp Duty, Registration and Other Documentation Costs",
+      "source_facility": "Both",
+      "source_excel_row": 6,
+      "product": "UCO Home",
+      "amount_type": "At actuals",
+      "amount": "At actuals",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": null,
+      "charged_per": null,
+      "frequency": "each time",
+      "conditions": "Borrower bears stamp duty, registration and other documentation costs at actuals. These costs are not included in housing property cost for LTV, except they may be included in project cost where house/dwelling unit cost does not exceed Rs. 10.00 lacs for LTV calculation. Product also offered as Term Loan / Dropline Overdraft. Applies to individuals including NRI and PIO."
+    },
+    {
+      "source_name": "Stamp Duty, Registration and Other Documentation Costs",
+      "source_facility": "Term Loan",
+      "source_excel_row": 7,
+      "product": "UCO Corporate Home Loan Scheme",
+      "amount_type": "At actuals",
+      "amount": "At actuals",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Non-individual",
+      "location": null,
+      "charged_per": null,
+      "frequency": "each time",
+      "conditions": "Cost of stamp duty, registration and other documentation charges should not be included in the project cost for margin calculation."
+    },
+    {
+      "source_name": "Cheque Return Charge - Inward (BSBD concession)",
+      "source_facility": "Any",
+      "source_excel_row": 11,
+      "product": "Any",
+      "amount_type": "Formula",
+      "amount": "25% of normal bank charges",
+      "min": null,
+      "max": null,
+      "pct_on": null,
+      "loan_from": null,
+      "loan_to": null,
+      "customer": "Any",
+      "location": null,
+      "charged_per": "Per instrument",
+      "frequency": "each time",
+      "conditions": "In Basic Savings Bank Accounts, charges for cheques returned unpaid are restricted to 25% of normal bank charges.",
+      "account_type": "Regular"
+    }
+  ],
+  "extra_in_master": [
+    {
+      "origin": "Offers.processing",
+      "count": 14,
+      "sample_charge_row_ids": [
+        "CHG-PROC-739",
+        "CHG-PROC-740",
+        "CHG-PROC-741",
+        "CHG-PROC-742",
+        "CHG-PROC-743",
+        "CHG-PROC-744",
+        "CHG-PROC-745",
+        "CHG-PROC-746"
+      ],
+      "all_charge_row_ids": [
+        "CHG-PROC-739",
+        "CHG-PROC-740",
+        "CHG-PROC-741",
+        "CHG-PROC-742",
+        "CHG-PROC-743",
+        "CHG-PROC-744",
+        "CHG-PROC-745",
+        "CHG-PROC-746",
+        "CHG-PROC-747",
+        "CHG-PROC-748",
+        "CHG-PROC-749",
+        "CHG-PROC-750",
+        "CHG-PROC-751",
+        "CHG-PROC-752"
+      ],
+      "detail": "summary",
+      "schemes": {
+        "UCO Home": 8,
+        "UCO Top Up Home Loan": 6
+      },
+      "facilities": {
+        "Term Loan": 14
+      },
+      "rate_types": {
+        "Floating": 14
+      },
+      "occupations": {
+        "Any": 14
+      },
+      "percentage_min_max_fingerprints": {
+        "(0.005, 1500, 15000)": 14
+      },
+      "cibil_bands": [
+        {
+          "min": 850,
+          "max": 900,
+          "id": "CHG-PROC-739",
+          "scheme": "UCO Home"
+        },
+        {
+          "min": 825,
+          "max": 849,
+          "id": "CHG-PROC-740",
+          "scheme": "UCO Home"
+        },
+        {
+          "min": 800,
+          "max": 824,
+          "id": "CHG-PROC-741",
+          "scheme": "UCO Home"
+        },
+        {
+          "min": 750,
+          "max": 799,
+          "id": "CHG-PROC-742",
+          "scheme": "UCO Home"
+        },
+        {
+          "min": 700,
+          "max": 749,
+          "id": "CHG-PROC-743",
+          "scheme": "UCO Home"
+        },
+        {
+          "min": 650,
+          "max": 699,
+          "id": "CHG-PROC-744",
+          "scheme": "UCO Home"
+        },
+        {
+          "min": 600,
+          "max": 649,
+          "id": "CHG-PROC-745",
+          "scheme": "UCO Home"
+        },
+        {
+          "min": -1,
+          "max": 0,
+          "id": "CHG-PROC-746",
+          "scheme": "UCO Home"
+        },
+        {
+          "min": 850,
+          "max": 900,
+          "id": "CHG-PROC-747",
+          "scheme": "UCO Top Up Home Loan"
+        },
+        {
+          "min": 825,
+          "max": 849,
+          "id": "CHG-PROC-748",
+          "scheme": "UCO Top Up Home Loan"
+        },
+        {
+          "min": 800,
+          "max": 824,
+          "id": "CHG-PROC-749",
+          "scheme": "UCO Top Up Home Loan"
+        },
+        {
+          "min": 750,
+          "max": 799,
+          "id": "CHG-PROC-750",
+          "scheme": "UCO Top Up Home Loan"
+        },
+        {
+          "min": 700,
+          "max": 749,
+          "id": "CHG-PROC-751",
+          "scheme": "UCO Top Up Home Loan"
+        },
+        {
+          "min": 650,
+          "max": 699,
+          "id": "CHG-PROC-752",
+          "scheme": "UCO Top Up Home Loan"
+        }
+      ],
+      "internal_clone_groups_multiplicity_gt1": 0,
+      "internal_clone_rows": 0,
+      "reason": "Not in Structured_Data (source covers Documentation/CIBIL/Inspection Nil, GST formula note, Stamp Duty at actuals ×2 products, Cheque Return Inward slabs + BSBD concession, ECS/NACH return slabs, SI failure — no processing-fee rows)"
+    },
+    {
+      "charge_row_id": "CHG-PROC-739",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Home",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Regular Home Loan",
+      "cibil_band": "850–900",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-740",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Home",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Regular Home Loan",
+      "cibil_band": "825–849",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-741",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Home",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Regular Home Loan",
+      "cibil_band": "800–824",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-742",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Home",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Regular Home Loan",
+      "cibil_band": "750–799",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-743",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Home",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Regular Home Loan",
+      "cibil_band": "700–749",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-744",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Home",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Regular Home Loan",
+      "cibil_band": "650–699",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-745",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Home",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Regular Home Loan",
+      "cibil_band": "600–649",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-746",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Home",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Regular Home Loan",
+      "cibil_band": "-1–0",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-747",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Top Up Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Top-up Loan",
+      "cibil_band": "850–900",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-748",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Top Up Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Top-up Loan",
+      "cibil_band": "825–849",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-749",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Top Up Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Top-up Loan",
+      "cibil_band": "800–824",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-750",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Top Up Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Top-up Loan",
+      "cibil_band": "750–799",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-751",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Top Up Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Top-up Loan",
+      "cibil_band": "700–749",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PROC-752",
+      "charge_name": "Processing fee",
+      "origin": "Offers.processing",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.005,
+      "charge_min": 1500,
+      "charge_max": 15000,
+      "scheme": "UCO Top Up Home Loan",
+      "rate_type": "Floating",
+      "occupation": "Any",
+      "purpose": "Top-up Loan",
+      "cibil_band": "650–699",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-OD-67",
+      "charge_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_per_annum": "Yes",
+      "percentage_base_value": "Default_Amount",
+      "scheme": "UCO Home",
+      "rate_type": "Floating",
+      "purpose": "Regular Home Loan",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-OD-68",
+      "charge_name": "Overdue charges",
+      "origin": "Offers.overdue",
+      "facility_type": "Term Loan",
+      "charge_type": "Percentage",
+      "fixed_amount": null,
+      "percentage": 0.02,
+      "percentage_per_annum": "Yes",
+      "percentage_base_value": "Default_Amount",
+      "scheme": "UCO Top Up Home Loan",
+      "rate_type": "Floating",
+      "purpose": "Top-up Loan",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-52",
+      "charge_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility_type": "Term Loan",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0,
+      "percentage": null,
+      "scheme": "UCO Home",
+      "rate_type": "Floating",
+      "purpose": "Regular Home Loan",
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    },
+    {
+      "charge_row_id": "CHG-PRE-53",
+      "charge_name": "Prepayment charges",
+      "origin": "Offers.prepayment",
+      "facility_type": "Term Loan",
+      "charge_type": "Fixed Amount",
+      "fixed_amount": 0,
+      "percentage": null,
+      "scheme": "UCO Top Up Home Loan",
+      "rate_type": "Floating",
+      "purpose": "Top-up Loan",
+      "note_1": "Prepayment not charged (prepayment_applicable=No)",
+      "detail": "full",
+      "reason": "Not in Structured_Data"
+    }
+  ],
+  "renames": [
+    {
+      "source_name": "Documentation Charge",
+      "master_name": "Documentation Charges",
+      "master_id": "CHG-OC-771",
+      "source_excel_row": 2
+    },
+    {
+      "source_name": "Inspection Charge",
+      "master_name": "Inspection Charges",
+      "master_id": "CHG-OC-773",
+      "source_excel_row": 4
+    },
+    {
+      "source_name": "Cheque Return Charge - Inward",
+      "master_name": "Cheque Return Inward Charge",
+      "master_id": "CHG-OC-774",
+      "source_excel_row": 8
+    },
+    {
+      "source_name": "Cheque Return Charge - Inward",
+      "master_name": "Cheque Return Inward Charge",
+      "master_id": "CHG-OC-775",
+      "source_excel_row": 9
+    },
+    {
+      "source_name": "Cheque Return Charge - Inward",
+      "master_name": "Cheque Return Inward Charge",
+      "master_id": "CHG-OC-776",
+      "source_excel_row": 10
+    },
+    {
+      "source_name": "ECS/NACH Debit Return Charge",
+      "master_name": "ECS/NACH Debit Return / Dishonour Charges",
+      "master_id": "CHG-OC-777",
+      "source_excel_row": 12
+    },
+    {
+      "source_name": "ECS/NACH Debit Return Charge",
+      "master_name": "ECS/NACH Debit Return / Dishonour Charges",
+      "master_id": "CHG-OC-778",
+      "source_excel_row": 13
+    },
+    {
+      "source_name": "ECS/NACH Debit Return Charge",
+      "master_name": "ECS/NACH Debit Return / Dishonour Charges",
+      "master_id": "CHG-OC-779",
+      "source_excel_row": 14
+    },
+    {
+      "source_name": "ECS/NACH Debit Return Charge",
+      "master_name": "ECS/NACH Debit Return / Dishonour Charges",
+      "master_id": "CHG-OC-780",
+      "source_excel_row": 15
+    },
+    {
+      "source_name": "Standing Instruction Failure Charge",
+      "master_name": "Standing Instruction Failure Charges",
+      "master_id": "CHG-OC-781",
+      "source_excel_row": 16
+    }
+  ],
+  "notes": [
+    "Source of truth: UCO_Home_Loan_Charges_Official.xlsx sheet Structured_Data (15 rows).",
+    "Master filter: Bank_charges where bank_key == uco bank (29 rows).",
+    "Semantic matching used; renames allowed when amounts/slabs match.",
+    "Nil→Fixed amount 0 for Documentation / CIBIL Report Pulling / Inspection.",
+    "Cheque Return Inward three published slabs ₹250 / ₹500 / ₹900 map; ₹10–100 lakh inward band unpublished in source PDF (gap in both).",
+    "ECS/NACH Debit Return four slabs all ₹250 map to ECS/NACH Debit Return / Dishonour Charges.",
+    "Missing: GST formula note; Stamp Duty at actuals (UCO Home + Corporate Non-individual); Cheque Return Inward BSBD 25% concession.",
+    "Other-charges: all 11 OC rows map (0 redundant). No Slab_Table or CSV.fixed_prepay.",
+    "Offers.processing 14 (0.50% min ₹1,500 max ₹15,000; UCO Home ×8 CIBIL bands + Top Up ×6); Offers.overdue ×2 at 2% p.a.; Offers.prepayment ×2 fixed 0.",
+    "openpyxl data_only=True used for both workbooks."
+  ],
+  "rules_ref": "AUDIT_RULES.md",
+  "reclassification": {
+    "missing_govt_ignored": 2,
+    "missing_bank_service_actionable": 2,
+    "extras_processing_not_error": 15,
+    "extras_prepay_ignored": 2,
+    "extras_overdue_no_action": 2,
+    "extras_other_charges_review": 0,
+    "value_mismatches": 0
+  },
+  "verdict_under_rules": "FAIL"
+}
