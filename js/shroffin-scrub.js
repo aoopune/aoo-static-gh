@@ -71,13 +71,15 @@
       var vh = window.innerHeight || 1;
 
       if (el.getAttribute("data-home-scrub") === "zero") {
-        /* Use the whole sticky runway as progress so reveals feel controlled. */
+        /* Use the sticky runway so reveals feel controlled. */
         if (!el.classList.contains("is-in")) return 0;
         var track = el.querySelector(".home-zero-track") || el;
         var trackRect = track.getBoundingClientRect();
         var runway = Math.max(1, track.offsetHeight - vh);
         var traveled = Math.max(0, -trackRect.top);
-        return clamp01(traveled / runway);
+        /* Finish the body line before the pin unsticks, then hold to read. */
+        var revealRunway = runway * 0.58;
+        return clamp01(traveled / Math.max(1, revealRunway));
       }
       if (el.getAttribute("data-home-scrub") === "lead") {
         var leadTrack = el.querySelector(".home-lead-track") || el;
@@ -98,9 +100,10 @@
     }
 
     function applyHomeZero(el, p) {
-      /* Soft stagger: commissions/bias first, body after more scroll. */
-      var rest = segment(p, 0.42, 0.94);
-      var body = segment(p, 0.74, 1.0);
+      /* Soft stagger: commissions/bias first, body after more scroll.
+         Body lands before progress hits 1 so the hold is fully readable. */
+      var rest = segment(p, 0.38, 0.78);
+      var body = segment(p, 0.56, 0.86);
       el.style.setProperty("--hz-rest", rest.toFixed(4));
       el.style.setProperty("--hz-body", body.toFixed(4));
     }

@@ -34,6 +34,7 @@ const SKIP_EXPLORE_BANKS_PREFOOTER_CTA = new Set([
   'pages/about.html',
   'pages/explore-banks.html',
   'pages/apply.html',
+  'pages/apply-contact.html',
   'privacy-policy.html',
   'terms-of-use.html',
   'sitemap.html'

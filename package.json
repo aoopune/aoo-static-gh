@@ -6,6 +6,7 @@
   "scripts": {
     "start": "python3 -m http.server 8765",
     "serve": "node scripts/serve.js",
+    "review:transcribe": "scripts/review-capture/.venv/bin/python scripts/review-capture/transcribe.py",
     "build:footer": "node scripts/sync-site-footer.js",
     "check:footer": "node scripts/sync-site-footer.js --check",
     "build:nav": "node scripts/sync-site-nav.js",

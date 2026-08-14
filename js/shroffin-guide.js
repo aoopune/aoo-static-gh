@@ -1784,30 +1784,6 @@
     });
   }
 
-  function initBreadcrumbs() {
-    document.querySelectorAll(".guide-breadcrumb").forEach(function (breadcrumb) {
-      if (breadcrumb.dataset.grouped === "true") return;
-      var items = Array.prototype.slice.call(breadcrumb.children);
-      if (!items.length) return;
-      breadcrumb.textContent = "";
-
-      for (var index = 0; index < items.length; index += 1) {
-        var segment = document.createElement("span");
-        segment.className = "guide-breadcrumb-segment";
-        segment.appendChild(items[index]);
-        if (
-          items[index + 1] &&
-          items[index + 1].classList.contains("guide-breadcrumb-sep")
-        ) {
-          segment.appendChild(items[index + 1]);
-          index += 1;
-        }
-        breadcrumb.appendChild(segment);
-      }
-      breadcrumb.dataset.grouped = "true";
-    });
-  }
-
   function initReducedMotionUpdates() {
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     function settle() {
@@ -1946,7 +1922,6 @@
     initFlipFocus();
     initSegPanels();
     initScrollRegions();
-    initBreadcrumbs();
     initGuideDisclosures();
     if (window.ShroffinScrub) window.ShroffinScrub.init();
     initGuideMoments();

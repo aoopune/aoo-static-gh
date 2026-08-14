@@ -15,6 +15,12 @@ python3 scripts/export_home_loans_json.py
 echo "== selftest =="
 python3 scripts/selftest_home_loans_json.py
 
+echo "== cache-bust data URL =="
+node scripts/stamp-asset-versions.js
+
+echo "== unit tests =="
+node tests/run-unit.js
+
 echo "== artifacts =="
 test -f "data/home-loans-compare.json" || { echo "FAIL: json missing"; exit 1; }
 test -f "data/HOME_LOANS_COMPARE_JSON_VALIDATION.md" || { echo "FAIL: validation md missing"; exit 1; }

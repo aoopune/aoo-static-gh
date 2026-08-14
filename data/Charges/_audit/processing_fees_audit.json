@@ -1,0 +1,517 @@
+{
+  "completed_at": "2026-08-14",
+  "totals": {
+    "ref_banks": 33,
+    "master_banks": 33,
+    "processing_rows": 212,
+    "bank_charges_rows": 1398,
+    "cibil_rows_remaining": 0,
+    "duplicate_keys": 0,
+    "pass_single": 12,
+    "pass_multi": 21,
+    "fail": 0
+  },
+  "banks": [
+    {
+      "bank": "Axis Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 2,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.01
+      ],
+      "distinct_mins": [
+        10000
+      ],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "Bandhan Bank",
+      "verdict": "PASS",
+      "master_rows": 1,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.01
+      ],
+      "distinct_mins": [],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "Bank of Baroda",
+      "verdict": "PASS_MULTI",
+      "master_rows": 24,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.0025,
+        0.0035,
+        0.005
+      ],
+      "distinct_mins": [
+        5000,
+        8500
+      ],
+      "distinct_maxes": [
+        12500,
+        15000,
+        25000
+      ]
+    },
+    {
+      "bank": "Bank of India",
+      "verdict": "PASS_MULTI",
+      "master_rows": 32,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.002,
+        0.0035
+      ],
+      "distinct_mins": [
+        2000,
+        3500
+      ],
+      "distinct_maxes": [
+        10000,
+        30000
+      ]
+    },
+    {
+      "bank": "Bank of Maharashtra",
+      "verdict": "PASS_MULTI",
+      "master_rows": 9,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.0025
+      ],
+      "distinct_mins": [],
+      "distinct_maxes": [
+        25000,
+        50000
+      ]
+    },
+    {
+      "bank": "CSB Bank",
+      "verdict": "PASS",
+      "master_rows": 1,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.006
+      ],
+      "distinct_mins": [
+        10000
+      ],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "Canara Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 5,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.005
+      ],
+      "distinct_mins": [
+        1500
+      ],
+      "distinct_maxes": [
+        10000
+      ]
+    },
+    {
+      "bank": "Central Bank of India",
+      "verdict": "PASS_MULTI",
+      "master_rows": 3,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.005
+      ],
+      "distinct_mins": [],
+      "distinct_maxes": [
+        20000
+      ]
+    },
+    {
+      "bank": "City Union Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 6,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.002,
+        0.0025,
+        0.0035
+      ],
+      "distinct_mins": [],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "DCB Bank",
+      "verdict": "PASS",
+      "master_rows": 1,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.02
+      ],
+      "distinct_mins": [
+        5000
+      ],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "Dhanlaxmi Bank",
+      "verdict": "PASS",
+      "master_rows": 1,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.01
+      ],
+      "distinct_mins": [
+        10000
+      ],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "Federal Bank",
+      "verdict": "PASS",
+      "master_rows": 1,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.005
+      ],
+      "distinct_mins": [
+        10000
+      ],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "HDFC Bank",
+      "verdict": "PASS",
+      "master_rows": 1,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.005
+      ],
+      "distinct_mins": [
+        4000
+      ],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "ICICI Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 4,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.02
+      ],
+      "distinct_mins": [],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "IDBI Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 12,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [],
+      "distinct_mins": [],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "IDFC FIRST Bank",
+      "verdict": "PASS",
+      "master_rows": 1,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.03
+      ],
+      "distinct_mins": [],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "Indian Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 6,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [],
+      "distinct_mins": [],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "Indian Overseas Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 10,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.005
+      ],
+      "distinct_mins": [],
+      "distinct_maxes": [
+        20000,
+        25000
+      ]
+    },
+    {
+      "bank": "IndusInd Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 2,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.01
+      ],
+      "distinct_mins": [],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "Jammu and Kashmir Bank",
+      "verdict": "PASS",
+      "master_rows": 1,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.0025
+      ],
+      "distinct_mins": [
+        2000
+      ],
+      "distinct_maxes": [
+        50000
+      ]
+    },
+    {
+      "bank": "Karnataka Bank",
+      "verdict": "PASS",
+      "master_rows": 1,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.0025
+      ],
+      "distinct_mins": [],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "Karur Vysya Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 6,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [],
+      "distinct_mins": [],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "Kotak Mahindra Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 2,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.02
+      ],
+      "distinct_mins": [],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "Nainital Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 21,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.005
+      ],
+      "distinct_mins": [],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "Punjab & Sind Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 6,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.0,
+        0.0015,
+        0.0025
+      ],
+      "distinct_mins": [
+        1000
+      ],
+      "distinct_maxes": [
+        3750,
+        12500,
+        15000
+      ]
+    },
+    {
+      "bank": "Punjab National Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 30,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.0,
+        0.0035
+      ],
+      "distinct_mins": [
+        2500
+      ],
+      "distinct_maxes": [
+        15000
+      ]
+    },
+    {
+      "bank": "RBL Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 2,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.02
+      ],
+      "distinct_mins": [
+        15000
+      ],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "South Indian Bank",
+      "verdict": "PASS",
+      "master_rows": 1,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.005
+      ],
+      "distinct_mins": [
+        10000
+      ],
+      "distinct_maxes": [
+        50000
+      ]
+    },
+    {
+      "bank": "State Bank of India",
+      "verdict": "PASS_MULTI",
+      "master_rows": 8,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.0035
+      ],
+      "distinct_mins": [
+        5000
+      ],
+      "distinct_maxes": [
+        15000,
+        18000
+      ]
+    },
+    {
+      "bank": "Tamilnad Mercantile Bank",
+      "verdict": "PASS",
+      "master_rows": 1,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.005
+      ],
+      "distinct_mins": [],
+      "distinct_maxes": []
+    },
+    {
+      "bank": "UCO Bank",
+      "verdict": "PASS_MULTI",
+      "master_rows": 2,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.005
+      ],
+      "distinct_mins": [
+        1500
+      ],
+      "distinct_maxes": [
+        15000
+      ]
+    },
+    {
+      "bank": "Union Bank of India",
+      "verdict": "PASS_MULTI",
+      "master_rows": 8,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.005
+      ],
+      "distinct_mins": [],
+      "distinct_maxes": [
+        15000
+      ]
+    },
+    {
+      "bank": "Yes Bank",
+      "verdict": "PASS",
+      "master_rows": 1,
+      "cibil_rows": 0,
+      "duplicate_keys": 0,
+      "ref_issues": [],
+      "distinct_percentages": [
+        0.01
+      ],
+      "distinct_mins": [
+        10000
+      ],
+      "distinct_maxes": []
+    }
+  ]
+}

@@ -3,13 +3,23 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
+XLSX='data/Home Loans.xlsx'
 CSV='data/Home Loans - Pre-payment charges - takeover_fixed rrate (1).csv'
 STRUCT='data/fixed-prepay-structured.csv'
 COMPARE='data/HOME_LOANS_COMPARE_v1.xlsx'
 LOCK_SNIP='/tmp/bank_charges_lock.txt'
 
-echo '== structure CSV =='
-python3 scripts/structure_fixed_prepay_csv.py --input "$CSV" --output "$STRUCT"
+echo '== patch source xlsx =='
+python3 scripts/patch_fixed_prepay_source_xlsx.py --xlsx "$XLSX"
+
+echo '== structure from xlsx (sync CSV export) =='
+python3 scripts/structure_fixed_prepay_csv.py \
+  --xlsx "$XLSX" \
+  --output "$STRUCT" \
+  --export-csv "$CSV"
+
+echo '== patch prepay statement notes in COMPARE =='
+python3 scripts/patch_prepay_compare_notes.py --compare "$COMPARE"
 
 echo '== upsert COMPARE (Fixed prepay only) =='
 python3 scripts/upsert_fixed_prepay_into_compare.py \
@@ -58,8 +68,8 @@ python3 scripts/export_home_loans_json.py
 echo '== selftest JSON =='
 python3 scripts/selftest_home_loans_json.py
 
-echo '== audit CSV coverage =='
-python3 scripts/audit_fixed_prepay_coverage.py --csv "$CSV" --compare-json data/home-loans-compare.json
+echo '== audit fixed prepay coverage =='
+python3 scripts/audit_fixed_prepay_coverage.py --xlsx "$XLSX" --compare-json data/home-loans-compare.json
 
 echo '== build compare bundle =='
 npm run build:compare

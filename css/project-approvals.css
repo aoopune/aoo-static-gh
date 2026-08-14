@@ -105,13 +105,6 @@ body {
   color: var(--apf-blue);
 }
 
-.apf-search-help {
-  margin: 0.65rem 0 0;
-  color: var(--apf-muted);
-  font-size: 0.9375rem;
-  line-height: 1.45;
-}
-
 .apf-data-note {
   max-width: none;
   width: 100%;
@@ -206,7 +199,9 @@ body {
   box-sizing: content-box;
   transition:
     background-color var(--shroffin-micro-duration, 0.5s) var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+    box-shadow var(--shroffin-micro-duration, 0.5s) var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
     opacity var(--shroffin-micro-duration, 0.5s) var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  box-shadow: var(--shroffin-btn-primary-shadow, 0 2px 8px rgba(0, 113, 227, 0.2));
 }
 
 @media (max-width: 833px) {
@@ -226,7 +221,14 @@ body {
 
 .apf-submit:hover,
 .apf-more:hover {
-  background: #0076df;
+  background: var(--shroffin-btn-primary-hover, #0058b0);
+  box-shadow: var(--shroffin-btn-primary-shadow-hover, 0 6px 22px rgba(0, 88, 176, 0.42));
+}
+
+.apf-submit:active,
+.apf-more:active {
+  background: var(--shroffin-btn-primary-active, #004a96);
+  box-shadow: var(--shroffin-btn-primary-shadow-active, 0 1px 4px rgba(0, 74, 150, 0.32));
 }
 
 .apf-submit:disabled {

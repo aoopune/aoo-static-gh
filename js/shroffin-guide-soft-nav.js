@@ -389,7 +389,7 @@
     document.addEventListener("focusin", onPointerPrefetch, true);
     window.addEventListener("popstate", onPopState);
 
-    document.querySelectorAll(".localnav-link[href], .guide-breadcrumb a[href]").forEach(function (link) {
+    document.querySelectorAll(".localnav-link[href]").forEach(function (link) {
       if (canHandle(link.href)) prefetch(link.href);
     });
   }

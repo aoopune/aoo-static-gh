@@ -4,8 +4,11 @@
     --shroffin-muted: #6e6e73;
     --shroffin-blue: #0071e3;
     --shroffin-btn-primary: #0071e3;
-    --shroffin-btn-primary-hover: #0076df;
-    --shroffin-btn-primary-active: #006edb;
+    --shroffin-btn-primary-hover: #0058b0;
+    --shroffin-btn-primary-active: #004a96;
+    --shroffin-btn-primary-shadow: 0 2px 8px rgba(0, 113, 227, 0.2);
+    --shroffin-btn-primary-shadow-hover: 0 6px 22px rgba(0, 88, 176, 0.42);
+    --shroffin-btn-primary-shadow-active: 0 1px 4px rgba(0, 74, 150, 0.32);
     /* Text links (on-site + off-site) — one colour, gap, and state system. */
     --shroffin-link: #3f62c8;
     --shroffin-link-active: #2f4ba0;
@@ -901,34 +904,50 @@
     transform: rotate(45deg);
   }
 
-  .globalnav-compact-icon,
-  .globalnav-compact-icon::before,
-  .globalnav-compact-icon::after {
-    display: block;
-    inline-size: 1rem;
-    block-size: 1px;
-    background: currentColor;
-    transition: transform var(--shroffin-ui-duration) var(--shroffin-ease);
-  }
-
+  /*
+   * Compact menu mark — bars meet as one line, then that line opens into an X.
+   * Not a same-time pivot from the spread position (that reads as Apple.com).
+   */
   .globalnav-compact-icon {
     position: relative;
-    background: transparent;
+    display: block;
+    flex-shrink: 0;
+    inline-size: 1rem;
+    block-size: 0.75rem;
+    overflow: visible;
   }
 
   .globalnav-compact-icon::before,
   .globalnav-compact-icon::after {
     content: "";
     position: absolute;
-    inset-inline-start: 0;
+    inset-inline: 0;
+    inset-block-start: 50%;
+    block-size: 1px;
+    margin-block-start: -0.5px;
+    background: currentColor;
+    transform-origin: center;
+    transition:
+      transform var(--shroffin-micro-duration) var(--shroffin-ease),
+      translate var(--shroffin-micro-duration) var(--shroffin-ease) var(--shroffin-micro-duration);
   }
 
   .globalnav-compact-icon::before {
-    transform: translateY(-3px);
+    translate: 0 -3px;
+    transform: rotate(0deg);
   }
 
   .globalnav-compact-icon::after {
-    transform: translateY(3px);
+    translate: 0 3px;
+    transform: rotate(0deg);
+  }
+
+  .globalnav.compact-open .globalnav-compact-icon::before,
+  .globalnav.compact-open .globalnav-compact-icon::after {
+    translate: 0 0;
+    transition:
+      translate var(--shroffin-micro-duration) var(--shroffin-ease),
+      transform var(--shroffin-micro-duration) var(--shroffin-ease) var(--shroffin-micro-duration);
   }
 
   .globalnav.compact-open .globalnav-compact-icon::before {
@@ -2110,6 +2129,7 @@
       background-color var(--shroffin-micro-duration) var(--shroffin-color-ease),
       color var(--shroffin-micro-duration) var(--shroffin-color-ease),
       border-color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+      box-shadow var(--shroffin-micro-duration) var(--shroffin-color-ease),
       opacity var(--shroffin-micro-duration) var(--shroffin-color-ease);
   }
 
@@ -2130,6 +2150,7 @@
   .hlc-btn-primary {
     background: var(--shroffin-btn-primary);
     background-clip: border-box;
+    box-shadow: var(--shroffin-btn-primary-shadow);
     color: #fff;
     text-decoration: none;
   }
@@ -2172,6 +2193,7 @@
   .hlc-btn-primary:focus-visible:not(:disabled) {
     background: var(--shroffin-btn-primary-hover);
     border-color: transparent;
+    box-shadow: var(--shroffin-btn-primary-shadow-hover);
     color: #fff;
   }
 
@@ -2183,6 +2205,7 @@
   .hlc-btn-primary:active:not(:disabled) {
     background: var(--shroffin-btn-primary-active);
     border-color: transparent;
+    box-shadow: var(--shroffin-btn-primary-shadow-active);
     color: #fff;
   }
 

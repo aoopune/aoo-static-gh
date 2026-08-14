@@ -393,11 +393,26 @@
                 <p class="visually-hidden" id="hlc-match-meta" aria-live="polite"></p>
               </div>
               <div class="hlc-results-actions">
-                <div class="hlc-column-tabs-scroller">
-                  <div class="hlc-column-tabs" role="tablist" aria-label="Column groups">
-                    <button type="button" class="hlc-column-tab" role="tab" data-group="essentials" aria-current="page" aria-selected="true">Overview</button>
-                    <button type="button" class="hlc-column-tab" role="tab" data-group="charges" aria-selected="false">Charges</button>
-                    <button type="button" class="hlc-column-tab" role="tab" data-group="laterCharges" aria-selected="false">Other charges</button>
+                <div class="hlc-results-tools-lead">
+                  <div class="hlc-column-tabs-scroller">
+                    <div class="hlc-column-tabs" role="tablist" aria-label="Column groups">
+                      <button type="button" class="hlc-column-tab" role="tab" data-group="essentials" aria-current="page" aria-selected="true">Overview</button>
+                      <button type="button" class="hlc-column-tab" role="tab" data-group="charges" aria-selected="false">Charges</button>
+                      <button type="button" class="hlc-column-tab" role="tab" data-group="laterCharges" aria-selected="false">Other charges</button>
+                    </div>
+                  </div>
+                  <div class="hlc-edit-inputs-control">
+                    <button
+                      type="button"
+                      class="hlc-edit-inputs"
+                      id="hlc-edit-inputs"
+                      aria-label="Edit inputs"
+                    >
+                      <svg class="hlc-edit-inputs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
+                      </svg>
+                      <span class="hlc-edit-inputs-label">edit</span>
+                    </button>
                   </div>
                 </div>
                 <div class="hlc-filters-control" id="hlc-filters-control">
@@ -407,11 +422,12 @@
                     id="hlc-filters-toggle"
                     aria-expanded="false"
                     aria-controls="hlc-filters-panel"
+                    aria-label="Filters"
                   >
-                    <svg class="hlc-filters-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-                      <path d="M2.5 4h11M4.5 8h7M6.5 12h3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    <svg class="hlc-filters-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"/>
                     </svg>
-                    <span class="hlc-filters-toggle-label">Filter</span>
+                    <span class="hlc-filters-toggle-label">filter</span>
                     <span class="hlc-filters-badge" id="hlc-filters-badge" hidden></span>
                   </button>
                 </div>
@@ -438,12 +454,6 @@
                     <button type="button" class="hlc-filters-clear" id="hlc-filters-clear" hidden>
                       Clear all
                     </button>
-                    <button
-                      type="button"
-                      class="hlc-icon-btn hlc-filters-close"
-                      id="hlc-filters-close"
-                      aria-label="Close filters"
-                    >×</button>
                   </div>
                 </div>
 
@@ -625,6 +635,8 @@
                 </div>
 
                 <div class="hlc-charges-note" id="hlc-charges-note" role="note" hidden></div>
+
+                <p class="hlc-freshness-note" id="hlc-freshness-note" hidden></p>
 
                 <div class="hlc-paddles">
                   <button type="button" class="hlc-paddle" id="hlc-paddle-left" aria-label="Scroll columns left">‹</button>

@@ -61,7 +61,7 @@ def main() -> int:
     gh, govt = load_sheet(wb, "Government_charges")
 
     t.check("offers_806", len(offers) == 806, str(len(offers)))
-    t.check("bank_2347", len(banks) == 2347, str(len(banks)))
+    t.check("bank_1398", len(banks) == 1398, str(len(banks)))
     t.check("govt_18", len(govt) == 18, str(len(govt)))
     t.check("offers_no_fee_cols", not any("processing_fee" in h or h.startswith("overdue_") or "prepayment" in h for h in oh), "")
     t.check("offers_has_roi", "roi" in oh and "bank_key" in oh, "")

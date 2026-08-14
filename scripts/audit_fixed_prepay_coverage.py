@@ -1,51 +1,33 @@
 #!/usr/bin/env python3
 """
-Audit: every non-NA CSV fixed-prepay cell maps to ≥1 Fixed Bank_charges row in JSON.
+Audit: every non-NA fixed-prepay cell in source maps to ≥1 Fixed Bank_charges row in JSON.
 """
 from __future__ import annotations
 
 import argparse
-import csv
 import json
-import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_XLSX = ROOT / "data" / "Home Loans.xlsx"
 DEFAULT_CSV = ROOT / "data" / "Home Loans - Pre-payment charges - takeover_fixed rrate (1).csv"
 DEFAULT_JSON = ROOT / "data" / "home-loans-compare.json"
 
-BANK_ALIASES = {
-    "Central bank of India": "Central Bank of India",
-    "Bank of Maharastra": "Bank of Maharashtra",
-    "Federal bank": "Federal Bank",
-    "IDFC first Bank": "IDFC FIRST Bank",
-    "Indusind Bank": "IndusInd Bank",
-    "Karur Vyasa Bank": "Karur Vysya Bank",
-    "Jammu & Kashmir bank": "Jammu and Kashmir Bank",
-}
-
-
-def norm_bank(raw: str) -> str:
-    s = re.sub(r"\s+", " ", (raw or "").strip())
-    return BANK_ALIASES.get(s, s)
-
-
-def kind(v: str) -> str:
-    t = (v or "").strip()
-    if not t:
-        return "blank"
-    u = t.upper().replace(" ", "")
-    if u in ("NIL", "NIL."):
-        return "nil"
-    if u in ("NA", "N/A", "N.A."):
-        return "na"
-    return "rule"
+sys.path.insert(0, str(ROOT / "scripts"))
+from structure_fixed_prepay_csv import (  # noqa: E402
+    DEFAULT_SHEET,
+    cell_kind,
+    load_bank_rows_from_csv,
+    load_bank_rows_from_xlsx,
+)
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--csv", type=Path, default=DEFAULT_CSV)
+    ap.add_argument("--xlsx", type=Path, default=DEFAULT_XLSX)
+    ap.add_argument("--sheet", type=str, default=DEFAULT_SHEET)
+    ap.add_argument("--csv", type=Path, default=None, help="Legacy CSV instead of xlsx")
     ap.add_argument("--compare-json", type=Path, default=DEFAULT_JSON)
     args = ap.parse_args()
 
@@ -75,34 +57,31 @@ def main() -> int:
                 return True
         return False
 
-    raw_rows = list(csv.reader(args.csv.open(encoding="utf-8")))
+    if args.csv is not None:
+        bank_rows = load_bank_rows_from_csv(args.csv)
+    else:
+        bank_rows = load_bank_rows_from_xlsx(args.xlsx, args.sheet)
+
     gaps = []
-    for r in raw_rows[3:]:
-        if not r or not (r[0] or "").strip():
-            continue
-        while len(r) < 6:
-            r.append("")
-        bank = norm_bank(r[0])
+    for bank, cells_raw, _url in bank_rows:
+        while len(cells_raw) < 4:
+            cells_raw.append("")
         cells = [
-            ("Term Loan", "Prepayment charges", r[1], "TL_self"),
-            ("Term Loan", "Prepayment charges (takeover)", r[2], "TL_take"),
-            ("Overdraft", "Prepayment charges", r[3], "OD_self"),
-            ("Overdraft", "Prepayment charges (takeover)", r[4], "OD_take"),
+            ("Term Loan", "Prepayment charges", cells_raw[0], "TL_self"),
+            ("Term Loan", "Prepayment charges (takeover)", cells_raw[1], "TL_take"),
+            ("Overdraft", "Prepayment charges", cells_raw[2], "OD_self"),
+            ("Overdraft", "Prepayment charges (takeover)", cells_raw[3], "OD_take"),
         ]
         if bank == "Yes Bank":
-            if kind(r[3]) == "blank":
-                cells[2] = ("Overdraft", "Prepayment charges", r[1], "OD_self")
-            if kind(r[4]) == "blank":
-                cells[3] = ("Overdraft", "Prepayment charges (takeover)", r[2], "OD_take")
+            if cell_kind(cells_raw[2]) == "blank":
+                cells[2] = ("Overdraft", "Prepayment charges", cells_raw[0], "OD_self")
+            if cell_kind(cells_raw[3]) == "blank":
+                cells[3] = ("Overdraft", "Prepayment charges (takeover)", cells_raw[1], "OD_take")
 
         for facility, charge_name, raw, ref in cells:
-            k = kind(raw)
+            k = cell_kind(raw)
             if k == "na" or (k == "blank" and bank != "Yes Bank"):
                 continue
-            expect_nil = k == "nil" or (
-                k == "rule" and "after 6 months" in raw.lower() and "within 6" in raw.lower()
-            )
-            # IDBI combined cell needs both charged and nil — check charged presence for rule
             if k == "rule" and "within 6 months" in raw.lower():
                 ok_charged = has_row(bank, facility, charge_name, expect_nil=False)
                 ok_nil = has_row(bank, facility, charge_name, expect_nil=True)

@@ -159,13 +159,13 @@
     }
 
     .home-hero-cta-secondary:hover {
-      background: var(--shroffin-btn-primary-hover, #0076df);
+      background: var(--shroffin-btn-primary-hover, #0058b0);
       color: #fff;
       border-color: transparent;
     }
 
     .home-hero-cta-secondary:active {
-      background: var(--shroffin-btn-primary-active, #006edb);
+      background: var(--shroffin-btn-primary-active, #004a96);
       color: #fff;
       border-color: transparent;
     }
@@ -212,17 +212,25 @@
       min-height: 72vh;
       min-height: 72svh;
       display: flex;
-      align-items: center;
+      /* Sit high so all four lines fit on a typical laptop viewport. */
+      align-items: flex-start;
       justify-content: center;
-      padding: clamp(80px, 12vw, 140px) 22px clamp(48px, 7vw, 80px);
+      padding: clamp(32px, 5vh, 56px) 22px clamp(32px, 5vh, 56px);
       box-sizing: border-box;
     }
 
     .js .home-lead-pin {
       position: sticky;
-      top: 0;
-      min-height: 100vh;
-      min-height: 100svh;
+      /* Sit under the fixed global nav. */
+      top: var(--gn-height);
+      min-height: calc(100vh - var(--gn-height));
+      min-height: calc(100svh - var(--gn-height));
+    }
+
+    @media (min-width: 834px) {
+      .home-lead-pin {
+        align-items: center;
+      }
     }
 
     .home-lead-inner {
@@ -384,9 +392,10 @@
 
     .js .home-clear-pin {
       position: sticky;
-      top: 0;
-      min-height: 100vh;
-      min-height: 100svh;
+      /* Sit under the fixed global nav so copy keeps its top padding. */
+      top: var(--gn-height);
+      min-height: calc(100vh - var(--gn-height));
+      min-height: calc(100svh - var(--gn-height));
     }
 
     .home-clear-inner {
@@ -637,8 +646,8 @@
     }
 
     .js .home-zero-track {
-      /* Hold the Zero section longer so staged lines can play out. */
-      min-height: 185svh;
+      /* Extra hold after the body line is in, so it can be read. */
+      min-height: 230svh;
     }
 
     .home-zero-pin {
@@ -654,9 +663,10 @@
 
     .js .home-zero-pin {
       position: sticky;
-      top: 0;
-      min-height: 100vh;
-      min-height: 100svh;
+      /* Sit under the fixed global nav so “Zero” keeps its top padding. */
+      top: var(--gn-height);
+      min-height: calc(100vh - var(--gn-height));
+      min-height: calc(100svh - var(--gn-height));
     }
 
     .home-zero-inner {
@@ -759,7 +769,7 @@
 
     @media (max-width: 833px) {
       .js .home-zero-track {
-        min-height: 165svh;
+        min-height: 210svh;
       }
 
       .home-zero-pin {
@@ -789,12 +799,28 @@
         margin-left: 0;
         margin-right: 0;
         max-width: 28em;
-        /* Slightly under Transparent body on mobile */
-        font-size: clamp(1.1rem, 4.4vw, 1.65rem);
+        /* Two more type steps on phone. */
+        font-size: clamp(1.5rem, 6.2vw, 2.85rem);
       }
 
       .home-zero-inner {
-        --home-zero-size: clamp(3.4rem, 13.6vw, 5.2rem);
+        --home-zero-size: clamp(4.25rem, 17vw, 6.5rem);
+      }
+    }
+
+    @media (min-width: 834px) {
+      .home-zero-inner {
+        /* Two steps closer than the 0.55em body gap. */
+        --home-zero-body-gap: 0.35em;
+      }
+
+      .home-zero-body {
+        /* Two type steps under the shared clamp. */
+        font-size: clamp(1.15rem, 3.35vw, 2.3rem);
+      }
+
+      .home-zero-body-tail {
+        display: block;
       }
     }
 
@@ -830,9 +856,10 @@
 
     .js .home-best-pin {
       position: sticky;
-      top: 0;
-      min-height: 100vh;
-      min-height: 100svh;
+      /* Sit under the fixed global nav so copy keeps its top padding. */
+      top: var(--gn-height);
+      min-height: calc(100vh - var(--gn-height));
+      min-height: calc(100svh - var(--gn-height));
     }
 
     .home-best-inner {
@@ -877,7 +904,7 @@
       width: auto;
       margin: 0;
       padding: 0;
-      color: rgba(245, 245, 247, 0.72);
+      color: #f5f5f7;
       font-size: 0.48em;
       font-weight: 600;
       letter-spacing: normal;
@@ -979,21 +1006,25 @@
         width: 100%;
       }
 
-      /* Phone hierarchy: intro clear, pace readable, closer still on top */
+      /* Phone hierarchy: intro, pace, then closer — all larger and stacked */
       .home-best-lead {
-        font-size: 0.82em;
+        font-size: 1.1em;
         line-height: 1.1;
       }
 
       .home-best-aside {
-        font-size: 0.7em;
+        font-size: 0.9em;
         line-height: 1.3;
       }
 
       .home-best-body {
         max-width: none;
-        font-size: 1em;
+        font-size: 1.1em;
         line-height: 1.25;
+      }
+
+      .home-best-body-line {
+        display: block;
       }
     }
 
@@ -1642,12 +1673,24 @@
         line-height: 1.45;
       }
 
-      .home-built-mobile-slot {
-        display: block;
+      .home-built-body {
+        overflow: hidden;
+        transition: grid-template-rows 0.9s var(--home-built-ease);
       }
 
-      .home-built-mobile-slot:empty {
-        display: none;
+      .home-built-mobile-slot {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.9s var(--home-built-ease);
+      }
+
+      .home-built-item.is-open .home-built-mobile-slot {
+        grid-template-rows: 1fr;
+      }
+
+      .home-built-mobile-slot-clip {
+        overflow: hidden;
+        min-height: 0;
       }
 
       .home-built-stage {
@@ -2633,6 +2676,7 @@
       }
 
       .home-built-body,
+      .home-built-mobile-slot,
       .home-built-copy,
       .home-built-chevron,
       .home-built-visual,
@@ -3009,7 +3053,7 @@
                   class="spd-frame"
                   data-spd-frame
                   title="Explore banks product demo"
-                  src="pages/_product-demo-frame.html?v=71"
+                  src="pages/_product-demo-frame.html?v=72"
                   width="1640"
                   height="1025"
                   loading="eager"
@@ -3062,7 +3106,7 @@
                   class="spd-frame"
                   data-spd-frame
                   title="Explore banks mobile demo"
-                  src="pages/_product-demo-frame-mobile.html?v=33"
+                  src="pages/_product-demo-frame-mobile.html?v=34"
                   width="402"
                   height="874"
                   loading="eager"
@@ -3147,7 +3191,7 @@
                 <span class="home-zero-rest">bias.</span>
               </span>
             </h2>
-            <p class="home-zero-body">So you get a fair view of every lender, as none is listed, ranked, or pushed ahead of another.</p>
+            <p class="home-zero-body"><span class="home-zero-body-lead">So you get a fair view of every lender listed on our platform,</span><span class="home-zero-body-tail"> with none ranked or pushed ahead of another.</span></p>
           </div>
         </div>
       </div>
@@ -3161,7 +3205,7 @@
               <span class="home-best-lead">Best of all,</span>
               <span class="home-best-aside">you can look through everything at your own pace,</span>
             </h2>
-            <p class="home-best-body home-moment">without spam calls, a hard sell, or pushy notifications.</p>
+            <p class="home-best-body home-moment"><span class="home-best-body-line">without spam calls,</span><span class="home-best-body-line"> a hard sell,</span><span class="home-best-body-line"> or pushy notifications.</span></p>
           </div>
         </div>
       </div>
@@ -3765,7 +3809,7 @@
   <script src="js/shroffin-guide.js?v=flip-grow-1"></script>
   <script src="js/shroffin-product-demo-chrome.js?v=97"></script>
   <script src="js/shroffin-home-stance.js?v=home-zero-6"></script>
-  <script src="js/shroffin-scrub.js?v=home-zero-15"></script>
-  <script src="js/shroffin-home-built.js?v=1"></script>
+  <script src="js/shroffin-scrub.js?v=home-zero-16"></script>
+  <script src="js/shroffin-home-built.js?v=2"></script>
 </body>
 </html>

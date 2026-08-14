@@ -43,6 +43,15 @@ const LAYOUT_REFS = [
     refs: [
       "../css/shroffin-shell.css",
       "../css/shroffin-apply.css",
+      "../js/home-loan-apply.js",
+      "../js/shroffin-nav.js",
+    ],
+  },
+  {
+    file: "templates/layouts/apply-contact.html",
+    refs: [
+      "../css/shroffin-shell.css",
+      "../css/shroffin-apply.css",
       "../js/site-contacts.generated.js",
       "../js/home-loan-apply.js",
       "../js/shroffin-nav.js",

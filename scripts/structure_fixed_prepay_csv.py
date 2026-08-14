@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Parse fixed-rate prepayment CSV → data/fixed-prepay-structured.csv
-Atomic rows only. No COMPARE writes.
+Parse fixed-rate prepayment source (Home Loans.xlsx sheet or legacy CSV)
+→ data/fixed-prepay-structured.csv. Atomic rows only. No COMPARE writes.
 """
 from __future__ import annotations
 
@@ -12,7 +12,11 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from openpyxl import load_workbook
+
 ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_XLSX = ROOT / "data" / "Home Loans.xlsx"
+DEFAULT_SHEET = "Pre-payment charges - takeoverf"
 DEFAULT_INPUT = ROOT / "data" / "Home Loans - Pre-payment charges - takeover_fixed rrate (1).csv"
 DEFAULT_OUTPUT = ROOT / "data" / "fixed-prepay-structured.csv"
 
@@ -63,6 +67,15 @@ def bank_key(name: str) -> str:
 def norm_bank(raw: str) -> str:
     s = re.sub(r"\s+", " ", (raw or "").strip())
     return BANK_ALIASES.get(s, s)
+
+
+def normalize_source_url(raw: str | None) -> str | None:
+    s = (raw or "").strip().replace("\n", " | ")
+    if not s:
+        return None
+    if s.lower().startswith(("http://", "https://")):
+        return s
+    return None
 
 
 def cell_kind(v: str) -> str:
@@ -261,7 +274,7 @@ def expand_cell(
             months_min=0,
             months_max=12,
             months_basis="disbursement",
-            note_1="Loan age under 12 months from disbursement (assumed)",
+            note_1="Loan age under 12 months from disbursement",
         )
         emit_simple_charged(
             rows,
@@ -276,7 +289,7 @@ def expand_cell(
             months_min=12,
             months_max=None,
             months_basis="disbursement",
-            note_1="Loan age 12+ months from disbursement (assumed)",
+            note_1="Loan age 12+ months from disbursement",
         )
         return
 
@@ -296,7 +309,7 @@ def expand_cell(
             slab_from=0,
             slab_to=10000000,
             slab_basis="loan_amount",
-            note_1="Up to Rs 1 crore loan amount (slab basis assumed)",
+            note_1="Up to Rs 1 crore loan amount",
         )
         emit_simple_charged(
             rows,
@@ -312,7 +325,7 @@ def expand_cell(
             slab_from=10000000.01,
             slab_to=None,
             slab_basis="loan_amount",
-            note_1="Above Rs 1 crore loan amount (slab basis assumed)",
+            note_1="Above Rs 1 crore loan amount",
         )
         return
 
@@ -345,36 +358,38 @@ def expand_cell(
     )
 
 
-def structure(input_path: Path) -> list[dict[str, Any]]:
-    raw_rows = list(csv.reader(input_path.open(encoding="utf-8")))
+def _cell_text(v: Any) -> str:
+    if v is None:
+        return ""
+    return str(v).strip()
+
+
+def structure_bank_rows(
+    bank_rows: list[tuple[str, list[str], str | None]],
+) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     banks_seen: list[str] = []
 
-    for r in raw_rows[3:]:
-        if not r or not (r[0] or "").strip():
-            continue
-        while len(r) < 6:
-            r.append("")
-        bank = norm_bank(r[0])
+    for bank, cells_raw, source_url in bank_rows:
         banks_seen.append(bank)
-        source_url = (r[5] or "").strip().replace("\n", " | ")
+        while len(cells_raw) < 4:
+            cells_raw.append("")
 
         cells = [
-            ("Term Loan", "Prepayment charges", r[1], "TL_self"),
-            ("Term Loan", "Prepayment charges (takeover)", r[2], "TL_take"),
-            ("Overdraft", "Prepayment charges", r[3], "OD_self"),
-            ("Overdraft", "Prepayment charges (takeover)", r[4], "OD_take"),
+            ("Term Loan", "Prepayment charges", cells_raw[0], "TL_self"),
+            ("Term Loan", "Prepayment charges (takeover)", cells_raw[1], "TL_take"),
+            ("Overdraft", "Prepayment charges", cells_raw[2], "OD_self"),
+            ("Overdraft", "Prepayment charges (takeover)", cells_raw[3], "OD_take"),
         ]
 
-        # Yes Bank OD blanks → mirror TL
         if bank == "Yes Bank":
-            if cell_kind(r[3]) == "blank":
-                cells[2] = ("Overdraft", "Prepayment charges", r[1], "OD_self_mirrored_TL")
-            if cell_kind(r[4]) == "blank":
+            if cell_kind(cells_raw[2]) == "blank":
+                cells[2] = ("Overdraft", "Prepayment charges", cells_raw[0], "OD_self_mirrored_TL")
+            if cell_kind(cells_raw[3]) == "blank":
                 cells[3] = (
                     "Overdraft",
                     "Prepayment charges (takeover)",
-                    r[2],
+                    cells_raw[1],
                     "OD_take_mirrored_TL",
                 )
 
@@ -385,7 +400,7 @@ def structure(input_path: Path) -> list[dict[str, Any]]:
                 facility=facility,
                 charge_name=charge_name,
                 raw=raw,
-                source_url=source_url,
+                source_url=source_url or "",
                 csv_cell_ref=f"{bank}|{ref}",
             )
 
@@ -394,6 +409,81 @@ def structure(input_path: Path) -> list[dict[str, Any]]:
             f"Expected 33 banks, got {len(set(banks_seen))}: {sorted(set(banks_seen))}"
         )
     return out
+
+
+def load_bank_rows_from_xlsx(path: Path, sheet_name: str) -> list[tuple[str, list[str], str | None]]:
+    wb = load_workbook(path, read_only=True, data_only=True)
+    if sheet_name not in wb.sheetnames:
+        raise SystemExit(f"Sheet not found: {sheet_name!r} in {path}")
+    ws = wb[sheet_name]
+    bank_rows: list[tuple[str, list[str], str | None]] = []
+    for row in ws.iter_rows(min_row=4, values_only=True):
+        if not row or not row[0]:
+            continue
+        bank = norm_bank(_cell_text(row[0]))
+        cells = [_cell_text(row[i]) if len(row) > i else "" for i in range(1, 5)]
+        url = normalize_source_url(_cell_text(row[5]) if len(row) > 5 else "")
+        bank_rows.append((bank, cells, url))
+    wb.close()
+    return bank_rows
+
+
+def load_bank_rows_from_csv(path: Path) -> list[tuple[str, list[str], str | None]]:
+    raw_rows = list(csv.reader(path.open(encoding="utf-8")))
+    bank_rows: list[tuple[str, list[str], str | None]] = []
+    for r in raw_rows[3:]:
+        if not r or not (r[0] or "").strip():
+            continue
+        while len(r) < 6:
+            r.append("")
+        bank = norm_bank(r[0])
+        cells = [r[1], r[2], r[3], r[4]]
+        url = normalize_source_url(r[5])
+        bank_rows.append((bank, cells, url))
+    return bank_rows
+
+
+def structure(input_path: Path, *, from_xlsx: bool = False, sheet_name: str = DEFAULT_SHEET) -> list[dict[str, Any]]:
+    if from_xlsx:
+        bank_rows = load_bank_rows_from_xlsx(input_path, sheet_name)
+    else:
+        bank_rows = load_bank_rows_from_csv(input_path)
+    return structure_bank_rows(bank_rows)
+
+
+def export_prepay_sheet_to_csv(
+    xlsx_path: Path,
+    csv_path: Path,
+    *,
+    sheet_name: str = DEFAULT_SHEET,
+) -> None:
+    bank_rows = load_bank_rows_from_xlsx(xlsx_path, sheet_name)
+    csv_path.parent.mkdir(parents=True, exist_ok=True)
+    with csv_path.open("w", encoding="utf-8", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(
+            [
+                "RBI guidelines",
+                "https://rbidocs.rbi.org.in/rdocs/notification/PDFs/170MD.pdf",
+                "",
+                "",
+                "",
+                "",
+            ]
+        )
+        w.writerow(["", "Term loan", "", "OD facility'", "", ""])
+        w.writerow(
+            [
+                "",
+                "Self funds",
+                "Take over - if fully paid & Part paid meaing some of the amount being paid",
+                "Pre-paid - Self funds",
+                "Fore-closure - Take over",
+                "",
+            ]
+        )
+        for bank, cells, url in bank_rows:
+            w.writerow([bank, *cells, url or ""])
 
 
 def write_structured(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -407,17 +497,39 @@ def write_structured(path: Path, rows: list[dict[str, Any]]) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--input", type=Path, default=DEFAULT_INPUT)
+    ap.add_argument("--input", type=Path, default=None, help="Legacy CSV path")
+    ap.add_argument("--xlsx", type=Path, default=DEFAULT_XLSX, help="Home Loans.xlsx path")
+    ap.add_argument("--sheet", type=str, default=DEFAULT_SHEET)
     ap.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    ap.add_argument(
+        "--export-csv",
+        type=Path,
+        default=None,
+        help="When reading xlsx, also write a synced CSV export",
+    )
     args = ap.parse_args()
-    if not args.input.exists():
-        print(f"Missing input: {args.input}", file=sys.stderr)
-        return 1
-    rows = structure(args.input)
+
+    if args.input is not None:
+        if not args.input.exists():
+            print(f"Missing input: {args.input}", file=sys.stderr)
+            return 1
+        rows = structure(args.input, from_xlsx=False)
+        source_label = str(args.input)
+    else:
+        if not args.xlsx.exists():
+            print(f"Missing xlsx: {args.xlsx}", file=sys.stderr)
+            return 1
+        rows = structure(args.xlsx, from_xlsx=True, sheet_name=args.sheet)
+        source_label = f"{args.xlsx}!{args.sheet}"
+        if args.export_csv:
+            export_prepay_sheet_to_csv(args.xlsx, args.export_csv, sheet_name=args.sheet)
+            print(f"Synced CSV export: {args.export_csv}")
+
     write_structured(args.output, rows)
     charged = sum(1 for r in rows if r["charge_status"] == "charged")
     nils = sum(1 for r in rows if r["charge_status"] == "nil")
     banks = sorted({r["bank_name"] for r in rows})
+    print(f"Source: {source_label}")
     print(f"Wrote {args.output}")
     print(f"rows={len(rows)} charged={charged} nil={nils} banks_with_rows={len(banks)}")
     return 0

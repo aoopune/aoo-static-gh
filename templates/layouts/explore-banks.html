@@ -17,8 +17,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=c6fe1dcb7b">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=dfec2794e6">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=e2fc600e44">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=291be3eea5">
 </head>
 <body class="explore-banks-page">
   <!-- SHROFFIN_NAV_START -->
@@ -363,8 +363,8 @@
 
   <script src="../js/shroffin-home-stance.js?v=d45fb1db51"></script>
   <script src="../js/shroffin-nav.js?v=69b8861330"></script>
-  <script src="../js/hlc-data-url.generated.js?v=f95618c05a"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=70f06334a7"></script>
+  <script src="../js/hlc-data-url.generated.js?v=2eb6ecb75c"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=b7cd311d13"></script>
   <script src="../js/hlc-field-help.js?v=305f463f51"></script>
   <script>
     (function () {
@@ -375,6 +375,7 @@
       if (!form || !resultsShell || !searching) return;
 
       var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var mobileMq = window.matchMedia("(max-width: 833px)");
       var busy = false;
       var searchTimer = null;
       var scrollRaf = null;
@@ -428,18 +429,32 @@
           parseFloat(rootStyles.getPropertyValue("--shroffin-gn-height")) ||
           48;
 
-        /* Park Overview / tools flush under the nav. */
-        var y = Math.max(
-          0,
-          head.getBoundingClientRect().top + window.pageYOffset - navOffset
-        );
+        var y;
 
-        /* Guarantee the input card is fully clear of the content area. */
-        var inputs = document.querySelector(".hlc-inputs-card");
-        if (inputs) {
-          var inputsBottom =
-            inputs.getBoundingClientRect().bottom + window.pageYOffset;
-          y = Math.max(y, inputsBottom - navOffset + 8);
+        if (mobileMq.matches) {
+          /*
+           * Phone: park tabs flush under nav. Scroll to the results head — not
+           * the input card bottom — so the section gap does not show as dead air.
+           * Form stays in the page; user can scroll back up to edit.
+           */
+          y = Math.max(
+            0,
+            head.getBoundingClientRect().top + window.pageYOffset - navOffset
+          );
+        } else {
+          /* Desktop: park Overview / tools flush under the nav. */
+          y = Math.max(
+            0,
+            head.getBoundingClientRect().top + window.pageYOffset - navOffset
+          );
+
+          /* Guarantee the input card is fully clear of the content area. */
+          var inputs = document.querySelector(".hlc-inputs-card");
+          if (inputs) {
+            var inputsBottom =
+              inputs.getBoundingClientRect().bottom + window.pageYOffset;
+            y = Math.max(y, inputsBottom - navOffset + 8);
+          }
         }
 
         var maxY = Math.max(
@@ -488,6 +503,20 @@
         scrollRaf = window.requestAnimationFrame(step);
       }
 
+      function scheduleScrollToOptions() {
+        function run() {
+          window.setTimeout(softScrollToOptions, reduceMotion ? 0 : 280);
+        }
+        /* Let mobile :has() collapse finish before measuring scroll target. */
+        if (mobileMq.matches) {
+          window.requestAnimationFrame(function () {
+            window.requestAnimationFrame(run);
+          });
+        } else {
+          run();
+        }
+      }
+
       function revealResults() {
         resultsShell.hidden = false;
         resultsShell.classList.remove("is-visible");
@@ -495,7 +524,7 @@
         resultsShell.classList.add("is-visible");
 
         // One calm scroll after the section starts settling — never fire twice.
-        window.setTimeout(softScrollToOptions, reduceMotion ? 0 : 280);
+        scheduleScrollToOptions();
       }
 
       form.addEventListener("submit", function (event) {
@@ -533,6 +562,87 @@
           });
         }, searchMs);
       });
+
+      function inputsScrollTop() {
+        var inputs = document.querySelector(".hlc-inputs-card") || form;
+        if (!inputs) return null;
+
+        var rootStyles = getComputedStyle(document.documentElement);
+        var navOffset =
+          parseFloat(rootStyles.getPropertyValue("--shroffin-gn-offset")) ||
+          parseFloat(rootStyles.getPropertyValue("--shroffin-gn-height")) ||
+          48;
+
+        var y = Math.max(
+          0,
+          inputs.getBoundingClientRect().top + window.pageYOffset - navOffset - 8
+        );
+        var maxY = Math.max(
+          0,
+          document.documentElement.scrollHeight - window.innerHeight
+        );
+        return Math.min(y, maxY);
+      }
+
+      function softScrollToInputs() {
+        var target = inputsScrollTop();
+        if (target == null) return;
+
+        if (scrollRaf) {
+          window.cancelAnimationFrame(scrollRaf);
+          scrollRaf = null;
+        }
+
+        var focusField =
+          document.getElementById("hlc-monthly-income") ||
+          form.querySelector("input, select, textarea");
+
+        function focusInputs() {
+          if (!focusField || typeof focusField.focus !== "function") return;
+          try {
+            focusField.focus({ preventScroll: true });
+          } catch (err) {
+            focusField.focus();
+          }
+        }
+
+        if (reduceMotion) {
+          window.scrollTo(0, target);
+          focusInputs();
+          return;
+        }
+
+        var start = window.pageYOffset;
+        var distance = target - start;
+        if (Math.abs(distance) < 4) {
+          window.scrollTo(0, target);
+          focusInputs();
+          return;
+        }
+
+        var startedAt = null;
+        function step(now) {
+          if (startedAt == null) startedAt = now;
+          var t = Math.min(1, (now - startedAt) / scrollMs);
+          window.scrollTo(0, start + distance * ease(t));
+          if (t < 1) {
+            scrollRaf = window.requestAnimationFrame(step);
+          } else {
+            scrollRaf = null;
+            var settled = inputsScrollTop();
+            if (settled != null) window.scrollTo(0, settled);
+            focusInputs();
+          }
+        }
+        scrollRaf = window.requestAnimationFrame(step);
+      }
+
+      var editInputsBtn = document.getElementById("hlc-edit-inputs");
+      if (editInputsBtn) {
+        editInputsBtn.addEventListener("click", function () {
+          softScrollToInputs();
+        });
+      }
     })();
   </script>
   <script>

@@ -1,6 +1,6 @@
 /**
  * Mobile product demo choreography — phone frame only.
- * Story: type → See options → tabs → Filters popover → Private rematch →
+ * Story: type → See options → tabs → filter sheet → Private rematch →
  * select → dock Apply once. Plays through once, then stops (parent Pause can stop early).
  * NEVER scrollIntoView. NEVER press Women. NEVER show a mouse/finger cursor — tap ripple only.
  */
@@ -18,6 +18,7 @@
     revealPause: 280,
     scroll: 1100,
     tab: 550,
+    sheet: 900,
     filter: 360,
     bank: 240,
     delta: 550,
@@ -149,75 +150,56 @@
     });
   }
 
-  function positionFiltersPanel(root) {
-    var toggle = root.querySelector("[data-spd-filters-toggle]");
-    var panel = root.querySelector("[data-spd-filters-panel]");
-    if (!toggle || !panel) return;
-
-    /* Same placement as live Explore banks — under the Filters control */
-    var heading = toggle.closest(".hlc-results-heading");
-    var anchor = (heading || toggle).getBoundingClientRect();
-    var toggleRect = toggle.getBoundingClientRect();
-    var gutter = 12;
-    var gap = 8;
-    var width = Math.min(300, window.innerWidth - gutter * 2);
-    var right = Math.max(gutter, Math.round(window.innerWidth - toggleRect.right));
-    if (toggleRect.right - width < gutter) right = gutter;
-
-    var top = Math.round(anchor.bottom + gap);
-    var spaceBelow = Math.max(180, window.innerHeight - top - gutter);
-
-    panel.style.setProperty("position", "fixed", "important");
-    panel.style.setProperty("top", top + "px", "important");
-    panel.style.setProperty("right", right + "px", "important");
-    panel.style.setProperty("left", "auto", "important");
-    panel.style.setProperty("bottom", "auto", "important");
-    panel.style.setProperty("width", Math.round(width) + "px", "important");
-    panel.style.setProperty(
-      "max-height",
-      Math.round(Math.min(spaceBelow, window.innerHeight * 0.65, 440)) + "px",
-      "important"
-    );
-    panel.style.setProperty("z-index", "200", "important");
-    panel.style.setProperty("opacity", "1", "important");
-    panel.style.setProperty("visibility", "visible", "important");
-    panel.style.setProperty("transform", "none", "important");
-    panel.style.setProperty("pointer-events", "auto", "important");
-    panel.style.setProperty("display", "block", "important");
-  }
-
   function setFiltersOpen(root, open) {
     var control = root.querySelector("[data-spd-filters-control]");
     var toggle = root.querySelector("[data-spd-filters-toggle]");
     var panel = root.querySelector("[data-spd-filters-panel]");
+    var scrim = document.querySelector("[data-spd-filters-scrim]");
     if (toggle) toggle.setAttribute("aria-expanded", open ? "true" : "false");
     if (control) control.classList.toggle("is-open", open);
-    if (!panel) return;
+    document.body.classList.toggle("hlc-filters-sheet-open", open);
 
-    if (open) {
-      /* Portal to body so parent opacity/overflow cannot hide the popover */
-      if (panel.parentElement !== document.body) {
-        panel.setAttribute("data-spd-filters-home", "1");
-        panel._spdFiltersHome = panel.parentElement;
-        document.body.appendChild(panel);
-      }
+    if (panel) {
       panel.removeAttribute("hidden");
-      panel.classList.add("is-open");
-      positionFiltersPanel(root);
-      setApplyDock(root, false);
-    } else {
-      panel.classList.remove("is-open");
-      panel.style.removeProperty("opacity");
-      panel.style.removeProperty("visibility");
-      panel.style.removeProperty("transform");
-      panel.style.removeProperty("pointer-events");
-      panel.style.removeProperty("display");
-      if (panel._spdFiltersHome) {
-        panel._spdFiltersHome.appendChild(panel);
-        panel._spdFiltersHome = null;
-        panel.removeAttribute("data-spd-filters-home");
+      panel.classList.toggle("is-open", open);
+      if (open) {
+        panel.setAttribute("role", "dialog");
+        panel.setAttribute("aria-modal", "true");
+      } else {
+        panel.setAttribute("role", "region");
+        panel.removeAttribute("aria-modal");
       }
-      setApplyDock(root, true);
+    }
+
+    if (scrim) {
+      if (open) {
+        scrim.removeAttribute("hidden");
+        scrim.classList.add("is-open");
+      } else {
+        scrim.classList.remove("is-open");
+        scrim.setAttribute("hidden", "");
+      }
+    }
+  }
+
+  function revealTabInScroller(tab) {
+    if (!tab) return;
+    var scroller = tab.closest(".hlc-column-tabs-scroller");
+    if (!scroller) return;
+    var track = tab.closest(".hlc-column-tabs");
+    var tabRect = tab.getBoundingClientRect();
+    var scrollerRect = scroller.getBoundingClientRect();
+    var trackRect = track ? track.getBoundingClientRect() : tabRect;
+    var siblings = track ? track.querySelectorAll(".hlc-column-tab") : [];
+    var isFirst = siblings.length > 0 && siblings[0] === tab;
+    var isLast = siblings.length > 0 && siblings[siblings.length - 1] === tab;
+    var rightEdge = isLast ? trackRect.right : tabRect.right;
+    var leftEdge = isFirst ? trackRect.left : tabRect.left;
+    var pad = 10;
+    if (rightEdge > scrollerRect.right - pad) {
+      scroller.scrollLeft += rightEdge - scrollerRect.right + pad;
+    } else if (leftEdge < scrollerRect.left + pad) {
+      scroller.scrollLeft -= scrollerRect.left - leftEdge + pad;
     }
   }
 
@@ -234,17 +216,23 @@
   }
 
   function setTab(root, name) {
+    var active = null;
     root.querySelectorAll("[data-spd-tab]").forEach(function (tab) {
       var on = tab.getAttribute("data-spd-tab") === name;
       tab.setAttribute("aria-selected", on ? "true" : "false");
-      if (on) tab.setAttribute("aria-current", "page");
-      else tab.removeAttribute("aria-current");
+      if (on) {
+        tab.setAttribute("aria-current", "page");
+        active = tab;
+      } else {
+        tab.removeAttribute("aria-current");
+      }
     });
     root.querySelectorAll("[data-spd-panel]").forEach(function (panel) {
       var on = panel.getAttribute("data-spd-panel") === name;
       if (on) panel.removeAttribute("hidden");
       else panel.setAttribute("hidden", "");
     });
+    revealTabInScroller(active);
   }
 
   function setMetric(cell, text, flash) {
@@ -667,19 +655,20 @@
     setTab(root, "essentials");
     await sleep(WAIT.settle, signal);
 
-    /* 6 — Filters toggle → Private rematch → close (NO Women) */
+    /* 6 — filter sheet → Private rematch → Done (NO Women) */
     var filtersToggle = root.querySelector("[data-spd-filters-toggle]");
     await tapOn(filtersToggle, signal);
     setFiltersOpen(root, true);
-    await sleep(WAIT.settle, signal);
+    await sleep(WAIT.sheet, signal);
 
     var privateChip = root.querySelector('[data-spd-filter="Private"]');
     var allChip = root.querySelector('[data-spd-filter="All"]');
-    var filtersPanel = root.querySelector("[data-spd-filters-panel]");
-    /* Keep Private in view inside the popover — do not use scrollIntoView */
-    if (filtersPanel && privateChip) {
-      var chipTop = privateChip.offsetTop - 48;
-      filtersPanel.scrollTop = Math.max(0, chipTop);
+    var filtersScroll = root.querySelector(".hlc-filters-scroll");
+    /* Keep Private in view inside the sheet — do not use scrollIntoView */
+    if (filtersScroll && privateChip) {
+      var chipBox = privateChip.getBoundingClientRect();
+      var scrollBox = filtersScroll.getBoundingClientRect();
+      filtersScroll.scrollTop += chipBox.top - scrollBox.top - 48;
     }
     await sleep(140, signal);
 
@@ -689,8 +678,11 @@
     setFilterBadge(root, 1);
     await rematchFilters(root, { bankType: "Private" }, signal);
     await sleep(WAIT.filter, signal);
+
+    var filtersDone = root.querySelector("[data-spd-filters-done]");
+    if (filtersDone) await tapOn(filtersDone, signal);
     setFiltersOpen(root, false);
-    await sleep(WAIT.settle, signal);
+    await sleep(WAIT.sheet, signal);
 
     /* 7 — Select 3 → dock Apply */
     var rows = visibleEssentialRows(root).slice(0, 3);
@@ -737,14 +729,16 @@
       return;
     }
 
-    /* Preview helper: ?spdFilters=1 → end state with Filters open */
+    /* Preview helper: ?spdFilters=1 → end state with filter sheet open */
     if (/\bspdFilters=1\b/.test(String(location.search || ""))) {
       still(root);
       setFiltersOpen(root, true);
       var privateChip = root.querySelector('[data-spd-filter="Private"]');
-      var panel = root.querySelector("[data-spd-filters-panel]");
-      if (panel && privateChip) {
-        panel.scrollTop = Math.max(0, privateChip.offsetTop - 48);
+      var filtersScroll = root.querySelector(".hlc-filters-scroll");
+      if (filtersScroll && privateChip) {
+        var chipBox = privateChip.getBoundingClientRect();
+        var scrollBox = filtersScroll.getBoundingClientRect();
+        filtersScroll.scrollTop += chipBox.top - scrollBox.top - 48;
       }
       notifyParent("spd-ready");
       return;

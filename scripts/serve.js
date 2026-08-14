@@ -3,6 +3,7 @@
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
+var review = require('./review-capture/server');
 var PORT = parseInt(process.env.PORT || '8765', 10);
 var root = path.resolve(__dirname, '..');
 
@@ -13,6 +14,7 @@ function mime(name) {
 }
 
 var server = http.createServer(function (req, res) {
+  if (review.handle(req, res, root)) return;
   var urlPath = (req.url || '/').split('?')[0];
   var filePath = path.join(root, urlPath === '/' ? 'index.html' : urlPath);
   if (!path.relative(root, filePath).split(path.sep).every(function (p) { return p !== '..'; })) {
@@ -52,4 +54,7 @@ var server = http.createServer(function (req, res) {
     res.end(data);
   });
 });
-server.listen(PORT, function () { console.log('Serving at http://localhost:' + PORT); });
+server.listen(PORT, function () {
+  console.log('Serving at http://localhost:' + PORT);
+  console.log('Review capture: http://localhost:' + PORT + '/__review/');
+});

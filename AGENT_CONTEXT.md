@@ -30,6 +30,7 @@ Use this when you start a new conversation or when the user says "we should be o
 - The user prefers to **see changes locally first**, then commit and push.
 - **Local preview:** Run `npm run serve` in the project folder, then open **http://localhost:8765** (and the specific page, e.g. `/pages/pro-tips.html`). Refresh after edits.
 - Don’t assume the user has already committed; remind them they can preview first, then commit/push when satisfied.
+- Spoken review: open **http://localhost:8765/__review/** while `npm run serve` is running. Sessions land in `review-sessions/`.
 
 ---
 
@@ -61,6 +62,17 @@ Use this when you start a new conversation or when the user says "we should be o
 - Contacts: `data/site-contacts.json` only.
 - Full publish path: `npm run build:site` then preview. See `docs/HOW_TO_EDIT_SITE_WORDS.md` and `docs/DEFINITION_OF_DONE.md`.
 - Legacy education pages: frozen — `docs/LEGACY_EDUCATION_FREEZE.md`.
+
+---
+
+## 8. Spoken review sessions
+
+When the user asks to apply changes from a review with a customer (or says “apply the review session”):
+
+1. Read the latest folder under `review-sessions/` — start with `session.md`, then `transcript.json` and `events.jsonl` if needed.
+2. Treat **MARK** lines as requested changes. Speech may be Marathi, Hindi, and English mixed; keep the original meaning.
+3. Do not ask them to retype feedback that is already in that session.
+4. Review capture is **localhost only** (`http://localhost:8765/__review/`). It is not part of the public website.
 
 ---
 

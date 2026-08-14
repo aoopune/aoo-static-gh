@@ -17,8 +17,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=c6fe1dcb7b">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=dfec2794e6">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=e2fc600e44">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=291be3eea5">
 </head>
 <body class="explore-banks-page">
   <!-- SHROFFIN_NAV_START -->
@@ -600,11 +600,26 @@
                 <p class="visually-hidden" id="hlc-match-meta" aria-live="polite"></p>
               </div>
               <div class="hlc-results-actions">
-                <div class="hlc-column-tabs-scroller">
-                  <div class="hlc-column-tabs" role="tablist" aria-label="Column groups">
-                    <button type="button" class="hlc-column-tab" role="tab" data-group="essentials" aria-current="page" aria-selected="true">Overview</button>
-                    <button type="button" class="hlc-column-tab" role="tab" data-group="charges" aria-selected="false">Charges</button>
-                    <button type="button" class="hlc-column-tab" role="tab" data-group="laterCharges" aria-selected="false">Other charges</button>
+                <div class="hlc-results-tools-lead">
+                  <div class="hlc-column-tabs-scroller">
+                    <div class="hlc-column-tabs" role="tablist" aria-label="Column groups">
+                      <button type="button" class="hlc-column-tab" role="tab" data-group="essentials" aria-current="page" aria-selected="true">Overview</button>
+                      <button type="button" class="hlc-column-tab" role="tab" data-group="charges" aria-selected="false">Charges</button>
+                      <button type="button" class="hlc-column-tab" role="tab" data-group="laterCharges" aria-selected="false">Other charges</button>
+                    </div>
+                  </div>
+                  <div class="hlc-edit-inputs-control">
+                    <button
+                      type="button"
+                      class="hlc-edit-inputs"
+                      id="hlc-edit-inputs"
+                      aria-label="Edit inputs"
+                    >
+                      <svg class="hlc-edit-inputs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
+                      </svg>
+                      <span class="hlc-edit-inputs-label">edit</span>
+                    </button>
                   </div>
                 </div>
                 <div class="hlc-filters-control" id="hlc-filters-control">
@@ -614,11 +629,12 @@
                     id="hlc-filters-toggle"
                     aria-expanded="false"
                     aria-controls="hlc-filters-panel"
+                    aria-label="Filters"
                   >
-                    <svg class="hlc-filters-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-                      <path d="M2.5 4h11M4.5 8h7M6.5 12h3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    <svg class="hlc-filters-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"/>
                     </svg>
-                    <span class="hlc-filters-toggle-label">Filter</span>
+                    <span class="hlc-filters-toggle-label">filter</span>
                     <span class="hlc-filters-badge" id="hlc-filters-badge" hidden></span>
                   </button>
                 </div>
@@ -645,12 +661,6 @@
                     <button type="button" class="hlc-filters-clear" id="hlc-filters-clear" hidden>
                       Clear all
                     </button>
-                    <button
-                      type="button"
-                      class="hlc-icon-btn hlc-filters-close"
-                      id="hlc-filters-close"
-                      aria-label="Close filters"
-                    >×</button>
                   </div>
                 </div>
 
@@ -833,6 +843,8 @@
 
                 <div class="hlc-charges-note" id="hlc-charges-note" role="note" hidden></div>
 
+                <p class="hlc-freshness-note" id="hlc-freshness-note" hidden></p>
+
                 <div class="hlc-paddles">
                   <button type="button" class="hlc-paddle" id="hlc-paddle-left" aria-label="Scroll columns left">‹</button>
                   <button type="button" class="hlc-paddle" id="hlc-paddle-right" aria-label="Scroll columns right">›</button>
@@ -1002,8 +1014,8 @@
 
   <script src="../js/shroffin-home-stance.js?v=d45fb1db51"></script>
   <script src="../js/shroffin-nav.js?v=69b8861330"></script>
-  <script src="../js/hlc-data-url.generated.js?v=f95618c05a"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=70f06334a7"></script>
+  <script src="../js/hlc-data-url.generated.js?v=2eb6ecb75c"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=b7cd311d13"></script>
   <script src="../js/hlc-field-help.js?v=305f463f51"></script>
   <script>
     (function () {
@@ -1014,6 +1026,7 @@
       if (!form || !resultsShell || !searching) return;
 
       var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var mobileMq = window.matchMedia("(max-width: 833px)");
       var busy = false;
       var searchTimer = null;
       var scrollRaf = null;
@@ -1067,18 +1080,32 @@
           parseFloat(rootStyles.getPropertyValue("--shroffin-gn-height")) ||
           48;
 
-        /* Park Overview / tools flush under the nav. */
-        var y = Math.max(
-          0,
-          head.getBoundingClientRect().top + window.pageYOffset - navOffset
-        );
+        var y;
 
-        /* Guarantee the input card is fully clear of the content area. */
-        var inputs = document.querySelector(".hlc-inputs-card");
-        if (inputs) {
-          var inputsBottom =
-            inputs.getBoundingClientRect().bottom + window.pageYOffset;
-          y = Math.max(y, inputsBottom - navOffset + 8);
+        if (mobileMq.matches) {
+          /*
+           * Phone: park tabs flush under nav. Scroll to the results head — not
+           * the input card bottom — so the section gap does not show as dead air.
+           * Form stays in the page; user can scroll back up to edit.
+           */
+          y = Math.max(
+            0,
+            head.getBoundingClientRect().top + window.pageYOffset - navOffset
+          );
+        } else {
+          /* Desktop: park Overview / tools flush under the nav. */
+          y = Math.max(
+            0,
+            head.getBoundingClientRect().top + window.pageYOffset - navOffset
+          );
+
+          /* Guarantee the input card is fully clear of the content area. */
+          var inputs = document.querySelector(".hlc-inputs-card");
+          if (inputs) {
+            var inputsBottom =
+              inputs.getBoundingClientRect().bottom + window.pageYOffset;
+            y = Math.max(y, inputsBottom - navOffset + 8);
+          }
         }
 
         var maxY = Math.max(
@@ -1127,6 +1154,20 @@
         scrollRaf = window.requestAnimationFrame(step);
       }
 
+      function scheduleScrollToOptions() {
+        function run() {
+          window.setTimeout(softScrollToOptions, reduceMotion ? 0 : 280);
+        }
+        /* Let mobile :has() collapse finish before measuring scroll target. */
+        if (mobileMq.matches) {
+          window.requestAnimationFrame(function () {
+            window.requestAnimationFrame(run);
+          });
+        } else {
+          run();
+        }
+      }
+
       function revealResults() {
         resultsShell.hidden = false;
         resultsShell.classList.remove("is-visible");
@@ -1134,7 +1175,7 @@
         resultsShell.classList.add("is-visible");
 
         // One calm scroll after the section starts settling — never fire twice.
-        window.setTimeout(softScrollToOptions, reduceMotion ? 0 : 280);
+        scheduleScrollToOptions();
       }
 
       form.addEventListener("submit", function (event) {
@@ -1172,6 +1213,87 @@
           });
         }, searchMs);
       });
+
+      function inputsScrollTop() {
+        var inputs = document.querySelector(".hlc-inputs-card") || form;
+        if (!inputs) return null;
+
+        var rootStyles = getComputedStyle(document.documentElement);
+        var navOffset =
+          parseFloat(rootStyles.getPropertyValue("--shroffin-gn-offset")) ||
+          parseFloat(rootStyles.getPropertyValue("--shroffin-gn-height")) ||
+          48;
+
+        var y = Math.max(
+          0,
+          inputs.getBoundingClientRect().top + window.pageYOffset - navOffset - 8
+        );
+        var maxY = Math.max(
+          0,
+          document.documentElement.scrollHeight - window.innerHeight
+        );
+        return Math.min(y, maxY);
+      }
+
+      function softScrollToInputs() {
+        var target = inputsScrollTop();
+        if (target == null) return;
+
+        if (scrollRaf) {
+          window.cancelAnimationFrame(scrollRaf);
+          scrollRaf = null;
+        }
+
+        var focusField =
+          document.getElementById("hlc-monthly-income") ||
+          form.querySelector("input, select, textarea");
+
+        function focusInputs() {
+          if (!focusField || typeof focusField.focus !== "function") return;
+          try {
+            focusField.focus({ preventScroll: true });
+          } catch (err) {
+            focusField.focus();
+          }
+        }
+
+        if (reduceMotion) {
+          window.scrollTo(0, target);
+          focusInputs();
+          return;
+        }
+
+        var start = window.pageYOffset;
+        var distance = target - start;
+        if (Math.abs(distance) < 4) {
+          window.scrollTo(0, target);
+          focusInputs();
+          return;
+        }
+
+        var startedAt = null;
+        function step(now) {
+          if (startedAt == null) startedAt = now;
+          var t = Math.min(1, (now - startedAt) / scrollMs);
+          window.scrollTo(0, start + distance * ease(t));
+          if (t < 1) {
+            scrollRaf = window.requestAnimationFrame(step);
+          } else {
+            scrollRaf = null;
+            var settled = inputsScrollTop();
+            if (settled != null) window.scrollTo(0, settled);
+            focusInputs();
+          }
+        }
+        scrollRaf = window.requestAnimationFrame(step);
+      }
+
+      var editInputsBtn = document.getElementById("hlc-edit-inputs");
+      if (editInputsBtn) {
+        editInputsBtn.addEventListener("click", function () {
+          softScrollToInputs();
+        });
+      }
     })();
   </script>
   <script>

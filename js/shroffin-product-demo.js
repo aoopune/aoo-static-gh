@@ -190,18 +190,45 @@
     }
   }
 
+  function revealTabInScroller(tab) {
+    if (!tab) return;
+    var scroller = tab.closest(".hlc-column-tabs-scroller");
+    if (!scroller) return;
+    var track = tab.closest(".hlc-column-tabs");
+    var tabRect = tab.getBoundingClientRect();
+    var scrollerRect = scroller.getBoundingClientRect();
+    var trackRect = track ? track.getBoundingClientRect() : tabRect;
+    var siblings = track ? track.querySelectorAll(".hlc-column-tab") : [];
+    var isFirst = siblings.length > 0 && siblings[0] === tab;
+    var isLast = siblings.length > 0 && siblings[siblings.length - 1] === tab;
+    var rightEdge = isLast ? trackRect.right : tabRect.right;
+    var leftEdge = isFirst ? trackRect.left : tabRect.left;
+    var pad = 10;
+    if (rightEdge > scrollerRect.right - pad) {
+      scroller.scrollLeft += rightEdge - scrollerRect.right + pad;
+    } else if (leftEdge < scrollerRect.left + pad) {
+      scroller.scrollLeft -= scrollerRect.left - leftEdge + pad;
+    }
+  }
+
   function setTab(root, name) {
+    var active = null;
     root.querySelectorAll("[data-spd-tab]").forEach(function (tab) {
       var on = tab.getAttribute("data-spd-tab") === name;
       tab.setAttribute("aria-selected", on ? "true" : "false");
-      if (on) tab.setAttribute("aria-current", "page");
-      else tab.removeAttribute("aria-current");
+      if (on) {
+        tab.setAttribute("aria-current", "page");
+        active = tab;
+      } else {
+        tab.removeAttribute("aria-current");
+      }
     });
     root.querySelectorAll("[data-spd-panel]").forEach(function (panel) {
       var on = panel.getAttribute("data-spd-panel") === name;
       if (on) panel.removeAttribute("hidden");
       else panel.setAttribute("hidden", "");
     });
+    revealTabInScroller(active);
   }
 
   function setMetric(cell, text, flash) {

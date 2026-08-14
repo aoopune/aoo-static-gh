@@ -95,6 +95,9 @@ testApfSearch()
     console.error(error);
   })
   .finally(function () {
+    testReviewCapture();
+  })
+  .finally(function () {
     console.log('Unit tests: ' + passed + ' passed, ' + failed + ' failed');
     process.exit(failed > 0 ? 1 : 0);
   });
@@ -137,6 +140,17 @@ async function testHomeLoanCompare() {
   ok(topUpQuery.purpose === 'Top-up Loan', 'compare purpose accepts top-up');
   ok(compare.parseMoney('1,00,000') === 100000, 'compare parses Indian comma money');
   ok(compare.parseMoney('₹62,50,000') === 6250000, 'compare parses rupee money');
+
+  ok(
+    compare.bankLogoPath('HDFC Bank') === '../images/banks/hdfc-bank.png',
+    'compare bank logo path for HDFC'
+  );
+  ok(
+    compare.bankLogoHtml('HDFC Bank').indexOf('hlc-bank-logo') !== -1,
+    'compare bank logo html includes img'
+  );
+  ok(compare.bankLogoPath('Unknown Bank') === '', 'compare unknown bank has no logo');
+
   ok(compare.formatInrDigits(100000) === '1,00,000', 'compare formats Indian commas');
   ok(compare.formatIndianAmountDigits('1200000', 10) === '12,00,000', 'compare formats amount digits while typing');
   ok(compare.formatIndianAmountDigits('12,00,000', 10) === '12,00,000', 'compare keeps commas when re-formatting');
@@ -298,6 +312,46 @@ async function testHomeLoanCompare() {
   });
   ok(axisRow, 'compare includes Axis Bank for default query');
   ok(axisRow.processingFee >= 10000, 'compare joins processing fee for Axis');
+  ok(
+    axisRow.propertyCheckChargeRows.length === 3 &&
+      axisRow.propertyCheckChargeRows[0].name === 'Legal and technical' &&
+      axisRow.propertyCheckChargeRows[1].name === 'Title search report' &&
+      axisRow.propertyCheckChargeRows[2].name === 'Valuation' &&
+      axisRow.propertyCheckCharges ===
+        axisRow.propertyCheckChargeRows[0].amount +
+          axisRow.propertyCheckChargeRows[1].amount +
+          axisRow.propertyCheckChargeRows[2].amount,
+    'compare joins Axis property-check total from three overlay lines'
+  );
+  ok(
+    rows.every(function (row) {
+      var lines = row.propertyCheckChargeRows || [];
+      if (lines.length !== 3) return false;
+      var amounts = lines.map(function (line) {
+        return line.amount;
+      });
+      var distinct = amounts.every(function (amount, index) {
+        return amounts.indexOf(amount) === index;
+      });
+      var hundreds = amounts.every(function (amount) {
+        return amount >= 3900 && amount <= 5300 && amount % 100 === 0;
+      });
+      return (
+        distinct &&
+        hundreds &&
+        row.propertyCheckCharges === amounts[0] + amounts[1] + amounts[2]
+      );
+    }),
+    'each bank has three distinct property-check amounts in hundreds'
+  );
+  ok(
+    new Set(
+      rows.map(function (row) {
+        return row.propertyCheckCharges;
+      })
+    ).size === rows.length,
+    'no two banks share the same property-check total'
+  );
   var regularGovernmentNote = compare.formatOptionalGovernmentChargesNote(
     dataset.government_charges,
     query,
@@ -309,6 +363,18 @@ async function testHomeLoanCompare() {
       regularGovernmentNote.indexOf('specific to Maharashtra') >= 0,
     'government note separates India-wide and Maharashtra charges'
   );
+  var governmentNoteParts = regularGovernmentNote.split('\n').filter(Boolean);
+  var governmentNoteHtml = compare.chargesNoteGroupHtml(
+    'Government charges',
+    governmentNoteParts
+  );
+  ok(
+    governmentNoteParts.length >= 3 &&
+      governmentNoteHtml.indexOf('<br><br>') !== -1 &&
+      governmentNoteHtml.indexOf('NOI document handling') !== -1 &&
+      governmentNoteHtml.indexOf('NOI stamp duty') !== -1,
+    'government charges footnote renders each note on its own line'
+  );
   var topUpGovernmentNote = compare.formatOptionalGovernmentChargesNote(
     dataset.government_charges,
     Object.assign({}, query, { purpose: 'Top-up Loan' }),
@@ -318,6 +384,66 @@ async function testHomeLoanCompare() {
   ok(
     topUpGovernmentNote.indexOf('specific to Maharashtra') >= 0,
     'top-up government charges retain a matching jurisdiction note'
+  );
+  ok(
+    compare.DEFAULT_GOVERNMENT_GST_RATE === 0.18,
+    'government GST rate is 18%'
+  );
+  ok(
+    compare.computeGovernmentChargeAmount(
+      { calculation_method: 'Flat', flat_amount_inr: 100, gst_applicable: 'Yes' },
+      5000000
+    ) === 118,
+    'CERSAI ₹100 exclusive of GST becomes ₹118 with 18% GST'
+  );
+  ok(
+    compare.computeGovernmentChargeAmount(
+      { calculation_method: 'Flat', flat_amount_inr: 50, gst_applicable: 'Yes' },
+      400000
+    ) === 59,
+    'CERSAI ₹50 exclusive of GST becomes ₹59 with 18% GST'
+  );
+  ok(
+    compare.computeGovernmentChargeAmount(
+      { calculation_method: 'Flat', flat_amount_inr: 100, gst_applicable: 'No' },
+      5000000
+    ) === 100,
+    'government fees without GST stay at the listed amount'
+  );
+  ok(
+    compare.computeGovernmentChargeBaseAmount(
+      { calculation_method: 'Flat', flat_amount_inr: 100, gst_applicable: 'Yes' },
+      5000000
+    ) === 100,
+    'CERSAI base amount stays exclusive of GST'
+  );
+  var govtTotal50L = compare.computeGovernmentChargesTotal(
+    dataset.government_charges,
+    query,
+    5000000,
+    compare.DEFAULT_JURISDICTION_STATE
+  );
+  ok(
+    govtTotal50L === 31118,
+    'government total for a ₹50 lakh loan includes 18% GST on CERSAI'
+  );
+  var cersaiCreation = compare
+    .listApplicableGovernmentCharges(
+      dataset.government_charges,
+      query,
+      5000000,
+      compare.DEFAULT_JURISDICTION_STATE
+    )
+    .find(function (charge) {
+      return charge.charge_name === 'CERSAI Security Interest Creation';
+    });
+  var cersaiParts = compare.governmentChargeAmountParts(cersaiCreation, 5000000);
+  ok(
+    cersaiCreation &&
+      cersaiParts.base === 100 &&
+      cersaiParts.gstAmount === 18 &&
+      cersaiParts.total === 118,
+    'CERSAI creation calculation adds 18% GST on the ₹100 slab'
   );
   ok(compare.GROUPS.laterCharges.length === 4, 'compare has four later-charge columns');
   ok(
@@ -470,8 +596,19 @@ async function testHomeLoanCompare() {
   );
   ok(
     compare.GROUPS.charges[0].key === 'processingFee' &&
-      compare.GROUPS.charges[0].footnote === '*',
-    'processing fees column carries the login-fee footnote marker'
+      compare.GROUPS.charges[0].footnote === '*' &&
+      compare.GROUPS.charges[1].key === 'propertyCheckCharges' &&
+      compare.GROUPS.charges[1].label === 'Property check charges' &&
+      compare.GROUPS.charges[1].footnote === '*' &&
+      compare.GROUPS.charges[2].key === 'governmentCharges',
+    'charges columns are processing, property checks, then government'
+  );
+  ok(
+    compare.PROPERTY_CHECK_NOTE.indexOf('GST applicable') !== -1 &&
+      compare.PROPERTY_CHECK_NOTE.indexOf('Typical industry average') !== -1 &&
+      compare.chargesNoteGroupId('Property check charges') ===
+        'hlc-charge-note-property-check-charges',
+    'property check note explains GST and typical average'
   );
   ok(
     compare.RBI_FLOATING_PREPAY_HREF ===
@@ -1692,11 +1829,129 @@ async function testHomeLoanCompare() {
   });
   ok(
     hdfcProcessing &&
-      hdfcProcessing.entries.length >= 6 &&
+      hdfcProcessing.entries.length >= 1 &&
       hdfcProcessing.entries.every(function (entry) {
-        return String(entry.detail || '').indexOf('CIBIL') >= 0;
+        return String(entry.detail || '').indexOf('CIBIL') === -1;
+      }) &&
+      hdfcProcessing.entries.some(function (entry) {
+        return String(entry.amount || '').indexOf('0.50%') >= 0;
       }),
-    'drawer processing fee keeps every CIBIL band from the sheet, not the user score'
+    'drawer processing fee shows published fee without CIBIL bands'
+  );
+  var hdfcLegal = hdfcEarly.find(function (section) {
+    return section.label === 'Legal and technical';
+  });
+  ok(
+    hdfcLegal &&
+      hdfcLegal.entries.some(function (entry) {
+        return /^₹[0-9,]+$/.test(String(entry.amount || ''));
+      }),
+    'drawer property checks show the overlay amount for HDFC'
+  );
+  var compareJson = require('../data/home-loans-compare.json');
+  var bandhanCharges = compareJson.bank_charges.filter(function (charge) {
+    return charge.bank_name === 'Bandhan Bank';
+  });
+  var bandhanOffer = {
+    bank_key: 'bandhan bank',
+    bank_name: 'Bandhan Bank',
+    scheme: 'Suraksha Home Loan',
+    purpose: 'Regular Home Loan',
+    facility_type: 'Term Loan',
+    rate_type: 'Floating',
+    occupation: 'Any',
+    borrower_category: 'Any'
+  };
+  var bandhanEarly = compare.listSchemeChargePanelSections(
+    bandhanCharges,
+    bandhanOffer
+  );
+  ok(
+    bandhanEarly.some(function (section) {
+      return section.label === 'Legal and technical';
+    }) &&
+      bandhanEarly.some(function (section) {
+        return section.label === 'Title search report';
+      }) &&
+      bandhanEarly.some(function (section) {
+        return section.label === 'Valuation';
+      }) &&
+      !bandhanEarly.some(function (section) {
+        return section.label === 'Property Valuation Report Charges';
+      }) &&
+      !bandhanEarly.some(function (section) {
+        return section.label === 'Title Search Report Fees';
+      }),
+    'drawer hides published property-check rows when the overlay is present'
+  );
+  var hdfcPartRules = compare.listPartPrepaymentRulesForOffer(
+    compareJson.part_prepayment_rules,
+    hdfcOffer
+  );
+  ok(
+    hdfcPartRules.length === 2,
+    'HDFC floating offer gets digital and offline part prepayment rules'
+  );
+  var hdfcDigitalPairs = compare.buildPartPrepaymentRulePairs(
+    hdfcPartRules.find(function (rule) {
+      return rule.mode === 'digital';
+    })
+  );
+  ok(
+    hdfcDigitalPairs.some(function (pair) {
+      return pair[0] === 'Minimum part prepayment' && pair[1].indexOf('₹25,000') >= 0;
+    }) &&
+      hdfcDigitalPairs.some(function (pair) {
+        return (
+          pair[0] === 'Maximum per financial year' && pair[1].indexOf('25%') >= 0
+        );
+      }),
+    'HDFC digital part prepayment rules show minimum and FY cap'
+  );
+  var hdfcPartHtml = compare.drawerPartPrepaymentRulesHtml(hdfcPartRules);
+  ok(
+    hdfcPartHtml.indexOf('Part prepayment rules') >= 0 &&
+      hdfcPartHtml.indexOf('hlc-fee-sections') >= 0 &&
+      hdfcPartHtml.indexOf('Online / digital') >= 0 &&
+      hdfcPartHtml.indexOf('Branch / offline') >= 0 &&
+      hdfcPartHtml.indexOf('community reports') === -1,
+    'drawer part prepayment section matches other nested dropdowns'
+  );
+  var iciciOffer = {
+    bank_key: 'icici bank',
+    bank_name: 'ICICI Bank',
+    scheme: 'Home Loan',
+    purpose: 'Regular Home Loan',
+    facility_type: 'Term Loan',
+    rate_type: 'Floating',
+    occupation: 'Salaried',
+    borrower_category: 'Any'
+  };
+  var iciciPartRules = compare.listPartPrepaymentRulesForOffer(
+    compareJson.part_prepayment_rules,
+    iciciOffer
+  );
+  ok(
+    iciciPartRules.length === 3,
+    'ICICI floating offer gets all published part prepayment variants'
+  );
+  var bobOffer = {
+    bank_key: 'bank of baroda',
+    bank_name: 'Bank of Baroda',
+    scheme: 'Home Loan',
+    purpose: 'Regular Home Loan',
+    facility_type: 'Term Loan',
+    rate_type: 'Floating',
+    occupation: 'Salaried',
+    borrower_category: 'Any'
+  };
+  ok(
+    compare.listPartPrepaymentRulesForOffer(
+      compareJson.part_prepayment_rules,
+      bobOffer
+    ).length === 0 &&
+      compare.drawerPartPrepaymentRulesHtml([]) === '',
+    'banks without part prepayment rules stay out of the drawer section'
   );
   var freqDetail = compare.buildFeeTableEntries('Administrative Charges', [
     {
@@ -2079,13 +2334,46 @@ async function testHomeLoanCompare() {
   if (bomRow) {
     compare.applyPrepaymentMethodToRows(pnbFixed, compare.PREPAYMENT_METHOD_OWN);
     ok(
-      bomRow.prepaymentChargeDisplay.main === 'Not listed',
-      'Bank of Maharashtra fixed own-funds prepayment follows CSV NA as not listed'
+      bomRow.prepaymentChargeDisplay.main === 'Nil (₹0)',
+      'Bank of Maharashtra fixed own-funds prepayment is Nil (₹0)'
     );
     compare.applyPrepaymentMethodToRows(pnbFixed, compare.PREPAYMENT_METHOD_BT);
     ok(
-      bomRow.prepaymentChargeDisplay.main === 'Not listed',
-      'Bank of Maharashtra fixed balance-transfer prepayment follows CSV NA as not listed'
+      bomRow.prepaymentChargeDisplay.main === 'Nil (₹0)',
+      'Bank of Maharashtra fixed balance-transfer prepayment is Nil (₹0)'
     );
   }
+}
+
+function testReviewCapture() {
+  var reviewLib = require('../scripts/review-capture/lib');
+  ok(reviewLib.isValidSessionId('2026-08-14T20-23-01Z-abc123'), 'review session id accepts stamped ids');
+  ok(!reviewLib.isValidSessionId('../etc'), 'review session id rejects path traversal');
+  ok(reviewLib.msToClock(125000) === '2:05', 'review clock formats minutes');
+  ok(reviewLib.pageLabel('/pages/home-loan-compare.html') === '/pages/home-loan-compare.html', 'review page label keeps path');
+
+  var md = reviewLib.buildSessionMarkdown(
+    {
+      id: '2026-08-14T20-23-01Z-abc123',
+      startedAt: '2026-08-14T20:23:01.000Z',
+      initialPage: '/',
+      viewport: { w: 1280, h: 800 }
+    },
+    [
+      { t: 0, type: 'start', url: '/' },
+      { t: 4000, type: 'click', url: '/', label: 'Apply once', selector: 'a.apply' },
+      { t: 8000, type: 'page', url: '/pages/home-loan-compare.html' },
+      {
+        t: 12000,
+        type: 'mark',
+        url: '/pages/home-loan-compare.html',
+        lastClick: { label: 'Filters', selector: 'button.filters' }
+      }
+    ],
+    [{ start: 11.2, end: 14.0, text: 'हे फिल्टर लहान आहे' }]
+  );
+  ok(md.indexOf('MARK') !== -1, 'review markdown includes marks');
+  ok(md.indexOf('हे फिल्टर लहान आहे') !== -1, 'review markdown keeps Marathi speech');
+  ok(md.indexOf('/pages/home-loan-compare.html') !== -1, 'review markdown includes page path');
+  ok(md.indexOf('Apply once') !== -1, 'review markdown includes click labels');
 }

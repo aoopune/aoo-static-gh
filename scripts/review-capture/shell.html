@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Shroffin review capture</title>
+  <link rel="stylesheet" href="/__review/shell.css">
+</head>
+<body>
+  <div class="rv-app">
+    <iframe id="rv-frame" class="rv-frame" title="Shroffin website"></iframe>
+
+    <aside id="rv-gate" class="rv-gate" hidden>
+      <div class="rv-gate-card">
+        <p class="rv-kicker">Local review only — not on the live website</p>
+        <h1>Record this review</h1>
+        <p>
+          You will browse the site as usual. This bar keeps listening even when you change pages.
+          Speak in Marathi, Hindi, or English — mixed is fine.
+        </p>
+        <ol>
+          <li>Click <strong>Start recording</strong> and allow the microphone.</li>
+          <li>Click around the site and talk as you normally would.</li>
+          <li>When you point at a problem, click <strong>Mark this</strong> (or press Alt+M).</li>
+          <li>Click <strong>Stop and save</strong> when you are done.</li>
+        </ol>
+        <p class="rv-note">Sit close enough that both voices reach this laptop’s mic. Keep this tab open until you stop.</p>
+        <button type="button" class="rv-btn rv-btn-primary" id="rv-start">Start recording</button>
+        <p id="rv-gate-error" class="rv-error" hidden></p>
+      </div>
+    </aside>
+
+    <div class="rv-bar" role="region" aria-label="Review recording">
+      <div class="rv-bar-left">
+        <span id="rv-dot" class="rv-dot" aria-hidden="true"></span>
+        <span id="rv-state">Ready</span>
+        <span id="rv-timer" class="rv-timer">0:00</span>
+        <span id="rv-page" class="rv-page"></span>
+      </div>
+      <div class="rv-bar-actions">
+        <button type="button" class="rv-btn" id="rv-mark" disabled>Mark this</button>
+        <button type="button" class="rv-btn rv-btn-danger" id="rv-stop" disabled>Stop and save</button>
+      </div>
+    </div>
+  </div>
+  <script src="/__review/shell.js"></script>
+</body>
+</html>

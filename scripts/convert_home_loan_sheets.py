@@ -77,7 +77,7 @@ OFFERS_OUT_HEADERS = [
     "insurance_pricing_rule", "insurance_adjustment", "insurance_roi", "roi_availability",
     "internal_score_rating", "req_amount_min", "req_amount_max",
     "req_repayment_tenure_months_min", "req_repayment_tenure_months_max", "age_min",
-    "age_max", "bank_key", "offer_row_id", "source_ref",
+    "age_max", "bank_key", "offer_row_id", "source_ref", "last_checked_on",
 ]
 
 # DFS / RBI classification (Public = 12 PSBs; rest Private incl. IDBI, J&K, Nainital)
@@ -148,7 +148,7 @@ BANK_META = [
     "source_ref", "percentage_unit", "valid_from", "valid_till",
 ]
 
-BANK_HEADERS = BANK_META + OTHER_57 + OFFERS_FILTER_EXTRA
+BANK_HEADERS = BANK_META + OTHER_57 + OFFERS_FILTER_EXTRA + ["last_checked_on"]
 
 GOVT_SRC_TO_OUT = [
     ("charge_name", "charge_name"),

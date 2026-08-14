@@ -161,8 +161,7 @@ a.localnav-title:hover {
 .guide-doc-note a,
 .mag-p a,
 .mag-def-desc a,
-.mag-lede a,
-.guide-breadcrumb a {
+.mag-lede a {
   color: var(--shroffin-link, #3f62c8);
   text-decoration: none;
   text-decoration-thickness: 1px;
@@ -178,8 +177,7 @@ a.localnav-title:hover {
 .guide-doc-note a:visited,
 .mag-p a:visited,
 .mag-def-desc a:visited,
-.mag-lede a:visited,
-.guide-breadcrumb a:visited {
+.mag-lede a:visited {
   color: var(--shroffin-link-visited, #5a4fcf);
 }
 
@@ -194,9 +192,7 @@ a.localnav-title:hover {
 .mag-def-desc a:hover,
 .mag-def-desc a:focus-visible,
 .mag-lede a:hover,
-.mag-lede a:focus-visible,
-.guide-breadcrumb a:hover,
-.guide-breadcrumb a:focus-visible {
+.mag-lede a:focus-visible {
   color: var(--shroffin-link, #3f62c8);
   text-decoration: underline;
   text-decoration-color: var(--shroffin-link, #3f62c8);
@@ -207,8 +203,7 @@ a.localnav-title:hover {
 .guide-doc-note a:visited:hover,
 .mag-p a:visited:hover,
 .mag-def-desc a:visited:hover,
-.mag-lede a:visited:hover,
-.guide-breadcrumb a:visited:hover {
+.mag-lede a:visited:hover {
   color: var(--shroffin-link-visited, #5a4fcf);
   text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
 }
@@ -218,8 +213,7 @@ a.localnav-title:hover {
 .guide-doc-note a:active,
 .mag-p a:active,
 .mag-def-desc a:active,
-.mag-lede a:active,
-.guide-breadcrumb a:active {
+.mag-lede a:active {
   color: var(--shroffin-link-active, #2f4ba0);
   text-decoration: underline;
   text-decoration-color: var(--shroffin-link-active, #2f4ba0);
@@ -808,7 +802,6 @@ body.guide-reading .guide-hero--media-pods .guide-hero-bg {
   transform: none;
 }
 
-body.guide-reading .guide-hero--media .guide-breadcrumb,
 body.guide-reading .guide-hero--media .guide-hero-title,
 body.guide-reading .guide-hero--media .guide-hero-lead,
 body.guide-reading .guide-hero--media .mag-title,
@@ -824,58 +817,19 @@ body.guide-reading .guide-hero--media h2.guide-hero-lead {
   color: #3a3a40;
 }
 
-/*
- * Path trail on the photo (insurance sub-pages): sits in the art’s upper
- * field, not on the paper band above the frame. Art shifts slightly up so
- * the trail lands on the image, not a blank gap from the desktop nudge.
- */
-body.guide-reading .guide-hero--media:has(> .guide-breadcrumb) {
-  padding-block-start: clamp(1rem, 3vw, 1.75rem);
-}
-
-/*
- * Path trail still sits on the photo, but on the same --mag-wrap rail as the
- * Guide bar / body — not flush to the full-bleed left edge.
- */
-body.guide-reading .guide-hero--media > .guide-breadcrumb {
-  align-self: center;
-  width: 100%;
-  max-width: var(--mag-wrap);
-  margin: 0 auto clamp(0.85rem, 2.25vw, 1.35rem);
-  padding-inline: var(--mag-inline) var(--mag-inline-end);
-  padding-block: 0;
-  justify-content: flex-start;
-  text-align: left;
-  box-sizing: border-box;
-}
-
-body.guide-reading .guide-hero--media:has(> .guide-breadcrumb) .guide-hero-bg {
-  /* Shared heroes nudge art down; trail pages lift a little so the path
-     sits on the photo field under the Guide bar, not a paper band above it. */
-  height: calc(100% + clamp(1.5rem, 4vh, 2.5rem));
-  object-position: center bottom;
-  transform: translateY(clamp(-1.5rem, -3.5vh, -0.75rem));
-}
-
 @media (max-width: 833px) {
-  body.guide-reading .guide-hero--media:has(> .guide-breadcrumb) .guide-hero-bg {
-    height: 100%;
-    object-position: center center;
-    transform: none;
-  }
-
   /*
    * Portrait heroes whose subject sits low (property house, loan-cover forms):
    * lift the art so the main object clears the chapter strip on the photo foot.
    */
-  body.guide-reading .guide-hero--art-nudge-up:has(> .guide-breadcrumb) .guide-hero-bg {
+  body.guide-reading .guide-hero--art-nudge-up .guide-hero-bg {
     height: 124%;
     object-position: center bottom;
     transform: translateY(-16%);
   }
 
   /* Loan cover: coloured forms sit deeper — lift further than the shared nudge. */
-  body.guide-reading .guide-hero--loan-art:has(> .guide-breadcrumb) .guide-hero-bg {
+  body.guide-reading .guide-hero--loan-art .guide-hero-bg {
     height: 136%;
     object-position: center bottom;
     transform: translateY(-26%);
@@ -1335,8 +1289,7 @@ body.guide-reading .mag-index-more:focus-visible {
 }
 
 /* When JS lifts the opener above Contents, keep the same page rail. */
-.guide-content > .mag-section,
-.guide-content > .guide-breadcrumb {
+.guide-content > .mag-section {
   max-width: var(--mag-wrap);
   margin-inline: auto;
   padding-inline: var(--mag-inline) var(--mag-inline-end);
@@ -2306,58 +2259,6 @@ body.guide-reading .mag-p {
   font-weight: 600;
 }
 
-/* ---- Breadcrumb (insurance sub-pages) ---------------------------------- */
-
-.guide-breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.25rem 0.4rem;
-  max-width: var(--mag-wrap);
-  margin: 0 auto;
-  padding-inline: var(--mag-inline) var(--mag-inline-end);
-  /* Path cue under the Guide bar — tight, not a second masthead pause. */
-  padding-block: 0.5rem 0;
-  box-sizing: border-box;
-  color: var(--mag-muted);
-  font-size: var(--shroffin-type-body);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-}
-
-/* Legacy: trail still above a non-media hero (paper band). */
-.guide-breadcrumb + .guide-hero:not(.guide-hero--media) {
-  padding-top: var(--shroffin-space-stack);
-}
-
-.guide-breadcrumb a {
-  color: var(--shroffin-link, #3f62c8);
-  text-decoration: none;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-}
-
-.guide-breadcrumb a:hover,
-.guide-breadcrumb a:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
-  text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
-}
-
-.guide-breadcrumb a:active {
-  color: var(--shroffin-link-active, #2f4ba0);
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
-}
-
-.guide-breadcrumb-current {
-  color: var(--mag-ink);
-  font-weight: 500;
-}
-
-.guide-breadcrumb-sep {
-  color: var(--mag-ghost);
-}
-
 /* ---- Card flip: fixed front box; docked control; page scrolls (no inner trap) ---- */
 
 .guide-flip {
@@ -2965,6 +2866,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
   border: 0;
   border-radius: var(--shroffin-btn-radius, 980px);
   background: var(--mag-accent-button);
+  box-shadow: var(--shroffin-btn-primary-shadow, 0 2px 8px rgba(0, 113, 227, 0.2));
   color: #fff;
   font-family: var(--font-brand);
   font-size: var(--shroffin-btn-standard-font, 14px);
@@ -2972,7 +2874,9 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
   letter-spacing: -0.01em;
   line-height: var(--shroffin-btn-standard-lh, 1.28571);
   cursor: pointer;
-  transition: background-color var(--mag-micro, 0.5s) var(--ease-color);
+  transition:
+    background-color var(--mag-micro, 0.5s) var(--ease-color),
+    box-shadow var(--mag-micro, 0.5s) var(--ease-color);
 }
 
 @media (min-width: 834px) {
@@ -2983,7 +2887,13 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 }
 
 .guide-calc-submit:hover {
-  background: #0076df;
+  background: var(--shroffin-btn-primary-hover, #0058b0);
+  box-shadow: var(--shroffin-btn-primary-shadow-hover, 0 6px 22px rgba(0, 88, 176, 0.42));
+}
+
+.guide-calc-submit:active {
+  background: var(--shroffin-btn-primary-active, #004a96);
+  box-shadow: var(--shroffin-btn-primary-shadow-active, 0 1px 4px rgba(0, 74, 150, 0.32));
 }
 
 .guide-calc-submit:focus-visible {
@@ -3924,11 +3834,11 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
   min-width: 0;
 }
 
-/* Same support-step type as .guide-limit-title; border is climb layout only. */
+/* Same support-step type as .guide-limit-title; no hairline under the column head. */
 .guide-climb-label {
   margin: 0 0 8px;
-  padding: 0 0 14px;
-  border-bottom: 1px solid var(--mag-hair);
+  padding: 0;
+  border-bottom: none;
   color: var(--mag-ink);
   font-size: var(--shroffin-type-support);
   font-weight: 600;
@@ -4419,7 +4329,6 @@ a.guide-note-ref:hover {
   .mag-index,
   .guide-story,
   .mag-wrap,
-  .guide-breadcrumb,
   .guide-fine-wrap,
   .mag-fine-wrap {
     padding-inline: var(--mag-inline) var(--mag-inline-end);
@@ -4726,8 +4635,13 @@ a.guide-note-ref:hover {
     margin-block-start: 0;
   }
 
-  /* Keep art foot tight — first-chapter air lives below the strip, not in the photo. */
+  /*
+   * Desktop only: title + lead sit a few spaces under the Guide bar, in the
+   * empty upper field of the 16:9 art. Phone keeps the shared
+   * padding-block-start on .guide-hero--media.
+   */
   body.guide-reading .guide-hero.guide-hero--media {
+    padding-block-start: 1.25rem;
     padding-block-end: clamp(1.25rem, 3.5vw, 2.25rem);
   }
 

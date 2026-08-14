@@ -1,8 +1,20 @@
-<main id="hl-apply" class="hl-apply">
+<main id="hl-apply" class="hl-apply hl-apply--review">
     <div class="hl-apply-inner">
       <h1 class="hl-apply-title">Review your application</h1>
 
-      <div class="hl-apply-layout">
+      <div class="hl-apply-review-actions">
+        <a class="hl-apply-review-back" href="explore-banks.html">
+          <svg class="hl-apply-review-back-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+            <path d="M7.8 1.2 3.2 5 7.8 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Back</span>
+        </a>
+        <button type="button" class="hl-apply-cta" id="hl-continue-application" disabled>
+          <span class="hl-apply-cta-label">Continue</span>
+        </button>
+      </div>
+
+      <div class="hl-apply-layout hl-apply-layout--review">
         <div class="hl-apply-main">
           <section class="hl-apply-context" aria-labelledby="hl-apply-context-heading">
             <h2 id="hl-apply-context-heading" class="hl-apply-section-title">Details you entered</h2>
@@ -41,78 +53,6 @@
             <ul id="hl-apply-banks" class="hl-apply-banks" aria-label="Selected banks"></ul>
           </section>
         </div>
-
-        <form id="hl-apply-form" class="hl-apply-form" novalidate>
-          <header class="hl-apply-form-intro">
-            <h2 class="hl-apply-form-heading">How we reach you</h2>
-            <p class="hl-apply-purpose">We use this email and number for updates and the next steps on your home loan application.</p>
-          </header>
-
-          <div class="hl-apply-fields">
-            <div class="hl-apply-field">
-              <label for="hl-name">Full name</label>
-              <input id="hl-name" name="name" type="text" autocomplete="name" required placeholder="As on your ID">
-            </div>
-            <div class="hl-apply-field hl-apply-field--phone">
-              <label for="hl-phone">Phone</label>
-              <div class="hl-apply-phone-row">
-                <span class="hl-apply-phone-prefix" title="India">
-                  <svg class="hl-apply-phone-flag" viewBox="0 0 24 16" focusable="false" aria-hidden="true">
-                    <rect width="24" height="5.333" y="0" fill="#FF9933"/>
-                    <rect width="24" height="5.334" y="5.333" fill="#FFFFFF"/>
-                    <rect width="24" height="5.333" y="10.667" fill="#138808"/>
-                    <circle cx="12" cy="8" r="1.65" fill="none" stroke="#000080" stroke-width="0.55"/>
-                  </svg>
-                  <span class="hl-apply-phone-cc">+91</span>
-                </span>
-                <input
-                  id="hl-phone"
-                  name="phone"
-                  type="tel"
-                  inputmode="numeric"
-                  autocomplete="tel-national"
-                  required
-                  maxlength="11"
-                  placeholder="XXXXX XXXXX"
-                  aria-label="Indian mobile number, +91"
-                >
-                <span class="hl-apply-phone-ok" id="hl-phone-ok" hidden>
-                  <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
-                    <path d="M3.2 8.2 6.4 11.4 12.8 4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  <span class="visually-hidden">Valid mobile number</span>
-                </span>
-              </div>
-            </div>
-            <div class="hl-apply-field hl-apply-field--email">
-              <label for="hl-email">Email</label>
-              <div class="hl-apply-email-row">
-                <input id="hl-email" name="email" type="email" autocomplete="email" required placeholder="name@example.com">
-                <button type="button" class="hl-apply-verify" id="hl-verify-email" disabled>Verify</button>
-              </div>
-              <p class="hl-apply-verify-status" id="hl-verify-status" hidden>Email verified</p>
-              <p class="hl-apply-email-mismatch" id="hl-email-mismatch" hidden></p>
-            </div>
-          </div>
-
-          <div class="hl-apply-commit">
-            <label class="hl-apply-consent" for="hl-consent">
-              <input type="checkbox" id="hl-consent" name="consent" required>
-              <span class="hl-apply-consent-copy">
-                <span class="hl-apply-consent-line">I confirm that the information I provide here is true and complete to the best of my knowledge.</span>
-                <span class="hl-apply-consent-line">I agree that Shroffin may email or call me about this home loan application.</span>
-                <span class="hl-apply-consent-line">See <a href="/privacy-policy.html">Privacy Policy</a> and <a href="/terms-of-use.html">Terms of Use</a>.</span>
-              </span>
-            </label>
-
-            <div class="hl-apply-actions">
-              <button type="button" class="hl-apply-cta" id="hl-submit-application" disabled>
-                <span class="hl-apply-cta-label">Submit application</span>
-                <span class="hl-apply-cta-spinner" aria-hidden="true" hidden></span>
-              </button>
-            </div>
-          </div>
-        </form>
       </div>
 
     </div>

@@ -6,9 +6,16 @@
   "use strict";
 
   var HL_APPLY_STORAGE_KEY = "shroffin_hl_apply_v1";
+  var HL_APPLY_CONTACT_DRAFT_KEY = "shroffin_hl_apply_contact_v1";
   var HL_APPLY_PACKET_MAX_AGE_MS = 60 * 60 * 1000;
   var HL_APPLY_MSG_KEY = "shroffin_hl_apply_msg";
   var HL_EXPLORE_DRAFT_KEY = "shroffin_hl_explore_draft_v1";
+  var HL_APPLY_REVIEW_URL = "apply.html";
+  var HL_APPLY_CONTACT_URL = "apply-contact.html";
+
+  var PAGE_MODE =
+    (document.body && document.body.getAttribute("data-hl-apply-page")) ||
+    "review";
 
   var HL_FIREBASE_CONFIG = {
     apiKey: "AIzaSyAsWbUw_SSNc8nXG7VR6NAB95UetshtxF0",
@@ -27,6 +34,7 @@
     contacts.phoneDisplayShort || "91123 34367";
   var HL_SUPPORT_TEL = contacts.phoneTel || "+919112334367";
   var HL_WHATSAPP_URL = contacts.whatsappUrl || "https://wa.me/919112334367";
+  var HL_DOCUMENTS_URL = "guide-documents.html";
   var HL_CONTACT_WINDOW = "48 hours";
 
   var firebaseReady = false;
@@ -60,6 +68,69 @@
     try {
       window.sessionStorage.removeItem(HL_APPLY_STORAGE_KEY);
     } catch (err) {}
+    clearContactDraft();
+  }
+
+  function loadContactDraft() {
+    try {
+      var raw = window.sessionStorage.getItem(HL_APPLY_CONTACT_DRAFT_KEY);
+      if (!raw) return null;
+      var data = JSON.parse(raw);
+      if (!data || typeof data !== "object") return null;
+      return data;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function persistContactDraft() {
+    if (PAGE_MODE !== "contact") return true;
+    var nameInput = $("hl-name");
+    var phoneInput = $("hl-phone");
+    var emailInput = $("hl-email");
+    var consent = $("hl-consent");
+    if (!nameInput && !phoneInput && !emailInput) return true;
+    try {
+      window.sessionStorage.setItem(
+        HL_APPLY_CONTACT_DRAFT_KEY,
+        JSON.stringify({
+          v: 1,
+          ts: Date.now(),
+          name: String((nameInput && nameInput.value) || "").trim(),
+          phone: normalizePhone(phoneInput && phoneInput.value),
+          contact_email: String((emailInput && emailInput.value) || "")
+            .trim()
+            .toLowerCase(),
+          consent: Boolean(consent && consent.checked)
+        })
+      );
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function clearContactDraft() {
+    try {
+      window.sessionStorage.removeItem(HL_APPLY_CONTACT_DRAFT_KEY);
+    } catch (err) {}
+  }
+
+  function applyContactDraftToForm(draft) {
+    if (!draft || typeof draft !== "object") return;
+    var nameInput = $("hl-name");
+    var phoneInput = $("hl-phone");
+    var emailInput = $("hl-email");
+    var consent = $("hl-consent");
+    if (nameInput && draft.name) nameInput.value = draft.name;
+    if (phoneInput && draft.phone) {
+      phoneInput.value = formatPhoneDisplay(draft.phone);
+    }
+    if (emailInput && draft.contact_email) {
+      emailInput.value = draft.contact_email;
+    }
+    if (consent) consent.checked = Boolean(draft.consent);
+    updatePhoneOk();
   }
 
   function persistApplyPacket(data) {
@@ -367,7 +438,7 @@
     if (!packet.banks.length) {
       clearApplyPacket();
       renderBankSummary(packet);
-      updateSubmitEnabled();
+      updatePageActions();
       showToast("No banks selected. Taking you back to choose banks.");
       scheduleReturnToExplore("Select at least one bank, then tap Apply.");
       return;
@@ -378,7 +449,15 @@
       return;
     }
     renderBankSummary(packet);
-    updateSubmitEnabled();
+    updatePageActions();
+  }
+
+  function renderContactRecap(data) {
+    var n = (data.banks && data.banks.length) || 0;
+    var recapN = $("hl-apply-recap-n");
+    var recap = $("hl-apply-recap");
+    if (recapN) recapN.textContent = String(n);
+    if (recap) recap.hidden = n <= 0;
   }
 
   function renderBankSummary(data) {
@@ -434,13 +513,19 @@
       toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
       toggle.setAttribute("aria-controls", detailsId);
       toggle.innerHTML =
-        '<span class="hl-apply-disclose-label">Show details</span>' +
+        '<span class="hl-apply-disclose-label">' +
+        (isOpen ? "Hide details" : "Show more details") +
+        "</span>" +
         discloseArrowHtml();
       toggle.addEventListener("click", function () {
         var next = !openBankDetails[key];
         openBankDetails[key] = next;
         li.classList.toggle("is-open", next);
         setDiscloseOpen(toggle, details, next);
+        var labelEl = toggle.querySelector(".hl-apply-disclose-label");
+        if (labelEl) {
+          labelEl.textContent = next ? "Hide details" : "Show more details";
+        }
       });
 
       var details = document.createElement("div");
@@ -473,6 +558,37 @@
     renderBankSummary(data);
   }
 
+  function canContinueToContact() {
+    if (submitting || verifying) return false;
+    if (!packet || !packet.banks || !packet.banks.length) return false;
+    return returnToExploreTimer == null;
+  }
+
+  function updateContinueEnabled() {
+    var btn = $("hl-continue-application");
+    if (!btn) return;
+    btn.disabled = !canContinueToContact();
+  }
+
+  function updatePageActions() {
+    if (PAGE_MODE === "contact") {
+      updateVerifyEnabled();
+      updateSubmitEnabled();
+      return;
+    }
+    updateContinueEnabled();
+  }
+
+  function onContinueClick() {
+    if (!canContinueToContact() || !packet) return;
+    packet.ts = Date.now();
+    if (!persistApplyPacket(packet)) {
+      showToast("Could not continue. Please try again.", true);
+      return;
+    }
+    window.location.href = HL_APPLY_CONTACT_URL;
+  }
+
   function bindYourDetailsToggle() {
     var toggle = $("hl-apply-details-toggle");
     var panel = $("hl-apply-your-details-panel");
@@ -480,16 +596,13 @@
     if (!toggle || !panel || toggle.getAttribute("data-bound") === "1") return;
     toggle.setAttribute("data-bound", "1");
     var labelEl = toggle.querySelector(".hl-apply-disclose-label");
-    var fieldCount = panel.querySelectorAll(
-      "input, select, textarea"
-    ).length;
-    if (labelEl && fieldCount > 0) {
-      labelEl.textContent = "Show more details (" + fieldCount + ")";
-    }
     toggle.addEventListener("click", function () {
       var next = toggle.getAttribute("aria-expanded") !== "true";
       setDiscloseOpen(toggle, panel, next);
       if (section) section.classList.toggle("is-open", next);
+      if (labelEl) {
+        labelEl.textContent = next ? "Hide details" : "Show more details";
+      }
     });
   }
 
@@ -876,7 +989,15 @@
         : "We've got your application for " + n + " banks.";
     host.innerHTML =
       '<div class="hl-apply-success-panel" role="dialog" aria-modal="true" aria-labelledby="hl-success-title">' +
-      '<h2 id="hl-success-title">Application received</h2>' +
+      '<h2 id="hl-success-title" class="hl-apply-success-title">' +
+      '<span class="hl-apply-success-check" aria-hidden="true">' +
+      '<svg viewBox="0 0 24 24" width="28" height="28" focusable="false">' +
+      '<circle cx="12" cy="12" r="11" fill="currentColor"/>' +
+      '<path d="M7.2 12.4 10.4 15.5 16.8 8.8" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>' +
+      "</svg>" +
+      "</span>" +
+      "<span>Application received</span>" +
+      "</h2>" +
       '<p class="hl-apply-success-lead">' +
       bankLine +
       "</p>" +
@@ -895,7 +1016,13 @@
       contact.phone +
       ".</p>" +
       '<p class="hl-apply-success-body">' +
-      "Please keep your documents with you for now. We will ask for them only when we talk." +
+      "Documents are not needed from you yet. Review the " +
+      '<a class="hl-apply-success-docs" href="' +
+      HL_DOCUMENTS_URL +
+      '" target="_blank" rel="noopener noreferrer">' +
+      "Documents" +
+      '<span class="visually-hidden"> (opens in a new tab)</span></a>' +
+      " list if you want to prepare ahead." +
       "</p>" +
       '<p class="hl-apply-success-help">' +
       "Missed a detail? " +
@@ -1097,6 +1224,7 @@
 
   function onFormFieldsChange() {
     onEmailInputChange();
+    persistContactDraft();
     updateVerifyEnabled();
     updateSubmitEnabled();
   }
@@ -1201,20 +1329,42 @@
       });
   }
 
-  function init() {
-    packet = loadApplyPacket();
-    if (!packet) {
-      redirectToExplore("Select banks again, then tap Apply.");
-      return;
-    }
-    renderSelection(packet);
-    bindYourDetailsToggle();
+  function watchAuthForVerificationRestore() {
+    if (!ensureFirebase()) return;
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (verifying || submitting) return;
+      if (!user || !user.email) {
+        if (verifiedUser) clearVerification();
+        updateVerifyEnabled();
+        updateSubmitEnabled();
+        return;
+      }
+      var contact = readContactForm();
+      if (
+        contact.contact_email &&
+        emailsMatch(user.email, contact.contact_email)
+      ) {
+        verifiedUser = user;
+        setVerifiedUi(true, user.email);
+      } else if (
+        verifiedUser &&
+        contact.contact_email &&
+        !emailsMatch(user.email, contact.contact_email)
+      ) {
+        clearVerification();
+      }
+      updateVerifyEnabled();
+      updateSubmitEnabled();
+    });
+  }
 
+  function bindContactForm() {
     var verifyBtn = $("hl-verify-email");
     var submitBtn = $("hl-submit-application");
     var nameInput = $("hl-name");
     var phoneInput = $("hl-phone");
     var emailInput = $("hl-email");
+    var consent = $("hl-consent");
     if (verifyBtn) verifyBtn.addEventListener("click", onVerifyEmailClick);
     if (submitBtn) submitBtn.addEventListener("click", onSubmitApplicationClick);
     bindPhoneField(phoneInput);
@@ -1223,9 +1373,37 @@
       el.addEventListener("input", onFormFieldsChange);
       el.addEventListener("change", onFormFieldsChange);
     });
+    if (consent) {
+      consent.addEventListener("change", onFormFieldsChange);
+    }
     updatePhoneOk();
     updateVerifyEnabled();
     updateSubmitEnabled();
+    watchAuthForVerificationRestore();
+  }
+
+  function initReview() {
+    renderSelection(packet);
+    bindYourDetailsToggle();
+    var continueBtn = $("hl-continue-application");
+    if (continueBtn) continueBtn.addEventListener("click", onContinueClick);
+    updateContinueEnabled();
+  }
+
+  function initContact() {
+    renderContactRecap(packet);
+    applyContactDraftToForm(loadContactDraft());
+    bindContactForm();
+  }
+
+  function init() {
+    packet = loadApplyPacket();
+    if (!packet) {
+      redirectToExplore("Select banks again, then tap Apply.");
+      return;
+    }
+    if (PAGE_MODE === "contact") initContact();
+    else initReview();
   }
 
   if (document.readyState === "loading") {
