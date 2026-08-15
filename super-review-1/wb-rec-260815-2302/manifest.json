@@ -1,0 +1,94 @@
+{
+  "format": "workbooks-recording/2.2",
+  "id": "1c3a6e22-3a9a-475d-8d5b-350dfe605171",
+  "label": null,
+  "description": null,
+  "start_url": "http://localhost:8765/pages/explore-banks.html",
+  "hosts": [
+    "localhost:8765"
+  ],
+  "urls": [
+    "http://localhost:8765/pages/explore-banks.html"
+  ],
+  "started_at": "2026-08-15T17:32:34.848Z",
+  "ended_at": "2026-08-15T17:34:36.510Z",
+  "duration_ms": 121662,
+  "total_waiting_ms": 0,
+  "events_count": 34,
+  "screenshots_count": 19,
+  "console_count": 0,
+  "tabs_count": 1,
+  "pages_count": 1,
+  "mic": true,
+  "mic_device_id": null,
+  "capture_shots": true,
+  "capture_network": true,
+  "capture_network_body": true,
+  "viewport": {
+    "device_scale_factor": 2,
+    "height": 768,
+    "width": 1366
+  },
+  "privacy": {
+    "input_masking": "sensitive-by-default",
+    "masked_fields": "password, email, tel; autocomplete of cc-*/username/one-time-code/etc; any input whose name/id/label matches /password|email|login|ssn|cc|cvv|otp|secret|token/; elements opted out via any honored session-replay convention (see redaction_sources)",
+    "url_scrubbing": "URL query-param values for well-known secret keys (code, token, state, sig, nonce, auth, bearer, jwt, api_key, x-amz-*, etc.) and high-entropy JWT-shaped values are replaced with ***",
+    "screenshot_redaction": "Elements matching REDACT_SELECTOR (or any ancestor matching it), plus any form field that would be input-masked, have their bounding box painted over in each screenshot. Mode (black/blur/off) is operator-configurable. Per-screenshot rects are persisted in screenshots/index.json under mask_rects.",
+    "redaction_sources": [
+      "workbooks",
+      "logrocket",
+      "fullstory",
+      "posthog",
+      "hotjar",
+      "heap",
+      "mixpanel",
+      "amplitude"
+    ],
+    "notes": "Masked field values are replaced with null + value_length. Screenshot redaction is best-effort — it only covers elements present in the viewport at capture time and relies on the vendor conventions above, so operators should still avoid flows where un-tagged secrets are on screen."
+  },
+  "waiting_semantics": {
+    "description": "Windows where the page was busy (network / spinner / DOM churn) AND the operator was idle. Screenshots drop to 30s cadence, mic is paused, time does not count against the session cap.",
+    "signals": [
+      "network_active",
+      "spinner_visible",
+      "dom_churn",
+      "manual"
+    ],
+    "screenshot_interval_ms_active": 8000,
+    "screenshot_interval_ms_waiting": 30000
+  },
+  "capture_model": {
+    "kind": "semantic",
+    "event_kinds": [
+      "click",
+      "dblclick",
+      "input",
+      "change",
+      "submit",
+      "key",
+      "focus",
+      "scroll",
+      "navigation",
+      "tab_switch",
+      "marker",
+      "note",
+      "idle",
+      "pause",
+      "resume",
+      "timeout",
+      "network",
+      "assertion",
+      "waiting_start",
+      "waiting_end",
+      "landmark_snapshot"
+    ],
+    "locators": "Playwright-style: getByTestId / getByRole / getByLabel / getByPlaceholder / getByText / locator(css)",
+    "notes": "No DOM snapshot. Each event carries a target descriptor with Playwright locator suggestions, ordered by preferred stability."
+  },
+  "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+  "extension_version": "0.2.0",
+  "audio": {
+    "file": "audio.webm",
+    "mime": "audio/webm"
+  }
+}

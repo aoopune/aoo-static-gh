@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Workbooks Recording</title>
+  <link rel="stylesheet" href="viewer.css">
+</head>
+<!--
+  workbooks-recorder bundle viewer.
+
+  This file is copied into every recording bundle as `index.html`. Double-click
+  it after unzipping to inspect the recording. No server required — it runs from
+  file:// with no fetch calls.
+
+  ──────────────────────────────────────────────────────────────────────────
+  PLACEHOLDER CONTRACT — for the extension's bundle-assembly step.
+  ──────────────────────────────────────────────────────────────────────────
+  At bundle-assembly time (src/background.js :: assembleBundle), replace each
+  of the five sentinels below with the JSON string of the corresponding file.
+  Use `JSON.stringify(data).replace(/</g, '<')` to prevent any embedded
+  `</script>` sequences from breaking the inline JSON script tag.
+
+  Sentinels (must match exactly):
+    {"format":"workbooks-recording/2.2","id":"1ce6b2c1-5803-4478-9e29-c1f823caae0f","label":null,"description":null,"start_url":"http://localhost:8765/pages/explore-banks.html","hosts":["localhost:8765"],"urls":["http://localhost:8765/pages/explore-banks.html"],"started_at":"2026-08-15T18:59:02.434Z","ended_at":"2026-08-15T19:01:28.697Z","duration_ms":146263,"total_waiting_ms":0,"events_count":58,"screenshots_count":17,"console_count":0,"tabs_count":1,"pages_count":0,"mic":true,"mic_device_id":null,"capture_shots":true,"capture_network":true,"capture_network_body":true,"viewport":{"device_scale_factor":2,"height":768,"width":1366},"privacy":{"input_masking":"sensitive-by-default","masked_fields":"password, email, tel; autocomplete of cc-*/username/one-time-code/etc; any input whose name/id/label matches /password|email|login|ssn|cc|cvv|otp|secret|token/; elements opted out via any honored session-replay convention (see redaction_sources)","url_scrubbing":"URL query-param values for well-known secret keys (code, token, state, sig, nonce, auth, bearer, jwt, api_key, x-amz-*, etc.) and high-entropy JWT-shaped values are replaced with ***","screenshot_redaction":"Elements matching REDACT_SELECTOR (or any ancestor matching it), plus any form field that would be input-masked, have their bounding box painted over in each screenshot. Mode (black/blur/off) is operator-configurable. Per-screenshot rects are persisted in screenshots/index.json under mask_rects.","redaction_sources":["workbooks","logrocket","fullstory","posthog","hotjar","heap","mixpanel","amplitude"],"notes":"Masked field values are replaced with null + value_length. Screenshot redaction is best-effort — it only covers elements present in the viewport at capture time and relies on the vendor conventions above, so operators should still avoid flows where un-tagged secrets are on screen."},"waiting_semantics":{"description":"Windows where the page was busy (network / spinner / DOM churn) AND the operator was idle. Screenshots drop to 30s cadence, mic is paused, time does not count against the session cap.","signals":["network_active","spinner_visible","dom_churn","manual"],"screenshot_interval_ms_active":8000,"screenshot_interval_ms_waiting":30000},"capture_model":{"kind":"semantic","event_kinds":["click","dblclick","input","change","submit","key","focus","scroll","navigation","tab_switch","marker","note","idle","pause","resume","timeout","network","assertion","waiting_start","waiting_end","landmark_snapshot"],"locators":"Playwright-style: getByTestId / getByRole / getByLabel / getByPlaceholder / getByText / locator(css)","notes":"No DOM snapshot. Each event carries a target descriptor with Playwright locator suggestions, ordered by preferred stability."},"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36","extension_version":"0.2.0","audio":{"file":"audio.webm","mime":"audio/webm"}}   → contents of manifest.json         (object)
+    [{"kind":"idle","t":272,"ts":1786820342706,"duration_ms":7649},{"kind":"focus","ts":1786820349953,"url":"http://localhost:8765/pages/explore-banks.html","target":{"tag":"button","id":null,"name":null,"type":"button","role":"button","accessible_name":"Collapse all","text":"Collapse all","label":null,"placeholder":null,"test_id":null,"href":null,"css":"div#hlc-charges-note > div > div > button","locators":["getByRole(\"button\", { name: \"Collapse all\" })","locator(\"div#hlc-charges-note > div > div > button\")"],"locator_matches":[{"str":"getByRole(\"button\", { name: \"Collapse all\" })","n":null},{"str":"locator(\"div#hlc-charges-note > div > div > button\")","n":1}]},"t":7519,"tab_id":1351502398},{"kind":"scroll","ts":1786820351064,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":1149.5,"t":8630,"tab_id":1351502398},{"kind":"scroll","ts":1786820352031,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":908.5,"t":9597,"tab_id":1351502398},{"kind":"idle","t":9999,"ts":1786820352433,"duration_ms":6319},{"kind":"idle","t":16318,"ts":1786820358752,"duration_ms":3249},{"kind":"scroll","ts":1786820361599,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":697,"t":19165,"tab_id":1351502398},{"kind":"idle","t":19567,"ts":1786820362001,"duration_ms":4766},{"kind":"idle","t":24333,"ts":1786820366767,"duration_ms":5134},{"kind":"scroll","ts":1786820371499,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":1272,"t":29065,"tab_id":1351502398},{"kind":"idle","t":29467,"ts":1786820371901,"duration_ms":2827},{"kind":"idle","t":32294,"ts":1786820374728,"duration_ms":8026},{"kind":"idle","t":40320,"ts":1786820382754,"duration_ms":7998},{"kind":"idle","t":48318,"ts":1786820390752,"duration_ms":4882},{"kind":"scroll","ts":1786820395232,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":1499.5,"t":52798,"tab_id":1351502398},{"kind":"idle","t":53200,"ts":1786820395634,"duration_ms":1299},{"kind":"scroll","ts":1786820396530,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":1638.5,"t":54096,"tab_id":1351502398},{"kind":"idle","t":54499,"ts":1786820396933,"duration_ms":3820},{"kind":"idle","t":58319,"ts":1786820400753,"duration_ms":7081},{"kind":"scroll","ts":1786820407433,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":1941.5,"t":64999,"tab_id":1351502398},{"kind":"idle","t":66309,"ts":1786820408743,"duration_ms":6158},{"kind":"scroll","ts":1786820414499,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":2201,"t":72065,"tab_id":1351502398},{"kind":"idle","t":72467,"ts":1786820414901,"duration_ms":1203},{"kind":"scroll","ts":1786820415700,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":2195.5,"t":73266,"tab_id":1351502398},{"kind":"idle","t":74319,"ts":1786820416753,"duration_ms":1882},{"kind":"scroll","ts":1786820418232,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":2196,"t":75798,"tab_id":1351502398},{"kind":"idle","t":76201,"ts":1786820418635,"duration_ms":1565},{"kind":"scroll","ts":1786820419797,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":2253,"t":77363,"tab_id":1351502398},{"kind":"idle","t":77766,"ts":1786820420200,"duration_ms":6551},{"kind":"idle","t":84317,"ts":1786820426751,"duration_ms":4082},{"kind":"scroll","ts":1786820430431,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":1866,"t":87997,"tab_id":1351502398},{"kind":"idle","t":88399,"ts":1786820430833,"duration_ms":3910},{"kind":"idle","t":92309,"ts":1786820434743,"duration_ms":3326},{"kind":"scroll","ts":1786820437666,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":1958.5,"t":95232,"tab_id":1351502398},{"kind":"idle","t":95635,"ts":1786820438069,"duration_ms":3963},{"kind":"scroll","ts":1786820441631,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":2171,"t":99197,"tab_id":1351502398},{"kind":"scroll","ts":1786820442533,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":2323.5,"t":100099,"tab_id":1351502398},{"kind":"idle","t":100500,"ts":1786820442934,"duration_ms":1809},{"kind":"scroll","ts":1786820445232,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":3035,"t":102798,"tab_id":1351502398},{"kind":"scroll","ts":1786820446133,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":3207,"t":103699,"tab_id":1351502398},{"kind":"scroll","ts":1786820446866,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":3205.5,"t":104432,"tab_id":1351502398},{"kind":"idle","t":104835,"ts":1786820447269,"duration_ms":5464},{"kind":"scroll","ts":1786820452332,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":2409,"t":109898,"tab_id":1351502398},{"kind":"idle","t":110300,"ts":1786820452734,"duration_ms":2015},{"kind":"idle","t":112315,"ts":1786820454749,"duration_ms":3252},{"kind":"scroll","ts":1786820457599,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":1907,"t":115165,"tab_id":1351502398},{"kind":"idle","t":115567,"ts":1786820458001,"duration_ms":4751},{"kind":"idle","t":120318,"ts":1786820462752,"duration_ms":6914},{"kind":"scroll","ts":1786820469265,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":1395.5,"t":126831,"tab_id":1351502398},{"kind":"idle","t":127232,"ts":1786820469666,"duration_ms":1102},{"kind":"scroll","ts":1786820470366,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":1100.5,"t":127932,"tab_id":1351502398},{"kind":"scroll","ts":1786820471331,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":900.5,"t":128897,"tab_id":1351502398},{"kind":"idle","t":129298,"ts":1786820471732,"duration_ms":1026},{"kind":"scroll","ts":1786820472365,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":702.5,"t":129931,"tab_id":1351502398},{"kind":"scroll","ts":1786820473265,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":692,"t":130831,"tab_id":1351502398},{"kind":"idle","t":131236,"ts":1786820473670,"duration_ms":9096},{"kind":"idle","t":140332,"ts":1786820482766,"duration_ms":3336},{"kind":"scroll","ts":1786820485699,"url":"http://localhost:8765/pages/explore-banks.html","x":0,"y":782,"t":143265,"tab_id":1351502398}]     → contents of events.json           (array)
+    []    → contents of console.json          (array)
+    [{"tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","entered_at":1786820342434,"left_at":1786820488550}]       → contents of tabs.json             (array)
+    [{"file":"screenshots/0000.png","t":199,"reason":"start","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":250919,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0001.png","t":8199,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":310633,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0002.png","t":16199,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":315833,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0003.jpg","t":24199,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/jpeg","bytes":118322,"mask_rects":[{"x":487,"y":0,"w":211,"h":6,"reason":"heuristic"},{"x":515,"y":24,"w":43,"h":22,"reason":"heuristic"}],"redaction_mode":"black"},{"file":"screenshots/0004.png","t":32200,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":274459,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0005.png","t":40200,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":274459,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0006.png","t":48200,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":274459,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0007.png","t":58199,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":240503,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0008.png","t":66199,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":254190,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0009.png","t":74200,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":261056,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0010.png","t":84199,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":265431,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0011.png","t":92200,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":253349,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0012.png","t":102200,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":232742,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0013.png","t":112199,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":254740,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0014.png","t":120200,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/png","bytes":248182,"mask_rects":[],"redaction_mode":"black"},{"file":"screenshots/0015.jpg","t":130199,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/jpeg","bytes":118152,"mask_rects":[{"x":515,"y":19,"w":43,"h":22,"reason":"heuristic"}],"redaction_mode":"black"},{"file":"screenshots/0016.jpg","t":140199,"reason":"periodic","tab_id":1351502398,"url":"http://localhost:8765/pages/explore-banks.html","mime":"image/jpeg","bytes":119472,"mask_rects":[{"x":487,"y":0,"w":211,"h":11,"reason":"heuristic"},{"x":515,"y":29,"w":43,"h":22,"reason":"heuristic"}],"redaction_mode":"black"}]      → contents of screenshots/index.json (array)
+
+  Binary assets (PNG/JPG screenshots, audio.webm) load via normal <img>/<audio>
+  tags using the relative paths already recorded in screenshots/index.json and
+  manifest.audio.file — those work fine from file://.
+
+  If a sentinel is left unreplaced (e.g. the viewer is loaded standalone for
+  development), viewer.js falls back to an empty default and renders a notice.
+-->
+<body>
+  <!-- Inlined bundle data. Replaced by assembleBundle. -->
+  <script type="application/json" id="manifest-data">__MANIFEST_JSON__</script>
+  <script type="application/json" id="events-data">__EVENTS_JSON__</script>
+  <script type="application/json" id="console-data">__CONSOLE_JSON__</script>
+  <script type="application/json" id="tabs-data">__TABS_JSON__</script>
+  <script type="application/json" id="shots-data">__SHOTS_JSON__</script>
+
+  <header class="top">
+    <div class="top-main">
+      <div class="label-block">
+        <div class="label" id="bundle-label">Recording</div>
+        <div class="description" id="bundle-description"></div>
+      </div>
+      <div class="meta-block" id="bundle-meta"></div>
+    </div>
+    <div class="hosts" id="bundle-hosts"></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="activity" role="tab">Activity</button>
+    <button class="tab" data-tab="console" role="tab">Console</button>
+    <button class="tab" data-tab="network" role="tab">Network</button>
+    <button class="tab" data-tab="screenshots" role="tab">Screenshots</button>
+    <button class="tab" data-tab="tabs" role="tab">Tabs</button>
+    <button class="tab" data-tab="manifest" role="tab">Manifest</button>
+  </nav>
+
+  <main class="main">
+    <!-- Activity tab: split into feed (left) + focus pane (right) -->
+    <section class="pane active" id="pane-activity" role="tabpanel">
+      <div class="split">
+        <div class="feed-col">
+          <div class="feed-head">
+            <input id="filter-text" class="input" placeholder="filter text…  (press / to focus)" autocomplete="off" />
+            <select id="filter-type" class="select" aria-label="Type filter">
+              <option value="">all kinds</option>
+            </select>
+            <label class="check">
+              <input id="only-interactions" type="checkbox" />
+              <span>only interactions</span>
+            </label>
+            <span class="feed-count muted" id="feed-count">0 / 0</span>
+          </div>
+          <div class="feed-wrap" id="feed-wrap">
+            <ul class="feed" id="feed"></ul>
+            <div class="empty" id="feed-empty">No events match the current filter.</div>
+          </div>
+          <div class="feed-hint muted">
+            <span>j/k navigate</span>
+            <span class="sep">·</span>
+            <span>Enter expand</span>
+            <span class="sep">·</span>
+            <span>/ filter</span>
+          </div>
+        </div>
+        <div class="focus-col" id="focus-col">
+          <div class="focus-empty muted">Select an event to see its details.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-console" role="tabpanel">
+      <div class="pane-head">
+        <input id="console-filter" class="input" placeholder="filter console…" autocomplete="off" />
+        <select id="console-level" class="select" aria-label="Level filter">
+          <option value="">all levels</option>
+          <option value="log">log</option>
+          <option value="info">info</option>
+          <option value="warn">warn</option>
+          <option value="error">error</option>
+          <option value="debug">debug</option>
+          <option value="trace">trace</option>
+        </select>
+        <span class="muted" id="console-count">0 entries</span>
+      </div>
+      <div class="scroll-body">
+        <ul class="console-list" id="console-list"></ul>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-network" role="tabpanel">
+      <div class="pane-head">
+        <input id="network-filter" class="input" placeholder="filter url…" autocomplete="off" />
+        <span class="muted" id="network-count">0 requests</span>
+      </div>
+      <div class="scroll-body">
+        <table class="network-table" id="network-table">
+          <thead>
+            <tr>
+              <th class="col-time">time</th>
+              <th class="col-method">method</th>
+              <th class="col-url">url</th>
+              <th class="col-status">status</th>
+              <th class="col-duration">dur</th>
+              <th class="col-size">size</th>
+            </tr>
+          </thead>
+          <tbody id="network-body"></tbody>
+        </table>
+        <div class="empty-inline muted" id="network-empty">
+          No network events in this bundle. The current recorder capture model
+          (<code>workbooks-recording/2.1</code>) does not emit <code>kind: "network"</code>;
+          this panel will populate automatically once network capture ships.
+        </div>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-screenshots" role="tabpanel">
+      <div class="pane-head">
+        <span class="muted" id="shots-count">0 screenshots</span>
+      </div>
+      <div class="scroll-body">
+        <div class="shots-grid" id="shots-grid"></div>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-tabs" role="tabpanel">
+      <div class="pane-head">
+        <span class="muted" id="tabs-count">0 tabs</span>
+      </div>
+      <div class="scroll-body">
+        <div class="tabs-timeline" id="tabs-timeline"></div>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-manifest" role="tabpanel">
+      <div class="scroll-body">
+        <pre class="json" id="manifest-view"></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot" id="audio-foot">
+    <audio id="audio" controls preload="metadata"></audio>
+    <button id="align-audio" class="btn" type="button" title="Seek audio to the currently selected event">Align to current event</button>
+    <span class="muted audio-hint" id="audio-hint">no audio</span>
+  </footer>
+
+  <!-- Lightbox overlay for enlarged screenshots -->
+  <div class="lightbox" id="lightbox" hidden>
+    <div class="lightbox-inner">
+      <img id="lightbox-img" alt="">
+      <button class="lightbox-close btn" id="lightbox-close" type="button">close</button>
+    </div>
+  </div>
+
+  <!-- Classic (non-module) script — ES modules are blocked on file:// in Chrome. -->
+  <script src="viewer.js"></script>
+</body>
+</html>
