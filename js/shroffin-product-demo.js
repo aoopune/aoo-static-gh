@@ -9,24 +9,24 @@
   "use strict";
 
   var WAIT = Object.freeze({
-    settle: 480,
-    typeChar: 22,
-    afterField: 110,
-    chip: 240,
-    /* Match live explore-banks See options → results timing */
-    searching: 1400,
-    searchFade: 750,
-    revealPause: 280,
-    scroll: 1100,
-    tab: 550,
-    filter: 360,
-    bank: 240,
-    delta: 550,
-    holdApply: 1000,
-    loopGap: 500,
-    press: 100,
-    move: 340,
-    click: 80
+    settle: 320,
+    typeChar: 14,
+    afterField: 70,
+    chip: 160,
+    /* Demo pace — shorter than live; frame CSS matches searchFade */
+    searching: 900,
+    searchFade: 550,
+    revealPause: 180,
+    scroll: 720,
+    tab: 360,
+    filter: 240,
+    bank: 160,
+    delta: 360,
+    holdApply: 650,
+    loopGap: 320,
+    press: 70,
+    move: 220,
+    click: 55
   });
 
   var FIELDS = [
@@ -335,7 +335,7 @@
     wraps.forEach(function (wrap) {
       wrap.classList.add("is-sel-fading-rows");
     });
-    await sleep(reduced() ? 0 : 160, signal);
+    await sleep(reduced() ? 0 : 100, signal);
     applyFilters(root, filters);
     wraps.forEach(function (wrap) {
       wrap.classList.remove("is-sel-fading-rows");
@@ -381,7 +381,7 @@
     el.classList.add("is-visible");
   }
 
-  /* Live hideSearching: fade ~750ms then hidden */
+  /* Demo hideSearching: fade matches WAIT.searchFade + frame CSS */
   async function hideSearching(root, signal) {
     var el = root.querySelector("[data-spd-searching]");
     if (!el) {
@@ -600,7 +600,7 @@
     await sleep(WAIT.settle, signal);
     showCursor(cursor, true);
     setCursorPos(cursor, 72, 96);
-    await sleep(140, signal);
+    await sleep(90, signal);
 
     /* 1 — Type the form */
     for (var f = 0; f < FIELDS.length; f++) {
@@ -669,7 +669,7 @@
 
     setApplyEnabled(root, rows.length > 0);
     var apply = root.querySelector("[data-spd-apply]");
-    await sleep(160, signal);
+    await sleep(100, signal);
     await clickPress(cursor, apply, signal);
     await sleep(WAIT.holdApply, signal);
 

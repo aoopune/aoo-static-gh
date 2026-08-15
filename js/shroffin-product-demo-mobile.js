@@ -1,32 +1,36 @@
 /**
  * Mobile product demo choreography — phone frame only.
- * Story: type → See options → tabs → filter sheet → Private rematch →
- * select → dock Apply once. Plays through once, then stops (parent Pause can stop early).
+ * Story: type → See options → scroll to banks → peek-slide columns →
+ * tabs (peek each) → filter sheet → Private rematch → select → dock Apply once.
+ * Plays through once, then stops (parent Pause can stop early).
  * NEVER scrollIntoView. NEVER press Women. NEVER show a mouse/finger cursor — tap ripple only.
  */
 (function () {
   "use strict";
 
   var WAIT = Object.freeze({
-    settle: 480,
-    typeChar: 22,
-    afterField: 110,
-    chip: 240,
-    /* Match live explore-banks See options → results timing */
-    searching: 1400,
-    searchFade: 750,
-    revealPause: 280,
-    scroll: 1100,
-    tab: 550,
-    sheet: 900,
-    filter: 360,
-    bank: 240,
-    delta: 550,
-    holdApply: 1000,
-    loopGap: 500,
-    press: 100,
-    move: 340,
-    click: 80
+    settle: 320,
+    typeChar: 14,
+    afterField: 70,
+    chip: 160,
+    /* Demo pace — shorter than live; frame CSS matches searchFade */
+    searching: 900,
+    searchFade: 550,
+    revealPause: 180,
+    scroll: 720,
+    /* Soft sideways peek so hidden columns read as slidable */
+    colSlide: 900,
+    colHold: 280,
+    tab: 360,
+    sheet: 580,
+    filter: 240,
+    bank: 160,
+    delta: 360,
+    holdApply: 650,
+    loopGap: 320,
+    press: 70,
+    move: 220,
+    click: 55
   });
 
   var FIELDS = [
@@ -339,7 +343,7 @@
     wraps.forEach(function (wrap) {
       wrap.classList.add("is-sel-fading-rows");
     });
-    await sleep(reduced() ? 0 : 160, signal);
+    await sleep(reduced() ? 0 : 100, signal);
     applyFilters(root, filters);
     wraps.forEach(function (wrap) {
       wrap.classList.remove("is-sel-fading-rows");
@@ -509,6 +513,60 @@
     setScrollY(resultsScrollTop(root));
   }
 
+  function visibleTableScroll(root) {
+    var wrap = root.querySelector(".hlc-table-wrap:not([hidden])");
+    return wrap ? wrap.querySelector(".hlc-table-scroll") : null;
+  }
+
+  function setScrollX(el, x) {
+    if (!el) return;
+    el.scrollLeft = x;
+  }
+
+  async function animateScrollX(el, toX, signal) {
+    if (!el) return;
+    var fromX = el.scrollLeft;
+    var dist = toX - fromX;
+    if (Math.abs(dist) < 1 || reduced()) {
+      setScrollX(el, toX);
+      return;
+    }
+    var duration = WAIT.colSlide;
+    var start = performance.now();
+    await new Promise(function (resolve) {
+      function frame(now) {
+        if (signal.aborted) {
+          resolve();
+          return;
+        }
+        var t = Math.min(1, (now - start) / duration);
+        /* Soft ease-out — same curve as vertical demo scroll */
+        var eased = 1 - Math.pow(1 - t, 3.2);
+        setScrollX(el, fromX + dist * eased);
+        if (t < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          resolve();
+        }
+      }
+      requestAnimationFrame(frame);
+    });
+  }
+
+  /* Soft peek right then back — teaches that metric columns slide sideways. */
+  async function peekSlideColumns(root, signal) {
+    var el = visibleTableScroll(root);
+    if (!el) return;
+    var maxX = Math.max(0, el.scrollWidth - el.clientWidth);
+    if (maxX < 24) return;
+    /* About half a phone width, or the full overflow if smaller */
+    var peekX = Math.min(maxX, Math.max(160, Math.round(el.clientWidth * 0.55)));
+    await animateScrollX(el, peekX, signal);
+    await sleep(WAIT.colHold, signal);
+    await animateScrollX(el, 0, signal);
+    await sleep(WAIT.settle, signal);
+  }
+
   async function typeField(root, key, text, signal) {
     var input = root.querySelector('[data-spd-input="' + key + '"]');
     var shell = root.querySelector('[data-spd-shell="' + key + '"]');
@@ -638,17 +696,21 @@
     await sleep(WAIT.revealPause, signal);
     await softScrollToResults(root, signal);
     await sleep(WAIT.settle, signal);
+    /* Peek sideways so Rate → EMI (and later charge cols) read as slidable */
+    await peekSlideColumns(root, signal);
 
-    /* 5 — Glance Charges → Other charges → Overview */
+    /* 5 — Glance Charges → Other charges → Overview (peek cols on each) */
     var tabCharges = root.querySelector('[data-spd-tab="charges"]');
     await tapOn(tabCharges, signal);
     setTab(root, "charges");
     await sleep(WAIT.tab, signal);
+    await peekSlideColumns(root, signal);
 
     var tabLater = root.querySelector('[data-spd-tab="later"]');
     await tapOn(tabLater, signal);
     setTab(root, "later");
     await sleep(WAIT.tab, signal);
+    await peekSlideColumns(root, signal);
 
     var tabOverview = root.querySelector('[data-spd-tab="essentials"]');
     await tapOn(tabOverview, signal);
@@ -670,7 +732,7 @@
       var scrollBox = filtersScroll.getBoundingClientRect();
       filtersScroll.scrollTop += chipBox.top - scrollBox.top - 48;
     }
-    await sleep(140, signal);
+    await sleep(90, signal);
 
     await tapOn(privateChip, signal);
     setPressed(privateChip, true);
@@ -694,7 +756,7 @@
     }
 
     setApplyEnabled(root, rows.length > 0);
-    await sleep(160, signal);
+    await sleep(100, signal);
     await tapOn(root.querySelector("[data-spd-apply]"), signal);
     await sleep(WAIT.holdApply, signal);
   }

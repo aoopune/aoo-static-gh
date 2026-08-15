@@ -177,9 +177,9 @@
     z-index: 2;
     margin-inline: calc(-1 * max(1rem, env(safe-area-inset-left)));
     padding:
-      1rem
+      0.75rem
       max(1rem, env(safe-area-inset-left))
-      calc(1rem + env(safe-area-inset-bottom))
+      calc(0.5rem + env(safe-area-inset-bottom, 0px))
       max(1rem, env(safe-area-inset-right));
     background: linear-gradient(
       to top,
@@ -238,9 +238,9 @@
     gap: 1.25rem;
     margin-inline: 0;
     padding:
-      1rem
+      0.75rem
       max(1rem, env(safe-area-inset-left))
-      max(1.25rem, calc(1rem + env(safe-area-inset-bottom, 0px)))
+      calc(0.5rem + env(safe-area-inset-bottom, 0px))
       max(1rem, env(safe-area-inset-right));
     background: linear-gradient(
       to top,

@@ -104,6 +104,7 @@ testApfSearch()
 
 async function testHomeLoanCompare() {
   var compare = require('../src/home-loan-compare.js');
+  var CHARGE_NOT_PUBLISHED_BY_BANK = compare.CHARGE_NOT_PUBLISHED_BY_BANK;
   var fs = require('fs');
   var path = require('path');
   var dataset = JSON.parse(
@@ -562,8 +563,8 @@ async function testHomeLoanCompare() {
     'rate change type-switch label follows the rate filter'
   );
   ok(
-    compare.formatRateChangeChargeDisplay(null).main === 'Not listed',
-    'missing rate change charge displays as not listed'
+    compare.formatRateChangeChargeDisplay(null).main === CHARGE_NOT_PUBLISHED_BY_BANK,
+    'missing rate change charge displays as not published by bank'
   );
   ok(
     compare.formatRateChangeChargeDisplay({ fixed_amount: 0 }).main === '₹0',
@@ -696,8 +697,8 @@ async function testHomeLoanCompare() {
     'side panel sections use disclose chevrons with Expand/Collapse all on the right'
   );
   ok(
-    compare.formatPrepaymentChargeDisplay(null).main === 'Not listed',
-    'missing prepayment charge displays as not listed'
+    compare.formatPrepaymentChargeDisplay(null).main === CHARGE_NOT_PUBLISHED_BY_BANK,
+    'missing prepayment charge displays as not published by bank'
   );
   ok(
     compare.formatPrepaymentChargeDisplay({
@@ -837,14 +838,14 @@ async function testHomeLoanCompare() {
         return row.id;
       })
       .join(',') === 'free,half,listed,missing',
-    'prepayment sort places Nil (₹0) first and not listed last'
+    'prepayment sort places Nil (₹0) first and not published by bank last'
   );
   compare.applyPrepaymentMethodToRows(
     syntheticPrepayRows,
     compare.PREPAYMENT_METHOD_BT
   );
   ok(
-    syntheticPrepayRows[0].prepaymentChargeDisplay.main === 'Not listed' &&
+    syntheticPrepayRows[0].prepaymentChargeDisplay.main === CHARGE_NOT_PUBLISHED_BY_BANK &&
       syntheticPrepayRows[3].prepaymentChargeDisplay.main === '2.00%',
     'prepayment method switch remaps display without rematching'
   );
@@ -1220,7 +1221,7 @@ async function testHomeLoanCompare() {
   );
   ok(
     rows.every(function (row) {
-      return row.overdueChargeDisplay.main !== 'Not listed';
+      return row.overdueChargeDisplay.main !== CHARGE_NOT_PUBLISHED_BY_BANK;
     }),
     'compare lists an overdue rule for every matched bank'
   );
@@ -1315,7 +1316,7 @@ async function testHomeLoanCompare() {
   );
   ok(
     rows.filter(function (row) {
-      return row.emiBounceChargeDisplay.main !== 'Not listed';
+      return row.emiBounceChargeDisplay.main !== CHARGE_NOT_PUBLISHED_BY_BANK;
     }).length >= rows.length - 1,
     'compare lists EMI bounce rules where the source data provides them'
   );
@@ -1793,7 +1794,7 @@ async function testHomeLoanCompare() {
   hdfcLater.concat(hdfcOther).forEach(function (section) {
     var amount =
       section.entries && section.entries[0] && section.entries[0].amount;
-    if (amount === 'Not listed') return;
+    if (amount === CHARGE_NOT_PUBLISHED_BY_BANK) return;
     hdfcShown[section.label] = true;
   });
   var hdfcAfterNames = {};

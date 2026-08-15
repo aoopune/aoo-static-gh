@@ -2272,6 +2272,12 @@
       border-block-width: var(--shroffin-btn-elevated-band);
     }
 
+    /*
+     * Keep the 4px transparent tap band for hit size, but paint the solid
+     * blue through it (border-box). padding-box left a gap that showed the
+     * page surface as a white ring — unlike desktop’s edge-to-edge fill.
+     * Outline secondary CTAs still use padding-box + ::before below.
+     */
     .home-hero-cta-primary,
     .lm-cta,
     .lm-cta-light,
@@ -2279,7 +2285,7 @@
     .about-cta-primary,
     .hlc-btn-primary {
       border-block-color: transparent;
-      background-clip: padding-box;
+      background-clip: border-box;
     }
 
     .home-hero-cta-secondary,

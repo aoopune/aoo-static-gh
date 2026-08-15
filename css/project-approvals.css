@@ -211,7 +211,8 @@ body {
     min-height: var(--shroffin-btn-elevated-min, 44px);
     border-block-width: var(--shroffin-btn-elevated-band, 4px);
     border-block-color: transparent;
-    background-clip: padding-box;
+    /* Match shell primary CTAs — fill through the tap band, no white ring. */
+    background-clip: border-box;
   }
 }
 

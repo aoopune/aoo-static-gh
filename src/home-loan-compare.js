@@ -82,6 +82,15 @@ function bankLogoHtml(bankName) {
   );
 }
 
+/** Circled + for the bank-row “More” control (opens more details — not an info tip). */
+const BANK_DETAIL_MARK_SVG =
+  '<span class="hlc-bank-detail-mark" aria-hidden="true">' +
+  '<svg viewBox="0 0 16 16" focusable="false">' +
+  '<circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/>' +
+  /* Plus shifted 0.35 up in the viewBox — geometric mid reads low in a circle. */
+  '<path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>' +
+  "</svg></span>";
+
 function defaultProductFilters() {
   return {
     govtPsu: false,
@@ -211,6 +220,20 @@ const FIXED_FORECLOSURE_NOTE =
   "Foreclosure means closing the full loan early. Lenders usually apply the same charge as prepayment, so foreclosure is not listed separately.";
 const PROCESSING_FEE_LOGIN_NOTE =
   "* Part of the processing fee is often taken upfront as a login fee to file the application. The amount differs by bank and is included in the processing fee shown — we don’t list it separately yet.";
+/**
+ * Customer label when the bank does not publish this charge or rule.
+ * Source sheets may mark NA; that never reaches the UI — missing rows use this string.
+ */
+const CHARGE_NOT_PUBLISHED_BY_BANK = "Not published by bank";
+
+function chargeNotPublishedDisplay() {
+  return { main: CHARGE_NOT_PUBLISHED_BY_BANK, details: [], note: "" };
+}
+
+function isChargeNotPublishedLabel(value) {
+  return normalizeText(value) === normalizeText(CHARGE_NOT_PUBLISHED_BY_BANK);
+}
+
 const PROPERTY_CHECK_ORIGIN = "Temporary.property_checks";
 const PROPERTY_CHECK_CHARGE_NAMES = [
   "Legal and technical",
@@ -1612,7 +1635,7 @@ function drawerPartPrepaymentRulesHtml(rules) {
 }
 
 function formatPrepaymentChargeDisplay(charge) {
-  if (!charge) return { main: "Not listed", details: [], note: "" };
+  if (!charge) return chargeNotPublishedDisplay();
   if (isPrepaymentNotCharged(charge)) {
     return {
       main: "Nil (₹0)",
@@ -2013,7 +2036,7 @@ function applyRateChangeMethodToRows(rows, method) {
 }
 
 function formatRateChangePanelText(charge) {
-  if (!charge) return "Not listed";
+  if (!charge) return CHARGE_NOT_PUBLISHED_BY_BANK;
   const display = formatChargeDisplay(charge);
   return [
     display.main +
@@ -2059,7 +2082,7 @@ function expandBenchmarkSwitchSide(value) {
 }
 
 function formatBenchmarkSwitchDetail(charge) {
-  if (!charge) return "Not listed";
+  if (!charge) return CHARGE_NOT_PUBLISHED_BY_BANK;
   let text = formatRateChangePanelText(charge);
   const from = charge.benchmark_switch_from;
   const to = charge.benchmark_switch_to;
@@ -2719,7 +2742,7 @@ function formatEncodedChargeNote(note) {
 
 function formatChargeDisplay(charge, options) {
   if (!charge) {
-    return { main: "Not listed", details: [], note: "" };
+    return chargeNotPublishedDisplay();
   }
 
   const settings = options || {};
@@ -2890,7 +2913,7 @@ function formatChargeDisplay(charge, options) {
 }
 
 function formatChargeDisplayText(display) {
-  if (!display) return "Not listed";
+  if (!display) return CHARGE_NOT_PUBLISHED_BY_BANK;
   return [
     display.main +
       (display.mainSuffix ? " " + display.mainSuffix : "") +
@@ -3415,7 +3438,7 @@ function formatChargeValue(charge, loanAmount) {
     hideBasis: true,
     hideUnit: true
   });
-  if (display.main && display.main !== "Not listed") return display.main;
+  if (display.main && !isChargeNotPublishedLabel(display.main)) return display.main;
   if (charge.note_1) return charge.note_1;
   return "See bank rules";
 }
@@ -3424,7 +3447,7 @@ function formatChargeValue(charge, loanAmount) {
 function formatChargeRule(charge) {
   if (!charge) return "—";
   const display = formatChargeDisplay(charge, { hideGst: true });
-  if (!display.main || display.main === "Not listed") {
+  if (!display.main || isChargeNotPublishedLabel(display.main)) {
     if (charge.note_1) return charge.note_1;
     return "See bank rules";
   }
@@ -3468,7 +3491,7 @@ function isShownOnExploreTable(charge) {
 
 /** Headline amount only — no basis/unit/GST/notes. */
 function formatChargeAmountHeadline(charge) {
-  if (!charge) return "Not listed";
+  if (!charge) return CHARGE_NOT_PUBLISHED_BY_BANK;
   const display = formatChargeDisplay(charge, {
     hideBasis: true,
     hideUnit: true,
@@ -4941,7 +4964,7 @@ function listAdditionalAfterOfferPanelSections(charges, query, offer) {
   return buildFeeSectionsFromMatched(matched, laterFeeCategory);
 }
 
-function notListedFeeSection(label) {
+function unpublishedFeeSection(label) {
   return {
     id: label,
     label: label,
@@ -4949,7 +4972,7 @@ function notListedFeeSection(label) {
       {
         what: label,
         detail: "",
-        amount: "Not listed",
+        amount: CHARGE_NOT_PUBLISHED_BY_BANK,
         meta: "",
         chargeHeaderUnit: "",
         gstApplicable: false
@@ -4988,7 +5011,7 @@ function listDrawerOtherChargeSections(charges, offer) {
   const seen = Object.create(null);
   preferred.forEach(function (label) {
     seen[label] = true;
-    ordered.push(byLabel[label] || notListedFeeSection(label));
+    ordered.push(byLabel[label] || unpublishedFeeSection(label));
   });
   built
     .slice()
@@ -5064,8 +5087,8 @@ function listSchemeChargePanelRows(charges, offer) {
     const first = block.variants && block.variants[0];
     const summary = first
       ? [first.summary, first.meta].filter(Boolean).join(" · ")
-      : "Not listed";
-    return [block.name, summary || "Not listed"];
+      : CHARGE_NOT_PUBLISHED_BY_BANK;
+    return [block.name, summary || CHARGE_NOT_PUBLISHED_BY_BANK];
   });
 }
 
@@ -5075,8 +5098,8 @@ function listAdditionalAfterOfferPanelRows(charges, query, offer) {
       const first = block.variants && block.variants[0];
       const summary = first
         ? [first.summary, first.meta].filter(Boolean).join(" · ")
-        : "Not listed";
-      return [block.name, summary || "Not listed"];
+        : CHARGE_NOT_PUBLISHED_BY_BANK;
+      return [block.name, summary || CHARGE_NOT_PUBLISHED_BY_BANK];
     }
   );
 }
@@ -5090,7 +5113,7 @@ function buildChargePanelVariant(rows) {
     first && first.kind === "slab-table" ? first : null;
   return {
     label: "",
-    summary: slabEntry ? "" : first ? first.amount : "Not listed",
+    summary: slabEntry ? "" : first ? first.amount : CHARGE_NOT_PUBLISHED_BY_BANK,
     meta: slabEntry ? "" : first ? first.meta : "",
     slabIntro: "",
     slabLeftHeader: slabEntry ? slabEntry.slabLeftHeader : "Range",
@@ -5116,7 +5139,7 @@ function buildChargePanelBlock(name, charges) {
     variants: [
       {
         label: "",
-        summary: slabEntry ? "" : first ? first.amount : "Not listed",
+        summary: slabEntry ? "" : first ? first.amount : CHARGE_NOT_PUBLISHED_BY_BANK,
         meta: slabEntry ? "" : first ? first.meta : "",
         slabIntro: "",
         slabLeftHeader: slabEntry ? slabEntry.slabLeftHeader : "Range",
@@ -5675,7 +5698,7 @@ function escapeHtml(value) {
 
 function chargeDisplayHtml(display, noteGroupId, options) {
   const opts = options || {};
-  const value = display || { main: "Not listed", details: [], note: "" };
+  const value = display || chargeNotPublishedDisplay();
   const details = (value.details || [])
     .map(function (detail) {
       return (
@@ -6518,7 +6541,7 @@ function initPage() {
       '<th class="hlc-sticky-col" scope="col" id="hlc-th-bank">' +
       '<div class="hlc-bank-head">' +
       headerCheckHtml(selectAllCheckState(visibleRows)) +
-      '<span class="hlc-bank-head-label">Bank</span>' +
+      '<span class="hlc-bank-head-label">Lenders</span>' +
       "</div></th>";
     if (useFillCol) {
       headHtml +=
@@ -6729,7 +6752,9 @@ function initPage() {
           row.id +
           '" aria-label="More about ' +
           escapeHtml(row.bankName) +
-          '"><span class="hlc-bank-detail-label">More</span><svg class="hlc-bank-detail-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="5" r="1" fill="currentColor"/><path d="M8 7.15v4.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>' +
+          '"><span class="hlc-bank-detail-label">More</span>' +
+          BANK_DETAIL_MARK_SVG +
+          "</button>" +
           "</div>" +
           "</div></div></td>" +
           (useFillCol ? '<td class="hlc-col-fill" aria-hidden="true"></td>' : "") +
@@ -6752,7 +6777,8 @@ function initPage() {
    *
    * Phone Overview hugs the widest header/value. Phone Charges / Other charges
    * hug the header row only (label, footnote marker, sort arrows + padding).
-   * Bank stays on CSS width.
+   * Phone Bank hugs the widest lender name (nowrap) + checkbox/logo chrome so
+   * empty sticky gutter does not cover Rate.
    */
   function shouldHugPhoneCompareColumns(group) {
     return (
@@ -6763,7 +6789,7 @@ function initPage() {
   }
 
   function phoneCompareColSkipIndices(group, headCells) {
-    const skip = new Set([0]);
+    const skip = new Set();
     if (group === "laterCharges") {
       const fillCell = headCells[1];
       if (fillCell && fillCell.classList.contains("hlc-col-fill")) {
@@ -6803,6 +6829,83 @@ function initPage() {
     const width = Math.ceil(probe.getBoundingClientRect().width + pad);
     document.body.removeChild(probe);
     return width;
+  }
+
+  /**
+   * Phone Lenders column: width from checkbox + logo + bank name (nowrap).
+   * Scheme ellipsizes inside that width; More stays on the same line at the
+   * trailing edge (CSS). Cap so Rate + Loan amount remain on-screen.
+   */
+  function measurePhoneBankColWidth(cell) {
+    if (!cell) return 0;
+    const padCs = window.getComputedStyle(cell);
+    const pad =
+      (parseFloat(padCs.paddingLeft) || 0) +
+      (parseFloat(padCs.paddingRight) || 0);
+
+    if (cell.tagName === "TH") {
+      const head = cell.querySelector(".hlc-bank-head");
+      return head ? measureProbeWidth(head, cell) : measureProbeWidth(cell, cell);
+    }
+
+    const bankCell = cell.querySelector(".hlc-bank-cell");
+    const name = bankCell && bankCell.querySelector(".hlc-bank-name");
+    if (!bankCell || !name) return Math.ceil(pad);
+
+    const check = bankCell.querySelector(".hlc-row-check");
+    const bankCs = window.getComputedStyle(bankCell);
+    const gap = parseFloat(bankCs.columnGap || bankCs.gap) || 0;
+    const nameCs = window.getComputedStyle(name);
+    const nameGap = parseFloat(nameCs.columnGap || nameCs.gap) || 0;
+
+    const probe = document.createElement("div");
+    probe.setAttribute("aria-hidden", "true");
+    probe.style.cssText =
+      "position:absolute;left:-10000px;top:0;visibility:hidden;pointer-events:none;" +
+      "display:flex;align-items:center;flex-wrap:nowrap;" +
+      "width:max-content;max-width:none;box-sizing:border-box;";
+    probe.style.gap = gap + "px";
+
+    if (check) {
+      const checkClone = check.cloneNode(true);
+      checkClone.style.flex = "0 0 auto";
+      probe.appendChild(checkClone);
+    }
+
+    const nameClone = name.cloneNode(true);
+    nameClone.style.cssText =
+      "display:inline-flex;align-items:center;flex-wrap:nowrap;" +
+      "width:max-content;max-width:none;min-width:0;white-space:nowrap;";
+    nameClone.style.gap = nameGap + "px";
+    const nameText = nameClone.querySelector(".hlc-bank-name-text");
+    if (nameText) {
+      nameText.style.whiteSpace = "nowrap";
+      nameText.style.flex = "0 0 auto";
+      nameText.style.minWidth = "0";
+      nameText.style.overflow = "visible";
+    }
+    const logo = nameClone.querySelector(".hlc-bank-logo");
+    if (logo) {
+      logo.style.flex = "0 0 auto";
+      logo.style.width = "1.25rem";
+      logo.style.height = "1.25rem";
+    }
+    probe.appendChild(nameClone);
+
+    document.body.appendChild(probe);
+    const width = Math.ceil(probe.getBoundingClientRect().width + pad);
+    document.body.removeChild(probe);
+    return width;
+  }
+
+  function phoneBankColCapPx() {
+    /*
+     * Sticky bank must leave room for a full Rate value beside it. Loan amount
+     * may peek or scroll. Hard ceiling keeps Rate from sliding under Bank.
+     */
+    const rateReserve = Math.ceil(5.25 * 16);
+    const fromViewport = window.innerWidth - rateReserve;
+    return Math.max(148, Math.min(200, fromViewport));
   }
 
   /**
@@ -6918,7 +7021,7 @@ function initPage() {
     const zeroPx = "0px";
     const headerOnly = shouldSizePhoneColsFromHeaderOnly(state.group);
 
-    /* Skip bank (and later-charges fill); size cols to content or header only. */
+    /* Skip later-charges fill; size bank + metric cols to content or header. */
     for (let i = 0; i < headCells.length; i++) {
       if (skipIndices.has(i)) {
         if (headCells[i].classList.contains("hlc-col-fill")) {
@@ -6942,10 +7045,20 @@ function initPage() {
         continue;
       }
 
-      let maxW = headerOnly
-        ? measurePhoneCompareColHeaderWidth(headCells[i])
-        : measureOverviewColContentWidth(headCells[i]);
-      if (!headerOnly) {
+      let maxW = 0;
+      if (headCells[i].classList.contains("hlc-sticky-col")) {
+        maxW = measurePhoneBankColWidth(headCells[i]);
+        for (let r = 0; r < bodyRows.length; r++) {
+          maxW = Math.max(
+            maxW,
+            measurePhoneBankColWidth(bodyRows[r].children[i])
+          );
+        }
+        maxW = Math.min(maxW, phoneBankColCapPx());
+      } else if (headerOnly) {
+        maxW = measurePhoneCompareColHeaderWidth(headCells[i]);
+      } else {
+        maxW = measureOverviewColContentWidth(headCells[i]);
         for (let r = 0; r < bodyRows.length; r++) {
           maxW = Math.max(
             maxW,
@@ -8334,15 +8447,15 @@ function initPage() {
     );
   }
 
-  function feeEntryAmountIsNotListed(entry) {
+  function feeEntryAmountIsUnpublished(entry) {
     const amount = String((entry && entry.amount) || "")
       .replace(/\u2014/g, "—")
       .trim();
     if (!amount || amount === "—") return true;
-    return /^not listed$/i.test(amount);
+    return isChargeNotPublishedLabel(amount);
   }
 
-  function feeSectionIsNotListedOnly(section) {
+  function feeSectionIsUnpublishedOnly(section) {
     if (!section || !section.entries || !section.entries.length) return false;
     if (
       section.entries.some(function (entry) {
@@ -8352,24 +8465,26 @@ function initPage() {
       return false;
     }
     if ((section.notes || []).length) return false;
-    return section.entries.every(feeEntryAmountIsNotListed);
+    return section.entries.every(feeEntryAmountIsUnpublished);
   }
 
-  function drawerFeeNotListedRowHtml(label) {
+  function drawerFeeUnpublishedRowHtml(label) {
     return (
       '<div class="hlc-fee-flat-row">' +
       '<span class="hlc-fee-flat-name">' +
       escapeHtml(label || "Charge") +
       "</span>" +
-      '<span class="hlc-fee-flat-value">Not listed</span>' +
+      '<span class="hlc-fee-flat-value">' +
+      escapeHtml(CHARGE_NOT_PUBLISHED_BY_BANK) +
+      "</span>" +
       "</div>"
     );
   }
 
   function drawerFeeChargeBlockHtml(section) {
     if (!section || !section.entries || !section.entries.length) return "";
-    if (section.label && feeSectionIsNotListedOnly(section)) {
-      return drawerFeeNotListedRowHtml(section.label);
+    if (section.label && feeSectionIsUnpublishedOnly(section)) {
+      return drawerFeeUnpublishedRowHtml(section.label);
     }
     const notesHtml = (section.notes || [])
       .map(function (note) {
@@ -8398,14 +8513,14 @@ function initPage() {
     return drawerDiscloseHtml(section.label, body, { nested: true });
   }
 
-  function orderFeeSectionsListedFirst(sections) {
-    const listed = [];
-    const notListed = [];
+  function orderFeeSectionsPublishedFirst(sections) {
+    const published = [];
+    const unpublished = [];
     (sections || []).forEach(function (section) {
-      if (feeSectionIsNotListedOnly(section)) notListed.push(section);
-      else listed.push(section);
+      if (feeSectionIsUnpublishedOnly(section)) unpublished.push(section);
+      else published.push(section);
     });
-    return listed.concat(notListed);
+    return published.concat(unpublished);
   }
 
   function drawerFeeCategoryHtml(section) {
@@ -8418,7 +8533,7 @@ function initPage() {
     if (!sections || !sections.length) {
       return drawerSection(title, [["Applicable charges", "None listed"]]);
     }
-    const ordered = orderFeeSectionsListedFirst(sections);
+    const ordered = orderFeeSectionsPublishedFirst(sections);
     const gstNote =
       settings.showGstNote && feeSectionsHaveGst(ordered)
         ? '<p class="hlc-fee-note">' +
@@ -9594,6 +9709,9 @@ module.exports = {
   rankOverdueCharge,
   rankEmiBounceCharge,
   isPrepaymentNotCharged,
+  CHARGE_NOT_PUBLISHED_BY_BANK,
+  chargeNotPublishedDisplay,
+  isChargeNotPublishedLabel,
   pickOwnFundsPrepayCharge,
   pickTakeoverPrepayCharge,
   formatPrepaymentChargeDisplay,

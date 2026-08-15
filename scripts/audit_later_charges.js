@@ -9,6 +9,7 @@ const fs = require("fs");
 const path = require("path");
 const { spawnSync } = require("child_process");
 const compare = require("../src/home-loan-compare.js");
+const CHARGE_NOT_PUBLISHED_BY_BANK = compare.CHARGE_NOT_PUBLISHED_BY_BANK;
 
 const ROOT = path.join(__dirname, "..");
 const JSON_PATH = path.join(ROOT, "data", "home-loans-compare.json");
@@ -113,7 +114,7 @@ function auditOverdue(row, rateLabel) {
         "atom=" + charge.fixed_amount + " main=" + disp.main
       );
     }
-  } else if (disp.main === "Not listed" || disp.main === "—") {
+  } else if (disp.main === CHARGE_NOT_PUBLISHED_BY_BANK || disp.main === "—") {
     issue("overdue_empty_atom", bank, JSON.stringify({
       type: charge.charge_type,
       special: charge.special_rule,
@@ -285,7 +286,7 @@ function auditPrepay(row, rateLabel) {
   function check(label, charge) {
     const disp = compare.formatPrepaymentChargeDisplay(charge);
     if (!charge) {
-      if (disp.main !== "Not listed") {
+      if (disp.main !== CHARGE_NOT_PUBLISHED_BY_BANK) {
         issue("prepay_" + label + "_orphan", bank, disp.main);
       } else {
         note("prepay_" + label + "_not_listed", bank, "no atom in package");
@@ -646,7 +647,7 @@ function auditRateChange(row, rateLabel) {
     const disp = probe.rateChangeChargeDisplay;
     const charge = entry.charge;
     if (!charge) {
-      if (!disp || disp.main !== "Not listed") {
+      if (!disp || disp.main !== CHARGE_NOT_PUBLISHED_BY_BANK) {
         issue(
           "rate_change_missing_display",
           bank,

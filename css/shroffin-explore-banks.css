@@ -2902,17 +2902,27 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   height: auto;
 }
 
+/*
+ * Sticky Bank column occlusion.
+ * Scrolling metric cells must never paint through Bank (visible as glyph
+ * fragments in the padding left of the checkbox). Table-cell sticky is a
+ * weak compositing layer unless it owns an opaque fill, stacks above
+ * metrics, and clips its own box.
+ */
 .hlc-sticky-col {
   position: sticky;
   left: 0;
   z-index: 2;
-  background: var(--hlc-page-bg);
   width: 18rem;
   min-width: 18rem;
   max-width: 18rem;
   white-space: normal;
-  overflow: visible;
+  overflow: hidden;
   box-shadow: none;
+  background-color: var(--hlc-page-bg);
+  background-clip: padding-box;
+  /* Stacking context without transform (transform can break sticky). */
+  isolation: isolate;
 }
 
 /* Slight inset so the checkbox is not flush against the edge. */
@@ -2926,14 +2936,48 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   left: 0;
   top: auto;
   z-index: 5;
-  background: var(--hlc-header-bg);
+  background-color: var(--hlc-header-bg);
 }
 
 .hlc-compare td.hlc-sticky-col {
   position: sticky;
   left: 0;
   z-index: 2;
-  background: var(--hlc-page-bg);
+  background-color: var(--hlc-page-bg);
+}
+
+/*
+ * Opaque shield inside the sticky layer. Table-cell backgrounds alone often
+ * fail to occlude under-scrolling text; this rect is what actually covers.
+ */
+.hlc-compare th.hlc-sticky-col::before,
+.hlc-compare td.hlc-sticky-col::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--hlc-page-bg);
+  pointer-events: none;
+}
+
+.hlc-compare th.hlc-sticky-col::before {
+  background-color: var(--hlc-header-bg);
+}
+
+.hlc-compare tbody tr.hlc-selectable-row:not(.is-selected):hover td.hlc-sticky-col::before,
+.hlc-compare tbody tr.hlc-selectable-row:focus-visible td.hlc-sticky-col::before {
+  background-color: var(--hlc-row-hover);
+}
+
+.hlc-compare tbody tr.is-selected td.hlc-sticky-col::before {
+  background-color: var(--hlc-row-selected);
+}
+
+/* Keep metric cells under the sticky Bank layer while they slide. */
+.hlc-compare thead th:not(.hlc-sticky-col),
+.hlc-compare tbody td:not(.hlc-sticky-col) {
+  position: relative;
+  z-index: 0;
 }
 
 .hlc-compare tbody tr {
@@ -3205,6 +3249,8 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 }
 
 .hlc-bank-cell {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: flex-start;
   gap: var(--hlc-check-gap);
@@ -3212,6 +3258,8 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 }
 
 .hlc-bank-head {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: var(--hlc-check-gap);
@@ -3345,7 +3393,6 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 }
 
 .hlc-bank-sub {
-  --hlc-detail-mark-size: 0.6875rem;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -3369,16 +3416,17 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   content: ".";
 }
 
-/* Secondary disclosure — “More” + blue circled i, shared flex slot on every row.
-   Text carries the action; the mark signals “about this bank.” Fixed rem mark
-   size so every row matches (em sizing + inline flow made them drift). */
+/* Secondary disclosure — “More” + blue circled +, shared flex slot on every row.
+   Text carries the action; the mark signals “open more details.”
+   Mark uses the same wrap pattern as field-help (inline-flex + line-height 0) so
+   the SVG does not sit on a replaced-element baseline under the letters. */
 .hlc-bank-detail {
   appearance: none;
   display: inline-flex;
   align-items: center;
   align-self: baseline;
   flex: 0 0 auto;
-  gap: 0.3em;
+  gap: 0.28em;
   white-space: nowrap;
   border: none;
   background: none;
@@ -3386,7 +3434,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   font: inherit;
   font-size: inherit;
   font-weight: 400;
-  line-height: inherit;
+  line-height: 1;
   cursor: pointer;
   margin: 0;
   padding: 0;
@@ -3398,7 +3446,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 .hlc-bank-detail-label {
   color: inherit;
   font-weight: 400;
-  line-height: inherit;
+  line-height: 1;
   text-decoration: none;
 }
 
@@ -3419,15 +3467,27 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 }
 
 .hlc-bank-detail-mark {
-  display: block;
-  box-sizing: border-box;
-  width: var(--hlc-detail-mark-size, 0.6875rem);
-  height: var(--hlc-detail-mark-size, 0.6875rem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex: 0 0 auto;
-  overflow: visible;
+  box-sizing: border-box;
+  width: 0.85em;
+  height: 0.85em;
+  line-height: 0;
   color: var(--shroffin-link, #3f62c8);
   opacity: 0.88;
+  /* Latin “More” lives above the baseline; lift the mark to that band. */
+  position: relative;
+  bottom: 0.12em;
   transition: opacity var(--shroffin-micro-duration, 0.5s) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hlc-bank-detail-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
 .hlc-bank-detail:hover .hlc-bank-detail-mark,
@@ -3464,7 +3524,6 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 
   .hlc-bank-sub {
     font-size: 0.8125rem;
-    --hlc-detail-mark-size: 0.75rem;
   }
 
   .hlc-sort-up svg,
@@ -3480,11 +3539,6 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   .hlc-row-check svg {
     width: calc(0.7rem * 16 / 15);
     height: calc(0.7rem * 16 / 15);
-  }
-
-  .hlc-bank-detail-mark {
-    max-width: calc(0.95rem * 16 / 15);
-    max-height: calc(0.95rem * 16 / 15);
   }
 }
 
@@ -4787,28 +4841,45 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   }
 
   /*
-   * Phone: bank sticky was 18rem and ate the viewport so Rate sat off-screen.
-   * Narrow enough that Rate is visible beside Bank. Scheme + More stay one
-   * inline sentence (same flow as desktop) — do not flex-split them.
+   * Phone: bank sticky width is content-measured in JS (longest nowrap name +
+   * checkbox/logo), then capped so Rate clears the sticky edge. Fallback is
+   * before first sync. Scheme ellipsizes; More sits at the trailing edge — no
+   * empty gutter after the +. Names stay one line (ellipsis only if capped).
    */
   .hlc-compare col.hlc-col-bank {
-    width: 12.75rem;
+    width: 11rem;
   }
 
   .hlc-sticky-col {
-    width: 12.75rem;
-    min-width: 12.75rem;
-    max-width: 12.75rem;
+    width: 11rem;
+    min-width: 11rem;
+    max-width: 11rem;
   }
 
   .hlc-compare th.hlc-sticky-col,
   .hlc-compare td.hlc-sticky-col {
-    padding-right: 0.55rem;
+    padding-right: 0.3rem;
+  }
+
+  .hlc-bank-logo {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .hlc-bank-name {
+    gap: 0.3rem;
+    white-space: nowrap;
+  }
+
+  .hlc-bank-name-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   /*
    * Overview only: metric cols hug content (JS measures widest value/header).
-   * Bank stays. Charges / Other charges keep shared rem widths above.
+   * Bank is measured separately. Charges / Other charges keep rem widths above.
    */
   .hlc-compare[data-group="essentials"] {
     width: max-content;
@@ -4865,11 +4936,14 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   }
 
   .hlc-bank-sub {
+    width: 100%;
     font-size: calc(0.75rem * 14 / 15); /* ~11.2px — ×14/15 of desktop 12px */
     flex-wrap: nowrap;
   }
 
   .hlc-bank-scheme {
+    flex: 1 1 0;
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
