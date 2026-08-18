@@ -41,16 +41,6 @@ function displayText(d) {
   return compare.formatChargeDisplayText(d);
 }
 
-function listBounceCandidates(dataset, bankKey) {
-  return dataset.bank_charges.filter(function (ch) {
-    return (
-      ch.when_it_matters === "After offer" &&
-      String(ch.bank_key) === String(bankKey) &&
-      /(bounce|dishonour|return)/i.test(ch.charge_name || "")
-    );
-  });
-}
-
 function auditOverdue(row, rateLabel) {
   const bank = row.bankName + " [" + rateLabel + "]";
   const charge = row.overdueCharge;
@@ -64,17 +54,25 @@ function auditOverdue(row, rateLabel) {
   }
 
   const slabs = row.overdueChargeSlabs || [];
-  if (disp.action === "overdue-slabs") {
-    if (disp.main !== "Fixed amount by overdue range") {
-      issue("overdue_range_label", bank, disp.main);
-    }
-    if (slabs.length < 2) {
-      issue("overdue_range_without_slabs", bank, "slabs=" + slabs.length);
+  if (slabs.length > 1) {
+    const matched = compare.resolveApplicableCharge(
+      slabs,
+      row.overdueCharge,
+      compare.chargeCaseFromRow(row)
+    );
+    if (matched && matched.fixed_amount != null) {
+      const expected = compare.formatInr(Number(matched.fixed_amount));
+      if (disp.main !== expected) {
+        issue("overdue_slab_amount", bank, disp.main + " vs " + expected);
+      }
     }
     slabs.forEach(function (s, i) {
-      if (s.fixed_amount == null || !Number.isFinite(Number(s.fixed_amount))) {
+      if (
+        s.fixed_amount == null &&
+        (s.percentage == null || !Number.isFinite(Number(s.percentage)))
+      ) {
         issue(
-          "overdue_slab_missing_fixed",
+          "overdue_slab_missing_amount",
           bank,
           "i=" + i + " type=" + s.charge_type + " pct=" + s.percentage
         );
@@ -130,7 +128,7 @@ function auditOverdue(row, rateLabel) {
   }
 }
 
-function auditBounce(row, dataset, rateLabel) {
+function auditBounce(row, rateLabel) {
   const bank = row.bankName + " [" + rateLabel + "]";
   const charge = row.emiBounceCharge;
   const disp = row.emiBounceChargeDisplay;
@@ -142,100 +140,27 @@ function auditBounce(row, dataset, rateLabel) {
     issue("bounce_wrong_name", bank, charge.charge_name);
   }
 
-  const hasScheduleMarker = !!disp.marker;
-  if (hasScheduleMarker) {
-    // Display is first band of selected charge family — amount must exist on that name
-    const shown = parseMainInr(disp.main);
-    const family = listBounceCandidates(dataset, row.bankKey).filter(function (c) {
-      return c.charge_name === charge.charge_name;
-    });
-    const amounts = family
-      .map(function (c) {
-        return Number(c.fixed_amount);
-      })
-      .filter(function (n) {
-        return Number.isFinite(n);
-      });
-    if (shown == null || amounts.indexOf(shown) < 0) {
-      issue(
-        "bounce_display_not_in_family",
-        bank,
-        "shown=" +
-          disp.main +
-          " familyAmounts=" +
-          amounts.join(",") +
-          " name=" +
-          charge.charge_name
-      );
+  const slabs = row.emiBounceChargeSlabs || [];
+  if (slabs.length > 1) {
+    const matched = compare.resolveApplicableCharge(
+      slabs,
+      row.emiBounceCharge,
+      compare.chargeCaseFromRow(row)
+    );
+    if (matched && matched.fixed_amount != null) {
+      const expected = Number(matched.fixed_amount);
+      const shown = parseMainInr(disp.main);
+      if (shown !== expected) {
+        issue(
+          "bounce_slab_amount",
+          bank,
+          "shown=" + disp.main + " expected=" + compare.formatInr(expected)
+        );
+      }
     }
-    // Footnote should mention higher amounts (if any exist beyond shown)
-    const higher = amounts.filter(function (a) {
-      return a !== shown;
-    });
-    if (higher.length && !row.emiBounceDetailFootnote) {
-      issue("bounce_missing_footnote", bank, "higher=" + higher.join(","));
-    }
-    if (row.emiBounceDetailFootnote) {
-      higher.forEach(function (amt) {
-        const label = compare.formatInr(amt);
-        if (row.emiBounceDetailFootnote.indexOf(label) < 0) {
-          // ₹0 may format oddly; also allow digit form
-          if (
-            amt !== 0 &&
-            row.emiBounceDetailFootnote.indexOf(String(amt)) < 0
-          ) {
-            issue(
-              "bounce_footnote_missing_amount",
-              bank,
-              "missing " + label + " in " + row.emiBounceDetailFootnote.slice(0, 160)
-            );
-          }
-        }
-      });
-    }
-    // First-band rule: shown should equal minimum non-null slab_from row's amount among area-preferred or slab group
-    const sorted = family
-      .filter(function (c) {
-        return c.fixed_amount != null;
-      })
-      .slice()
-      .sort(function (a, b) {
-        const as = a.slab_from == null ? -Infinity : Number(a.slab_from);
-        const bs = b.slab_from == null ? -Infinity : Number(b.slab_from);
-        return as - bs;
-      });
-    // For area charges, restrict to Metro (or first area in display details)
-    let expectedFirst = sorted[0];
-    const metro = sorted.filter(function (c) {
-      return String(c.charge_by_area || "") === "Metro";
-    });
-    if (metro.length >= 1 && family.some(function (c) {
-      return c.charge_by_area && c.charge_by_area !== "Metro";
-    })) {
-      expectedFirst = metro.slice().sort(function (a, b) {
-        const as = a.slab_from == null ? -Infinity : Number(a.slab_from);
-        const bs = b.slab_from == null ? -Infinity : Number(b.slab_from);
-        return as - bs;
-      })[0];
-    }
-    if (expectedFirst && shown !== Number(expectedFirst.fixed_amount)) {
-      // Canara/BoB design shows first of selected name; if area multi, Metro first
-      issue(
-        "bounce_not_first_band",
-        bank,
-        "shown=" +
-          shown +
-          " expectedFirst=" +
-          expectedFirst.fixed_amount +
-          " (slab_from=" +
-          expectedFirst.slab_from +
-          ")"
-      );
-    }
-    return;
   }
 
-  // Simple single-charge display
+  // Display must match the resolved charge atom.
   if (charge.percentage != null && Number.isFinite(Number(charge.percentage))) {
     const shown = parseMainPercent(disp.main);
     if (shown != null && !nearlyEqual(shown, charge.percentage)) {
@@ -656,24 +581,13 @@ function auditRateChange(row, rateLabel) {
       }
       return;
     }
-    if (disp && disp.action === "rate-change-slabs") {
-      if (disp.main !== "Fixed amount by loan amount range") {
-        issue("rate_change_slab_label", bank, entry.label + " " + disp.main);
-      }
-      if (!probe.rateChangeChargeSlabs || probe.rateChangeChargeSlabs.length < 2) {
-        issue(
-          "rate_change_slab_count",
-          bank,
-          entry.label +
-            " slabs=" +
-            (probe.rateChangeChargeSlabs
-              ? probe.rateChangeChargeSlabs.length
-              : 0)
-        );
-      }
-      return;
-    }
-    const expected = compare.formatRateChangeChargeDisplay(charge, []);
+    const resolved = compare.resolveApplicableCharge(
+      probe.rateChangeChargeSlabs,
+      charge,
+      compare.chargeCaseFromRow(row),
+      row.loanAmount
+    );
+    const expected = compare.formatRateChangeChargeDisplay(resolved);
     if (disp.main !== expected.main) {
       issue(
         "rate_change_display_mismatch",
@@ -718,13 +632,13 @@ async function main() {
 
   floating.forEach(function (row) {
     auditOverdue(row, "Floating");
-    auditBounce(row, dataset, "Floating");
+    auditBounce(row, "Floating");
     auditPrepay(row, "Floating");
     auditRateChange(row, "Floating");
   });
   fixed.forEach(function (row) {
     auditOverdue(row, "Fixed");
-    auditBounce(row, dataset, "Fixed");
+    auditBounce(row, "Fixed");
     auditPrepay(row, "Fixed");
     auditRateChange(row, "Fixed");
   });

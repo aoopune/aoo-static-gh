@@ -25,7 +25,7 @@
   );
   margin-inline: auto;
   padding-block: calc(var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + clamp(2rem, 5vw, 2.5rem))
-    clamp(2.5rem, 6vw, 4rem);
+    0;
   font-size: var(--shroffin-type-body, 1rem);
   line-height: 1.47059;
 }
@@ -224,7 +224,7 @@
   );
   margin-inline: auto;
   padding-block: calc(var(--shroffin-gn-offset, var(--shroffin-gn-height, 48px)) + clamp(2.5rem, 7vw, 5rem))
-    clamp(2rem, 6vw, 4.5rem);
+    0;
 }
 
 .utility-page .sitemap-title {

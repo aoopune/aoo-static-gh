@@ -31,11 +31,12 @@ const officialUrls = [
   'https://www.incometax.gov.in/iec/foportal/'
 ];
 const requiredFooterText = [
-  'Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender.',
-  'Information on this website — including rates, fees, charges, eligibility criteria',
-  'Displaying, listing, ranking, or describing a bank or loan product does not guarantee',
-  'Any loan you take is governed by the agreement between you and the lender.',
-  'Features, banks, products, and services shown on this website are subject to change.'
+  'Shroffin is not a bank, a Non-Banking Financial Company (NBFC), or a lender. We do not approve, sanction, underwrite, or disburse loans. The lender decides your rate, your fees, and whether you are approved.',
+  "Even so, we try our best for you. We show each lender's home loan clearly, one next to the other.",
+  "We take each lender's terms and check them with that lender.",
+  'The rates and rules we show can change.',
+  'Seeing a lender does not mean they will lend to you.',
+  'If you take the loan, the agreement is with the lender, not with us.'
 ];
 const legacyRoutes = [
   'education-loan.html',
@@ -375,8 +376,32 @@ if (
 ) {
   fail('css/shroffin-shell.css', 'help strip must have a bottom hairline');
 }
-if (!/\.site-help-strip\s*\{[\s\S]*?margin-block-end:\s*clamp\(/.test(shellCss)) {
-  fail('css/shroffin-shell.css', 'help strip must sit in the air above the footer');
+if (!/\.site-help-strip\s*\{[\s\S]*?margin-block-start:\s*0/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'help strip must sit flush above (no default top air gap)');
+}
+if (
+  /explore-banks-page[\s\S]{0,220}site-help-strip[\s\S]{0,160}margin-block-start:\s*clamp\(/.test(shellCss) ||
+  /hl-apply-page[\s\S]{0,220}site-help-strip[\s\S]{0,160}margin-block-start:\s*clamp\(/.test(shellCss)
+) {
+  fail(
+    'css/shroffin-shell.css',
+    'help strip must stay flush on Explore banks and Apply (no page-specific top margin).'
+  );
+}
+if (!/\.site-prefooter-cta:has\(\+ \.site-help-strip\)\s*\{[\s\S]*?padding-block-end:\s*clamp\(/.test(shellCss)) {
+  fail(
+    'css/shroffin-shell.css',
+    'prefooter CTA must tighten bottom pad when help strip follows'
+  );
+}
+if (!/\.site-help-strip\s*\{[\s\S]*?margin-block-end:\s*0/.test(shellCss)) {
+  fail('css/shroffin-shell.css', 'help strip must stick to the footer (no bottom air gap)');
+}
+if (!/\.site-help-strip \+ \.site-footer\s*\{[\s\S]*?border-block-start:\s*0/.test(shellCss)) {
+  fail(
+    'css/shroffin-shell.css',
+    'footer must drop its top hairline when immediately after the help strip'
+  );
 }
 if (
   !/\.site-help-strip \.guide-section-link,\s*\n\s*\.site-help-strip-phone\s*\{[\s\S]*?min-height:\s*var\(--shroffin-btn-touch\)/.test(

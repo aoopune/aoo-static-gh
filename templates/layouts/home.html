@@ -60,7 +60,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       padding: 0;
       box-sizing: border-box;
       overflow: visible;
@@ -73,8 +73,12 @@
       z-index: 1;
       width: min(1068px, calc(100% - 48px));
       margin: 0 auto;
-      /* Top: title air; bottom: gap before the product frame */
-      padding: 52px 0 clamp(3.75rem, 7.5vw, 5.5rem);
+      /* Same total air as before. The frosted nav blends into this pale band,
+         so it counts as space above the title — shift the pair down by half
+         the nav height so title + button sit in the optical middle. */
+      --hero-copy-gap: calc((52px + clamp(3.75rem, 7.5vw, 5.5rem)) / 2);
+      padding-top: calc(var(--hero-copy-gap) - var(--gn-height) / 2);
+      padding-bottom: calc(var(--hero-copy-gap) + var(--gn-height) / 2);
       pointer-events: none;
     }
 
@@ -91,9 +95,7 @@
     }
 
     /* Story sections stay out of view until the landing stack opens. */
-    html.js.home-boot .home-content > .home-story-dark,
-    html.js.home-boot .home-content > .home-built,
-    html.js.home-boot .home-content > .home-open {
+    html.js.home-boot .home-content > .home-story-dark {
       visibility: hidden;
     }
 
@@ -170,9 +172,9 @@
       border-color: transparent;
     }
 
-    /* ——— Dark story band — lead → Transparent → Zero → Best ———
+    /* ——— Dark story band — lead → Best → Zero → Transparent → apply ———
        Hold deep charcoal through the opening beats, then lift gently
-       into Best. End still dark so type stays crisp before Built. */
+       toward the end. Type stays crisp on the dark field. */
     .home-story-dark {
       width: 100%;
       background: linear-gradient(
@@ -203,28 +205,18 @@
     }
 
     .js .home-lead-track {
-      /* Hold the re-engineered intro so it is not skipped. */
-      min-height: 185svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .home-lead-pin {
       width: 100%;
-      min-height: 72vh;
-      min-height: 72svh;
       display: flex;
-      /* Sit high so all four lines fit on a typical laptop viewport. */
       align-items: flex-start;
       justify-content: center;
-      padding: clamp(32px, 5vh, 56px) 22px clamp(32px, 5vh, 56px);
+      padding: clamp(80px, 14vh, 140px) 22px;
       box-sizing: border-box;
-    }
-
-    .js .home-lead-pin {
-      position: sticky;
-      /* Sit under the fixed global nav. */
-      top: var(--gn-height);
-      min-height: calc(100vh - var(--gn-height));
-      min-height: calc(100svh - var(--gn-height));
     }
 
     @media (min-width: 834px) {
@@ -269,7 +261,7 @@
       color: #f5f5f7;
     }
 
-    /* Lead + Built scroll moments — each settles as it enters view */
+    /* Story moments — each settles as it enters view */
     .js .home-moment {
       opacity: 0;
       transform: translate3d(0, 18px, 0);
@@ -281,32 +273,6 @@
     .js .home-moment.is-in {
       opacity: 1;
       transform: translate3d(0, 0, 0);
-    }
-
-    .js .home-built-card.home-moment {
-      transition-delay: 0.2s;
-    }
-
-    .js .home-lead[data-home-scrub="lead"] .home-lead-line.home-moment {
-      --hl-line-progress: 1;
-      opacity: var(--hl-line-progress);
-      transform: translate3d(0, calc((1 - var(--hl-line-progress)) * 14px), 0);
-    }
-
-    .js .home-lead[data-home-scrub="lead"] .home-lead-line.home-moment:nth-child(1) {
-      --hl-line-progress: var(--hl-line-1, 1);
-    }
-
-    .js .home-lead[data-home-scrub="lead"] .home-lead-line.home-moment:nth-child(2) {
-      --hl-line-progress: var(--hl-line-2, 0);
-    }
-
-    .js .home-lead[data-home-scrub="lead"] .home-lead-line.home-moment:nth-child(3) {
-      --hl-line-progress: var(--hl-line-3, 0);
-    }
-
-    .js .home-lead[data-home-scrub="lead"] .home-lead-line.home-moment:nth-child(4) {
-      --hl-line-progress: var(--hl-line-4, 0);
     }
 
     @media only screen and (max-width: 1068px) {
@@ -334,12 +300,14 @@
 
     @media (max-width: 833px) {
       .js .home-lead-track {
-        min-height: 165svh;
+        align-items: flex-start;
       }
 
       .home-hero-copy {
         width: min(1068px, calc(100% - 32px));
-        padding: 40px 0 3.5rem;
+        --hero-copy-gap: calc((40px + 3.5rem) / 2);
+        padding-top: calc(var(--hero-copy-gap) - var(--gn-height) / 2);
+        padding-bottom: calc(var(--hero-copy-gap) + var(--gn-height) / 2);
       }
 
       .home-hero-ctas {
@@ -358,9 +326,7 @@
       }
     }
 
-    /* ——— Clear — Transparent as hollow outline type ———
-       Shares .home-story-dark gradient with the lead above.
-       Full-viewport presence to match Zero. */
+    /* ——— Clear — Transparent as hollow outline type ——— */
     .home-clear {
       width: 100%;
       box-sizing: border-box;
@@ -375,27 +341,18 @@
     }
 
     .js .home-clear-track {
-      /* Hold Transparent long enough to read before moving on. */
-      min-height: 175svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .home-clear-pin {
       width: 100%;
-      min-height: 72vh;
-      min-height: 72svh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: clamp(56px, 8vh, 96px) 22px;
+      padding: clamp(80px, 14vh, 140px) 22px;
       box-sizing: border-box;
-    }
-
-    .js .home-clear-pin {
-      position: sticky;
-      /* Sit under the fixed global nav so copy keeps its top padding. */
-      top: var(--gn-height);
-      min-height: calc(100vh - var(--gn-height));
-      min-height: calc(100svh - var(--gn-height));
     }
 
     .home-clear-inner {
@@ -554,7 +511,7 @@
 
     @media (max-width: 833px) {
       .js .home-clear-track {
-        min-height: 155svh;
+        align-items: flex-start;
       }
 
       .home-clear-pin {
@@ -628,11 +585,9 @@
       }
     }
 
-    /* ——— Zero — soft quick Zero, nano-scroll for commissions / bias ——— */
+    /* ——— Zero — each claim arrives as a pair; never a bare “Zero” ——— */
     .home-zero {
       --home-zero-ease: cubic-bezier(0.22, 1, 0.36, 1);
-      --hz-rest: 1;
-      --hz-body: 1;
       width: 100%;
       box-sizing: border-box;
       background: transparent;
@@ -646,27 +601,18 @@
     }
 
     .js .home-zero-track {
-      /* Extra hold after the body line is in, so it can be read. */
-      min-height: 230svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .home-zero-pin {
       width: 100%;
-      min-height: 72vh;
-      min-height: 72svh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: clamp(56px, 8vh, 96px) 22px;
+      padding: clamp(80px, 14vh, 140px) 22px;
       box-sizing: border-box;
-    }
-
-    .js .home-zero-pin {
-      position: sticky;
-      /* Sit under the fixed global nav so “Zero” keeps its top padding. */
-      top: var(--gn-height);
-      min-height: calc(100vh - var(--gn-height));
-      min-height: calc(100svh - var(--gn-height));
     }
 
     .home-zero-inner {
@@ -712,7 +658,6 @@
       font-weight: 600;
       letter-spacing: normal;
       line-height: 1;
-      transform-origin: center bottom;
     }
 
     .home-zero-rest {
@@ -739,37 +684,37 @@
       text-align: center;
     }
 
-    .js .home-zero[data-home-scrub="zero"] {
-      --hz-rest: 0;
-      --hz-body: 0;
-    }
-
-    .js .home-zero-zero {
+    .js .home-zero-pair:nth-child(1),
+    .js .home-zero-pair:nth-child(2),
+    .js .home-zero-body {
       opacity: 0;
       transform: translate3d(0, 16px, 0);
       transition:
-        opacity 0.75s var(--home-zero-ease),
-        transform 0.95s var(--home-zero-ease);
+        opacity 1.1s var(--home-zero-ease),
+        transform 1.5s var(--home-zero-ease);
     }
 
-    .js .home-zero.is-in .home-zero-zero {
+    .js .home-zero.is-in .home-zero-pair:nth-child(1) {
       opacity: 1;
       transform: translate3d(0, 0, 0);
+      transition-delay: 0s;
     }
 
-    .js .home-zero[data-home-scrub="zero"] .home-zero-rest {
-      opacity: var(--hz-rest);
-      transform: translate3d(0, calc((1 - var(--hz-rest)) * 12px), 0);
+    .js .home-zero.is-in .home-zero-pair:nth-child(2) {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition-delay: 0.28s;
     }
 
-    .js .home-zero[data-home-scrub="zero"] .home-zero-body {
-      opacity: var(--hz-body);
-      transform: translate3d(0, calc((1 - var(--hz-body)) * 10px), 0);
+    .js .home-zero.is-in .home-zero-body {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition-delay: 0.48s;
     }
 
     @media (max-width: 833px) {
       .js .home-zero-track {
-        min-height: 210svh;
+        align-items: flex-start;
       }
 
       .home-zero-pin {
@@ -789,10 +734,6 @@
       .home-zero-display,
       .home-zero-pair {
         align-items: flex-start;
-      }
-
-      .home-zero-zero {
-        transform-origin: left bottom;
       }
 
       .home-zero-body {
@@ -839,27 +780,18 @@
     }
 
     .js .home-best-track {
-      /* Hold spam-free closer so users can absorb it. */
-      min-height: 175svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .home-best-pin {
       width: 100%;
-      min-height: 72vh;
-      min-height: 72svh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: clamp(56px, 8vh, 96px) 22px;
+      padding: clamp(80px, 14vh, 140px) 22px;
       box-sizing: border-box;
-    }
-
-    .js .home-best-pin {
-      position: sticky;
-      /* Sit under the fixed global nav so copy keeps its top padding. */
-      top: var(--gn-height);
-      min-height: calc(100vh - var(--gn-height));
-      min-height: calc(100svh - var(--gn-height));
     }
 
     .home-best-inner {
@@ -973,7 +905,7 @@
 
     @media (max-width: 833px) {
       .js .home-best-track {
-        min-height: 155svh;
+        align-items: flex-start;
       }
 
       .home-best-pin {
@@ -1006,7 +938,7 @@
         width: 100%;
       }
 
-      /* Phone hierarchy: intro, pace, then closer — all larger and stacked */
+      /* Phone hierarchy: intro, then closer — stacked */
       .home-best-lead {
         font-size: 1.1em;
         line-height: 1.1;
@@ -1035,1563 +967,6 @@
 
       .home-best-body {
         text-align: center;
-      }
-    }
-
-    /* ——— Built around you — topic switcher ——— */
-    .home-built {
-      --home-built-ease: cubic-bezier(0.22, 1, 0.36, 1);
-      /* Local spacing scale — open the card without one-off magic numbers */
-      --hb-space-2: 12px;
-      --hb-space-3: 16px;
-      --hb-space-4: 24px;
-      --hb-space-5: 32px;
-      --hb-space-6: 48px;
-      --hb-pad-card: clamp(40px, 5.5vw, 64px);
-      --hb-gap-cols: clamp(40px, 5.5vw, 72px);
-      --hb-pad-row-y: clamp(26px, 3.2vw, 34px);
-      --hb-pad-copy-y: 4px 0 16px;
-      width: 100%;
-      padding: clamp(72px, 11vw, 120px) 22px clamp(72px, 11vw, 120px);
-      box-sizing: border-box;
-      background: #f5f7f9;
-    }
-
-    .home-built-inner {
-      width: min(1240px, 100%);
-      margin: 0 auto;
-    }
-
-    .home-built-title {
-      margin: 0 0 clamp(32px, 4.5vw, 48px);
-      color: #1d1d1f;
-      font-size: calc(var(--shroffin-type-display) - 3px);
-      font-weight: 600;
-      letter-spacing: normal;
-      line-height: 1.15;
-      text-align: left;
-    }
-
-    .home-built-card {
-      display: block;
-      width: 100%;
-      padding: var(--hb-pad-card);
-      box-sizing: border-box;
-      border-radius: 28px;
-      background: #ffffff;
-      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
-    }
-
-    .home-built-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-      gap: var(--hb-gap-cols);
-      align-items: stretch;
-      min-height: 0;
-    }
-
-    .home-built-list {
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
-
-    .home-built-item {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-    .home-built-item:first-child {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-    .home-built-heading {
-      margin: 0;
-      font-size: inherit;
-      font-weight: inherit;
-    }
-
-    .home-built-trigger {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--hb-space-4);
-      width: 100%;
-      margin: 0;
-      padding: var(--hb-pad-row-y) 6px;
-      border: 0;
-      background: transparent;
-      color: #1d1d1f;
-      font: inherit;
-      font-size: 21px;
-      font-weight: 600;
-      letter-spacing: 0.011em;
-      line-height: 1.3;
-      text-align: left;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .home-built-trigger:focus-visible {
-      outline: 2px solid #0071e3;
-      outline-offset: 3px;
-      border-radius: 6px;
-    }
-
-    .home-built-trigger-label {
-      flex: 1 1 auto;
-      min-width: 0;
-    }
-
-    .home-built-chevron {
-      flex: 0 0 auto;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      color: #86868b;
-      transform: rotate(0deg);
-      transition:
-        color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        transform 0.8s var(--home-built-ease);
-    }
-
-    .home-built-item.is-open .home-built-chevron {
-      color: #1d1d1f;
-      transform: rotate(180deg);
-    }
-
-    .home-built-body {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows 0.85s var(--home-built-ease);
-    }
-
-    .home-built-item.is-open .home-built-body {
-      grid-template-rows: 1fr;
-    }
-
-    .home-built-body-inner {
-      overflow: hidden;
-      min-height: 0;
-    }
-
-    .home-built-copy {
-      margin: 0;
-      padding: var(--hb-pad-copy-y);
-      padding-right: 44px;
-      padding-left: 6px;
-      max-width: 36em;
-      color: #1d1d1f;
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      line-height: 1.45;
-      opacity: 0;
-      transform: translateY(8px);
-      transition:
-        opacity 1.05s var(--home-built-ease),
-        transform 1.4s var(--home-built-ease);
-    }
-
-    .home-built-item.is-open .home-built-copy {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .home-built-mobile-slot {
-      display: none;
-    }
-
-    .home-built-stage {
-      position: relative;
-      min-height: 360px;
-      border-radius: 0;
-      background: transparent;
-      overflow: hidden;
-    }
-
-    .home-built-visual {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: clamp(24px, 3.5vw, 40px);
-      box-sizing: border-box;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(10px);
-      transition:
-        opacity 1.05s var(--home-built-ease),
-        transform 1.4s var(--home-built-ease),
-        visibility 0s linear 1.05s;
-      pointer-events: none;
-    }
-
-    .home-built-visual.is-active {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-      transition:
-        opacity 1.05s var(--home-built-ease),
-        transform 1.4s var(--home-built-ease),
-        visibility 0s linear 0s;
-    }
-
-    @keyframes home-built-float {
-      0%,
-      100% {
-        transform: translate3d(0, 0, 0);
-      }
-      50% {
-        transform: translate3d(0, -7px, 0);
-      }
-    }
-
-    @keyframes home-built-soft-in {
-      from {
-        opacity: 0;
-        transform: translate3d(0, 12px, 0);
-      }
-      to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-      }
-    }
-
-    /* Meaningful scene cards — readable labels, quiet product language. */
-    .home-built-scene {
-      width: min(100%, 520px);
-      padding: var(--hb-space-5) var(--hb-space-5) 28px;
-      box-sizing: border-box;
-      border-radius: 18px;
-      background: #ffffff;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-    }
-
-    .home-built-visual.is-active .home-built-scene {
-      animation: home-built-float 5.2s cubic-bezier(0.22, 1, 0.36, 1) 1.45s infinite;
-    }
-
-    .home-built-visual.is-active .home-built-guide-card,
-    .home-built-visual.is-active .home-built-table-row,
-    .home-built-visual.is-active .home-built-bank-card,
-    .home-built-visual.is-active .home-built-share-box,
-    .home-built-visual.is-active .home-built-apply-form,
-    .home-built-visual.is-active .home-built-apply-banks,
-    .home-built-visual.is-active .home-built-apply-offers,
-    .home-built-visual.is-active .home-built-help-solo,
-    .home-built-visual.is-active .home-built-help-ask,
-    .home-built-visual.is-active .home-built-help-footer {
-      animation: home-built-soft-in 1.35s var(--home-built-ease) both;
-    }
-
-    .home-built-visual.is-active .home-built-guide-card:nth-child(2),
-    .home-built-visual.is-active .home-built-table-row:nth-child(2),
-    .home-built-visual.is-active .home-built-bank-card:nth-child(2),
-    .home-built-visual.is-active .home-built-apply-banks,
-    .home-built-visual.is-active .home-built-help-ask {
-      animation-delay: 0.12s;
-    }
-
-    .home-built-visual.is-active .home-built-guide-card:nth-child(3),
-    .home-built-visual.is-active .home-built-table-row:nth-child(3),
-    .home-built-visual.is-active .home-built-bank-card:nth-child(3),
-    .home-built-visual.is-active .home-built-share-box,
-    .home-built-visual.is-active .home-built-apply-offers,
-    .home-built-visual.is-active .home-built-help-footer {
-      animation-delay: 0.24s;
-    }
-
-    .home-built-visual.is-active .home-built-table-row:nth-child(4) {
-      animation-delay: 0.28s;
-    }
-
-    .home-built-scene-label {
-      margin: 0 0 var(--hb-space-3);
-      color: #86868b;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: normal;
-      text-transform: none;
-    }
-
-    .home-built-table {
-      display: grid;
-      gap: var(--hb-space-2);
-    }
-
-    .home-built-table-row {
-      display: grid;
-      grid-template-columns: 1.15fr 0.75fr 0.85fr 0.75fr;
-      gap: var(--hb-space-2);
-      align-items: center;
-      padding: 10px 12px;
-      border-radius: 10px;
-      background: #f5f5f7;
-    }
-
-    .home-built-table--five .home-built-table-row {
-      grid-template-columns: 0.95fr 0.8fr 0.75fr 0.95fr 0.7fr;
-      gap: 6px;
-      padding: 10px 8px;
-    }
-
-    .home-built-table-row--head {
-      background: transparent;
-      padding-top: 0;
-      padding-bottom: 4px;
-    }
-
-    .home-built-table-row--head span {
-      color: #6e6e73;
-      font-size: 10px;
-      font-weight: 600;
-    }
-
-    .home-built-table-row > span:first-child {
-      color: #1d1d1f;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .home-built-table-row:not(.home-built-table-row--head) > span:not(:first-child):not(.home-built-table-val) {
-      display: block;
-      height: 8px;
-      border-radius: 999px;
-      background: #d2d2d7;
-    }
-
-    .home-built-table-val {
-      color: #1d1d1f;
-      font-size: 11px;
-      font-weight: 500;
-      font-variant-numeric: tabular-nums;
-      text-align: right;
-    }
-
-    .home-built-table-row--head > span:not(:first-child) {
-      height: auto;
-      background: none;
-      border-radius: 0;
-    }
-
-    .home-built-table-row.is-on {
-      background: rgba(0, 113, 227, 0.08);
-    }
-
-    .home-built-table-row.is-on .home-built-table-val {
-      color: #0071e3;
-      font-weight: 600;
-    }
-
-    .home-built-browse-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--hb-space-2);
-      margin-bottom: var(--hb-space-3);
-    }
-
-    .home-built-bank-card {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 64px;
-      border-radius: 12px;
-      background: #f5f5f7;
-      border: 1px solid rgba(0, 0, 0, 0.04);
-      color: #1d1d1f;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .home-built-share-box {
-      padding: var(--hb-space-3);
-      border-radius: 12px;
-      border: 1px dashed rgba(0, 0, 0, 0.14);
-      background: #fbfbfd;
-    }
-
-    .home-built-share-box--held {
-      border-style: solid;
-      border-color: rgba(0, 0, 0, 0.08);
-      background: #f5f5f7;
-    }
-
-    .home-built-share-field {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: var(--hb-space-2);
-      padding: 12px 14px;
-      border-radius: 8px;
-      background: #ffffff;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      color: #a1a1a6;
-      font-size: 12px;
-    }
-
-    .home-built-share-field:last-child {
-      margin-bottom: 0;
-    }
-
-    .home-built-share-name {
-      color: #6e6e73;
-      font-weight: 500;
-    }
-
-    .home-built-share-note {
-      color: #1d1d1f;
-      font-size: 11px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    .home-built-apply-flow,
-    .home-built-apply-story {
-      display: grid;
-      grid-template-columns: 1.15fr auto 0.95fr;
-      gap: var(--hb-space-3);
-      align-items: center;
-    }
-
-    .home-built-apply-form {
-      display: grid;
-      gap: var(--hb-space-2);
-      padding: var(--hb-space-3);
-      border-radius: 12px;
-      background: #f5f5f7;
-    }
-
-    .home-built-apply-title,
-    .home-built-help-ask-title {
-      color: #1d1d1f;
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    .home-built-apply-line {
-      display: block;
-      height: 8px;
-      border-radius: 999px;
-      background: #d2d2d7;
-    }
-
-    .home-built-apply-line--short {
-      width: 62%;
-    }
-
-    .home-built-apply-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: fit-content;
-      margin-top: 4px;
-      padding: 8px 14px;
-      border-radius: 980px;
-      background: #1d1d1f;
-      color: #f5f5f7;
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .home-built-apply-arrow {
-      width: 18px;
-      height: 18px;
-      border-top: 2px solid #86868b;
-      border-right: 2px solid #86868b;
-      transform: rotate(45deg);
-      justify-self: center;
-    }
-
-    .home-built-apply-banks {
-      display: grid;
-      gap: var(--hb-space-2);
-    }
-
-    .home-built-apply-banks span {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 38px;
-      border-radius: 10px;
-      background: #ffffff;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      color: #1d1d1f;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .home-built-apply-offers {
-      margin-top: var(--hb-space-3);
-      padding-top: var(--hb-space-3);
-      border-top: 1px solid rgba(0, 0, 0, 0.06);
-    }
-
-    .home-built-apply-offers-label {
-      display: block;
-      margin-bottom: var(--hb-space-2);
-      color: #6e6e73;
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .home-built-apply-offers-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--hb-space-2);
-    }
-
-    .home-built-apply-offers-row span {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 36px;
-      border-radius: 10px;
-      background: rgba(0, 113, 227, 0.08);
-      color: #0071e3;
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .home-built-scene--help {
-      width: min(100%, 560px);
-      padding: 36px 36px 32px;
-    }
-
-    .home-built-help-split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--hb-space-4);
-    }
-
-    .home-built-help-solo,
-    .home-built-help-ask {
-      display: grid;
-      gap: var(--hb-space-3);
-      padding: var(--hb-space-4);
-      border-radius: 14px;
-      min-height: 168px;
-      box-sizing: border-box;
-    }
-
-    .home-built-help-solo {
-      background: #f5f5f7;
-      align-content: start;
-    }
-
-    .home-built-help-ask {
-      background: #ffffff;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      align-content: start;
-    }
-
-    .home-built-help-topic {
-      display: flex;
-      align-items: center;
-      min-height: 36px;
-      padding: 0 14px;
-      border-radius: 10px;
-      background: #f5f5f7;
-      color: #1d1d1f;
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    .home-built-help-footer {
-      margin: var(--hb-space-4) 0 0;
-      color: #1d1d1f;
-      font-size: 15px;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .home-built-guide-list {
-      display: grid;
-      gap: var(--hb-space-2);
-    }
-
-    .home-built-guide-card {
-      display: grid;
-      gap: 6px;
-      padding: 14px 16px;
-      border-radius: 12px;
-      background: #f5f5f7;
-    }
-
-    .home-built-guide-when {
-      color: #86868b;
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .home-built-guide-what {
-      color: #1d1d1f;
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1.35;
-    }
-
-    @media only screen and (max-width: 1068px) {
-      .home-built-trigger {
-        font-size: 19px;
-      }
-    }
-
-    @media (max-width: 833px) {
-      .home-built {
-        --hb-pad-card: 20px 20px 28px;
-        --hb-pad-row-y: 24px;
-        padding: clamp(56px, 12vw, 88px) 16px;
-      }
-
-      .home-built-title {
-        margin-bottom: var(--hb-space-5);
-      }
-
-      .home-built-card {
-        padding: var(--hb-pad-card);
-        border-radius: 22px;
-      }
-
-      .home-built-layout {
-        display: block;
-      }
-
-      .home-built-trigger {
-        padding: var(--hb-pad-row-y) 4px;
-        font-size: 18px;
-        min-height: 48px;
-        line-height: 1.35;
-      }
-
-      .home-built-copy {
-        padding: 4px 28px 14px 4px;
-        font-size: 17px;
-        line-height: 1.45;
-      }
-
-      .home-built-body {
-        overflow: hidden;
-        transition: grid-template-rows 0.9s var(--home-built-ease);
-      }
-
-      .home-built-mobile-slot {
-        display: grid;
-        grid-template-rows: 0fr;
-        transition: grid-template-rows 0.9s var(--home-built-ease);
-      }
-
-      .home-built-item.is-open .home-built-mobile-slot {
-        grid-template-rows: 1fr;
-      }
-
-      .home-built-mobile-slot-clip {
-        overflow: hidden;
-        min-height: 0;
-      }
-
-      .home-built-stage {
-        position: relative;
-        min-height: 280px;
-        margin: var(--hb-space-3) 0 var(--hb-space-4);
-        border-radius: 0;
-        background: transparent;
-      }
-
-      .home-built-scene {
-        width: min(100%, 380px);
-        padding: var(--hb-space-4);
-      }
-
-      .home-built-apply-flow,
-      .home-built-apply-story {
-        grid-template-columns: 1fr;
-        gap: var(--hb-space-3);
-      }
-
-      .home-built-apply-arrow {
-        transform: rotate(135deg);
-        margin: 2px auto;
-      }
-
-      .home-built-help-split {
-        grid-template-columns: 1fr;
-      }
-
-      .home-built-help-solo,
-      .home-built-help-ask {
-        min-height: 0;
-      }
-    }
-
-    /* ——— Open band — claim, then visual contrast, then advantage ——— */
-    .home-open {
-      --home-open-ease: cubic-bezier(0.22, 1, 0.36, 1);
-      background: #1d1d1f;
-      color: #f5f5f7;
-      text-align: center;
-    }
-
-    .home-open-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      box-sizing: border-box;
-      width: min(1068px, calc(100% - 48px));
-      margin: 0 auto;
-      padding:
-        clamp(2.75rem, 6.5vw, 4.5rem)
-        0
-        clamp(1.5rem, 3.5vw, 2.5rem);
-    }
-
-    .home-open-display {
-      margin: 0;
-      max-width: none;
-      font-weight: 600;
-      font-size: calc(var(--shroffin-type-display) - 3px);
-      letter-spacing: normal;
-      line-height: 1.15;
-    }
-
-    .home-open-line {
-      display: block;
-    }
-
-    .home-open-line--soft {
-      color: rgba(245, 245, 247, 0.42);
-    }
-
-    .home-open-line--strong {
-      color: #f5f5f7;
-    }
-
-    /* Below the graphic — type split: setup soft, claim bright */
-    .home-open-caption {
-      margin: clamp(0.85rem, 2vw, 1.25rem) 0 0;
-      max-width: min(42rem, 100%);
-      color: #f5f5f7;
-      font-weight: 400;
-      font-size: calc(var(--shroffin-type-support) - 3px);
-      letter-spacing: normal;
-      line-height: 1.35;
-      text-align: center;
-      white-space: nowrap;
-    }
-
-    .home-open-caption-soft {
-      color: rgba(245, 245, 247, 0.42);
-    }
-
-    .home-open-caption-strong {
-      color: #f5f5f7;
-    }
-
-    /* End stamp — bigger brand blue; punch is never faded */
-    .home-open-caption-punch {
-      color: #0071e3;
-      font-size: 1.18em;
-      font-weight: 600;
-    }
-
-    .home-open-visual {
-      width: 100%;
-      max-width: 42rem;
-      margin-top: clamp(1.5rem, 4vw, 2.5rem);
-      margin-inline: auto;
-    }
-
-    .home-open-stage {
-      position: relative;
-      display: block;
-      width: 100%;
-      /* Tall enough for bank fan or Shroffin mock — both scenes overlay */
-      min-height: clamp(22rem, 52vw, 28rem);
-      margin: 0;
-    }
-
-    .home-open-visual .spd-playback {
-      position: static;
-      display: inline-flex;
-      margin: clamp(0.35rem, 1.25vw, 0.65rem) 0 0;
-      pointer-events: auto;
-    }
-
-    .home-open-col {
-      margin: 0;
-      min-width: 0;
-      width: 100%;
-    }
-
-    /*
-     * Both scenes stay absolutely stacked. Story classes only change
-     * visibility — never document flow — so the loop never jumps height.
-     */
-    .js .home-open-col--away,
-    .js .home-open-col--here {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: min(38rem, 100%);
-      transform: translate(-50%, -50%);
-      margin: 0;
-      pointer-events: none;
-    }
-
-    .home-open-col--away,
-    .home-open-col--here {
-      width: min(38rem, 100%);
-      margin-inline: auto;
-    }
-
-    /* ——— Browser windows (finish for black stage) ——— */
-    .home-open-stack {
-      position: relative;
-      width: 100%;
-      height: clamp(20rem, 48vw, 25rem);
-      margin-inline: auto;
-    }
-
-    .home-open-browser {
-      --home-open-win-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.14),
-        0 1px 1px rgba(255, 255, 255, 0.08) inset,
-        0 2px 6px rgba(0, 0, 0, 0.25),
-        0 18px 36px rgba(0, 0, 0, 0.45),
-        0 40px 80px rgba(0, 0, 0, 0.35);
-      position: absolute;
-      width: min(16.5rem, 72%);
-      border-radius: 12px;
-      overflow: hidden;
-      background: #e8eaed;
-      box-shadow: var(--home-open-win-shadow);
-      transform-origin: center center;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .home-open-browser--ours {
-      position: relative;
-      width: 100%;
-      max-width: none;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      background: #fcfcfd;
-      border: 1px solid rgba(108, 128, 155, 0.16);
-      box-shadow:
-        0 1px 2px rgba(29, 29, 31, 0.04),
-        0 18px 48px rgba(55, 75, 100, 0.18);
-      text-align: left;
-      color: #1d1d1f;
-    }
-
-    /* Polished product silhouette — not the live Explore banks UI */
-    .home-open-app {
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      padding: 0.95rem 1rem 1.05rem;
-      background: #fcfcfd;
-    }
-
-    .home-open-app-head {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      gap: 0.75rem 1rem;
-    }
-
-    .home-open-app-actions {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem 1rem;
-      width: 100%;
-      min-width: 0;
-    }
-
-    .home-open-app-tabs {
-      display: flex;
-      align-items: stretch;
-      gap: 0.85rem;
-      border-bottom: 1px solid rgba(108, 128, 155, 0.26);
-    }
-
-    .home-open-app-tabs span {
-      position: relative;
-      padding: 0.35rem 0.1rem 0.55rem;
-      color: #6e6e73;
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      white-space: nowrap;
-    }
-
-    .home-open-app-tabs span.is-on {
-      color: #1d1d1f;
-    }
-
-    .home-open-app-tabs span.is-on::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -1px;
-      height: 2px;
-      background: #1d1d1f;
-      border-radius: 1px 1px 0 0;
-    }
-
-    .home-open-app-apply {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 2rem;
-      padding: 0 0.9rem;
-      border-radius: 980px;
-      background: #1d1d1f;
-      color: #f5f5f7;
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      white-space: nowrap;
-    }
-
-    .home-open-app-body {
-      min-width: 0;
-    }
-
-    .home-open-app-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.75rem;
-      letter-spacing: -0.014em;
-    }
-
-    .home-open-app-table th,
-    .home-open-app-table td {
-      padding: 0.55rem 0.4rem;
-      border-bottom: 1px solid rgba(108, 128, 155, 0.14);
-      text-align: left;
-      vertical-align: middle;
-    }
-
-    .home-open-app-table th {
-      color: #6e6e73;
-      font-weight: 500;
-      font-size: 0.62rem;
-      padding-top: 0.2rem;
-      padding-bottom: 0.45rem;
-    }
-
-    .home-open-app-table td {
-      color: #1d1d1f;
-      font-weight: 500;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .home-open-app-table th:nth-child(2),
-    .home-open-app-table th:nth-child(3),
-    .home-open-app-table td:nth-child(2),
-    .home-open-app-table td:nth-child(3) {
-      text-align: right;
-    }
-
-    .home-open-app-table tbody tr.is-selected td {
-      background: rgba(0, 113, 227, 0.06);
-    }
-
-    .home-open-app-table tbody tr:last-child td {
-      border-bottom: 0;
-    }
-
-    .home-open-app-bank,
-    .home-open-app-scheme {
-      display: block;
-    }
-
-    .home-open-app-bank {
-      color: #1d1d1f;
-      font-weight: 600;
-      letter-spacing: -0.016em;
-    }
-
-    .home-open-app-scheme {
-      margin-top: 0.12rem;
-      color: #6e6e73;
-      font-size: 0.62rem;
-      font-weight: 400;
-    }
-
-    /* Centered fan — swish converges to middle */
-    .home-open-browser[data-bank="1"] {
-      --rot: -9deg;
-      --swish-x: 42%;
-      --swish-y: 8%;
-      top: 12%;
-      left: 6%;
-      z-index: 1;
-      transform: rotate(var(--rot));
-      filter: brightness(0.92);
-    }
-
-    .home-open-browser[data-bank="2"] {
-      --rot: -4deg;
-      --swish-x: 26%;
-      --swish-y: 12%;
-      top: 4%;
-      left: 16%;
-      z-index: 2;
-      transform: rotate(var(--rot));
-      filter: brightness(0.96);
-    }
-
-    .home-open-browser[data-bank="3"] {
-      --rot: 2deg;
-      --swish-x: 8%;
-      --swish-y: 4%;
-      top: 14%;
-      left: 28%;
-      z-index: 3;
-      transform: rotate(var(--rot));
-    }
-
-    .home-open-browser[data-bank="4"] {
-      --rot: -1.5deg;
-      --swish-x: -12%;
-      --swish-y: 10%;
-      top: 2%;
-      left: 40%;
-      z-index: 4;
-      transform: rotate(var(--rot));
-    }
-
-    .home-open-browser[data-bank="5"] {
-      --rot: 7deg;
-      --swish-x: -28%;
-      --swish-y: 2%;
-      top: 16%;
-      left: 48%;
-      z-index: 5;
-      transform: rotate(var(--rot));
-    }
-
-    .home-open-bchrome {
-      display: flex;
-      align-items: flex-end;
-      gap: 0.5rem;
-      min-height: 2rem;
-      padding: 0.4rem 0.5rem 0;
-      background: linear-gradient(180deg, #f0f1f3 0%, #e3e5e8 100%);
-    }
-
-
-    .home-open-traffic {
-      display: flex;
-      flex: none;
-      gap: 0.32rem;
-      align-items: center;
-      padding-bottom: 0.5rem;
-    }
-
-    .home-open-traffic span {
-      width: 0.5rem;
-      height: 0.5rem;
-      border-radius: 50%;
-      background: #d1d1d6;
-      box-shadow:
-        inset 0 0 0 1px rgba(0, 0, 0, 0.12),
-        0 0.5px 0.5px rgba(255, 255, 255, 0.5);
-    }
-
-    .home-open-btabs {
-      display: flex;
-      flex: 1 1 auto;
-      min-width: 0;
-      align-items: flex-end;
-    }
-
-    .home-open-btab {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      max-width: 100%;
-      padding: 0.4rem 0.7rem;
-      border-radius: 9px 9px 0 0;
-      background: #fff;
-      color: #3c4043;
-      font-size: 0.58rem;
-      font-weight: 500;
-      letter-spacing: -0.012em;
-      line-height: 1.2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04);
-    }
-
-    .home-open-fav {
-      flex: none;
-      width: 0.55rem;
-      height: 0.55rem;
-      border-radius: 2px;
-      background: var(--c, #6e6e73);
-      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
-    }
-
-    .home-open-address {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      margin: 0;
-      padding: 0.4rem 0.55rem 0.45rem;
-      background: #fff;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    }
-
-    .home-open-lock {
-      flex: none;
-      width: 0.48rem;
-      height: 0.58rem;
-      border: 1.5px solid #9aa0a6;
-      border-radius: 0.18rem 0.18rem 0.12rem 0.12rem;
-      position: relative;
-    }
-
-    .home-open-lock::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: -0.3rem;
-      width: 0.3rem;
-      height: 0.3rem;
-      border: 1.5px solid #9aa0a6;
-      border-bottom: 0;
-      border-radius: 0.3rem 0.3rem 0 0;
-      transform: translateX(-50%);
-    }
-
-    .home-open-url {
-      flex: 1 1 auto;
-      min-width: 0;
-      padding: 0.28rem 0.55rem;
-      border-radius: 980px;
-      background: #f1f3f4;
-      color: #3c4043;
-      font-size: 0.55rem;
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.25;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: left;
-      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
-    }
-
-    .home-open-page {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      padding: 0.75rem 0.8rem 0.9rem;
-      min-height: 7.25rem;
-      background:
-        linear-gradient(180deg, #fff 0%, #fafafa 100%);
-    }
-
-    .home-open-page-top {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-    }
-
-    .home-open-logo {
-      flex: none;
-      width: 1rem;
-      height: 1rem;
-      border-radius: 50%;
-      background: rgba(29, 29, 31, 0.14);
-      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
-    }
-
-    .home-open-skel {
-      display: block;
-      border-radius: 4px;
-      background: rgba(29, 29, 31, 0.09);
-    }
-
-    .home-open-skel--nav {
-      height: 0.5rem;
-      width: 62%;
-    }
-
-    .home-open-skel--hero {
-      height: 2.65rem;
-      width: 100%;
-      margin-top: 0.1rem;
-      border-radius: 6px;
-    }
-
-    .home-open-skel--line {
-      height: 0.38rem;
-      width: 90%;
-    }
-
-    .home-open-skel--short {
-      width: 55%;
-    }
-
-    .home-open-skel--btn {
-      height: 0.95rem;
-      width: 42%;
-      margin-top: 0.2rem;
-      border-radius: 980px;
-      background: rgba(29, 29, 31, 0.32);
-    }
-
-    .home-open-page--sbi .home-open-logo,
-    .home-open-page--sbi .home-open-skel--hero { background: rgba(33, 88, 140, 0.22); }
-    .home-open-page--hdfc .home-open-logo,
-    .home-open-page--hdfc .home-open-skel--hero { background: rgba(0, 76, 143, 0.18); }
-    .home-open-page--icici .home-open-logo,
-    .home-open-page--icici .home-open-skel--hero { background: rgba(243, 122, 32, 0.2); }
-    .home-open-page--axis .home-open-logo,
-    .home-open-page--axis .home-open-skel--hero { background: rgba(151, 20, 77, 0.16); }
-    .home-open-page--bom .home-open-logo,
-    .home-open-page--bom .home-open-skel--hero { background: rgba(10, 110, 63, 0.18); }
-
-    .home-open-ours {
-      margin: 0;
-    }
-
-    .js .home-open-inner.home-reveal {
-      opacity: 1;
-      transform: none;
-    }
-
-    /* Headline + caption settle; browsers tell the story next */
-    .js .home-open-inner.home-reveal .home-open-display,
-    .js .home-open-inner.home-reveal .home-open-caption {
-      opacity: 0;
-      transform: translate3d(0, 16px, 0);
-      transition:
-        opacity 1.05s var(--home-open-ease),
-        transform 1.45s var(--home-open-ease);
-    }
-
-    .js .home-open-inner.home-reveal .home-open-caption {
-      transition-delay: 0.2s;
-    }
-
-    .js .home-open-inner.home-reveal.is-in .home-open-display,
-    .js .home-open-inner.home-reveal.is-in .home-open-caption {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-    }
-
-    /*
-     * Story: banks pop one by one → all swish into one → Shroffin arrives.
-     * Soft ease; Move / Reveal bands — fun, not snappy.
-     */
-    @keyframes home-open-bank-pop {
-      0% {
-        opacity: 0;
-        transform: rotate(var(--rot, 0deg)) scale(0.78) translate3d(0, 44px, 0);
-      }
-      72% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 1;
-        transform: rotate(var(--rot, 0deg)) scale(1) translate3d(0, 0, 0);
-      }
-    }
-
-    @keyframes home-open-bank-swish {
-      0% {
-        opacity: 1;
-        transform: rotate(var(--rot, 0deg)) scale(1) translate3d(0, 0, 0);
-        filter: brightness(1);
-      }
-      55% {
-        opacity: 1;
-        filter: brightness(1.05);
-      }
-      100% {
-        opacity: 0;
-        transform:
-          rotate(0deg)
-          scale(0.28)
-          translate3d(var(--swish-x, 0%), var(--swish-y, 0%), 0);
-        filter: brightness(1.1);
-      }
-    }
-
-    @keyframes home-open-ours-in {
-      0% {
-        opacity: 0;
-        transform: translate3d(0, 32px, 0) scale(0.9);
-      }
-      100% {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-    }
-
-    @keyframes home-open-ours-out {
-      0% {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translate3d(0, 18px, 0) scale(0.94);
-      }
-    }
-
-    .js .home-open-browser:not(.home-open-browser--ours) {
-      opacity: 0;
-      transform: rotate(var(--rot, 0deg)) scale(0.78) translate3d(0, 44px, 0);
-      will-change: transform, opacity;
-    }
-
-    .js .home-open-browser--ours {
-      opacity: 0;
-      visibility: hidden;
-      transform: translate3d(0, 32px, 0) scale(0.9);
-      will-change: transform, opacity;
-    }
-
-    /* 1) Banks pop in sequence — slower, Shroffin stays hidden */
-    .js .home-open-inner.is-in:not(.is-swishing):not(.is-resolved) .home-open-browser[data-bank="1"] {
-      animation: home-open-bank-pop 1.35s var(--home-open-ease) 0.4s both;
-    }
-
-    .js .home-open-inner.is-in:not(.is-swishing):not(.is-resolved) .home-open-browser[data-bank="2"] {
-      animation: home-open-bank-pop 1.35s var(--home-open-ease) 0.75s both;
-    }
-
-    .js .home-open-inner.is-in:not(.is-swishing):not(.is-resolved) .home-open-browser[data-bank="3"] {
-      animation: home-open-bank-pop 1.35s var(--home-open-ease) 1.1s both;
-    }
-
-    .js .home-open-inner.is-in:not(.is-swishing):not(.is-resolved) .home-open-browser[data-bank="4"] {
-      animation: home-open-bank-pop 1.35s var(--home-open-ease) 1.45s both;
-    }
-
-    .js .home-open-inner.is-in:not(.is-swishing):not(.is-resolved) .home-open-browser[data-bank="5"] {
-      animation: home-open-bank-pop 1.35s var(--home-open-ease) 1.8s both;
-    }
-
-    /* 2) All bank windows swish into one point */
-    .js .home-open-inner.is-swishing:not(.is-resolved) .home-open-browser:not(.home-open-browser--ours) {
-      animation: home-open-bank-swish 1.4s var(--home-open-ease) both;
-    }
-
-    .js .home-open-inner.is-swishing:not(.is-resolved) .home-open-browser[data-bank="1"] {
-      animation-delay: 0s;
-    }
-
-    .js .home-open-inner.is-swishing:not(.is-resolved) .home-open-browser[data-bank="2"] {
-      animation-delay: 0.06s;
-    }
-
-    .js .home-open-inner.is-swishing:not(.is-resolved) .home-open-browser[data-bank="3"] {
-      animation-delay: 0.12s;
-    }
-
-    .js .home-open-inner.is-swishing:not(.is-resolved) .home-open-browser[data-bank="4"] {
-      animation-delay: 0.18s;
-    }
-
-    .js .home-open-inner.is-swishing:not(.is-resolved) .home-open-browser[data-bank="5"] {
-      animation-delay: 0.24s;
-    }
-
-    /* Banks stay gone after the swish */
-    .js .home-open-inner.is-resolved .home-open-browser:not(.home-open-browser--ours) {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      animation: none;
-    }
-
-    /* 3) After the swish — Shroffin window arrives, centered */
-    .js .home-open-inner.is-resolved:not(.is-loop-out) .home-open-browser--ours {
-      visibility: visible;
-      animation: home-open-ours-in 1.45s var(--home-open-ease) 0.1s both;
-    }
-
-    /* Soft exit before the loop restarts */
-    .js .home-open-inner.is-resolved.is-loop-out .home-open-browser--ours {
-      visibility: visible;
-      animation: home-open-ours-out 1s var(--home-open-ease) both;
-    }
-
-    /* Quiet beat between cycles — hold empty, do not start pop early */
-    .js .home-open-inner.is-in.is-loop-gap .home-open-browser:not(.home-open-browser--ours),
-    .js .home-open-inner.is-in.is-loop-gap .home-open-browser--ours {
-      animation: none;
-      opacity: 0;
-      visibility: hidden;
-      filter: none;
-      pointer-events: none;
-    }
-
-    @media (min-width: 834px) {
-      .home-open-inner {
-        width: min(1068px, calc(100% - 48px));
-        padding-bottom: clamp(1.75rem, 4vw, 3rem);
-      }
-
-      .home-open-visual {
-        max-width: 40rem;
-      }
-
-      .home-open-stage {
-        min-height: clamp(24rem, 36vw, 28rem);
-      }
-
-      .home-open-stack {
-        height: clamp(22rem, 30vw, 26rem);
-      }
-
-      .home-open-browser:not(.home-open-browser--ours) {
-        width: min(17rem, 70%);
-      }
-    }
-
-    @media (max-width: 833px) {
-      .home-open {
-        overflow-x: clip;
-      }
-
-      .home-open-inner {
-        width: min(1068px, calc(100% - 40px));
-        padding-bottom: clamp(1.5rem, 4.5vw, 2.75rem);
-      }
-
-      .home-open-display {
-        max-width: none;
-      }
-
-      /*
-       * Let the Shroffin mock sit in normal flow so stage height matches it.
-       * Absolute centering in a short stage made the window bleed into the
-       * caption. Scale the bank fan so every card stays inside the stage.
-       */
-      .js .home-open-col--here,
-      .home-open-col--here {
-        position: relative;
-        left: auto;
-        top: auto;
-        width: 100%;
-        transform: none;
-        margin: 0;
-      }
-
-      .js .home-open-col--away {
-        position: absolute;
-        left: 50%;
-        top: 0.35rem;
-        width: 100%;
-        height: 17rem;
-        transform: translateX(-50%);
-        pointer-events: none;
-      }
-
-      .home-open-visual {
-        max-width: min(22.5rem, 100%);
-      }
-
-      .home-open-stage {
-        min-height: 0;
-        height: auto;
-        overflow: hidden;
-        box-sizing: border-box;
-      }
-
-      .home-open-stack {
-        height: 17rem;
-        width: 100%;
-        transform: scale(0.8);
-        transform-origin: top center;
-      }
-
-      .home-open-browser:not(.home-open-browser--ours) {
-        width: min(9.25rem, 48%);
-      }
-
-      .home-open-browser[data-bank="1"] { left: 4%; --rot: -5deg; }
-      .home-open-browser[data-bank="2"] { left: 12%; --rot: -2.5deg; }
-      .home-open-browser[data-bank="3"] { left: 20%; --rot: 1deg; }
-      .home-open-browser[data-bank="4"] { left: 28%; --rot: -1deg; }
-      .home-open-browser[data-bank="5"] { left: 34%; --rot: 3.5deg; }
-
-      .home-open-caption {
-        margin-top: 1.75rem;
-        /* Keep the caption on one line on narrow screens */
-        font-size: clamp(0.78rem, 3.55vw, calc(var(--shroffin-type-support) - 3px));
-      }
-
-      .home-open-app {
-        gap: 0.65rem;
-        padding: 0.7rem 0.75rem 0.8rem;
-      }
-
-      .home-open-app-head {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.55rem;
-      }
-
-      .home-open-app-actions {
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: flex-start;
-        flex-wrap: nowrap;
-        gap: 0.55rem;
-        min-width: 0;
-      }
-
-      .home-open-app-table {
-        font-size: 0.68rem;
-      }
-
-      .home-open-app-table th,
-      .home-open-app-table td {
-        padding: 0.45rem 0.3rem;
-      }
-
-      .home-open-app-tabs {
-        width: 100%;
-        min-width: 0;
-        gap: 0.55rem;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-      }
-
-      .home-open-app-tabs::-webkit-scrollbar {
-        display: none;
-      }
-
-      .home-open-app-tabs span {
-        flex: 0 0 auto;
-        font-size: 0.62rem;
-        padding: 0.3rem 0.05rem 0.45rem;
-      }
-
-      .home-open-app-apply {
-        align-self: flex-end;
-        flex: 0 0 auto;
-        min-height: 1.75rem;
-        padding: 0 0.7rem;
-        font-size: 0.62rem;
       }
     }
 
@@ -2626,6 +1001,7 @@
 
     .site-footer-disclaimer {
       margin: 0;
+      color: #1d1d1f;
     }
 
     .site-footer-disclaimer p {
@@ -2669,43 +1045,8 @@
         transition: none;
       }
 
-      html.js.home-boot .home-content > .home-story-dark,
-      html.js.home-boot .home-content > .home-built,
-      html.js.home-boot .home-content > .home-open {
+      html.js.home-boot .home-content > .home-story-dark {
         visibility: visible;
-      }
-
-      .home-built-body,
-      .home-built-mobile-slot,
-      .home-built-copy,
-      .home-built-chevron,
-      .home-built-visual,
-      .home-built-visual.is-active {
-        transition: none;
-        transform: none;
-      }
-
-      .home-built-visual.is-active .home-built-scene,
-      .home-built-visual.is-active .home-built-guide-card,
-      .home-built-visual.is-active .home-built-table-row,
-      .home-built-visual.is-active .home-built-bank-card,
-      .home-built-visual.is-active .home-built-share-box,
-      .home-built-visual.is-active .home-built-apply-form,
-      .home-built-visual.is-active .home-built-apply-banks,
-      .home-built-visual.is-active .home-built-apply-offers,
-      .home-built-visual.is-active .home-built-help-solo,
-      .home-built-visual.is-active .home-built-help-ask,
-      .home-built-visual.is-active .home-built-help-footer {
-        animation: none;
-      }
-
-      .home-built-copy {
-        opacity: 0;
-      }
-
-      .home-built-item.is-open .home-built-copy,
-      .home-built-visual.is-active {
-        opacity: 1;
       }
 
       html.js.home-boot .home-hero-copy,
@@ -2716,11 +1057,7 @@
       }
 
       .js .home-moment,
-      .js .home-moment.is-in,
-      .js .home-open-inner.home-reveal .home-open-display,
-      .js .home-open-inner.home-reveal.is-in .home-open-display,
-      .js .home-open-inner.home-reveal .home-open-caption,
-      .js .home-open-inner.home-reveal.is-in .home-open-caption {
+      .js .home-moment.is-in {
         opacity: 1;
         transform: none;
         transition: none;
@@ -2735,36 +1072,13 @@
         transition: none;
       }
 
-      .js .home-zero-zero,
-      .js .home-zero-rest,
-      .js .home-zero-body,
-      .js .home-zero.is-in .home-zero-zero,
-      .js .home-zero[data-home-scrub="zero"] .home-zero-rest,
-      .js .home-zero[data-home-scrub="zero"] .home-zero-body {
-        --hz-rest: 1;
-        --hz-body: 1;
+      .js .home-zero-pair,
+      .js .home-zero.is-in .home-zero-pair:nth-child(1),
+      .js .home-zero.is-in .home-zero-pair:nth-child(2),
+      .js .home-zero.is-in .home-zero-body {
         opacity: 1;
         transform: none;
         transition: none;
-      }
-
-      .js .home-zero-pin {
-        position: static;
-        min-height: 0;
-      }
-
-      .js .home-lead-pin,
-      .js .home-clear-pin,
-      .js .home-best-pin {
-        position: static;
-        min-height: 0;
-      }
-
-      .js .home-lead[data-home-scrub="lead"] {
-        --hl-line-1: 1;
-        --hl-line-2: 1;
-        --hl-line-3: 1;
-        --hl-line-4: 1;
       }
 
       .js .home-clear-display .home-clear-word,
@@ -2774,31 +1088,6 @@
         -webkit-text-fill-color: transparent;
         -webkit-text-stroke-color: rgba(245, 245, 247, 0.62);
         animation: none;
-      }
-
-      .js .home-open-browser:not(.home-open-browser--ours),
-      .js .home-open-browser--ours,
-      .js .home-open-inner.is-in .home-open-browser:not(.home-open-browser--ours),
-      .js .home-open-inner.is-swishing .home-open-browser:not(.home-open-browser--ours),
-      .js .home-open-inner.is-resolved .home-open-browser:not(.home-open-browser--ours),
-      .js .home-open-inner.is-resolved .home-open-browser--ours,
-      .js .home-open-inner.is-resolved.is-loop-out .home-open-browser--ours {
-        opacity: 1;
-        visibility: visible;
-        transform: rotate(var(--rot, 0deg));
-        animation: none;
-        filter: none;
-        transition: none;
-      }
-
-      .js .home-open-browser--ours {
-        transform: none;
-      }
-
-      /* Reduced motion: skip story — show end state (banks gone, Shroffin only) */
-      .js .home-open-browser:not(.home-open-browser--ours) {
-        opacity: 0;
-        visibility: hidden;
       }
     }
 
@@ -3090,16 +1379,16 @@
           <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
             <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
             <div class="site-footer-disclaimer">
-              <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
+              <p class="site-footer-disclaimer-summary">Shroffin is not a bank, a Non-Banking Financial Company (NBFC), or a lender. We do not approve, sanction, underwrite, or disburse loans. The lender decides your rate, your fees, and whether you are approved.</p>
+              <p class="site-footer-disclaimer-turn">Even so, we try our best for you. We show each lender's home loan clearly, one next to the other.</p>
               <details class="site-footer-disclaimer-more">
                 <summary>Read the full disclaimer</summary>
                 <div class="site-footer-disclaimer-panel">
                   <div class="site-footer-disclaimer-full">
-                    <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-                    <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-                    <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-                    <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-                    <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                    <p>We take each lender's terms and check them with that lender. Then we put the home loans next to each other, so you can compare. We can also help you apply.</p>
+                    <p>The rates and rules we show can change. The ones the lender gives you can be different. That still depends on your credit, income, documents, the property, and the checks the lender makes. Some of this may not apply to you, to your city, or when you apply.</p>
+                    <p>Seeing a lender does not mean they will lend to you. We cannot make a lender say yes, or take back a no. When they answer, we go through it with you, and we help you decide what to do. You still choose. What the lender writes is what counts.</p>
+                    <p>If you take the loan, the agreement is with the lender, not with us. We do not become your lender. Read the sanction letter, the key fact statement, and the loan documents before you accept.</p>
                   </div>
                 </div>
               </details>
@@ -3129,8 +1418,7 @@
   <script src="js/shroffin-nav.js?v=guide-top-1"></script>
   <script src="js/shroffin-guide.js?v=flip-grow-1"></script>
   <script src="js/shroffin-product-demo-chrome.js?v=97"></script>
-  <script src="js/shroffin-home-stance.js?v=home-zero-6"></script>
-  <script src="js/shroffin-scrub.js?v=home-zero-16"></script>
-  <script src="js/shroffin-home-built.js?v=2"></script>
+  <script src="js/shroffin-home-stance.js?v=home-story-8"></script>
+  <script src="js/shroffin-scrub.js?v=home-story-8"></script>
 </body>
 </html>

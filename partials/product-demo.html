@@ -28,27 +28,29 @@
                       <h2 class="visually-hidden">Loan inputs</h2>
                       <div class="hlc-inputs-card">
                         <div class="hlc-form">
-                          <div class="hlc-form-primary-grid">
-                            <div class="hlc-form-zone hlc-form-zone--hero">
+                          <div class="hlc-form-pairs">
+                            <fieldset class="hlc-form-row hlc-form-row--hero">
+                              <legend class="hlc-form-row-head"><span class="hlc-form-row-about">Determines how much you can borrow</span></legend>
+                              <div class="hlc-form-row-fields">
                               <label class="hlc-field hlc-field--hero" data-spd-field="income">
-                                <span class="hlc-field-label">Monthly income</span>
+                                <span class="hlc-field-label">Net monthly income</span>
                                 <span class="hlc-input-shell hlc-input-shell--hero" data-spd-shell>
                                   <span class="hlc-prefix" aria-hidden="true">₹</span>
                                   <input type="text" data-spd-value value="1,00,000" readonly tabindex="-1" aria-hidden="true">
                                 </span>
                               </label>
-                            </div>
-                            <div class="hlc-form-zone hlc-form-zone--hero">
                               <label class="hlc-field hlc-field--hero" data-spd-field="property">
-                                <span class="hlc-field-label">Property agreement value</span>
+                                <span class="hlc-field-label">Property value<span class="hlc-field-label-qualifier"> as per agreement</span></span>
                                 <span class="hlc-input-shell hlc-input-shell--hero" data-spd-shell>
                                   <span class="hlc-prefix" aria-hidden="true">₹</span>
                                   <input type="text" data-spd-value value="62,50,000" readonly tabindex="-1" aria-hidden="true">
                                 </span>
                               </label>
-                            </div>
-                            <div class="hlc-form-zone hlc-form-zone--pair">
-                              <div class="hlc-form-zone-fields">
+                              </div>
+                            </fieldset>
+                            <fieldset class="hlc-form-row">
+                              <legend class="hlc-form-row-head"><span class="hlc-form-row-about">Alters rate, years and offers</span></legend>
+                              <div class="hlc-form-row-fields">
                                 <div class="hlc-field">
                                   <span class="hlc-field-label">Age</span>
                                   <span class="hlc-input-shell">
@@ -63,28 +65,31 @@
                                   </span>
                                 </div>
                               </div>
-                            </div>
-                            <div class="hlc-form-zone hlc-form-zone--choices">
-                              <div class="hlc-form-zone-fields">
+                            </fieldset>
+                            <fieldset class="hlc-form-row hlc-form-row--choices">
+                              <legend class="hlc-form-row-head"><span class="hlc-form-row-about">Alters scheme and loan type</span></legend>
+                              <div class="hlc-form-row-fields">
                                 <div class="hlc-field hlc-field--occupation">
                                   <span class="hlc-field-label">Occupation</span>
-                                  <div class="hlc-segmented hlc-occupation-pills">
-                                    <button type="button" class="hlc-chip" aria-pressed="true" tabindex="-1">Salaried</button>
-                                    <button type="button" class="hlc-chip" aria-pressed="false" tabindex="-1">Self-employed</button>
-                                  </div>
+                                  <span class="hlc-input-shell hlc-input-shell--select hlc-input-shell--has-face">
+                                    <span class="hlc-select-face" aria-hidden="true">
+                                      <span class="hlc-select-face-value">Salaried</span>
+                                    </span>
+                                  </span>
                                 </div>
                                 <div class="hlc-field hlc-field--purpose">
                                   <span class="hlc-field-label">Purpose</span>
-                                  <div class="hlc-segmented hlc-purpose-pills">
-                                    <button type="button" class="hlc-chip" aria-pressed="true" tabindex="-1">Regular</button>
-                                    <button type="button" class="hlc-chip" aria-pressed="false" tabindex="-1">Top-up</button>
-                                  </div>
+                                  <span class="hlc-input-shell hlc-input-shell--select hlc-input-shell--has-face">
+                                    <span class="hlc-select-face" aria-hidden="true">
+                                      <span class="hlc-select-face-value">New</span>
+                                    </span>
+                                  </span>
                                 </div>
                               </div>
-                            </div>
+                            </fieldset>
                           </div>
                           <div class="hlc-form-submit">
-                            <button type="button" class="home-hero-cta home-hero-cta-secondary" data-spd-see-options tabindex="-1">See options</button>
+                            <button type="button" class="home-hero-cta home-hero-cta-primary hlc-compare-cta" data-spd-see-options tabindex="-1"><svg class="hlc-compare-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m317-160-42-42 121-121H80v-60h316L275-504l42-42 193 193-193 193Zm326-254L450-607l193-193 42 42-121 121h316v60H564l121 121-42 42Z"/></svg><span class="hlc-compare-label">Compare</span></button>
                           </div>
                         </div>
                       </div>

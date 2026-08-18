@@ -9,7 +9,7 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="../css/shroffin-shell.css?v=disclaimer-3">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=product-ui-2">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=product-ui-9">
   <style>
     /*
      * Frame chrome only. Do NOT re-layout the product —
@@ -130,8 +130,7 @@
       display: none !important;
     }
 
-    .hlc-form-more,
-    .hlc-form-more-toggle {
+    .hlc-form-more {
       pointer-events: none;
     }
 
@@ -208,7 +207,7 @@
                   <div class="hlc-form-zone hlc-form-zone--hero">
                     <label class="hlc-field hlc-field--hero" for="spd-income">
                       <span class="hlc-field-label-row">
-                        <span class="hlc-field-label">Monthly income<span class="hlc-req" aria-hidden="true">*</span><span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span></button></span></span>
+                        <span class="hlc-field-label">Net monthly income<sup class="hlc-req" aria-hidden="true">*</sup><span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span></span>
                       </span>
                       <span class="hlc-input-shell hlc-input-shell--hero" data-spd-shell="income">
                         <span class="hlc-prefix" aria-hidden="true">₹</span>
@@ -220,7 +219,7 @@
                   <div class="hlc-form-zone hlc-form-zone--hero">
                     <label class="hlc-field hlc-field--hero hlc-field--property" for="spd-property">
                       <span class="hlc-field-label-row">
-                        <span class="hlc-field-label">Property agreement&nbsp;<span class="hlc-field-label-tail">value<span class="hlc-req" aria-hidden="true">*</span><span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span></button></span></span></span>
+                        <span class="hlc-field-label">Property value<span class="hlc-field-label-qualifier"> as per agreement</span><sup class="hlc-req" aria-hidden="true">*</sup><span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span></span>
                       </span>
                       <span class="hlc-input-shell hlc-input-shell--hero" data-spd-shell="property">
                         <span class="hlc-prefix" aria-hidden="true">₹</span>
@@ -233,7 +232,7 @@
                     <div class="hlc-form-zone-fields">
                       <label class="hlc-field" for="spd-age">
                         <span class="hlc-field-label-row">
-                          <span class="hlc-field-label">Age<span class="hlc-req" aria-hidden="true">*</span><span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span></button></span></span>
+                          <span class="hlc-field-label">Age<sup class="hlc-req" aria-hidden="true">*</sup><span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span></span>
                         </span>
                         <span class="hlc-input-shell" data-spd-shell="age">
                           <input type="text" id="spd-age" data-spd-input="age" value="" placeholder="35" readonly tabindex="-1" aria-hidden="true">
@@ -242,7 +241,7 @@
                       </label>
                       <label class="hlc-field" for="spd-cibil">
                         <span class="hlc-field-label-row">
-                          <span class="hlc-field-label">CIBIL score<span class="hlc-req" aria-hidden="true">*</span><span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span></button></span></span>
+                          <span class="hlc-field-label">CIBIL score<sup class="hlc-req" aria-hidden="true">*</sup><span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span></span>
                         </span>
                         <span class="hlc-input-shell" data-spd-shell="cibil">
                           <input type="text" id="spd-cibil" data-spd-input="cibil" value="" placeholder="780" readonly tabindex="-1" aria-hidden="true">
@@ -253,42 +252,33 @@
 
                   <div class="hlc-form-zone hlc-form-zone--choices">
                     <div class="hlc-form-zone-fields">
-                      <div class="hlc-field hlc-field--occupation">
+                      <label class="hlc-field hlc-field--occupation" for="spd-occupation">
                         <span class="hlc-field-label-row">
-                          <span class="hlc-field-label">Occupation<span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span></button></span></span>
+                          <span class="hlc-field-label">Occupation<sup class="hlc-req" aria-hidden="true">*</sup><span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span></span>
                         </span>
-                        <div class="hlc-segmented hlc-occupation-pills" role="group">
-                          <button type="button" class="hlc-chip" data-spd-chip="occupation" data-spd-choice="Salaried" aria-pressed="false" tabindex="-1">Salaried</button>
-                          <button type="button" class="hlc-chip" data-spd-chip="occupation" data-spd-choice="Self-Employed" aria-pressed="false" tabindex="-1">Self-employed</button>
-                        </div>
-                      </div>
-                      <div class="hlc-field hlc-field--purpose">
+                        <span class="hlc-input-shell hlc-input-shell--select hlc-input-shell--has-face" data-spd-shell="occupation">
+                          <span class="hlc-select-face" aria-hidden="true">
+                            <span class="hlc-select-face-value" data-spd-chip="occupation" data-spd-choice="Salaried">Salaried</span>
+                          </span>
+                        </span>
+                      </label>
+                      <label class="hlc-field hlc-field--purpose" for="spd-purpose">
                         <span class="hlc-field-label-row">
-                          <span class="hlc-field-label">Purpose<span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span></button></span></span>
+                          <span class="hlc-field-label">Purpose<sup class="hlc-req" aria-hidden="true">*</sup><span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span></span>
                         </span>
-                        <div class="hlc-segmented hlc-purpose-pills" role="group">
-                          <button type="button" class="hlc-chip" data-spd-chip="purpose" data-spd-choice="Regular" aria-pressed="false" tabindex="-1">Regular</button>
-                          <button type="button" class="hlc-chip" data-spd-chip="purpose" data-spd-choice="Top-up" aria-pressed="false" tabindex="-1">Top-up</button>
-                        </div>
-                      </div>
+                        <span class="hlc-input-shell hlc-input-shell--select hlc-input-shell--has-face" data-spd-shell="purpose">
+                          <span class="hlc-select-face" aria-hidden="true">
+                            <span class="hlc-select-face-value" data-spd-chip="purpose" data-spd-choice="Regular">New</span>
+                          </span>
+                        </span>
+                      </label>
                     </div>
                   </div>
                 </div>
 
                 <div class="hlc-form-actions">
-                  <!-- Shown for look only — closed like live; demo never opens or fills these -->
-                  <details class="hlc-form-more" data-spd-more>
-                    <summary class="hlc-form-more-toggle" tabindex="-1">
-                      <span class="hlc-form-more-copy">
-                        <span class="hlc-form-more-title">
-                          <span class="hlc-form-more-label">Adjust eligibility</span>
-                          <svg class="hlc-form-more-chevron" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                            <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>
-                        </span>
-                        <span class="hlc-form-more-hint">Existing EMIs, credit cards, income share for EMIs, tenure, co-applicant</span>
-                      </span>
-                    </summary>
+                  <!-- Always visible like live — demo never fills these -->
+                  <div class="hlc-form-more" data-spd-more>
                     <div class="hlc-form-more-panel">
                       <div class="hlc-form-fields hlc-form-fields--more">
                         <label class="hlc-field">
@@ -304,10 +294,10 @@
                             <span class="hlc-prefix" aria-hidden="true">₹</span>
                             <input type="text" value="0" readonly tabindex="-1" aria-hidden="true">
                           </span>
-                          <p class="hlc-field-note">About 10% counts as monthly load</p>
+                          <p class="hlc-field-note hlc-field-note--card-load">About 10% of this limit counts as monthly EMI</p>
                         </div>
                         <label class="hlc-field hlc-field--foir">
-                          <span class="hlc-field-label">Share of income for EMIs /<br>FOIR</span>
+                          <span class="hlc-field-label">EMI limit / FOIR</span>
                           <span class="hlc-input-shell hlc-input-shell--select hlc-input-shell--has-face">
                             <span class="hlc-select-face" aria-hidden="true">
                               <span class="hlc-select-face-value">55%</span><span class="hlc-select-face-tag"> (default)</span>
@@ -315,7 +305,7 @@
                           </span>
                         </label>
                         <label class="hlc-field">
-                          <span class="hlc-field-label">Tenure</span>
+                          <span class="hlc-field-label">Loan tenure</span>
                           <span class="hlc-input-shell">
                             <input type="text" value="20" readonly tabindex="-1" aria-hidden="true">
                             <span class="hlc-suffix" aria-hidden="true">years</span>
@@ -323,20 +313,19 @@
                         </label>
                         <div class="hlc-coapplicant-row">
                           <div class="hlc-coapplicant-toggle-cell">
-                            <div class="hlc-field hlc-field--coapplicant">
-                              <span class="hlc-field-label">Co-applicant</span>
-                              <div class="hlc-segmented hlc-coapplicant-pills" role="group">
-                                <button type="button" class="hlc-chip" aria-pressed="true" tabindex="-1">No</button>
-                                <button type="button" class="hlc-chip" aria-pressed="false" tabindex="-1">Yes</button>
+                            <div class="hlc-coapplicant-inline">
+                              <p class="hlc-coapplicant-copy">To get a higher loan amount, add a co-applicant with income.</p>
+                              <div class="hlc-coapplicant-pills">
+                                <button type="button" class="hlc-coapplicant-action" aria-pressed="false" tabindex="-1">Add</button>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </details>
+                  </div>
                   <div class="hlc-form-submit">
-                    <button type="button" class="home-hero-cta home-hero-cta-secondary" data-spd-see-options tabindex="-1">See options</button>
+                    <button type="button" class="home-hero-cta home-hero-cta-primary hlc-compare-cta" data-spd-see-options tabindex="-1"><svg class="hlc-compare-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m317-160-42-42 121-121H80v-60h316L275-504l42-42 193 193-193 193Zm326-254L450-607l193-193 42 42-121 121h316v60H564l121 121-42 42Z"/></svg><span class="hlc-compare-label">Compare</span></button>
                   </div>
                 </div>
               </form>
@@ -351,7 +340,7 @@
             aria-live="polite"
             aria-atomic="true"
           >
-            <p class="hlc-searching-title">Finding your options.</p>
+            <p class="hlc-searching-title">Comparing banks.</p>
             <div class="hlc-searching-dots" aria-hidden="true">
               <span></span><span></span><span></span>
             </div>
@@ -360,7 +349,7 @@
           <section class="hlc-results-shell" data-spd-results hidden aria-live="polite">
             <div class="hlc-results-head">
               <div class="hlc-results-heading">
-                <h2 class="visually-hidden">Bank options</h2>
+                <h2 class="visually-hidden">Banks</h2>
               </div>
               <div class="hlc-results-actions">
                 <div class="hlc-results-tools-lead">
@@ -370,20 +359,6 @@
                       <button type="button" class="hlc-column-tab" role="tab" data-spd-tab="charges" aria-selected="false" tabindex="-1">Charges</button>
                       <button type="button" class="hlc-column-tab" role="tab" data-spd-tab="later" aria-selected="false" tabindex="-1">Other charges</button>
                     </div>
-                  </div>
-                  <div class="hlc-edit-inputs-control">
-                    <button
-                      type="button"
-                      class="hlc-edit-inputs"
-                      data-spd-edit-inputs
-                      aria-label="Edit inputs"
-                      tabindex="-1"
-                    >
-                      <svg class="hlc-edit-inputs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
-                      </svg>
-                      <span class="hlc-edit-inputs-label">edit</span>
-                    </button>
                   </div>
                 </div>
                 <div class="hlc-filters-control" data-spd-filters-control>
@@ -396,8 +371,8 @@
                     aria-label="Filters"
                     tabindex="-1"
                   >
-                    <svg class="hlc-filters-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"/>
+                    <svg class="hlc-filters-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false">
+                      <path fill="currentColor" d="M440-160q-17 0-28.5-11.5T400-200v-240L168-736q-15-20-4.5-42t36.5-22h560q26 0 36.5 22t-4.5 42L560-440v240q0 17-11.5 28.5T520-160h-80Zm40-308 198-252H282l198 252Zm0 0Z"/>
                     </svg>
                     <span class="hlc-filters-toggle-label">filter</span>
                     <span class="hlc-filters-badge" data-spd-filters-badge hidden></span>
@@ -496,9 +471,9 @@
 
               <div class="hlc-compare-table-area">
                 <div class="hlc-table-wrap" data-spd-panel="essentials">
-                  <div class="hlc-table-scroll" data-spd-scroll tabindex="0" role="region" aria-label="Your home loan options">
+                  <div class="hlc-table-scroll" data-spd-scroll tabindex="0" role="region" aria-label="Matching banks">
                     <table class="hlc-compare" data-group="essentials">
-                      <caption class="visually-hidden">Your home loan options</caption>
+                      <caption class="visually-hidden">Matching banks</caption>
                       <colgroup>
                         <col class="hlc-col-bank">
                         <col class="hlc-col-w-pct">
@@ -535,7 +510,7 @@
                           </th>
                         </tr>
                       </thead>
-                      <!-- Same bank order on every tab (rate ascending). Scheme + More stay on every tab. -->
+                      <!-- Same bank order on every tab (rate ascending). Bank name only in the table. -->
                       <tbody>
                         <tr class="hlc-selectable-row" data-spd-row data-bank="bom" data-bank-type="Public" aria-selected="false">
                           <td class="hlc-sticky-col">
@@ -543,7 +518,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bank-of-maharashtra.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Bank of Maharashtra</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Maha Super Housing Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -558,7 +532,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/indian-overseas-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Indian Overseas Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Subhagruha Housing Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -573,7 +546,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/punjab-national-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Punjab National Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing Loan For Public</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -588,7 +560,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/canara-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Canara Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -603,7 +574,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/central-bank-of-india.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Central Bank of India</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Cent Home loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -618,7 +588,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/axis-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Axis Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -633,7 +602,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/union-bank-of-india.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Union Bank of India</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Union Home</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -648,7 +616,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bank-of-baroda.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Bank of Baroda</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Baroda Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -663,7 +630,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/south-indian-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">South Indian Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">SIB Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -678,7 +644,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/jammu-kashmir-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Jammu and Kashmir Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -693,7 +658,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/nainital-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Nainital Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Apna Aashiana - Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -708,7 +672,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/hdfc-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">HDFC Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -723,7 +686,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bandhan-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Bandhan Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Suraksha Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -738,7 +700,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/icici-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">ICICI Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -753,7 +714,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/federal-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Federal Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -788,7 +748,7 @@
                         <tr>
                           <th scope="col" class="hlc-sticky-col">Bank</th>
                           <th scope="col" class="hlc-col-num" data-col="processingFee" aria-describedby="spd-charges-note">Processing fees<sup class="hlc-col-footnote" aria-hidden="true">*</sup></th>
-                          <th scope="col" class="hlc-col-num" data-col="propertyCheckCharges" aria-describedby="spd-charges-note">Property check charges<sup class="hlc-col-footnote" aria-hidden="true">*</sup></th>
+                          <th scope="col" class="hlc-col-num" data-col="propertyCheckCharges" aria-describedby="spd-charges-note">Property check charges<sup class="hlc-col-footnote" aria-hidden="true">†</sup></th>
                           <th scope="col" class="hlc-col-num" data-col="governmentCharges">Government charges</th>
                         </tr>
                       </thead>
@@ -799,7 +759,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bank-of-maharashtra.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Bank of Maharashtra</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Maha Super Housing Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -813,7 +772,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/indian-overseas-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Indian Overseas Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Subhagruha Housing Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -827,7 +785,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/punjab-national-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Punjab National Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing Loan For Public</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -841,7 +798,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/canara-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Canara Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -855,7 +811,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/central-bank-of-india.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Central Bank of India</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Cent Home loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -869,7 +824,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/axis-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Axis Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -883,7 +837,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/union-bank-of-india.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Union Bank of India</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Union Home</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -897,7 +850,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bank-of-baroda.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Bank of Baroda</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Baroda Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -911,7 +863,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/south-indian-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">South Indian Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">SIB Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -925,7 +876,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/jammu-kashmir-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Jammu and Kashmir Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -939,7 +889,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/nainital-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Nainital Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Apna Aashiana - Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -953,7 +902,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/hdfc-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">HDFC Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -967,7 +915,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bandhan-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Bandhan Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Suraksha Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -981,7 +928,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/icici-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">ICICI Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -995,7 +941,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/federal-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Federal Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1008,7 +953,7 @@
                   </div>
                 </div>
                 <div class="hlc-charges-note" data-spd-panel="charges" id="spd-charges-note" hidden>
-                  <p class="hlc-charges-note-body">* Part of the processing fee is often taken upfront as a login fee to file the application. The amount differs by bank and is included in the processing fee shown — we don’t list it separately yet. * Property check charges are a typical average and exclude GST.</p>
+                  <p class="hlc-charges-note-body">* Part of the processing fee is often taken upfront as a login fee to file the application. The amount differs by bank and is included in the processing fee shown — we don’t list it separately yet. † Property check charges are a typical average and exclude GST.</p>
                 </div>
 
                 <div class="hlc-table-wrap" data-spd-panel="later" hidden>
@@ -1037,7 +982,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bank-of-maharashtra.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Bank of Maharashtra</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Maha Super Housing Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1052,7 +996,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/indian-overseas-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Indian Overseas Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Subhagruha Housing Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1067,7 +1010,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/punjab-national-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Punjab National Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing Loan For Public</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1082,7 +1024,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/canara-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Canara Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1097,7 +1038,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/central-bank-of-india.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Central Bank of India</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Cent Home loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1112,7 +1052,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/axis-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Axis Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1127,7 +1066,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/union-bank-of-india.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Union Bank of India</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Union Home</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1142,7 +1080,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bank-of-baroda.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Bank of Baroda</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Baroda Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1157,7 +1094,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/south-indian-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">South Indian Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">SIB Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1172,7 +1108,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/jammu-kashmir-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Jammu and Kashmir Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Housing Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1187,7 +1122,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/nainital-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Nainital Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Apna Aashiana - Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1202,7 +1136,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/hdfc-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">HDFC Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1217,7 +1150,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bandhan-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Bandhan Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Suraksha Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1232,7 +1164,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/icici-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">ICICI Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1247,7 +1178,6 @@
                               <span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                               <div class="hlc-bank-cell-text">
                                 <div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/federal-bank.png" alt="" width="26" height="26" decoding="async" loading="lazy"><span class="hlc-bank-name-text">Federal Bank</span></div>
-                                <div class="hlc-bank-sub"><span class="hlc-bank-scheme">Home Loan</span><span class="hlc-bank-detail" aria-hidden="true"><span class="hlc-bank-detail-label">More</span><span class="hlc-bank-detail-mark" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></span></div>
                               </div>
                             </div>
                           </td>
@@ -1263,7 +1193,7 @@
                 <div class="hlc-charges-note" data-spd-panel="later" id="spd-later-note" hidden>
                   <p class="hlc-charges-note-body">° Usually each rate-type switch. ‡ On overdue amount. ^ Per bounce.</p>
                 </div>
-                <p class="hlc-freshness-note">Data last checked on 14 July 2026</p>
+                <p class="hlc-freshness-note">Last checked on 14 July 2026</p>
               </div>
             </div>
           </section>
@@ -1273,6 +1203,6 @@
     </div>
   </main>
 
-  <script src="../js/shroffin-product-demo.js?v=70"></script>
+  <script src="../js/shroffin-product-demo.js?v=71"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 /**
  * Mobile product demo choreography — phone frame only.
- * Story: type → See options → scroll to banks → peek-slide columns →
+ * Story: type → Compare → scroll to banks → peek-slide columns →
  * tabs (peek each) → filter sheet → Private rematch → select → dock Apply once.
  * Plays through once, then stops (parent Pause can stop early).
  * NEVER scrollIntoView. NEVER press Women. NEVER show a mouse/finger cursor — tap ripple only.
@@ -365,15 +365,16 @@
   function setSeeOptionsBusy(root, on) {
     var btn = root.querySelector("[data-spd-see-options]");
     if (!btn) return;
+    var labelEl = btn.querySelector(".hlc-compare-label") || btn;
     if (on) {
       if (!btn.getAttribute("data-spd-label")) {
-        btn.setAttribute("data-spd-label", btn.textContent || "See options");
+        btn.setAttribute("data-spd-label", labelEl.textContent || "Compare");
       }
-      btn.textContent = "Finding options";
+      labelEl.textContent = "Comparing";
       btn.disabled = true;
     } else {
       var label = btn.getAttribute("data-spd-label");
-      if (label) btn.textContent = label;
+      if (label) labelEl.textContent = label;
       btn.removeAttribute("data-spd-label");
       btn.disabled = false;
     }
@@ -682,7 +683,7 @@
     setChoice(root, "purpose", "Regular");
     await sleep(WAIT.chip, signal);
 
-    /* 3 — See options → Finding options (stay on the form, like live) */
+    /* 3 — Compare → Comparing (stay on the form, like live) */
     var see = root.querySelector("[data-spd-see-options]");
     await tapOn(see, signal);
     showSearching(root);

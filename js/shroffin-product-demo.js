@@ -1,6 +1,6 @@
 /**
  * Product demo choreography — preview frame only.
- * Story: empty form → type → chips → See options → Finding options →
+ * Story: empty form → type → chips → Compare → Comparing →
  * scroll to banks → tabs → Private filter rematch → select → Apply once.
  * Plays through once, then stops (parent Pause can stop early).
  * Visuals = explore-banks CSS + real hlc markup. Cursor is demo chrome.
@@ -357,15 +357,16 @@
   function setSeeOptionsBusy(root, on) {
     var btn = root.querySelector("[data-spd-see-options]");
     if (!btn) return;
+    var labelEl = btn.querySelector(".hlc-compare-label") || btn;
     if (on) {
       if (!btn.getAttribute("data-spd-label")) {
-        btn.setAttribute("data-spd-label", btn.textContent || "See options");
+        btn.setAttribute("data-spd-label", labelEl.textContent || "Compare");
       }
-      btn.textContent = "Finding options";
+      labelEl.textContent = "Comparing";
       btn.disabled = true;
     } else {
       var label = btn.getAttribute("data-spd-label");
-      if (label) btn.textContent = label;
+      if (label) labelEl.textContent = label;
       btn.removeAttribute("data-spd-label");
       btn.disabled = false;
     }
@@ -618,7 +619,7 @@
     setChoice(root, "purpose", "Regular");
     await sleep(WAIT.chip, signal);
 
-    /* 3 — See options → Finding options (stay on the form, like live) */
+    /* 3 — Compare → Comparing (stay on the form, like live) */
     var see = root.querySelector("[data-spd-see-options]");
     await clickPress(cursor, see, signal);
     showSearching(root);

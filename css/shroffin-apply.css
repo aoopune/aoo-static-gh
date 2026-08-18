@@ -336,7 +336,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: clamp(2rem, 4vw, 3rem);
-    row-gap: 1.35rem;
+    row-gap: 2.25rem;
   }
 
   .hl-apply--contact .hl-apply-field--email {
@@ -1372,17 +1372,23 @@
 .hl-apply-fields {
   display: flex;
   flex-direction: column;
-  gap: 1.35rem;
+  gap: 2.35rem;
+}
+
+.hl-apply--contact .hl-apply-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
 .hl-apply-field label {
   display: block;
-  margin-bottom: 0.45rem;
+  margin-bottom: 0;
   font-size: 0.9375rem;
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.25;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: rgba(29, 29, 31, 0.84);
 }
 
 @media (min-width: 834px) {
@@ -1391,13 +1397,70 @@
   }
 }
 
-/* Phone: India-only +91 — underline row matches other fields (recipe in shell) */
+/* Contact fields: keep structure, add soft surface polish */
+.hl-apply--contact .hl-apply-field > input,
+.hl-apply--contact .hl-apply-phone-row,
+.hl-apply--contact .hl-apply-email-row {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  background: #f7f8fa;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transition:
+    border-color var(--shroffin-ui-duration, 0.8s)
+      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    box-shadow var(--shroffin-ui-duration, 0.8s)
+      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    background-color var(--shroffin-ui-duration, 0.8s)
+      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.hl-apply--contact .hl-apply-field > input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 56px;
+  padding: 0.95rem 1.1rem;
+  color: var(--shroffin-ink, #1d1d1f);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.hl-apply--contact .hl-apply-field > input,
+.hl-apply--contact .hl-apply-field--phone input,
+.hl-apply--contact .hl-apply-email-row input {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.hl-apply--contact .hl-apply-field > input::placeholder,
+.hl-apply--contact .hl-apply-field--phone input::placeholder,
+.hl-apply--contact .hl-apply-email-row input::placeholder {
+  color: rgba(110, 110, 115, 0.78);
+}
+
+.hl-apply--contact .hl-apply-field > input:hover,
+.hl-apply--contact .hl-apply-phone-row:hover,
+.hl-apply--contact .hl-apply-email-row:hover {
+  border-color: rgba(0, 113, 227, 0.18);
+  background: #f9fafc;
+}
+
+.hl-apply--contact .hl-apply-field:focus-within > input,
+.hl-apply--contact .hl-apply-field--phone:focus-within .hl-apply-phone-row,
+.hl-apply--contact .hl-apply-field--email:focus-within .hl-apply-email-row {
+  background: #ffffff;
+  border-color: rgba(0, 113, 227, 0.34);
+  box-shadow:
+    0 0 0 4px rgba(0, 113, 227, 0.08);
+}
+
+/* Phone: India-only +91 — same structure, softened into the field surface */
 .hl-apply-phone-row {
   display: flex;
   align-items: stretch;
   gap: 0.5rem;
-  min-height: var(--shroffin-field-min-height, 48px);
-  padding: 0;
+  min-height: 56px;
+  padding: 0 1.05rem 0 1.15rem;
 }
 
 .hl-apply-phone-prefix {
@@ -1406,10 +1469,9 @@
   gap: 0.4rem;
   flex-shrink: 0;
   margin: 0;
-  padding: var(--shroffin-field-pad-block-start, 0.65rem) 0
-    var(--shroffin-field-pad-block-end, 0.75rem);
-  color: var(--shroffin-ink, #1d1d1f);
-  font-size: var(--shroffin-field-font-size, 1.125rem);
+  padding: 0.95rem 0;
+  color: rgba(29, 29, 31, 0.56);
+  font-size: 1rem;
   font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1.2;
@@ -1436,17 +1498,18 @@
   min-width: 0;
   width: auto;
   box-sizing: border-box;
-  min-height: 48px;
+  min-height: 56px;
   margin: 0;
-  padding: 0.65rem 0 0.75rem;
+  padding: 0.95rem 0;
   border: none;
   border-bottom: none;
   border-radius: 0;
   background: transparent;
-  font-size: 1.125rem;
+  color: var(--shroffin-ink, #1d1d1f);
+  font-size: 1rem;
   font-weight: 400;
-  letter-spacing: 0.02em;
-  line-height: 1.2;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
 }
 
 .hl-apply-field--phone input:focus {
@@ -1460,8 +1523,10 @@
   justify-content: center;
   flex-shrink: 0;
   align-self: center;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: rgba(29, 122, 58, 0.08);
   color: #1d7a3a;
 }
 
@@ -1478,36 +1543,41 @@
   display: flex;
   align-items: flex-end;
   gap: 0.75rem;
+  min-height: 56px;
+  padding: 0.4rem 0.4rem 0.4rem 1.15rem;
 }
 
 .hl-apply-email-row input {
   flex: 1;
   min-width: 0;
+  min-height: 48px;
+  padding: 0.6rem 0;
+  color: var(--shroffin-ink, #1d1d1f);
+  font-size: 1rem;
+  line-height: 1.35;
 }
 
 .hl-apply-verify {
   appearance: none;
   flex-shrink: 0;
   min-height: 44px;
-  min-width: 4.75rem;
-  margin-bottom: 0.35rem;
-  padding: 0 0.85rem;
-  border: none;
-  border-radius: 0;
-  border-bottom: 1px solid transparent;
-  background: transparent;
-  color: var(--shroffin-blue, #0071e3);
+  min-width: 5.5rem;
+  margin-bottom: 0;
+  padding: 0 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 999px;
+  background: #ffffff;
+  color: rgba(29, 29, 31, 0.74);
   font: inherit;
   font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
-  text-decoration: none;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
   transition:
+    background-color var(--shroffin-ui-duration, 0.8s)
+      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    border-color var(--shroffin-ui-duration, 0.8s)
+      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
     color var(--shroffin-micro-duration, 0.5s)
-      var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
-    text-decoration-color var(--shroffin-micro-duration, 0.5s)
       var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
     opacity var(--shroffin-micro-duration, 0.5s)
       var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1));
@@ -1515,26 +1585,27 @@
 
 .hl-apply-verify:hover:not(:disabled):not(.is-verified),
 .hl-apply-verify:focus-visible:not(:disabled):not(.is-verified) {
+  background: #f3f7ff;
+  border-color: rgba(0, 113, 227, 0.18);
   color: var(--shroffin-blue, #0071e3);
-  text-decoration: underline;
-  text-decoration-color: var(--shroffin-blue, #0071e3);
 }
 
 .hl-apply-verify:active:not(:disabled):not(.is-verified) {
+  background: #edf4ff;
+  border-color: rgba(0, 113, 227, 0.24);
   color: #0077ed;
-  text-decoration: underline;
-  text-decoration-color: #0077ed;
 }
 
 .hl-apply-verify:disabled {
-  opacity: 0.45;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
 .hl-apply-verify.is-verified {
   color: #1d7a3a;
   cursor: default;
-  text-decoration: none;
+  border-color: rgba(29, 122, 58, 0.14);
+  background: rgba(29, 122, 58, 0.06);
 }
 
 .hl-apply-verify-status {
@@ -1563,14 +1634,15 @@
   .hl-apply-email-row {
     flex-direction: column;
     align-items: stretch;
-    gap: 0.35rem;
+    gap: 0.5rem;
+    padding: 0.9rem 0.95rem;
   }
 
   .hl-apply-verify {
     align-self: flex-start;
     margin-bottom: 0;
     min-height: 44px;
-    padding-inline: 0;
+    padding-inline: 1rem;
   }
 }
 

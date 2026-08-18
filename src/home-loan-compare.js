@@ -27,6 +27,31 @@ const DEFAULT_JURISDICTION_STATE = "Maharashtra";
 /** GST-yes government fees (CERSAI) are stored exclusive of GST. */
 const DEFAULT_GOVERNMENT_GST_RATE = 0.18;
 const FOIR_CHOICES = [50, 55, 60, 65, 70];
+/** Lenders commonly cap a joint home loan at six borrowers in total. */
+const MAX_CO_APPLICANTS = 5;
+/**
+ * Lenders only club income from close family. Anyone else can still sign as a
+ * borrower or co-owner, but their income does not raise the eligible amount.
+ */
+const CO_APPLICANT_RELATIONSHIPS = [
+  { value: "Spouse", label: "Spouse", clubs: true },
+  { value: "Father", label: "Father", clubs: true },
+  { value: "Mother", label: "Mother", clubs: true },
+  { value: "Son", label: "Son", clubs: true },
+  { value: "Daughter", label: "Daughter", clubs: true },
+  { value: "Brother", label: "Brother", clubs: true },
+  { value: "Sister", label: "Sister", clubs: true },
+  { value: "Other", label: "Someone else", clubs: false }
+];
+const DEFAULT_CO_APPLICANT_RELATIONSHIP = "Spouse";
+/** "Not earning" keeps a co-owner on the loan without adding income. */
+const CO_APPLICANT_OCCUPATIONS = [
+  { value: "Salaried", label: "Salaried", earns: true },
+  { value: "Self-employed", label: "Self-employed", earns: true },
+  { value: "Pensioner", label: "Pensioner", earns: true },
+  { value: "Not earning", label: "Not earning", earns: false }
+];
+const DEFAULT_CO_APPLICANT_OCCUPATION = "Salaried";
 
 /** bank_name (compare JSON) → 128×128 watermark PNG under images/banks/ */
 const BANK_LOGO_FILES = {
@@ -82,26 +107,131 @@ function bankLogoHtml(bankName) {
   );
 }
 
-/** Circled + for the bank-row “More” control (opens more details — not an info tip). */
-const BANK_DETAIL_MARK_SVG =
-  '<span class="hlc-bank-detail-mark" aria-hidden="true">' +
-  '<svg viewBox="0 0 16 16" focusable="false">' +
-  '<circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/>' +
-  /* Plus shifted 0.35 up in the viewBox — geometric mid reads low in a circle. */
-  '<path d="M8 4.4v6.5M4.75 7.65h6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>' +
-  "</svg></span>";
-
 function defaultProductFilters() {
   return {
     govtPsu: false,
     greenHome: false,
     womenApplicant: false,
     insurance: false,
+    bankPublic: true,
+    bankPrivate: true,
+    rateFloating: true,
     fixedRate: false,
-    overdraft: false,
-    bankType: DEFAULT_BANK_TYPE
+    facilityTermLoan: true,
+    overdraft: false
   };
 }
+
+/**
+ * Normalize filter state to the multi-select checkbox shape.
+ * Older drafts used exclusive switches (bankType / fixedRate / overdraft only).
+ */
+function normalizeProductFilters(input) {
+  const raw = input && typeof input === "object" ? input : {};
+  const base = defaultProductFilters();
+  const next = {
+    govtPsu: Boolean(raw.govtPsu),
+    greenHome: Boolean(raw.greenHome),
+    womenApplicant: Boolean(raw.womenApplicant),
+    insurance: Boolean(raw.insurance)
+  };
+
+  const hasNewBank = "bankPublic" in raw || "bankPrivate" in raw;
+  if (hasNewBank) {
+    next.bankPublic = Boolean(raw.bankPublic);
+    next.bankPrivate = Boolean(raw.bankPrivate);
+  } else if ("bankType" in raw) {
+    const bankType = normalizeBankType(raw.bankType);
+    next.bankPublic =
+      bankType === DEFAULT_BANK_TYPE || bankType === "Public";
+    next.bankPrivate =
+      bankType === DEFAULT_BANK_TYPE || bankType === "Private";
+  } else {
+    next.bankPublic = base.bankPublic;
+    next.bankPrivate = base.bankPrivate;
+  }
+
+  const hasNewRate = "rateFloating" in raw;
+  if (hasNewRate) {
+    next.rateFloating = Boolean(raw.rateFloating);
+    next.fixedRate = Boolean(raw.fixedRate);
+  } else if ("fixedRate" in raw) {
+    next.rateFloating = !raw.fixedRate;
+    next.fixedRate = Boolean(raw.fixedRate);
+  } else {
+    next.rateFloating = base.rateFloating;
+    next.fixedRate = base.fixedRate;
+  }
+
+  const hasNewFacility = "facilityTermLoan" in raw;
+  if (hasNewFacility) {
+    next.facilityTermLoan = Boolean(raw.facilityTermLoan);
+    next.overdraft = Boolean(raw.overdraft);
+  } else if ("overdraft" in raw) {
+    next.facilityTermLoan = !raw.overdraft;
+    next.overdraft = Boolean(raw.overdraft);
+  } else {
+    next.facilityTermLoan = base.facilityTermLoan;
+    next.overdraft = base.overdraft;
+  }
+
+  return next;
+}
+
+function selectedRateTypes(filters) {
+  const f = filters || defaultProductFilters();
+  const types = [];
+  if (f.rateFloating) types.push("Floating");
+  if (f.fixedRate) types.push("Fixed");
+  return types;
+}
+
+function selectedFacilityTypes(filters) {
+  const f = filters || defaultProductFilters();
+  const types = [];
+  if (f.facilityTermLoan) types.push("Term Loan");
+  if (f.overdraft) types.push("Overdraft");
+  return types;
+}
+
+function selectedBankTypes(filters) {
+  const f = filters || defaultProductFilters();
+  const types = [];
+  if (f.bankPublic) types.push("Public");
+  if (f.bankPrivate) types.push("Private");
+  return types;
+}
+
+function primaryRateType(filters) {
+  const types = selectedRateTypes(filters);
+  if (types.length === 1) return types[0];
+  if (types.indexOf("Floating") !== -1) return "Floating";
+  if (types.indexOf("Fixed") !== -1) return "Fixed";
+  return DEFAULT_RATE_TYPE;
+}
+
+function primaryFacilityType(filters) {
+  const types = selectedFacilityTypes(filters);
+  if (types.length === 1) return types[0];
+  if (types.indexOf("Term Loan") !== -1) return "Term Loan";
+  if (types.indexOf("Overdraft") !== -1) return "Overdraft";
+  return DEFAULT_FACILITY_TYPE;
+}
+
+function primaryBankType(filters) {
+  const types = selectedBankTypes(filters);
+  if (types.length === 1) return types[0];
+  return DEFAULT_BANK_TYPE;
+}
+
+/**
+ * Charges-tab index marks. One glyph per distinct note on the visible
+ * Notes panel. Share a mark only when two places point to the same note.
+ * Sequence follows traditional footnotes: * then †; government already uses ^.
+ */
+const PROCESSING_FEE_MARKER = "*";
+const PROPERTY_CHECK_MARKER = "†";
+const GOVERNMENT_CHARGES_MARKER = "^";
 
 const GROUPS = {
   essentials: [
@@ -116,21 +246,21 @@ const GROUPS = {
       label: "Processing fees",
       type: "inr",
       sort: "num",
-      footnote: "*"
+      footnote: PROCESSING_FEE_MARKER
     },
     {
       key: "propertyCheckCharges",
       label: "Property check charges",
       type: "inr",
       sort: "num",
-      footnote: "*"
+      footnote: PROPERTY_CHECK_MARKER
     },
     {
       key: "governmentCharges",
       label: "Government charges",
       type: "inr",
       sort: "num",
-      footnote: true
+      footnote: GOVERNMENT_CHARGES_MARKER
     }
   ],
   laterCharges: [
@@ -180,7 +310,7 @@ const RATE_CHANGE_FREQUENCY_NOTE_BENCHMARK =
   "° These fees are usually charged each time you change the benchmark — not once for the whole loan.";
 /** Shown only when the Rate change dropdown is on Benchmark switch. */
 const RATE_CHANGE_BENCHMARK_MEANING_NOTE =
-  "° Benchmark switch means changing the reference rate your loan follows — usually from an older bank rate such as Base Rate, Marginal Cost of Funds based Lending Rate (MCLR), Benchmark Prime Lending Rate (BPLR), or State Bank Advance Rate (SBAR), to a newer external or repo-linked rate such as Repo Linked Lending Rate (RLLR), External Benchmark Lending Rate (EBLR), or External Benchmark Rate (EBR).";
+  "° A home loan rate follows a reference. Most follow the RBI repo rate. Some follow a rate the bank sets. A benchmark switch is changing which reference your loan follows. You choose.";
 /** Shown only when the Rate change dropdown is on Repricing. */
 const RATE_CHANGE_REPRICING_MEANING_NOTE =
   "° Repricing here means moving from a higher rate to a lower rate on the same rate type — not Floating ➔ Fixed.";
@@ -215,11 +345,12 @@ const RATE_CHANGE_BANK_MARKERS = {
 const RBI_FLOATING_PREPAY_HREF =
   "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13140&Mode=0";
 const FLOATING_PREPAY_NOTE =
-  "Floating-rate home loans to individuals have no prepayment or foreclosure charge. Under Reserve Bank of India (RBI) directions, Part E, paragraphs 352 and 353.";
+  "Floating home loans to individuals have no prepayment charge under RBI.";
 const FIXED_FORECLOSURE_NOTE =
   "Foreclosure means closing the full loan early. Lenders usually apply the same charge as prepayment, so foreclosure is not listed separately.";
 const PROCESSING_FEE_LOGIN_NOTE =
-  "* Part of the processing fee is often taken upfront as a login fee to file the application. The amount differs by bank and is included in the processing fee shown — we don’t list it separately yet.";
+  PROCESSING_FEE_MARKER +
+  " This fee is mandatory. You pay it to go ahead on a sanction. Banks do not usually refund it. Part is often taken first as a login fee. That amount is already inside this number.";
 /**
  * Customer label when the bank does not publish this charge or rule.
  * Source sheets may mark NA; that never reaches the UI — missing rows use this string.
@@ -234,6 +365,31 @@ function isChargeNotPublishedLabel(value) {
   return normalizeText(value) === normalizeText(CHARGE_NOT_PUBLISHED_BY_BANK);
 }
 
+function chargeDisplayIsUnpublished(display) {
+  if (display == null || display === "") return true;
+  if (typeof display === "string") return isChargeNotPublishedLabel(display);
+  if (typeof display !== "object") return false;
+  return isChargeNotPublishedLabel(display.main);
+}
+
+const CALCULATION_COLUMN_KEYS = {
+  loanAmount: true,
+  emi: true,
+  processingFee: true,
+  propertyCheckCharges: true,
+  governmentCharges: true,
+  overdueChargeDisplay: true,
+  emiBounceChargeDisplay: true,
+  prepaymentChargeDisplay: true,
+  rateChangeChargeDisplay: true
+};
+
+function columnOpensCalculation(column, display) {
+  if (!column || !CALCULATION_COLUMN_KEYS[column.key]) return false;
+  if (column.type === "charge" && chargeDisplayIsUnpublished(display)) return false;
+  return true;
+}
+
 const PROPERTY_CHECK_ORIGIN = "Temporary.property_checks";
 const PROPERTY_CHECK_CHARGE_NAMES = [
   "Legal and technical",
@@ -241,7 +397,8 @@ const PROPERTY_CHECK_CHARGE_NAMES = [
   "Valuation"
 ];
 const PROPERTY_CHECK_NOTE =
-  "* GST applicable. Typical industry average. Exact fees may differ by lender.";
+  PROPERTY_CHECK_MARKER +
+  " The bank runs these checks. They will not take a report you bring. Typical industry amounts. GST extra. Exact fees may differ at the branch.";
 
 function rateChangeFrequencyNoteForMethod(method) {
   if (method === RATE_CHANGE_METHOD_REPRICE) {
@@ -255,13 +412,11 @@ function rateChangeFrequencyNoteForMethod(method) {
 
 function floatingPrepayNoteHtml() {
   return (
-    escapeHtml(
-      "Floating-rate home loans to individuals have no prepayment or foreclosure charge. Under Reserve Bank of India (RBI) directions, "
-    ) +
+    escapeHtml("Floating home loans to individuals have no prepayment charge under RBI. See ") +
     '<a class="guide-section-link" href="' +
     escapeHtml(RBI_FLOATING_PREPAY_HREF) +
     '" target="_blank" rel="noopener noreferrer">' +
-    "Part E, paragraphs 352 and 353" +
+    "RBI directions" +
     '<span class="guide-section-link-arrow" aria-hidden="true">↗</span>' +
     '<span class="visually-hidden"> (opens official RBI page)</span></a>.'
   );
@@ -471,6 +626,48 @@ function drawerDiscloseHtml(title, bodyHtml, options) {
   );
 }
 
+function calcNotesBlockHtml(lines) {
+  const list = (lines || []).filter(function (line) {
+    return String(line || "").trim();
+  });
+  if (!list.length) return "";
+  return (
+    '<div class="hlc-calc-notes">' +
+    list
+      .map(function (line) {
+        return (
+          '<p class="hlc-story-note">' +
+          escapeHtml(line).replace(/\n/g, "<br>") +
+          "</p>"
+        );
+      })
+      .join("") +
+    "</div>"
+  );
+}
+
+function calcDrawerBodyHtml(calcHtml, extras) {
+  const extra = extras || {};
+  const calcTitle = extra.calcTitle || "Calculation of the charges";
+  const noteLines = extra.noteLines || [];
+  const notesBlock = calcNotesBlockHtml(noteLines);
+  let html = drawerDiscloseHtml(
+    calcTitle,
+    calcHtml || "",
+    { open: true }
+  );
+  if (extra.detailsHtml) {
+    html += drawerDiscloseHtml("All amounts", extra.detailsHtml);
+  }
+  if (noteLines.length >= 2 && notesBlock) {
+    html += drawerDiscloseHtml("Notes", notesBlock);
+  } else if (notesBlock) {
+    html += notesBlock;
+  }
+  if (extra.footHtml) html += extra.footHtml;
+  return html;
+}
+
 function chargesNoteGroupId(heading) {
   return (
     "hlc-charge-note-" +
@@ -597,11 +794,29 @@ function columnLabelForKey(groupName, columnKey) {
   return columnKey;
 }
 
+function columnFootnoteMarker(groupName, columnKey) {
+  const columns = GROUPS[groupName] || [];
+  for (let i = 0; i < columns.length; i++) {
+    if (columns[i].key === columnKey) {
+      return typeof columns[i].footnote === "string" ? columns[i].footnote : "";
+    }
+  }
+  return "";
+}
+
 function laterChargesColumns(showPrepayment) {
   if (showPrepayment) return GROUPS.laterCharges.slice();
   return GROUPS.laterCharges.filter(function (column) {
     return column.key !== "prepaymentChargeDisplay";
   });
+}
+
+/**
+ * Visible Other-charges fee columns. The table stays the card width: Bank is
+ * fixed, these columns share what is left (see data-charge-count in CSS).
+ */
+function laterChargesFeeCount(showPrepayment) {
+  return laterChargesColumns(showPrepayment).length;
 }
 
 function columnsForGroup(group, showPrepayment) {
@@ -625,6 +840,773 @@ function maxLoanForProperty(propertyValue) {
   if (value <= 3000000) return value * 0.9;
   if (value <= 7500000) return value * 0.8;
   return value * 0.75;
+}
+
+function propertyFundedPct(propertyValue) {
+  const value = Number(propertyValue);
+  if (!(value > 0)) return 0;
+  if (value <= 3000000) return 90;
+  if (value <= 7500000) return 80;
+  return 75;
+}
+
+function monthlyRateFromAnnualDecimal(annualDecimal) {
+  return Number(annualDecimal) / 12;
+}
+
+function formatPctPlain(value) {
+  if (!Number.isFinite(Number(value))) return "—";
+  const n = Number(value);
+  if (Math.abs(n - Math.round(n)) < 0.005) return String(Math.round(n)) + "%";
+  return (Math.round(n * 100) / 100).toFixed(2) + "%";
+}
+
+function tenureInWordsFromRow(row) {
+  const years = formatTenureYears(row && row.tenureYears);
+  if (years === "—") {
+    return String((row && row.tenureMonths) || 0) + " months";
+  }
+  return years === "1" ? "1 year" : years + " years";
+}
+
+function amortizationSchedule(principal, annualRateDecimal, tenureMonths) {
+  const months = Math.max(0, Math.round(Number(tenureMonths) || 0));
+  const amount = Number(principal);
+  const r = monthlyRateFromAnnualDecimal(annualRateDecimal);
+  const emi = emiFromLoan(amount, annualRateDecimal, months / 12);
+  const rows = [];
+  let outstanding = amount;
+  for (let m = 1; m <= months && outstanding > 0; m++) {
+    const interest = outstanding * r;
+    const principalPart = Math.min(outstanding, emi - interest);
+    outstanding = Math.max(0, outstanding - principalPart);
+    rows.push({
+      month: m,
+      interest: interest,
+      principal: principalPart,
+      outstanding: outstanding
+    });
+  }
+  return { emi: emi, rows: rows };
+}
+
+function chargeUsesWhicheverHigher(charge) {
+  if (!charge) return false;
+  return [charge.note_1, charge.note_2, charge.special_rule].some(function (value) {
+    return /overdue_whichever_higher=yes/i.test(String(value || ""));
+  });
+}
+
+function matchChargeSlab(slabs, amount) {
+  const list = slabs || [];
+  if (!list.length) return null;
+  const value = Number(amount) || 0;
+  return (
+    list.filter(function (charge) {
+      const from = charge.slab_from == null ? -Infinity : Number(charge.slab_from);
+      const to = charge.slab_to == null ? Infinity : Number(charge.slab_to);
+      return value >= from && value <= to;
+    })[0] || list[0]
+  );
+}
+
+const MISSED_EMI_DAYS = 30;
+
+function chargeCaseFromParts(emi, loanAmount, tenureMonths) {
+  return {
+    emi: Number(emi) || 0,
+    loanAmount: Number(loanAmount) || 0,
+    tenureMonths: Number(tenureMonths) || 0,
+    missedEmiDays: MISSED_EMI_DAYS
+  };
+}
+
+function chargeCaseFromRow(row) {
+  return chargeCaseFromParts(
+    row && row.emi,
+    row && row.loanAmount,
+    row && row.tenureMonths
+  );
+}
+
+function encodedChargeNumber(charge, key) {
+  const blob = [
+    charge && charge.note_1,
+    charge && charge.note_2,
+    charge && charge.special_rule
+  ]
+    .map(function (value) {
+      return String(value || "");
+    })
+    .join("; ");
+  const match = blob.match(new RegExp(key + "=([\\d.]+)", "i"));
+  return match ? Number(match[1]) : null;
+}
+
+function slabMatchAmount(charge, chargeCase) {
+  const basis = normalizeText(charge && charge.slab_basis);
+  if (basis.indexOf("sanctioned") >= 0) {
+    return chargeCase && chargeCase.loanAmount;
+  }
+  return chargeCase && chargeCase.emi;
+}
+
+function chargeRowApplies(charge, chargeCase) {
+  if (!charge) return false;
+  const tenureMonths = chargeCase && chargeCase.tenureMonths;
+  const tenureMax = encodedChargeNumber(charge, "overdue_tenure_months_max");
+  if (
+    tenureMax != null &&
+    Number.isFinite(tenureMax) &&
+    Number(tenureMonths) > tenureMax
+  ) {
+    return false;
+  }
+  const dayMin = encodedChargeNumber(charge, "overdue_days_min");
+  const dayMax = encodedChargeNumber(charge, "overdue_days_max");
+  if (dayMin == null && dayMax == null) return true;
+  const days = (chargeCase && chargeCase.missedEmiDays) || MISSED_EMI_DAYS;
+  if (dayMin != null && Number.isFinite(dayMin) && days < dayMin) return false;
+  if (dayMax != null && Number.isFinite(dayMax) && days > dayMax) return false;
+  return true;
+}
+
+function overdueSlabsForCase(candidates, selectedCharge) {
+  const amountSlabs = listMatchingChargeSlabs(candidates, selectedCharge);
+  if (amountSlabs.length > 1) return amountSlabs;
+  const pctSlabs = listOverduePercentageSlabRows(candidates, selectedCharge);
+  if (pctSlabs.length > 1) return pctSlabs;
+  return amountSlabs;
+}
+
+function preferredBounceArea(candidates) {
+  const areas = uniqueStrings(
+    (candidates || [])
+      .map(function (charge) {
+        return charge.charge_by_area;
+      })
+      .filter(Boolean)
+  );
+  if (areas.length < 2) return "";
+  return (
+    areas.find(function (area) {
+      return normalizeText(area) === "metro";
+    }) || areas[0]
+  );
+}
+
+function listBounceChargeSlabs(candidates, selectedCharge) {
+  if (!selectedCharge) return [];
+  const area = selectedCharge.charge_by_area || preferredBounceArea(candidates);
+  const pool = (candidates || []).filter(function (charge) {
+    if (area && charge.charge_by_area && charge.charge_by_area !== area) {
+      return false;
+    }
+    return true;
+  });
+  const seed =
+    pool.find(function (charge) {
+      return (
+        charge.charge_name === selectedCharge.charge_name &&
+        normalizeText(charge.has_slab_wise_charges) === "yes"
+      );
+    }) || selectedCharge;
+  return listMatchingChargeSlabs(pool, seed);
+}
+
+function resolveApplicableCharge(schedule, fallback, chargeCase, matchAmount) {
+  const list = schedule && schedule.length ? schedule : fallback ? [fallback] : [];
+  const applicable = list.filter(function (charge) {
+    return chargeRowApplies(charge, chargeCase);
+  });
+  const pool = applicable.length ? applicable : list;
+  if (!pool.length) return fallback || null;
+  if (pool.length === 1) return pool[0];
+  const amount =
+    matchAmount != null && Number.isFinite(Number(matchAmount))
+      ? Number(matchAmount)
+      : slabMatchAmount(pool[0], chargeCase);
+  return matchChargeSlab(pool, amount) || pool[0];
+}
+
+function applicableSlabSentence(charge, chargeCase) {
+  const band = formatChargeSlabBand(charge);
+  if (!band) return "";
+  const usesLoan =
+    normalizeText(charge && charge.slab_basis).indexOf("sanctioned") >= 0;
+  return (
+    (usesLoan ? "This loan sits in the bank’s " : "This EMI sits in the bank’s ") +
+    band +
+    " band."
+  );
+}
+
+function formatResolvedChargeDisplay(charge, options) {
+  const display = formatChargeDisplay(charge, options || { hideBasis: true });
+  if (!display || !charge) return display;
+  const band = formatChargeSlabBand(charge);
+  if (band && display.details.indexOf(band) < 0) {
+    display.details = [band].concat(display.details || []);
+  }
+  return display;
+}
+
+function formatResolvedBounceDisplay(charge) {
+  const display = formatChargeDisplay(charge, {
+    hideBasis: true,
+    hideUnit: true,
+    hideGst: true
+  });
+  if (!display || !charge) return display;
+  const method = formatEmiBounceMethodLabel(charge.charge_name);
+  const band = formatEmiBounceSlabBand(charge);
+  const area = String(charge.charge_by_area || "").trim();
+  const extras = [];
+  if (method && method !== charge.charge_name) extras.push(method);
+  if (band) {
+    extras.push(area ? band + " in " + area.toLowerCase() + " areas" : band);
+  }
+  display.details = uniqueStrings(
+    extras.concat(display.details || []).filter(Boolean)
+  );
+  return display;
+}
+
+function overdueExtraForMissedEmi(charge, emi, rowRoiDecimal) {
+  const overdueAmount = Math.max(0, Number(emi) || 0);
+  if (!charge || !(overdueAmount > 0)) {
+    return { extra: 0, kind: "none", overdueAmount: overdueAmount, graceDays: 0 };
+  }
+  const graceDays =
+    normalizeText(charge.has_grace_period) === "yes" &&
+    charge.grace_period_days != null
+      ? Math.round(Number(charge.grace_period_days))
+      : 0;
+  if (graceDays >= 30) {
+    return {
+      extra: 0,
+      kind: "grace",
+      overdueAmount: overdueAmount,
+      graceDays: graceDays
+    };
+  }
+  if (normalizeText(charge.special_rule) === "as_per_roi") {
+    return {
+      extra: overdueAmount * monthlyRateFromAnnualDecimal(rowRoiDecimal),
+      kind: "row_rate",
+      overdueAmount: overdueAmount,
+      graceDays: graceDays,
+      yearPct: Number(rowRoiDecimal) * 100
+    };
+  }
+  const pct =
+    charge.percentage != null && Number.isFinite(Number(charge.percentage))
+      ? Number(charge.percentage)
+      : null;
+  let extra = 0;
+  let kind = "rule";
+  if (pct != null) {
+    extra =
+      normalizeText(charge.percentage_per_annum) === "yes"
+        ? overdueAmount * (pct / 12)
+        : overdueAmount * pct;
+    kind = "percent";
+  } else if (charge.fixed_amount != null && Number.isFinite(Number(charge.fixed_amount))) {
+    extra = Number(charge.fixed_amount);
+    kind = "fixed";
+  }
+  const floor =
+    charge.charge_min != null && Number.isFinite(Number(charge.charge_min))
+      ? Number(charge.charge_min)
+      : null;
+  const rawExtra = extra;
+  const usedFloor =
+    floor != null &&
+    (chargeUsesWhicheverHigher(charge) || pct != null) &&
+    extra < floor;
+  if (usedFloor) extra = floor;
+  return {
+    extra: extra,
+    rawExtra: rawExtra,
+    kind: kind,
+    overdueAmount: overdueAmount,
+    graceDays: graceDays,
+    yearPct: pct != null ? pct * 100 : null,
+    perAnnum: normalizeText(charge.percentage_per_annum) === "yes",
+    floor: floor,
+    usedFloor: Boolean(usedFloor)
+  };
+}
+
+function bounceExtraForMissedEmi(charge, emi) {
+  if (!charge) return { extra: 0, gst: 0, total: 0 };
+  const base = computeProcessingFee(charge, emi);
+  const amount =
+    base != null && Number.isFinite(base) ? base : Number(charge.fixed_amount) || 0;
+  const gst = amount * governmentChargeGstRate(charge);
+  return { extra: amount, gst: gst, total: amount + gst };
+}
+
+function missedEmiMonthTotal(
+  overdueCharge,
+  bounceCharge,
+  emi,
+  rowRoiDecimal,
+  loanAmount,
+  tenureMonths
+) {
+  const chargeCase = chargeCaseFromParts(emi, loanAmount, tenureMonths);
+  const overduePart = overdueExtraForMissedEmi(
+    overdueCharge,
+    emi,
+    rowRoiDecimal
+  );
+  if (overdueCharge && formatChargeSlabBand(overdueCharge)) {
+    overduePart.kind = "slab";
+    overduePart.slabSentence = applicableSlabSentence(overdueCharge, chargeCase);
+  }
+  const overdueRuleNote = formatEncodedChargeNote(
+    overdueCharge && overdueCharge.note_1
+  );
+  if (overdueRuleNote) overduePart.ruleNote = overdueRuleNote;
+  const bouncePart = bounceExtraForMissedEmi(bounceCharge, emi);
+  if (bounceCharge && formatChargeSlabBand(bounceCharge)) {
+    bouncePart.slabSentence = applicableSlabSentence(bounceCharge, chargeCase);
+  }
+  return {
+    overdue: overduePart,
+    bounce: bouncePart,
+    total: (overduePart.extra || 0) + bouncePart.total
+  };
+}
+
+/**
+ * Exact min/max on the live matching set (not the visible slice).
+ * Pill words are always Lowest / Highest. Colour follows whether that
+ * extreme helps or costs: cost columns (rate, fees) vs benefit (loan).
+ */
+const COLUMN_COMPARE_KIND = {
+  effectiveRoiPct: "cost",
+  loanAmount: "benefit",
+  emi: "cost",
+  processingFee: "cost",
+  propertyCheckCharges: "cost",
+  governmentCharges: "cost",
+  prepaymentChargeDisplay: "cost",
+  rateChangeChargeDisplay: "cost",
+  overdueChargeDisplay: "cost",
+  emiBounceChargeDisplay: "cost"
+};
+
+function finiteOrNull(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+
+function comparableColumnValue(row, columnKey) {
+  if (!row || !columnKey) return null;
+  if (columnKey === "effectiveRoiPct") return finiteOrNull(row.effectiveRoiPct);
+  if (columnKey === "loanAmount") return finiteOrNull(row.loanAmount);
+  if (columnKey === "emi") return finiteOrNull(row.emi);
+  if (columnKey === "processingFee") return finiteOrNull(row.processingFee);
+  if (columnKey === "propertyCheckCharges") {
+    return finiteOrNull(row.propertyCheckCharges);
+  }
+  if (columnKey === "governmentCharges") {
+    return finiteOrNull(row.governmentCharges);
+  }
+  if (columnKey === "prepaymentChargeDisplay") {
+    if (chargeDisplayIsUnpublished(row.prepaymentChargeDisplay)) return null;
+    return finiteOrNull(row.prepaymentChargeSortValue);
+  }
+  if (columnKey === "rateChangeChargeDisplay") {
+    if (chargeDisplayIsUnpublished(row.rateChangeChargeDisplay)) return null;
+    return finiteOrNull(row.rateChangeChargeSortValue);
+  }
+  if (columnKey === "overdueChargeDisplay") {
+    if (chargeDisplayIsUnpublished(row.overdueChargeDisplay)) return null;
+    if (!row.overdueCharge) return null;
+    return finiteOrNull(
+      overdueExtraForMissedEmi(
+        row.overdueCharge,
+        row.emi,
+        row.roiDecimal
+      ).extra
+    );
+  }
+  if (columnKey === "emiBounceChargeDisplay") {
+    if (chargeDisplayIsUnpublished(row.emiBounceChargeDisplay)) return null;
+    if (!row.emiBounceCharge) return null;
+    return finiteOrNull(bounceExtraForMissedEmi(row.emiBounceCharge, row.emi).total);
+  }
+  return null;
+}
+
+function buildCompareRanks(rows) {
+  const byRow = {};
+  if (!rows || !rows.length) return byRow;
+  Object.keys(COLUMN_COMPARE_KIND).forEach(function (columnKey) {
+    const entries = [];
+    rows.forEach(function (row) {
+      const value = comparableColumnValue(row, columnKey);
+      if (value == null) return;
+      entries.push({ id: row.id, value: value });
+    });
+    if (entries.length < 2) return;
+    let min = Infinity;
+    let max = -Infinity;
+    entries.forEach(function (entry) {
+      if (entry.value < min) min = entry.value;
+      if (entry.value > max) max = entry.value;
+    });
+    if (min === max) return;
+    entries.forEach(function (entry) {
+      let mark = "";
+      if (entry.value === min) mark = "low";
+      else if (entry.value === max) mark = "high";
+      if (!mark) return;
+      if (!byRow[entry.id]) byRow[entry.id] = {};
+      byRow[entry.id][columnKey] = mark;
+    });
+  });
+  return byRow;
+}
+
+function compareRankTone(columnKey, mark) {
+  const kind = COLUMN_COMPARE_KIND[columnKey];
+  if (!kind || (mark !== "low" && mark !== "high")) return "";
+  if (kind === "benefit") return mark === "high" ? "helpful" : "costly";
+  return mark === "low" ? "helpful" : "costly";
+}
+
+function overdueGraceDays(row) {
+  const charge = row && row.overdueCharge;
+  if (!charge) return 0;
+  if (normalizeText(charge.has_grace_period) !== "yes") return 0;
+  if (charge.grace_period_days == null) return 0;
+  const days = Math.round(Number(charge.grace_period_days));
+  return Number.isFinite(days) && days > 0 ? days : 0;
+}
+
+function gracePillLabel(days) {
+  if (!(days > 0)) return "";
+  return days === 1 ? "1-day grace" : String(days) + "-day grace";
+}
+
+function compareRankNumClass(row, column, ranks) {
+  if (!row || !column) return "";
+  if (column.type === "charge" && chargeDisplayIsUnpublished(row[column.key])) {
+    return "";
+  }
+  const mark = ranks && ranks[row.id] && ranks[row.id][column.key];
+  const tone = compareRankTone(column.key, mark);
+  return tone ? " hlc-rank-num hlc-rank-num--" + tone : "";
+}
+
+function compareRankPillsHtml(row, column, ranks) {
+  if (!row || !column) return "";
+  if (column.type === "charge" && chargeDisplayIsUnpublished(row[column.key])) {
+    return "";
+  }
+  let html = "";
+  const mark = ranks && ranks[row.id] && ranks[row.id][column.key];
+  if (mark === "low" || mark === "high") {
+    const tone = compareRankTone(column.key, mark);
+    html +=
+      '<span class="hlc-rank-pill hlc-rank-pill--' +
+      tone +
+      '">' +
+      (mark === "low" ? "Lowest" : "Highest") +
+      "</span>";
+  }
+  if (column.key === "overdueChargeDisplay") {
+    const label = gracePillLabel(overdueGraceDays(row));
+    if (label) {
+      html +=
+        '<span class="hlc-rank-pill hlc-rank-pill--grace">' +
+        escapeHtml(label) +
+        "</span>";
+    }
+  }
+  if (!html) return "";
+  return '<span class="hlc-rank-pills">' + html + "</span>";
+}
+
+function figureWithRankPills(figureHtml, pillsHtml) {
+  if (!pillsHtml) return figureHtml;
+  return (
+    '<span class="hlc-rank-wrap">' +
+    '<span class="hlc-rank-figure">' +
+    figureHtml +
+    "</span>" +
+    pillsHtml +
+    "</span>"
+  );
+}
+
+function loanAmountWalkModel(row, query) {
+  const propertyValue = Math.max(0, Number(query.propertyValue) || 0);
+  const fundedPct = propertyFundedPct(propertyValue);
+  const basis = row.incomeBasis || emptyIncomeBasis();
+  const totalIncome = basis.monthlyIncome;
+  const existingEmis = basis.existingEmis;
+  const cardLimits = basis.cardLimits;
+  const foirPct = normalizeFoirPct(query.foirPct);
+  const cardLoadPct = normalizeCardLoadPct(query.cardLoadPct);
+  const incomeAllowance = totalIncome * (foirPct / 100);
+  const cardLoad = cardLimits * (cardLoadPct / 100);
+  const afterEmis = Math.max(0, incomeAllowance - existingEmis);
+  const emiRoom = Math.max(0, afterEmis - cardLoad);
+  const bankMaximum =
+    row.offer &&
+    row.offer.req_amount_max != null &&
+    Number.isFinite(Number(row.offer.req_amount_max))
+      ? Number(row.offer.req_amount_max)
+      : null;
+  const bankMaxApplies =
+    bankMaximum != null &&
+    bankMaximum <= Math.min(row.fromProperty, row.fromIncome);
+  let limiter = "income";
+  if (bankMaxApplies && Math.round(bankMaximum) === Math.round(row.loanAmount)) {
+    limiter = "bank";
+  } else if (
+    Math.round(row.fromProperty) === Math.round(row.loanAmount) &&
+    Math.round(row.fromIncome) === Math.round(row.loanAmount)
+  ) {
+    limiter = "both";
+  } else if (Math.round(row.fromProperty) === Math.round(row.loanAmount)) {
+    limiter = "house";
+  }
+  return {
+    propertyValue: propertyValue,
+    fundedPct: fundedPct,
+    downPayment: row.downPayment,
+    totalIncome: totalIncome,
+    foirPct: foirPct,
+    incomeAllowance: incomeAllowance,
+    existingEmis: existingEmis,
+    afterEmis: afterEmis,
+    cardLimits: cardLimits,
+    cardLoadPct: cardLoadPct,
+    cardLoad: cardLoad,
+    emiRoom: emiRoom,
+    fromProperty: row.fromProperty,
+    fromIncome: row.fromIncome,
+    bankMaximum: bankMaximum,
+    bankMaxApplies: bankMaxApplies,
+    limiter: limiter,
+    result: row.loanAmount,
+    tenureLabel: tenureInWordsFromRow(row),
+    ratePct: row.effectiveRoiPct,
+    incomeBasis: basis
+  };
+}
+
+function relationshipClubsIncome(value) {
+  const wanted = normalizeText(value);
+  for (let i = 0; i < CO_APPLICANT_RELATIONSHIPS.length; i++) {
+    const entry = CO_APPLICANT_RELATIONSHIPS[i];
+    if (normalizeText(entry.value) === wanted) return entry.clubs;
+  }
+  return false;
+}
+
+function occupationEarns(value) {
+  const wanted = normalizeText(value);
+  for (let i = 0; i < CO_APPLICANT_OCCUPATIONS.length; i++) {
+    const entry = CO_APPLICANT_OCCUPATIONS[i];
+    if (normalizeText(entry.value) === wanted) return entry.earns;
+  }
+  // Primary-applicant occupations ("Salaried", "Self-Employed…") always earn.
+  return true;
+}
+
+function normalizeCoApplicant(raw, index) {
+  const source = raw || {};
+  const age = parseMoney(source.age);
+  const cibil = parseMoney(source.cibilScore);
+  const relationship = String(
+    source.relationship || DEFAULT_CO_APPLICANT_RELATIONSHIP
+  );
+  const occupation = String(
+    source.occupation || DEFAULT_CO_APPLICANT_OCCUPATION
+  );
+  const earns = occupationEarns(occupation);
+  return {
+    id: "co-" + (index + 1),
+    relationship: relationship,
+    occupation: occupation,
+    age: Number.isFinite(age) ? age : null,
+    cibilScore: Number.isFinite(cibil) ? cibil : null,
+    monthlyIncome: earns ? Math.max(0, parseMoney(source.monthlyIncome) || 0) : 0,
+    existingEmis: Math.max(0, parseMoney(source.existingEmis) || 0),
+    cardLimits: Math.max(0, parseMoney(source.cardLimits) || 0),
+    /** Income only pools when the lender accepts the relationship and there is income. */
+    clubsIncome: earns && relationshipClubsIncome(relationship)
+  };
+}
+
+function normalizeCoApplicants(list) {
+  if (!Array.isArray(list)) return [];
+  return list
+    .slice(0, MAX_CO_APPLICANTS)
+    .map(function (raw, index) {
+      return normalizeCoApplicant(raw, index);
+    });
+}
+
+/** Reads the current array shape, falling back to the older single-co-applicant fields. */
+function coApplicantsFromValues(values) {
+  if (Array.isArray(values.coApplicants)) return values.coApplicants;
+  if (
+    values.coMonthlyIncome == null &&
+    values.coExistingEmis == null &&
+    values.coCardLimits == null
+  ) {
+    return [];
+  }
+  return [
+    {
+      relationship: DEFAULT_CO_APPLICANT_RELATIONSHIP,
+      occupation: DEFAULT_CO_APPLICANT_OCCUPATION,
+      age: values.coAge,
+      cibilScore: values.coCibilScore,
+      monthlyIncome: values.coMonthlyIncome,
+      existingEmis: values.coExistingEmis,
+      cardLimits: values.coCardLimits
+    }
+  ];
+}
+
+function weakestCibilScore(primaryScore, coApplicants) {
+  let weakest = primaryScore;
+  (coApplicants || []).forEach(function (person) {
+    if (person.cibilScore == null || !Number.isFinite(person.cibilScore)) return;
+    if (weakest == null || !Number.isFinite(weakest)) return;
+    weakest = Math.min(weakest, person.cibilScore);
+  });
+  return weakest;
+}
+
+/** Primary applicant first, then co-applicants — one shared shape for the engine. */
+function applicantsFromQuery(query) {
+  const primary = {
+    id: "primary",
+    relationship: "Self",
+    occupation: query.occupation || "Salaried",
+    age: query.age,
+    cibilScore: query.primaryCibilScore != null ? query.primaryCibilScore : query.cibilScore,
+    monthlyIncome: Math.max(0, Number(query.monthlyIncome) || 0),
+    existingEmis: Math.max(0, Number(query.existingEmis) || 0),
+    cardLimits: Math.max(0, Number(query.cardLimits) || 0),
+    clubsIncome: true
+  };
+  return [primary].concat(query.coApplicants || []);
+}
+
+function emptyIncomeBasis() {
+  return {
+    monthlyIncome: 0,
+    existingEmis: 0,
+    cardLimits: 0,
+    countedIds: [],
+    droppedIds: [],
+    tenureAge: null
+  };
+}
+
+/**
+ * Applicants whose income a lender may actually count on this offer: the
+ * relationship must be allowed, there must be income, and they must clear the
+ * scheme's minimum age. Anyone else can still sign, but adds nothing here.
+ */
+function clubbableApplicants(applicants, offer) {
+  const ageMin = offer ? Number(offer.age_min) : NaN;
+  return applicants.filter(function (person) {
+    if (!person.clubsIncome) return false;
+    if (!(person.monthlyIncome > 0)) return false;
+    if (person.age == null || !Number.isFinite(person.age)) return true;
+    if (Number.isFinite(ageMin) && person.age < ageMin) return false;
+    return true;
+  });
+}
+
+function totalsForApplicants(list) {
+  const totals = emptyIncomeBasis();
+  list.forEach(function (person) {
+    totals.monthlyIncome += person.monthlyIncome;
+    totals.existingEmis += person.existingEmis;
+    totals.cardLimits += person.cardLimits;
+    totals.countedIds.push(person.id);
+  });
+  return totals;
+}
+
+/**
+ * Tenure is capped by the eldest borrower *whose income is counted* — lenders
+ * state this explicitly (Can Fin Homes: "maximum age of 60 years of the eldest
+ * borrower whose income is considered … and 85 years of the eldest borrower
+ * whose income is not considered"). So counting an older earner buys income but
+ * spends tenure, and the trade can go either way.
+ *
+ * We try each way of resolving it and keep the largest loan. Dropping a younger
+ * earner while keeping an older one can never win — it loses income and leaves
+ * the tenure cap untouched — so only the "drop the eldest earners" candidates
+ * need testing: n + 1 of them, not 2^n.
+ */
+function resolveIncomeBasis(query, offer, roiDecimal, options) {
+  const applicants = applicantsFromQuery(query);
+  const pool = clubbableApplicants(applicants, offer).slice().sort(function (a, b) {
+    const ageA = a.age == null ? -1 : a.age;
+    const ageB = b.age == null ? -1 : b.age;
+    return ageB - ageA;
+  });
+
+  let best = null;
+  let fullPoolFromIncome = null;
+  for (let drop = 0; drop < pool.length; drop++) {
+    const counted = pool.slice(drop);
+    if (!counted.length) break;
+    const totals = totalsForApplicants(counted);
+    const tenureAge = counted.reduce(function (oldest, person) {
+      if (person.age == null || !Number.isFinite(person.age)) return oldest;
+      return oldest == null ? person.age : Math.max(oldest, person.age);
+    }, null);
+    const tenureMonths =
+      options && options.forMatching
+        ? queryTenureMonthsForMatching(offer, query, tenureAge)
+        : resolveTenureMonths(offer, tenureAge, query.tenureYears);
+    const fromIncome = maxLoanFromIncome(
+      totals.monthlyIncome,
+      roiDecimal,
+      tenureMonths,
+      query.foirPct,
+      totals.existingEmis,
+      totals.cardLimits,
+      query.cardLoadPct
+    );
+    if (drop === 0) fullPoolFromIncome = fromIncome;
+    if (best && !(fromIncome > best.fromIncome)) continue;
+    totals.tenureAge = tenureAge;
+    totals.droppedIds = pool.slice(0, drop).map(function (person) {
+      return person.id;
+    });
+    best = {
+      basis: totals,
+      tenureMonths: tenureMonths,
+      fromIncome: fromIncome
+    };
+  }
+
+  if (best) {
+    best.basis.fullPoolFromIncome = fullPoolFromIncome;
+    return best;
+  }
+  return {
+    basis: emptyIncomeBasis(),
+    tenureMonths: 0,
+    fromIncome: 0
+  };
 }
 
 function parseMoney(raw) {
@@ -689,29 +1671,29 @@ function queryFromInputs(values, productFilters) {
   const monthlyIncome = Math.max(0, parseMoney(values.monthlyIncome) || 0);
   const existingEmis = Math.max(0, parseMoney(values.existingEmis) || 0);
   const cardLimits = Math.max(0, parseMoney(values.cardLimits) || 0);
-  const coMonthlyIncome = Math.max(0, parseMoney(values.coMonthlyIncome) || 0);
-  const coExistingEmis = Math.max(0, parseMoney(values.coExistingEmis) || 0);
-  const coCardLimits = Math.max(0, parseMoney(values.coCardLimits) || 0);
   const ageRaw = parseMoney(values.age);
   const cibilRaw = parseMoney(values.cibilScore);
   const tenureRaw = parseMoney(values.tenureYears);
   const age = Number.isFinite(ageRaw) ? ageRaw : null;
   const cibilScore = Number.isFinite(cibilRaw) ? cibilRaw : null;
-  const filters = Object.assign(defaultProductFilters(), productFilters || {});
+  const filters = normalizeProductFilters(productFilters);
   const includeCoApplicant =
     values.includeCoApplicant === true ||
     values.includeCoApplicant === "yes" ||
     values.includeCoApplicant === "true";
+  const coApplicants = includeCoApplicant
+    ? normalizeCoApplicants(coApplicantsFromValues(values))
+    : [];
   return {
     age: age,
-    cibilScore: cibilScore,
+    /** Every borrower is credit-checked, so the weakest score sets the band. */
+    cibilScore: weakestCibilScore(cibilScore, coApplicants),
+    primaryCibilScore: cibilScore,
     monthlyIncome,
     existingEmis,
     cardLimits,
-    includeCoApplicant: includeCoApplicant,
-    coMonthlyIncome: includeCoApplicant ? coMonthlyIncome : 0,
-    coExistingEmis: includeCoApplicant ? coExistingEmis : 0,
-    coCardLimits: includeCoApplicant ? coCardLimits : 0,
+    includeCoApplicant: includeCoApplicant && coApplicants.length > 0,
+    coApplicants: coApplicants,
     cardLoadPct: normalizeCardLoadPct(values.cardLoadPct),
     tenureYears: normalizeTenureYears(tenureRaw),
     foirPct: normalizeFoirPct(values.foirPct),
@@ -721,9 +1703,12 @@ function queryFromInputs(values, productFilters) {
     womenApplicant: Boolean(filters.womenApplicant),
     greenHome: Boolean(filters.greenHome),
     productFilters: filters,
-    rateType: filters.fixedRate ? "Fixed" : DEFAULT_RATE_TYPE,
-    facilityType: filters.overdraft ? "Overdraft" : DEFAULT_FACILITY_TYPE,
-    bankType: normalizeBankType(filters.bankType)
+    rateTypes: selectedRateTypes(filters),
+    facilityTypes: selectedFacilityTypes(filters),
+    bankTypes: selectedBankTypes(filters),
+    rateType: primaryRateType(filters),
+    facilityType: primaryFacilityType(filters),
+    bankType: primaryBankType(filters)
   };
 }
 
@@ -758,7 +1743,7 @@ function resolveTenureMonths(offer, age, requestedYears) {
  * Tenure (months) used to test whether this row's tenure slab applies.
  * Uses what the customer asked for — not shrunk to this row's slab max first.
  */
-function queryTenureMonthsForMatching(offer, query) {
+function queryTenureMonthsForMatching(offer, query, tenureAge) {
   const wantMonths = Math.round(normalizeTenureYears(query.tenureYears) * 12);
   let ceiling = MAX_TENURE_YEARS * 12;
 
@@ -767,10 +1752,11 @@ function queryTenureMonthsForMatching(offer, query) {
     ceiling = Math.min(ceiling, reqMax);
   }
 
-  if (query.age != null && Number.isFinite(query.age) && offer.age_max != null) {
+  const age = tenureAge === undefined ? query.age : tenureAge;
+  if (age != null && Number.isFinite(age) && offer.age_max != null) {
     const ageMax = Number(offer.age_max);
     if (Number.isFinite(ageMax)) {
-      const monthsUntilAgeMax = Math.max(0, Math.floor((ageMax - query.age) * 12));
+      const monthsUntilAgeMax = Math.max(0, Math.floor((ageMax - age) * 12));
       ceiling = Math.min(ceiling, monthsUntilAgeMax);
     }
   }
@@ -812,11 +1798,32 @@ function offerHasDiscount(offer) {
 }
 
 function matchesProductFilters(offer, query) {
-  const filters = query.productFilters || defaultProductFilters();
+  const filters = normalizeProductFilters(
+    query.productFilters || defaultProductFilters()
+  );
+  const rateTypes =
+    Array.isArray(query.rateTypes) && query.rateTypes.length
+      ? query.rateTypes
+      : selectedRateTypes(filters);
+  const facilityTypes =
+    Array.isArray(query.facilityTypes) && query.facilityTypes.length
+      ? query.facilityTypes
+      : selectedFacilityTypes(filters);
+  const bankTypes =
+    Array.isArray(query.bankTypes) && query.bankTypes.length
+      ? query.bankTypes
+      : selectedBankTypes(filters);
 
-  if (offer.rate_type !== query.rateType) return false;
-  if (offer.facility_type !== query.facilityType) return false;
-  if (query.bankType !== DEFAULT_BANK_TYPE && offer.bank_type !== query.bankType) {
+  if (!rateTypes.length || rateTypes.indexOf(offer.rate_type) === -1) {
+    return false;
+  }
+  if (
+    !facilityTypes.length ||
+    facilityTypes.indexOf(offer.facility_type) === -1
+  ) {
+    return false;
+  }
+  if (!bankTypes.length || bankTypes.indexOf(offer.bank_type) === -1) {
     return false;
   }
 
@@ -881,29 +1888,10 @@ function maxLoanFromIncome(monthlyIncome, roiDecimal, tenureMonths, foirPct, exi
 }
 
 function computeOfferTerms(query, offer, roiDecimal, options) {
-  const forMatching = options && options.forMatching;
-  const tenureMonths = forMatching
-    ? queryTenureMonthsForMatching(offer, query)
-    : resolveTenureMonths(offer, query.age, query.tenureYears);
+  const chosen = resolveIncomeBasis(query, offer, roiDecimal, options);
+  const tenureMonths = chosen.tenureMonths;
+  const fromIncome = chosen.fromIncome;
   const fromProperty = maxLoanForProperty(query.propertyValue);
-  const totalIncome =
-    (Number(query.monthlyIncome) || 0) +
-    (query.includeCoApplicant ? Number(query.coMonthlyIncome) || 0 : 0);
-  const existingTotal =
-    (Number(query.existingEmis) || 0) +
-    (query.includeCoApplicant ? Number(query.coExistingEmis) || 0 : 0);
-  const cardTotal =
-    (Number(query.cardLimits) || 0) +
-    (query.includeCoApplicant ? Number(query.coCardLimits) || 0 : 0);
-  const fromIncome = maxLoanFromIncome(
-    totalIncome,
-    roiDecimal,
-    tenureMonths,
-    query.foirPct,
-    existingTotal,
-    cardTotal,
-    query.cardLoadPct
-  );
   let loanAmount = Math.min(fromProperty, fromIncome);
 
   if (offer.req_amount_max != null && Number.isFinite(Number(offer.req_amount_max))) {
@@ -927,7 +1915,8 @@ function computeOfferTerms(query, offer, roiDecimal, options) {
     fromProperty,
     fromIncome,
     limiting: fromProperty <= fromIncome ? "property" : "income",
-    emi
+    emi,
+    incomeBasis: chosen.basis
   };
 }
 
@@ -965,7 +1954,9 @@ function formatCheckedOnDate(isoDate) {
 
 function formatFreshnessLabel(isoDate) {
   if (!isoDate) return "";
-  return "Data last checked on " + formatCheckedOnDate(isoDate);
+  const date = formatCheckedOnDate(isoDate);
+  if (!date) return "";
+  return "Last checked on " + date;
 }
 
 function formatDrawerFreshnessSubtitle(scheme, checkedOnIso) {
@@ -1020,6 +2011,32 @@ function matchesAge(offer, age) {
   return true;
 }
 
+/**
+ * A joint loan fits the scheme's age window if at least one borrower whose
+ * income is counted fits it. Others sign as non-financial co-applicants, whom
+ * lenders hold to a far looser age limit.
+ */
+function matchesApplicantAges(offer, ages) {
+  if (!Array.isArray(ages)) return matchesAge(offer, ages);
+  const known = ages.filter(function (age) {
+    return age != null && Number.isFinite(age);
+  });
+  if (!known.length) return true;
+  return known.some(function (age) {
+    return matchesAge(offer, age);
+  });
+}
+
+function earningApplicantAges(query) {
+  return applicantsFromQuery(query)
+    .filter(function (person) {
+      return person.clubsIncome && person.monthlyIncome > 0;
+    })
+    .map(function (person) {
+      return person.age;
+    });
+}
+
 function matchesCibilBand(offer, cibilScore) {
   const status = offer.cibil_score_status;
   // Bank does not price this row on CIBIL — always eligible on score grounds.
@@ -1048,7 +2065,7 @@ function prefilterOffer(offer, query) {
   if (!matchesOptionalField(offer.purpose, query.purpose)) return false;
   if (!matchesOptionalField(offer.occupation, query.occupation)) return false;
   if (!matchesCibilBand(offer, query.cibilScore)) return false;
-  if (!matchesAge(offer, query.age)) return false;
+  if (!matchesApplicantAges(offer, earningApplicantAges(query))) return false;
   if (!matchesProductFilters(offer, query)) return false;
 
   const roiDecimal = Number(offer.roi);
@@ -1792,17 +2809,7 @@ function rateChangeCandidatesForMethod(row, method) {
   return row.rateChangeTypeSwitchCandidates || [];
 }
 
-function rateChangeSortValue(charge, slabs) {
-  if (slabs && slabs.length > 1) {
-    let min = null;
-    slabs.forEach(function (s) {
-      if (s.fixed_amount != null && Number.isFinite(Number(s.fixed_amount))) {
-        const n = Number(s.fixed_amount);
-        if (min == null || n < min) min = n;
-      }
-    });
-    return min;
-  }
+function rateChangeSortValue(charge) {
   if (!charge) return null;
   if (charge.percentage != null && Number.isFinite(Number(charge.percentage))) {
     return Number(charge.percentage) * 100;
@@ -1816,23 +2823,13 @@ function rateChangeSortValue(charge, slabs) {
   return null;
 }
 
-function formatRateChangeChargeDisplay(charge, slabs) {
-  if (slabs && slabs.length > 1) {
-    return {
-      main: "Fixed amount by loan amount range",
-      details: [],
-      note: "",
-      action: "rate-change-slabs"
-    };
-  }
-  const display = formatChargeDisplay(charge, {
-    // Basis differs by bank — show on the cell, not a clubbed footnote.
+function formatRateChangeChargeDisplay(charge) {
+  const display = formatResolvedChargeDisplay(charge, {
     hideBasis: false,
     hideUnit: true,
     hideGst: true
   });
-  // Exception / bank prose lives in footnotes, not the cell.
-  display.note = "";
+  if (display) display.note = "";
   return display;
 }
 
@@ -1867,46 +2864,67 @@ function rateChangeMarkerForBankKey(bankKey) {
   return "";
 }
 
-function shortenBenchmarkToken(token) {
-  const raw = String(token || "").trim();
-  if (!raw) return "";
-  const key = normalizeText(raw)
+/** Customer Notes: two references only. Bank-published names stay off this surface. */
+function benchmarkReferenceKind(token) {
+  const key = normalizeText(token)
     .replace(/[()]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-  const labels = {
-    "base rate": "Base Rate",
-    mclr: "MCLR",
-    bplr: "BPLR",
-    sbar: "SBAR",
-    rllr: "RLLR",
-    eblr: "EBLR",
-    ebr: "EBR",
-    "external benchmark rate": "EBR",
-    "external benchmark": "EBR",
-    "external benchmark rate repo rate": "EBR (repo rate)",
-    "repo rate": "repo rate"
-  };
-  if (labels[key]) return labels[key];
-  return raw;
+  if (!key) return "";
+  if (
+    key === "mclr" ||
+    key === "bplr" ||
+    key === "sbar" ||
+    key === "base rate" ||
+    key.indexOf("marginal cost") !== -1 ||
+    key.indexOf("prime lending") !== -1 ||
+    key.indexOf("state bank advance") !== -1
+  ) {
+    return "bank";
+  }
+  if (
+    key === "rllr" ||
+    key === "eblr" ||
+    key === "ebr" ||
+    key === "repo rate" ||
+    key.indexOf("repo") !== -1 ||
+    key.indexOf("external benchmark") !== -1
+  ) {
+    return "repo";
+  }
+  return "";
+}
+
+function uniqueBenchmarkReferenceKinds(value) {
+  const kinds = [];
+  String(value || "")
+    .split(/\s*\/\s*/)
+    .forEach(function (token) {
+      const kind = benchmarkReferenceKind(token);
+      if (kind && kinds.indexOf(kind) === -1) kinds.push(kind);
+    });
+  return kinds;
+}
+
+function customerBenchmarkReferenceLabel(kind) {
+  if (kind === "repo") return "the RBI repo rate";
+  if (kind === "bank") return "a rate the bank sets";
+  return "";
 }
 
 function formatBenchmarkSwitchShortNote(charge) {
-  const from = charge && charge.benchmark_switch_from;
-  const to = charge && charge.benchmark_switch_to;
-  if (!from || !to) return "";
-  const fromShort = String(from)
-    .split(/\s*\/\s*/)
-    .map(shortenBenchmarkToken)
-    .filter(Boolean)
-    .join(" / ");
-  const toShort = String(to)
-    .split(/\s*\/\s*/)
-    .map(shortenBenchmarkToken)
-    .filter(Boolean)
-    .join(" / ");
-  if (!fromShort || !toShort) return "";
-  return "From " + fromShort + " to " + toShort + ".";
+  const fromKinds = uniqueBenchmarkReferenceKinds(
+    charge && charge.benchmark_switch_from
+  );
+  const toKinds = uniqueBenchmarkReferenceKinds(
+    charge && charge.benchmark_switch_to
+  );
+  if (fromKinds.length !== 1 || toKinds.length !== 1) return "";
+  if (fromKinds[0] === toKinds[0]) return "";
+  const fromLabel = customerBenchmarkReferenceLabel(fromKinds[0]);
+  const toLabel = customerBenchmarkReferenceLabel(toKinds[0]);
+  if (!fromLabel || !toLabel) return "";
+  return "From " + fromLabel + " to " + toLabel + ".";
 }
 
 function collectRateChangeExceptionTexts(
@@ -2013,11 +3031,17 @@ function rateTypeIsFixedForRow(row) {
 
 function applyRateChangeMethodToRows(rows, method) {
   rows.forEach(function (row) {
-    const charge = rateChangeChargeForMethod(row, method);
+    const seed = rateChangeChargeForMethod(row, method);
     const candidates = rateChangeCandidatesForMethod(row, method);
-    const slabs = listMatchingChargeSlabs(candidates, charge);
+    const slabs = listMatchingChargeSlabs(candidates, seed);
+    const charge = resolveApplicableCharge(
+      slabs,
+      seed,
+      chargeCaseFromRow(row),
+      row.loanAmount
+    );
     row.rateChangeChargeSlabs = slabs;
-    const display = formatRateChangeChargeDisplay(charge, slabs);
+    const display = formatRateChangeChargeDisplay(charge);
     const bankKey = rateChangeBankKey(row, charge);
     const exceptionTexts = collectRateChangeExceptionTexts(
       charge,
@@ -2026,11 +3050,9 @@ function applyRateChangeMethodToRows(rows, method) {
       rateTypeIsFixedForRow(row),
       candidates
     );
-    if (exceptionTexts.length) {
-      display.marker = rateChangeMarkerForBankKey(bankKey);
-    }
+    row.rateChangeDrawerNotes = exceptionTexts;
     row.rateChangeChargeDisplay = display;
-    row.rateChangeChargeSortValue = rateChangeSortValue(charge, slabs);
+    row.rateChangeChargeSortValue = rateChangeSortValue(charge);
   });
   return rows;
 }
@@ -2165,41 +3187,6 @@ function formatEmiBounceMethodLabel(chargeName) {
   return String(chargeName).replace(/\s+/g, " ").trim();
 }
 
-function listAlternateEmiBounceMethodFacts(candidates, selectedChargeName) {
-  const selected = normalizeText(selectedChargeName);
-  const byName = Object.create(null);
-  candidates.forEach(function (charge) {
-    if (normalizeText(charge.charge_name) === selected) return;
-    if (charge.fixed_amount == null || !Number.isFinite(Number(charge.fixed_amount))) {
-      return;
-    }
-    const key = charge.charge_name;
-    if (!byName[key]) byName[key] = [];
-    byName[key].push(charge);
-  });
-  return Object.keys(byName)
-    .sort(function (a, b) {
-      return rankEmiBounceCharge(byName[b][0]) - rankEmiBounceCharge(byName[a][0]);
-    })
-    .map(function (name) {
-      const rows = byName[name]
-        .slice()
-        .sort(function (a, b) {
-          return chargeSlabStart(a) - chargeSlabStart(b);
-        });
-      const label = formatEmiBounceMethodLabel(name);
-      const amounts = Array.from(
-        new Set(
-          rows.map(function (charge) {
-            return formatInr(Number(charge.fixed_amount));
-          })
-        )
-      );
-      if (amounts.length === 1) return label + ": " + amounts[0];
-      return label + ": " + formatAreaSlabNotes(rows, false);
-    });
-}
-
 function specificityScore(record, fields) {
   return fields.reduce(function (score, field) {
     const value = record[field];
@@ -2226,9 +3213,9 @@ function createMatchEngine() {
     return matchesCibilBand(payload.offer, queryPayload.cibilScore);
   });
 
-  engine.addOperator("matchesAge", (payload, age) => {
+  engine.addOperator("matchesAge", (payload, ages) => {
     if (!payload || !payload.offer) return false;
-    return matchesAge(payload.offer, age);
+    return matchesApplicantAges(payload.offer, ages);
   });
 
   engine.addRule({
@@ -2298,7 +3285,7 @@ function offerFacts(offer, query) {
     cibil: { offer: offer },
     query_cibil: { cibilScore: query.cibilScore },
     age_payload: { offer: offer },
-    query_age: query.age
+    query_age: earningApplicantAges(query)
   };
 }
 
@@ -2574,7 +3561,7 @@ function formatOptionalGovernmentChargesNote(governmentCharges, query, loanAmoun
   const hasStateSpecific = Array.from(jurisdictions).some(function (value) {
     return value && value !== "india";
   });
-  let scopeNote = "^ Government charges shown ";
+  let scopeNote = GOVERNMENT_CHARGES_MARKER + " Government charges shown ";
   if (hasIndiaWide && hasStateSpecific) {
     scopeNote +=
       "include charges that apply across India and charges specific to " +
@@ -2594,19 +3581,21 @@ function formatOptionalGovernmentChargesNote(governmentCharges, query, loanAmoun
       const name = String(charge.charge_name || "");
       if (name === "Notice of Intimation Stamp Duty") {
         return (
-          "^ NOI stamp duty " +
+          GOVERNMENT_CHARGES_MARKER +
+          " NOI stamp duty " +
           amountLabel +
           " applies if MODT stamp duty is already paid."
         );
       }
       if (name === "Notice of Intimation Document Handling Charge") {
         return (
-          "^ NOI document handling " +
+          GOVERNMENT_CHARGES_MARKER +
+          " NOI document handling " +
           amountLabel +
           " applies if filing is done in person."
         );
       }
-      return "^ " + name + " " + amountLabel + ".";
+      return GOVERNMENT_CHARGES_MARKER + " " + name + " " + amountLabel + ".";
     })
     .join("\n");
 
@@ -2824,11 +3813,7 @@ function formatChargeDisplay(charge, options) {
   if (settings.zeroAsPercentage && fixed === 0 && percentage == null && !percentageShownAsBandOrCap) {
     mainParts.push("0%");
   }
-  const whicheverHigherRule = [charge.note_1, charge.note_2, charge.special_rule].some(
-    function (value) {
-      return /overdue_whichever_higher=yes/i.test(String(value || ""));
-    }
-  );
+  const whicheverHigherRule = chargeUsesWhicheverHigher(charge);
   const alternativeAmount =
     whicheverHigherRule && fixedLabel
       ? [fixedLabel, fixedBasisDetail].filter(Boolean).join(" ")
@@ -3005,190 +3990,6 @@ function formatSlabBasisSentence(charge, fallback) {
   return basis ? "The charge depends on the " + basis + "." : "";
 }
 
-function formatAreaSlabNote(charge, index, rows) {
-  const amount = formatInr(Number(charge.fixed_amount));
-  const min = charge.slab_from == null ? null : Number(charge.slab_from);
-  const max = charge.slab_to == null ? null : Number(charge.slab_to);
-  const previous = index > 0 && rows ? rows[index - 1] : null;
-  const previousMax =
-    previous && previous.slab_to != null ? Number(previous.slab_to) : null;
-  if (min == null && max != null) {
-    return amount + " up to " + formatChargeThreshold(max);
-  }
-  if (min != null && max != null) {
-    if (previousMax != null && min === previousMax) {
-      return (
-        amount +
-        " above " +
-        formatChargeThreshold(min) +
-        " to " +
-        formatChargeThreshold(max)
-      );
-    }
-    return (
-      amount +
-      " from " +
-      formatChargeThreshold(min) +
-      " to " +
-      formatChargeThreshold(max)
-    );
-  }
-  if (min != null && previousMax != null && min === previousMax) {
-    return amount + " above " + formatChargeThreshold(min);
-  }
-  if (min != null) return amount + " from " + formatChargeThreshold(min);
-  return amount;
-}
-
-function formatAreaSlabNotes(rows, skipFirst) {
-  return rows
-    .map(formatAreaSlabNote)
-    .slice(skipFirst ? 1 : 0)
-    .join("; ");
-}
-
-function buildAreaChargeSummary(candidates, preferredArea, bankDisplayName) {
-  if (!candidates.length) return null;
-  const selectedName = candidates[0].charge_name;
-  const areaRows = candidates.filter(function (charge) {
-    return (
-      charge.charge_name === selectedName &&
-      charge.charge_by_area &&
-      charge.fixed_amount != null
-    );
-  });
-  const areaNames = Array.from(
-    new Set(
-      areaRows.map(function (charge) {
-        return charge.charge_by_area;
-      })
-    )
-  );
-  if (areaNames.length < 2) return null;
-
-  const preferred =
-    areaNames.find(function (area) {
-      return normalizeText(area) === normalizeText(preferredArea);
-    }) || areaNames[0];
-  const primaryRows = areaRows
-    .filter(function (charge) {
-      return charge.charge_by_area === preferred;
-    })
-    .sort(function (a, b) {
-      return chargeSlabStart(a) - chargeSlabStart(b);
-    });
-  const otherRows = areaRows
-    .filter(function (charge) {
-      return charge.charge_by_area !== preferred;
-    })
-    .sort(function (a, b) {
-      return chargeSlabStart(a) - chargeSlabStart(b);
-    });
-  const otherArea = otherRows.length ? otherRows[0].charge_by_area : "";
-  const primaryFirst = primaryRows[0];
-  const primaryRest = primaryRows.slice(1);
-  const methodLabel = formatEmiBounceMethodLabel(selectedName);
-  const alternateFacts = listAlternateEmiBounceMethodFacts(
-    candidates,
-    selectedName
-  );
-  const useFullScheduleMarker = alternateFacts.length > 0;
-  const marker = useFullScheduleMarker ? "§" : "†";
-  const footnoteParts = [];
-  if (useFullScheduleMarker) {
-    footnoteParts.push(
-      preferred + ": " + formatAreaSlabNotes(primaryRows, false)
-    );
-  } else if (primaryRest.length) {
-    footnoteParts.push(
-      preferred +
-        " (higher charges): " +
-        formatAreaSlabNotes([primaryFirst].concat(primaryRest), true)
-    );
-  }
-  if (otherRows.length) {
-    footnoteParts.push(
-      otherArea + ": " + formatAreaSlabNotes(otherRows, false)
-    );
-  }
-  alternateFacts.forEach(function (fact) {
-    footnoteParts.push(fact);
-  });
-  const primaryBand = formatEmiBounceSlabBand(primaryFirst);
-  const primaryDetailParts = [];
-  if (useFullScheduleMarker && methodLabel) primaryDetailParts.push(methodLabel);
-  if (primaryBand) {
-    primaryDetailParts.push(
-      primaryBand +
-        (preferred ? " in " + preferred.toLowerCase() + " areas" : "")
-    );
-  } else if (preferred) {
-    primaryDetailParts.push(preferred);
-  }
-
-  const shownSentence = useFullScheduleMarker
-    ? "The amount shown is the " +
-      methodLabel +
-      (primaryBand
-        ? " " +
-          primaryBand +
-          (preferred ? " in " + preferred.toLowerCase() + " areas" : "")
-        : "") +
-      "."
-    : formatSlabBasisSentence(primaryFirst, "bounce amount");
-
-  return {
-    display: {
-      main: formatInr(Number(primaryFirst.fixed_amount)),
-      marker: marker,
-      details: primaryDetailParts.filter(Boolean),
-      note: ""
-    },
-    footnote: footnoteParts.length
-      ? marker +
-        " " +
-        (bankDisplayName || primaryFirst.bank_name) +
-        ": " +
-        shownSentence +
-        " " +
-        footnoteParts.join(". ") +
-        "."
-      : ""
-  };
-}
-
-function buildSlabChargeSummary(candidates, bankDisplayName) {
-  if (!candidates.length || candidates[0].charge_by_area) return null;
-  const slabRows = listMatchingChargeSlabs(candidates, candidates[0]);
-  if (slabRows.length < 2) return null;
-
-  const distinctAmounts = new Set(
-    slabRows.map(function (charge) {
-      return Number(charge.fixed_amount);
-    })
-  );
-  if (distinctAmounts.size < 2) return null;
-
-  const firstSlab = slabRows[0];
-  const higherSlabs = slabRows.slice(1);
-  return {
-    display: {
-      main: formatInr(Number(firstSlab.fixed_amount)),
-      marker: "†",
-      details: [formatEmiBounceSlabBand(firstSlab)].filter(Boolean),
-      note: ""
-    },
-    footnote:
-      "† " +
-      (bankDisplayName || firstSlab.bank_name) +
-      ": " +
-      formatSlabBasisSentence(firstSlab, "bounce amount") +
-      " Higher charges: " +
-      formatAreaSlabNotes([firstSlab].concat(higherSlabs), true) +
-      "."
-  };
-}
-
 function formatChargePercentageValue(charge) {
   const percentage = Number(charge.percentage) * 100;
   const value = Number.isInteger(percentage)
@@ -3201,73 +4002,6 @@ function formatChargePercentageValue(charge) {
       ? " p.a."
       : "")
   );
-}
-
-function buildOverduePercentageSlabSummary(candidates, bankDisplayName) {
-  if (!candidates.length) return null;
-  const selected = candidates[0];
-  const identityFields = [
-    "bank_key",
-    "charge_name",
-    "purpose",
-    "facility_type",
-    "scheme",
-    "rate_type",
-    "occupation",
-    "borrower_category"
-  ];
-  const slabRows = candidates
-    .filter(function (charge) {
-      return (
-        normalizeText(charge.has_slab_wise_charges) === "yes" &&
-        normalizeText(charge.charge_type) === "percentage" &&
-        identityFields.every(function (field) {
-          return normalizeText(charge[field]) === normalizeText(selected[field]);
-        })
-      );
-    })
-    .sort(function (a, b) {
-      return chargeSlabStart(a) - chargeSlabStart(b);
-    });
-  if (slabRows.length < 2) return null;
-
-  const firstSlab = slabRows[0];
-  const firstBand =
-    Number(firstSlab.slab_from) === 0 && firstSlab.slab_to != null
-      ? "Up to " + formatChargeThreshold(firstSlab.slab_to)
-      : formatChargeSlabBand(firstSlab);
-  const firstDetails = [firstBand]
-    .concat(
-      [firstSlab.note_1, firstSlab.note_2]
-        .map(formatEncodedChargeNote)
-        .filter(Boolean)
-    )
-    .filter(Boolean)
-    .join(" · ");
-  const higherSlabs = slabRows.slice(1).map(function (charge) {
-    const band = formatChargeSlabBand(charge);
-    return (
-      formatChargePercentageValue(charge) +
-      (band ? " " + band.charAt(0).toLowerCase() + band.slice(1) : "")
-    );
-  });
-
-  return {
-    display: {
-      main: formatChargePercentageValue(firstSlab),
-      marker: "◊",
-      details: firstDetails ? [firstDetails] : [],
-      note: ""
-    },
-    footnote:
-      "◊ " +
-      (bankDisplayName || firstSlab.bank_name) +
-      ": " +
-      formatSlabBasisSentence(firstSlab, "overdue amount") +
-      " " +
-      higherSlabs.join("; ") +
-      "."
-  };
 }
 
 function formatFacilityLabel(facilityType) {
@@ -3773,49 +4507,66 @@ function buildSlabTableBlockFromCharges(title, charges, basisFallback) {
   };
 }
 
+function overdueScheduleIsPercentage(slabs) {
+  return (slabs || []).some(function (charge) {
+    return (
+      charge &&
+      charge.percentage != null &&
+      Number.isFinite(Number(charge.percentage)) &&
+      !(charge.fixed_amount != null && Number.isFinite(Number(charge.fixed_amount)))
+    );
+  });
+}
+
+function formatOverdueScheduleAmount(charge) {
+  if (!charge) return "—";
+  if (
+    charge.percentage != null &&
+    Number.isFinite(Number(charge.percentage)) &&
+    !(charge.fixed_amount != null && Number.isFinite(Number(charge.fixed_amount)))
+  ) {
+    return formatChargePercentageValue(charge);
+  }
+  if (charge.fixed_amount != null && Number.isFinite(Number(charge.fixed_amount))) {
+    return formatInr(Number(charge.fixed_amount));
+  }
+  if (charge.percentage != null && Number.isFinite(Number(charge.percentage))) {
+    return formatChargePercentageValue(charge);
+  }
+  return "—";
+}
+
 function buildOverdueDrawerSlabBlocks(overdueChargeSlabs, overdueCharge, candidates) {
-  const blocks = [];
-  if (overdueChargeSlabs && overdueChargeSlabs.length > 1) {
-    const first = overdueChargeSlabs[0];
-    const isDcbBank =
-      overdueCharge && normalizeText(overdueCharge.bank_name) === "dcb bank";
-    blocks.push({
+  const schedule =
+    overdueChargeSlabs && overdueChargeSlabs.length > 1
+      ? overdueChargeSlabs
+      : listOverduePercentageSlabRows(candidates || [], overdueCharge);
+  if (!schedule || schedule.length < 2) return [];
+
+  const first = schedule[0];
+  const isDcbBank =
+    overdueCharge && normalizeText(overdueCharge.bank_name) === "dcb bank";
+  const asPct = overdueScheduleIsPercentage(schedule);
+  return [
+    {
       title: "Overdue charge by range",
       leftHeader: formatSlabColumnHeader(first),
       rightHeader: isDcbBank ? "Monthly charge" : "Charge",
-      rows: overdueChargeSlabs.map(function (charge) {
+      rows: schedule.map(function (charge) {
+        const notes = asPct
+          ? [charge.note_1, charge.note_2]
+              .map(formatEncodedChargeNote)
+              .filter(Boolean)
+          : [];
         return {
           range: formatChargeSlabBand(charge) || "Range",
-          amount: formatInr(Number(charge.fixed_amount)),
-          meta: ""
-        };
-      }),
-      notes: [formatSlabBasisSentence(first, "overdue amount")]
-    });
-    return blocks;
-  }
-
-  const pctSlabs = listOverduePercentageSlabRows(candidates || [], overdueCharge);
-  if (pctSlabs.length > 1) {
-    const first = pctSlabs[0];
-    blocks.push({
-      title: "Overdue charge by range",
-      leftHeader: formatSlabColumnHeader(first),
-      rightHeader: "Charge",
-      rows: pctSlabs.map(function (charge) {
-        const notes = [charge.note_1, charge.note_2]
-          .map(formatEncodedChargeNote)
-          .filter(Boolean);
-        return {
-          range: formatChargeSlabBand(charge) || "Range",
-          amount: formatChargePercentageValue(charge),
+          amount: formatOverdueScheduleAmount(charge),
           meta: notes.join(" · ")
         };
       }),
       notes: [formatSlabBasisSentence(first, "overdue amount")]
-    });
-  }
-  return blocks;
+    }
+  ];
 }
 
 function buildEmiBounceFlatDrawerRows(candidates, summaryCharge) {
@@ -4077,6 +4828,125 @@ function renderDrawerSlabTableBlocks(blocks) {
     blocks.map(renderDrawerSlabTableBlock).join("") +
     "</div>"
   );
+}
+
+/**
+ * Extra published rules that do not fit on the cell (ranges, area
+ * schedules). Shown under the rupee walk, never instead of it.
+ */
+function chargeCalculationDetailsHtml(row, calculationKey) {
+  if (!row || !calculationKey) return "";
+  if (calculationKey === "overdueChargeDisplay") {
+    return renderDrawerSlabTableBlocks(
+      buildOverdueDrawerSlabBlocks(
+        row.overdueChargeSlabs,
+        row.overdueCharge,
+        row.overdueCandidates
+      )
+    );
+  }
+  if (calculationKey === "emiBounceChargeDisplay") {
+    const slabs = renderDrawerSlabTableBlocks(
+      buildEmiBounceDrawerSlabBlocks(row.emiBounceCandidates)
+    );
+    const extraRows = buildEmiBounceFlatDrawerRows(
+      row.emiBounceCandidates,
+      row.emiBounceCharge
+    );
+    const extra = extraRows.length
+      ? renderDrawerSlabTableBlock({
+          title: "",
+          leftHeader: "Charge",
+          rightHeader: "Amount",
+          rows: extraRows
+        })
+      : "";
+    return slabs + extra;
+  }
+  if (calculationKey === "rateChangeChargeDisplay") {
+    const block = buildSlabTableBlockFromCharges(
+      "",
+      row.rateChangeChargeSlabs,
+      "loan amount"
+    );
+    return block ? renderDrawerSlabTableBlock(block) : "";
+  }
+  return "";
+}
+
+function chargeHasDrawerDetails(row, columnKey) {
+  return !!chargeCalculationDetailsHtml(row, columnKey);
+}
+
+function bankChargeNotePlain(text, bankName) {
+  let t = String(text || "").trim();
+  if (!t) return "";
+  const chars = Array.from(t);
+  if (chars.length >= 2 && chars[1] === " " && !/^[A-Za-z0-9]$/.test(chars[0])) {
+    t = chars.slice(2).join("").trim();
+  }
+  if (bankName) {
+    const prefix = String(bankName).trim() + ": ";
+    if (t.indexOf(prefix) === 0) t = t.slice(prefix.length).trim();
+  }
+  return t;
+}
+
+function rateChangeDrawerNotesForRow(row, method) {
+  if (!row) return [];
+  const charge = rateChangeChargeForMethod(row, method);
+  return collectRateChangeExceptionTexts(
+    charge,
+    rateChangeBankKey(row, charge),
+    method,
+    rateTypeIsFixedForRow(row),
+    rateChangeCandidatesForMethod(row, method)
+  );
+}
+
+/**
+ * Bank-only sentences for this cell’s drawer. No index glyphs. Column-wide
+ * notes stay on the header / Notes panel.
+ */
+function chargeDrawerNoteLines(row, calculationKey) {
+  const lines = [];
+  const seen = Object.create(null);
+  function add(line) {
+    const t = String(line || "").trim();
+    if (!t || seen[t]) return;
+    seen[t] = true;
+    lines.push(t);
+  }
+  if (!row || !calculationKey) return lines;
+  if (calculationKey === "rateChangeChargeDisplay") {
+    (row.rateChangeDrawerNotes || []).forEach(add);
+    const display = row.rateChangeChargeDisplay;
+    if (display && display.note) add(display.note);
+    return lines;
+  }
+  if (calculationKey === "overdueChargeDisplay") {
+    add(row.overdueShownNote);
+    if (!chargeHasDrawerDetails(row, calculationKey)) {
+      add(bankChargeNotePlain(row.overdueDetailFootnote, row.bankName));
+    }
+    const display = row.overdueChargeDisplay;
+    if (display && display.note) add(display.note);
+    return lines;
+  }
+  if (calculationKey === "emiBounceChargeDisplay") {
+    add(row.emiBounceShownNote);
+    if (!chargeHasDrawerDetails(row, calculationKey)) {
+      add(bankChargeNotePlain(row.emiBounceDetailFootnote, row.bankName));
+    }
+    const display = row.emiBounceChargeDisplay;
+    if (display && display.note) add(display.note);
+    return lines;
+  }
+  return lines;
+}
+
+function chargeDrawerNotesHtml(row, calculationKey) {
+  return calcNotesBlockHtml(chargeDrawerNoteLines(row, calculationKey));
 }
 
 function uniqueStrings(values) {
@@ -5366,59 +6236,58 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges, partPrep
     rateChangeTypeSwitchCandidates,
     rateChangeTypeSwitchCharge
   );
+  const chargeCase = chargeCaseFromParts(
+    terms.emi,
+    terms.loanAmount,
+    terms.tenureMonths
+  );
+  const rateChangeCharge = resolveApplicableCharge(
+    rateChangeTypeSwitchSlabs,
+    rateChangeTypeSwitchCharge,
+    chargeCase,
+    chargeCase.loanAmount
+  );
   const overdueCandidates = listRankedAfterOfferCharges(
     bankCharges,
     offerQuery,
     offer,
     rankOverdueCharge
   );
-  const overdueCharge = overdueCandidates.length ? overdueCandidates[0] : null;
-  const overdueChargeSlabs = listMatchingChargeSlabs(
+  const overdueChargeSeed = overdueCandidates.length ? overdueCandidates[0] : null;
+  const overdueChargeSlabs = overdueSlabsForCase(
     overdueCandidates,
-    overdueCharge
+    overdueChargeSeed
   );
-  const overdueSlabSummary =
-    buildOverduePercentageSlabSummary(overdueCandidates, offer.bank_name);
+  const overdueCharge = resolveApplicableCharge(
+    overdueChargeSlabs.length ? overdueChargeSlabs : overdueCandidates,
+    overdueChargeSeed,
+    chargeCase
+  );
   const emiBounceCandidates = listRankedAfterOfferCharges(
     bankCharges,
     offerQuery,
     offer,
     rankEmiBounceCharge
   );
-  const emiBounceCharge = emiBounceCandidates.length ? emiBounceCandidates[0] : null;
-  const areaChargeSummary = buildAreaChargeSummary(
+  const emiBounceChargeSeed = emiBounceCandidates.length
+    ? emiBounceCandidates[0]
+    : null;
+  const emiBounceChargeSlabs = listBounceChargeSlabs(
     emiBounceCandidates,
-    "Metro",
-    offer.bank_name
+    emiBounceChargeSeed
   );
-  const slabChargeSummary = buildSlabChargeSummary(
-    emiBounceCandidates,
-    offer.bank_name
+  const emiBounceCharge = resolveApplicableCharge(
+    emiBounceChargeSlabs,
+    emiBounceChargeSeed,
+    chargeCase
   );
-  const emiBounceSummary = areaChargeSummary || slabChargeSummary;
   const prepaymentChargeDisplay = formatPrepaymentChargeDisplay(
     prepayOwnFundsCharge
   );
-  const overdueChargeDisplay =
-    overdueChargeSlabs.length > 1
-      ? {
-          main: "Fixed amount by overdue range",
-          details: [],
-          note: "",
-          action: "overdue-slabs"
-        }
-      : overdueSlabSummary
-        ? overdueSlabSummary.display
-        : formatChargeDisplay(overdueCharge, {
-            hideBasis: true
-          });
-  const emiBounceChargeDisplay = emiBounceSummary
-    ? emiBounceSummary.display
-    : formatChargeDisplay(emiBounceCharge, {
-        hideBasis: true,
-        hideUnit: true,
-        hideGst: true
-      });
+  const overdueChargeDisplay = formatResolvedChargeDisplay(overdueCharge, {
+    hideBasis: true
+  });
+  const emiBounceChargeDisplay = formatResolvedBounceDisplay(emiBounceCharge);
   const processingFee = computeProcessingFee(processingCharge, terms.loanAmount);
   const propertyCheckChargesList = listPropertyCheckCharges(
     bankCharges,
@@ -5486,6 +6355,7 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges, partPrep
     emi: terms.emi,
     fromProperty: terms.fromProperty,
     fromIncome: terms.fromIncome,
+    incomeBasis: terms.incomeBasis,
     limiting: terms.limiting,
     processingFee: processingFee,
     propertyCheckCharges: propertyCheckCharges,
@@ -5498,14 +6368,18 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges, partPrep
         : null,
     prepaymentChargeDisplay: prepaymentChargeDisplay,
     prepaymentChargeSortValue: prepaymentSortValue(prepayOwnFundsCharge),
-    rateChangeChargeDisplay: formatRateChangeChargeDisplay(
-      rateChangeTypeSwitchCharge,
-      rateChangeTypeSwitchSlabs
+    rateChangeChargeDisplay: formatRateChangeChargeDisplay(rateChangeCharge),
+    rateChangeDrawerNotes: collectRateChangeExceptionTexts(
+      rateChangeCharge,
+      rateChangeBankKey(
+        { bankName: offer.bank_name },
+        rateChangeCharge
+      ),
+      RATE_CHANGE_METHOD_TYPE,
+      normalizeRateTypeToken(offer.rate_type) === "Fixed",
+      rateChangeTypeSwitchCandidates
     ),
-    rateChangeChargeSortValue: rateChangeSortValue(
-      rateChangeTypeSwitchCharge,
-      rateChangeTypeSwitchSlabs
-    ),
+    rateChangeChargeSortValue: rateChangeSortValue(rateChangeCharge),
     rateChangeChargeSlabs: rateChangeTypeSwitchSlabs,
     rateChangeTypeSwitchCharge: rateChangeTypeSwitchCharge,
     rateChangeRepricingCharge: rateChangeRepricingCharge,
@@ -5514,11 +6388,11 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges, partPrep
     rateChangeRepricingCandidates: rateChangeRepricingCandidates,
     rateChangeBenchmarkCandidates: rateChangeBenchmarkCandidates,
     overdueChargeDisplay: overdueChargeDisplay,
-    overdueDetailFootnote: overdueSlabSummary
-      ? overdueSlabSummary.footnote
-      : "",
+    overdueShownNote: applicableSlabSentence(overdueCharge, chargeCase),
+    overdueDetailFootnote: "",
     emiBounceChargeDisplay: emiBounceChargeDisplay,
-    emiBounceDetailFootnote: emiBounceSummary ? emiBounceSummary.footnote : "",
+    emiBounceShownNote: applicableSlabSentence(emiBounceCharge, chargeCase),
+    emiBounceDetailFootnote: "",
     prepayLabel: formatPrepayLabel(prepayOwnFundsCharge),
     prepayPct:
       prepayOwnFundsCharge && prepayOwnFundsCharge.percentage != null
@@ -5597,7 +6471,8 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges, partPrep
     overdueChargeSlabs: overdueChargeSlabs,
     overdueCandidates: overdueCandidates,
     emiBounceCandidates: emiBounceCandidates,
-    emiBounceCharge: emiBounceCharge
+    emiBounceCharge: emiBounceCharge,
+    emiBounceChargeSlabs: emiBounceChargeSlabs
   };
 }
 
@@ -5696,6 +6571,189 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+function mathWorkLinesHtml(lines) {
+  return (lines || [])
+    .filter(Boolean)
+    .map(function (line) {
+      if (line.k === "rule") {
+        return '<div class="hlc-math-rule" aria-hidden="true"></div>';
+      }
+      if (line.k === "caption") {
+        return (
+          '<div class="hlc-math-caption-row' +
+          (line.limiting
+            ? " hlc-math-caption-row--limiting hlc-math-caption-row--" +
+              line.track
+            : "") +
+          '">' +
+          '<span class="hlc-math-caption">' +
+          escapeHtml(line.t) +
+          "</span>" +
+          '<span class="hlc-math-num">' +
+          escapeHtml(line.v) +
+          "</span></div>"
+        );
+      }
+      if (line.k === "op") {
+        return '<div class="hlc-math-op">' + escapeHtml(line.t) + "</div>";
+      }
+      return (
+        '<div class="hlc-math-num' +
+        (line.k === "result" || line.emphasis ? " hlc-math-num--result" : "") +
+        '">' +
+        escapeHtml(line.t) +
+        "</div>"
+      );
+    })
+    .join("");
+}
+
+function mathWorkHtml(lines) {
+  if (!lines || !lines.length) return "";
+  return '<div class="hlc-math-sheet">' + mathWorkLinesHtml(lines) + "</div>";
+}
+
+function mathBarHtml(step, label, note, valueText, options) {
+  const opts = options || {};
+  const track = opts.track ? " hlc-math-bar--" + opts.track : "";
+  const limiting = opts.limiting ? " hlc-math-bar--limiting" : "";
+  const work =
+    opts.lines && opts.lines.length
+      ? mathWorkHtml(opts.lines)
+      : mathWorkHtml([{ k: "result", t: valueText, emphasis: true }]);
+  return (
+    '<div class="hlc-math-bar' +
+    track +
+    limiting +
+    '">' +
+    '<span class="hlc-math-bar-num">' +
+    escapeHtml(String(step)) +
+    "</span>" +
+    '<div class="hlc-math-bar-body">' +
+    '<p class="hlc-math-bar-label">' +
+    escapeHtml(label) +
+    "</p>" +
+    (note ? '<p class="hlc-math-bar-note">' + escapeHtml(note) + "</p>" : "") +
+    "</div>" +
+    work +
+    "</div>"
+  );
+}
+
+function mathBarStackHtml(bars) {
+  if (!bars || !bars.length) return "";
+  return (
+    '<div class="hlc-math-bars">' +
+    bars
+      .map(function (bar) {
+        return mathBarHtml(bar.step, bar.label, bar.note, bar.value, bar);
+      })
+      .join("") +
+    "</div>"
+  );
+}
+
+function amortizationTableHtml(schedule) {
+  const rows = (schedule && schedule.rows) || [];
+  if (!rows.length) return "";
+  const byYear = [];
+  rows.forEach(function (row) {
+    const year = Math.ceil(row.month / 12);
+    if (!byYear[year]) byYear[year] = [];
+    byYear[year].push(row);
+  });
+  function yearTable(yearRows, yearNumber) {
+    return (
+      '<div class="hlc-amort-shell"><table class="hlc-amort-table">' +
+      '<caption class="visually-hidden">Year ' +
+      yearNumber +
+      "</caption>" +
+      "<thead><tr><th>Month</th><th>Still owed</th><th>Principal</th><th>Interest</th></tr></thead><tbody>" +
+      yearRows
+        .map(function (row) {
+          return (
+            "<tr><td>" +
+            row.month +
+            "</td><td>" +
+            formatInr(row.outstanding) +
+            "</td><td>" +
+            formatInr(row.principal) +
+            "</td><td>" +
+            formatInr(row.interest) +
+            "</td></tr>"
+          );
+        })
+        .join("") +
+      "</tbody></table></div>"
+    );
+  }
+  const firstYear = byYear[1] || [];
+  let laterHtml = "";
+  for (let year = 2; year < byYear.length; year++) {
+    if (!byYear[year]) continue;
+    laterHtml += drawerDiscloseHtml(
+      "Year " + year,
+      yearTable(byYear[year], year),
+      { nested: true }
+    );
+  }
+  if (laterHtml) {
+    laterHtml = '<div class="hlc-amort-years">' + laterHtml + "</div>";
+  }
+  return drawerDiscloseHtml(
+    "Month by month",
+    yearTable(firstYear, 1) + laterHtml,
+    { nested: true, open: true }
+  );
+}
+
+const CALC_HOW_TITLE = "How this is worked out";
+const CALC_CHARGES_TITLE = "Calculation of the charges";
+
+function calcStoryHtml(resultText, leadText, barsHtml, extraHtml, options) {
+  const opts = options || {};
+  const resultBlock = resultText
+    ? '<p class="hlc-story-result">' + escapeHtml(resultText) + "</p>"
+    : "";
+  const leadBlock = leadText
+    ? '<p class="hlc-story-lead">' + escapeHtml(leadText) + "</p>"
+    : "";
+  const workInner =
+    (opts.workTitle && (barsHtml || extraHtml)
+      ? '<p class="hlc-story-work-title">' + escapeHtml(opts.workTitle) + "</p>"
+      : "") +
+    (barsHtml || "") +
+    (extraHtml || "");
+  return (
+    '<div class="hlc-story">' +
+    (resultBlock || leadBlock
+      ? '<div class="hlc-story-head">' + leadBlock + resultBlock + "</div>"
+      : "") +
+    (workInner
+      ? '<div class="hlc-drawer-card hlc-story-card">' + workInner + "</div>"
+      : "") +
+    "</div>"
+  );
+}
+
+function calculationButtonHtml(innerHtml, column, row, extraClass) {
+  return (
+    '<button type="button" class="hlc-charge-amount' +
+    (extraClass || "") +
+    '" data-calculation-detail="' +
+    column.key +
+    '" data-row-id="' +
+    escapeHtml(row.id) +
+    '" aria-label="Show how ' +
+    escapeHtml(column.label.toLowerCase()) +
+    " for " +
+    escapeHtml(row.bankName) +
+    ' was calculated">' +
+    innerHtml +
+    "</button>"
+  );
+}
+
 function chargeDisplayHtml(display, noteGroupId, options) {
   const opts = options || {};
   const value = display || chargeNotPublishedDisplay();
@@ -5708,46 +6766,52 @@ function chargeDisplayHtml(display, noteGroupId, options) {
       );
     })
     .join("");
+  const figure = escapeHtml(value.main);
+  const mainFigure = opts.wrapMain ? opts.wrapMain(figure) : figure;
   return (
     '<span class="hlc-charge-rule">' +
     '<span class="hlc-charge-rule-main">' +
-    escapeHtml(value.main) +
+    mainFigure +
     (value.mainSuffix
       ? '<span class="hlc-charge-rule-subnote hlc-charge-rule-main-suffix">' +
         escapeHtml(value.mainSuffix) +
         "</span>"
       : "") +
-    footnoteRefHtml(value.marker, noteGroupId, {
-      plain: !!opts.plainMarker
-    }) +
     "</span>" +
+    (opts.afterFigure || "") +
     details +
     "</span>"
   );
 }
 
 /**
- * Charge cell markup. Markers inside the slab button use plain superscripts
- * (data-note-target) so we never nest interactive elements.
+ * Charge cell markup. The slab control wraps only the main figure so
+ * notes under it stay plain text.
  */
 function chargeCellHtml(row, column) {
   const display = row[column.key];
   const noteGroupId = chargesNoteGroupId(column.label);
-  if (!(display && display.action)) {
+  if (chargeDisplayIsUnpublished(display) || !(display && display.action)) {
     return chargeDisplayHtml(display, noteGroupId);
   }
   return (
-    '<button type="button" class="hlc-charge-detail-button" data-charge-detail="' +
-    escapeHtml(display.action) +
-    '" data-row-id="' +
-    escapeHtml(row.id) +
-    '" aria-label="Show ' +
-    escapeHtml(column.label.toLowerCase()) +
-    " slabs for " +
-    escapeHtml(row.bankName) +
-    '">' +
-    chargeDisplayHtml(display, noteGroupId, { plainMarker: true }) +
-    '<svg class="hlc-charge-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
+    chargeDisplayHtml(display, noteGroupId, {
+      wrapMain: function (figure) {
+        return (
+          '<button type="button" class="hlc-charge-detail-button" data-charge-detail="' +
+          escapeHtml(display.action) +
+          '" data-row-id="' +
+          escapeHtml(row.id) +
+          '" aria-label="Show ' +
+          escapeHtml(column.label.toLowerCase()) +
+          " slabs for " +
+          escapeHtml(row.bankName) +
+          '">' +
+          figure +
+          '<svg class="hlc-charge-detail-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
+        );
+      }
+    })
   );
 }
 
@@ -5800,6 +6864,86 @@ function columnWidthClass(column) {
   return "hlc-col-w-text";
 }
 
+const FIELD_BOX_ACTIVATE_SKIP =
+  ".hlc-field-help, .hlc-field-help-popover, .hlc-inline-pct-select, a";
+const FIELD_BOX_SELECT_DRAG_PX = 6;
+
+function fieldBoxPrimaryControl(field) {
+  if (!field) return null;
+  return field.querySelector(
+    ":scope > .hlc-input-shell input, :scope > .hlc-input-shell select"
+  );
+}
+
+function fieldBoxHasCopySelection() {
+  const sel = window.getSelection();
+  return Boolean(sel && String(sel).replace(/\s/g, "").length);
+}
+
+/**
+ * A tap on the name, ₹, or padding still enters the box. A drag or a live
+ * highlight is copy — leave it. Do not cancel pointerdown; that blocked
+ * selecting. The i, Learn more, and the card-% menu stay separate.
+ */
+function bindFieldBoxActivate(form) {
+  if (!form) return;
+  let pointerStart = null;
+
+  form.addEventListener(
+    "pointerdown",
+    function (event) {
+      if (event.button != null && event.button !== 0) {
+        pointerStart = null;
+        return;
+      }
+      pointerStart = { x: event.clientX, y: event.clientY };
+    },
+    true
+  );
+
+  form.addEventListener("click", function (event) {
+    if (event.target.closest(FIELD_BOX_ACTIVATE_SKIP)) return;
+    const field = event.target.closest(".hlc-field");
+    if (!field || !form.contains(field)) return;
+    const control = fieldBoxPrimaryControl(field);
+    if (!control || control.disabled) return;
+    if (control === event.target || control.contains(event.target)) {
+      pointerStart = null;
+      return;
+    }
+
+    let dragged = false;
+    if (pointerStart) {
+      const dx = event.clientX - pointerStart.x;
+      const dy = event.clientY - pointerStart.y;
+      dragged =
+        dx * dx + dy * dy > FIELD_BOX_SELECT_DRAG_PX * FIELD_BOX_SELECT_DRAG_PX;
+    }
+    pointerStart = null;
+
+    if (event.detail >= 2 || dragged || fieldBoxHasCopySelection()) {
+      event.preventDefault();
+      return;
+    }
+
+    control.focus();
+    if (control.tagName === "INPUT" && typeof control.setSelectionRange === "function") {
+      try {
+        control.setSelectionRange(0, control.value.length);
+      } catch (err) {
+        /* Some input modes reject a range; focus still landed. */
+      }
+    }
+    if (control.tagName === "SELECT" && typeof control.showPicker === "function") {
+      try {
+        control.showPicker();
+      } catch (err) {
+        /* Focus still landed if the browser blocked the picker. */
+      }
+    }
+  });
+}
+
 function initPage() {
   const root = document.querySelector("[data-hlc-root]");
   if (!root) return;
@@ -5836,13 +6980,17 @@ function initPage() {
     foirFace: document.getElementById("hlc-foir-face"),
     coApplicant: document.getElementById("hlc-coapplicant"),
     coApplicantFields: document.getElementById("hlc-coapplicant-fields"),
-    coMonthlyIncome: document.getElementById("hlc-co-income"),
-    coExistingEmis: document.getElementById("hlc-co-existing-emis"),
-    coCardLimits: document.getElementById("hlc-co-card-limits"),
+    coApplicantList: document.getElementById("hlc-coapplicant-list"),
+    coApplicantAdd: document.getElementById("hlc-coapplicant-add"),
+    coApplicantLimit: document.getElementById("hlc-coapplicant-limit"),
+    coApplicantToggle: document.getElementById("hlc-co-toggle"),
     occupation: document.getElementById("hlc-occupation"),
+    occupationFace: document.getElementById("hlc-occupation-face"),
     purpose: document.getElementById("hlc-purpose"),
+    purposeFace: document.getElementById("hlc-purpose-face"),
     propertyValue: document.getElementById("hlc-property-value"),
     loanHint: document.getElementById("hlc-loan-hint"),
+    incomeBasisNote: document.getElementById("hlc-income-basis-note"),
     status: document.getElementById("hlc-status"),
     meta: document.getElementById("hlc-match-meta"),
     headTable: document.querySelector(".hlc-compare--head"),
@@ -5997,9 +7145,7 @@ function initPage() {
         tenureYears: el.tenure ? el.tenure.value : DEFAULT_TENURE_YEARS,
         foirPct: el.foir ? el.foir.value : DEFAULT_FOIR_PCT,
         includeCoApplicant: el.coApplicant ? el.coApplicant.value : "no",
-        coMonthlyIncome: el.coMonthlyIncome ? el.coMonthlyIncome.value : "0",
-        coExistingEmis: el.coExistingEmis ? el.coExistingEmis.value : "0",
-        coCardLimits: el.coCardLimits ? el.coCardLimits.value : "0",
+        coApplicants: readCoApplicants(),
         occupation: el.occupation.value,
         purpose: el.purpose ? el.purpose.value : DEFAULT_PURPOSE,
         propertyValue: el.propertyValue.value
@@ -6021,63 +7167,333 @@ function initPage() {
 
   function updateLoanHint() {
     if (!el.loanHint) return;
-    el.loanHint.textContent = "";
+    if (!primaryFieldsAreComplete()) {
+      el.loanHint.textContent = "";
+      return;
+    }
+    const rows = state.rows || [];
+    let limiting = "";
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      if (row.limiting === "property" || row.limiting === "income") {
+        limiting = row.limiting;
+        break;
+      }
+    }
+    el.loanHint.textContent =
+      limiting === "property"
+        ? "Limited by property."
+        : limiting === "income"
+          ? "Limited by income."
+          : "";
+  }
+
+  function updateIncomeBasisNote() {
+    if (!el.incomeBasisNote) return;
+    const rows = state.rows || [];
+    const text = rows.length ? incomeBasisNote(rows[0]) : "";
+    el.incomeBasisNote.textContent = text;
+    el.incomeBasisNote.hidden = !text;
+  }
+
+  function applicantLabel(id) {
+    if (id === "primary") return "you";
+    const index = Number(String(id).replace("co-", "")) - 1;
+    const rows = readCoApplicants();
+    const row = rows[index];
+    if (!row) return "your co-applicant";
+    const relationship = normalizeText(row.relationship);
+    if (!relationship || relationship === "other") return "your co-applicant";
+    return "your " + relationship;
+  }
+
+  function joinPlainList(parts) {
+    if (parts.length <= 1) return parts.join("");
+    if (parts.length === 2) return parts[0] + " and " + parts[1];
+    return parts.slice(0, -1).join(", ") + " and " + parts[parts.length - 1];
+  }
+
+  /**
+   * Says which incomes the banks can actually count. Dropping an older earner
+   * often wins, because tenure is capped by the eldest counted borrower.
+   */
+  function incomeBasisNote(row) {
+    const basis = row && row.incomeBasis;
+    if (!basis || !basis.droppedIds || !basis.droppedIds.length) return "";
+    const dropped = joinPlainList(basis.droppedIds.map(applicantLabel));
+    const lead = "Banks cap the tenure on the oldest earner whose income counts. ";
+    const gain =
+      basis.fullPoolFromIncome != null
+        ? Math.round(row.fromIncome - basis.fullPoolFromIncome)
+        : 0;
+    if (!(gain > 0)) {
+      return lead + "So we left " + dropped + " out of the income.";
+    }
+    return (
+      lead +
+      "Leaving " +
+      dropped +
+      " out keeps the tenure long and the loan " +
+      formatInr(gain) +
+      " higher."
+    );
   }
 
   function setOccupation(value) {
     if (!el.occupation) return;
     el.occupation.value = value;
-    document.querySelectorAll(".hlc-occupation-pills .hlc-chip[data-occupation]").forEach(function (btn) {
-      const selected = btn.getAttribute("data-occupation") === value;
-      btn.setAttribute("aria-pressed", selected ? "true" : "false");
-    });
+    syncOccupationFace();
   }
 
   function setPurpose(value) {
     if (!el.purpose) return;
-    const purpose = normalizePurpose(value);
-    el.purpose.value = purpose;
-    document.querySelectorAll(".hlc-purpose-pills .hlc-chip[data-purpose]").forEach(function (btn) {
-      const selected = btn.getAttribute("data-purpose") === purpose;
-      btn.setAttribute("aria-pressed", selected ? "true" : "false");
+    el.purpose.value = normalizePurpose(value);
+    syncSelectFace(el.purpose, el.purposeFace);
+  }
+
+  function syncSelectFace(select, faceEl) {
+    if (!select || !faceEl) return;
+    const valueNode = faceEl.querySelector(".hlc-select-face-value");
+    if (!valueNode) return;
+    const opt = select.selectedOptions[0];
+    const face = opt && opt.getAttribute("data-face");
+    valueNode.textContent = face || (opt ? opt.textContent.trim() : "");
+  }
+
+  function syncOccupationFace() {
+    syncSelectFace(el.occupation, el.occupationFace);
+  }
+
+  function coApplicantCards() {
+    if (!el.coApplicantList) return [];
+    return Array.prototype.slice.call(
+      el.coApplicantList.querySelectorAll(".hlc-coapplicant-card")
+    );
+  }
+
+  function cardFieldValue(card, field) {
+    const node = card.querySelector('[data-co-field="' + field + '"]');
+    return node ? node.value : "";
+  }
+
+  /** The rendered cards are the source of truth, like every other form field. */
+  function readCoApplicants() {
+    return coApplicantCards().map(function (card) {
+      return {
+        relationship: cardFieldValue(card, "relationship"),
+        occupation: cardFieldValue(card, "occupation"),
+        age: cardFieldValue(card, "age"),
+        cibilScore: cardFieldValue(card, "cibilScore"),
+        monthlyIncome: cardFieldValue(card, "monthlyIncome"),
+        existingEmis: cardFieldValue(card, "existingEmis"),
+        cardLimits: cardFieldValue(card, "cardLimits")
+      };
     });
   }
 
-  function setFormMoreOpen(open) {
-    const details = document.getElementById("hlc-form-more");
-    if (!details) return;
-    details.open = Boolean(open);
+  function selectOptionsHtml(list, selected) {
+    return list
+      .map(function (entry) {
+        return (
+          '<option value="' +
+          escapeHtml(entry.value) +
+          '"' +
+          (normalizeText(entry.value) === normalizeText(selected) ? " selected" : "") +
+          ">" +
+          escapeHtml(entry.label) +
+          "</option>"
+        );
+      })
+      .join("");
+  }
+
+  function coApplicantMoneyFieldHtml(id, field, label, value) {
+    return (
+      '<label class="hlc-field" for="' +
+      id +
+      '">' +
+      '<span class="hlc-field-label-row"><span class="hlc-field-label">' +
+      escapeHtml(label) +
+      "</span></span>" +
+      '<span class="hlc-input-shell">' +
+      '<span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>' +
+      '<input type="text" id="' +
+      id +
+      '" data-co-field="' +
+      field +
+      '" value="' +
+      escapeHtml(value) +
+      '" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">' +
+      "</span>" +
+      "</label>"
+    );
+  }
+
+  function coApplicantCardHtml(index, values) {
+    const n = index + 1;
+    const prefix = "hlc-co-" + n + "-";
+    return (
+      '<div class="hlc-coapplicant-card" data-co-index="' +
+      index +
+      '">' +
+      '<div class="hlc-coapplicant-card-head">' +
+      '<h3 class="hlc-coapplicant-card-title">Co-applicant ' +
+      n +
+      "</h3>" +
+      '<button type="button" class="hlc-coapplicant-remove" data-co-remove="' +
+      index +
+      '" aria-label="Remove co-applicant ' +
+      n +
+      '"><span aria-hidden="true">Remove</span></button>' +
+      "</div>" +
+      '<div class="hlc-coapplicant-card-fields hlc-form-fields--coapplicant">' +
+      '<label class="hlc-field" for="' +
+      prefix +
+      'relationship"><span class="hlc-field-label-row"><span class="hlc-field-label">Relation to you</span></span>' +
+      '<span class="hlc-input-shell hlc-input-shell--select">' +
+      '<select id="' +
+      prefix +
+      'relationship" data-co-field="relationship">' +
+      selectOptionsHtml(CO_APPLICANT_RELATIONSHIPS, values.relationship) +
+      "</select></span></label>" +
+      '<label class="hlc-field" for="' +
+      prefix +
+      'occupation"><span class="hlc-field-label-row"><span class="hlc-field-label">Work</span></span>' +
+      '<span class="hlc-input-shell hlc-input-shell--select">' +
+      '<select id="' +
+      prefix +
+      'occupation" data-co-field="occupation">' +
+      selectOptionsHtml(CO_APPLICANT_OCCUPATIONS, values.occupation) +
+      "</select></span></label>" +
+      '<label class="hlc-field" for="' +
+      prefix +
+      'age"><span class="hlc-field-label-row"><span class="hlc-field-label">Age</span></span>' +
+      '<span class="hlc-input-shell"><input type="text" id="' +
+      prefix +
+      'age" data-co-field="age" value="' +
+      escapeHtml(values.age) +
+      '" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2"><span class="hlc-suffix" aria-hidden="true">years</span></span></label>' +
+      '<label class="hlc-field" for="' +
+      prefix +
+      'cibil"><span class="hlc-field-label-row"><span class="hlc-field-label">CIBIL score</span></span>' +
+      '<span class="hlc-input-shell"><input type="text" id="' +
+      prefix +
+      'cibil" data-co-field="cibilScore" value="' +
+      escapeHtml(values.cibilScore) +
+      '" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="3" data-hlc-max="900"></span></label>' +
+      coApplicantMoneyFieldHtml(
+        prefix + "income",
+        "monthlyIncome",
+        "Monthly income",
+        values.monthlyIncome
+      ) +
+      coApplicantMoneyFieldHtml(
+        prefix + "emis",
+        "existingEmis",
+        "Existing EMIs",
+        values.existingEmis
+      ) +
+      coApplicantMoneyFieldHtml(
+        prefix + "cards",
+        "cardLimits",
+        "Card limits",
+        values.cardLimits
+      ) +
+      "</div>" +
+      "</div>"
+    );
+  }
+
+  function blankCoApplicant() {
+    return {
+      relationship: DEFAULT_CO_APPLICANT_RELATIONSHIP,
+      occupation: DEFAULT_CO_APPLICANT_OCCUPATION,
+      age: "",
+      cibilScore: "",
+      monthlyIncome: "0",
+      existingEmis: "0",
+      cardLimits: "0"
+    };
+  }
+
+  function renderCoApplicants(list) {
+    if (!el.coApplicantList) return;
+    const rows = (list || []).slice(0, MAX_CO_APPLICANTS);
+    el.coApplicantList.innerHTML = rows
+      .map(function (values, index) {
+        return coApplicantCardHtml(index, Object.assign(blankCoApplicant(), values));
+      })
+      .join("");
+    el.coApplicantList
+      .querySelectorAll("input[data-hlc-format]")
+      .forEach(bindFormattedInput);
+    syncCoApplicantChrome(rows.length);
+  }
+
+  /** The page's disclosure script owns opening and closing this panel. */
+  function coApplicantPanel() {
+    return (typeof window !== "undefined" && window.__hlcCoApplicantPanel) || null;
+  }
+
+  function syncCoApplicantChrome(count) {
+    const on = count > 0;
+    const panel = coApplicantPanel();
+    if (panel) {
+      if (on !== panel.isOpen()) panel.set(on);
+    } else {
+      if (el.coApplicant) el.coApplicant.value = on ? "yes" : "no";
+      if (el.coApplicantFields) {
+        if (on) el.coApplicantFields.removeAttribute("hidden");
+        else el.coApplicantFields.setAttribute("hidden", "");
+      }
+    }
+    if (el.coApplicantAdd) {
+      el.coApplicantAdd.hidden = count >= MAX_CO_APPLICANTS;
+    }
+    if (el.coApplicantLimit) {
+      el.coApplicantLimit.textContent =
+        count >= MAX_CO_APPLICANTS
+          ? "Most lenders cap a joint loan at six borrowers in total."
+          : "";
+    }
+  }
+
+  function addCoApplicant() {
+    const rows = readCoApplicants();
+    if (rows.length >= MAX_CO_APPLICANTS) return;
+    rows.push(blankCoApplicant());
+    renderCoApplicants(rows);
+    const cards = coApplicantCards();
+    const last = cards[cards.length - 1];
+    const firstInput = last && last.querySelector("select, input");
+    if (firstInput && typeof firstInput.focus === "function") firstInput.focus();
+  }
+
+  function removeCoApplicant(index) {
+    const rows = readCoApplicants();
+    if (index < 0 || index >= rows.length) return;
+    rows.splice(index, 1);
+    renderCoApplicants(rows);
   }
 
   function setCoApplicant(value) {
-    if (!el.coApplicant) return;
     const on = value === "yes" || value === true;
-    el.coApplicant.value = on ? "yes" : "no";
-    document.querySelectorAll(".hlc-coapplicant-pills .hlc-chip[data-coapplicant]").forEach(function (btn) {
-      const selected = (btn.getAttribute("data-coapplicant") === "yes") === on;
-      btn.setAttribute("aria-pressed", selected ? "true" : "false");
-    });
-    if (el.coApplicantFields) {
-      if (on) el.coApplicantFields.removeAttribute("hidden");
-      else el.coApplicantFields.setAttribute("hidden", "");
+    if (on && !coApplicantCards().length) {
+      renderCoApplicants([blankCoApplicant()]);
+      return;
     }
-    if (on) setFormMoreOpen(true);
+    if (!on) renderCoApplicants([]);
   }
 
-  function setRateType(value) {
-    const rate = value === "Fixed" ? "Fixed" : "Floating";
-    state.productFilters.fixedRate = rate === "Fixed";
+  function onProductFilterChange(key) {
     if (
+      key === "fixedRate" &&
       !state.productFilters.fixedRate &&
       state.sortKey === "prepaymentChargeDisplay"
     ) {
       state.sortKey = DEFAULT_SORT_KEY;
       state.sortDir = DEFAULT_SORT_DIR;
     }
-    document.querySelectorAll(".hlc-rate-pills .hlc-chip[data-rate-type]").forEach(function (btn) {
-      const selected = btn.getAttribute("data-rate-type") === rate;
-      btn.setAttribute("aria-pressed", selected ? "true" : "false");
-    });
     updateFiltersBadge();
   }
 
@@ -6107,36 +7523,16 @@ function initPage() {
     renderTable();
   }
 
-  function setFacilityType(value) {
-    const facility = value === "Overdraft" ? "Overdraft" : "Term Loan";
-    state.productFilters.overdraft = facility === "Overdraft";
-    document.querySelectorAll(".hlc-facility-pills .hlc-chip[data-facility-type]").forEach(function (btn) {
-      const selected = btn.getAttribute("data-facility-type") === facility;
-      btn.setAttribute("aria-pressed", selected ? "true" : "false");
-    });
-    updateFiltersBadge();
-  }
-
-  function setBankType(value) {
-    const bankType = normalizeBankType(value);
-    state.productFilters.bankType = bankType;
-    document.querySelectorAll(".hlc-bank-type-pills .hlc-chip[data-bank-type]").forEach(function (btn) {
-      const selected = btn.getAttribute("data-bank-type") === bankType;
-      btn.setAttribute("aria-pressed", selected ? "true" : "false");
-    });
-    updateFiltersBadge();
-  }
-
   function countActiveProductFilters(filters) {
-    const f = filters || defaultProductFilters();
+    const f = normalizeProductFilters(filters);
     let count = 0;
     if (f.govtPsu) count += 1;
     if (f.womenApplicant) count += 1;
     if (f.greenHome) count += 1;
     if (f.insurance) count += 1;
-    if (f.fixedRate) count += 1;
-    if (f.overdraft) count += 1;
-    if (normalizeBankType(f.bankType) !== DEFAULT_BANK_TYPE) count += 1;
+    if (!(f.bankPublic && f.bankPrivate)) count += 1;
+    if (!(f.rateFloating && !f.fixedRate)) count += 1;
+    if (!(f.facilityTermLoan && !f.overdraft)) count += 1;
     return count;
   }
 
@@ -6163,13 +7559,7 @@ function initPage() {
 
   function clearAllProductFilters() {
     state.productFilters = defaultProductFilters();
-    setRateType(DEFAULT_RATE_TYPE);
-    setFacilityType(DEFAULT_FACILITY_TYPE);
-    setBankType(DEFAULT_BANK_TYPE);
-    document.querySelectorAll("[data-product-filter]").forEach(function (el) {
-      setProductFilterControl(el, false);
-    });
-    updateFiltersBadge();
+    syncProductFilterChips();
     persistExploreDraft();
     scheduleMatch({ fade: true });
   }
@@ -6441,10 +7831,7 @@ function initPage() {
     el.existingEmis,
     el.cardLimits,
     el.tenure,
-    el.propertyValue,
-    el.coMonthlyIncome,
-    el.coExistingEmis,
-    el.coCardLimits
+    el.propertyValue
   ].forEach(bindFormattedInput);
 
   function showToast(message) {
@@ -6495,6 +7882,22 @@ function initPage() {
     el.freshnessNote.hidden = false;
   }
 
+  /**
+   * Layout contract for CSS: group + how many Other-charges fee columns.
+   * Four fee columns share leftover width; three keep 13rem + fill gutter.
+   */
+  function applyCompareTableLayoutAttrs(group, feeColumnCount) {
+    [el.headTable, el.table].forEach(function (table) {
+      if (!table) return;
+      table.setAttribute("data-group", group);
+      if (group === "laterCharges" && feeColumnCount > 0) {
+        table.setAttribute("data-charge-count", String(feeColumnCount));
+      } else {
+        table.removeAttribute("data-charge-count");
+      }
+    });
+  }
+
   function renderTable(options) {
     const highlightDeltas = !!(options && options.highlightDeltas);
     const showPrepayment =
@@ -6522,8 +7925,10 @@ function initPage() {
     el.status.textContent = "";
     renderFreshnessNote();
 
-    if (el.headTable) el.headTable.setAttribute("data-group", state.group);
-    if (el.table) el.table.setAttribute("data-group", state.group);
+    applyCompareTableLayoutAttrs(
+      state.group,
+      state.group === "laterCharges" ? laterChargesFeeCount(showPrepayment) : 0
+    );
     const useFillCol = state.group === "laterCharges";
     if (el.cols || el.headCols) {
       let colHtml = '<col class="hlc-col-bank">';
@@ -6592,7 +7997,7 @@ function initPage() {
             "</select>"
           : "";
       const typeSwitchLabel = rateChangeTypeSwitchLabel(
-        state.productFilters.fixedRate ? "Fixed" : "Floating"
+        primaryRateType(state.productFilters)
       );
       const rateChangeMethods =
         isRateChange
@@ -6624,17 +8029,20 @@ function initPage() {
             ">Benchmark switch</option>" +
             "</select>"
           : "";
-      const headerLabel =
-        isPrepayment || isRateChange
-          ? '<span class="hlc-column-label">' +
-            '<span class="hlc-column-title">' +
-            escapeHtml(column.label) +
-            footnoteHtml +
-            sortInd +
-            "</span>" +
-            (isPrepayment ? prepaymentMethods : rateChangeMethods) +
-            "</span>"
-          : escapeHtml(column.label);
+      const useChargeHeader = state.group === "laterCharges";
+      const headerLabel = useChargeHeader
+        ? '<span class="hlc-column-label">' +
+          '<span class="hlc-column-title">' +
+          '<span class="hlc-column-title-text">' +
+          escapeHtml(column.label) +
+          "</span>" +
+          footnoteHtml +
+          sortInd +
+          "</span>" +
+          (isPrepayment ? prepaymentMethods : "") +
+          (isRateChange ? rateChangeMethods : "") +
+          "</span>"
+        : escapeHtml(column.label);
       headHtml +=
         '<th class="' +
         columnAlignClass(column) +
@@ -6649,8 +8057,8 @@ function initPage() {
         (footnoteMarker ? ' aria-describedby="hlc-charges-note"' : "") +
         ">" +
         headerLabel +
-        (isPrepayment || isRateChange ? "" : footnoteHtml) +
-        (isPrepayment || isRateChange ? "" : sortInd) +
+        (useChargeHeader ? "" : footnoteHtml) +
+        (useChargeHeader ? "" : sortInd) +
         "</th>";
     });
     headHtml += "</tr>";
@@ -6659,6 +8067,7 @@ function initPage() {
     updateChargesFootnote(footnoteState.text);
 
     const colCount = columns.length + 1 + (useFillCol ? 1 : 0);
+    const ranks = buildCompareRanks(rows);
 
     if (!rows.length) {
       el.body.innerHTML =
@@ -6683,43 +8092,53 @@ function initPage() {
               highlightDeltas && cellDidChange(prevSnapshot, row.id, column.key, display)
                 ? " hlc-cell-delta"
                 : "";
-            const hasCalculation =
-              column.key === "loanAmount" ||
-              column.key === "emi" ||
-              column.key === "processingFee" ||
-              column.key === "propertyCheckCharges" ||
-              column.key === "governmentCharges";
-            const cellContent =
-              column.type === "charge"
+            const unpublished =
+              column.type === "charge" &&
+              chargeDisplayIsUnpublished(row[column.key]);
+            const hasCalculation = columnOpensCalculation(
+              column,
+              row[column.key]
+            );
+            const noteGroupId = chargesNoteGroupId(column.label);
+            const rankClass = compareRankNumClass(row, column, ranks);
+            const rankPills = compareRankPillsHtml(row, column, ranks);
+            const cellContent = hasCalculation
+              ? column.type === "charge"
+                ? chargeDisplayHtml(row[column.key], noteGroupId, {
+                    wrapMain: function (figure) {
+                      return calculationButtonHtml(
+                        figure,
+                        column,
+                        row,
+                        rankClass
+                      );
+                    },
+                    afterFigure: rankPills
+                  })
+                : figureWithRankPills(
+                    calculationButtonHtml(display, column, row, rankClass),
+                    rankPills
+                  )
+              : column.type === "charge"
                 ? chargeCellHtml(row, column)
-                : hasCalculation
-                  ? '<button type="button" class="hlc-charge-amount" data-calculation-detail="' +
-                    column.key +
-                    '" data-row-id="' +
-                    row.id +
-                    '" aria-label="Show how ' +
-                    column.label.toLowerCase() +
-                    " for " +
-                    row.bankName.replace(/"/g, "&quot;") +
-                    ' was calculated">' +
-                    display +
-                    "</button>"
-                  : '<span class="hlc-cell-value">' + display + "</span>";
+                : figureWithRankPills(
+                    '<span class="hlc-cell-value' +
+                      rankClass +
+                      '">' +
+                      display +
+                      "</span>",
+                    rankPills
+                  );
             return (
               '<td class="' +
               columnAlignClass(column) +
               deltaClass +
+              (unpublished ? " hlc-charge-unpublished-cell" : "") +
               '" data-col="' +
               column.key +
               '" headers="hlc-th-' +
               escapeHtml(column.key) +
-              '"' +
-              (column.type === "charge" &&
-              row[column.key] &&
-              row[column.key].marker
-                ? ' aria-describedby="hlc-charges-note"'
-                : "") +
-              ">" +
+              '">' +
               cellContent +
               "</td>"
             );
@@ -6741,21 +8160,13 @@ function initPage() {
           '<div class="hlc-bank-cell-text">' +
           '<div class="hlc-bank-name">' +
           bankLogoHtml(row.bankName) +
-          '<span class="hlc-bank-name-text">' +
-          escapeHtml(row.bankName) +
-          "</span></div>" +
-          '<div class="hlc-bank-sub">' +
-          '<span class="hlc-bank-scheme">' +
-          row.scheme +
-          "</span>" +
-          '<button type="button" class="hlc-bank-detail" data-detail="' +
+          '<button type="button" class="hlc-bank-name-text" data-detail="' +
           row.id +
-          '" aria-label="More about ' +
+          '" aria-label="Details for ' +
           escapeHtml(row.bankName) +
-          '"><span class="hlc-bank-detail-label">More</span>' +
-          BANK_DETAIL_MARK_SVG +
-          "</button>" +
-          "</div>" +
+          '">' +
+          escapeHtml(row.bankName) +
+          "</button></div>" +
           "</div></div></td>" +
           (useFillCol ? '<td class="hlc-col-fill" aria-hidden="true"></td>' : "") +
           cells +
@@ -6833,8 +8244,8 @@ function initPage() {
 
   /**
    * Phone Lenders column: width from checkbox + logo + bank name (nowrap).
-   * Scheme ellipsizes inside that width; More stays on the same line at the
-   * trailing edge (CSS). Cap so Rate + Loan amount remain on-screen.
+   * Scheme ellipsizes inside that width. Cap so Rate + Loan amount remain
+   * on-screen.
    */
   function measurePhoneBankColWidth(cell) {
     if (!cell) return 0;
@@ -7175,14 +8586,6 @@ function initPage() {
       if (state.rateChangeMethod === RATE_CHANGE_METHOD_REPRICE) {
         rateChangeNotes.push(escapeHtml(RATE_CHANGE_REPRICING_MEANING_NOTE));
       }
-      Array.prototype.push.apply(
-        rateChangeNotes,
-        buildRateChangeExceptionNotes(
-          visibleRows,
-          state.rateChangeMethod,
-          state.productFilters.fixedRate
-        )
-      );
       const activeRateChangeCharges = visibleRows
         .map(function (row) {
           return rateChangeChargeForMethod(row, state.rateChangeMethod);
@@ -7222,24 +8625,6 @@ function initPage() {
       }
       result.headerMarkers.rateChangeChargeDisplay = RATE_CHANGE_COMMON_MARKER;
 
-      const overdueNotes = Array.from(
-        new Set(
-          visibleRows
-            .map(function (row) {
-              return row.overdueDetailFootnote;
-            })
-            .filter(Boolean)
-        )
-      ).map(escapeHtml);
-      const emiNotes = Array.from(
-        new Set(
-          visibleRows
-            .map(function (row) {
-              return row.emiBounceDetailFootnote;
-            })
-            .filter(Boolean)
-        )
-      ).map(escapeHtml);
       const percentageOverdueRows = visibleRows.filter(function (row) {
         return (
           row.overdueCharge &&
@@ -7280,8 +8665,8 @@ function initPage() {
             escapeHtml(
               "‡ Percentage overdue charges are calculated on the overdue amount for as long as the payment stays overdue."
             )
-          ].concat(overdueNotes)
-        : overdueNotes.slice();
+          ]
+        : [];
       const emiGroupNotes = [];
       if (emiUnits.length) {
         emiGroupNotes.push(
@@ -7306,7 +8691,6 @@ function initPage() {
           escapeHtml("^ " + GST_APPLICABLE_NOTE)
         );
       }
-      emiGroupNotes.push.apply(emiGroupNotes, emiNotes);
       if (percentageOverdueRows.length) {
         result.headerMarkers.overdueChargeDisplay = "‡";
       }
@@ -7340,14 +8724,20 @@ function initPage() {
       return result;
     }
     const groups = [];
-    result.headerMarkers.processingFee = "*";
+    result.headerMarkers.processingFee = columnFootnoteMarker(
+      "charges",
+      "processingFee"
+    );
     groups.push(
       chargesNoteGroupHtml(
         columnLabelForKey("charges", "processingFee"),
         [escapeHtml(PROCESSING_FEE_LOGIN_NOTE)]
       )
     );
-    result.headerMarkers.propertyCheckCharges = "*";
+    result.headerMarkers.propertyCheckCharges = columnFootnoteMarker(
+      "charges",
+      "propertyCheckCharges"
+    );
     groups.push(
       chargesNoteGroupHtml(
         columnLabelForKey("charges", "propertyCheckCharges"),
@@ -7367,7 +8757,10 @@ function initPage() {
         DEFAULT_JURISDICTION_STATE
       );
       if (note) {
-        result.headerMarkers.governmentCharges = "^";
+        result.headerMarkers.governmentCharges = columnFootnoteMarker(
+          "charges",
+          "governmentCharges"
+        );
         groups.push(
           chargesNoteGroupHtml(
             columnLabelForKey("charges", "governmentCharges"),
@@ -7473,12 +8866,14 @@ function initPage() {
     }
   }
 
-  function showDrawer(title, subtitle, bodyHtml) {
+  function showDrawer(title, subtitle, bodyHtml, options) {
     if (isExploreMobile() && isFiltersOpen()) {
       setFiltersOpen(false);
     }
+    const opts = options || {};
     const hasGroups = String(bodyHtml || "").indexOf("hlc-drawer-group") >= 0;
-    if (hasGroups) {
+    const dumpChrome = hasGroups && opts.keepHeading !== true;
+    if (dumpChrome) {
       el.drawerTitle.textContent = "More details";
       el.drawerSub.textContent = "";
       el.drawerSub.hidden = true;
@@ -7501,13 +8896,27 @@ function initPage() {
       el.drawerSub.textContent = subtitle || "";
       el.drawerSub.hidden = !String(subtitle || "").trim();
       el.drawerBody.innerHTML = bodyHtml;
+      const groupCount = hasGroups
+        ? el.drawerBody.querySelectorAll(".hlc-drawer-group").length
+        : 0;
+      const showExpand = groupCount >= 2;
       if (el.drawerActionsBar) {
-        el.drawerActionsBar.hidden = true;
+        el.drawerActionsBar.hidden = !showExpand;
       }
       if (el.drawerToggleAll) {
-        el.drawerToggleAll.hidden = true;
+        if (showExpand) {
+          const fresh = el.drawerToggleAll.cloneNode(true);
+          fresh.hidden = false;
+          fresh.textContent = "Expand all";
+          fresh.setAttribute("aria-expanded", "false");
+          el.drawerToggleAll.parentNode.replaceChild(fresh, el.drawerToggleAll);
+          el.drawerToggleAll = fresh;
+        } else {
+          el.drawerToggleAll.hidden = true;
+        }
       }
       el.drawer.classList.remove("hlc-drawer--sections");
+      if (hasGroups) bindDrawerDropdowns(el.drawer);
     }
 
     if (el.drawerScroll) {
@@ -7525,65 +8934,13 @@ function initPage() {
   }
 
   function openChargeSlabs(id, detail) {
-    if (detail !== "overdue-slabs" && detail !== "rate-change-slabs") return;
-    const row = state.rows.find(function (entry) {
-      return entry.id === id;
-    });
-    if (!row) return;
-
-    if (detail === "rate-change-slabs") {
-      if (!row.rateChangeChargeSlabs || !row.rateChangeChargeSlabs.length) return;
-      const slabRows = row.rateChangeChargeSlabs.map(function (charge) {
-        return [
-          formatChargeSlabBand(charge),
-          formatChargeDisplayText(
-            formatChargeDisplay(charge, {
-              hideBasis: true,
-              hideUnit: true,
-              hideGst: true
-            })
-          )
-        ];
-      });
-      const bodyHtml =
-        drawerSlabTable("Loan amount", "Charge", slabRows) +
-        '<p class="hlc-drawer-foot">' +
-        escapeHtml(
-          "Each listed charge applies per instance. Figures are indicative. The bank decides final terms."
-        ) +
-        "</p>";
-      showDrawer(
-        row.bankName,
-        "Rate change charge · Fixed amount by loan amount range",
-        bodyHtml
-      );
+    if (detail === "overdue-slabs") {
+      openCalculation(id, "overdueChargeDisplay");
       return;
     }
-
-    if (!row.overdueChargeSlabs || !row.overdueChargeSlabs.length) return;
-
-    const slabRows = row.overdueChargeSlabs.map(function (charge) {
-      return [
-        formatChargeSlabBand(charge),
-        formatInr(Number(charge.fixed_amount))
-      ];
-    });
-    const isDcbBank = normalizeText(row.bankName) === "dcb bank";
-    const chargeHeading = isDcbBank ? "Monthly charge" : "Charge";
-    const footNote = isDcbBank
-      ? "Each listed charge is applied every month, or for part of a month, while the amount stays overdue. Figures are indicative. The bank decides final terms."
-      : "Each listed charge applies per instance. Figures are indicative. The bank decides final terms.";
-    const bodyHtml =
-      drawerSlabTable("Overdue amount", chargeHeading, slabRows) +
-      '<p class="hlc-drawer-foot">' +
-      footNote +
-      "</p>";
-
-    showDrawer(
-      row.bankName,
-      "Overdue charge · Fixed amount by overdue range",
-      bodyHtml
-    );
+    if (detail === "rate-change-slabs") {
+      openCalculation(id, "rateChangeChargeDisplay");
+    }
   }
 
   function openDrawer(id) {
@@ -7662,287 +9019,385 @@ function initPage() {
     );
   }
 
-  /** One row in a notebook-style sum: optional operator, then the value. */
-  function calculationLine(value, operator) {
+  function storyEm(text) {
+    return '<strong class="hlc-story-em">' + escapeHtml(String(text)) + "</strong>";
+  }
+
+  function storyLead(text) {
+    return '<p class="hlc-story-lead">' + escapeHtml(text) + "</p>";
+  }
+
+  function storyLabel(text) {
+    return '<p class="hlc-story-label">' + escapeHtml(text) + "</p>";
+  }
+
+  function storyLine(html) {
+    return '<p class="hlc-story-line">' + html + "</p>";
+  }
+
+  function storyNote(text) {
+    if (!text) return "";
+    return '<p class="hlc-story-note">' + escapeHtml(text) + "</p>";
+  }
+
+  function storyJoin(parts) {
+    if (!parts || !parts.length) return "";
+    if (parts.length === 1) return parts[0];
+    if (parts.length === 2) return parts[0] + " and " + parts[1];
+    return parts.slice(0, -1).join(", ") + ", and " + parts[parts.length - 1];
+  }
+
+  function storyFact(label, value) {
+    return storyRow(label, value, false);
+  }
+
+  function storyResult(value) {
     return (
-      '<div class="hlc-calc-line">' +
-      '<span class="hlc-calc-op" aria-hidden="true">' +
-      (operator || "") +
-      "</span>" +
-      '<span class="hlc-calc-val">' +
-      value +
-      "</span>" +
-      "</div>"
+      '<p class="hlc-story-result">' + escapeHtml(String(value)) + "</p>"
     );
   }
 
-  function calculationRule() {
-    return '<div class="hlc-calc-rule" aria-hidden="true"></div>';
+  function storyHero(label, value) {
+    return storyResult(value);
   }
 
-  function calculationAnswer(value) {
+  function storyTotal(label, value) {
+    return storyResult(value);
+  }
+
+  function storyStage(options) {
     return (
-      '<div class="hlc-calc-line hlc-calc-line--answer">' +
-      '<span class="hlc-calc-op" aria-hidden="true"></span>' +
-      '<span class="hlc-calc-val">' +
-      value +
-      "</span>" +
-      "</div>"
+      '<section class="hlc-story-block">' +
+      (options.title
+        ? '<h4 class="hlc-story-block-title">' +
+          escapeHtml(options.title) +
+          "</h4>"
+        : "") +
+      (options.body || "") +
+      (options.note ? storyNote(options.note) : "") +
+      "</section>"
     );
   }
 
-  /**
-   * Stacked arithmetic: first value, then each next line with its operator,
-   * then a rule and the answer (school-notebook layout).
-   * lines: [{ value, op? }] — first line’s op is ignored.
-   */
-  function calculationStack(lines, answer) {
-    if (!lines || !lines.length) return "";
-    let html = '<div class="hlc-calc-stack">';
-    lines.forEach(function (line, index) {
-      html += calculationLine(line.value, index === 0 ? "" : line.op || "");
-    });
-    if (answer != null && answer !== "") {
-      html += calculationRule() + calculationAnswer(answer);
-    }
-    html += "</div>";
-    return html;
+  function renderMathLines(lines) {
+    return mathWorkLinesHtml(lines);
   }
 
-  /** Sum / list of amounts stacked with the same operator, then answer. */
-  function calculationSumStack(values, operator, answer) {
-    return calculationStack(
-      values.map(function (value, index) {
-        return { value: value, op: index === 0 ? "" : operator };
-      }),
-      answer
+  function mathWorksheet(lines) {
+    return (
+      '<div class="hlc-math-sheet">' + renderMathLines(lines) + "</div>"
     );
   }
 
-  let calculationStepSerial = 0;
-
-  function resetCalculationSteps() {
-    calculationStepSerial = 0;
-  }
-
-  /**
-   * Numbered calc card (1, 2, 3…). options.wide → full row under the 2-col grid.
-   */
-  function calculationStep(label, stackHtml, note, options) {
-    calculationStepSerial += 1;
-    const n = calculationStepSerial;
-    const wide = options && options.wide;
+  function mathBlock(label, lines, note) {
     return (
-      '<div class="hlc-calc-step' +
-      (wide ? " hlc-calc-step--wide" : "") +
-      '">' +
-      '<p class="hlc-calc-step-label">' +
-      '<span class="hlc-calc-step-num">' +
-      n +
-      "</span>" +
-      '<span class="hlc-calc-step-title">' +
-      label +
-      "</span>" +
-      "</p>" +
-      stackHtml +
-      (note ? '<p class="hlc-calc-detail">' + note + "</p>" : "") +
-      "</div>"
-    );
-  }
-
-  function calculationTotal(label, amount, stackHtml) {
-    return (
-      '<div class="hlc-calc-total">' +
-      '<div class="hlc-calc-total-main">' +
-      '<p class="hlc-calc-total-label">' +
-      label +
-      "</p>" +
-      (stackHtml || "") +
+      '<div class="hlc-math-block">' +
+      '<div class="hlc-math-block-aside">' +
+      (label
+        ? '<p class="hlc-math-block-label">' + escapeHtml(label) + "</p>"
+        : "") +
+      (note
+        ? '<p class="hlc-math-block-note">' + escapeHtml(note) + "</p>"
+        : "") +
       "</div>" +
-      '<strong class="hlc-calc-total-amount">' +
-      amount +
-      "</strong>" +
+      mathWorksheet(lines) +
       "</div>"
     );
   }
 
-  function formatCalculationPct(value, fractionDigits) {
-    if (!Number.isFinite(Number(value))) return "—";
-    return Number(value).toFixed(fractionDigits) + "%";
+  function mathSheet(blocks) {
+    return (
+      '<div class="hlc-math-sheet-wrap">' +
+      blocks
+        .filter(function (block) {
+          return block && block.lines && block.lines.length;
+        })
+        .map(function (block) {
+          return mathBlock(block.label, block.lines, block.note);
+        })
+        .join("") +
+      "</div>"
+    );
+  }
+
+  function storyMathStack(lines) {
+    return mathWorksheet(lines);
+  }
+
+  function storyTrack(title, bodyHtml, trackId, active, note) {
+    return (
+      '<section class="hlc-story-track hlc-story-track--' +
+      trackId +
+      (active ? " hlc-story-track--active" : "") +
+      '">' +
+      '<h4 class="hlc-story-track-title">' +
+      escapeHtml(title) +
+      "</h4>" +
+      (note ? '<p class="hlc-story-track-note">' + escapeHtml(note) + "</p>" : "") +
+      bodyHtml +
+      "</section>"
+    );
+  }
+
+  function storyRow(label, value, emphasis) {
+    return (
+      '<div class="hlc-story-row' +
+      (emphasis ? " hlc-story-row--emphasis" : "") +
+      '">' +
+      '<span class="hlc-story-row-label">' +
+      escapeHtml(label) +
+      "</span>" +
+      '<span class="hlc-story-row-value">' +
+      escapeHtml(value) +
+      "</span>" +
+      "</div>"
+    );
+  }
+
+  function storyLimitsCompare(limits, limiter, finalValue) {
+    function isLimiting(key) {
+      if (limiter === "both") {
+        return key === "house" || key === "income";
+      }
+      return limiter === key;
+    }
+    var lines = limits.map(function (lim) {
+      return {
+        k: "caption",
+        t: lim.label,
+        v: lim.value,
+        track: lim.key,
+        limiting: isLimiting(lim.key)
+      };
+    });
+    if (limits.length >= 2) {
+      lines.push({ k: "op", t: "min" });
+      lines.push({ k: "rule" });
+      lines.push({ k: "result", t: finalValue, emphasis: true });
+    }
+    return '<div class="hlc-story-compare">' + mathWorksheet(lines) + "</div>";
+  }
+
+  function storyDivider() {
+    return '<div class="hlc-story-divider" aria-hidden="true"></div>';
+  }
+
+  function storyCard(innerHtml) {
+    return (
+      '<div class="hlc-drawer-card hlc-story-card">' + innerHtml + "</div>"
+    );
+  }
+
+  function storyBreakdown(rows) {
+    return (
+      '<div class="hlc-story-breakdown">' +
+      rows
+        .map(function (row) {
+          return (
+            '<div class="hlc-story-breakdown-row">' +
+            '<div class="hlc-story-breakdown-main">' +
+            '<span class="hlc-story-breakdown-name">' +
+            escapeHtml(row.name) +
+            "</span>" +
+            '<span class="hlc-story-breakdown-amt">' +
+            escapeHtml(row.amount) +
+            "</span>" +
+            "</div>" +
+            (row.how
+              ? '<p class="hlc-story-breakdown-how">' +
+                escapeHtml(row.how) +
+                "</p>"
+              : "") +
+            "</div>"
+          );
+        })
+        .join("") +
+      "</div>"
+    );
+  }
+
+  function storyReceipt(rows) {
+    return storyBreakdown(rows);
+  }
+
+  function storyCallout(html) {
+    return '<div class="hlc-story-callout">' + html + "</div>";
+  }
+
+  function amountsMatch(a, b) {
+    return Math.round(Number(a) || 0) === Math.round(Number(b) || 0);
   }
 
   function loanAmountCalculationHtml(row) {
-    resetCalculationSteps();
-    const query = readQuery();
-    const propertyValue = Math.max(0, Number(query.propertyValue) || 0);
-    const propertyPct =
-      propertyValue > 0 ? (row.fromProperty / propertyValue) * 100 : 0;
-    const totalIncome =
-      (Number(query.monthlyIncome) || 0) +
-      (query.includeCoApplicant ? Number(query.coMonthlyIncome) || 0 : 0);
-    const existingEmis =
-      (Number(query.existingEmis) || 0) +
-      (query.includeCoApplicant ? Number(query.coExistingEmis) || 0 : 0);
-    const cardLimits =
-      (Number(query.cardLimits) || 0) +
-      (query.includeCoApplicant ? Number(query.coCardLimits) || 0 : 0);
-    const foirPct = normalizeFoirPct(query.foirPct);
-    const cardLoadPct = normalizeCardLoadPct(query.cardLoadPct);
-    const incomeAllowance = totalIncome * (foirPct / 100);
-    const cardLoad = cardLimits * (cardLoadPct / 100);
-    const emiRoom = Math.max(0, incomeAllowance - existingEmis - cardLoad);
-    const applicableLimits = [row.fromProperty, row.fromIncome];
-    let steps =
-      calculationStep(
-        "Property limit",
-        calculationStack(
-          [
-            { value: formatInr(propertyValue) },
-            { value: formatPct(propertyPct), op: "×" }
-          ],
-          formatInr(row.fromProperty)
-        )
-      ) +
-      calculationStep(
-        "Income allowance",
-        calculationStack(
-          [
-            { value: formatInr(totalIncome) },
-            { value: formatPct(foirPct), op: "×" }
-          ],
-          formatInr(incomeAllowance)
-        )
-      ) +
-      calculationStep(
-        "Credit-card load",
-        calculationStack(
-          [
-            { value: formatInr(cardLimits) },
-            { value: formatPct(cardLoadPct), op: "×" }
-          ],
-          formatInr(cardLoad)
-        )
-      ) +
-      calculationStep(
-        "Monthly EMI available",
-        calculationStack(
-          [
-            { value: formatInr(incomeAllowance) },
-            { value: formatInr(existingEmis), op: "−" },
-            { value: formatInr(cardLoad), op: "−" }
-          ],
-          formatInr(emiRoom)
-        )
-      ) +
-      calculationStep(
-        "Income limit",
-        calculationStack(
-          [
-            { value: formatInr(emiRoom) + " / month" },
-            { value: formatPct(row.effectiveRoiPct) },
-            { value: String(row.tenureMonths) + " months" }
-          ],
-          formatInr(row.fromIncome)
-        ),
-        "Standard EMI formula."
-      );
-
-    const bankMaximum =
-      row.offer &&
-      row.offer.req_amount_max != null &&
-      Number.isFinite(Number(row.offer.req_amount_max))
-        ? Number(row.offer.req_amount_max)
-        : null;
-    if (
-      bankMaximum != null &&
-      bankMaximum <= Math.min(row.fromProperty, row.fromIncome)
-    ) {
-      applicableLimits.push(bankMaximum);
-      steps += calculationStep(
-        "Bank maximum",
-        calculationStack([{ value: formatInr(bankMaximum) }], null)
-      );
+    const model = loanAmountWalkModel(row, readQuery());
+    const bars = [
+      {
+        step: 1,
+        label: "Share of this house the bank will fund",
+        note: "The rest is yours: " + formatInr(model.downPayment) + ".",
+        value: formatInr(model.fromProperty),
+        track: "house",
+        limiting: model.limiter === "house" || model.limiter === "both",
+        lines: [
+          { k: "num", t: formatInr(model.propertyValue) },
+          { k: "op", t: "× " + formatPctPlain(model.fundedPct) },
+          { k: "rule" },
+          { k: "result", t: formatInr(model.fromProperty), emphasis: true }
+        ]
+      },
+      {
+        step: 2,
+        label: "Share of take-home that can go to all EMIs",
+        note: "From the monthly take-home you entered.",
+        value: formatInr(model.incomeAllowance),
+        lines: [
+          { k: "num", t: formatInr(model.totalIncome) },
+          { k: "op", t: "× " + formatPctPlain(model.foirPct) },
+          { k: "rule" },
+          { k: "result", t: formatInr(model.incomeAllowance), emphasis: true }
+        ]
+      },
+      {
+        step: 3,
+        label: "Minus other EMIs",
+        note: "These EMIs are already running each month.",
+        value: formatInr(model.afterEmis),
+        lines: [
+          { k: "num", t: formatInr(model.incomeAllowance) },
+          { k: "op", t: "− " + formatInr(model.existingEmis) },
+          { k: "rule" },
+          { k: "result", t: formatInr(model.afterEmis), emphasis: true }
+        ]
+      },
+      {
+        step: 4,
+        label: "Minus card load",
+        note: "This is not outstanding dues.",
+        value: formatInr(model.emiRoom),
+        lines: [
+          { k: "num", t: formatInr(model.afterEmis) },
+          { k: "op", t: "− " + formatInr(model.cardLoad) },
+          { k: "rule" },
+          { k: "result", t: formatInr(model.emiRoom), emphasis: true }
+        ]
+      },
+      {
+        step: 5,
+        label: "Loan from the EMI that is left",
+        note: "The EMI left, at this bank’s rate and tenure.",
+        value: formatInr(model.fromIncome),
+        track: "income",
+        limiting: model.limiter === "income" || model.limiter === "both",
+        lines: [
+          { k: "num", t: formatInr(model.emiRoom) },
+          {
+            k: "op",
+            t: "@ " + formatPctPlain(model.ratePct) + ", " + model.tenureLabel
+          },
+          { k: "rule" },
+          { k: "result", t: formatInr(model.fromIncome), emphasis: true }
+        ]
+      }
+    ];
+    if (model.bankMaxApplies) {
+      bars.push({
+        step: 6,
+        label: "This bank’s maximum",
+        note: "This bank will not go above this amount.",
+        value: formatInr(model.bankMaximum),
+        track: "bank",
+        limiting: model.limiter === "bank",
+        lines: [{ k: "num", t: formatInr(model.bankMaximum) }]
+      });
     }
-
-    const limitLabels = applicableLimits.map(function (amount) {
-      return formatInr(amount);
-    });
-
-    return (
-      '<div class="hlc-calc-steps">' +
-      steps +
-      calculationStep(
-        "Lowest of these limits",
-        calculationStack(
-          limitLabels.map(function (value) {
-            return { value: value };
-          }),
-          formatInr(row.loanAmount)
-        ),
-        null,
-        { wide: true }
-      ) +
-      "</div>" +
-      calculationTotal("Loan amount shown", formatInr(row.loanAmount))
+    const step6 = mathBarHtml(
+      model.bankMaxApplies ? 7 : 6,
+      "The loan is the lower of these",
+      "The coloured number is the one that applies.",
+      formatInr(model.result),
+      {
+        limiting: true,
+        track:
+          model.limiter === "bank"
+            ? "bank"
+            : model.limiter === "house"
+              ? "house"
+              : "income",
+        lines: (function () {
+          const parts = [
+            { k: "num", t: formatInr(model.fromProperty) },
+            { k: "op", t: "or " + formatInr(model.fromIncome) }
+          ];
+          if (model.bankMaxApplies) {
+            parts.push({ k: "op", t: "or " + formatInr(model.bankMaximum) });
+          }
+          parts.push({ k: "rule" });
+          parts.push({ k: "result", t: formatInr(model.result), emphasis: true });
+          return parts;
+        })()
+      }
+    );
+    return calcStoryHtml(
+      formatInr(model.result),
+      "This bank’s loan on these inputs is",
+      mathBarStackHtml(bars) + step6,
+      ""
     );
   }
 
   function emiCalculationHtml(row) {
-    resetCalculationSteps();
-    const monthlyRate = row.roiDecimal / 12;
-    const monthlyRateDecimal = monthlyRate.toFixed(8);
-    const monthlyFactor = (1 + monthlyRate).toFixed(8);
-    const power =
-      "(" + monthlyFactor + ")<sup>" + row.tenureMonths + "</sup>";
-    const formulaStack =
-      '<div class="hlc-calc-stack hlc-calc-stack--formula">' +
-      '<div class="hlc-calc-fraction">' +
-      '<div class="hlc-calc-fraction-num">' +
-      calculationLine(formatInr(row.loanAmount)) +
-      calculationLine(monthlyRateDecimal, "×") +
-      calculationLine(power, "×") +
-      "</div>" +
-      '<div class="hlc-calc-fraction-bar" aria-hidden="true"></div>' +
-      '<div class="hlc-calc-fraction-den">' +
-      calculationLine(power + " − 1") +
-      "</div>" +
-      "</div>" +
-      calculationRule() +
-      calculationAnswer(formatInr(row.emi)) +
-      "</div>";
-
-    return (
-      '<div class="hlc-calc-steps">' +
-      calculationStep(
-        "Monthly interest rate",
-        calculationStack(
-          [
-            { value: formatPct(row.effectiveRoiPct) },
-            { value: "12", op: "÷" }
-          ],
-          formatCalculationPct(monthlyRate * 100, 4)
-        )
-      ) +
-      calculationStep("EMI", formulaStack) +
-      "</div>" +
-      calculationTotal("EMI shown", formatInr(row.emi))
+    const annualPct = Number(row.effectiveRoiPct);
+    const monthlyPct = annualPct / 12;
+    const schedule = amortizationSchedule(
+      row.loanAmount,
+      row.roiDecimal,
+      row.tenureMonths
+    );
+    const bars = mathBarStackHtml([
+      {
+        step: 1,
+        label: "Year into a month",
+        note: "The year rate, for one month.",
+        value: monthlyPct.toFixed(4) + "%",
+        lines: [
+          { k: "num", t: formatPctPlain(annualPct) + " a year" },
+          { k: "op", t: "÷ 12 months" },
+          { k: "rule" },
+          { k: "result", t: monthlyPct.toFixed(4) + "%", emphasis: true }
+        ]
+      },
+      {
+        step: 2,
+        label: "Loan at that monthly rate",
+        note: "Monthly payment stays the same. Early months pay more interest.",
+        value: formatInr(row.emi) + " / month",
+        lines: [
+          { k: "num", t: formatInr(row.loanAmount) },
+          {
+            k: "op",
+            t: "@ " + monthlyPct.toFixed(4) + "%, " + tenureInWordsFromRow(row)
+          },
+          { k: "rule" },
+          { k: "result", t: formatInr(row.emi) + " / month", emphasis: true }
+        ]
+      }
+    ]);
+    return calcStoryHtml(
+      formatInr(row.emi),
+      "EMI every month is",
+      bars,
+      amortizationTableHtml(schedule)
     );
   }
 
   function processingFeeCalculationHtml(row) {
-    resetCalculationSteps();
     const charge = row.processingCharge;
     if (!charge) {
-      return (
-        '<div class="hlc-calc-steps">' +
-        calculationStep(
-          "Processing fee rule",
-          calculationStack([{ value: "No matching rule listed" }], null),
-          null,
-          { wide: true }
-        ) +
-        "</div>" +
-        calculationTotal("Amount shown", formatInr(row.processingFee))
+      return calcStoryHtml(
+        formatInr(0),
+        "Processing fee on this loan is",
+        "",
+        ""
       );
     }
 
@@ -7950,161 +9405,225 @@ function initPage() {
       charge.percentage == null ? NaN : Number(charge.percentage);
     const fixed =
       charge.fixed_amount == null ? NaN : Number(charge.fixed_amount);
-    let steps = "";
+    const bars = [];
+    let note = "";
 
     if (Number.isFinite(pct) && pct > 0) {
       const beforeLimits = row.loanAmount * pct;
-      steps += calculationStep(
-        "Percentage",
-        calculationStack(
-          [
-            { value: formatInr(row.loanAmount) },
-            { value: formatPct(pct * 100), op: "×" }
-          ],
-          formatInr(beforeLimits)
-        )
-      );
-
-      if (
+      bars.push({
+        step: 1,
+        label: "This bank’s share",
+        note: "",
+        value: formatInr(beforeLimits),
+        lines: [
+          { k: "num", t: formatInr(row.loanAmount) },
+          { k: "op", t: "× " + formatPctPlain(pct * 100) },
+          { k: "rule" },
+          { k: "result", t: formatInr(beforeLimits), emphasis: true }
+        ]
+      });
+      const minHit =
         charge.charge_min != null &&
-        beforeLimits < Number(charge.charge_min)
-      ) {
-        const minimum = Number(charge.charge_min);
-        steps += calculationStep(
-          "Minimum applied",
-          calculationStack(
-            [
-              { value: formatInr(beforeLimits) },
-              { value: formatInr(minimum), op: "→" }
-            ],
-            formatInr(minimum)
-          ),
-          "Below the bank minimum."
-        );
-      } else if (
+        beforeLimits < Number(charge.charge_min);
+      const maxHit =
         charge.charge_max != null &&
-        beforeLimits > Number(charge.charge_max)
-      ) {
-        const maximum = Number(charge.charge_max);
-        steps += calculationStep(
-          "Maximum applied",
-          calculationStack(
-            [
-              { value: formatInr(beforeLimits) },
-              { value: formatInr(maximum), op: "→" }
-            ],
-            formatInr(maximum)
-          ),
-          "Above the bank maximum."
-        );
-      } else if (charge.charge_min != null || charge.charge_max != null) {
-        let rangeNote = "Within the allowed range.";
-        if (charge.charge_min != null && charge.charge_max != null) {
-          rangeNote =
-            "Within " +
-            formatInr(Number(charge.charge_min)) +
-            " – " +
-            formatInr(Number(charge.charge_max)) +
-            ".";
-        } else if (charge.charge_min != null) {
-          rangeNote =
-            "Above the " +
-            formatInr(Number(charge.charge_min)) +
-            " minimum.";
-        } else if (charge.charge_max != null) {
-          rangeNote =
-            "Below the " +
-            formatInr(Number(charge.charge_max)) +
-            " maximum.";
-        }
-        steps += calculationStep(
-          "Limit check",
-          calculationStack([{ value: formatInr(beforeLimits) }], formatInr(beforeLimits)),
-          rangeNote
-        );
+        beforeLimits > Number(charge.charge_max);
+
+      if (minHit) {
+        bars.push({
+          step: 2,
+          label: "Bank floor",
+          note: "This bank will not take less than this.",
+          value: formatInr(row.processingFee),
+          lines: [
+            { k: "num", t: formatInr(beforeLimits) },
+            { k: "op", t: "or " + formatInr(Number(charge.charge_min)) },
+            { k: "rule" },
+            { k: "result", t: formatInr(row.processingFee), emphasis: true }
+          ]
+        });
+      } else if (maxHit) {
+        bars.push({
+          step: 2,
+          label: "Bank ceiling",
+          note: "This bank will not take more than this.",
+          value: formatInr(row.processingFee),
+          lines: [
+            { k: "num", t: formatInr(beforeLimits) },
+            { k: "op", t: "up to " + formatInr(Number(charge.charge_max)) },
+            { k: "rule" },
+            { k: "result", t: formatInr(row.processingFee), emphasis: true }
+          ]
+        });
+      } else if (charge.charge_min != null && charge.charge_max != null) {
+        note =
+          "This bank keeps the fee between " +
+          formatInr(Number(charge.charge_min)) +
+          " and " +
+          formatInr(Number(charge.charge_max)) +
+          ".";
+      } else if (charge.charge_min != null) {
+        note = "Bank floor: " + formatInr(Number(charge.charge_min)) + ".";
+      } else if (charge.charge_max != null) {
+        note = "Bank ceiling: " + formatInr(Number(charge.charge_max)) + ".";
       }
     } else if (Number.isFinite(fixed)) {
-      steps += calculationStep(
-        "Flat fee",
-        calculationStack([{ value: formatInr(fixed) }], null),
-        null,
-        { wide: true }
-      );
+      bars.push({
+        step: 1,
+        label: "Flat fee",
+        note: "A flat rupee. Not a percent of this loan.",
+        value: formatInr(fixed)
+      });
     } else if (charge.percentage === 0) {
-      steps += calculationStep(
-        "Percentage",
-        calculationStack(
-          [
-            { value: formatInr(row.loanAmount) },
-            { value: "0%", op: "×" }
-          ],
-          formatInr(0)
-        ),
-        null,
-        { wide: true }
+      bars.push({
+        step: 1,
+        label: "Processing fee",
+        note: "This bank’s share is 0%.",
+        value: formatInr(0),
+        lines: [
+          { k: "num", t: formatInr(row.loanAmount) },
+          { k: "op", t: "× 0%" },
+          { k: "rule" },
+          { k: "result", t: formatInr(0), emphasis: true }
+        ]
+      });
+    } else {
+      return calcStoryHtml(
+        formatInr(0),
+        "Processing fee on this loan is",
+        "",
+        ""
       );
     }
 
+    const extraNotes = [
+      "This fee is mandatory. You pay it to go ahead on a sanction. Banks do not usually refund it.",
+      note
+    ].filter(Boolean);
+
     return (
-      '<div class="hlc-calc-steps">' +
-      steps +
-      "</div>" +
-      calculationTotal("Processing fee shown", formatInr(row.processingFee))
+      calcStoryHtml(
+        formatInr(row.processingFee),
+        "Processing fee on this loan is",
+        mathBarStackHtml(bars),
+        "",
+        { workTitle: CALC_CHARGES_TITLE }
+      ) + (extraNotes.length ? storyNote(extraNotes.join(" ")) : "")
     );
   }
 
   function propertyCheckChargeCalculationHtml(row) {
-    resetCalculationSteps();
     const lines = row.propertyCheckChargeRows || [];
-    const amounts = lines.map(function (line) {
-      return line.amount;
+    const bars = lines.map(function (line, index) {
+      return {
+        step: index + 1,
+        label: line.name || "Charge",
+        note: "",
+        value: formatInr(line.amount),
+        lines:
+          index === 0
+            ? [{ k: "num", t: formatInr(line.amount) }]
+            : [{ k: "op", t: "+ " + formatInr(line.amount) }]
+      };
     });
-    const steps = lines
-      .map(function (line) {
-        return calculationStep(
-          line.name,
-          calculationStack([{ value: formatInr(line.amount) }], null)
-        );
-      })
-      .join("");
-    const totalLabel = formatInr(row.propertyCheckCharges);
-    const numberedAmounts = amounts.filter(function (amount) {
-      return amount != null && Number.isFinite(amount);
-    });
-    const totalStack =
-      numberedAmounts.length > 1
-        ? calculationSumStack(
-            numberedAmounts.map(function (amount) {
-              return formatInr(amount);
-            }),
-            "+",
-            totalLabel
-          )
-        : calculationStack([{ value: totalLabel }], null);
-
+    if (lines.length) {
+      const sumLines = [{ k: "num", t: formatInr(lines[0].amount) }];
+      lines.slice(1).forEach(function (line) {
+        sumLines.push({ k: "op", t: "+ " + formatInr(line.amount) });
+      });
+      sumLines.push({ k: "rule" }, { k: "result", t: formatInr(row.propertyCheckCharges), emphasis: true });
+      bars.push({
+        step: bars.length + 1,
+        label: "Total",
+        note: "GST extra. Typical industry amounts.",
+        value: formatInr(row.propertyCheckCharges),
+        lines: sumLines
+      });
+    }
     return (
-      '<div class="hlc-calc-steps">' +
-      steps +
-      (lines.length > 1
-        ? calculationStep("Total", totalStack, null, { wide: true })
-        : "") +
-      "</div>" +
-      calculationTotal("Property check charges shown", totalLabel)
+      calcStoryHtml(
+        formatInr(row.propertyCheckCharges),
+        "Property check charges on this loan are",
+        mathBarStackHtml(bars),
+        "",
+        { workTitle: CALC_CHARGES_TITLE }
+      ) +
+      storyNote(
+        "The bank runs these checks. They will not take a report you bring. GST extra. Typical industry amounts."
+      )
     );
   }
 
   function governmentChargeName(chargeName) {
     const names = {
       "MODT Stamp Duty": "MODT stamp duty",
-      "Notice of Intimation Registration Fee": "NOI registration",
-      "Notice of Intimation Filing Fee": "NOI filing",
+      "Notice of Intimation Registration Fee": "Notice of Intimation registration",
+      "Notice of Intimation Filing Fee": "Notice of Intimation filing",
       "CERSAI Security Interest Creation": "CERSAI creation"
     };
     return names[chargeName] || chargeName;
   }
 
+  function governmentChargeSheetLines(charge, loanAmount) {
+    const parts = governmentChargeAmountParts(charge, loanAmount);
+    const method = normalizeText(charge.calculation_method);
+    const lines = [];
+    if (method === "percentage") {
+      const beforeLimits = loanAmount * Number(charge.percentage);
+      const minApplied =
+        charge.min_amount_inr != null &&
+        beforeLimits < Number(charge.min_amount_inr);
+      const maxApplied =
+        charge.max_amount_inr != null &&
+        beforeLimits > Number(charge.max_amount_inr);
+      lines.push(
+        { k: "num", t: formatInr(loanAmount) },
+        {
+          k: "op",
+          t: "× " + formatPctPlain(Number(charge.percentage) * 100)
+        },
+        { k: "rule" },
+        { k: "result", t: formatInr(beforeLimits) }
+      );
+      if (minApplied) {
+        lines.push(
+          { k: "op", t: "min " + formatInr(Number(charge.min_amount_inr)) },
+          { k: "rule" },
+          { k: "result", t: formatInr(Number(charge.min_amount_inr)) }
+        );
+      } else if (maxApplied) {
+        lines.push(
+          { k: "op", t: "max " + formatInr(Number(charge.max_amount_inr)) },
+          { k: "rule" },
+          { k: "result", t: formatInr(Number(charge.max_amount_inr)) }
+        );
+      }
+      if (parts.gstRate > 0) {
+        lines.push(
+          { k: "op", t: "+ " + formatPctPlain(parts.gstRate * 100) + " GST" },
+          { k: "rule" },
+          { k: "result", t: formatInr(parts.total), emphasis: true }
+        );
+      } else {
+        lines[lines.length - 1].emphasis = true;
+        lines[lines.length - 1].t = formatInr(parts.total);
+      }
+    } else if (parts.base != null) {
+      lines.push({ k: "num", t: formatInr(parts.base) });
+      if (parts.gstRate > 0) {
+        lines.push(
+          { k: "op", t: "+ " + formatPctPlain(parts.gstRate * 100) + " GST" },
+          { k: "rule" },
+          { k: "result", t: formatInr(parts.total), emphasis: true }
+        );
+      } else {
+        lines[0].emphasis = true;
+      }
+    }
+    return lines;
+  }
+
   function governmentChargeCalculationHtml(row) {
-    resetCalculationSteps();
     const query = readQuery();
     const charges = listApplicableGovernmentCharges(
       (state.dataset && state.dataset.government_charges) || [],
@@ -8112,115 +9631,310 @@ function initPage() {
       row.loanAmount,
       DEFAULT_JURISDICTION_STATE
     );
-    function governmentChargeGstStack(parts) {
-      if (!parts.gstRate) return "";
-      return calculationStack(
-        [
-          { value: formatInr(parts.base) },
-          {
-            value:
-              formatInr(parts.gstAmount) +
-              " (" +
-              formatPct(parts.gstRate * 100) +
-              " GST)",
-            op: "+"
-          }
-        ],
-        formatInr(parts.total)
+    const bars = charges.map(function (charge, index) {
+      const parts = governmentChargeAmountParts(charge, row.loanAmount);
+      const method = normalizeText(charge.calculation_method);
+      let note = "";
+      if (method === "percentage") {
+        note =
+          formatPctPlain(Number(charge.percentage) * 100) +
+          " of this loan" +
+          (parts.gstRate > 0 ? ". GST included." : ".");
+      } else if (method === "flat") {
+        note = parts.gstRate > 0 ? "A flat fee. GST included." : "A flat fee.";
+      } else if (parts.gstRate > 0) {
+        note = "GST included.";
+      }
+      return {
+        step: index + 1,
+        label: governmentChargeName(charge.charge_name),
+        note: note,
+        value: formatInr(parts.total),
+        lines: governmentChargeSheetLines(charge, row.loanAmount)
+      };
+    });
+    if (charges.length) {
+      const sumLines = charges.map(function (charge, index) {
+        const total = governmentChargeAmountParts(charge, row.loanAmount).total;
+        return index === 0
+          ? { k: "num", t: formatInr(total) }
+          : { k: "op", t: "+ " + formatInr(total) };
+      });
+      sumLines.push(
+        { k: "rule" },
+        { k: "result", t: formatInr(row.governmentCharges), emphasis: true }
+      );
+      bars.push({
+        step: bars.length + 1,
+        label: "Total",
+        note: "",
+        value: formatInr(row.governmentCharges),
+        lines: sumLines
+      });
+    }
+    return calcStoryHtml(
+      formatInr(row.governmentCharges),
+      "State charges on this loan are",
+      mathBarStackHtml(bars),
+      "",
+      { workTitle: CALC_CHARGES_TITLE }
+    );
+  }
+
+  function missedEmiWalkHtml(row) {
+    const walk = missedEmiMonthTotal(
+      row.overdueCharge,
+      row.emiBounceCharge,
+      row.emi,
+      row.roiDecimal,
+      row.loanAmount,
+      row.tenureMonths
+    );
+    const overdue = walk.overdue;
+    const bounce = walk.bounce;
+    const overdueRupee = formatInr(
+      overdue.rawExtra != null ? overdue.rawExtra : overdue.extra
+    );
+    const extraWorking =
+      overdue.perAnnum || overdue.kind === "row_rate"
+        ? [
+            { k: "num", t: formatInr(overdue.overdueAmount) },
+            {
+              k: "op",
+              t: "× " + formatPctPlain(overdue.yearPct) + " ÷ 12 months"
+            },
+            { k: "rule" },
+            { k: "result", t: overdueRupee, emphasis: true }
+          ]
+        : [{ k: "result", t: overdueRupee, emphasis: true }];
+    let overdueNote = "The bank’s overdue charge on this missed EMI.";
+    if (overdue.kind === "row_rate") {
+      overdueNote =
+        "The bank uses this loan’s yearly rate on the missed EMI, for this month.";
+    } else if (overdue.slabSentence) {
+      overdueNote = overdue.slabSentence;
+    } else if (overdue.kind === "slab") {
+      overdueNote = "The bank’s overdue charge for this overdue amount.";
+    }
+    if (overdue.ruleNote) {
+      overdueNote =
+        overdueNote === "The bank’s overdue charge on this missed EMI."
+          ? overdue.ruleNote
+          : overdueNote + " " + overdue.ruleNote;
+    }
+    const bars = [
+      {
+        step: 1,
+        label: "This EMI",
+        note: "The monthly payment that did not go through.",
+        value: formatInr(overdue.overdueAmount),
+        lines: [{ k: "num", t: formatInr(overdue.overdueAmount) }]
+      },
+      {
+        step: 2,
+        label: "Overdue charge",
+        note: overdueNote,
+        value: overdueRupee,
+        lines: extraWorking
+      }
+    ];
+    if (overdue.usedFloor) {
+      bars.push({
+        step: bars.length + 1,
+        label: "Bank minimum",
+        note: "The bank’s lowest overdue extra. Used if it is higher than the percent.",
+        value: formatInr(overdue.extra),
+        lines: [
+          { k: "num", t: overdueRupee },
+          { k: "op", t: "or " + formatInr(overdue.extra) },
+          { k: "rule" },
+          { k: "result", t: formatInr(overdue.extra), emphasis: true }
+        ]
+      });
+    }
+    if (overdue.graceDays) {
+      bars.push({
+        step: bars.length + 1,
+        label: "Grace",
+        note:
+          overdue.graceDays +
+          " days before overdue extra starts. A full month late is past that.",
+        value: overdue.graceDays + " days"
+      });
+    }
+    if (bounce.total > 0) {
+      bars.push({
+        step: bars.length + 1,
+        label: "Bounce charge",
+        note:
+          bounce.slabSentence ||
+          "This bank’s bounce charge is taken when EMI auto-debit fails.",
+        value:
+          bounce.gst > 0
+            ? formatInr(bounce.extra) + " + " + formatInr(bounce.gst) + " GST"
+            : formatInr(bounce.extra),
+        lines:
+          bounce.gst > 0
+            ? [
+                { k: "num", t: formatInr(bounce.extra) },
+                { k: "op", t: "+ " + formatInr(bounce.gst) + " GST" },
+                { k: "rule" },
+                { k: "result", t: formatInr(bounce.total), emphasis: true }
+              ]
+            : [{ k: "num", t: formatInr(bounce.extra) }]
+      });
+      bars.push({
+        step: bars.length + 1,
+        label: "Total",
+        note: "",
+        value: formatInr(walk.total),
+        lines: [
+          { k: "num", t: formatInr(overdue.extra || 0) },
+          { k: "op", t: "+ " + formatInr(bounce.total) },
+          { k: "rule" },
+          { k: "result", t: formatInr(walk.total), emphasis: true }
+        ]
+      });
+    }
+    const aboutEmi =
+      walk.total >= row.emi && row.emi > 0
+        ? "One missed EMI here costs about another EMI in charges. A slightly cheaper rate does not cancel that."
+        : "";
+    const notes = aboutEmi;
+    const missedLead =
+      bounce.total > 0
+        ? "If you miss this EMI, overdue and bounce charges this month are"
+        : "If you miss this EMI, overdue charges this month are";
+    return (
+      calcStoryHtml(
+        formatInr(walk.total),
+        missedLead,
+        mathBarStackHtml(bars),
+        "",
+        { workTitle: CALC_CHARGES_TITLE }
+      ) + (notes ? '<p class="hlc-story-note">' + escapeHtml(notes) + "</p>" : "")
+    );
+  }
+
+  function overdueCalculationHtml(row) {
+    return missedEmiWalkHtml(row);
+  }
+
+  function bounceCalculationHtml(row) {
+    return missedEmiWalkHtml(row);
+  }
+
+  function rateChangeCalculationHtml(row) {
+    const seed = rateChangeChargeForMethod(row, state.rateChangeMethod);
+    const slabs = row.rateChangeChargeSlabs || [];
+    const charge = resolveApplicableCharge(
+      slabs,
+      seed,
+      chargeCaseFromRow(row),
+      row.loanAmount
+    );
+    const amount = computeProcessingFee(charge, row.loanAmount);
+    const resultText =
+      amount != null && Number.isFinite(amount)
+        ? formatInr(amount)
+        : formatChargeDisplayText(formatRateChangeChargeDisplay(charge));
+    const bars = [
+      {
+        step: 1,
+        label: "This loan",
+        note: "On this loan.",
+        value: formatInr(row.loanAmount),
+        lines: [{ k: "num", t: formatInr(row.loanAmount) }]
+      },
+      {
+        step: 2,
+        label: "Charge to change the rate",
+        note:
+          applicableSlabSentence(charge, chargeCaseFromRow(row)) ||
+          "What this bank charges to change the rate.",
+        value: resultText,
+        lines:
+          amount != null &&
+          Number.isFinite(amount) &&
+          charge &&
+          charge.percentage != null &&
+          Number.isFinite(Number(charge.percentage))
+            ? [
+                { k: "num", t: formatInr(row.loanAmount) },
+                { k: "op", t: "× " + formatPctPlain(Number(charge.percentage) * 100) },
+                { k: "rule" },
+                { k: "result", t: resultText, emphasis: true }
+              ]
+            : amount != null && Number.isFinite(amount)
+              ? [
+                  { k: "num", t: formatInr(row.loanAmount) },
+                  { k: "rule" },
+                  { k: "result", t: resultText, emphasis: true }
+                ]
+              : [{ k: "result", t: resultText, emphasis: true }]
+      }
+    ];
+    return calcStoryHtml(
+      resultText,
+      "Charge to change the rate is",
+      mathBarStackHtml(bars),
+      "",
+      { workTitle: CALC_CHARGES_TITLE }
+    );
+  }
+
+  function prepaymentCalculationHtml(row) {
+    const charge = prepayChargeForMethod(row, state.prepaymentMethod);
+    if (!charge || isPrepaymentNotCharged(charge)) {
+      return (
+        calcStoryHtml(
+          formatInr(0),
+          "Prepayment charge on this loan is",
+          "",
+          ""
+        ) +
+        '<p class="hlc-story-note">' +
+        floatingPrepayNoteHtml() +
+        "</p>"
       );
     }
-
-    const amounts = [];
-    const steps = charges
-      .map(function (charge) {
-        const parts = governmentChargeAmountParts(charge, row.loanAmount);
-        const amount = parts.total;
-        amounts.push(amount);
-        const method = normalizeText(charge.calculation_method);
-        if (method === "percentage") {
-          const beforeLimits = row.loanAmount * Number(charge.percentage);
-          const minApplied =
-            charge.min_amount_inr != null &&
-            beforeLimits < Number(charge.min_amount_inr);
-          const maxApplied =
-            charge.max_amount_inr != null &&
-            beforeLimits > Number(charge.max_amount_inr);
-          let note = "";
-          if (minApplied) {
-            note =
-              "Minimum " +
-              formatInr(Number(charge.min_amount_inr)) +
-              " applied.";
-          } else if (maxApplied) {
-            note =
-              "Maximum " +
-              formatInr(Number(charge.max_amount_inr)) +
-              " applied.";
-          }
-          let stack = calculationStack(
-            [
-              { value: formatInr(row.loanAmount) },
-              {
-                value: formatPct(Number(charge.percentage) * 100),
-                op: "×"
-              }
-            ],
-            formatInr(beforeLimits)
-          );
-          if (minApplied || maxApplied) {
-            stack += calculationStack(
-              [
-                { value: formatInr(beforeLimits) },
-                { value: formatInr(parts.base), op: "→" }
-              ],
-              formatInr(parts.base)
-            );
-          }
-          stack += governmentChargeGstStack(parts);
-          return calculationStep(
-            governmentChargeName(charge.charge_name),
-            stack,
-            note
-          );
-        }
-        if (parts.gstRate > 0) {
-          return calculationStep(
-            governmentChargeName(charge.charge_name),
-            governmentChargeGstStack(parts)
-          );
-        }
-        return calculationStep(
-          governmentChargeName(charge.charge_name),
-          calculationStack([{ value: formatInr(amount) }], null)
-        );
-      })
-      .join("");
-
-    const totalStack =
-      amounts.length > 1
-        ? calculationSumStack(
-            amounts.map(function (amount) {
-              return formatInr(amount);
-            }),
-            "+",
-            formatInr(row.governmentCharges)
-          )
-        : calculationStack(
-            [{ value: formatInr(row.governmentCharges) }],
-            null
-          );
-
+    const pct =
+      charge.percentage != null && Number.isFinite(Number(charge.percentage))
+        ? Number(charge.percentage) * 100
+        : null;
     return (
-      '<div class="hlc-calc-steps">' +
-      steps +
-      (amounts.length > 1
-        ? calculationStep("Total", totalStack, null, { wide: true })
-        : "") +
-      "</div>" +
-      calculationTotal(
-        "Government charges shown",
-        formatInr(row.governmentCharges)
-      )
+      calcStoryHtml(
+        pct != null
+          ? formatPctPlain(pct)
+          : formatChargeDisplayText(formatPrepaymentChargeDisplay(charge)),
+        "This bank’s share of what you prepay is",
+        "",
+        ""
+      ) + storyNote("Rupees depend on how much you prepay.")
+    );
+  }
+
+  const CALC_DRAWER_FOOT =
+    '<p class="hlc-drawer-foot">These figures are a guide. The bank decides the final terms. You pick.</p>';
+
+  function chargeDetailsSectionHtml(row, calculationKey) {
+    const details = chargeCalculationDetailsHtml(row, calculationKey);
+    if (!details) return "";
+    return '<div class="hlc-calc-details">' + details + "</div>";
+  }
+
+  function openCalcDrawer(title, subtitle, calcHtml, extra) {
+    const packed = extra || {};
+    showDrawer(
+      title,
+      subtitle,
+      calcDrawerBodyHtml(calcHtml, {
+        calcTitle: packed.calcTitle,
+        detailsHtml: packed.detailsHtml || "",
+        noteLines: packed.noteLines || [],
+        footHtml: CALC_DRAWER_FOOT
+      }),
+      { keepHeading: true }
     );
   }
 
@@ -8229,43 +9943,46 @@ function initPage() {
       return entry.id === id;
     });
     if (!row) return;
+    if (
+      row[calculationKey] &&
+      typeof row[calculationKey] === "object" &&
+      chargeDisplayIsUnpublished(row[calculationKey])
+    ) {
+      return;
+    }
+
+    const bankSub = row.bankName + " · " + (row.scheme || "");
 
     if (calculationKey === "loanAmount") {
-      showDrawer(
-        "Loan amount",
-        row.bankName + " · " + (row.scheme || ""),
-        loanAmountCalculationHtml(row) +
-          '<p class="hlc-drawer-foot">This is an indicative amount based on the inputs shown. The lender decides final eligibility and sanction.</p>'
-      );
+      openCalcDrawer("Loan amount", bankSub, loanAmountCalculationHtml(row), {
+        calcTitle: CALC_HOW_TITLE
+      });
       return;
     }
 
     if (calculationKey === "emi") {
-      showDrawer(
-        "EMI",
-        row.bankName + " · " + (row.scheme || ""),
-        emiCalculationHtml(row) +
-          '<p class="hlc-drawer-foot">This is an indicative EMI based on the displayed loan amount, rate and tenure. The lender decides final terms.</p>'
-      );
+      openCalcDrawer("EMI", bankSub, emiCalculationHtml(row), {
+        calcTitle: CALC_HOW_TITLE
+      });
       return;
     }
 
     if (calculationKey === "processingFee") {
-      showDrawer(
+      openCalcDrawer(
         "Processing fee",
-        row.bankName + " · " + (row.scheme || ""),
-        processingFeeCalculationHtml(row) +
-          '<p class="hlc-drawer-foot">Calculated from the processing fee rule matched to your inputs. Banks often take part of this upfront as a login fee to file the application; that amount differs by bank and is not broken out separately yet. Final charges remain subject to the lender’s terms.</p>'
+        bankSub,
+        processingFeeCalculationHtml(row),
+        { calcTitle: CALC_CHARGES_TITLE }
       );
       return;
     }
 
     if (calculationKey === "propertyCheckCharges") {
-      showDrawer(
+      openCalcDrawer(
         "Property check charges",
-        row.bankName + " · " + (row.scheme || ""),
-        propertyCheckChargeCalculationHtml(row) +
-          '<p class="hlc-drawer-foot">Typical industry average for legal, title-search, and valuation checks. GST is extra. Exact fees may differ by lender.</p>'
+        bankSub,
+        propertyCheckChargeCalculationHtml(row),
+        { calcTitle: CALC_CHARGES_TITLE }
       );
       return;
     }
@@ -8277,16 +9994,54 @@ function initPage() {
         row.loanAmount,
         DEFAULT_JURISDICTION_STATE
       );
-      showDrawer(
+      openCalcDrawer(
         "Government charges",
         "Loan amount " + formatInr(row.loanAmount),
-        governmentChargeCalculationHtml(row) +
-          (note
-            ? '<p class="hlc-drawer-foot hlc-drawer-foot--lines">' +
-              note.replace(/\n/g, "<br>") +
-              "</p>"
-            : "")
+        governmentChargeCalculationHtml(row),
+        {
+          calcTitle: CALC_CHARGES_TITLE,
+          noteLines: note ? [note] : []
+        }
       );
+      return;
+    }
+
+    if (calculationKey === "overdueChargeDisplay" || calculationKey === "emiBounceChargeDisplay") {
+      openCalcDrawer(
+        calculationKey === "emiBounceChargeDisplay" ? "EMI bounce" : "Overdue charge",
+        bankSub,
+        missedEmiWalkHtml(row),
+        {
+          calcTitle: CALC_CHARGES_TITLE,
+          detailsHtml: chargeDetailsSectionHtml(row, calculationKey),
+          noteLines: chargeDrawerNoteLines(row, calculationKey)
+        }
+      );
+      return;
+    }
+
+    if (calculationKey === "rateChangeChargeDisplay") {
+      openCalcDrawer(
+        "Rate change charge",
+        bankSub,
+        rateChangeCalculationHtml(row),
+        {
+          calcTitle: CALC_CHARGES_TITLE,
+          detailsHtml: chargeDetailsSectionHtml(row, calculationKey),
+          noteLines: chargeDrawerNoteLines(row, calculationKey)
+        }
+      );
+      return;
+    }
+
+    if (calculationKey === "prepaymentChargeDisplay") {
+      openCalcDrawer(
+        "Prepayment charge",
+        bankSub,
+        prepaymentCalculationHtml(row),
+        { calcTitle: CALC_CHARGES_TITLE }
+      );
+      return;
     }
   }
 
@@ -8591,12 +10346,14 @@ function initPage() {
     if (!state.dataset) return;
     if (!primaryFieldsAreComplete()) {
       root.setAttribute("aria-busy", "false");
+      updateLoanHint();
       return;
     }
     root.setAttribute("aria-busy", "true");
     const query = readQuery();
-    updateLoanHint(query);
     state.rows = await matchOffers(state.dataset, query, state.engine);
+    updateLoanHint();
+    updateIncomeBasisNote();
     applyPrepaymentMethodToRows(state.rows, state.prepaymentMethod);
     applyRateChangeMethodToRows(state.rows, state.rateChangeMethod);
     state.showAllBanks = false;
@@ -8623,6 +10380,7 @@ function initPage() {
     persistExploreDraft();
     if (!primaryFieldsAreComplete()) {
       root.setAttribute("aria-busy", "false");
+      updateLoanHint();
       return;
     }
     const fade = !!(options && options.fade);
@@ -8825,7 +10583,7 @@ function initPage() {
       const key = input.getAttribute("data-product-filter");
       if (!key || !(key in state.productFilters)) return;
       state.productFilters[key] = Boolean(input.checked);
-      updateFiltersBadge();
+      onProductFilterChange(key);
       scheduleMatch({ fade: true });
     });
   });
@@ -8959,79 +10717,54 @@ function initPage() {
     }
   }
 
-  const occupationPills = document.querySelector(".hlc-occupation-pills");
-  if (occupationPills) {
-    occupationPills.addEventListener("click", function (event) {
-      const btn = event.target.closest(".hlc-chip[data-occupation]");
-      if (!btn || !occupationPills.contains(btn)) return;
+  // The disclosure script flips this hidden input; the list follows it.
+  if (el.coApplicant) {
+    el.coApplicant.addEventListener("change", function () {
+      const on = el.coApplicant.value === "yes";
+      const count = coApplicantCards().length;
+      if (on && !count) renderCoApplicants([blankCoApplicant()]);
+      else if (!on && count) renderCoApplicants([]);
+    });
+  }
+
+  if (el.coApplicantAdd) {
+    el.coApplicantAdd.addEventListener("click", function (event) {
       event.preventDefault();
-      setOccupation(btn.getAttribute("data-occupation"));
+      addCoApplicant();
       scheduleMatch({ fade: true });
     });
   }
 
-  const purposePills = document.querySelector(".hlc-purpose-pills");
-  if (purposePills) {
-    purposePills.addEventListener("click", function (event) {
-      const btn = event.target.closest(".hlc-chip[data-purpose]");
-      if (!btn || !purposePills.contains(btn)) return;
+  if (el.coApplicantList) {
+    el.coApplicantList.addEventListener("click", function (event) {
+      const btn = event.target.closest("[data-co-remove]");
+      if (!btn || !el.coApplicantList.contains(btn)) return;
       event.preventDefault();
-      setPurpose(btn.getAttribute("data-purpose"));
+      removeCoApplicant(Number(btn.getAttribute("data-co-remove")));
       scheduleMatch({ fade: true });
     });
   }
 
-  const coApplicantPills = document.querySelector(".hlc-coapplicant-pills");
-  if (coApplicantPills) {
-    coApplicantPills.addEventListener("click", function (event) {
-      const btn = event.target.closest(".hlc-chip[data-coapplicant]");
-      if (!btn || !coApplicantPills.contains(btn)) return;
-      event.preventDefault();
-      setCoApplicant(btn.getAttribute("data-coapplicant"));
-      scheduleMatch({ fade: true });
-    });
-  }
+  syncCoApplicantChrome(coApplicantCards().length);
 
-  setCoApplicant(el.coApplicant ? el.coApplicant.value : "no");
-
-  const ratePills = document.querySelector(".hlc-rate-pills");
-  if (ratePills) {
-    ratePills.addEventListener("click", function (event) {
-      const btn = event.target.closest(".hlc-chip[data-rate-type]");
-      if (!btn || !ratePills.contains(btn)) return;
-      event.preventDefault();
-      setRateType(btn.getAttribute("data-rate-type"));
-      scheduleMatch({ fade: true });
-    });
-  }
-
-  const facilityPills = document.querySelector(".hlc-facility-pills");
-  if (facilityPills) {
-    facilityPills.addEventListener("click", function (event) {
-      const btn = event.target.closest(".hlc-chip[data-facility-type]");
-      if (!btn || !facilityPills.contains(btn)) return;
-      event.preventDefault();
-      setFacilityType(btn.getAttribute("data-facility-type"));
-      scheduleMatch({ fade: true });
-    });
-  }
-
-  const bankTypePills = document.querySelector(".hlc-bank-type-pills");
-  if (bankTypePills) {
-    bankTypePills.addEventListener("click", function (event) {
-      const btn = event.target.closest(".hlc-chip[data-bank-type]");
-      if (!btn || !bankTypePills.contains(btn)) return;
-      event.preventDefault();
-      setBankType(btn.getAttribute("data-bank-type"));
-      scheduleMatch({ fade: true });
-    });
-  }
-
+  bindFieldBoxActivate(el.form);
   el.form.addEventListener("input", scheduleMatch);
   el.form.addEventListener("change", scheduleMatch);
   if (el.foir) {
     el.foir.addEventListener("change", syncFoirFace);
     el.foir.addEventListener("change", scheduleMatch);
+  }
+  if (el.occupation) {
+    el.occupation.addEventListener("input", syncOccupationFace);
+    el.occupation.addEventListener("change", syncOccupationFace);
+  }
+  if (el.purpose) {
+    el.purpose.addEventListener("input", function () {
+      syncSelectFace(el.purpose, el.purposeFace);
+    });
+    el.purpose.addEventListener("change", function () {
+      syncSelectFace(el.purpose, el.purposeFace);
+    });
   }
   if (el.cardLoadPct) el.cardLoadPct.addEventListener("change", scheduleMatch);
 
@@ -9174,9 +10907,7 @@ function initPage() {
       tenureYears: el.tenure ? el.tenure.value : String(DEFAULT_TENURE_YEARS),
       foirPct: el.foir ? el.foir.value : String(DEFAULT_FOIR_PCT),
       includeCoApplicant: el.coApplicant ? el.coApplicant.value : "no",
-      coMonthlyIncome: el.coMonthlyIncome ? el.coMonthlyIncome.value : "0",
-      coExistingEmis: el.coExistingEmis ? el.coExistingEmis.value : "0",
-      coCardLimits: el.coCardLimits ? el.coCardLimits.value : "0",
+      coApplicants: readCoApplicants(),
       occupation: el.occupation ? el.occupation.value : "",
       purpose: el.purpose ? el.purpose.value : DEFAULT_PURPOSE,
       propertyValue: el.propertyValue ? el.propertyValue.value : ""
@@ -9241,25 +10972,18 @@ function initPage() {
       setInputValue(el.cardLoadPct, form.cardLoadPct);
       setInputValue(el.tenure, form.tenureYears);
       setInputValue(el.foir, form.foirPct);
-      setInputValue(el.coMonthlyIncome, form.coMonthlyIncome);
-      setInputValue(el.coExistingEmis, form.coExistingEmis);
-      setInputValue(el.coCardLimits, form.coCardLimits);
       setInputValue(el.propertyValue, form.propertyValue);
 
       if (form.occupation) setOccupation(form.occupation);
       if (form.purpose) setPurpose(form.purpose);
-      setCoApplicant(form.includeCoApplicant || "no");
+      renderCoApplicants(
+        form.includeCoApplicant === "yes" ? form.coApplicants || [] : []
+      );
 
       if (draft.filters && typeof draft.filters === "object") {
-        state.productFilters = Object.assign(
-          defaultProductFilters(),
-          draft.filters
-        );
+        state.productFilters = normalizeProductFilters(draft.filters);
       }
       syncProductFilterChips();
-      setRateType(state.productFilters.fixedRate ? "Fixed" : "Floating");
-      setFacilityType(state.productFilters.overdraft ? "Overdraft" : "Term Loan");
-      setBankType(state.productFilters.bankType || DEFAULT_BANK_TYPE);
 
       if (draft.prepaymentMethod) {
         state.prepaymentMethod = draft.prepaymentMethod;
@@ -9355,9 +11079,7 @@ function initPage() {
       tenureYears: el.tenure ? el.tenure.value : DEFAULT_TENURE_YEARS,
       foirPct: el.foir ? el.foir.value : DEFAULT_FOIR_PCT,
       includeCoApplicant: el.coApplicant ? el.coApplicant.value : "no",
-      coMonthlyIncome: el.coMonthlyIncome ? el.coMonthlyIncome.value : "0",
-      coExistingEmis: el.coExistingEmis ? el.coExistingEmis.value : "0",
-      coCardLimits: el.coCardLimits ? el.coCardLimits.value : "0",
+      coApplicants: readCoApplicants(),
       occupation: el.occupation ? el.occupation.value : "",
       purpose: el.purpose ? el.purpose.value : DEFAULT_PURPOSE,
       propertyValue: el.propertyValue ? el.propertyValue.value : ""
@@ -9496,6 +11218,8 @@ function initPage() {
   var didRestoreDraft = restoreExploreDraft();
   ensureSampleDefaults();
   syncFoirFace();
+  syncOccupationFace();
+  syncSelectFace(el.purpose, el.purposeFace);
   updateFiltersBadge();
 
   var resultsShellEl = document.getElementById("hlc-results-shell");
@@ -9592,12 +11316,14 @@ module.exports = {
   RATE_CHANGE_COMMON_MARKER,
   expandBenchmarkToken,
   expandBenchmarkSwitchSide,
-  shortenBenchmarkToken,
   formatBenchmarkSwitchShortNote,
   RATE_CHANGE_BANK_MARKERS,
   RBI_FLOATING_PREPAY_HREF,
   FLOATING_PREPAY_NOTE,
   FIXED_FORECLOSURE_NOTE,
+  PROCESSING_FEE_MARKER,
+  PROPERTY_CHECK_MARKER,
+  GOVERNMENT_CHARGES_MARKER,
   PROCESSING_FEE_LOGIN_NOTE,
   PROPERTY_CHECK_ORIGIN,
   PROPERTY_CHECK_CHARGE_NAMES,
@@ -9605,6 +11331,7 @@ module.exports = {
   floatingPrepayNoteHtml,
   footnoteMarkersFromNoteParts,
   chargesNoteGroupId,
+  columnFootnoteMarker,
   footnoteRefHtml,
   chargesNoteGroupHtml,
   chargesNoteToolbarHtml,
@@ -9613,7 +11340,9 @@ module.exports = {
   bindDetailsAccordion,
   drawerToolbarHtml,
   drawerDiscloseHtml,
+  calcDrawerBodyHtml,
   laterChargesColumns,
+  laterChargesFeeCount,
   columnsForGroup,
   DEFAULT_FOIR_PCT,
   DEFAULT_TENURE_YEARS,
@@ -9621,6 +11350,16 @@ module.exports = {
   DEFAULT_CARD_LOAD_PCT,
   CARD_LOAD_PCT_CHOICES,
   FOIR_CHOICES,
+  MAX_CO_APPLICANTS,
+  CO_APPLICANT_RELATIONSHIPS,
+  CO_APPLICANT_OCCUPATIONS,
+  normalizeCoApplicants,
+  applicantsFromQuery,
+  clubbableApplicants,
+  resolveIncomeBasis,
+  matchesApplicantAges,
+  earningApplicantAges,
+  weakestCibilScore,
   GOVT_PSU_BORROWER_CATEGORY,
   DEFAULT_RATE_TYPE,
   DEFAULT_FACILITY_TYPE,
@@ -9630,6 +11369,13 @@ module.exports = {
   bankLogoPath,
   bankLogoHtml,
   defaultProductFilters,
+  normalizeProductFilters,
+  selectedRateTypes,
+  selectedFacilityTypes,
+  selectedBankTypes,
+  primaryRateType,
+  primaryFacilityType,
+  primaryBankType,
   parseMoney,
   queryFromInputs,
   normalizeBankType,
@@ -9643,6 +11389,31 @@ module.exports = {
   offerHasDiscount,
   matchesProductFilters,
   maxLoanForProperty,
+  propertyFundedPct,
+  monthlyRateFromAnnualDecimal,
+  formatPctPlain,
+  tenureInWordsFromRow,
+  amortizationSchedule,
+  chargeUsesWhicheverHigher,
+  matchChargeSlab,
+  chargeCaseFromParts,
+  chargeCaseFromRow,
+  resolveApplicableCharge,
+  chargeRowApplies,
+  listBounceChargeSlabs,
+  overdueSlabsForCase,
+  overdueExtraForMissedEmi,
+  bounceExtraForMissedEmi,
+  missedEmiMonthTotal,
+  comparableColumnValue,
+  buildCompareRanks,
+  compareRankTone,
+  overdueGraceDays,
+  gracePillLabel,
+  compareRankPillsHtml,
+  loanAmountWalkModel,
+  mathBarHtml,
+  amortizationTableHtml,
   tenureMonthsForOffer,
   loanFromEmi,
   maxLoanFromIncome,
@@ -9712,6 +11483,8 @@ module.exports = {
   CHARGE_NOT_PUBLISHED_BY_BANK,
   chargeNotPublishedDisplay,
   isChargeNotPublishedLabel,
+  chargeDisplayIsUnpublished,
+  columnOpensCalculation,
   pickOwnFundsPrepayCharge,
   pickTakeoverPrepayCharge,
   formatPrepaymentChargeDisplay,
@@ -9751,6 +11524,8 @@ module.exports = {
   buildEmiBounceFlatDrawerRows,
   buildAreaMatrixFeeEntry,
   renderDrawerSlabTableBlock,
+  chargeCalculationDetailsHtml,
+  chargeDrawerNoteLines,
   feeSectionsHaveGst,
   listSchemeChargePanelSections,
   listAdditionalAfterOfferPanelSections,

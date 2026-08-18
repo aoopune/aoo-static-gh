@@ -153,6 +153,16 @@ async function testHomeLoanCompare() {
   ok(compare.bankLogoPath('Unknown Bank') === '', 'compare unknown bank has no logo');
 
   ok(compare.formatInrDigits(100000) === '1,00,000', 'compare formats Indian commas');
+  ok(
+    compare.formatFreshnessLabel('2026-07-14') === 'Last checked on 14 July 2026',
+    'freshness line is Last checked on plus the date'
+  );
+  ok(compare.formatFreshnessLabel('') === '', 'freshness line is empty without a date');
+  ok(
+    compare.formatDrawerFreshnessSubtitle('Home Loan', '2026-07-14') ===
+      'Home Loan · Last checked on 14 July 2026',
+    'drawer subtitle reuses the same freshness line'
+  );
   ok(compare.formatIndianAmountDigits('1200000', 10) === '12,00,000', 'compare formats amount digits while typing');
   ok(compare.formatIndianAmountDigits('12,00,000', 10) === '12,00,000', 'compare keeps commas when re-formatting');
   ok(compare.matchesAge({ age_min: 21, age_max: 70 }, 35), 'compare age in range');
@@ -272,6 +282,114 @@ async function testHomeLoanCompare() {
   var termsCo = compare.computeOfferTerms(withCo, sampleOffer, 0.08);
   var termsAlone = compare.computeOfferTerms(alone, sampleOffer, 0.08);
   ok(termsCo.fromIncome > termsAlone.fromIncome, 'compare co-applicant income raises income loan');
+
+  var coBase = {
+    age: 30,
+    cibilScore: 780,
+    monthlyIncome: 50000,
+    existingEmis: 0,
+    occupation: 'Salaried',
+    propertyValue: 100000000,
+    tenureYears: 30,
+    foirPct: 55,
+    includeCoApplicant: 'yes'
+  };
+
+  var twoEarners = compare.queryFromInputs(Object.assign({}, coBase, {
+    coApplicants: [
+      { relationship: 'Spouse', occupation: 'Salaried', age: 30, monthlyIncome: 50000 },
+      { relationship: 'Brother', occupation: 'Salaried', age: 32, monthlyIncome: 40000 }
+    ]
+  }));
+  ok(twoEarners.coApplicants.length === 2, 'compare keeps several co-applicants');
+  ok(
+    compare.computeOfferTerms(twoEarners, sampleOffer, 0.08).fromIncome >
+      compare.computeOfferTerms(withCo, sampleOffer, 0.08).fromIncome,
+    'compare pools income across every co-applicant'
+  );
+
+  var cappedList = compare.normalizeCoApplicants(
+    [1, 2, 3, 4, 5, 6, 7].map(function () {
+      return { relationship: 'Spouse', occupation: 'Salaried', age: 30, monthlyIncome: 1000 };
+    })
+  );
+  ok(cappedList.length === compare.MAX_CO_APPLICANTS, 'compare caps co-applicants at the lender limit');
+
+  var strangerCo = compare.queryFromInputs(Object.assign({}, coBase, {
+    coApplicants: [
+      { relationship: 'Other', occupation: 'Salaried', age: 30, monthlyIncome: 200000 }
+    ]
+  }));
+  ok(
+    compare.computeOfferTerms(strangerCo, sampleOffer, 0.08).fromIncome ===
+      compare.computeOfferTerms(compare.queryFromInputs(Object.assign({}, coBase, { includeCoApplicant: 'no' })), sampleOffer, 0.08).fromIncome,
+    'compare ignores income from a relationship lenders will not club'
+  );
+
+  var notEarningCo = compare.queryFromInputs(Object.assign({}, coBase, {
+    coApplicants: [
+      { relationship: 'Spouse', occupation: 'Not earning', age: 30, monthlyIncome: 200000 }
+    ]
+  }));
+  ok(
+    compare.computeOfferTerms(notEarningCo, sampleOffer, 0.08).fromIncome ===
+      compare.computeOfferTerms(compare.queryFromInputs(Object.assign({}, coBase, { includeCoApplicant: 'no' })), sampleOffer, 0.08).fromIncome,
+    'compare ignores income for a co-applicant marked not earning'
+  );
+
+  // Tenure is capped by the eldest borrower whose income is counted, so a small
+  // income from a near-retirement parent must not be allowed to shrink the loan.
+  var oldParentCo = compare.queryFromInputs(Object.assign({}, coBase, {
+    coApplicants: [
+      { relationship: 'Father', occupation: 'Salaried', age: 68, monthlyIncome: 20000 }
+    ]
+  }));
+  var soloTerms = compare.computeOfferTerms(
+    compare.queryFromInputs(Object.assign({}, coBase, { includeCoApplicant: 'no' })),
+    sampleOffer,
+    0.08
+  );
+  var parentTerms = compare.computeOfferTerms(oldParentCo, sampleOffer, 0.08);
+  ok(
+    parentTerms.fromIncome === soloTerms.fromIncome,
+    'compare drops an older earner when counting them would cost more tenure than it gains'
+  );
+  ok(
+    parentTerms.incomeBasis.droppedIds.indexOf('co-1') !== -1,
+    'compare records which co-applicant was left out of the income pool'
+  );
+  ok(
+    parentTerms.tenureMonths === soloTerms.tenureMonths,
+    'compare keeps the full tenure when the older earner is left out'
+  );
+
+  var richParentCo = compare.queryFromInputs(Object.assign({}, coBase, {
+    coApplicants: [
+      { relationship: 'Father', occupation: 'Salaried', age: 68, monthlyIncome: 5000000 }
+    ]
+  }));
+  var richParentTerms = compare.computeOfferTerms(richParentCo, sampleOffer, 0.08);
+  ok(
+    richParentTerms.incomeBasis.countedIds.indexOf('co-1') !== -1,
+    'compare still counts an older earner when the income clearly beats the lost tenure'
+  );
+
+  var weakCoCibil = compare.queryFromInputs(Object.assign({}, coBase, {
+    coApplicants: [
+      { relationship: 'Spouse', occupation: 'Salaried', age: 30, cibilScore: 640, monthlyIncome: 50000 }
+    ]
+  }));
+  ok(weakCoCibil.cibilScore === 640, 'compare prices on the weakest score on the loan');
+  ok(weakCoCibil.primaryCibilScore === 780, 'compare keeps the primary score for display');
+
+  ok(
+    compare.matchesApplicantAges({ age_min: 21, age_max: 65 }, [72, 30]),
+    'compare accepts a scheme when one earning applicant fits its age window'
+  );
+  ok(
+    !compare.matchesApplicantAges({ age_min: 21, age_max: 65 }, [72, 68]),
+    'compare rejects a scheme when no earning applicant fits its age window'
+  );
 
   var engine = compare.createMatchEngine();
   var axisOffer = dataset.offers.find(function (offer) {
@@ -504,6 +622,14 @@ async function testHomeLoanCompare() {
     'fixed later-charges columns include rate change'
   );
   ok(
+    compare.laterChargesFeeCount(false) === 3,
+    'floating other-charges layout uses three fee columns'
+  );
+  ok(
+    compare.laterChargesFeeCount(true) === 4,
+    'fixed other-charges layout uses four fee columns'
+  );
+  ok(
     compare.RATE_CHANGE_FREQUENCY_NOTE ===
       '° These fees are usually charged each time you switch rate type — not once for the whole loan.',
     'rate change shared frequency note uses the locked copy'
@@ -521,22 +647,29 @@ async function testHomeLoanCompare() {
     'rate change frequency note follows the selected method'
   );
   ok(
-    compare.RATE_CHANGE_BENCHMARK_MEANING_NOTE.indexOf(
-      'Marginal Cost of Funds based Lending Rate (MCLR)'
-    ) !== -1 &&
-      compare.RATE_CHANGE_BENCHMARK_MEANING_NOTE.indexOf(
-        'Repo Linked Lending Rate (RLLR)'
-      ) !== -1 &&
-      compare.RATE_CHANGE_BENCHMARK_MEANING_NOTE.indexOf(
-        'External Benchmark Lending Rate (EBLR)'
-      ) !== -1,
-    'benchmark meaning note spells out older and newer reference rates'
+    compare.RATE_CHANGE_BENCHMARK_MEANING_NOTE.indexOf('RBI repo rate') !== -1 &&
+      compare.RATE_CHANGE_BENCHMARK_MEANING_NOTE.indexOf('rate the bank sets') !== -1 &&
+      compare.RATE_CHANGE_BENCHMARK_MEANING_NOTE.indexOf('You choose') !== -1 &&
+      compare.RATE_CHANGE_BENCHMARK_MEANING_NOTE.indexOf('MCLR') === -1 &&
+      compare.RATE_CHANGE_BENCHMARK_MEANING_NOTE.indexOf('BPLR') === -1,
+    'benchmark meaning note says how the rate is decided, not MCLR/BPLR'
   );
   ok(
     compare.RATE_CHANGE_REPRICING_MEANING_NOTE.indexOf('higher rate') !== -1 &&
       compare.RATE_CHANGE_REPRICING_MEANING_NOTE.indexOf('lower rate') !== -1 &&
       compare.RATE_CHANGE_REPRICING_MEANING_NOTE.indexOf('Floating') !== -1,
     'repricing meaning note states higher-to-lower on the same rate type'
+  );
+  ok(
+    compare.formatBenchmarkSwitchShortNote({
+      benchmark_switch_from: 'MCLR',
+      benchmark_switch_to: 'EBR'
+    }) === 'From a rate the bank sets to the RBI repo rate.' &&
+      compare.formatBenchmarkSwitchShortNote({
+        benchmark_switch_from: 'Base Rate / MCLR / BPLR',
+        benchmark_switch_to: 'RLLR'
+      }) === 'From a rate the bank sets to the RBI repo rate.',
+    'Notes from/to names repo vs a rate the bank sets, not MCLR/BPLR'
   );
   ok(
     compare.expandBenchmarkSwitchSide('Base Rate / MCLR / BPLR') ===
@@ -578,7 +711,7 @@ async function testHomeLoanCompare() {
   );
   ok(
     compare.FLOATING_PREPAY_NOTE ===
-      'Floating-rate home loans to individuals have no prepayment or foreclosure charge. Under Reserve Bank of India (RBI) directions, Part E, paragraphs 352 and 353.',
+      'Floating home loans to individuals have no prepayment charge under RBI.',
     'floating prepayment note states the RBI rule'
   );
   ok(
@@ -588,28 +721,65 @@ async function testHomeLoanCompare() {
   );
   ok(
     compare.PROCESSING_FEE_LOGIN_NOTE.indexOf('login fee') !== -1 &&
-      compare.PROCESSING_FEE_LOGIN_NOTE.indexOf('differs by bank') !== -1 &&
-      compare.PROCESSING_FEE_LOGIN_NOTE.indexOf("don't list it separately") ===
+      compare.PROCESSING_FEE_LOGIN_NOTE.indexOf('mandatory') !== -1 &&
+      compare.PROCESSING_FEE_LOGIN_NOTE.indexOf('already inside this number') !==
         -1 &&
-      compare.PROCESSING_FEE_LOGIN_NOTE.indexOf('don’t list it separately yet') !==
+      compare.PROCESSING_FEE_LOGIN_NOTE.indexOf("don't list it separately") ===
         -1,
     'processing fee note explains login fee without inventing amounts'
   );
   ok(
     compare.GROUPS.charges[0].key === 'processingFee' &&
-      compare.GROUPS.charges[0].footnote === '*' &&
+      compare.GROUPS.charges[0].footnote === compare.PROCESSING_FEE_MARKER &&
       compare.GROUPS.charges[1].key === 'propertyCheckCharges' &&
       compare.GROUPS.charges[1].label === 'Property check charges' &&
-      compare.GROUPS.charges[1].footnote === '*' &&
-      compare.GROUPS.charges[2].key === 'governmentCharges',
+      compare.GROUPS.charges[1].footnote === compare.PROPERTY_CHECK_MARKER &&
+      compare.GROUPS.charges[2].key === 'governmentCharges' &&
+      compare.GROUPS.charges[2].footnote === compare.GOVERNMENT_CHARGES_MARKER,
     'charges columns are processing, property checks, then government'
   );
+  function footnoteMarksForGroup(columns) {
+    return columns
+      .map(function (column) {
+        return column.footnote;
+      })
+      .filter(function (mark) {
+        return typeof mark === 'string' && mark;
+      });
+  }
   ok(
-    compare.PROPERTY_CHECK_NOTE.indexOf('GST applicable') !== -1 &&
-      compare.PROPERTY_CHECK_NOTE.indexOf('Typical industry average') !== -1 &&
+    (function () {
+      var marks = footnoteMarksForGroup(compare.GROUPS.charges);
+      return marks.length === 3 && new Set(marks).size === marks.length;
+    })() &&
+      (function () {
+        var marks = footnoteMarksForGroup(compare.GROUPS.laterCharges);
+        return marks.length === 3 && new Set(marks).size === marks.length;
+      })(),
+    'each column note on a tab uses a distinct index mark'
+  );
+  ok(
+    compare.columnFootnoteMarker('charges', 'processingFee') === '*' &&
+      compare.columnFootnoteMarker('charges', 'propertyCheckCharges') === '†' &&
+      compare.columnFootnoteMarker('charges', 'governmentCharges') === '^' &&
+      compare.PROCESSING_FEE_LOGIN_NOTE.indexOf(compare.PROCESSING_FEE_MARKER + ' ') ===
+        0 &&
+      compare.PROPERTY_CHECK_NOTE.indexOf(compare.PROPERTY_CHECK_MARKER + ' ') ===
+        0 &&
+      compare.chargesNoteGroupHtml('Processing fees', [
+        compare.PROCESSING_FEE_LOGIN_NOTE
+      ]).indexOf('(*)') !== -1 &&
+      compare.chargesNoteGroupHtml('Property check charges', [
+        compare.PROPERTY_CHECK_NOTE
+      ]).indexOf('(†)') !== -1,
+    'charges headers and notes share one unique mark per note'
+  );
+  ok(
+    compare.PROPERTY_CHECK_NOTE.indexOf('GST extra') !== -1 &&
+      compare.PROPERTY_CHECK_NOTE.indexOf('Typical industry amounts') !== -1 &&
       compare.chargesNoteGroupId('Property check charges') ===
         'hlc-charge-note-property-check-charges',
-    'property check note explains GST and typical average'
+    'property check note explains GST and typical amounts'
   );
   ok(
     compare.RBI_FLOATING_PREPAY_HREF ===
@@ -622,8 +792,8 @@ async function testHomeLoanCompare() {
       compare.floatingPrepayNoteHtml().indexOf('target="_blank"') !== -1 &&
       compare
         .floatingPrepayNoteHtml()
-        .indexOf('Part E, paragraphs 352 and 353') !== -1,
-    'floating prepayment note links Part E to the RBI page'
+        .indexOf('RBI directions') !== -1,
+    'floating prepayment note links RBI directions to the RBI page'
   );
   ok(
     compare.footnoteRefHtml('*', 'hlc-charge-note-processing-fees').indexOf(
@@ -697,8 +867,79 @@ async function testHomeLoanCompare() {
     'side panel sections use disclose chevrons with Expand/Collapse all on the right'
   );
   ok(
+    (function () {
+      const html = compare.calcDrawerBodyHtml('<div class="hlc-story">walk</div>', {
+        calcTitle: 'How this is worked out',
+        detailsHtml: '<div class="hlc-calc-details">slabs</div>',
+        noteLines: ['First bank note', 'Second bank note'],
+        footHtml: '<p class="hlc-drawer-foot">guide</p>'
+      });
+      const groups = html.split('class="hlc-drawer-group"');
+      const firstOpen = html.indexOf('<details class="hlc-drawer-group" open>') !== -1;
+      const closedCount = (html.match(/<details class="hlc-drawer-group">/g) || [])
+        .length;
+      return (
+        groups.length === 4 &&
+        firstOpen &&
+        closedCount === 2 &&
+        html.indexOf('How this is worked out') !== -1 &&
+        html.indexOf('All amounts') !== -1 &&
+        html.indexOf('Notes') !== -1 &&
+        html.indexOf('hlc-drawer-chevron') !== -1 &&
+        html.indexOf('guide') !== -1 &&
+        html.indexOf('guide') > html.lastIndexOf('hlc-drawer-group')
+      );
+    })(),
+    'calc drawers reuse dump dropdowns: first open, later closed, foot outside'
+  );
+  ok(
+    (function () {
+      const html = compare.calcDrawerBodyHtml('<div class="hlc-story">walk</div>', {
+        calcTitle: 'Calculation of the charges',
+        noteLines: ['Allowed only if CIBIL is above 700.']
+      });
+      return (
+        html.indexOf('<details class="hlc-drawer-group">') === -1 &&
+        html.indexOf('>Notes<') === -1 &&
+        html.indexOf('Allowed only if CIBIL is above 700.') !== -1 &&
+        html.indexOf('hlc-calc-notes') !== -1
+      );
+    })(),
+    'a single calc note sits in the drawer, not in a Notes dropdown'
+  );
+  ok(
     compare.formatPrepaymentChargeDisplay(null).main === CHARGE_NOT_PUBLISHED_BY_BANK,
     'missing prepayment charge displays as not published by bank'
+  );
+  ok(
+    compare.chargeDisplayIsUnpublished(compare.formatPrepaymentChargeDisplay(null)),
+    'missing prepayment is unpublished'
+  );
+  ok(
+    compare.chargeDisplayIsUnpublished(compare.formatRateChangeChargeDisplay(null)),
+    'missing rate change is unpublished'
+  );
+  ok(
+    !compare.chargeDisplayIsUnpublished({ main: 'Nil (₹0)', details: [] }),
+    'Nil is published as zero, not unpublished'
+  );
+  ok(
+    !compare.columnOpensCalculation(
+      { key: 'prepaymentChargeDisplay', type: 'charge' },
+      compare.chargeNotPublishedDisplay()
+    ),
+    'unpublished charge does not open a calculation drawer'
+  );
+  ok(
+    compare.columnOpensCalculation(
+      { key: 'prepaymentChargeDisplay', type: 'charge' },
+      { main: '2.00%', details: [] }
+    ),
+    'published prepayment still opens a calculation drawer'
+  );
+  ok(
+    compare.columnOpensCalculation({ key: 'loanAmount', type: 'inr' }, 0),
+    'loan amount still opens a calculation drawer'
   );
   ok(
     compare.formatPrepaymentChargeDisplay({
@@ -864,6 +1105,9 @@ async function testHomeLoanCompare() {
     {
       id: 'slabs',
       bankName: 'B',
+      loanAmount: 6000000,
+      emi: 40000,
+      tenureMonths: 240,
       rateChangeTypeSwitchCharge: {
         fixed_amount: 1000,
         charge_name: 'Interest Rate Type Switch Fees',
@@ -904,10 +1148,11 @@ async function testHomeLoanCompare() {
     'rate change defaults to type switch display'
   );
   ok(
-    syntheticRateRows[1].rateChangeChargeDisplay.action === 'rate-change-slabs' &&
-      syntheticRateRows[1].rateChangeChargeDisplay.main ===
-        'Fixed amount by loan amount range',
-    'multi-slab rate change uses loan-amount range action'
+    syntheticRateRows[1].rateChangeChargeDisplay.main === '₹2,000' &&
+      syntheticRateRows[1].rateChangeChargeDisplay.details.join(' ').indexOf(
+        '₹50,00,001'
+      ) >= 0,
+    'multi-slab rate change uses the loan-amount band that matches this loan'
   );
   compare.applyRateChangeMethodToRows(
     syntheticRateRows,
@@ -990,9 +1235,17 @@ async function testHomeLoanCompare() {
     compare.RATE_CHANGE_METHOD_TYPE
   );
   ok(
-    markedRateRows[0].rateChangeChargeDisplay.marker ===
-      compare.RATE_CHANGE_BANK_MARKERS['hdfc bank'],
-    'HDFC rate-change cell carries the bank-specific footnote marker'
+    !markedRateRows[0].rateChangeChargeDisplay.marker &&
+      markedRateRows[0].rateChangeDrawerNotes.indexOf(
+        'This type switch fee applies only once.'
+      ) >= 0,
+    'HDFC rate-change bank note lives in that bank’s drawer, not as a cell mark'
+  );
+  ok(
+    compare
+      .chargeDrawerNoteLines(markedRateRows[0], 'rateChangeChargeDisplay')
+      .indexOf('This type switch fee applies only once.') >= 0,
+    'HDFC type-switch note is listed for that drawer only'
   );
   ok(
     compare
@@ -1192,7 +1445,7 @@ async function testHomeLoanCompare() {
         false
       )
       .join(' ')
-      .indexOf('From MCLR to EBR (repo rate).') >= 0 &&
+      .indexOf('From a rate the bank sets to the RBI repo rate.') >= 0 &&
       compare
         .buildRateChangeExceptionNotes(
           [
@@ -1235,9 +1488,14 @@ async function testHomeLoanCompare() {
   ok(
     dcbRow &&
       dcbRow.overdueChargeDisplay.main ===
-        'Fixed amount by overdue range' &&
-      dcbRow.overdueChargeDisplay.action === 'overdue-slabs',
-    'DCB Bank links its overdue cell to the overdue range details'
+        compare.formatInr(
+          Number(
+            compare.matchChargeSlab(dcbRow.overdueChargeSlabs, dcbRow.emi)
+              .fixed_amount
+          )
+        ) &&
+      dcbRow.overdueChargeDisplay.details[0],
+    'DCB Bank overdue cell uses the slab that matches this EMI'
   );
   ok(
     dcbRow &&
@@ -1251,17 +1509,25 @@ async function testHomeLoanCompare() {
   });
   ok(
     centralBankOverdueRow &&
-      centralBankOverdueRow.overdueChargeDisplay.main === '0%' &&
-      centralBankOverdueRow.overdueChargeDisplay.marker === '◊' &&
-      centralBankOverdueRow.overdueChargeDisplay.details[0] ===
-        'Up to ₹30,000 · Applies when loan tenure is up to 23 months.',
-    'Central Bank of India shows its first overdue slab and condition'
+      /2(\.00)?%\s*p\.a\./i.test(
+        centralBankOverdueRow.overdueChargeDisplay.main
+      ) &&
+      centralBankOverdueRow.overdueChargeDisplay.details.join(' ').indexOf(
+        '₹30,001'
+      ) >= 0,
+    'Central Bank of India uses the overdue slab that matches this EMI, not the up-to-₹30,000 band'
+  );
+  var centralBankOverdueDetails = compare.chargeCalculationDetailsHtml(
+    centralBankOverdueRow,
+    'overdueChargeDisplay'
   );
   ok(
     centralBankOverdueRow &&
-      centralBankOverdueRow.overdueDetailFootnote ===
-        '◊ Central Bank of India: The charge depends on the overdue amount. 2% p.a. from ₹30,001.',
-    'Central Bank of India footnote names the slab basis and higher slab'
+      !centralBankOverdueRow.overdueDetailFootnote &&
+      /0%/.test(centralBankOverdueDetails) &&
+      /2(\.00)?%\s*p\.a\./i.test(centralBankOverdueDetails) &&
+      centralBankOverdueDetails.indexOf('₹30,001') >= 0,
+    'Central Bank of India keeps both overdue bands in All amounts, not a first-slab footnote'
   );
   var idfcOverdueRow = rows.find(function (row) {
     return row.bankName === 'IDFC FIRST Bank';
@@ -2066,57 +2332,63 @@ async function testHomeLoanCompare() {
   ok(
     bankOfBarodaRow &&
       bankOfBarodaRow.emiBounceChargeDisplay.main === '₹125' &&
-      bankOfBarodaRow.emiBounceChargeDisplay.marker === '§' &&
-      bankOfBarodaRow.emiBounceChargeDisplay.details[0] ===
-        'ECS / cheque return' &&
-      bankOfBarodaRow.emiBounceChargeDisplay.details[1] ===
-        'for a bounce amount up to ₹1 lakh in metro areas',
-    'Bank of Baroda shows ECS metro first slab with § marker'
+      !bankOfBarodaRow.emiBounceChargeDisplay.marker &&
+      bankOfBarodaRow.emiBounceChargeDisplay.details.indexOf(
+        'ECS / cheque return'
+      ) >= 0 &&
+      /for a bounce amount up to ₹1 lakh/i.test(
+        bankOfBarodaRow.emiBounceChargeDisplay.details.join(' ')
+      ),
+    'Bank of Baroda bounce cell uses the metro slab that matches this EMI'
   );
   ok(
-    bankOfBarodaRow &&
-      bankOfBarodaRow.emiBounceDetailFootnote ===
-        '§ Bank of Baroda: The amount shown is the ECS / cheque return for a bounce amount up to ₹1 lakh in metro areas. Metro: ₹125 up to ₹1 lakh; ₹250 from ₹1,00,001 to ₹99,99,999; ₹500 from ₹1 crore. Rural / Semi-urban: ₹100 up to ₹1 lakh; ₹225 from ₹1,00,001 to ₹99,99,999; ₹450 from ₹1 crore. NACH return: ₹250. Auto debit / SI bounce: ₹500. Technical ECS / cheque return: ₹0.',
-    'Bank of Baroda § note states ECS shown and lists every bounce fact'
+    compare
+      .chargeCalculationDetailsHtml(bankOfBarodaRow, 'emiBounceChargeDisplay')
+      .indexOf('Rural') >= 0,
+    'Bank of Baroda bounce drawer still lists rural bands in All amounts'
+  );
+  ok(
+    bankOfBarodaRow.emiBounceShownNote.indexOf('band') >= 0 &&
+      compare
+        .chargeDrawerNoteLines(bankOfBarodaRow, 'emiBounceChargeDisplay')
+        .join(' ')
+        .indexOf('band') >= 0,
+    'Bank of Baroda bounce names the band that applies to this EMI'
   );
   var canaraRow = rows.find(function (row) {
     return row.bankName === 'Canara Bank';
   });
   ok(
     canaraRow &&
-      canaraRow.emiBounceChargeDisplay.main === '₹300' &&
-      canaraRow.emiBounceChargeDisplay.marker === '†' &&
-      canaraRow.emiBounceChargeDisplay.details[0] ===
-        'for a bounce amount up to ₹999',
-    'Canara Bank shows its first ECS and NACH return slab in the table'
+      canaraRow.emiBounceChargeDisplay.main ===
+        compare.formatInr(Number(canaraRow.emiBounceCharge.fixed_amount)) &&
+      /for a bounce amount/i.test(
+        canaraRow.emiBounceChargeDisplay.details.join(' ')
+      ),
+    'Canara Bank bounce cell uses the slab that matches this EMI'
   );
   ok(
     canaraRow &&
-      canaraRow.emiBounceDetailFootnote.indexOf(
-        'The charge depends on the bounce amount.'
-      ) >= 0 &&
-      canaraRow.emiBounceDetailFootnote.indexOf(
-        '₹500 from ₹1,000 to ₹99,999'
-      ) >= 0 &&
-      canaraRow.emiBounceDetailFootnote.indexOf(
-        '₹750 from ₹1 lakh to ₹49,99,999'
-      ) >= 0 &&
-      canaraRow.emiBounceDetailFootnote.indexOf(
-        '₹2,000 from ₹1 crore'
-      ) >= 0,
-    'Canara Bank footnote lists every higher ECS and NACH return slab'
+      canaraRow.emiBounceChargeSlabs.length > 1 &&
+      canaraRow.emiBounceChargeSlabs.some(function (charge) {
+        return Number(charge.fixed_amount) === 500;
+      }) &&
+      canaraRow.emiBounceChargeSlabs.some(function (charge) {
+        return Number(charge.fixed_amount) === 2000;
+      }),
+    'Canara Bank bounce schedule keeps every published band for All amounts'
   );
   var bankOfIndiaBounceRow = rows.find(function (row) {
     return row.bankName === 'Bank of India';
   });
   ok(
     bankOfIndiaBounceRow &&
-      bankOfIndiaBounceRow.emiBounceChargeDisplay.details[0] ===
-        'for a sanctioned loan amount up to ₹25,000' &&
-      bankOfIndiaBounceRow.emiBounceDetailFootnote.indexOf(
-        'The charge depends on the sanctioned loan amount.'
-      ) >= 0,
-    'EMI bounce slabs show the published non-bounce calculation basis'
+      /sanctioned loan amount/i.test(
+        bankOfIndiaBounceRow.emiBounceChargeDisplay.details.join(' ')
+      ) &&
+      bankOfIndiaBounceRow.emiBounceChargeDisplay.main ===
+        compare.formatInr(Number(bankOfIndiaBounceRow.emiBounceCharge.fixed_amount)),
+    'EMI bounce uses the sanctioned-loan slab that matches this loan'
   );
   var indusindRow = rows.find(function (row) {
     return row.bankName === 'IndusInd Bank';
@@ -2193,6 +2465,12 @@ async function testHomeLoanCompare() {
 
   ok(query.rateType === 'Floating', 'compare defaults to floating rate');
   ok(query.facilityType === 'Term Loan', 'compare defaults to term loan');
+  ok(
+    query.bankType === 'All' &&
+      query.bankTypes.indexOf('Public') !== -1 &&
+      query.bankTypes.indexOf('Private') !== -1,
+    'compare bank type defaults to public and private'
+  );
 
   var govtOffer = dataset.offers.find(function (offer) {
     return offer.borrower_category === compare.GOVT_PSU_BORROWER_CATEGORY && offer.rate_type === 'Floating';
@@ -2215,6 +2493,10 @@ async function testHomeLoanCompare() {
     { fixedRate: true }
   );
   ok(fixedQuery.rateType === 'Fixed', 'compare fixed filter switches rate type');
+  ok(
+    fixedQuery.rateTypes.length === 1 && fixedQuery.rateTypes[0] === 'Fixed',
+    'compare fixed filter selects only fixed'
+  );
 
   var overdraftQuery = compare.queryFromInputs(
     { age: 35, cibilScore: 780, monthlyIncome: 100000, occupation: 'Salaried', propertyValue: 6250000 },
@@ -2226,7 +2508,7 @@ async function testHomeLoanCompare() {
     { age: 35, cibilScore: 780, monthlyIncome: 100000, occupation: 'Salaried', propertyValue: 6250000 },
     {}
   );
-  ok(allBankTypeQuery.bankType === 'All', 'compare bank type defaults to All');
+  ok(allBankTypeQuery.bankType === 'All', 'compare bank type defaults to All when both checked');
 
   var publicOffer = { rate_type: 'Floating', facility_type: 'Term Loan', bank_type: 'Public', borrower_category: 'Any' };
   var privateOffer = { rate_type: 'Floating', facility_type: 'Term Loan', bank_type: 'Private', borrower_category: 'Any' };
@@ -2236,7 +2518,17 @@ async function testHomeLoanCompare() {
   );
   ok(compare.matchesProductFilters(publicOffer, publicQuery), 'compare public filter keeps public banks');
   ok(!compare.matchesProductFilters(privateOffer, publicQuery), 'compare public filter drops private banks');
-  ok(compare.matchesProductFilters(privateOffer, allBankTypeQuery), 'compare All keeps private banks');
+  ok(compare.matchesProductFilters(privateOffer, allBankTypeQuery), 'compare both bank types keeps private banks');
+
+  var bothRateQuery = compare.queryFromInputs(
+    { age: 35, cibilScore: 780, monthlyIncome: 100000, occupation: 'Salaried', propertyValue: 6250000 },
+    { rateFloating: true, fixedRate: true }
+  );
+  ok(
+    bothRateQuery.rateTypes.indexOf('Floating') !== -1 &&
+      bothRateQuery.rateTypes.indexOf('Fixed') !== -1,
+    'compare can include both floating and fixed rates'
+  );
 
   var scoredOffer = { cibil_score_status: 'Scored', cibil_band_applicable: 'Yes', cibil_band_score_min: 775, cibil_band_score_max: 799 };
   var noScoreOffer = { cibil_score_status: 'No_Score', cibil_band_applicable: 'Yes', cibil_band_score_min: -1, cibil_band_score_max: 0 };
@@ -2344,6 +2636,318 @@ async function testHomeLoanCompare() {
       'Bank of Maharashtra fixed balance-transfer prepayment is Nil (₹0)'
     );
   }
+
+  ok(compare.propertyFundedPct(2500000) === 90, 'funded share 90% up to ₹30 lakh');
+  ok(compare.propertyFundedPct(6000000) === 80, 'funded share 80% up to ₹75 lakh');
+  ok(compare.propertyFundedPct(8000000) === 75, 'funded share 75% above ₹75 lakh');
+
+  var emiCheck = compare.emiFromLoan(4800000, 0.0725, 20);
+  ok(Math.round(emiCheck) > 0, 'EMI from ₹48 lakh at 7.25% for 20 years is a rupee');
+
+  var amort = compare.amortizationSchedule(4800000, 0.0725, 240);
+  ok(
+    Math.abs((amort.rows[0].interest + amort.rows[0].principal) - amort.emi) < 1,
+    'first month principal plus interest matches EMI'
+  );
+  ok(
+    amort.rows[amort.rows.length - 1].outstanding < 1,
+    'last amortization month clears the loan'
+  );
+
+  var amortHtml = compare.amortizationTableHtml(amort);
+  ok(
+    amortHtml.indexOf('Month by month') >= 0 &&
+      amortHtml.indexOf('hlc-drawer-group') >= 0 &&
+      amortHtml.indexOf('hlc-drawer-chevron') >= 0 &&
+      amortHtml.indexOf('hlc-drawer-group--nested" open>') >= 0 &&
+      amortHtml.indexOf('Year 2') >= 0 &&
+      amortHtml.indexOf('Year 20') >= 0 &&
+      amortHtml.indexOf('class="hlc-amort-year"') === -1 &&
+      (amortHtml.match(/<details class="hlc-drawer-group hlc-drawer-group--nested">/g) || [])
+        .length === 19,
+    'month-by-month years reuse the drawer dropdowns; year 1 stays open'
+  );
+  ok(
+    compare
+      .amortizationTableHtml(compare.amortizationSchedule(4800000, 0.0725, 12))
+      .indexOf('Year 2') === -1,
+    'a one-year loan has no later-year dropdowns'
+  );
+
+  var overdue2 = compare.overdueExtraForMissedEmi(
+    { percentage: 0.02, percentage_per_annum: 'Yes' },
+    37938,
+    0.0725
+  );
+  ok(Math.round(overdue2.extra) === 63, '2% a year on ₹37,938 EMI is about ₹63 this month');
+
+  var overdue24 = compare.overdueExtraForMissedEmi(
+    { percentage: 0.24, percentage_per_annum: 'Yes' },
+    37938,
+    0.0725
+  );
+  ok(Math.round(overdue24.extra) === 759, '24% a year on ₹37,938 EMI is about ₹759 this month');
+
+  var overdueFloor = compare.overdueExtraForMissedEmi(
+    {
+      percentage: 0.002,
+      percentage_per_annum: 'Yes',
+      charge_min: 200,
+      special_rule: 'overdue_whichever_higher=yes'
+    },
+    37938,
+    0.0725
+  );
+  ok(Math.round(overdueFloor.extra) === 200, '0.20% a year loses to the ₹200 floor');
+
+  var bounceGst = compare.bounceExtraForMissedEmi(
+    { fixed_amount: 750, gst_applicable: 'Yes' },
+    37938
+  );
+  ok(Math.round(bounceGst.extra) === 750, 'bounce base is the published rupee');
+  ok(Math.round(bounceGst.gst) === 135, 'bounce GST 18% on ₹750 is ₹135');
+  ok(Math.round(bounceGst.total) === 885, 'bounce plus GST');
+
+  var boiBounceSlabs = [
+    {
+      slab_from: null,
+      slab_to: 25000,
+      slab_basis: 'Sanctioned loan amount',
+      fixed_amount: 0,
+      has_slab_wise_charges: 'Yes',
+      charge_name: 'EMI bounce',
+      charge_group_id: 'g'
+    },
+    {
+      slab_from: 25001,
+      slab_to: 1000000,
+      slab_basis: 'Sanctioned loan amount',
+      fixed_amount: 250,
+      has_slab_wise_charges: 'Yes',
+      charge_name: 'EMI bounce',
+      charge_group_id: 'g'
+    },
+    {
+      slab_from: 1000001,
+      slab_to: null,
+      slab_basis: 'Sanctioned loan amount',
+      fixed_amount: 500,
+      has_slab_wise_charges: 'Yes',
+      charge_name: 'EMI bounce',
+      charge_group_id: 'g'
+    }
+  ];
+  var bigLoanCase = compare.chargeCaseFromParts(40000, 5000000, 240);
+  var smallLoanCase = compare.chargeCaseFromParts(40000, 20000, 240);
+  ok(
+    compare.bounceExtraForMissedEmi(
+      compare.resolveApplicableCharge(boiBounceSlabs, boiBounceSlabs[0], bigLoanCase),
+      40000
+    ).extra === 500,
+    'bounce resolve uses the sanctioned-loan slab for this loan, not the first band'
+  );
+  ok(
+    compare.bounceExtraForMissedEmi(
+      compare.resolveApplicableCharge(boiBounceSlabs, boiBounceSlabs[0], smallLoanCase),
+      40000
+    ).extra === 0,
+    'bounce resolve uses the up-to-₹25,000 band when that loan is that small'
+  );
+  var centralOverdueSlabs = [
+    {
+      percentage: 0,
+      has_slab_wise_charges: 'Yes',
+      slab_from: 0,
+      slab_to: 30000,
+      note_1: 'overdue_tenure_months_max=23.0',
+      charge_type: 'percentage'
+    },
+    {
+      percentage: 0.02,
+      percentage_per_annum: 'Yes',
+      has_slab_wise_charges: 'Yes',
+      slab_from: 30001,
+      slab_to: null,
+      charge_type: 'percentage'
+    }
+  ];
+  ok(
+    Math.round(
+      compare.overdueExtraForMissedEmi(
+        compare.resolveApplicableCharge(
+          centralOverdueSlabs,
+          centralOverdueSlabs[0],
+          bigLoanCase
+        ),
+        40000,
+        0.08
+      ).extra
+    ) === Math.round(40000 * (0.02 / 12)),
+    'overdue resolve uses the from-₹30,001 band on this EMI, not the first 0% band'
+  );
+  ok(
+    compare.chargeRowApplies(centralOverdueSlabs[0], bigLoanCase) === false &&
+      compare.chargeRowApplies(
+        centralOverdueSlabs[0],
+        compare.chargeCaseFromParts(20000, 5000000, 12)
+      ) === true,
+    'tenure-capped overdue notes drop out of a 20-year home loan'
+  );
+
+  var rankCheap = {
+    id: 'cheap',
+    effectiveRoiPct: 8,
+    loanAmount: 4000000,
+    emi: 30000,
+    processingFee: 1000,
+    propertyCheckCharges: 4000,
+    governmentCharges: 11800,
+    prepaymentChargeDisplay: { main: '2%' },
+    prepaymentChargeSortValue: 2,
+    rateChangeChargeDisplay: { main: '0.50%' },
+    rateChangeChargeSortValue: 0.5,
+    overdueChargeDisplay: { main: '2%' },
+    overdueCharge: { percentage: 0.02, percentage_per_annum: 'Yes' },
+    emiBounceChargeDisplay: { main: '₹100' },
+    emiBounceCharge: { fixed_amount: 100 },
+    roiDecimal: 0.08
+  };
+  var rankDear = {
+    id: 'dear',
+    effectiveRoiPct: 10,
+    loanAmount: 5000000,
+    emi: 40000,
+    processingFee: 5000,
+    propertyCheckCharges: 4000,
+    governmentCharges: 11800,
+    prepaymentChargeDisplay: { main: '4%' },
+    prepaymentChargeSortValue: 4,
+    rateChangeChargeDisplay: { main: '1%' },
+    rateChangeChargeSortValue: 1,
+    overdueChargeDisplay: { main: '24%' },
+    overdueCharge: {
+      percentage: 0.24,
+      percentage_per_annum: 'Yes',
+      has_grace_period: 'Yes',
+      grace_period_days: 7
+    },
+    emiBounceChargeDisplay: { main: '₹750' },
+    emiBounceCharge: { fixed_amount: 750, gst_applicable: 'Yes' },
+    roiDecimal: 0.1
+  };
+  var rankTie = Object.assign({}, rankCheap, {
+    id: 'tie',
+    processingFee: 1000
+  });
+  var rankHidden = Object.assign({}, rankDear, {
+    id: 'hidden',
+    overdueChargeDisplay: { main: CHARGE_NOT_PUBLISHED_BY_BANK },
+    emiBounceChargeDisplay: { main: CHARGE_NOT_PUBLISHED_BY_BANK },
+    overdueCharge: { percentage: 0.9 },
+    emiBounceCharge: { fixed_amount: 9000 }
+  });
+  var ranks = compare.buildCompareRanks([rankCheap, rankDear, rankTie, rankHidden]);
+  ok(ranks.cheap.processingFee === 'low', 'lowest processing fee is tagged low');
+  ok(ranks.tie.processingFee === 'low', 'tied lowest processing fees both get Lowest');
+  ok(ranks.dear.processingFee === 'high', 'highest processing fee is tagged high');
+  ok(ranks.cheap.loanAmount === 'low', 'smaller loan is Lowest');
+  ok(ranks.dear.loanAmount === 'high', 'larger loan is Highest');
+  ok(compare.compareRankTone('processingFee', 'low') === 'helpful', 'cheap fee is helpful green');
+  ok(compare.compareRankTone('processingFee', 'high') === 'costly', 'dear fee is costly red');
+  ok(compare.compareRankTone('loanAmount', 'high') === 'helpful', 'higher loan is helpful green');
+  ok(compare.compareRankTone('loanAmount', 'low') === 'costly', 'lower loan is costly red');
+  ok(!ranks.cheap.propertyCheckCharges && !ranks.dear.propertyCheckCharges, 'same property-check rupees get no compare pill');
+  ok(!ranks.cheap.governmentCharges && !ranks.dear.governmentCharges, 'same government rupees get no compare pill');
+  ok(!ranks.hidden || !ranks.hidden.overdueChargeDisplay, 'unpublished overdue is left out of min/max');
+  ok(!ranks.hidden || !ranks.hidden.emiBounceChargeDisplay, 'unpublished bounce is left out of min/max');
+  ok(ranks.cheap.overdueChargeDisplay === 'low', 'published overdue still ranks without the unpublished bank');
+  var tenth = Object.assign({}, rankDear, { id: 'tenth', processingFee: 50 });
+  var ranksAll = compare.buildCompareRanks([
+    rankCheap, rankDear, rankTie, rankHidden,
+    Object.assign({}, rankDear, { id: 'r5', processingFee: 4000 }),
+    Object.assign({}, rankDear, { id: 'r6', processingFee: 4100 }),
+    Object.assign({}, rankDear, { id: 'r7', processingFee: 4200 }),
+    Object.assign({}, rankDear, { id: 'r8', processingFee: 4300 }),
+    Object.assign({}, rankDear, { id: 'r9', processingFee: 4400 }),
+    tenth
+  ]);
+  ok(ranksAll.tenth.processingFee === 'low', 'Lowest uses every matching bank, not only the first visible rows');
+  ok(ranksAll.cheap.processingFee !== 'low', 'a visible cheap fee is not Lowest if a later bank is cheaper');
+  ok(compare.overdueGraceDays(rankDear) === 7, 'grace days come from that bank overdue charge');
+  ok(compare.gracePillLabel(7) === '7-day grace', 'grace pill says 7-day grace');
+  ok(compare.gracePillLabel(1) === '1-day grace', 'grace pill says 1-day grace');
+  ok(compare.gracePillLabel(15) === '15-day grace', 'grace pill says 15-day grace');
+  ok(compare.gracePillLabel(0) === '', 'no grace pill when days are 0');
+  var overdueCol = { key: 'overdueChargeDisplay', type: 'charge', label: 'Overdue charge' };
+  var feeCol = { key: 'processingFee', type: 'inr', label: 'Processing fee' };
+  var gracePills = compare.compareRankPillsHtml(rankDear, overdueCol, ranks);
+  ok(gracePills.indexOf('Highest') !== -1, 'overdue extreme uses Highest');
+  ok(gracePills.indexOf('7-day grace') !== -1, 'grace pill sits with the overdue figure');
+  ok(gracePills.indexOf('hlc-rank-pills') !== -1, 'pills are grouped under the figure');
+  ok(gracePills.indexOf('Highest loan') === -1, 'pills do not say Highest loan');
+  ok(gracePills.indexOf('here') === -1, 'pills do not say here');
+  var unpublishedPills = compare.compareRankPillsHtml(rankHidden, overdueCol, ranksAll);
+  ok(unpublishedPills === '', 'unpublished overdue has no pill or colour cue');
+  var feePills = compare.compareRankPillsHtml(rankCheap, feeCol, ranks);
+  ok(feePills.indexOf('Lowest') !== -1 && feePills.indexOf('Nil') === -1, 'compare pill is Lowest, not Nil');
+
+  var rateSlabs = [
+    {
+      has_slab_wise_charges: 'Yes',
+      slab_from: 0,
+      slab_to: 2500000,
+      fixed_amount: 5000,
+      charge_name: 'Interest Rate Type Switch'
+    },
+    {
+      has_slab_wise_charges: 'Yes',
+      slab_from: 2500001,
+      slab_to: null,
+      fixed_amount: 10000,
+      charge_name: 'Interest Rate Type Switch'
+    }
+  ];
+  var rateDetails = compare.chargeCalculationDetailsHtml(
+    { rateChangeChargeSlabs: rateSlabs },
+    'rateChangeChargeDisplay'
+  );
+  ok(
+    rateDetails.indexOf('hlc-slab-table') !== -1 && rateDetails.indexOf('5,000') !== -1,
+    'rate-change extra detail is the published range table'
+  );
+  ok(
+    compare.chargeCalculationDetailsHtml(
+      { overdueCharge: { percentage: 0.02 } },
+      'overdueChargeDisplay'
+    ) === '',
+    'a single overdue rule has no extra table under the walk'
+  );
+
+  var walkModel = compare.loanAmountWalkModel(rows[0], query);
+  ok(walkModel.fundedPct === 80, '₹62.5 lakh house uses the 80% band');
+  ok(walkModel.cardLoad === 0, 'card load is present at ₹0');
+  ok(walkModel.result === rows[0].loanAmount, 'walk result matches table loan amount');
+
+  var barHtml = compare.mathBarHtml(1, 'Test', 'Note', '₹1');
+  ok(
+    barHtml.indexOf('hlc-math-bar-num') !== -1 && barHtml.indexOf('>1<') !== -1,
+    'numbered bar markup has a step number'
+  );
+  ok(
+    barHtml.indexOf('hlc-math-sheet') !== -1 && barHtml.indexOf('₹1') !== -1,
+    'numbered bar amount sits in a maths column'
+  );
+  ok(
+    compare.mathBarHtml(1, 'Test', 'Note', '₹1', {
+      lines: [
+        { k: 'num', t: '₹100' },
+        { k: 'op', t: '× 80%' },
+        { k: 'rule' },
+        { k: 'result', t: '₹80' }
+      ]
+    }).indexOf('hlc-math-op') !== -1,
+    'numbered bar can show a times-and-line working'
+  );
 }
 
 function testReviewCapture() {

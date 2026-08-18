@@ -10,164 +10,57 @@
             <h2 class="visually-hidden" id="hlc-inputs-heading">Loan inputs</h2>
             <div class="hlc-inputs-card">
             <form class="hlc-form" id="hlc-inputs" autocomplete="off" novalidate aria-labelledby="hlc-inputs-heading">
-              <div class="hlc-form-primary-grid">
-                <div class="hlc-form-zone hlc-form-zone--hero">
+              <div class="hlc-form-pairs">
+                <div class="hlc-form-row hlc-form-row--hero">
+                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Determines how much you can borrow</p></div>
+                  <div class="hlc-form-row-fields">
                   <label class="hlc-field hlc-field--hero" for="hlc-monthly-income">
                     <span class="hlc-field-label-row">
-                      <span class="hlc-field-label">Monthly income<span class="hlc-req" aria-hidden="true">*</span><span class="hlc-field-help-anchor"><button
+                      <span class="hlc-field-label">Net monthly income<sup class="hlc-req" aria-hidden="true">*</sup><span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-monthly-income"
-                        aria-label="About Monthly income"
+                        aria-label="About Net monthly income"
                       >
-                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
+                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-monthly-income" role="tooltip" hidden>
                       <p class="hlc-field-help-text">Sets how much loan banks can offer you. Use take-home, not CTC.</p>
                       <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
                     </div></span></span>
                     </span>
                     <span class="hlc-input-shell hlc-input-shell--hero">
-                      <span class="hlc-prefix" aria-hidden="true">₹</span>
+                      <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
                       <input type="text" id="hlc-monthly-income" name="monthlyIncome" value="1,00,000" placeholder="1,00,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10" required>
                     </span>
                     <span class="hlc-field-note" id="hlc-monthly-income-note"></span>
                     </label>
-                </div>
-
-                <div class="hlc-form-zone hlc-form-zone--hero">
                   <label class="hlc-field hlc-field--hero hlc-field--property" for="hlc-property-value">
                     <span class="hlc-field-label-row">
-                      <span class="hlc-field-label">Property agreement <span class="hlc-field-label-tail">value<span class="hlc-req" aria-hidden="true">*</span><span class="hlc-field-help-anchor"><button
+                      <span class="hlc-field-label">Property value<span class="hlc-field-label-qualifier"> as per agreement</span><sup class="hlc-req" aria-hidden="true">*</sup><span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-property-value"
-                        aria-label="About Property agreement value"
+                        aria-label="About Property value"
                       >
-                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
+                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-property-value" role="tooltip" hidden>
                       <p class="hlc-field-help-text">Sets the ceiling on the loan against this house. Use the sale agreement price.</p>
                       <a class="hlc-field-help-more" href="guide.html#loan-amount-property">Learn more</a>
-                    </div></span></span></span>
+                    </div></span></span>
                     </span>
                     <span class="hlc-input-shell hlc-input-shell--hero">
-                      <span class="hlc-prefix" aria-hidden="true">₹</span>
+                      <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
                       <input type="text" id="hlc-property-value" name="propertyValue" value="62,50,000" placeholder="62,50,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10" required>
                     </span>
-                    <span class="hlc-field-note" id="hlc-loan-hint" aria-live="polite"></span>
                     </label>
-                </div>
-
-                <div class="hlc-form-zone hlc-form-zone--pair">
-                  <div class="hlc-form-zone-fields">
-                    <label class="hlc-field" for="hlc-age">
-                      <span class="hlc-field-label-row">
-                        <span class="hlc-field-label">Age<span class="hlc-req" aria-hidden="true">*</span><span class="hlc-field-help-anchor"><button
-                          type="button"
-                          class="hlc-field-help"
-                          aria-expanded="false"
-                          aria-controls="hlc-help-age"
-                          aria-label="About Age"
-                        >
-                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
-                        </button><div class="hlc-field-help-popover" id="hlc-help-age" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Sets the longest tenure banks will allow.</p>
-                        <a class="hlc-field-help-more" href="guide.html#tenure">Learn more</a>
-                      </div></span></span>
-                    </span>
-                      <span class="hlc-input-shell">
-                        <input type="text" id="hlc-age" name="age" value="35" placeholder="35" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2" required>
-                        <span class="hlc-suffix" aria-hidden="true">years</span>
-                      </span>
-                      <span class="hlc-field-note" id="hlc-age-note"></span>
-                      </label>
-                    <label class="hlc-field" for="hlc-cibil">
-                      <span class="hlc-field-label-row">
-                        <span class="hlc-field-label">CIBIL score<span class="hlc-req" aria-hidden="true">*</span><span class="hlc-field-help-anchor"><button
-                          type="button"
-                          class="hlc-field-help"
-                          aria-expanded="false"
-                          aria-controls="hlc-help-cibil"
-                          aria-label="About CIBIL score"
-                        >
-                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
-                        </button><div class="hlc-field-help-popover" id="hlc-help-cibil" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Changes the rates banks show you.</p>
-                      </div></span></span>
-                    </span>
-                      <span class="hlc-input-shell">
-                        <input type="text" id="hlc-cibil" name="cibilScore" value="780" placeholder="780" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="3" data-hlc-max="900" required>
-                      </span>
-                      <span class="hlc-field-note" id="hlc-cibil-note"></span>
-                      </label>
                   </div>
                 </div>
 
-                <div class="hlc-form-zone hlc-form-zone--choices">
-                  <div class="hlc-form-zone-fields">
-                    <div class="hlc-field hlc-field--occupation">
-                      <span class="hlc-field-label-row">
-                        <span class="hlc-field-label" id="hlc-occupation-label">Occupation<span class="hlc-req" aria-hidden="true">*</span><span class="hlc-field-help-anchor"><button
-                          type="button"
-                          class="hlc-field-help"
-                          aria-expanded="false"
-                          aria-controls="hlc-help-occupation"
-                          aria-label="About Occupation"
-                        >
-                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
-                        </button><div class="hlc-field-help-popover" id="hlc-help-occupation" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Changes which offers and rates you see.</p>
-                        <a class="hlc-field-help-more" href="guide-documents.html#income">Learn more</a>
-                      </div></span></span>
-                    </span>
-                      <div class="hlc-segmented hlc-occupation-pills" role="group" aria-labelledby="hlc-occupation-label">
-                        <button type="button" class="hlc-chip" data-occupation="Salaried" aria-pressed="true">Salaried</button>
-                        <button type="button" class="hlc-chip" data-occupation="Self-Employed" aria-pressed="false">Self-employed</button>
-                      </div>
-                      <input type="hidden" id="hlc-occupation" name="occupation" value="Salaried">
-                      <span class="hlc-field-note" id="hlc-occupation-note"></span>
-                    </div>
-                    <div class="hlc-field hlc-field--purpose">
-                      <span class="hlc-field-label-row">
-                        <span class="hlc-field-label" id="hlc-purpose-label">Purpose<span class="hlc-req" aria-hidden="true">*</span><span class="hlc-field-help-anchor"><button
-                          type="button"
-                          class="hlc-field-help"
-                          aria-expanded="false"
-                          aria-controls="hlc-help-purpose"
-                          aria-label="About Purpose"
-                        >
-                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
-                        </button><div class="hlc-field-help-popover" id="hlc-help-purpose" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Top-up adds money on a home loan you already have.</p>
-                      </div></span></span>
-                    </span>
-                      <div class="hlc-segmented hlc-purpose-pills" role="group" aria-labelledby="hlc-purpose-label">
-                        <button type="button" class="hlc-chip" data-purpose="Regular Home Loan" aria-pressed="true">Regular</button>
-                        <button type="button" class="hlc-chip" data-purpose="Top-up Loan" aria-pressed="false">Top-up</button>
-                      </div>
-                      <input type="hidden" id="hlc-purpose" name="purpose" value="Regular Home Loan">
-                      <span class="hlc-field-note" id="hlc-purpose-note"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="hlc-form-actions">
-              <details class="hlc-form-more" id="hlc-form-more">
-                <summary class="hlc-form-more-toggle">
-                  <span class="hlc-form-more-copy">
-                    <span class="hlc-form-more-title">
-                      <span class="hlc-form-more-label">Adjust eligibility</span>
-                      <svg class="hlc-form-more-chevron" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                        <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    </span>
-                    <span class="hlc-form-more-hint">Existing EMIs, credit cards, income share for EMIs, tenure, co-applicant</span>
-                  </span>
-                </summary>
-                <div class="hlc-form-more-panel" id="hlc-form-more-panel">
-                  <div class="hlc-form-fields hlc-form-fields--more">
+                <div class="hlc-form-row hlc-form-row--reduce">
+                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Reduces how much you can borrow</p></div>
+                  <div class="hlc-form-row-fields">
                     <label class="hlc-field" for="hlc-existing-emis">
                       <span class="hlc-field-label-row">
                         <span class="hlc-field-label">Existing EMIs<span class="hlc-field-help-anchor"><button
@@ -177,17 +70,17 @@
                           aria-controls="hlc-help-existing-emis"
                           aria-label="About Existing EMIs"
                         >
-                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
+                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-existing-emis" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Lowers how much new loan you can get.</p>
+                        <p class="hlc-field-help-text">Each rupee of EMI here comes off what you can borrow.</p>
                         <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
                       </div></span></span>
                     </span>
                       <span class="hlc-input-shell">
-                        <span class="hlc-prefix" aria-hidden="true">₹</span>
+                        <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
                         <input type="text" id="hlc-existing-emis" name="existingEmis" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
                       </span>
-                      </label>
+                    </label>
                     <div class="hlc-field">
                       <div class="hlc-field-label-row">
                         <span class="hlc-field-label-cluster"><label class="hlc-field-label" for="hlc-card-limits">Credit card limits</label><span class="hlc-field-help-anchor"><button
@@ -197,45 +90,51 @@
                           aria-controls="hlc-help-card-limits"
                           aria-label="About Credit card limits"
                         >
-                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
+                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-card-limits" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Part of this counts as monthly load — the limit, not what you owe.</p>
+                        <p class="hlc-field-help-text">Banks count 10% of all card limits as an EMI. That cuts the loan.</p>
                         <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
                       </div></span></span>
                       </div>
                       <span class="hlc-input-shell">
-                        <span class="hlc-prefix" aria-hidden="true">₹</span>
+                        <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
                         <input type="text" id="hlc-card-limits" name="cardLimits" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
                       </span>
-                      <p class="hlc-field-note">
+                      <p class="hlc-field-note hlc-field-note--card-load">
                         About
                         <select
                           class="hlc-inline-pct-select"
                           id="hlc-card-load-pct"
                           name="cardLoadPct"
-                          aria-label="Share of credit card limits counted as monthly load"
+                          aria-label="Share of this credit card limit counted as monthly EMI"
                         >
                           <option value="0">0%</option>
                           <option value="5">5%</option>
                           <option value="10" selected>10%</option>
                         </select>
-                        counts as monthly load
+                        of this limit counts as monthly EMI
                       </p>
-                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hlc-form-row hlc-form-row--emi">
+                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Alters loan amount and EMI</p></div>
+                  <div class="hlc-form-row-fields">
                     <label class="hlc-field hlc-field--foir" for="hlc-foir">
                       <span class="hlc-field-label-row">
-                        <span class="hlc-field-label">Share of income for<span class="hlc-foir-mobile-break" aria-hidden="true"></span><span class="hlc-foir-rest"> EMIs /<br><span class="hlc-field-label-keep">FOIR<span class="hlc-field-help-anchor"><button
+                        <span class="hlc-field-label">EMI limit / FOIR<span class="hlc-field-help-anchor"><button
                           type="button"
                           class="hlc-field-help"
                           aria-expanded="false"
                           aria-controls="hlc-help-foir"
-                          aria-label="About Share of income for EMIs / FOIR"
+                          aria-label="About EMI limit / FOIR"
                         >
-                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
+                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-foir" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Cap on EMIs versus income. Leave at 55% unless you know another figure.</p>
+                        <p class="hlc-field-help-text">Share of take-home that can go to EMIs. 55% is the usual cap. Leave it unless you know another figure.</p>
                         <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
-                      </div></span></span></span></span>
+                      </div></span></span>
                     </span>
                       <span class="hlc-input-shell hlc-input-shell--select hlc-input-shell--has-face">
                         <select id="hlc-foir" name="foirPct">
@@ -249,19 +148,19 @@
                           <span class="hlc-select-face-value">55%</span><span class="hlc-select-face-tag"> (default)</span>
                         </span>
                       </span>
-                      </label>
+                    </label>
                     <label class="hlc-field hlc-field--tenure" for="hlc-tenure">
                       <span class="hlc-field-label-row">
-                        <span class="hlc-field-label">Tenure<span class="hlc-req" aria-hidden="true">*</span><span class="hlc-field-help-anchor"><button
+                        <span class="hlc-field-label">Loan tenure<sup class="hlc-req" aria-hidden="true">*</sup><span class="hlc-field-help-anchor"><button
                           type="button"
                           class="hlc-field-help"
                           aria-expanded="false"
                           aria-controls="hlc-help-tenure"
-                          aria-label="About Tenure"
+                          aria-label="About Loan tenure"
                         >
-                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
+                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-tenure" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Years to repay. Changes your EMI.</p>
+                        <p class="hlc-field-help-text">How many years you want to repay. Longer years, smaller EMI, more interest.</p>
                         <a class="hlc-field-help-more" href="guide.html#tenure">Learn more</a>
                       </div></span></span>
                     </span>
@@ -270,101 +169,153 @@
                         <span class="hlc-suffix" aria-hidden="true">years</span>
                       </span>
                       <span class="hlc-field-note" id="hlc-tenure-note"></span>
-                      </label>
-                    <div class="hlc-coapplicant-row" id="hlc-coapplicant-row">
-                      <div class="hlc-coapplicant-toggle-cell">
-                        <div class="hlc-field hlc-field--coapplicant">
-                          <span class="hlc-field-label-row">
-                            <span class="hlc-field-label" id="hlc-coapplicant-label">Co-applicant<span class="hlc-field-help-anchor"><button
-                              type="button"
-                              class="hlc-field-help"
-                              aria-expanded="false"
-                              aria-controls="hlc-help-coapplicant"
-                              aria-label="About Co-applicant"
-                            >
-                              <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
-                            </button><div class="hlc-field-help-popover" id="hlc-help-coapplicant" role="tooltip" hidden>
-                            <p class="hlc-field-help-text">Adds a second person’s income to what you can borrow.</p>
-                            <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
-                          </div></span></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="hlc-form-row hlc-form-row--rate">
+                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Alters rate, years and offers</p></div>
+                  <div class="hlc-form-row-fields">
+                    <label class="hlc-field" for="hlc-age">
+                      <span class="hlc-field-label-row">
+                        <span class="hlc-field-label">Age<sup class="hlc-req" aria-hidden="true">*</sup><span class="hlc-field-help-anchor"><button
+                          type="button"
+                          class="hlc-field-help"
+                          aria-expanded="false"
+                          aria-controls="hlc-help-age"
+                          aria-label="About Age"
+                        >
+                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
+                        </button><div class="hlc-field-help-popover" id="hlc-help-age" role="tooltip" hidden>
+                        <p class="hlc-field-help-text">Sets the longest tenure banks will allow.</p>
+                        <a class="hlc-field-help-more" href="guide.html#tenure">Learn more</a>
+                      </div></span></span>
                     </span>
-                          <div class="hlc-segmented hlc-coapplicant-pills" role="group" aria-labelledby="hlc-coapplicant-label">
-                            <button type="button" class="hlc-chip" data-coapplicant="no" aria-pressed="true">No</button>
-                            <button type="button" class="hlc-chip" data-coapplicant="yes" aria-pressed="false">Yes</button>
+                      <span class="hlc-input-shell">
+                        <input type="text" id="hlc-age" name="age" value="35" placeholder="35" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2" required>
+                        <span class="hlc-suffix" aria-hidden="true">years</span>
+                      </span>
+                      <span class="hlc-field-note" id="hlc-age-note"></span>
+                    </label>
+                    <label class="hlc-field" for="hlc-cibil">
+                      <span class="hlc-field-label-row">
+                        <span class="hlc-field-label">CIBIL score<sup class="hlc-req" aria-hidden="true">*</sup><span class="hlc-field-help-anchor"><button
+                          type="button"
+                          class="hlc-field-help"
+                          aria-expanded="false"
+                          aria-controls="hlc-help-cibil"
+                          aria-label="About CIBIL score"
+                        >
+                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
+                        </button><div class="hlc-field-help-popover" id="hlc-help-cibil" role="tooltip" hidden>
+                        <p class="hlc-field-help-text">Changes the rates banks show you.</p>
+                      </div></span></span>
+                    </span>
+                      <span class="hlc-input-shell">
+                        <input type="text" id="hlc-cibil" name="cibilScore" value="780" placeholder="780" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="3" data-hlc-max="900" required>
+                      </span>
+                      <span class="hlc-field-note" id="hlc-cibil-note"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="hlc-form-row hlc-form-row--choices">
+                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Alters scheme and loan type</p></div>
+                  <div class="hlc-form-row-fields">
+                    <label class="hlc-field hlc-field--occupation" for="hlc-occupation">
+                      <span class="hlc-field-label-row">
+                        <span class="hlc-field-label">Occupation<sup class="hlc-req" aria-hidden="true">*</sup><span class="hlc-field-help-anchor"><button
+                          type="button"
+                          class="hlc-field-help"
+                          aria-expanded="false"
+                          aria-controls="hlc-help-occupation"
+                          aria-label="About Occupation"
+                        >
+                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
+                        </button><div class="hlc-field-help-popover" id="hlc-help-occupation" role="tooltip" hidden>
+                        <p class="hlc-field-help-text">Changes which offers and rates you see.</p>
+                        <a class="hlc-field-help-more" href="guide-documents.html#income">Learn more</a>
+                      </div></span></span>
+                    </span>
+                      <span class="hlc-input-shell hlc-input-shell--select hlc-input-shell--has-face">
+                        <select id="hlc-occupation" name="occupation" required>
+                          <option value="Salaried" selected data-face="Salaried">Salaried</option>
+                          <option value="Self-Employed" data-face="Self-emp">Self-employed</option>
+                        </select>
+                        <span class="hlc-select-face" id="hlc-occupation-face" aria-hidden="true">
+                          <span class="hlc-select-face-value">Salaried</span>
+                        </span>
+                      </span>
+                      <span class="hlc-field-note" id="hlc-occupation-note"></span>
+                    </label>
+                    <label class="hlc-field hlc-field--purpose" for="hlc-purpose">
+                      <span class="hlc-field-label-row">
+                        <span class="hlc-field-label">Purpose<sup class="hlc-req" aria-hidden="true">*</sup><span class="hlc-field-help-anchor"><button
+                          type="button"
+                          class="hlc-field-help"
+                          aria-expanded="false"
+                          aria-controls="hlc-help-purpose"
+                          aria-label="About Purpose"
+                        >
+                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
+                        </button><div class="hlc-field-help-popover" id="hlc-help-purpose" role="tooltip" hidden>
+                        <p class="hlc-field-help-text">Top-up adds money on a home loan you already have.</p>
+                      </div></span></span>
+                    </span>
+                      <span class="hlc-input-shell hlc-input-shell--select hlc-input-shell--has-face">
+                        <select id="hlc-purpose" name="purpose" required>
+                          <option value="Regular Home Loan" selected>New</option>
+                          <option value="Top-up Loan">Top-up</option>
+                        </select>
+                        <span class="hlc-select-face" id="hlc-purpose-face" aria-hidden="true">
+                          <span class="hlc-select-face-value">New</span>
+                        </span>
+                      </span>
+                      <span class="hlc-field-note" id="hlc-purpose-note"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="hlc-form-row hlc-form-row--coapplicant">
+                  <div class="hlc-form-more" id="hlc-form-more">
+                    <div class="hlc-form-more-panel" id="hlc-form-more-panel">
+                      <div class="hlc-coapplicant-row" id="hlc-coapplicant-row">
+                        <div class="hlc-coapplicant-toggle-cell">
+                          <div class="hlc-coapplicant-inline">
+                            <p class="hlc-coapplicant-copy">To get a higher loan amount, add a co-applicant with income.</p>
+                            <div class="hlc-coapplicant-pills">
+                              <button
+                                type="button"
+                                class="hlc-coapplicant-action"
+                                id="hlc-co-toggle"
+                                aria-pressed="false"
+                                aria-controls="hlc-coapplicant-fields"
+                                aria-label="Add co-applicant"
+                              ><span class="hlc-coapplicant-action-label">Add</span><svg class="hlc-coapplicant-action-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            </div>
+                            <input type="hidden" id="hlc-coapplicant" name="includeCoApplicant" value="no">
                           </div>
-                          <input type="hidden" id="hlc-coapplicant" name="includeCoApplicant" value="no">
                         </div>
-                      </div>
-                      <div class="hlc-coapplicant-fields" id="hlc-coapplicant-fields" hidden>
-                        <div class="hlc-form-fields hlc-form-fields--coapplicant">
-                          <label class="hlc-field" for="hlc-co-income">
-                            <span class="hlc-field-label-row">
-                              <span class="hlc-field-label">Co-applicant income<span class="hlc-field-help-anchor"><button
-                                type="button"
-                                class="hlc-field-help"
-                                aria-expanded="false"
-                                aria-controls="hlc-help-co-income"
-                                aria-label="About Co-applicant income"
-                              >
-                                <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
-                              </button><div class="hlc-field-help-popover" id="hlc-help-co-income" role="tooltip" hidden>
-                              <p class="hlc-field-help-text">Added to yours for eligibility.</p>
-                              <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
-                            </div></span></span>
-                    </span>
-                            <span class="hlc-input-shell">
-                              <span class="hlc-prefix" aria-hidden="true">₹</span>
-                              <input type="text" id="hlc-co-income" name="coMonthlyIncome" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
-                            </span>
-                            </label>
-                          <label class="hlc-field" for="hlc-co-existing-emis">
-                            <span class="hlc-field-label-row">
-                              <span class="hlc-field-label">Co-applicant EMIs<span class="hlc-field-help-anchor"><button
-                                type="button"
-                                class="hlc-field-help"
-                                aria-expanded="false"
-                                aria-controls="hlc-help-co-emis"
-                                aria-label="About Co-applicant EMIs"
-                              >
-                                <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
-                              </button><div class="hlc-field-help-popover" id="hlc-help-co-emis" role="tooltip" hidden>
-                              <p class="hlc-field-help-text">Lowers eligibility the same way yours do.</p>
-                              <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
-                            </div></span></span>
-                    </span>
-                            <span class="hlc-input-shell">
-                              <span class="hlc-prefix" aria-hidden="true">₹</span>
-                              <input type="text" id="hlc-co-existing-emis" name="coExistingEmis" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
-                            </span>
-                            </label>
-                          <label class="hlc-field" for="hlc-co-card-limits">
-                            <span class="hlc-field-label-row">
-                              <span class="hlc-field-label">Co-applicant card limits<span class="hlc-field-help-anchor"><button
-                                type="button"
-                                class="hlc-field-help"
-                                aria-expanded="false"
-                                aria-controls="hlc-help-co-cards"
-                                aria-label="About Co-applicant card limits"
-                              >
-                                <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
-                              </button><div class="hlc-field-help-popover" id="hlc-help-co-cards" role="tooltip" hidden>
-                              <p class="hlc-field-help-text">Counted like your card limits.</p>
-                              <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
-                            </div></span></span>
-                    </span>
-                            <span class="hlc-input-shell">
-                              <span class="hlc-prefix" aria-hidden="true">₹</span>
-                              <input type="text" id="hlc-co-card-limits" name="coCardLimits" value="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
-                            </span>
-                            </label>
+                        <div class="hlc-coapplicant-income-cell hlc-coapplicant-fields" id="hlc-coapplicant-fields" hidden>
+                          <div class="hlc-coapplicant-list" id="hlc-coapplicant-list"></div>
+                          <div class="hlc-coapplicant-list-foot">
+                            <button
+                              type="button"
+                              class="hlc-coapplicant-add"
+                              id="hlc-coapplicant-add"
+                            ><span class="hlc-coapplicant-add-mark" aria-hidden="true">+</span><span class="hlc-coapplicant-add-label">Add another co-applicant</span></button>
+                            <p class="hlc-coapplicant-limit" id="hlc-coapplicant-limit" role="status"></p>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </details>
+              </div>
+
+              <div class="hlc-form-actions">
               <div class="hlc-form-submit">
-                <button type="submit" class="home-hero-cta home-hero-cta-secondary" id="hlc-see-options">See options</button>
+                <button type="submit" class="home-hero-cta home-hero-cta-primary hlc-compare-cta" id="hlc-see-options"><svg class="hlc-compare-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m317-160-42-42 121-121H80v-60h316L275-504l42-42 193 193-193 193Zm326-254L450-607l193-193 42 42-121 121h316v60H564l121 121-42 42Z"/></svg><span class="hlc-compare-label">Compare</span></button>
               </div>
               </div>
             </form>
@@ -401,19 +352,6 @@
                       <button type="button" class="hlc-column-tab" role="tab" data-group="laterCharges" aria-selected="false">Other charges</button>
                     </div>
                   </div>
-                  <div class="hlc-edit-inputs-control">
-                    <button
-                      type="button"
-                      class="hlc-edit-inputs"
-                      id="hlc-edit-inputs"
-                      aria-label="Edit inputs"
-                    >
-                      <svg class="hlc-edit-inputs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
-                      </svg>
-                      <span class="hlc-edit-inputs-label">edit</span>
-                    </button>
-                  </div>
                 </div>
                 <div class="hlc-filters-control" id="hlc-filters-control">
                   <button
@@ -424,8 +362,8 @@
                     aria-controls="hlc-filters-panel"
                     aria-label="Filters"
                   >
-                    <svg class="hlc-filters-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"/>
+                    <svg class="hlc-filters-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false">
+                      <path fill="currentColor" d="M440-160q-17 0-28.5-11.5T400-200v-240L168-736q-15-20-4.5-42t36.5-22h560q26 0 36.5 22t-4.5 42L560-440v240q0 17-11.5 28.5T520-160h-80Zm40-308 198-252H282l198 252Zm0 0Z"/>
                     </svg>
                     <span class="hlc-filters-toggle-label">filter</span>
                     <span class="hlc-filters-badge" id="hlc-filters-badge" hidden></span>
@@ -437,6 +375,8 @@
                 </div>
               </div>
             </div>
+
+            <p class="hlc-income-basis-note" id="hlc-income-basis-note" role="status" aria-live="polite" hidden></p>
 
             <div class="hlc-compare-stage">
               <aside
@@ -469,7 +409,7 @@
                         aria-controls="hlc-help-borrower"
                         aria-label="About Borrower"
                       >
-                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
+                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-borrower" role="tooltip" hidden>
                     <p class="hlc-field-help-text">Only if you work for the government or a PSU, or you’re a pensioner.</p>
                   </div></span>
@@ -494,7 +434,7 @@
                         aria-controls="hlc-help-concessions"
                         aria-label="About Concessions"
                       >
-                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
+                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-concessions" role="tooltip" hidden>
                     <p class="hlc-field-help-text">Turns on rate cuts that apply to you.</p>
                     <a class="hlc-field-help-more" href="concessions.html#bank-rates">Learn more</a>
@@ -528,18 +468,29 @@
                         aria-controls="hlc-help-bank-type"
                         aria-label="About Bank type"
                       >
-                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
+                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-bank-type" role="tooltip" hidden>
                     <p class="hlc-field-help-text">Shows only that kind of bank.</p>
                   </div></span>
                     </span>
                   </legend>
-                  <div class="hlc-segmented hlc-bank-type-pills" role="group" aria-labelledby="hlc-bank-type-label">
-                    <button type="button" class="hlc-chip" data-bank-type="All" aria-pressed="true">All</button>
-                    <button type="button" class="hlc-chip" data-bank-type="Public" aria-pressed="false">Public</button>
-                    <button type="button" class="hlc-chip" data-bank-type="Private" aria-pressed="false">Private</button>
+                  <div class="hlc-filter-checks" role="group" aria-labelledby="hlc-bank-type-label">
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="bankPublic" checked />
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">Public</span>
+                        <span class="hlc-filter-option-note">Slower process, usually a better rate.</span>
+                      </span>
+                    </label>
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="bankPrivate" checked />
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">Private</span>
+                        <span class="hlc-filter-option-note">Smoother process, usually a higher rate and fee.</span>
+                      </span>
+                    </label>
                   </div>
-                  </fieldset>
+                </fieldset>
 
                 <fieldset class="hlc-filter-group">
                   <legend class="hlc-filter-legend" id="hlc-rate-label">
@@ -552,21 +503,30 @@
                         aria-controls="hlc-help-rate"
                         aria-label="About Rate"
                       >
-                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
+                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-rate" role="tooltip" hidden>
-                    <p class="hlc-field-help-text">Floating can change later. Fixed stays put for a period.</p>
+                    <p class="hlc-field-help-text">Floating is on by default.</p>
                     <a class="hlc-field-help-more" href="guide.html#rates">Learn more</a>
                   </div></span>
                     </span>
                   </legend>
-                  <div class="hlc-segmented hlc-rate-pills" role="group" aria-labelledby="hlc-rate-label">
-                    <button type="button" class="hlc-chip" data-rate-type="Floating" aria-pressed="true">Floating</button>
-                    <button type="button" class="hlc-chip hlc-chip--stacked" data-rate-type="Fixed" aria-pressed="false">
-                      <span class="hlc-chip-label">Fixed</span>
-                      <span class="hlc-chip-note">About 1–2% higher</span>
-                    </button>
+                  <div class="hlc-filter-checks" role="group" aria-labelledby="hlc-rate-label">
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="rateFloating" checked />
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">Floating</span>
+                        <span class="hlc-filter-option-note">Can move with the benchmark.</span>
+                      </span>
+                    </label>
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="fixedRate" />
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">Fixed</span>
+                        <span class="hlc-filter-option-note">Does not change for a few years (generally 5 years). About 1–2% higher than floating rate.</span>
+                      </span>
+                    </label>
                   </div>
-                  </fieldset>
+                </fieldset>
 
                 <fieldset class="hlc-filter-group">
                   <legend class="hlc-filter-legend" id="hlc-facility-label">
@@ -579,21 +539,40 @@
                         aria-controls="hlc-help-facility"
                         aria-label="About Facility"
                       >
-                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false"><circle cx="8" cy="8" r="8" fill="#e8e8ed"/><circle cx="8" cy="4.55" r="0.95" fill="#1d1d1f"/><rect x="7.15" y="6.55" width="1.7" height="5.35" rx="0.85" fill="#1d1d1f"/></svg></span>
+                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-facility" role="tooltip" hidden>
-                    <p class="hlc-field-help-text">Term loan = set EMI. Overdraft = redraw within a limit.</p>
+                    <p class="hlc-field-help-text">Loan of ₹20 lakh with ₹5 lakh in savings, you pay interest on ₹15 lakh. You can pull that ₹5 lakh or leave it. Costs about 0.15–1% more. For people with spare cash.</p>
                     <a class="hlc-field-help-more" href="guide.html#loan-structure">Learn more</a>
                   </div></span>
                     </span>
                   </legend>
-                  <div class="hlc-segmented hlc-facility-pills" role="group" aria-labelledby="hlc-facility-label">
-                    <button type="button" class="hlc-chip" data-facility-type="Term Loan" aria-pressed="true">Term loan</button>
-                    <button type="button" class="hlc-chip hlc-chip--stacked" data-facility-type="Overdraft" aria-pressed="false">
-                      <span class="hlc-chip-label">Overdraft</span>
-                      <span class="hlc-chip-note">About 0.15–1% higher</span>
-                    </button>
+                  <div class="hlc-filter-checks" role="group" aria-labelledby="hlc-facility-label">
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="facilityTermLoan" checked />
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">Term loan</span>
+                        <span class="hlc-filter-option-note">A general home loan product.</span>
+                      </span>
+                    </label>
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="overdraft" />
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">Overdraft<span class="hlc-field-help-anchor"><button
+                          type="button"
+                          class="hlc-field-help"
+                          aria-expanded="false"
+                          aria-controls="hlc-help-overdraft"
+                          aria-label="About Overdraft"
+                        >
+                          <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
+                        </button><div class="hlc-field-help-popover" id="hlc-help-overdraft" role="tooltip" hidden>
+                        <p class="hlc-field-help-text">Overdraft lets you park extra money and redraw within your limit, but it is usually costlier than a regular term loan.</p>
+                      </div></span></span>
+                        <span class="hlc-filter-option-note">Idle money saves interest. About 0.15–1% higher than term loan</span>
+                      </span>
+                    </label>
                   </div>
-                  </fieldset>
+                </fieldset>
                 </div>
                 <div class="hlc-filters-foot">
                   <button type="button" class="hlc-btn-primary hlc-filters-done" id="hlc-filters-done">

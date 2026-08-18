@@ -471,7 +471,6 @@
   .guide-flip-link-arrow,
   .calc-amort-toggle-arrow,
   .hlc-show-more-arrow,
-  .hlc-form-more-chevron,
   .mag-toc-compact-chevron,
   .hlc-charge-detail-arrow {
     display: block;
@@ -1337,12 +1336,22 @@
     }
   }
 
-  /* Pre-footer help: floats above the footer with space on both sides. */
+  /*
+   * When help follows the get-started band, drop the tall empty pad under the
+   * button so help sits on the footer unit — keep the top air for the headline.
+   * Placed after the width ladders so padding-block shorthand does not win.
+   */
+  .site-prefooter-cta:has(+ .site-help-strip) {
+    margin-block-end: 0;
+    padding-block-end: clamp(2.25rem, 4vw, 3rem);
+  }
+
+  /* Help strip: footer chrome. Flush to content above and footer below. Same on every page. */
   .site-help-strip {
     box-sizing: border-box;
     width: 100%;
-    margin-block-start: clamp(2rem, 5vw, 3.25rem);
-    margin-block-end: clamp(2.5rem, 6vw, 4rem);
+    margin-block-start: 0;
+    margin-block-end: 0;
     /* Enough band for --shroffin-btn-touch links without clipping the hit box. */
     padding-block: max(0.75rem, calc((var(--shroffin-btn-touch) - 1.5em) / 2 + 0.35rem));
     padding-inline: max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right));
@@ -1350,6 +1359,11 @@
     border-block-end: 1px solid var(--shroffin-rule);
     text-align: center;
     font-family: var(--shroffin-font);
+  }
+
+  /* Help strip already draws the join line — don't stack a second one on the footer. */
+  .site-help-strip + .site-footer {
+    border-block-start: 0;
   }
 
   .site-help-strip-text {
@@ -1760,6 +1774,10 @@
     letter-spacing: -0.01em;
   }
 
+  .site-footer-disclaimer {
+    color: var(--shroffin-ink);
+  }
+
   .site-footer-disclaimer p {
     margin: 0 0 0.5rem;
   }
@@ -1770,7 +1788,6 @@
 
   .site-footer-disclaimer-summary {
     margin: 0 0 0.35rem;
-    color: var(--shroffin-ink);
   }
 
   .site-footer-disclaimer-more > summary {
@@ -2400,7 +2417,8 @@
     }
 
     .home-hero-copy {
-      padding-block: 2rem 3rem;
+      padding-block-start: calc(2.5rem - var(--shroffin-gn-height) / 2);
+      padding-block-end: calc(2.5rem + var(--shroffin-gn-height) / 2);
     }
 
     .lm-card {

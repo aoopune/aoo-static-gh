@@ -251,7 +251,7 @@
 
     appendPrimaryFact(
       primaryEl,
-      "Monthly income",
+      "Net monthly income",
       formatInr(form.monthlyIncome || query.monthlyIncome)
     );
     appendPrimaryFact(
@@ -261,7 +261,7 @@
     );
     appendPrimaryFact(
       primaryEl,
-      "Age",
+      "Your age",
       formatPlain(form.age != null ? form.age : query.age)
     );
     appendPrimaryFact(
@@ -271,18 +271,39 @@
     );
     appendPrimaryFact(
       primaryEl,
-      "Occupation",
+      "Your occupation",
       formatPlain(form.occupation || query.occupation)
     );
     appendPrimaryFact(
       primaryEl,
-      "Purpose",
+      "Loan purpose",
       formatPlain(form.purpose || query.purpose)
     );
 
-    var rateFixed = Boolean(filters.fixedRate) || query.rateType === "Fixed";
-    var facilityOd =
-      Boolean(filters.overdraft) || query.facilityType === "Overdraft";
+    var rateFixed;
+    if ("rateFloating" in filters || "facilityTermLoan" in filters) {
+      rateFixed =
+        Boolean(filters.fixedRate) && !Boolean(filters.rateFloating)
+          ? true
+          : Boolean(filters.rateFloating) && !Boolean(filters.fixedRate)
+            ? false
+            : query.rateType === "Fixed";
+    } else {
+      rateFixed = Boolean(filters.fixedRate) || query.rateType === "Fixed";
+    }
+
+    var facilityOd;
+    if ("facilityTermLoan" in filters) {
+      facilityOd =
+        Boolean(filters.overdraft) && !Boolean(filters.facilityTermLoan)
+          ? true
+          : Boolean(filters.facilityTermLoan) && !Boolean(filters.overdraft)
+            ? false
+            : query.facilityType === "Overdraft";
+    } else {
+      facilityOd =
+        Boolean(filters.overdraft) || query.facilityType === "Overdraft";
+    }
 
     appendPrimaryFact(primaryEl, "Rate type", rateFixed ? "Fixed" : "Floating");
     appendPrimaryFact(
@@ -308,7 +329,7 @@
     );
     appendFact(
       detailsEl,
-      "Card EMI load",
+      "Credit card monthly load",
       form.cardLoadPct != null || query.cardLoadPct != null
         ? formatPlain(
             (form.cardLoadPct != null ? form.cardLoadPct : query.cardLoadPct) +
@@ -318,7 +339,7 @@
     );
     appendFact(
       detailsEl,
-      "Share of income for EMIs / FOIR",
+      "EMI limit / FOIR",
       form.foirPct != null || query.foirPct != null
         ? formatPlain(
             (form.foirPct != null ? form.foirPct : query.foirPct) + "%"

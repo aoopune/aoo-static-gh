@@ -181,6 +181,13 @@ async function expectSharedShell(page, entry) {
     ).toHaveText('91123 34367');
     await expect(page.locator('.site-help-strip')).toHaveCSS('border-top-width', '1px');
     await expect(page.locator('.site-help-strip')).toHaveCSS('border-bottom-width', '1px');
+    const help = page.locator('.site-help-strip');
+    const helpBox = await help.evaluate(function (node) {
+      const style = getComputedStyle(node);
+      return { marginTop: style.marginTop, marginBottom: style.marginBottom };
+    });
+    expect(helpBox.marginTop).toBe('0px');
+    expect(helpBox.marginBottom).toBe('0px');
   }
   await expect(page.locator('.site-footer-directory')).toHaveCount(1);
   await expect(page.locator('.site-footer-heading')).toHaveCount(5);
@@ -188,7 +195,11 @@ async function expectSharedShell(page, entry) {
     'Regulators and official resources'
   );
   await expect(page.locator('.site-footer-rule')).toHaveCount(0);
-  await expect(page.locator('footer.site-footer')).toHaveCSS('border-top-width', '1px');
+  // Help strip owns the join hairline; About (no help strip) keeps the footer top border.
+  await expect(page.locator('footer.site-footer')).toHaveCSS(
+    'border-top-width',
+    omitHelpStrip ? '1px' : '0px'
+  );
   await expect(page.locator('.site-footer-legal')).toHaveCSS('border-top-width', '0px');
   await expect(page.locator('.site-footer-legal')).toHaveCSS('border-bottom-width', '0px');
   await expect(page.locator('.site-footer-tagline')).toHaveCount(0);
@@ -246,9 +257,17 @@ async function expectSharedShell(page, entry) {
     )
   ).toHaveCount(1);
   await expect(page.locator('.site-footer-disclaimer-title')).toHaveText('Disclaimer');
-  await expect(page.locator('.site-footer-disclaimer-summary')).toHaveCount(1);
+  await expect(page.locator('.site-footer-disclaimer-summary')).toHaveText(
+    'Shroffin is not a bank, a Non-Banking Financial Company (NBFC), or a lender. We do not approve, sanction, underwrite, or disburse loans. The lender decides your rate, your fees, and whether you are approved.'
+  );
+  await expect(page.locator('.site-footer-disclaimer-turn')).toHaveText(
+    "Even so, we try our best for you. We show each lender's home loan clearly, one next to the other."
+  );
   await expect(page.locator('.site-footer-disclaimer-more')).toHaveCount(1);
   await expect(page.locator('.site-footer-disclaimer p')).toHaveCount(6);
+  await expect(page.locator('.site-footer-disclaimer-full p').first()).toHaveText(
+    "We take each lender's terms and check them with that lender. Then we put the home loans next to each other, so you can compare. We can also help you apply."
+  );
   await expect(page.locator('.site-footer-copy')).toContainText(
     'Copyright © 2026 Shroffin. All rights reserved.'
   );

@@ -17,8 +17,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=e2fc600e44">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=e9bb9faa58">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=088220580a">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=af30fb089e">
 </head>
 <body class="explore-banks-page">
   <!-- SHROFFIN_NAV_START -->
@@ -326,16 +326,16 @@
           <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
             <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
             <div class="site-footer-disclaimer">
-              <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
+              <p class="site-footer-disclaimer-summary">Shroffin is not a bank, a Non-Banking Financial Company (NBFC), or a lender. We do not approve, sanction, underwrite, or disburse loans. The lender decides your rate, your fees, and whether you are approved.</p>
+              <p class="site-footer-disclaimer-turn">Even so, we try our best for you. We show each lender's home loan clearly, one next to the other.</p>
               <details class="site-footer-disclaimer-more">
                 <summary>Read the full disclaimer</summary>
                 <div class="site-footer-disclaimer-panel">
                   <div class="site-footer-disclaimer-full">
-                    <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-                    <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-                    <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-                    <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-                    <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                    <p>We take each lender's terms and check them with that lender. Then we put the home loans next to each other, so you can compare. We can also help you apply.</p>
+                    <p>The rates and rules we show can change. The ones the lender gives you can be different. That still depends on your credit, income, documents, the property, and the checks the lender makes. Some of this may not apply to you, to your city, or when you apply.</p>
+                    <p>Seeing a lender does not mean they will lend to you. We cannot make a lender say yes, or take back a no. When they answer, we go through it with you, and we help you decide what to do. You still choose. What the lender writes is what counts.</p>
+                    <p>If you take the loan, the agreement is with the lender, not with us. We do not become your lender. Read the sanction letter, the key fact statement, and the loan documents before you accept.</p>
                   </div>
                 </div>
               </details>
@@ -361,10 +361,10 @@
   </footer>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/shroffin-home-stance.js?v=d45fb1db51"></script>
+  <script src="../js/shroffin-home-stance.js?v=2c89949b5f"></script>
   <script src="../js/shroffin-nav.js?v=69b8861330"></script>
   <script src="../js/hlc-data-url.generated.js?v=2eb6ecb75c"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=71b241916b"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=d8cc33c2a0"></script>
   <script src="../js/hlc-field-help.js?v=305f463f51"></script>
   <script>
     (function () {
@@ -392,11 +392,13 @@
         form.setAttribute("aria-busy", isBusy ? "true" : "false");
         if (submitBtn) {
           submitBtn.disabled = isBusy;
+          var submitLabel =
+            submitBtn.querySelector(".hlc-compare-label") || submitBtn;
           if (isBusy) {
-            submitBtn.setAttribute("data-hlc-label", submitBtn.textContent);
-            submitBtn.textContent = "Finding options";
+            submitBtn.setAttribute("data-hlc-label", submitLabel.textContent);
+            submitLabel.textContent = "Comparing";
           } else if (submitBtn.getAttribute("data-hlc-label")) {
-            submitBtn.textContent = submitBtn.getAttribute("data-hlc-label");
+            submitLabel.textContent = submitBtn.getAttribute("data-hlc-label");
             submitBtn.removeAttribute("data-hlc-label");
           }
         }
@@ -435,7 +437,7 @@
           /*
            * Phone: park tabs flush under nav. Scroll to the results head — not
            * the input card bottom — so the section gap does not show as dead air.
-           * Form stays in the page; user can scroll back up to edit.
+           * Form stays in the page above results.
            */
           y = Math.max(
             0,
@@ -531,19 +533,6 @@
         event.preventDefault();
         if (busy) return;
 
-        // Open Adjust eligibility if a required field inside it is empty,
-        // so the browser can focus it and show the native required message.
-        var more = document.getElementById("hlc-form-more");
-        if (more && !more.open) {
-          var nestedRequired = more.querySelectorAll("[required]");
-          for (var i = 0; i < nestedRequired.length; i++) {
-            if (!nestedRequired[i].checkValidity()) {
-              more.open = true;
-              break;
-            }
-          }
-        }
-
         if (!form.reportValidity()) return;
 
         if (!resultsShell.hidden && resultsShell.classList.contains("is-visible")) {
@@ -563,278 +552,42 @@
         }, searchMs);
       });
 
-      function inputsScrollTop() {
-        var inputs = document.querySelector(".hlc-inputs-card") || form;
-        if (!inputs) return null;
-
-        var rootStyles = getComputedStyle(document.documentElement);
-        var navOffset =
-          parseFloat(rootStyles.getPropertyValue("--shroffin-gn-offset")) ||
-          parseFloat(rootStyles.getPropertyValue("--shroffin-gn-height")) ||
-          48;
-
-        var y = Math.max(
-          0,
-          inputs.getBoundingClientRect().top + window.pageYOffset - navOffset - 8
-        );
-        var maxY = Math.max(
-          0,
-          document.documentElement.scrollHeight - window.innerHeight
-        );
-        return Math.min(y, maxY);
-      }
-
-      function softScrollToInputs() {
-        var target = inputsScrollTop();
-        if (target == null) return;
-
-        if (scrollRaf) {
-          window.cancelAnimationFrame(scrollRaf);
-          scrollRaf = null;
-        }
-
-        var focusField =
-          document.getElementById("hlc-monthly-income") ||
-          form.querySelector("input, select, textarea");
-
-        function focusInputs() {
-          if (!focusField || typeof focusField.focus !== "function") return;
-          try {
-            focusField.focus({ preventScroll: true });
-          } catch (err) {
-            focusField.focus();
-          }
-        }
-
-        if (reduceMotion) {
-          window.scrollTo(0, target);
-          focusInputs();
-          return;
-        }
-
-        var start = window.pageYOffset;
-        var distance = target - start;
-        if (Math.abs(distance) < 4) {
-          window.scrollTo(0, target);
-          focusInputs();
-          return;
-        }
-
-        var startedAt = null;
-        function step(now) {
-          if (startedAt == null) startedAt = now;
-          var t = Math.min(1, (now - startedAt) / scrollMs);
-          window.scrollTo(0, start + distance * ease(t));
-          if (t < 1) {
-            scrollRaf = window.requestAnimationFrame(step);
-          } else {
-            scrollRaf = null;
-            var settled = inputsScrollTop();
-            if (settled != null) window.scrollTo(0, settled);
-            focusInputs();
-          }
-        }
-        scrollRaf = window.requestAnimationFrame(step);
-      }
-
-      var editInputsBtn = document.getElementById("hlc-edit-inputs");
-      if (editInputsBtn) {
-        editInputsBtn.addEventListener("click", function () {
-          softScrollToInputs();
-        });
-      }
     })();
   </script>
   <script>
     (function () {
-      var details = document.getElementById("hlc-form-more");
-      var panel = document.getElementById("hlc-form-more-panel");
-      if (!details || !panel) return;
-
-      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      var supportsDetailsContent =
-        typeof CSS !== "undefined" &&
-        CSS.supports &&
-        CSS.supports("selector(::details-content)");
-      if (reduceMotion || supportsDetailsContent) return;
-
-      var duration = 900;
-      var ease = "cubic-bezier(0.22, 1, 0.36, 1)";
-      var busy = false;
-      var syncing = false;
-
-      function clearInline() {
-        details.classList.remove("is-animating");
-        panel.style.height = "";
-        panel.style.opacity = "";
-        panel.style.overflow = "";
-        panel.style.transition = "";
-      }
-
-      function animateTo(open) {
-        if (busy) return;
-        busy = true;
-        details.classList.add("is-animating");
-
-        if (open) {
-          syncing = true;
-          details.open = true;
-          syncing = false;
-          panel.style.overflow = "hidden";
-          panel.style.height = "0px";
-          panel.style.opacity = "0";
-          panel.style.transition = "none";
-          void panel.offsetHeight;
-          panel.style.transition =
-            "height " + duration + "ms " + ease + ", opacity " + Math.round(duration * 0.85) + "ms " + ease;
-          panel.style.height = panel.scrollHeight + "px";
-          panel.style.opacity = "1";
-        } else {
-          panel.style.overflow = "hidden";
-          panel.style.height = panel.scrollHeight + "px";
-          panel.style.opacity = "1";
-          panel.style.transition = "none";
-          void panel.offsetHeight;
-          panel.style.transition =
-            "height " + duration + "ms " + ease + ", opacity " + Math.round(duration * 0.75) + "ms " + ease;
-          panel.style.height = "0px";
-          panel.style.opacity = "0";
-        }
-
-        function onEnd(event) {
-          if (event.propertyName !== "height") return;
-          panel.removeEventListener("transitionend", onEnd);
-          if (!open) {
-            syncing = true;
-            details.open = false;
-            syncing = false;
-          }
-          clearInline();
-          busy = false;
-        }
-
-        panel.addEventListener("transitionend", onEnd);
-      }
-
-      details.addEventListener("click", function (event) {
-        var summary = event.target.closest("summary");
-        if (!summary || summary.parentElement !== details) return;
-        event.preventDefault();
-        animateTo(!details.open);
-      });
-
-      new MutationObserver(function () {
-        if (syncing || busy) return;
-        if (!details.open) return;
-        busy = true;
-        details.classList.add("is-animating");
-        panel.style.overflow = "hidden";
-        panel.style.height = "0px";
-        panel.style.opacity = "0";
-        panel.style.transition = "none";
-        void panel.offsetHeight;
-        panel.style.transition =
-          "height " + duration + "ms " + ease + ", opacity " + Math.round(duration * 0.85) + "ms " + ease;
-        panel.style.height = panel.scrollHeight + "px";
-        panel.style.opacity = "1";
-        function onEnd(event) {
-          if (event.propertyName !== "height") return;
-          panel.removeEventListener("transitionend", onEnd);
-          clearInline();
-          busy = false;
-        }
-        panel.addEventListener("transitionend", onEnd);
-      }).observe(details, { attributes: true, attributeFilter: ["open"] });
-    })();
-  </script>
-  <script>
-    (function () {
-      var details = document.getElementById("hlc-form-more");
-      var panel = document.getElementById("hlc-form-more-panel");
-      if (!details || !panel) return;
-
-      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      var scrollMs = 1100;
-      var scrollRaf = null;
-
-      function easeOut(t) {
-        return 1 - Math.pow(1 - t, 3.2);
-      }
-
-      function softScrollBy(delta) {
-        if (!Number.isFinite(delta) || Math.abs(delta) < 8) return;
-
-        if (scrollRaf) {
-          window.cancelAnimationFrame(scrollRaf);
-          scrollRaf = null;
-        }
-
-        if (reduceMotion) {
-          window.scrollBy(0, delta);
-          return;
-        }
-
-        var start = window.pageYOffset;
-        var target = Math.max(0, start + delta);
-        var distance = target - start;
-        var startedAt = null;
-
-        function step(now) {
-          if (startedAt == null) startedAt = now;
-          var t = Math.min(1, (now - startedAt) / scrollMs);
-          window.scrollTo(0, start + distance * easeOut(t));
-          if (t < 1) {
-            scrollRaf = window.requestAnimationFrame(step);
-          } else {
-            scrollRaf = null;
-          }
-        }
-
-        scrollRaf = window.requestAnimationFrame(step);
-      }
-
-      function overflowToReveal() {
-        var pad = 36;
-        var top = panel.getBoundingClientRect().top;
-        var fullBottom = top + Math.max(panel.scrollHeight, panel.getBoundingClientRect().height);
-        var submit = document.querySelector(".hlc-form-submit");
-        if (submit) {
-          fullBottom = Math.max(fullBottom, submit.getBoundingClientRect().bottom);
-        }
-        return fullBottom - (window.innerHeight - pad);
-      }
-
-      details.addEventListener("toggle", function () {
-        if (!details.open) return;
-
-        // Let the panel start opening, then slide the page with it so
-        // the user does not have to scroll to see the new fields.
-        window.setTimeout(function () {
-          softScrollBy(overflowToReveal());
-        }, reduceMotion ? 0 : 120);
-      });
-    })();
-  </script>
-  <script>
-    (function () {
-      var pills = document.querySelector(".hlc-coapplicant-pills");
+      var toggleBtn = document.getElementById("hlc-co-toggle");
       var row = document.getElementById("hlc-coapplicant-row");
       var fields = document.getElementById("hlc-coapplicant-fields");
       var hiddenInput = document.getElementById("hlc-coapplicant");
       var formMore = document.getElementById("hlc-form-more");
       var morePanel = document.getElementById("hlc-form-more-panel");
       var form = document.getElementById("hlc-inputs");
-      if (!pills || !row || !fields || !hiddenInput) return;
+      if (!toggleBtn || !row || !fields || !hiddenInput) return;
 
-      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      var duration = 900;
+      var reduceMotionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
       var busy = false;
 
-      function setPills(on) {
-        pills.querySelectorAll(".hlc-chip[data-coapplicant]").forEach(function (btn) {
-          var selected = (btn.getAttribute("data-coapplicant") === "yes") === on;
-          btn.setAttribute("aria-pressed", selected ? "true" : "false");
-        });
+      var toggleLabel = toggleBtn.querySelector(".hlc-coapplicant-action-label");
+
+      function prefersReducedMotion() {
+        return reduceMotionMq.matches;
+      }
+
+      function heightDurationMs() {
+        if (prefersReducedMotion()) return 0;
+        var raw = window.getComputedStyle(row).transitionDuration || "";
+        var first = raw.split(",")[0].trim();
+        if (!first) return 850;
+        if (first.slice(-2) === "ms") return parseFloat(first) || 850;
+        if (first.slice(-1) === "s") return (parseFloat(first) || 0.85) * 1000;
+        return 850;
+      }
+
+      function setToggle(on) {
+        if (toggleLabel) toggleLabel.textContent = on ? "Close" : "Add";
+        toggleBtn.setAttribute("aria-pressed", on ? "true" : "false");
+        toggleBtn.setAttribute("aria-label", on ? "Close co-applicant" : "Add co-applicant");
         hiddenInput.value = on ? "yes" : "no";
       }
 
@@ -852,28 +605,57 @@
         if (form) form.dispatchEvent(new Event("input", { bubbles: true }));
       }
 
+      function afterHeight(done) {
+        var ms = heightDurationMs();
+        if (ms <= 0) {
+          fields.classList.remove("is-animating");
+          busy = false;
+          releaseMorePanelHeight();
+          if (done) done();
+          return;
+        }
+
+        var settled = false;
+        function finish() {
+          if (settled) return;
+          settled = true;
+          row.removeEventListener("transitionend", onEnd);
+          window.clearTimeout(failSafe);
+          fields.classList.remove("is-animating");
+          busy = false;
+          releaseMorePanelHeight();
+          if (done) done();
+        }
+        function onEnd(ev) {
+          if (ev.target !== row) return;
+          if (ev.propertyName && ev.propertyName !== "grid-template-rows") return;
+          finish();
+        }
+        row.addEventListener("transitionend", onEnd);
+        var failSafe = window.setTimeout(finish, ms + 120);
+      }
+
       function openFields(done) {
         fields.hidden = false;
-        void row.offsetWidth;
+        fields.classList.add("is-animating");
+        void row.offsetHeight;
         row.classList.add("is-coapplicant-open");
         fields.classList.add("is-coapplicant-open");
         releaseMorePanelHeight();
-        if (reduceMotion) {
+        if (prefersReducedMotion()) {
+          fields.classList.remove("is-animating");
           if (done) done();
           return;
         }
         busy = true;
-        window.setTimeout(function () {
-          busy = false;
-          releaseMorePanelHeight();
-          if (done) done();
-        }, duration);
+        afterHeight(done);
       }
 
       function closeFields(done) {
-        if (reduceMotion) {
+        if (prefersReducedMotion()) {
           row.classList.remove("is-coapplicant-open");
           fields.classList.remove("is-coapplicant-open");
+          fields.classList.remove("is-animating");
           fields.hidden = true;
           releaseMorePanelHeight();
           if (done) done();
@@ -881,18 +663,17 @@
         }
 
         busy = true;
+        fields.classList.add("is-animating");
         row.classList.remove("is-coapplicant-open");
         fields.classList.remove("is-coapplicant-open");
-        window.setTimeout(function () {
+        afterHeight(function () {
           fields.hidden = true;
-          busy = false;
-          releaseMorePanelHeight();
           if (done) done();
-        }, duration);
+        });
       }
 
       function applyCoApplicant(on) {
-        setPills(on);
+        setToggle(on);
 
         var isOpen = row.classList.contains("is-coapplicant-open");
         if (on === isOpen) return;
@@ -901,20 +682,42 @@
         else closeFields(notifyFormChange);
       }
 
-      pills.addEventListener(
+      /* This script owns the panel's open/close. The compare bundle owns the
+         co-applicant cards inside it, and drives the panel through here. */
+      window.__hlcCoApplicantPanel = {
+        isOpen: function () {
+          return row.classList.contains("is-coapplicant-open");
+        },
+        set: function (on) {
+          if (busy) return;
+          applyCoApplicant(Boolean(on));
+        }
+      };
+
+      (function syncInitialState() {
+        var on = hiddenInput.value === "yes";
+        setToggle(on);
+        if (on) {
+          fields.hidden = false;
+          row.classList.add("is-coapplicant-open");
+          fields.classList.add("is-coapplicant-open");
+        } else {
+          fields.hidden = true;
+          row.classList.remove("is-coapplicant-open");
+          fields.classList.remove("is-coapplicant-open");
+        }
+      })();
+
+      toggleBtn.addEventListener(
         "click",
         function (event) {
-          var btn = event.target.closest(".hlc-chip[data-coapplicant]");
-          if (!btn || !pills.contains(btn)) return;
-
-          var wantOn = btn.getAttribute("data-coapplicant") === "yes";
           var isOn = hiddenInput.value === "yes";
 
           event.preventDefault();
           event.stopImmediatePropagation();
 
-          if (busy || wantOn === isOn) return;
-          applyCoApplicant(wantOn);
+          if (busy) return;
+          applyCoApplicant(!isOn);
         },
         true
       );
