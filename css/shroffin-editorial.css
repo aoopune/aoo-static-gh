@@ -1296,26 +1296,83 @@ body.guide-reading .mag-index-more:focus-visible {
   box-sizing: border-box;
 }
 
-/* Reveal — fade settles slightly ahead of the move. */
+/*
+ * Section shell stays put — headings and cards own their motion.
+ * (Apple-like: a revealed heading stays visible; it does not ride a
+ * timed section fade that can read as “turning off” when scroll ends.)
+ */
 .guide-moment,
 .mag-reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition:
-    opacity 1.1s var(--ease),
-    transform 1.5s var(--ease);
+  opacity: 1;
+  transform: none;
 }
 
 .guide-moment.is-in,
 .mag-reveal.is-in,
 .guide-moment[id]:target {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
+}
+
+/*
+ * Guide chapter headings — scroll-scrubbed, one-way latch (see shroffin-scrub.js).
+ * Opacity finishes slightly ahead of the move.
+ */
+body.guide-reading .guide-heading-scrub {
+  opacity: calc(0.14 + 0.86 * var(--guide-heading-scrub, 0));
+  transform: translate3d(
+    0,
+    calc((1 - var(--guide-heading-scrub, 0)) * 20px),
+    0
+  );
+}
+
+body.guide-reading .guide-heading-scrub.is-heading-settled {
+  opacity: 1;
+  transform: none;
+}
+
+/* Rule line under the question — follows the heading, a touch later. */
+body.guide-reading
+  .guide-moment--has-heading-scrub:not(.is-heading-settled)
+  .guide-tile-copy--rule {
+  opacity: calc(
+    0.14 +
+      0.86 *
+      clamp(0, (var(--guide-heading-scrub, 0) - 0.1) / 0.9, 1)
+  );
+  transform: translate3d(
+    0,
+    calc(
+      (1 - clamp(0, (var(--guide-heading-scrub, 0) - 0.1) / 0.9, 1)) * 14px
+    ),
+    0
+  );
+}
+
+body.guide-reading .guide-moment.is-heading-settled .guide-tile-copy--rule {
+  opacity: 1;
+  transform: none;
+}
+
+/* In-chapter blocks — scroll-scrubbed; latch at full reveal. */
+body.guide-reading .guide-scrub:not(.is-scrub-done) {
+  opacity: calc(0.22 + 0.78 * var(--guide-scrub, 0));
+  transform: translate3d(
+    0,
+    calc((1 - var(--guide-scrub, 0)) * 16px),
+    0
+  );
+}
+
+body.guide-reading .guide-scrub.is-scrub-done {
+  opacity: 1;
+  transform: none;
 }
 
 /*
  * First chapter only: already on the page — no scroll-in rise.
- * Later chapters keep the calm fade + lift.
+ * Frozen: no heading scrub, no section fade.
  */
 body.guide-reading .guide-story > .mag-section.guide-moment:first-child,
 body.guide-reading .guide-story > .mag-section.guide-moment:first-child.is-in,
@@ -1422,27 +1479,36 @@ body.guide-reading {
  * card behind the flip.
  */
 body.guide-reading .guide-chapter-card {
+  opacity: 0;
   transform: translateY(48px);
-  transition: transform 1.45s var(--ease);
+  transition:
+    opacity 1.1s var(--ease),
+    transform 1.45s var(--ease);
 }
 
 body.guide-reading .guide-chapter-card.is-in {
+  opacity: 1;
   transform: translateY(0);
 }
 
 body.guide-reading .guide-flip-scene {
+  opacity: 0;
   transform: translateY(48px);
   transition:
+    opacity 1.1s var(--ease),
     transform 1.45s var(--ease),
     height var(--guide-flip-duration) var(--ease);
 }
 
 body.guide-reading .guide-flip-scene.is-in {
+  opacity: 1;
   transform: translateY(0);
 }
 
 body.guide-reading .guide-flip-scene .guide-chapter-card,
 body.guide-reading .guide-flip-scene .guide-chapter-card.is-in {
+  /* Scene owns the scroll rise — card must stay readable once the scene is in. */
+  opacity: 1;
   box-shadow: none;
   transform: none;
   transition: none;
@@ -1460,6 +1526,7 @@ body.guide-reading .guide-flip-scene .guide-chapter-card.is-in {
 
   body.guide-reading .guide-chapter-card.is-in,
   body.guide-reading .guide-flip-scene.is-in {
+    opacity: 1;
     transform: translateY(0);
   }
 
@@ -3619,21 +3686,14 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
     margin-top: 0;
   }
 
-  /*
-   * Section settle: readable sooner on phone (was fully invisible → washout).
-   * Still fades in; travel stays modest.
-   */
-  body.guide-reading .guide-moment,
-  body.guide-reading .mag-reveal {
-    opacity: 0.24;
-    transform: translateY(12px);
-  }
-
-  body.guide-reading .guide-moment.is-in,
-  body.guide-reading .mag-reveal.is-in,
-  body.guide-reading .guide-moment[id]:target {
-    opacity: 1;
-    transform: translateY(0);
+  /* Phone: heading scrub starts slightly visible (same latch rules). */
+  body.guide-reading .guide-heading-scrub:not(.is-heading-settled) {
+    opacity: calc(0.28 + 0.72 * var(--guide-heading-scrub, 0));
+    transform: translate3d(
+      0,
+      calc((1 - var(--guide-heading-scrub, 0)) * 14px),
+      0
+    );
   }
 }
 
@@ -4540,6 +4600,13 @@ a.guide-note-ref:hover {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  body.guide-reading .guide-heading-scrub,
+  body.guide-reading .guide-scrub,
+  body.guide-reading .guide-moment--has-heading-scrub .guide-tile-copy--rule {
+    opacity: 1;
+    transform: none;
   }
 
   body.guide-reading .guide-chapter-card,

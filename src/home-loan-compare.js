@@ -1226,13 +1226,13 @@ function comparableColumnValue(row, columnKey) {
   if (columnKey === "overdueChargeDisplay") {
     if (chargeDisplayIsUnpublished(row.overdueChargeDisplay)) return null;
     if (!row.overdueCharge) return null;
-    return finiteOrNull(
-      overdueExtraForMissedEmi(
-        row.overdueCharge,
-        row.emi,
-        row.roiDecimal
-      ).extra
-    );
+    const overdueExtra = overdueExtraForMissedEmi(
+      row.overdueCharge,
+      row.emi,
+      row.roiDecimal
+    ).extra;
+    const bounceTotal = bounceExtraForMissedEmi(row.emiBounceCharge, row.emi).total;
+    return finiteOrNull((overdueExtra || 0) + (bounceTotal || 0));
   }
   if (columnKey === "emiBounceChargeDisplay") {
     if (chargeDisplayIsUnpublished(row.emiBounceChargeDisplay)) return null;
@@ -8458,14 +8458,17 @@ function initPage() {
 
       let maxW = 0;
       if (headCells[i].classList.contains("hlc-sticky-col")) {
-        maxW = measurePhoneBankColWidth(headCells[i]);
-        for (let r = 0; r < bodyRows.length; r++) {
-          maxW = Math.max(
-            maxW,
-            measurePhoneBankColWidth(bodyRows[r].children[i])
-          );
-        }
-        maxW = Math.min(maxW, phoneBankColCapPx());
+        /*
+         * Bank column width is declared in CSS (9rem on phone). Read it from
+         * the col element so CSS remains the single source of truth. Names
+         * wrap to a second line rather than being measured nowrap and capped.
+         */
+        const colEl =
+          (el.cols && el.cols.children[i]) ||
+          (el.headCols && el.headCols.children[i]);
+        maxW = colEl
+          ? Math.round(parseFloat(window.getComputedStyle(colEl).width) || 0)
+          : Math.round(9 * 16);
       } else if (headerOnly) {
         maxW = measurePhoneCompareColHeaderWidth(headCells[i]);
       } else {
@@ -9229,118 +9232,138 @@ function initPage() {
   }
 
   function loanAmountCalculationHtml(row) {
-    const model = loanAmountWalkModel(row, readQuery());
-    const bars = [
+    var model = loanAmountWalkModel(row, readQuery());
+
+    var houseActive = model.limiter === "house" || model.limiter === "both";
+    var houseBody = mathBarStackHtml([
       {
         step: 1,
-        label: "Share of this house the bank will fund",
-        note: "The rest is yours: " + formatInr(model.downPayment) + ".",
+        label: "LTV — the bank funds " + formatPctPlain(model.fundedPct) + " of the property",
+        note: "The rest is your down payment: " + formatInr(model.downPayment) + ".",
         value: formatInr(model.fromProperty),
         track: "house",
-        limiting: model.limiter === "house" || model.limiter === "both",
+        limiting: houseActive,
         lines: [
           { k: "num", t: formatInr(model.propertyValue) },
-          { k: "op", t: "× " + formatPctPlain(model.fundedPct) },
+          { k: "op",  t: "× " + formatPctPlain(model.fundedPct) + " (LTV)" },
           { k: "rule" },
           { k: "result", t: formatInr(model.fromProperty), emphasis: true }
         ]
-      },
+      }
+    ]);
+    var houseTrackHtml = storyTrack(
+      "House cap",
+      houseBody,
+      "house",
+      houseActive,
+      houseActive ? "This is the limit that applies." : null
+    );
+
+    var incomeActive = model.limiter === "income" || model.limiter === "both";
+    var incomeBody = mathBarStackHtml([
       {
-        step: 2,
-        label: "Share of take-home that can go to all EMIs",
-        note: "From the monthly take-home you entered.",
+        step: 1,
+        label: "FOIR — share of income for all EMIs",
+        note: "FOIR (" + formatPctPlain(model.foirPct) + ") is the maximum fraction of income banks allow for all EMI payments combined.",
         value: formatInr(model.incomeAllowance),
         lines: [
           { k: "num", t: formatInr(model.totalIncome) },
-          { k: "op", t: "× " + formatPctPlain(model.foirPct) },
+          { k: "op",  t: "× " + formatPctPlain(model.foirPct) + " FOIR" },
           { k: "rule" },
           { k: "result", t: formatInr(model.incomeAllowance), emphasis: true }
         ]
       },
       {
-        step: 3,
-        label: "Minus other EMIs",
-        note: "These EMIs are already running each month.",
+        step: 2,
+        label: "Minus other EMIs running",
+        note: "These EMIs are already committed each month.",
         value: formatInr(model.afterEmis),
         lines: [
           { k: "num", t: formatInr(model.incomeAllowance) },
-          { k: "op", t: "− " + formatInr(model.existingEmis) },
+          { k: "op",  t: "− " + formatInr(model.existingEmis) + " other EMIs" },
           { k: "rule" },
           { k: "result", t: formatInr(model.afterEmis), emphasis: true }
         ]
       },
       {
-        step: 4,
-        label: "Minus card load",
-        note: "This is not outstanding dues.",
+        step: 3,
+        label: "Minus credit card load",
+        note: "Total card limits across all cards × " + formatPctPlain(model.cardLoadPct) + " counts as a monthly load. This is not your outstanding dues.",
         value: formatInr(model.emiRoom),
         lines: [
           { k: "num", t: formatInr(model.afterEmis) },
-          { k: "op", t: "− " + formatInr(model.cardLoad) },
+          { k: "op",  t: "− " + formatInr(model.cardLoad) + " card load" },
           { k: "rule" },
           { k: "result", t: formatInr(model.emiRoom), emphasis: true }
         ]
       },
       {
-        step: 5,
-        label: "Loan from the EMI that is left",
-        note: "The EMI left, at this bank’s rate and tenure.",
+        step: 4,
+        label: "Monthly EMI eligibility → loan",
+        note: "This EMI room, at this bank's rate (" + formatPctPlain(model.ratePct) + ") for " + model.tenureLabel + ".",
         value: formatInr(model.fromIncome),
         track: "income",
-        limiting: model.limiter === "income" || model.limiter === "both",
+        limiting: incomeActive,
         lines: [
-          { k: "num", t: formatInr(model.emiRoom) },
-          {
-            k: "op",
-            t: "@ " + formatPctPlain(model.ratePct) + ", " + model.tenureLabel
-          },
+          { k: "num", t: formatInr(model.emiRoom) + " / month" },
+          { k: "op",  t: "@ " + formatPctPlain(model.ratePct) + " (this bank's rate), " + model.tenureLabel },
           { k: "rule" },
           { k: "result", t: formatInr(model.fromIncome), emphasis: true }
         ]
       }
+    ]);
+    var incomeTrackHtml = storyTrack(
+      "Income cap",
+      incomeBody,
+      "income",
+      incomeActive,
+      incomeActive ? "This is the limit that applies." : null
+    );
+
+    var bankTrackHtml = "";
+    if (model.bankMaxApplies) {
+      var bankActive = model.limiter === "bank";
+      bankTrackHtml = storyTrack(
+        "This bank's maximum",
+        mathBarStackHtml([
+          {
+            step: 1,
+            label: "This bank will not go above this amount.",
+            note: "",
+            value: formatInr(model.bankMaximum),
+            track: "bank",
+            limiting: bankActive,
+            lines: [{ k: "num", t: formatInr(model.bankMaximum) }]
+          }
+        ]),
+        "bank",
+        bankActive,
+        bankActive ? "This is the limit that applies." : null
+      );
+    }
+
+    var limits = [
+      { key: "house",  label: "House cap",  value: formatInr(model.fromProperty) },
+      { key: "income", label: "Income cap", value: formatInr(model.fromIncome) }
     ];
     if (model.bankMaxApplies) {
-      bars.push({
-        step: 6,
-        label: "This bank’s maximum",
-        note: "This bank will not go above this amount.",
-        value: formatInr(model.bankMaximum),
-        track: "bank",
-        limiting: model.limiter === "bank",
-        lines: [{ k: "num", t: formatInr(model.bankMaximum) }]
-      });
+      limits.push({ key: "bank", label: "Bank maximum", value: formatInr(model.bankMaximum) });
     }
-    const step6 = mathBarHtml(
-      model.bankMaxApplies ? 7 : 6,
-      "The loan is the lower of these",
-      "The coloured number is the one that applies.",
-      formatInr(model.result),
-      {
-        limiting: true,
-        track:
-          model.limiter === "bank"
-            ? "bank"
-            : model.limiter === "house"
-              ? "house"
-              : "income",
-        lines: (function () {
-          const parts = [
-            { k: "num", t: formatInr(model.fromProperty) },
-            { k: "op", t: "or " + formatInr(model.fromIncome) }
-          ];
-          if (model.bankMaxApplies) {
-            parts.push({ k: "op", t: "or " + formatInr(model.bankMaximum) });
-          }
-          parts.push({ k: "rule" });
-          parts.push({ k: "result", t: formatInr(model.result), emphasis: true });
-          return parts;
-        })()
-      }
-    );
+    var compareHtml = storyLimitsCompare(limits, model.limiter, formatInr(model.result));
+
+    var inner =
+      houseTrackHtml +
+      storyDivider() +
+      incomeTrackHtml +
+      (bankTrackHtml ? storyDivider() + bankTrackHtml : "") +
+      storyDivider() +
+      '<p class="hlc-story-compare-title">Lower of these is what this bank can give you</p>' +
+      compareHtml;
+
     return calcStoryHtml(
       formatInr(model.result),
-      "This bank’s loan on these inputs is",
-      mathBarStackHtml(bars) + step6,
+      "This bank's loan on these inputs is",
+      inner,
       ""
     );
   }
@@ -9356,8 +9379,8 @@ function initPage() {
     const bars = mathBarStackHtml([
       {
         step: 1,
-        label: "Year into a month",
-        note: "The year rate, for one month.",
+        label: "Banks quote annual; you pay monthly",
+        note: "Divide the annual rate by 12 months to get the rate charged each month.",
         value: monthlyPct.toFixed(4) + "%",
         lines: [
           { k: "num", t: formatPctPlain(annualPct) + " a year" },
@@ -9412,8 +9435,8 @@ function initPage() {
       const beforeLimits = row.loanAmount * pct;
       bars.push({
         step: 1,
-        label: "This bank’s share",
-        note: "",
+        label: "Processing fee — this bank’s percentage",
+        note: "A one-time fee on your loan amount. You pay this when you accept the sanction letter.",
         value: formatInr(beforeLimits),
         lines: [
           { k: "num", t: formatInr(row.loanAmount) },
@@ -9470,8 +9493,8 @@ function initPage() {
     } else if (Number.isFinite(fixed)) {
       bars.push({
         step: 1,
-        label: "Flat fee",
-        note: "A flat rupee. Not a percent of this loan.",
+        label: "Flat processing fee",
+        note: "This bank charges a fixed amount regardless of your loan size.",
         value: formatInr(fixed)
       });
     } else if (charge.percentage === 0) {
@@ -9512,13 +9535,25 @@ function initPage() {
     );
   }
 
+function propertyCheckChargeNote(name) {
+  var notes = {
+    "Legal and technical":
+      "The bank checks that the property title is clear, that there are no legal disputes, and that the construction meets local rules.",
+    "Title search report":
+      "A search of official records to confirm the seller genuinely owns the property and there are no other claims on it.",
+    "Valuation":
+      "An independent estimate of the property's market value. The bank uses this to decide how much it will lend."
+  };
+  return notes[name] || "The bank runs this check on the property before sanctioning the loan.";
+}
+
   function propertyCheckChargeCalculationHtml(row) {
     const lines = row.propertyCheckChargeRows || [];
     const bars = lines.map(function (line, index) {
       return {
         step: index + 1,
         label: line.name || "Charge",
-        note: "",
+        note: propertyCheckChargeNote(line.name || ""),
         value: formatInr(line.amount),
         lines:
           index === 0
@@ -9554,7 +9589,23 @@ function initPage() {
     );
   }
 
-  function governmentChargeName(chargeName) {
+  function governmentChargeExplanation(chargeName) {
+  var explanations = {
+    "MODT Stamp Duty":
+      "A stamp duty paid to the state government to officially register the bank's mortgage on your property. Mandatory for most home loans.",
+    "Notice of Intimation Registration Fee":
+      "A government fee to register the bank's claim on the property in the state's official records.",
+    "Notice of Intimation Filing Fee":
+      "A filing fee paid when the notice of the bank's mortgage is submitted to the state authority.",
+    "CERSAI Security Interest Creation":
+      "A central government registry fee. CERSAI records the bank's mortgage so no one can fraudulently take a second loan on the same property.",
+    "Further Charge Stamp Duty":
+      "A stamp duty for registering a further charge on the property — applies to top-up loans."
+  };
+  return explanations[chargeName] || "";
+}
+
+function governmentChargeName(chargeName) {
     const names = {
       "MODT Stamp Duty": "MODT stamp duty",
       "Notice of Intimation Registration Fee": "Notice of Intimation registration",
@@ -9648,7 +9699,7 @@ function initPage() {
       return {
         step: index + 1,
         label: governmentChargeName(charge.charge_name),
-        note: note,
+        note: [governmentChargeExplanation(charge.charge_name), note].filter(Boolean).join(" "),
         value: formatInr(parts.total),
         lines: governmentChargeSheetLines(charge, row.loanAmount)
       };
@@ -9707,14 +9758,14 @@ function initPage() {
             { k: "result", t: overdueRupee, emphasis: true }
           ]
         : [{ k: "result", t: overdueRupee, emphasis: true }];
-    let overdueNote = "The bank’s overdue charge on this missed EMI.";
+    let overdueNote = "An extra amount the bank charges every month the EMI stays unpaid.";
     if (overdue.kind === "row_rate") {
       overdueNote =
         "The bank uses this loan’s yearly rate on the missed EMI, for this month.";
     } else if (overdue.slabSentence) {
       overdueNote = overdue.slabSentence;
     } else if (overdue.kind === "slab") {
-      overdueNote = "The bank’s overdue charge for this overdue amount.";
+      overdueNote = "The bank’s overdue extra for this amount — based on a slab rate.";
     }
     if (overdue.ruleNote) {
       overdueNote =
@@ -9824,6 +9875,16 @@ function initPage() {
     return missedEmiWalkHtml(row);
   }
 
+function rateChangeMethodDescription(method) {
+  if (method === RATE_CHANGE_METHOD_REPRICE) {
+    return "Repricing — renegotiating the interest rate with your bank.";
+  }
+  if (method === RATE_CHANGE_METHOD_BENCHMARK) {
+    return "Benchmark switch — moving from one rate index to another (e.g. MCLR to repo rate).";
+  }
+  return "Rate type switch — converting between floating and fixed rate.";
+}
+
   function rateChangeCalculationHtml(row) {
     const seed = rateChangeChargeForMethod(row, state.rateChangeMethod);
     const slabs = row.rateChangeChargeSlabs || [];
@@ -9841,8 +9902,8 @@ function initPage() {
     const bars = [
       {
         step: 1,
-        label: "This loan",
-        note: "On this loan.",
+        label: "Your outstanding loan",
+        note: "The charge is a percentage of this amount. " + rateChangeMethodDescription(state.rateChangeMethod),
         value: formatInr(row.loanAmount),
         lines: [{ k: "num", t: formatInr(row.loanAmount) }]
       },
@@ -9851,7 +9912,7 @@ function initPage() {
         label: "Charge to change the rate",
         note:
           applicableSlabSentence(charge, chargeCaseFromRow(row)) ||
-          "What this bank charges to change the rate.",
+          "This bank's fee for this rate change. " + rateChangeMethodDescription(state.rateChangeMethod),
         value: resultText,
         lines:
           amount != null &&
@@ -9902,13 +9963,34 @@ function initPage() {
       charge.percentage != null && Number.isFinite(Number(charge.percentage))
         ? Number(charge.percentage) * 100
         : null;
+    var resultLabel = pct != null
+      ? formatPctPlain(pct)
+      : formatChargeDisplayText(formatPrepaymentChargeDisplay(charge));
+
+    var prepayBarsHtml = "";
+    if (pct != null) {
+      var exampleCharge = row.loanAmount * (pct / 100);
+      prepayBarsHtml = mathBarStackHtml([
+        {
+          step: 1,
+          label: "On your current loan amount",
+          note: "If you repaid the full outstanding amount today, this is the charge. The actual charge scales with how much you prepay.",
+          value: formatInr(exampleCharge),
+          lines: [
+            { k: "num", t: formatInr(row.loanAmount) },
+            { k: "op",  t: "× " + formatPctPlain(pct) },
+            { k: "rule" },
+            { k: "result", t: formatInr(exampleCharge), emphasis: true }
+          ]
+        }
+      ]);
+    }
+
     return (
       calcStoryHtml(
-        pct != null
-          ? formatPctPlain(pct)
-          : formatChargeDisplayText(formatPrepaymentChargeDisplay(charge)),
-        "This bank’s share of what you prepay is",
-        "",
+        resultLabel,
+        "This bank’s prepayment charge is",
+        prepayBarsHtml,
         ""
       ) + storyNote("Rupees depend on how much you prepay.")
     );
@@ -11176,11 +11258,41 @@ function initPage() {
     target.scrollLeft = source.scrollLeft;
     syncingTableScroll = false;
   }
+  /* Mobile scroll hints: left (appears on scroll) and right (fades at end). */
+  var scrollHintWrap =
+    el.scroll && el.scroll.closest(".hlc-table-wrap")
+      ? el.scroll.closest(".hlc-table-wrap")
+      : null;
+  var scrollHintRight = scrollHintWrap
+    ? scrollHintWrap.querySelector(".hlc-scroll-hint--right")
+    : null;
+  var scrollHintLeft = scrollHintWrap
+    ? scrollHintWrap.querySelector(".hlc-scroll-hint--left")
+    : null;
+  function updateScrollHint() {
+    if (!el.scroll) return;
+    var scrollLeft = el.scroll.scrollLeft;
+    var atEnd = scrollLeft >= el.scroll.scrollWidth - el.scroll.clientWidth - 4;
+    var atStart = scrollLeft <= 4;
+    if (scrollHintRight) scrollHintRight.classList.toggle("is-at-end", atEnd);
+    if (scrollHintLeft) scrollHintLeft.classList.toggle("is-scrolled", !atStart);
+  }
+  if (scrollHintRight && el.scroll) {
+    scrollHintRight.addEventListener("click", function () {
+      el.scroll.scrollBy({ left: 220, behavior: "smooth" });
+    });
+  }
+  if (scrollHintLeft && el.scroll) {
+    scrollHintLeft.addEventListener("click", function () {
+      el.scroll.scrollBy({ left: -220, behavior: "smooth" });
+    });
+  }
   if (el.scroll) {
     el.scroll.addEventListener(
       "scroll",
       function () {
         syncCompareScroll(el.scroll);
+        updateScrollHint();
       },
       { passive: true }
     );

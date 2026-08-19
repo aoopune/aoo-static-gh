@@ -1789,9 +1789,9 @@
     function settle() {
       if (!reduce.matches) return;
       document.querySelectorAll(
-        ".guide-moment, .mag-reveal, .home-moment, .learn-card, .guide-chapter-card, .guide-flip-scene"
+        ".guide-moment, .mag-reveal, .home-moment, .learn-card, .guide-chapter-card, .guide-flip-scene, .guide-heading-scrub, .guide-scrub"
       ).forEach(function (node) {
-        node.classList.add("is-in", "is-visible");
+        node.classList.add("is-in", "is-visible", "is-heading-settled", "is-scrub-done");
       });
     }
     if (reduce.addEventListener) reduce.addEventListener("change", settle);

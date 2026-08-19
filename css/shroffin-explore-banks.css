@@ -525,6 +525,7 @@
   /* Half-width boxes: the name wraps instead of pushing the box wider. */
   .explore-banks-page .hlc-inputs-card .hlc-field-label {
     font-size: var(--shroffin-field-label-size, 1.125rem);
+    font-weight: 400;
     letter-spacing: -0.015em;
     line-height: 1.2;
     white-space: normal;
@@ -532,6 +533,7 @@
 
   .explore-banks-page .hlc-inputs-card .hlc-field--hero .hlc-field-label {
     font-size: var(--shroffin-field-label-size, 1.125rem);
+    font-weight: 400;
     white-space: normal;
   }
 
@@ -543,14 +545,14 @@
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-field-label-qualifier {
-    font-size: 0.875rem;
+    font-size: 0.857em;
     font-weight: 400;
     color: var(--shroffin-muted, #6e6e73);
-    margin-left: 0.25rem;
+    margin-left: 0;
     letter-spacing: -0.01em;
     line-height: 1.2;
     align-self: baseline;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .hlc-form-row-head {
@@ -1588,9 +1590,26 @@
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) input,
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) select:not(.hlc-inline-pct-select),
-.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-prefix,
-.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-suffix,
-.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-select-face {
+.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-select-face,
+.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-select-face-tag {
+  font-size: var(--shroffin-field-font-size, 1.25rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  min-height: 0;
+  padding: 0;
+}
+
+.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-prefix {
+  font-size: var(--shroffin-field-unit-size, var(--shroffin-field-font-size, 1.25rem));
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  min-height: 0;
+  padding: 0;
+}
+
+.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-suffix {
   font-size: var(--shroffin-field-font-size, 1.25rem);
   font-weight: 500;
   line-height: 1.2;
@@ -2047,10 +2066,14 @@
  */
 @media (max-width: 833px) {
   .explore-banks-page .hlc-inputs-card {
-    /* One gap between two boxes, one gap between a box's own lines. */
+    /* One gap between two boxes; label/value spacing lives inside each box. */
     --hlc-box-gap: 0.6rem;
     --hlc-box-line-gap: 0.4rem;
-    --hlc-box-pad-x: 0.7rem;
+    --hlc-box-pad-x: 0.5rem;
+    --hlc-box-pad-top: 0.6rem;
+    --hlc-box-pad-bottom: 0.35rem;
+    --hlc-box-min-height: 3.25rem;
+    --hlc-label-value-gap: 0.45rem;
     /* Section name to its boxes, and section to section. */
     --hlc-head-gap: 0.3rem;
     --hlc-group-gap: 1.05rem;
@@ -2061,18 +2084,24 @@
     /* Room the group keeps under its boxes for the card-load sentence. */
     --hlc-note-reserve: calc(var(--hlc-note-line) * 2 + var(--hlc-note-gap));
     /*
-     * Name 16px and value 18px from 360px up — the sizes a phone form
-     * wants. Narrower than that the card cannot hold a ten-digit rupee
-     * value, so both sizes step down together and keep their 2px relation.
+     * Phone type tokens: labels are 17px, regular values go back to their
+     * earlier 18px size, and money fields keep a tighter 16px size so long
+     * amounts still fit in half-width boxes. Unit marks stay smaller.
      */
-    --shroffin-field-label-size: clamp(0.8125rem, 4.55vw, 1rem);
-    --shroffin-field-font-size: clamp(0.9375rem, 5.1vw, 1.125rem);
+    --shroffin-field-label-size: 1.0625rem;
+    --shroffin-field-font-size: 1.125rem;
+    --shroffin-money-font-size: 1rem;
+    --shroffin-field-unit-size: 0.8125rem;
   }
 
   /* Card surface matches the page, so on phone its edge must be drawn. */
   .explore-banks-page .hlc-inputs-card::before {
     border: 1px solid var(--hlc-section-line, #dde1e6);
     box-shadow: 0 1px 10px rgba(73, 92, 118, 0.08);
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) {
+    min-height: var(--hlc-box-min-height);
   }
 
   /* One owner for the space between groups: the form's own gap. */
@@ -2095,13 +2124,12 @@
   /*
    * One selector owns every group on phone — it outranks the per-group
    * desktop rules, so all groups get the same columns and the same gaps.
-   * The three rows are the tracks the boxes subgrid onto.
    */
   .explore-banks-page .hlc-inputs-card .hlc-form .hlc-form-pairs .hlc-form-row .hlc-form-row-fields,
   .explore-banks-page .hlc-inputs-card .hlc-form .hlc-form-pairs .hlc-form-fields--coapplicant {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: max-content max-content max-content;
+    grid-template-rows: max-content;
     align-items: stretch;
     column-gap: var(--hlc-box-gap);
     row-gap: var(--hlc-box-line-gap);
@@ -2118,70 +2146,65 @@
 
   .explore-banks-page .hlc-inputs-card .hlc-form-row .hlc-form-row-fields > .hlc-field:has(> .hlc-input-shell),
   .explore-banks-page .hlc-inputs-card .hlc-form-fields--coapplicant > .hlc-field:has(> .hlc-input-shell) {
-    grid-template-columns: minmax(0, 1fr);
-    align-items: start;
-    justify-items: start;
-    justify-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     align-self: stretch;
+    gap: var(--hlc-label-value-gap);
     width: 100%;
     max-width: 100%;
     min-width: 0;
-    min-height: 3.25rem;
+    min-height: var(--hlc-box-min-height);
     column-gap: 0;
-    padding: 0.6rem var(--hlc-box-pad-x);
+    padding: var(--hlc-box-pad-top) var(--hlc-box-pad-x) var(--hlc-box-pad-bottom);
   }
 
-  /*
-   * A pair shares the group's rows, so name block, value and note line up
-   * across both boxes however the wording wraps. This restates the base
-   * subgrid because the boxed-field rules override it by specificity.
-   */
-  .explore-banks-page .hlc-inputs-card .hlc-form-row .hlc-form-row-fields > .hlc-field:has(> .hlc-input-shell) {
-    grid-row: span 3;
-    grid-template-rows: subgrid;
-  }
-
-  /* The co-applicant band is not a subgrid, so each box settles its own
-     value to the bottom — the same alignment, done locally. */
-  .explore-banks-page .hlc-inputs-card .hlc-form-fields--coapplicant > .hlc-field:has(> .hlc-input-shell) {
-    grid-template-rows: max-content;
-    grid-auto-rows: max-content;
-    align-content: space-between;
-    row-gap: var(--hlc-box-line-gap);
+  /* The typed line should not carry desktop min-heights on phone. */
+  .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) > .hlc-input-shell,
+  .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) > .hlc-input-shell.hlc-input-shell--hero {
+    min-height: 0;
+    padding: 0;
+    align-items: flex-end;
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-form-row .hlc-form-row-fields > .hlc-field:has(> .hlc-input-shell) > .hlc-field-label-row,
   .explore-banks-page .hlc-inputs-card .hlc-form-fields--coapplicant > .hlc-field:has(> .hlc-input-shell) > .hlc-field-label-row {
-    grid-column: 1;
-    grid-row: 1;
     display: block;
-    align-self: start;
-    justify-self: start;
+    flex: 0 0 auto;
     width: 100%;
     min-width: 0;
   }
 
-  /* The name is text on phone: it wraps, and the help mark flows after
-     the last word instead of taking a line of its own. */
+  /* The name wraps like normal text — word by word at the box edge. */
   .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-field-label,
   .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-field-label-cluster {
-    display: inline;
+    display: block;
     white-space: normal;
-    overflow-wrap: break-word;
+    overflow-wrap: normal;
+    word-break: normal;
   }
 
   /*
-   * A qualifier is a second thought, so it starts the next line — as a line
-   * break rather than a block, which keeps the marks that follow it (the
-   * required star, the help mark) on that same line.
+   * The second line of a two-line name — qualifier, star, help — is one
+   * unit so the marks never orphan onto a line of their own.
    */
-  .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-field-label-qualifier {
-    margin-left: 0;
+  .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-field-label-subline {
+    white-space: nowrap;
   }
 
-  .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-field-label-qualifier::before {
+  .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-field-label-subline::before {
     content: "\A";
     white-space: pre;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-field-label-qualifier {
+    margin-left: 0;
+    white-space: normal;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-field-label-tail {
+    display: inline;
+    white-space: nowrap;
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-field-help-anchor {
@@ -2190,10 +2213,8 @@
 
   .explore-banks-page .hlc-inputs-card .hlc-form-row .hlc-form-row-fields > .hlc-field:has(> .hlc-input-shell) > .hlc-input-shell,
   .explore-banks-page .hlc-inputs-card .hlc-form-fields--coapplicant > .hlc-field:has(> .hlc-input-shell) > .hlc-input-shell {
-    grid-column: 1;
-    grid-row: 2;
-    align-self: end;
-    justify-self: start;
+    flex: 0 0 auto;
+    margin-top: auto;
     justify-content: flex-start;
     flex-wrap: nowrap;
     width: 100%;
@@ -2215,6 +2236,40 @@
     max-width: 100%;
     min-width: 0;
     flex: 0 1 auto;
+  }
+
+  /*
+   * Money boxes: digits use the value size; ₹ uses the unit size and stays
+   * out of the way. Long amounts may scroll inside the box.
+   */
+  .explore-banks-page .hlc-inputs-card .hlc-input-shell:has(input[data-hlc-format="money"]) {
+    column-gap: 0.15rem;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-input-shell:has(input[data-hlc-format="money"]) input[data-hlc-format="money"] {
+    font-size: var(--shroffin-money-font-size, var(--shroffin-field-font-size, 1rem));
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-input-shell:has(input[data-hlc-format="money"]) .hlc-prefix {
+    font-size: var(--shroffin-field-unit-size, var(--shroffin-money-font-size, 0.8125rem));
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-input-shell:has(input[data-hlc-format="money"]) input[data-hlc-format="money"] {
+    letter-spacing: -0.025em;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-field input[data-hlc-format="money"] {
+    field-sizing: fixed;
+    flex: 1 1 0;
+    width: 0;
+    max-width: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-field input[data-hlc-format="money"]::-webkit-scrollbar {
+    display: none;
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) > .hlc-input-shell.hlc-input-shell--has-face {
@@ -2296,13 +2351,16 @@
 }
 
 /*
- * Below the 360px baseline every millimetre counts: the boxes give back
- * some inside room so a ten-digit value still fits, and the card-load
- * sentence needs a third line in a column that narrow.
+ * Below 360px the half box is narrower: step all three sizes down together
+ * and keep the same hierarchy in the tighter half box (16 / 15 / 15 / 12 px).
  */
 @media (max-width: 359px) {
   .explore-banks-page .hlc-inputs-card {
-    --hlc-box-pad-x: 0.5rem;
+    --hlc-box-pad-x: 0.4rem;
+    --shroffin-field-label-size: 1rem;
+    --shroffin-field-font-size: 0.9375rem;
+    --shroffin-money-font-size: 0.9375rem;
+    --shroffin-field-unit-size: 0.75rem;
     --hlc-note-reserve: calc(var(--hlc-note-line) * 3 + var(--hlc-note-gap));
   }
 }
@@ -3478,6 +3536,88 @@
   position: relative;
   overflow: visible;
   border-bottom: 1px solid rgba(29, 29, 31, 0.18);
+}
+
+/*
+ * Mobile scroll hints — left and right edge chevrons on the column header.
+ * Right hint: visible at start, fades when scrolled to the end.
+ * Left hint: hidden at start, appears once user has scrolled right.
+ * Desktop: hidden entirely.
+ */
+@media (max-width: 833px) {
+  /* Shared base — button reset + positioning */
+  .hlc-scroll-hint {
+    appearance: none;
+    border: 0;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+    width: 3rem;
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    transition: opacity var(--shroffin-micro-duration, 0.5s)
+      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  }
+
+  /* Right hint — flush right, gradient fades left-to-right */
+  .hlc-scroll-hint--right {
+    right: 0;
+    justify-content: flex-end;
+    padding-right: 0.5rem;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(248, 248, 250, 0.88) 50%,
+      rgba(248, 248, 250, 0.97) 100%
+    );
+  }
+
+  .hlc-scroll-hint--right.is-at-end {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Left hint — flush left, but offset past the sticky Bank column */
+  .hlc-scroll-hint--left {
+    left: 9rem; /* matches mobile .hlc-sticky-col width */
+    justify-content: flex-start;
+    padding-left: 0.5rem;
+    background: linear-gradient(
+      to left,
+      transparent 0%,
+      rgba(248, 248, 250, 0.88) 50%,
+      rgba(248, 248, 250, 0.97) 100%
+    );
+    /* Hidden until user scrolls away from the left edge */
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .hlc-scroll-hint--left.is-scrolled {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .hlc-scroll-hint-arrow {
+    display: block;
+    width: 0.55rem;
+    height: 0.55rem;
+    color: var(--shroffin-ink-muted, #6e6e73);
+    flex-shrink: 0;
+  }
+}
+
+@media (min-width: 834px) {
+  .hlc-scroll-hint {
+    display: none;
+  }
 }
 
 /*
@@ -5539,8 +5679,8 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-drawer-card {
-  border-radius: 0.9rem;
-  background: rgba(29, 29, 31, 0.035);
+  border-radius: 0;
+  background: transparent;
   padding: 0.2rem var(--hlc-drawer-card-pad-x);
 }
 
@@ -5649,13 +5789,13 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-math-bar {
   display: grid;
-  grid-template-columns: 2.75rem minmax(0, 1fr);
+  grid-template-columns: 1.75rem minmax(0, 1fr);
   grid-template-areas:
     "num body"
     ". work";
-  gap: 0.5rem 0.9rem;
+  gap: 0.5rem 0.75rem;
   align-items: start;
-  padding: 1.15rem 0;
+  padding: 1.05rem 0;
   border-bottom: 1px solid var(--shroffin-line, #e8e8ed);
 }
 
@@ -5666,15 +5806,12 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-math-bar-num {
   grid-area: num;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 999px;
-  background: var(--shroffin-fill, #f5f5f7);
-  color: var(--shroffin-ink, #1d1d1f);
-  font-size: 0.9375rem;
-  font-weight: 600;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 0.15rem;
+  color: var(--shroffin-muted, #6e6e73);
+  font-size: 0.8125rem;
+  font-weight: 400;
   font-variant-numeric: tabular-nums;
 }
 
@@ -5712,12 +5849,10 @@ button.hlc-bank-name-text:focus-visible {
   font-weight: 700;
 }
 
-.hlc-math-bar--house.hlc-math-bar--limiting .hlc-math-bar-num,
 .hlc-math-bar--house.hlc-math-bar--limiting .hlc-math-num--result {
   color: #7a3410;
 }
 
-.hlc-math-bar--income.hlc-math-bar--limiting .hlc-math-bar-num,
 .hlc-math-bar--income.hlc-math-bar--limiting .hlc-math-num--result {
   color: #234a82;
 }
@@ -5790,7 +5925,7 @@ button.hlc-bank-name-text:focus-visible {
 
 @media (min-width: 834px) {
   .hlc-math-bar {
-    grid-template-columns: 2.75rem minmax(0, 1fr) minmax(8.75rem, max-content);
+    grid-template-columns: 1.75rem minmax(0, 1fr) minmax(8.75rem, max-content);
     grid-template-areas: "num body work";
     gap: 0.85rem 1.5rem;
   }
@@ -5827,7 +5962,9 @@ button.hlc-bank-name-text:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--shroffin-line, #e8e8ed);
 }
 
 .hlc-story-lead {
@@ -6026,8 +6163,14 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-story-track {
-  padding: 0.875rem 0 0.875rem 1rem;
-  border-left: 2px solid rgba(29, 29, 31, 0.12);
+  padding: 1rem 0 1rem 1.25rem;
+  border-left: 1px solid rgba(29, 29, 31, 0.14);
+  opacity: 0.4;
+}
+
+.hlc-story-track.hlc-story-track--active {
+  border-left-color: var(--shroffin-ink, #1d1d1f);
+  opacity: 1;
 }
 
 .hlc-story-track + .hlc-story-track,
@@ -6035,55 +6178,40 @@ button.hlc-bank-name-text:focus-visible {
   margin-top: 0;
 }
 
-.hlc-story-track--house {
-  border-left-color: rgba(154, 63, 6, 0.28);
-}
-
-.hlc-story-track--house.hlc-story-track--active {
-  border-left-color: rgba(154, 63, 6, 0.72);
-}
-
-.hlc-story-track--income {
-  border-left-color: rgba(42, 82, 140, 0.28);
-}
-
-.hlc-story-track--income.hlc-story-track--active {
-  border-left-color: rgba(42, 82, 140, 0.72);
-}
-
-.hlc-story-track--bank {
-  border-left-color: rgba(29, 29, 31, 0.22);
-}
-
-.hlc-story-track--bank.hlc-story-track--active {
-  border-left-color: rgba(29, 29, 31, 0.55);
-}
-
 .hlc-story-track-title {
-  color: var(--shroffin-ink, #1d1d1f);
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 500;
   line-height: 1.35;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--shroffin-muted, #6e6e73);
+}
+
+.hlc-story-track--active .hlc-story-track-title {
+  color: var(--shroffin-ink, #1d1d1f);
+  font-weight: 600;
 }
 
 .hlc-story-track-note {
-  margin-bottom: 0.5rem;
+  display: block;
+  margin-bottom: 0.75rem;
   color: var(--shroffin-muted, #6e6e73);
   font-size: 0.8125rem;
   line-height: 1.45;
+  font-weight: 400;
 }
 
-.hlc-story-track:not(.hlc-story-track--active) .hlc-story-track-title {
+/* Compare section title above the min-of-two row */
+.hlc-story-compare-title {
+  margin: 0.75rem 0 0.35rem;
   color: var(--shroffin-muted, #6e6e73);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
-.hlc-story-track--house.hlc-story-track--active .hlc-story-track-title {
-  color: #7a3410;
-}
-
-.hlc-story-track--income.hlc-story-track--active .hlc-story-track-title {
-  color: #234a82;
+/* The active track's limiting step label is slightly stronger */
+.hlc-story-track--active .hlc-math-bar--limiting .hlc-math-bar-label {
+  color: var(--shroffin-ink, #1d1d1f);
 }
 
 .hlc-story-math-stack {
@@ -6563,19 +6691,18 @@ button.hlc-bank-name-text:focus-visible {
   }
 
   /*
-   * Phone: bank sticky width is content-measured in JS (longest nowrap name +
-   * checkbox/logo), then capped so Rate clears the sticky edge. Fallback is
-   * before first sync. Scheme ellipsizes; More sits at the trailing edge — no
-   * empty gutter after the +. Names stay one line (ellipsis only if capped).
+   * Phone: bank column is narrower (9rem) so metric columns have more room.
+   * Bank names wrap to a second line rather than truncating — the row height
+   * grows slightly, which is fine and avoids hiding lender identity.
    */
   .hlc-compare col.hlc-col-bank {
-    width: 11rem;
+    width: 9rem;
   }
 
   .hlc-sticky-col {
-    width: 11rem;
-    min-width: 11rem;
-    max-width: 11rem;
+    width: 9rem;
+    min-width: 9rem;
+    max-width: 9rem;
   }
 
   .hlc-compare th.hlc-sticky-col,
@@ -6590,13 +6717,10 @@ button.hlc-bank-name-text:focus-visible {
 
   .hlc-bank-name {
     gap: 0.3rem;
-    white-space: nowrap;
   }
 
   .hlc-bank-name-text {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    word-break: break-word;
   }
 
   /*

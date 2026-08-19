@@ -190,6 +190,15 @@
     }
   }
 
+  function filterOptionEl(input) {
+    return input && input.closest ? input.closest(".hlc-filter-option") : input;
+  }
+
+  function setPrivateBankFilter(root) {
+    setPressed(root.querySelector('[data-spd-filter="Public"]'), false);
+    setPressed(root.querySelector('[data-spd-filter="Private"]'), true);
+  }
+
   function revealTabInScroller(tab) {
     if (!tab) return;
     var scroller = tab.closest(".hlc-column-tabs-scroller");
@@ -575,8 +584,7 @@
     fillFormInstant(root);
     setResults(root, true);
     setSearching(root, false);
-    setPressed(root.querySelector('[data-spd-filter="Private"]'), true);
-    setPressed(root.querySelector('[data-spd-filter="All"]'), false);
+    setPrivateBankFilter(root);
     setPressed(root.querySelector('[data-spd-filter="women"]'), false);
     setFilterBadge(root, 1);
     applyFilters(root, { bankType: "Private" });
@@ -649,12 +657,11 @@
     setTab(root, "essentials");
     await sleep(WAIT.settle, signal);
 
-    /* 6 — Private filter rematches like live (8 private banks, not a thin leftover list) */
-    var privateChip = root.querySelector('[data-spd-filter="Private"]');
-    var allChip = root.querySelector('[data-spd-filter="All"]');
-    await clickPress(cursor, privateChip, signal);
-    setPressed(privateChip, true);
-    setPressed(allChip, false);
+    /* 6 — Uncheck Public so only private banks remain (live checkbox filters) */
+    var publicFilter = root.querySelector('[data-spd-filter="Public"]');
+    var publicOption = filterOptionEl(publicFilter);
+    await clickPress(cursor, publicOption || publicFilter, signal);
+    setPrivateBankFilter(root);
     setFilterBadge(root, 1);
     await rematchFilters(root, { bankType: "Private" }, signal);
     await sleep(WAIT.filter, signal);

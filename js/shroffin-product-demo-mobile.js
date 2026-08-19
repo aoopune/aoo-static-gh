@@ -219,6 +219,15 @@
     }
   }
 
+  function filterOptionEl(input) {
+    return input && input.closest ? input.closest(".hlc-filter-option") : input;
+  }
+
+  function setPrivateBankFilter(root) {
+    setPressed(root.querySelector('[data-spd-filter="Public"]'), false);
+    setPressed(root.querySelector('[data-spd-filter="Private"]'), true);
+  }
+
   function setTab(root, name) {
     var active = null;
     root.querySelectorAll("[data-spd-tab]").forEach(function (tab) {
@@ -649,8 +658,7 @@
     setResults(root, true);
     setApplyDock(root, true);
     setSearching(root, false);
-    setPressed(root.querySelector('[data-spd-filter="Private"]'), true);
-    setPressed(root.querySelector('[data-spd-filter="All"]'), false);
+    setPrivateBankFilter(root);
     setPressed(root.querySelector('[data-spd-filter="women"]'), false);
     setFilterBadge(root, 1);
     applyFilters(root, { bankType: "Private" });
@@ -724,20 +732,19 @@
     setFiltersOpen(root, true);
     await sleep(WAIT.sheet, signal);
 
-    var privateChip = root.querySelector('[data-spd-filter="Private"]');
-    var allChip = root.querySelector('[data-spd-filter="All"]');
+    var publicFilter = root.querySelector('[data-spd-filter="Public"]');
+    var publicOption = filterOptionEl(publicFilter);
     var filtersScroll = root.querySelector(".hlc-filters-scroll");
-    /* Keep Private in view inside the sheet — do not use scrollIntoView */
-    if (filtersScroll && privateChip) {
-      var chipBox = privateChip.getBoundingClientRect();
+    /* Keep Bank type in view inside the sheet — do not use scrollIntoView */
+    if (filtersScroll && publicOption) {
+      var optionBox = publicOption.getBoundingClientRect();
       var scrollBox = filtersScroll.getBoundingClientRect();
-      filtersScroll.scrollTop += chipBox.top - scrollBox.top - 48;
+      filtersScroll.scrollTop += optionBox.top - scrollBox.top - 48;
     }
     await sleep(90, signal);
 
-    await tapOn(privateChip, signal);
-    setPressed(privateChip, true);
-    setPressed(allChip, false);
+    await tapOn(publicOption || publicFilter, signal);
+    setPrivateBankFilter(root);
     setFilterBadge(root, 1);
     await rematchFilters(root, { bankType: "Private" }, signal);
     await sleep(WAIT.filter, signal);
@@ -796,12 +803,13 @@
     if (/\bspdFilters=1\b/.test(String(location.search || ""))) {
       still(root);
       setFiltersOpen(root, true);
-      var privateChip = root.querySelector('[data-spd-filter="Private"]');
+      var publicFilter = root.querySelector('[data-spd-filter="Public"]');
+      var publicOption = filterOptionEl(publicFilter);
       var filtersScroll = root.querySelector(".hlc-filters-scroll");
-      if (filtersScroll && privateChip) {
-        var chipBox = privateChip.getBoundingClientRect();
+      if (filtersScroll && publicOption) {
+        var optionBox = publicOption.getBoundingClientRect();
         var scrollBox = filtersScroll.getBoundingClientRect();
-        filtersScroll.scrollTop += chipBox.top - scrollBox.top - 48;
+        filtersScroll.scrollTop += optionBox.top - scrollBox.top - 48;
       }
       notifyParent("spd-ready");
       return;
