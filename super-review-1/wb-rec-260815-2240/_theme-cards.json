@@ -1,0 +1,233 @@
+{
+  "folder": "wb-rec-260815-2240",
+  "sequence_index": 18,
+  "issue_count": 6,
+  "cards": [
+    {
+      "path": "issue-01-explore-banks-not-obvious-at-a-glance.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2240/issue-01-explore-banks-not-obvious-at-a-glance.md",
+      "issue_id": "wb-rec-260815-2240/issue-01-explore-banks-not-obvious-at-a-glance",
+      "issue_title": "Explore banks page is not obvious at a glance",
+      "summary_4_lines": [
+        "The Explore banks page does not show, in one look, how the tool works.",
+        "They want the filled form, three tooltips, and at least two table rows visible together.",
+        "A pre-filled profile is the part that already works, because people will not type honest current income.",
+        "Without that full picture, a visitor cannot tell how the page was built."
+      ],
+      "pinpoint": "On Explore banks they said the page must show this form, three tooltips, and at least two table rows at one glance so a visitor knows how the page was made; idle shots show a pre-filled form and a table that sits mostly below the fold.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Loan inputs form card plus Bank options table",
+      "tags": ["copy", "layout", "trust", "interaction"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260815-2231",
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-02-form-fields-dont-carry-first-inputs-or-show-roi.md"],
+      "quotes_sample": [
+        "And this optimization is working for this pre-filled form.",
+        "Three tool tips.",
+        "At one glance, you will know how this page was made."
+      ],
+      "related_discussion_one_liners": [
+        "Continues sampling / opinionated-product talk from wb-rec-260815-2231 (bell curve, standard deviations, not building for “any customer,” people cannot name their problems) — company method, not a second website defect.",
+        "Users will not enter current income honestly (“I will never think that I should put the truth”; they would name future income instead) — that is why the pre-filled form exists, not a request to empty the fields.",
+        "“If this profile does like this, will it be like this?” — the pre-fill lets someone test a profile rather than confess.",
+        "Tooltip (i) buttons already exist on Monthly income / Property agreement value / Age / CIBIL; they still wanted three tips visible with two table rows, not only hidden behind icons."
+      ],
+      "kind_hint": "page-not-obvious-at-a-glance",
+      "distinct_from_other_files_in_this_folder": "This is the whole-page glance composition (filled form + three tooltips + at least two table rows together), not field cascade, eligibility wording, dropdown affordance, or See options label/placement."
+    },
+    {
+      "path": "issue-02-form-fields-dont-carry-first-inputs-or-show-roi.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2240/issue-02-form-fields-dont-carry-first-inputs-or-show-roi.md",
+      "issue_id": "wb-rec-260815-2240/issue-02-form-fields-dont-carry-first-inputs-or-show-roi",
+      "issue_title": "Form fields do not carry the first inputs or show ROI first",
+      "summary_4_lines": [
+        "If you enter income first, the other fields do not keep all of that information.",
+        "Changing property value or age then drops monthly income and changes ROI, but ROI is not shown first.",
+        "They said you need two tips, because you cannot see where the numbers come from.",
+        "Google-style sites were the comparison: put a fact in one place and you still do not know where it will appear."
+      ],
+      "pinpoint": "On Explore banks they said you cannot take all pieces of the first information: put income, then change property value and age, monthly income falls and ROI changes, but ROI is not shown first; screenshots 0032–0042 show those fields on the form and Rate on the table.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Loan inputs fields: Monthly income, Property agreement value, Age, and the Rate column on the bank table",
+      "tags": ["interaction", "copy", "trust"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-01-explore-banks-not-obvious-at-a-glance.md"],
+      "quotes_sample": [
+        "You can't take all the pieces of the first information.",
+        "ROI will change. But before that, tell me what is the ROI?",
+        "We need two tips."
+      ],
+      "related_discussion_one_liners": [
+        "Follows issue 01’s three tooltips / table at the bottom; the two tips here are specifically about where numbers come from and what ROI is, not the whole-page glance.",
+        "“Google sites don't have the same information” — quoted as ASR “Google sites”; issue file says likely meant a spreadsheet/site that does not share one source of truth.",
+        "ASR “ROI” in a home-loan table with a Rate column: issue file says likely rate of interest; quoted as ROI.",
+        "API aside at 00:05:49 (“this one is API… otherwise this is all front-end”) is implementation talk, not a second defect."
+      ],
+      "kind_hint": "fields-dont-carry-first-inputs-or-show-roi",
+      "distinct_from_other_files_in_this_folder": "This is linked fields not carrying the first inputs and ROI not being shown first, not the at-a-glance page picture, eligibility name, dropdown affordance, or See options."
+    },
+    {
+      "path": "issue-03-adjust-eligibility-not-simple-english.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2240/issue-03-adjust-eligibility-not-simple-english.md",
+      "issue_id": "wb-rec-260815-2240/issue-03-adjust-eligibility-not-simple-english",
+      "issue_title": "Adjust eligibility is not simple English",
+      "summary_4_lines": [
+        "The extra-fields control is labeled Adjust eligibility.",
+        "They said eligibility is not a good word under their Super-English rule.",
+        "They want a plain name such as extra columns, extra attributes, or extra parameters.",
+        "The next recording keeps this topic: show those fields as columns instead of “adjusting.”"
+      ],
+      "pinpoint": "On Explore banks they said Adjust eligibility is not a good word (Super-English) and should become extra columns, extra attributes, or extra parameters in very simple English; they opened that disclosure at 390395 ms while saying this.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Adjust eligibility disclosure (details#hlc-form-more) on the Loan inputs card",
+      "tags": ["copy"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "continues_into_next",
+      "continued_from_folder": null,
+      "continued_into_folder": "wb-rec-260815-2249",
+      "related_issue_files": [
+        "issue-04-adjust-eligibility-looks-unopenable-but-is-dropdown.md",
+        "issue-05-see-options-label-unclear.md",
+        "issue-06-see-options-not-below-centered.md"
+      ],
+      "quotes_sample": [
+        "And just eligibility is not a good word.",
+        "Adjust eligibility… should become something else.",
+        "But something in very simple English."
+      ],
+      "related_discussion_one_liners": [
+        "Super-English / “fine-tune Super-English rule” is the naming standard they applied.",
+        "Opening the same control as a dropdown vs demo is issue 04 (affordance), not this wording issue.",
+        "Next folder wb-rec-260815-2249 starts: “instead of adjusting the availability, we need to show the columns here” — same object, next step (show as columns); ASR “availability” = eligibility."
+      ],
+      "kind_hint": "adjust-eligibility-not-simple-english",
+      "distinct_from_other_files_in_this_folder": "This is the Super-English wording of the Adjust eligibility label, not whether the control looks openable, not See options wording or placement, and not the page-glance or field-cascade issues."
+    },
+    {
+      "path": "issue-04-adjust-eligibility-looks-unopenable-but-is-dropdown.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2240/issue-04-adjust-eligibility-looks-unopenable-but-is-dropdown.md",
+      "issue_id": "wb-rec-260815-2240/issue-04-adjust-eligibility-looks-unopenable-but-is-dropdown",
+      "issue_title": "Adjust eligibility looks like it will not open, but it is a dropdown",
+      "summary_4_lines": [
+        "They treated the Adjust eligibility control as misleading.",
+        "One person thought that button could not be opened.",
+        "The other showed it is a dropdown (the extra-fields disclosure).",
+        "They argued demo versus dropdown, then confirmed you can open a dropdown with that control."
+      ],
+      "pinpoint": "On Explore banks they said this button is misleading: they thought Adjust eligibility was not openable, then found it is a dropdown; clicks at 390395 and 402822 toggle details#hlc-form-more while screenshots 0047–0048 show the extra fields.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Adjust eligibility summary on details#hlc-form-more",
+      "tags": ["interaction"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-03-adjust-eligibility-not-simple-english.md",
+        "issue-05-see-options-label-unclear.md"
+      ],
+      "quotes_sample": [
+        "Then this button is misleading.",
+        "I thought this button is not openable. But there is a drop-down there.",
+        "You can open a drop-down with this button."
+      ],
+      "related_discussion_one_liners": [
+        "Confusion with See options on the same row (“this is given in the See options line”); See-options wording is issue 05.",
+        "“Should I do a demo or a dropdown?” — they decided it is a dropdown, not a demo.",
+        "Wording “eligibility” is issue 03."
+      ],
+      "kind_hint": "adjust-eligibility-misleading-dropdown",
+      "distinct_from_other_files_in_this_folder": "This is the misleading affordance (looks unopenable but is a dropdown), not the eligibility wording, not See options label/placement, and not glance or field cascade."
+    },
+    {
+      "path": "issue-05-see-options-label-unclear.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2240/issue-05-see-options-label-unclear.md",
+      "issue_id": "wb-rec-260815-2240/issue-05-see-options-label-unclear",
+      "issue_title": "See options is not a clear label",
+      "summary_4_lines": [
+        "The submit button is labeled See options.",
+        "They did not know what “options” meant.",
+        "They contrasted it with See banks, said the two are different, and said See options is not a good answer.",
+        "They noted it is a form submit, and that Submit is also the wrong idea for this button."
+      ],
+      "pinpoint": "On Explore banks they said See options is not a good answer: they do not know what options are, See banks would mean something else, and the control is actually a form submit; they clicked #hlc-see-options at 378089, 383489, 386609, and 424777.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "See options button #hlc-see-options (type=submit) on the Loan inputs form",
+      "tags": ["copy", "interaction"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-04-adjust-eligibility-looks-unopenable-but-is-dropdown.md",
+        "issue-06-see-options-not-below-centered.md"
+      ],
+      "quotes_sample": [
+        "What is See options?",
+        "I don't know what options.",
+        "See options is definitely not the answer."
+      ],
+      "related_discussion_one_liners": [
+        "Placement of the same button (below Adjust eligibility, centered) is issue 06.",
+        "Dropdown confusion on the neighboring Adjust eligibility control is issue 04.",
+        "“Form. Just See options. Just move it.” bridges wording (this issue) into placement (issue 06)."
+      ],
+      "kind_hint": "see-options-label-unclear",
+      "distinct_from_other_files_in_this_folder": "This is the unclear See options label (what “options” means vs See banks vs Submit), not where the button sits, not Adjust eligibility wording or dropdown, and not glance or field cascade."
+    },
+    {
+      "path": "issue-06-see-options-not-below-centered.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2240/issue-06-see-options-not-below-centered.md",
+      "issue_id": "wb-rec-260815-2240/issue-06-see-options-not-below-centered",
+      "issue_title": "See options is not below Adjust eligibility and not centered",
+      "summary_4_lines": [
+        "After they reject the See options label, they talk about where that button sits.",
+        "They want See options under Adjust eligibility, in the center.",
+        "If you open Adjust eligibility, you still have to go to a separate button on the right to see results.",
+        "The recording ends mid-sentence on that placement."
+      ],
+      "pinpoint": "On Explore banks they said See options should be a button below Adjust eligibility and in the center; screenshots 0047, 0060, and 0062 show See options on the right of that header, so after opening extra fields they still have to go to that other button to see results.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "See options button #hlc-see-options next to the Adjust eligibility summary",
+      "tags": ["layout", "interaction"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "continues_into_next",
+      "continued_from_folder": null,
+      "continued_into_folder": "wb-rec-260815-2249",
+      "related_issue_files": [
+        "issue-03-adjust-eligibility-not-simple-english.md",
+        "issue-05-see-options-label-unclear.md"
+      ],
+      "quotes_sample": [
+        "Just move it.",
+        "See options should be below this Adjust eligibility.",
+        "And in center."
+      ],
+      "related_discussion_one_liners": [
+        "Label “See options” vs See banks vs Submit is issue 05; this file is only placement.",
+        "Rename Adjust eligibility to extra columns/parameters (00:08:33–00:08:50) is issue 03; they said it in the same breath as moving See options.",
+        "ASR “It should not come below this” vs “should be below this Adjust eligibility”: first line is about the extra-fields block / not putting the action in the wrong place; they then repeat below Adjust eligibility and in the center.",
+        "Next folder opens: “instead of adjusting the availability, we need to show the columns here” — continues the extra-fields / columns idea, not a new See-options sentence, so this issue is marked continues_into_next for that unfinished layout+columns talk."
+      ],
+      "kind_hint": "see-options-not-below-centered",
+      "distinct_from_other_files_in_this_folder": "This is See options placement (not below Adjust eligibility, not centered), not the See options wording, not Adjust eligibility naming or affordance, and not glance or field cascade."
+    }
+  ]
+}

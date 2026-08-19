@@ -1,0 +1,114 @@
+{
+  "folder": "wb-rec-260816-0013",
+  "sequence_index": 28,
+  "issue_count": 3,
+  "cards": [
+    {
+      "path": "issue-01-government-charges-same-on-every-bank-and-duplicated-in-card.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260816-0013/issue-01-government-charges-same-on-every-bank-and-duplicated-in-card.md",
+      "issue_id": "wb-rec-260816-0013/issue-01-government-charges-same-on-every-bank-and-duplicated-in-card",
+      "issue_title": "Government charges look the same on every bank, and the card repeats the table",
+      "summary_4_lines": [
+        "On Explore banks → Charges, every lender shows the same government-charges rupee figure.",
+        "Opening a bank’s card shows CERSAI, MODT stamp duty, NOI filing, and NOI registration — the same stack for each bank.",
+        "The notes under the table say those figures again, so it is hard to tell what is unique to a bank versus what is just Maharashtra / India tax."
+      ],
+      "pinpoint": "On Explore banks Charges, they treated government charges as the same number on every bank, with stamp duty and NOI explained twice — once in the table/notes and again in the side card — so a user cannot tell bank-specific fees from Maharashtra/India government fees.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Charges tab → Government charges column (₹30,518 on every bank) + government-charges drawer (CERSAI / MODT stamp duty / NOI filing / NOI registration) + Notes → Government charges (^)",
+      "tags": ["copy", "layout", "data", "trust", "charges", "government-charges"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260816-0004",
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-02-rate-change-charge-too-complex-legal-jargon.md"],
+      "quotes_sample": [
+        "This is the same. You have the same screen information in the same card.",
+        "How would you know if the information is in the card?",
+        "It is not a problem. It is time duty."
+      ],
+      "related_discussion_one_liners": [
+        "Numbered 1–4–5 cards in the drawer continue the previous recording’s talk that sequential charge cards should \"flow\".",
+        "SBI property-check ₹15,100 was opened first as a neighbouring charge card, then they moved to government charges.",
+        "Stamp duty + registration treated as \"not a problem\" as real government items, but still a presentation problem."
+      ],
+      "kind_hint": "government-charges-duplicated-same-on-every-bank",
+      "distinct_from_other_files_in_this_folder": "This is the Charges-tab government-charges column showing the same ₹30,518 stack on every bank and repeating it in notes and the side card — not rate-change jargon and not overdue % without a rupee calculation."
+    },
+    {
+      "path": "issue-02-rate-change-charge-too-complex-legal-jargon.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260816-0013/issue-02-rate-change-charge-too-complex-legal-jargon.md",
+      "issue_id": "wb-rec-260816-0013/issue-02-rate-change-charge-too-complex-legal-jargon",
+      "issue_title": "Rate-change charges are too complex and read like legal jargon, not advice",
+      "summary_4_lines": [
+        "On Explore banks → Other charges, the Rate change charge column has a dropdown: Floating → Fixed, Repricing, Benchmark switch.",
+        "They said there are too many complexes, then walked MCLR, repo, LIBOR/MIBOR, and CIBIL bargaining.",
+        "They asked for three or four plain ways banks set rates, in the voice of a lawyer’s advice, not technical terms."
+      ],
+      "pinpoint": "On Explore banks Other charges, the Rate change charge column and its type dropdown plus the ° notes are too complex (MCLR, repo, many symbols); they wanted a short lawyer-like explanation of the few ways banks set rates, not legal/technical words.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Other charges tab → Rate change charge column + Rate change type combobox (Floating → Fixed / Repricing / Benchmark switch / Type switch) + Notes ° for rate-change charge",
+      "tags": ["copy", "interaction", "charges", "rate-change", "jargon"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-01-government-charges-same-on-every-bank-and-duplicated-in-card.md",
+        "issue-03-overdue-charge-no-rupee-calculation.md"
+      ],
+      "quotes_sample": [
+        "Oh my god! There are many complexes.",
+        "This needs to be a lot simpler.",
+        "Should feel like an advice coming from a lawyer instead of just technical terms and legal words."
+      ],
+      "related_discussion_one_liners": [
+        "CIBIL as bargaining power to force a rate change; floating→fixed described as the simple case.",
+        "Repo as something that does not auto-change for the borrower.",
+        "MCLR full form and who decides it; LIBOR/MIBOR/IBA as other benchmarks.",
+        "\"Cost of sleep\" as customer risk.",
+        "\"Low notes are floating to fixed.\""
+      ],
+      "kind_hint": "rate-change-legal-jargon",
+      "distinct_from_other_files_in_this_folder": "This is the Other-charges Rate change charge dropdown and ° notes being too complex and legal — not government charges looking identical across banks, and not overdue % p.a. without a rupee walkthrough."
+    },
+    {
+      "path": "issue-03-overdue-charge-no-rupee-calculation.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260816-0013/issue-03-overdue-charge-no-rupee-calculation.md",
+      "issue_id": "wb-rec-260816-0013/issue-03-overdue-charge-no-rupee-calculation",
+      "issue_title": "Overdue charge shows a yearly percent with no rupee calculation for a missed EMI",
+      "summary_4_lines": [
+        "On Other charges, overdue is written as 2% p.a., 5% p.a., 8% p.a.",
+        "They asked what 5% means in money after one missed EMI, how overdue is made, when a notice goes, and when a collection agency comes.",
+        "They said 2% per annum is the wrong unit if the borrower only missed the next month."
+      ],
+      "pinpoint": "On Explore banks Other charges, overdue is only a percent per annum with no calculation of rupees after one missed EMI, no notice timeline, and no collection-agency timeline — they said that is not usable.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Other charges tab → Overdue charge column (‡) and its note; cells such as 2.00% p.a. / 5.00% p.a. / 8.00% p.a.",
+      "tags": ["copy", "data", "charges", "overdue", "calculation", "trust"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "continues_into_next",
+      "continued_from_folder": null,
+      "continued_into_folder": "wb-rec-260816-0029",
+      "related_issue_files": ["issue-02-rate-change-charge-too-complex-legal-jargon.md"],
+      "quotes_sample": [
+        "What is 5%?",
+        "Show me the calculation.",
+        "How did you get 2%? You have written the annum. But I put a total amount in the next month. I have not used the money for an annum."
+      ],
+      "related_discussion_one_liners": [
+        "Listed the questions a borrower would ask after missing an EMI (how overdue is made, how much money/charge, days until notice, days until a collection agency).",
+        "\"Monitoring value\" / putting data on top of the calculation: they want inputs (EMI missed, days late) driving a shown sum.",
+        "EMI bounce is on the same table but they did not attack bounce as a separate defect here; next recording folds bounce into the same overdue-calculation drawer."
+      ],
+      "kind_hint": "overdue-no-rupee-calculation",
+      "distinct_from_other_files_in_this_folder": "This is overdue shown only as % per annum with no rupee calculation, notice days, or collection-agency days after one missed EMI — not duplicated government charges and not rate-change legal jargon."
+    }
+  ]
+}

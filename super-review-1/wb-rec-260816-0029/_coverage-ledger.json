@@ -1,0 +1,388 @@
+{
+  "folder": "wb-rec-260816-0029",
+  "sequence_index": 29,
+  "recording_id": "1ce6b2c1-5803-4478-9e29-c1f823caae0f",
+  "started_at": "2026-08-15T18:59:02.434Z",
+  "ended_at": "2026-08-15T19:01:28.697Z",
+  "duration_ms": 146263,
+  "prev_folder": "wb-rec-260816-0013",
+  "next_folder": "wb-rec-260816-0031",
+  "files_in_folder": [
+    "audio.json",
+    "audio.lrc",
+    "audio.srt",
+    "audio.text",
+    "audio.tsv",
+    "audio.txt",
+    "audio.vtt",
+    "audio.webm",
+    "audio_sentences.txt",
+    "console.json",
+    "events.json",
+    "index.html",
+    "manifest.json",
+    "pages.json",
+    "replay.spec.ts",
+    "screenshots/0000.png",
+    "screenshots/0001.png",
+    "screenshots/0002.png",
+    "screenshots/0003.jpg",
+    "screenshots/0004.png",
+    "screenshots/0005.png",
+    "screenshots/0006.png",
+    "screenshots/0007.png",
+    "screenshots/0008.png",
+    "screenshots/0009.png",
+    "screenshots/0010.png",
+    "screenshots/0011.png",
+    "screenshots/0012.png",
+    "screenshots/0013.png",
+    "screenshots/0014.png",
+    "screenshots/0015.jpg",
+    "screenshots/0016.jpg",
+    "screenshots/index.json",
+    "tabs.json",
+    "viewer.css",
+    "viewer.js"
+  ],
+  "file_status": {
+    "audio.json": "fully_read_chunked",
+    "audio.lrc": "fully_read",
+    "audio.srt": "fully_read",
+    "audio.text": "fully_read",
+    "audio.tsv": "fully_read",
+    "audio.txt": "fully_read",
+    "audio.vtt": "fully_read",
+    "audio.webm": "binary_audio_untranscribed_use_text_artifacts",
+    "audio_sentences.txt": "fully_read",
+    "console.json": "fully_read",
+    "events.json": "fully_read",
+    "index.html": "player_shell_with_inlined_json_fully_read",
+    "manifest.json": "fully_read",
+    "pages.json": "fully_read",
+    "replay.spec.ts": "fully_read",
+    "screenshots/0000.png": "fully_read_image",
+    "screenshots/0001.png": "fully_read_image",
+    "screenshots/0002.png": "fully_read_image",
+    "screenshots/0003.jpg": "fully_read_image",
+    "screenshots/0004.png": "fully_read_image",
+    "screenshots/0005.png": "fully_read_image",
+    "screenshots/0006.png": "fully_read_image",
+    "screenshots/0007.png": "fully_read_image",
+    "screenshots/0008.png": "fully_read_image",
+    "screenshots/0009.png": "fully_read_image",
+    "screenshots/0010.png": "fully_read_image",
+    "screenshots/0011.png": "fully_read_image",
+    "screenshots/0012.png": "fully_read_image",
+    "screenshots/0013.png": "fully_read_image",
+    "screenshots/0014.png": "fully_read_image",
+    "screenshots/0015.jpg": "fully_read_image",
+    "screenshots/0016.jpg": "fully_read_image",
+    "screenshots/index.json": "fully_read",
+    "tabs.json": "fully_read",
+    "viewer.css": "player_chrome_fully_read_confirmed",
+    "viewer.js": "player_chrome_fully_read_confirmed"
+  },
+  "files_missing_expected": [],
+  "screenshots_index_count": 17,
+  "screenshots_files_seen": 17,
+  "issues_written": [
+    "issue-01-other-charges-missing-emi-miss-calculation-drawer.md",
+    "issue-02-banks-missing-emi-miss-penalty-labels.md"
+  ],
+  "issue_count": 2,
+  "zero_issue_reason": null,
+  "continuations": [
+    {
+      "issue_file": "issue-01-other-charges-missing-emi-miss-calculation-drawer.md",
+      "direction": "from",
+      "other_folder": "wb-rec-260816-0013"
+    },
+    {
+      "issue_file": "issue-02-banks-missing-emi-miss-penalty-labels.md",
+      "direction": "from",
+      "other_folder": "wb-rec-260816-0013"
+    }
+  ],
+  "prev_boundary_read": true,
+  "next_boundary_read": true,
+  "file_usage": [
+    {
+      "path": "audio.json",
+      "bytes": 79185,
+      "status": "fully_read_chunked",
+      "facts_taken": [
+        "25 segments, language tagged mr (wrong)",
+        "segment1 7.83-16.29 audio charge drawer+calculation; word audio p=0.82",
+        "segment4 27.03-30.21 24-step bank",
+        "segment16 87.43-93.03 Indus land bank highest EMI-miss penalties",
+        "trailing text repeats overdue+bounce in calculations"
+      ],
+      "used_for": ["supports_issue", "timeline_alignment"]
+    },
+    {
+      "path": "audio.lrc",
+      "bytes": 2065,
+      "status": "fully_read",
+      "facts_taken": ["timed lines match srt: drawer, 24-step, underlines, J&K, Indus land, overdue/bounce"],
+      "used_for": ["supports_issue", "timeline_alignment"]
+    },
+    {
+      "path": "audio.srt",
+      "bytes": 2331,
+      "status": "fully_read",
+      "facts_taken": [
+        "25 cues 00:00:07,830-00:02:12,850",
+        "cue1 every audio charge needs drawer+calculation",
+        "cues13-17 labels J&K least / Indus land highest; tell intelligence",
+        "cues19-24 overdue+bounce click calculations and total extra money"
+      ],
+      "used_for": ["supports_issue", "timeline_alignment"]
+    },
+    {
+      "path": "audio.text",
+      "bytes": 1415,
+      "status": "fully_read",
+      "facts_taken": ["untimed full transcript same demands as srt"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "audio.tsv",
+      "bytes": 1746,
+      "status": "fully_read",
+      "facts_taken": ["ms clock 7830 drawer, 27030 24-step, 64510 underlines, 73930 labels, 109430 overdue+bounce, 129970 intelligence already visible"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "audio.txt",
+      "bytes": 2090,
+      "status": "fully_read",
+      "facts_taken": ["Whisper timed dump matches srt wording"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "audio.vtt",
+      "bytes": 2100,
+      "status": "fully_read",
+      "facts_taken": ["WEBVTT cues identical to srt"],
+      "used_for": ["supports_issue", "timeline_alignment"]
+    },
+    {
+      "path": "audio.webm",
+      "bytes": 2350857,
+      "status": "binary_audio_untranscribed_use_text_artifacts",
+      "facts_taken": ["binary mic recording; speech taken from text artifacts only"],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "audio_sentences.txt",
+      "bytes": 1389,
+      "status": "fully_read",
+      "facts_taken": ["one paragraph; includes drawer, J&K, Indus land, overdue and EMI bounce"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "console.json",
+      "bytes": 2,
+      "status": "fully_read",
+      "facts_taken": ["empty array []; no console errors captured"],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "events.json",
+      "bytes": 6230,
+      "status": "fully_read",
+      "facts_taken": [
+        "58 events; kinds focus/idle/scroll only",
+        "focus t=7519 Collapse all css div#hlc-charges-note > div > div > button",
+        "scrolls y 697 to 3207 then back to 692; url always explore-banks.html",
+        "no click on overdue/bounce cells or bank rows in this folder"
+      ],
+      "used_for": ["supports_issue", "timeline_alignment"]
+    },
+    {
+      "path": "index.html",
+      "bytes": 21267,
+      "status": "player_shell_with_inlined_json_fully_read",
+      "facts_taken": [
+        "generic Workbooks viewer shell",
+        "inlined manifest id 1ce6b2c1-5803-4478-9e29-c1f823caae0f, start_url explore-banks.html, 58 events, 17 screenshots",
+        "no extra session discussion beyond JSON files"
+      ],
+      "used_for": ["checked_no_extra_signal", "timeline_alignment"]
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 3472,
+      "status": "fully_read",
+      "facts_taken": [
+        "id 1ce6b2c1-5803-4478-9e29-c1f823caae0f",
+        "start_url http://localhost:8765/pages/explore-banks.html",
+        "2026-08-15T18:59:02.434Z to 2026-08-15T19:01:28.697Z duration_ms 146263",
+        "events_count 58 screenshots_count 17 pages_count 0 console_count 0 viewport 1366x768 mic true"
+      ],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "pages.json",
+      "bytes": 2,
+      "status": "fully_read",
+      "facts_taken": ["empty array []; page title taken from URL and screenshots"],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "replay.spec.ts",
+      "bytes": 2769,
+      "status": "fully_read",
+      "facts_taken": ["goto explore-banks.html then only idle comments; no click steps; matches events (talk during idle+scroll)"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "screenshots/0000.png",
+      "bytes": 250919,
+      "status": "fully_read_image",
+      "facts_taken": ["t=199 start Other charges; CSB 24.00% p.a. overdue; bounce rupees; City Union through IDBI"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0001.png",
+      "bytes": 310633,
+      "status": "fully_read_image",
+      "facts_taken": ["t=8199 after Collapse all focus; Bank of Maharashtra selected; overdue/bounce columns"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0002.png",
+      "bytes": 315833,
+      "status": "fully_read_image",
+      "facts_taken": ["t=16199 Other charges Axis through Central Bank"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "screenshots/0003.jpg",
+      "bytes": 118322,
+      "status": "fully_read_image",
+      "facts_taken": ["t=24199 jpeg with heuristic masks; Other charges still visible"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "screenshots/0004.png",
+      "bytes": 274459,
+      "status": "fully_read_image",
+      "facts_taken": ["t=32200 Canara 0% overdue cap; CSB 24.00% p.a.; DCB overdue as blue range link"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0005.png",
+      "bytes": 274459,
+      "status": "fully_read_image",
+      "facts_taken": ["t=40200 same CSB/DCB band as 0004"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "screenshots/0006.png",
+      "bytes": 274459,
+      "status": "fully_read_image",
+      "facts_taken": ["t=48200 same CSB/DCB band as 0004"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "screenshots/0007.png",
+      "bytes": 240503,
+      "status": "fully_read_image",
+      "facts_taken": ["t=58199 DCB through Indian Bank; IDFC overdue is a long condition not a calculator"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0008.png",
+      "bytes": 254190,
+      "status": "fully_read_image",
+      "facts_taken": ["t=66199 IndusInd 24.00% p.a. / ₹750 bounce and J&K 0.20% p.a. / ₹200 bounce; no penalty labels"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0009.png",
+      "bytes": 261056,
+      "status": "fully_read_image",
+      "facts_taken": ["t=74200 same IndusInd/J&K pair during labels speech"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0010.png",
+      "bytes": 265431,
+      "status": "fully_read_image",
+      "facts_taken": ["t=84199 Indian Overseas through Nainital; J&K still in view"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0011.png",
+      "bytes": 253349,
+      "status": "fully_read_image",
+      "facts_taken": ["t=92200 HDFC through J&K including IndusInd"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0012.png",
+      "bytes": 232742,
+      "status": "fully_read_image",
+      "facts_taken": ["t=102200 RBL through Yes Bank plus Notes/Collapse all/Prepayment charge drawer pattern"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0013.png",
+      "bytes": 254740,
+      "status": "fully_read_image",
+      "facts_taken": ["t=112199 J&K through PNB during overdue+bounce calculation talk"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0014.png",
+      "bytes": 248182,
+      "status": "fully_read_image",
+      "facts_taken": ["t=120200 IndusInd row highlighted; 24.00% p.a. overdue and ₹750 bounce unlabeled"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0015.jpg",
+      "bytes": 118152,
+      "status": "fully_read_image",
+      "facts_taken": ["t=130199 top of table Axis–Bank of Maharashtra; intelligence already visible speech"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0016.jpg",
+      "bytes": 119472,
+      "status": "fully_read_image",
+      "facts_taken": ["t=140199 same top of Other charges near session end"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/index.json",
+      "bytes": 5219,
+      "status": "fully_read",
+      "facts_taken": ["17 shots; t 199 to 140199; url always explore-banks.html; 0003/0015/0016 jpeg with heuristic mask_rects"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "tabs.json",
+      "bytes": 160,
+      "status": "fully_read",
+      "facts_taken": ["one tab 1351502398 url explore-banks.html whole session"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "viewer.css",
+      "bytes": 17895,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": ["generic replay player styles; 17895 bytes; no session talk"],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "viewer.js",
+      "bytes": 32334,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": ["generic replay player script; 32334 bytes; no session talk"],
+      "used_for": ["checked_no_extra_signal"]
+    }
+  ]
+}

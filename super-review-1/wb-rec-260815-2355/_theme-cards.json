@@ -1,0 +1,116 @@
+{
+  "folder": "wb-rec-260815-2355",
+  "sequence_index": 26,
+  "issue_count": 3,
+  "cards": [
+    {
+      "path": "issue-01-loan-amount-how-calculated-steps-unlabeled-unsequenced.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2355/issue-01-loan-amount-how-calculated-steps-unlabeled-unsequenced.md",
+      "issue_id": "wb-rec-260815-2355/issue-01-loan-amount-how-calculated-steps-unlabeled-unsequenced",
+      "issue_title": "Loan-amount how-calculated steps have no names, so the chain cannot be followed",
+      "summary_4_lines": [
+        "On Explore banks, they opened Bank of Maharashtra’s loan-amount drawer.",
+        "The six steps show bare numbers (80%, 55%, 10%, ₹555) without names.",
+        "They could not tell what 80% or 55% was, or why the next step exists.",
+        "They said the steps must be sequenced and each number must have a name and label."
+      ],
+      "pinpoint": "On Explore banks, the Bank of Maharashtra loan-amount how-calculated drawer shows six numbered arithmetic steps whose percentages and leftover rupees (80.00%, 55.00%, 10.00%, −₹555) have no names, so a reader cannot follow why step n is useful or where 80/55/10 came from.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks (from URL; pages.json empty)",
+      "on_screen_object": "Loan amount drawer for Bank of Maharashtra · Maha Super Housing Loan (opened from ₹48,00,000 — Show how loan amount was calculated)",
+      "tags": ["copy", "layout", "trust", "data", "interaction"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260815-2341",
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-02-emi-how-calculated-formula-unlabeled-12-and-0-006.md"],
+      "quotes_sample": [
+        "So I don't know why the next step is useful.",
+        "Now he has done into 800. What is 800?",
+        "I need their names and labels."
+      ],
+      "related_discussion_one_liners": [
+        "Called the loan amounts “amazing” / “we are getting a lot of loans” while still attacking the unlabeled math.",
+        "Accepted a single calculation if it is easy to follow.",
+        "Restated the intended chain: income allowance × FOIR − EMIs − credit-card load = monthly EMI eligibility; income limit 68 lakh; lower-of → 48 lakh.",
+        "Later reopened the same drawer as proof a bank agent only gets a system or head-office figure — praise of having the drawer, not a second defect."
+      ],
+      "kind_hint": "unlabeled-loan-amount-steps",
+      "distinct_from_other_files_in_this_folder": "This is the loan-amount drawer’s six unlabeled arithmetic steps (80%/55%/10%/−₹555 with no names or sequencing), not the EMI formula’s unnamed 12/0.006 and not the Charges footnote * vs ^ glyphs."
+    },
+    {
+      "path": "issue-02-emi-how-calculated-formula-unlabeled-12-and-0-006.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2355/issue-02-emi-how-calculated-formula-unlabeled-12-and-0-006.md",
+      "issue_id": "wb-rec-260815-2355/issue-02-emi-how-calculated-formula-unlabeled-12-and-0-006",
+      "issue_title": "EMI how-calculated formula leaves 12 and 0.006 unnamed",
+      "summary_4_lines": [
+        "On Explore banks they opened Bank of Maharashtra’s EMI drawer (₹37,938).",
+        "The formula shows 7.25% ÷ 12 and a bare 0.00604167 with no word “months” or “monthly rate”.",
+        "They asked why yearly interest is needed, why it says “into”, and what 0.06 is.",
+        "They still called showing EMI math revolutionary — that praise is not this issue."
+      ],
+      "pinpoint": "On Explore banks, the Bank of Maharashtra EMI how-calculated drawer prints 7.25% ÷ 12 = 0.6042% and then 0.00604167^(240) without labeling 12 as months or 0.00604167 as the monthly rate, so they could not read the formula.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks (from URL; pages.json empty)",
+      "on_screen_object": "EMI drawer for Bank of Maharashtra · Maha Super Housing Loan (opened from ₹37,938 — Show how EMI was calculated)",
+      "tags": ["copy", "layout", "trust", "data"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-01-loan-amount-how-calculated-steps-unlabeled-unsequenced.md"],
+      "quotes_sample": [
+        "I need to know that interest is monthly. I don't know why I need to calculate the annual interest.",
+        "It would have been better if it was written as months.",
+        "What is 0.06?"
+      ],
+      "related_discussion_one_liners": [
+        "Praised the existence of the explanation: “Very nice. Nobody knows how EMI is calculated. This is a revolutionary product.”",
+        "Said a branch agent does not know this much and only gets a system or head-office figure.",
+        "Joked about not having money at home.",
+        "Expected the drawer to open and slide-select on click — “Very nice.”",
+        "Said “we don't lie to the customer / we are here to empower you” as the reason this drawer should exist."
+      ],
+      "kind_hint": "unlabeled-emi-formula-12-monthly-rate",
+      "distinct_from_other_files_in_this_folder": "This is the EMI drawer’s formula leaving 12 and 0.00604167 unnamed (no “months” / “monthly rate”), not the loan-amount step names and not the Charges footnote * vs ^ / dash-as-link marks."
+    },
+    {
+      "path": "issue-03-charges-footnote-marks-dash-looks-like-link-want-stars.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2355/issue-03-charges-footnote-marks-dash-looks-like-link-want-stars.md",
+      "issue_id": "wb-rec-260815-2355/issue-03-charges-footnote-marks-dash-looks-like-link-want-stars",
+      "issue_title": "Charges footnote dash looks like a link; they want stars, and there is an extra mark",
+      "summary_4_lines": [
+        "On Explore banks → Charges they looked at the * and ^ marks on fee column titles.",
+        "They said a dash is for linking and must not be used as a note mark.",
+        "They want a star, like Apple’s footnote marks, so notes are not confused with links.",
+        "They counted three index marks and only two stars — an extra mark is sitting there."
+      ],
+      "pinpoint": "On Explore banks Charges, footnote marks on Processing fees / Property check / Government charges mix * and ^ (ASR: dash), which they said looks like a link rather than a note; they want stars, and they counted three indexes but only two stars — an extra mark.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks (from URL; pages.json empty)",
+      "on_screen_object": "Charges tab column-title note buttons: Processing fees *, Property check charges *, Government charges ^, plus Notes * / ^ blocks",
+      "tags": ["copy", "layout", "interaction", "trust"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "continues_into_next",
+      "continued_from_folder": null,
+      "continued_into_folder": "wb-rec-260816-0004",
+      "related_issue_files": [],
+      "quotes_sample": [
+        "What is Dash?",
+        "I want a star.",
+        "Actually there is an extra mark here."
+      ],
+      "related_discussion_one_liners": [
+        "Apple analogy: Apple’s site uses many footnote marks but keeps them distinct from links; they said Apple underlines marks so people don’t get confused.",
+        "“Dash might look long” / “there are a lot of them.”",
+        "After the glyph talk they opened Indian Bank ₹2,500 processing-fee how-calculated with almost no remaining speech.",
+        "Next recording starts “what is a processing fee” on the same Charges / processing-fee note — note-body talk, not the glyph (belongs in 0004)."
+      ],
+      "kind_hint": "charges-footnote-marks-look-like-links",
+      "distinct_from_other_files_in_this_folder": "This is Charges footnote glyphs (* vs ^, dash looking like a link, three indexes vs two stars), not unlabeled loan-amount steps and not unlabeled EMI formula numbers."
+    }
+  ]
+}

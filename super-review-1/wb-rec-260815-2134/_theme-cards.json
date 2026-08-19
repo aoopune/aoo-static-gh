@@ -1,0 +1,80 @@
+{
+  "folder": "wb-rec-260815-2134",
+  "sequence_index": 11,
+  "issue_count": 2,
+  "cards": [
+    {
+      "path": "issue-01-cibil-single-exact-vs-min-max-range.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2134/issue-01-cibil-single-exact-vs-min-max-range.md",
+      "issue_id": "wb-rec-260815-2134/issue-01-cibil-single-exact-vs-min-max-range",
+      "issue_title": "CIBIL score is one required exact number",
+      "summary_4_lines": [
+        "On Explore banks, CIBIL is a single required box (it shows 780).",
+        "People often do not know their exact score, only a band like 680–700.",
+        "They treated that exact box as the wrong control: they want a dropdown and/or a min–max range.",
+        "Minimum should be required; maximum optional. If someone puts a hoped-for higher score, the bank table can go empty."
+      ],
+      "pinpoint": "On Explore banks, the required CIBIL score field is a single exact number (780 on screen); they said users do not know an exact CIBIL and the field must be a selectable dropdown and/or a min–max range, with minimum compulsory and maximum optional.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Loan inputs CIBIL score* textbox #hlc-cibil (placeholder 780, required)",
+      "tags": ["cibil", "loan-inputs", "dropdown", "range", "copy", "interaction"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260815-2125",
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-02-bank-options-one-rate-for-cibil-band.md"],
+      "quotes_sample": [
+        "Should I give him a drop down?",
+        "You don't need to know your exact Sibyl score.",
+        "Then the table will be empty."
+      ],
+      "related_discussion_one_liners": [
+        "Amazon typeahead analogy from wb-rec-260815-2125 (cracked Amazon links; type 7 → next 5 scores; football 24 inches) — not a separate Amazon-link bug.",
+        "Font weight: typed amount normal; the type you are going to type extra weight — related to Amazon-style typeahead for CIBIL, not a second page object.",
+        "Aside: “You have to pay so much for a PM” — not a site issue.",
+        "Rejection psychology: if they think “my rejection is more,” they raise the minimum (e.g. 760); only-max 760 vs also-max showing max 760 — “This is what I like.”",
+        "User-future talk: 3/6 months, raise score 20 points, “show me what is possible” vs “I can’t increase it”; bounding the range (ASR max of 5 / 25); end “I want 2 rates. I want 2 loans.” is issue-02."
+      ],
+      "kind_hint": "cibil-exact-vs-min-max-range",
+      "distinct_from_other_files_in_this_folder": "This is the Loan inputs CIBIL score* box (#hlc-cibil) as a single exact number vs dropdown/min–max; issue-02 is the Overview Rate column showing one rate for a bank CIBIL band."
+    },
+    {
+      "path": "issue-02-bank-options-one-rate-for-cibil-band.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2134/issue-02-bank-options-one-rate-for-cibil-band.md",
+      "issue_id": "wb-rec-260815-2134/issue-02-bank-options-one-rate-for-cibil-band",
+      "issue_title": "Bank table shows only one rate for a CIBIL band",
+      "summary_4_lines": [
+        "On Explore banks, each bank row has a single Rate.",
+        "They said the bank actually gives a band such as 775 to 780, so one rate cannot be filtered or explained.",
+        "They asked which rate is the lowest, and on what basis.",
+        "At the end they said they want two rates and two loans, after opening Other charges and switching Prepayment to Balance transfer."
+      ],
+      "pinpoint": "On Explore banks Overview, each bank is shown with only one Rate, while they said the bank tells a CIBIL band such as 775–780, so they cannot filter or tell the user which rate applies; they asked which is the lowest rate and on what basis, and later said they want two rates and two loans.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Bank options Overview table Rate column (sortable header Rate)",
+      "tags": ["rates", "bank-options", "cibil", "filtering", "overview-table"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-01-cibil-single-exact-vs-min-max-range.md"],
+      "quotes_sample": [
+        "But we have to show him only one rate.",
+        "Which is the lowest rate?",
+        "I want 2 rates."
+      ],
+      "related_discussion_one_liners": [
+        "Sits on top of issue-01 CIBIL min/max/dropdown; rejection, 680–700, 20 points, 6-month loan analogies belong with the input, not this Rate column.",
+        "“Maximum limit of 5” vs “25”: ASR disagrees; both about bounding a CIBIL range so a rate filter can work — not a separate issue.",
+        "Other charges / Prepayment method / Balance transfer: they switched Self funds → Balance transfer; some banks’ prepayment did change (Canara Nil→2%, BoB Nil→0.50%); they said BT will not change, then “No, no. I want 2 rates” — a check, not a separate BT-charges-wrong issue.",
+        "“Repayment charge and self-fund will be 300”: ASR; on screen Self funds prepayment is 2.00% / Nil, not “300.”"
+      ],
+      "kind_hint": "one-rate-for-cibil-band",
+      "distinct_from_other_files_in_this_folder": "This is the Overview Rate column showing one number per bank for a 775–780 CIBIL band (and “2 rates / 2 loans”); issue-01 is how the user enters CIBIL on the Loan inputs field."
+    }
+  ]
+}

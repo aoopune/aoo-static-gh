@@ -1,0 +1,125 @@
+{
+  "folder": "wb-rec-260815-2304",
+  "sequence_index": 21,
+  "issue_count": 3,
+  "cards": [
+    {
+      "path": "issue-01-extra-eligibility-should-stay-visible-prefilled.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2304/issue-01-extra-eligibility-should-stay-visible-prefilled.md",
+      "issue_id": "wb-rec-260815-2304/issue-01-extra-eligibility-should-stay-visible-prefilled",
+      "issue_title": "Extra loan fields should stay on screen, already filled in",
+      "summary_4_lines": [
+        "On Explore banks, extra questions (existing EMIs, cards, FOIR, tenure, co-applicant) sit behind Adjust eligibility.",
+        "They said they will stay on this form and keep those answers already filled, as more columns, so filling does not get harder.",
+        "They want a short note under each field that shows what changes (for example, using existing EMIs can change the loan by ₹10 lakh).",
+        "They also said not to stamp fields as mandatory, because later those answers change."
+      ],
+      "pinpoint": "On Explore banks, extra eligibility fields live behind collapsed Adjust eligibility; they said they will sit on this form, keep those fields as already-filled columns (about 6 plus 4 more), not make filling harder, show a tooltip of what changes, and never write “mandatory,” because a later surprise would break trust.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Loan inputs form, details#hlc-form-more (Adjust eligibility), extra fields (Existing EMIs, Credit card limits, Share of income for EMIs / FOIR, Tenure, Co-applicant), See options button",
+      "tags": ["form", "eligibility", "layout", "trust", "copy", "interaction"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "both",
+      "continued_from_folder": "wb-rec-260815-2302",
+      "continued_into_folder": "wb-rec-260815-2313",
+      "related_issue_files": [
+        "issue-02-loan-form-fields-lack-importance-indication.md",
+        "issue-03-see-options-explore-banks-naming.md"
+      ],
+      "quotes_sample": [
+        "No, because I don't want to get a surprise later.",
+        "I will sit here only. I have to keep a pre-field for that.",
+        "we should never write the mandatory fields."
+      ],
+      "related_discussion_one_liners": [
+        "They called the open extras “a perfect table.”",
+        "They skip filling at the start because they do not know if it will be of any use; if the consequence is shown, ten fields are fine and they would not go elsewhere to look up FOIR.",
+        "Never write mandatory, because later “we don't have this with us” and it changes with existing EMIs.",
+        "If Co-applicant is Yes, take details and do not overthink (continues co-applicant talk from wb-rec-260815-2302); the customer should feel the details are useful.",
+        "Importance stars / meter / score on those columns is a separate issue (issue-02); See options / Compare banks button name is a separate issue (issue-03)."
+      ],
+      "kind_hint": "hidden-eligibility-columns",
+      "distinct_from_other_files_in_this_folder": "This is extras staying on the form as already-filled columns with a consequence tooltip and no “mandatory” stamp, not column-importance marks (issue-02) and not See options / Explore banks naming (issue-03)."
+    },
+    {
+      "path": "issue-02-loan-form-fields-lack-importance-indication.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2304/issue-02-loan-form-fields-lack-importance-indication.md",
+      "issue_id": "wb-rec-260815-2304/issue-02-loan-form-fields-lack-importance-indication",
+      "issue_title": "Loan fields do not show how much each one matters",
+      "summary_4_lines": [
+        "On Explore banks, every loan question looks equally important.",
+        "They said each column should show how much it matters to the loan — stars, a red–orange–green meter, or a score like 10/10.",
+        "They later described the same idea as a small red card with big type for what matters most, then quieter second- and third-level cards.",
+        "They used FOIR as the example of a weaker field: it only nudges the rate a little."
+      ],
+      "pinpoint": "On Explore banks, Loan inputs fields have no mark of how much each column matters to the loan; they asked for stars, a red/orange/green meter, or a 10/10 vs 8/10 score, and later for a small red big-type card for the most important field versus quieter second- and third-level cards.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Loan inputs fields (Monthly income, Property agreement value, Age, CIBIL score, Occupation, Purpose, and Adjust eligibility extras including FOIR)",
+      "tags": ["form", "layout", "importance", "copy", "eligibility"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "continues_into_next",
+      "continued_from_folder": null,
+      "continued_into_folder": "wb-rec-260815-2313",
+      "related_issue_files": [
+        "issue-01-extra-eligibility-should-stay-visible-prefilled.md",
+        "issue-03-see-options-explore-banks-naming.md"
+      ],
+      "quotes_sample": [
+        "And somewhere, I need an indication that how important is this column to my loan application.",
+        "Maybe you can give it stars.",
+        "this is a small card. Most important."
+      ],
+      "related_discussion_one_liners": [
+        "Ten columns at the start, all pre-filled, so friction does not rise — that visibility is issue-01; the importance marks on those columns are this issue. EMI-to-₹10-lakh tooltips used here as how someone would *see* importance.",
+        "Future credit pull / “we won't keep anything” — trust talk while pointing at FOIR, not a separate page defect.",
+        "“AI native” / vertical tabs: tenure with two cards, interest rate with one card — a sketch they then dropped.",
+        "They counted rate, amount, tenure as three outputs, then processing fees / salary / self-employed as more effects, and said if effects are not mutually exclusive, 1:1 sectioning is not allowed.",
+        "Next recording continues: top-to-bottom = money, rate, tenure; left-to-right = column importance; colors and order."
+      ],
+      "kind_hint": "missing-column-importance",
+      "distinct_from_other_files_in_this_folder": "This is each Loan inputs column lacking a mark of how much it matters (stars, meter, score, red/second/third-level cards), not extras staying visible and pre-filled (issue-01) and not See options / Explore banks naming (issue-03)."
+    },
+    {
+      "path": "issue-03-see-options-explore-banks-naming.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2304/issue-03-see-options-explore-banks-naming.md",
+      "issue_id": "wb-rec-260815-2304/issue-03-see-options-explore-banks-naming",
+      "issue_title": "“See options” and “Explore banks” are the wrong names",
+      "summary_4_lines": [
+        "The button on the loan card is labeled See options. The page is titled Explore banks.",
+        "They asked how “See options” was derived, then said the button should be called Compare banks.",
+        "They said Explore banks does not work: explore means dump everything in, and they mean compare."
+      ],
+      "pinpoint": "On Explore banks, they said the See options button should be named Compare banks, and that the page name Explore banks does not work because explore means dump everything in, while they mean compare.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "See options button on the Loan inputs card; page title / H1 Explore banks.",
+      "tags": ["copy", "naming", "navigation", "button"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-01-extra-eligibility-should-stay-visible-prefilled.md",
+        "issue-02-loan-form-fields-lack-importance-indication.md"
+      ],
+      "quotes_sample": [
+        "The name of the button is compare banks.",
+        "What is explore banks?",
+        "Explore doesn't work."
+      ],
+      "related_discussion_one_liners": [
+        "Joke derivation “your items, your options, C-Options.”",
+        "“Check” as a stepping-stone word before “Compare banks.”",
+        "“Compare banks is an option” — they treated compare as the real action, not a menu item named options.",
+        "Extra-fields / pre-fill talk immediately before this (issue-01); Co-applicant Yes immediately after (related to issue-01)."
+      ],
+      "kind_hint": "see-options-explore-banks-naming",
+      "distinct_from_other_files_in_this_folder": "This is the names “See options” and “Explore banks” being wrong for a compare action, not extras staying visible and pre-filled (issue-01) and not column-importance marks (issue-02)."
+    }
+  ]
+}

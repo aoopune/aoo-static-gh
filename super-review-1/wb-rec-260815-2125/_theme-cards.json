@@ -1,0 +1,43 @@
+{
+  "folder": "wb-rec-260815-2125",
+  "sequence_index": 10,
+  "issue_count": 1,
+  "cards": [
+    {
+      "path": "issue-01-cibil-score-exact-text-instead-of-range-dropdown.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2125/issue-01-cibil-score-exact-text-instead-of-range-dropdown.md",
+      "issue_id": "wb-rec-260815-2125/issue-01-cibil-score-exact-text-instead-of-range-dropdown",
+      "issue_title": "CIBIL score box forces an exact number instead of a range dropdown",
+      "summary_4_lines": [
+        "The CIBIL score box on Explore banks is a type-in field. It asks for one exact number.",
+        "They said that is the problem: it forces the exact score.",
+        "They want a dropdown of score windows (for example 750 to 780), not a vague “approximate” with a star at the bottom.",
+        "They kept clicking that same box while arguing buckets, bank breakouts, and Amazon-style typeahead."
+      ],
+      "pinpoint": "On Explore banks, the CIBIL score control is a free-text box that forces an exact number; they said the problem is that it forces the exact score and they need a dropdown of score windows (e.g. 750–780, 730–750) instead of typing an exact score, and they rejected calling the result approximate with a star footnote.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "CIBIL score* text box (#hlc-cibil, placeholder 780) in the Loan inputs form, plus its About CIBIL score info button",
+      "tags": ["copy", "interaction", "data", "trust"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "continues_into_next",
+      "continued_from_folder": null,
+      "continued_into_folder": "wb-rec-260815-2134",
+      "related_issue_files": [],
+      "quotes_sample": [
+        "You are forcing me to tell the exact score.",
+        "No. Here, we need a drop down.",
+        "And here we give a range but do not give a drop down."
+      ],
+      "related_discussion_one_liners": [
+        "Coarse bands already in people’s heads (“Average, high,” “700 plus is excellent”) — they want numeric windows, not those words.",
+        "Bucket size: 10-point ranges vs 5-point (“with 55” / 5–5); ten points “don’t change,” five-point makes the list bigger; finer buckets near “900 top score” make it long.",
+        "Negotiation: “I have 776 also. Show me the offer of 780”; ten points here and there should still work without throwing so much that 776/778 is ignored.",
+        "Bank-specific breakouts are not parallel (one bank 800–810, another 850–812); they also debate “Minimum Sibyl Score” vs exact on the same box, and stress about knowing 5–10 points.",
+        "Amazon typeahead analogy: type 766 and dropdowns open; type F and it freezes; either select a dropdown or type a range — do not mix both in a confusing way."
+      ],
+      "kind_hint": "cibil-exact-text-vs-range-dropdown"
+    }
+  ]
+}

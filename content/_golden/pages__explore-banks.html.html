@@ -18,7 +18,7 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="../css/shroffin-shell.css?v=088220580a">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=af30fb089e">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=03cf5b26a6">
 </head>
 <body class="explore-banks-page">
   <!-- SHROFFIN_NAV_START -->
@@ -529,6 +529,21 @@
             </div>
           </section>
 
+          <!-- Intelligence panel — shown after match, before results table -->
+          <section
+            class="hlc-intelligence"
+            id="hlc-intelligence"
+            aria-labelledby="hlc-intelligence-sr-heading"
+            hidden
+          >
+            <h2 class="visually-hidden" id="hlc-intelligence-sr-heading">
+              Three things worth knowing for your loan
+            </h2>
+            <p class="hlc-intel-status" id="hlc-intel-status" role="status" aria-live="polite"></p>
+            <ol class="hlc-intel-tips" id="hlc-intel-tips" aria-label="Top tips for your loan"></ol>
+            <p class="hlc-intel-disclaimer">Figures are indicative. Banks decide final terms.</p>
+          </section>
+
           <div
             class="hlc-searching"
             id="hlc-searching"
@@ -1005,7 +1020,7 @@
   <script src="../js/shroffin-home-stance.js?v=2c89949b5f"></script>
   <script src="../js/shroffin-nav.js?v=69b8861330"></script>
   <script src="../js/hlc-data-url.generated.js?v=2eb6ecb75c"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=d8cc33c2a0"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=efdff8a127"></script>
   <script src="../js/hlc-field-help.js?v=305f463f51"></script>
   <script>
     (function () {

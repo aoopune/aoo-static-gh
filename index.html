@@ -361,6 +361,7 @@
       background: transparent;
       color: #f5f5f7;
       border-top: 1px solid rgba(245, 245, 247, 0.12);
+      text-align: center;
     }
 
     .home-browse-track {
@@ -383,99 +384,78 @@
     }
 
     .home-browse-inner {
+      --home-browse-size: clamp(2.6rem, 5.8vw, 4.75rem);
       width: 100%;
-      max-width: min(var(--gn-max, 1068px), 100%);
+      max-width: min(1068px, 100%);
       margin: 0 auto;
       box-sizing: border-box;
-    }
-
-    .home-browse-line {
-      margin: 0;
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
-      box-sizing: border-box;
-      color: rgba(245, 245, 247, 0.42);
-      font-size: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.1em;
+      font-size: var(--home-browse-size);
       font-weight: 600;
-      letter-spacing: 0.004em;
-      line-height: 1.35;
-      text-align: left;
+      letter-spacing: -0.026em;
+      line-height: 1.05;
+      text-align: center;
     }
 
-    .home-browse-strong {
+    .home-browse-setup {
+      display: block;
+      color: rgba(245, 245, 247, 0.3);
+    }
+
+    .home-browse-promise {
+      display: block;
       color: #f5f5f7;
     }
 
-    @media only screen and (max-width: 1068px) {
-      .home-browse-line {
-        font-size: 24px;
-        letter-spacing: 0.009em;
-        line-height: 1.35;
-      }
+    .js .home-browse .home-moment {
+      opacity: 0;
+      transform: translate3d(0, 20px, 0);
+      transition:
+        opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    @media only screen and (max-width: 734px) {
-      .home-browse-line {
-        font-size: 21px;
-        letter-spacing: 0.011em;
-        line-height: 1.381;
-      }
+    .js .home-browse .home-moment.is-in {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
     }
 
-    @media (min-width: 834px) {
-      .home-browse-line {
-        max-width: 22em;
-        margin: 0 auto;
-        font-size: 36px;
-        line-height: 1.3;
-        text-align: center;
-      }
+    .js .home-browse-promise.home-moment {
+      transition-delay: 0.22s;
     }
-
-    @media (min-width: 1069px) {
-      .home-browse-line {
-        max-width: 24em;
-        font-size: 40px;
-      }
-    }
-
-    /* Primary pill focus lives in shroffin-shell.css */
 
     @media (max-width: 833px) {
-      .js .home-lead-track {
-        align-items: flex-start;
-      }
-
-      .home-hero-copy {
-        width: min(1068px, calc(100% - 32px));
-        --hero-copy-gap: calc((40px + 3.5rem) / 2);
-        padding-top: calc(var(--hero-copy-gap) - var(--gn-height) / 2);
-        padding-bottom: calc(var(--hero-copy-gap) + var(--gn-height) / 2);
-      }
-
-      .home-hero-ctas {
-        gap: 14px;
-        margin-top: 14px;
-      }
-
-      .home-lead-pin {
-        padding-left: 16px;
-        padding-right: 16px;
-      }
-
       .home-browse-pin {
         padding-left: 16px;
         padding-right: 16px;
+        align-items: flex-start;
+        justify-content: flex-start;
       }
 
-      .home-clear-pin {
-        padding-left: 16px;
-        padding-right: 16px;
+      .home-browse-inner,
+      .home-browse {
+        text-align: left;
+        align-items: flex-start;
+      }
+
+      .home-browse-inner {
+        --home-browse-size: clamp(2rem, 8vw, 3rem);
+        gap: 0.14em;
       }
     }
 
-    /* ——— Clear — Transparent as hollow outline type ——— */
+    @media (prefers-reduced-motion: reduce) {
+      .js .home-browse .home-moment {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+
+
     .home-clear {
       width: 100%;
       box-sizing: border-box;
@@ -745,31 +725,46 @@
       text-align: center;
     }
 
-    .home-apply-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: clamp(48px, 6vw, 68px);
+    .home-apply-pin {
       width: 100%;
-      max-width: min(1068px, 100%);
-      margin: 0 auto;
-      padding: clamp(100px, 17vh, 160px) clamp(16px, 4vw, 48px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(80px, 14vh, 140px) 22px;
       box-sizing: border-box;
     }
 
-    /* Headline */
-    .home-apply-title {
+    .home-apply-inner {
+      --home-apply-size: clamp(4.25rem, 13.5vw, 9.25rem);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: min(1068px, 100%);
+      margin: 0 auto;
+      padding: 0;
+      font-size: var(--home-apply-size);
+      text-align: center;
+      gap: 0.55em;
+    }
+
+    .home-apply-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.08em;
       margin: 0;
       padding: 0;
-      font-size: clamp(3rem, 9.5vw, 7.5rem);
+      font-size: 1em;
       font-weight: 600;
       letter-spacing: -0.028em;
       line-height: 1.02;
-      text-align: center;
     }
 
     .home-apply-now {
       display: block;
+      font-size: 0.8em;
       color: rgba(245, 245, 247, 0.32);
     }
 
@@ -778,474 +773,23 @@
       color: #f5f5f7;
     }
 
-    /* ——— Apply once demo animation ——— */
-
-    /* Section layout: mobile = stack center, desktop = two-col side by side */
-    .hapl-demo {
+    .home-apply-body {
+      display: block;
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
-    }
-
-    /* Phone shell */
-    .hapl-phone {
-      position: relative;
-      /* Mobile: fills width minus breathing room */
-      width: min(320px, calc(100vw - 64px));
-      height: min(560px, calc((100vw - 64px) * 1.75));
-      border-radius: clamp(28px, 8vw, 40px);
-      background: #f2f2f7;
-      border: 1px solid rgba(0,0,0,0.1);
-      box-shadow:
-        0 0 0 clamp(5px, 2vw, 8px) #1d1d1f,
-        0 40px 100px rgba(0,0,0,0.5),
-        0 12px 36px rgba(0,0,0,0.28);
-      overflow: hidden;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* iOS status bar */
-    .hapl-statusbar {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 20px 6px;
-      background: #f2f2f7;
-      color: #1d1d1f;
-      position: relative;
-      z-index: 2;
-    }
-
-    .hapl-status-time {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-
-    .hapl-status-icons {
-      display: flex;
-      align-items: center;
-      color: #1d1d1f;
-    }
-
-    /* Both screens stack inside the phone under the statusbar */
-    .hapl-screen {
-      position: absolute;
-      top: 34px; /* statusbar natural height */
-      left: 0;
-      right: 0;
-      bottom: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ——— List screen ——— */
-    .hapl-screen--list {
-      background: #f2f2f7;
-      z-index: 1;
-    }
-
-    .hapl-nav {
-      flex-shrink: 0;
-      padding: 10px 16px 10px;
-      border-bottom: 1px solid rgba(0,0,0,0.1);
-      background: #f2f2f7;
-    }
-
-    .hapl-nav-title {
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #1d1d1f;
-    }
-
-    .hapl-col-header {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-      height: 28px;
-      background: #e8e8ed;
-      border-bottom: 1px solid rgba(0,0,0,0.08);
-    }
-
-    .hapl-col-h {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: #6e6e73;
-    }
-
-    .hapl-col-h--name { flex: 0 0 100px; }
-    .hapl-col-h--rate { flex: 1; text-align: right; }
-    .hapl-col-h--emi  { flex: 1; text-align: right; }
-    .hapl-col-h--fee  { flex: 1; text-align: right; }
-
-    /* Rows area */
-    .hapl-rows {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      background: #fff;
-    }
-
-    .hapl-row {
-      display: flex;
-      align-items: center;
-      height: 54px;
-      padding: 0 12px;
-      border-bottom: 1px solid rgba(0,0,0,0.07);
-      background: #fff;
-      flex-shrink: 0;
-      transition:
-        background 0.4s cubic-bezier(0.22,1,0.36,1),
-        box-shadow 0.4s cubic-bezier(0.22,1,0.36,1);
-    }
-
-    .hapl-row-sticky {
-      flex: 0 0 100px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      min-width: 0;
-      overflow: hidden;
-    }
-
-    .hapl-cb {
-      flex-shrink: 0;
-      width: 18px;
-      height: 18px;
-      border-radius: 5px;
-      border: 1.5px solid #c7c7cc;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition:
-        background 0.28s cubic-bezier(0.22,1,0.36,1),
-        border-color 0.28s cubic-bezier(0.22,1,0.36,1);
-    }
-
-    .hapl-tick {
-      stroke: #fff;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-dasharray: 14;
-      stroke-dashoffset: 14;
-      transition: stroke-dashoffset 0.22s cubic-bezier(0.22,1,0.36,1) 0.06s;
-    }
-
-    .hapl-logo {
-      flex-shrink: 0;
-      width: 20px;
-      height: 20px;
-      object-fit: contain;
-      border-radius: 3px;
-    }
-
-    .hapl-rname {
-      flex: 1;
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      color: #1d1d1f;
-    }
-
-    .hapl-rcell {
-      flex: 1;
-      text-align: right;
-      font-size: 11px;
-      font-weight: 500;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: -0.01em;
-      color: #3a3a3c;
-    }
-
-    .hapl-rcell--rate {
-      font-weight: 700;
-      color: #1d1d1f;
-    }
-
-    /* ——— State-driven selection ——— */
-    .hapl-phone.hapl-s1 .hapl-row--1 .hapl-cb,
-    .hapl-phone.hapl-s2 .hapl-row--1 .hapl-cb,
-    .hapl-phone.hapl-s2 .hapl-row--2 .hapl-cb,
-    .hapl-phone.hapl-s3 .hapl-row--1 .hapl-cb,
-    .hapl-phone.hapl-s3 .hapl-row--2 .hapl-cb,
-    .hapl-phone.hapl-s3 .hapl-row--3 .hapl-cb,
-    .hapl-phone.hapl-s4 .hapl-row--1 .hapl-cb,
-    .hapl-phone.hapl-s4 .hapl-row--2 .hapl-cb,
-    .hapl-phone.hapl-s4 .hapl-row--3 .hapl-cb,
-    .hapl-phone.hapl-s5 .hapl-row--1 .hapl-cb,
-    .hapl-phone.hapl-s5 .hapl-row--2 .hapl-cb,
-    .hapl-phone.hapl-s5 .hapl-row--3 .hapl-cb {
-      background: #1d1d1f;
-      border-color: #1d1d1f;
-    }
-
-    .hapl-phone.hapl-s1 .hapl-row--1 .hapl-tick,
-    .hapl-phone.hapl-s2 .hapl-row--1 .hapl-tick,
-    .hapl-phone.hapl-s2 .hapl-row--2 .hapl-tick,
-    .hapl-phone.hapl-s3 .hapl-row--1 .hapl-tick,
-    .hapl-phone.hapl-s3 .hapl-row--2 .hapl-tick,
-    .hapl-phone.hapl-s3 .hapl-row--3 .hapl-tick,
-    .hapl-phone.hapl-s4 .hapl-row--1 .hapl-tick,
-    .hapl-phone.hapl-s4 .hapl-row--2 .hapl-tick,
-    .hapl-phone.hapl-s4 .hapl-row--3 .hapl-tick,
-    .hapl-phone.hapl-s5 .hapl-row--1 .hapl-tick,
-    .hapl-phone.hapl-s5 .hapl-row--2 .hapl-tick,
-    .hapl-phone.hapl-s5 .hapl-row--3 .hapl-tick {
-      stroke-dashoffset: 0;
-    }
-
-    .hapl-phone.hapl-s1 .hapl-row--1,
-    .hapl-phone.hapl-s2 .hapl-row--1,
-    .hapl-phone.hapl-s2 .hapl-row--2,
-    .hapl-phone.hapl-s3 .hapl-row--1,
-    .hapl-phone.hapl-s3 .hapl-row--2,
-    .hapl-phone.hapl-s3 .hapl-row--3,
-    .hapl-phone.hapl-s4 .hapl-row--1,
-    .hapl-phone.hapl-s4 .hapl-row--2,
-    .hapl-phone.hapl-s4 .hapl-row--3 {
-      background: #f0f0f5;
-    }
-
-    /* ——— Floating dock ——— */
-    .hapl-dock {
-      position: absolute;
-      bottom: 18px;
-      left: 50%;
-      transform: translateX(-50%) translateY(14px);
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      opacity: 0;
-      pointer-events: none;
-      white-space: nowrap;
-      transition:
-        opacity 0.5s cubic-bezier(0.22,1,0.36,1),
-        transform 0.6s cubic-bezier(0.22,1,0.36,1);
-    }
-
-    .hapl-dock-count {
-      padding: 8px 13px;
-      border-radius: 980px;
-      background: #e5e5ea;
-      color: #1d1d1f;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-    }
-
-    .hapl-dock-n { font-weight: 700; }
-
-    .hapl-dock-btn {
-      padding: 9px 20px;
-      border-radius: 980px;
-      background: #1d1d1f;
-      color: #f5f5f7;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      border: none;
-      cursor: default;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.3);
-      transition: transform 0.16s cubic-bezier(0.22,1,0.36,1);
-    }
-
-    .hapl-phone.hapl-s3 .hapl-dock,
-    .hapl-phone.hapl-s4 .hapl-dock,
-    .hapl-phone.hapl-s5 .hapl-dock {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .hapl-phone.hapl-s4 .hapl-dock-btn {
-      transform: scale(0.91);
-    }
-
-    /* ——— Done screen ——— */
-    .hapl-screen--done {
-      z-index: 2;
-      background: #fff;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 0 28px;
-      text-align: center;
-      opacity: 0;
-      transform: translateY(20px);
-      pointer-events: none;
-      transition:
-        opacity 0.55s cubic-bezier(0.22,1,0.36,1),
-        transform 0.7s cubic-bezier(0.22,1,0.36,1);
-    }
-
-    .hapl-phone.hapl-s5 .hapl-screen--done {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .hapl-done-icon svg { width: 48px; height: 48px; }
-
-    .hapl-done-tick {
-      stroke-dasharray: 28;
-      stroke-dashoffset: 28;
-      transition: stroke-dashoffset 0.42s cubic-bezier(0.22,1,0.36,1) 0.3s;
-    }
-
-    .hapl-phone.hapl-s5 .hapl-done-tick { stroke-dashoffset: 0; }
-
-    .hapl-done-h {
-      margin: 8px 0 0;
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      color: #1d1d1f;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.5s cubic-bezier(0.22,1,0.36,1) 0.44s, transform 0.6s cubic-bezier(0.22,1,0.36,1) 0.44s;
-    }
-
-    .hapl-phone.hapl-s5 .hapl-done-h { opacity: 1; transform: translateY(0); }
-
-    .hapl-done-sub {
-      margin: 4px 0 0;
-      font-size: 13px;
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.45;
-      color: #3a3a3c;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.5s cubic-bezier(0.22,1,0.36,1) 0.58s, transform 0.6s cubic-bezier(0.22,1,0.36,1) 0.58s;
-    }
-
-    .hapl-phone.hapl-s5 .hapl-done-sub { opacity: 1; transform: translateY(0); }
-
-    .hapl-done-note {
-      margin: 10px 0 0;
-      font-size: 12px;
-      color: #6e6e73;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.5s cubic-bezier(0.22,1,0.36,1) 0.72s, transform 0.6s cubic-bezier(0.22,1,0.36,1) 0.72s;
-    }
-
-    .hapl-phone.hapl-s5 .hapl-done-note { opacity: 1; transform: translateY(0); }
-
-    /* ——— Desktop layout: headline left + phone right, bigger phone ——— */
-    @media (min-width: 834px) {
-      .home-apply-inner {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        gap: clamp(48px, 6vw, 80px);
-        padding-top: clamp(80px, 12vh, 130px);
-        padding-bottom: clamp(80px, 12vh, 130px);
-      }
-
-      .home-apply-title {
-        text-align: left;
-        font-size: clamp(3.5rem, 7vw, 6rem);
-      }
-
-      .home-apply-now { color: rgba(245,245,247,0.32); }
-
-      /* Left column: headline + subtitle stacked */
-      .home-apply-copy {
-        flex: 1;
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 28px;
-      }
-
-      /* Right column: the phone, bigger on desktop */
-      .hapl-demo {
-        flex-shrink: 0;
-        width: auto;
-      }
-
-      .hapl-phone {
-        width: 340px;
-        height: 596px;
-        border-radius: 40px;
-        box-shadow:
-          0 0 0 8px #1d1d1f,
-          0 48px 120px rgba(0,0,0,0.55),
-          0 16px 40px rgba(0,0,0,0.3);
-      }
-
-      .home-apply-sub {
-        text-align: left;
-        max-width: 36ch;
-      }
-    }
-
-    /* ——— Mobile ——— */
-    @media (max-width: 833px) {
-      .home-apply-inner {
-        padding-top: clamp(70px, 12vh, 110px);
-        padding-bottom: clamp(70px, 12vh, 110px);
-        padding-left: 16px;
-        padding-right: 16px;
-        gap: 36px;
-      }
-
-      .home-apply-copy {
-        width: 100%;
-        display: contents; /* title and sub stay in the column flow */
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .hapl-tick,
-      .hapl-dock,
-      .hapl-screen--done,
-      .hapl-done-h, .hapl-done-sub, .hapl-done-note,
-      .hapl-done-tick {
-        transition: none !important;
-        animation: none !important;
-      }
-    }
-
-
-    /* Subtitle */
-    .home-apply-sub {
+      max-width: none;
       margin: 0;
-      max-width: 44ch;
-      color: rgba(245, 245, 247, 0.44);
-      font-size: clamp(1.0625rem, 2vw, 1.3125rem);
+      font-size: clamp(1.25rem, 3vw, 2rem);
       font-weight: 400;
-      letter-spacing: 0.003em;
-      line-height: 1.55;
-      text-align: center;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+      color: rgba(245, 245, 247, 0.44);
     }
 
-    .home-apply-note {
-      color: rgba(245, 245, 247, 0.22);
-      font-size: 0.82em;
-    }
-
-    /* Section-scoped moment transitions */
     .js .home-apply .home-moment {
       opacity: 0;
-      transform: translate3d(0, 20px, 0);
+      transform: translate3d(0, 22px, 0);
       transition:
-        opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
         transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
@@ -1254,8 +798,148 @@
       transform: translate3d(0, 0, 0);
     }
 
-    .js .home-apply .home-apply-sub.home-moment {
-      transition-delay: 0.32s;
+    .js .home-apply-body.home-moment {
+      transition-delay: 0.52s;
+    }
+
+    @media (max-width: 833px) {
+      .home-apply-pin {
+        padding-left: 16px;
+        padding-right: 16px;
+        align-items: flex-start;
+        justify-content: flex-start;
+      }
+
+      .home-apply-inner,
+      .home-apply-display {
+        align-items: flex-start;
+      }
+
+      .home-apply,
+      .home-apply-inner,
+      .home-apply-display,
+      .home-apply-now,
+      .home-apply-once,
+      .home-apply-body {
+        text-align: left;
+      }
+
+      .home-apply-inner {
+        --home-apply-size: clamp(3.6rem, 14.5vw, 5.45rem);
+      }
+
+      .home-apply-body {
+        font-size: clamp(1.1rem, 4vw, 1.5rem);
+        line-height: 1.35;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .js .home-apply .home-moment {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+
+
+    /* ——— Apply-once dispatch visual ——— */
+
+    .home-apply-dispatch {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    /* "Your application" pill */
+    .hapl-source {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .hapl-source-label {
+      display: inline-block;
+      padding: 9px 16px;
+      border-radius: 10px;
+      background: rgba(245, 245, 247, 0.08);
+      border: 1px solid rgba(245, 245, 247, 0.22);
+      color: #f5f5f7;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    /* SVG branching tree */
+    .hapl-tree {
+      flex-shrink: 0;
+      width: 40px;
+      height: 220px;
+    }
+
+    .hapl-spine {
+      stroke: rgba(245, 245, 247, 0.15);
+      stroke-width: 1.5;
+    }
+
+    .hapl-branch {
+      stroke: rgba(245, 245, 247, 0.15);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-dasharray: 0 40;
+    }
+
+    .js .home-apply-dispatch.is-in .hapl-branch {
+      animation: hapl-branch-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes hapl-branch-in {
+      to { stroke-dasharray: 40 0; }
+    }
+
+    .js .home-apply-dispatch.is-in .hapl-branch--1 { animation-delay: 0.10s; }
+    .js .home-apply-dispatch.is-in .hapl-branch--2 { animation-delay: 0.22s; }
+    .js .home-apply-dispatch.is-in .hapl-branch--3 { animation-delay: 0.34s; }
+    .js .home-apply-dispatch.is-in .hapl-branch--4 { animation-delay: 0.46s; }
+    .js .home-apply-dispatch.is-in .hapl-branch--5 { animation-delay: 0.58s; }
+
+    /* Bank rows */
+    .hapl-banks {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hapl-bank {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 44px;
+      padding: 0 14px;
+      border-bottom: 1px solid rgba(245, 245, 247, 0.07);
+    }
+
+    .hapl-bank:first-child {
+      border-top: 1px solid rgba(245, 245, 247, 0.07);
+    }
+
+    .hapl-bank-name {
+      color: rgba(245, 245, 247, 0.55);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    .hapl-bank-rate {
+      color: #f5f5f7;
+      font-size: 14px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.01em;
     }
 
     /* Bank rows arrive one by one */
@@ -1274,12 +958,6 @@
     .js .home-apply-dispatch.is-in .hapl-bank--5 { opacity: 1; transform: none; transition-delay: 0.60s; }
 
     @media (prefers-reduced-motion: reduce) {
-      .js .home-apply .home-moment,
-      .js .home-apply-dispatch.home-moment {
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
-      }
       .js .hapl-bank {
         opacity: 1 !important;
         transform: none !important;
@@ -1292,26 +970,10 @@
     }
 
     @media (max-width: 833px) {
-      .home-apply-inner {
-        padding-left: 16px;
-        padding-right: 16px;
-      }
-
-      .home-apply-dispatch {
-        max-width: 100%;
-      }
-
-      .hapl-source-label {
-        font-size: 12px;
-        padding: 8px 12px;
-      }
-
-      .hapl-bank-name,
-      .hapl-bank-rate {
-        font-size: 12px;
-      }
+      .home-apply-dispatch { max-width: 100%; }
+      .hapl-source-label { font-size: 12px; padding: 8px 12px; }
+      .hapl-bank-name, .hapl-bank-rate { font-size: 12px; }
     }
-
 
     /* ——— Zero — each claim arrives as a pair; never a bare “Zero” ——— */
     .home-zero {
@@ -1695,6 +1357,10 @@
 
       .home-best-body {
         text-align: center;
+      }
+
+      .home-best-body-line {
+        display: block;
       }
     }
 
@@ -2178,11 +1844,12 @@
       </div>
     </section>
 
-    <section class="home-browse" aria-labelledby="home-browse-statement">
+    <section class="home-browse" aria-labelledby="home-browse-title">
       <div class="home-browse-track">
         <div class="home-browse-pin">
           <div class="home-browse-inner">
-            <p class="home-browse-line home-moment" id="home-browse-statement">You can <span class="home-browse-strong">look through all of it</span> <span class="home-browse-strong">without surrendering your phone number or email</span>.</p>
+            <span class="home-browse-setup home-moment" id="home-browse-title">You can look through all of it</span>
+            <span class="home-browse-promise home-moment">without surrendering your phone number or email.</span>
           </div>
         </div>
       </div>
@@ -2196,7 +1863,7 @@
               <span class="home-best-lead">Best of all,</span>
               <span class="home-best-aside">we do not create any urgency.</span>
             </h2>
-            <p class="home-best-body home-moment"><span class="home-best-body-line">No unnecessary calls.</span><span class="home-best-body-line"> No sales pitch.</span><span class="home-best-body-line"> No pushy notifications.</span></p>
+            <p class="home-best-body home-moment"><span class="home-best-body-line">No unnecessary calls.</span><span class="home-best-body-line">No sales pitch.</span><span class="home-best-body-line">No pushy notifications.</span></p>
           </div>
         </div>
       </div>
@@ -2237,133 +1904,55 @@
     </section>
 
     <section class="home-apply" aria-labelledby="home-apply-title">
-      <div class="home-apply-inner">
-
-        <!-- Left: headline + subtitle -->
-        <div class="home-apply-copy">
-          <h2 class="home-apply-title home-moment" id="home-apply-title">
+      <div class="home-apply-pin">
+        <div class="home-apply-inner">
+          <h2 class="home-apply-display home-moment" id="home-apply-title">
             <span class="home-apply-now">Now,</span>
             <span class="home-apply-once">apply only once.</span>
           </h2>
-          <p class="home-apply-sub home-moment">Send one application to every bank you chose and let them compete for you.</p>
-        </div>
+          <p class="home-apply-body home-moment">Send one application to every bank you chose and let them compete for you.</p>
 
-        <!-- Right: dummy product animation -->
-        <div class="hapl-demo home-moment" aria-hidden="true">
+          <!-- Dispatch visual: one application → branching lines → competing banks -->
+          <div class="home-apply-dispatch home-moment" aria-hidden="true">
 
-          <!-- Phone shell -->
-          <div class="hapl-phone">
-
-            <!-- iOS status bar -->
-            <div class="hapl-statusbar">
-              <span class="hapl-status-time">9:41</span>
-              <span class="hapl-status-icons">
-                <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><rect x="0" y="3" width="3" height="9" rx="1" fill="currentColor" opacity=".4"/><rect x="4.5" y="2" width="3" height="10" rx="1" fill="currentColor" opacity=".6"/><rect x="9" y="0" width="3" height="12" rx="1" fill="currentColor"/><rect x="13.5" y="1" width="3" height="10" rx="1.2" fill="none" stroke="currentColor" stroke-width="1"/><rect x="14.2" y="2.5" width="1.6" height="7" rx=".4" fill="currentColor"/></svg>
-              </span>
+            <div class="hapl-source">
+              <div class="hapl-source-label">Your application</div>
             </div>
 
-            <!-- Screen: bank list view (light theme — matches real product) -->
-            <div class="hapl-screen hapl-screen--list">
+            <svg class="hapl-tree" viewBox="0 0 40 220" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line class="hapl-spine" x1="20" y1="22" x2="20" y2="198"/>
+              <line class="hapl-branch hapl-branch--1" x1="20" y1="22"  x2="40" y2="22"/>
+              <line class="hapl-branch hapl-branch--2" x1="20" y1="66"  x2="40" y2="66"/>
+              <line class="hapl-branch hapl-branch--3" x1="20" y1="110" x2="40" y2="110"/>
+              <line class="hapl-branch hapl-branch--4" x1="20" y1="154" x2="40" y2="154"/>
+              <line class="hapl-branch hapl-branch--5" x1="20" y1="198" x2="40" y2="198"/>
+            </svg>
 
-              <!-- Nav row -->
-              <div class="hapl-nav">
-                <span class="hapl-nav-title">Explore banks</span>
+            <div class="hapl-banks">
+              <div class="hapl-bank hapl-bank--1">
+                <span class="hapl-bank-name">SBI</span>
+                <span class="hapl-bank-rate">8.50%</span>
               </div>
-
-              <!-- Column header -->
-              <div class="hapl-col-header">
-                <span class="hapl-col-h hapl-col-h--name">Bank</span>
-                <span class="hapl-col-h hapl-col-h--rate">Rate</span>
-                <span class="hapl-col-h hapl-col-h--emi">EMI / mo</span>
-                <span class="hapl-col-h hapl-col-h--fee">Proc. fee</span>
+              <div class="hapl-bank hapl-bank--2">
+                <span class="hapl-bank-name">HDFC Bank</span>
+                <span class="hapl-bank-rate">8.70%</span>
               </div>
-
-              <!-- Bank rows -->
-              <div class="hapl-rows">
-
-                <div class="hapl-row hapl-row--1">
-                  <div class="hapl-row-sticky">
-                    <div class="hapl-cb"><svg viewBox="0 0 14 14" fill="none"><polyline class="hapl-tick" points="2.5,7 5.5,10 11.5,4"/></svg></div>
-                    <img class="hapl-logo" src="/images/banks/state-bank-of-india.png" alt="SBI">
-                    <span class="hapl-rname">SBI</span>
-                  </div>
-                  <span class="hapl-rcell hapl-rcell--rate">8.50%</span>
-                  <span class="hapl-rcell hapl-rcell--emi">₹77,439</span>
-                  <span class="hapl-rcell hapl-rcell--fee">₹10,000</span>
-                </div>
-
-                <div class="hapl-row hapl-row--2">
-                  <div class="hapl-row-sticky">
-                    <div class="hapl-cb"><svg viewBox="0 0 14 14" fill="none"><polyline class="hapl-tick" points="2.5,7 5.5,10 11.5,4"/></svg></div>
-                    <img class="hapl-logo" src="/images/banks/hdfc-bank.png" alt="HDFC Bank">
-                    <span class="hapl-rname">HDFC Bank</span>
-                  </div>
-                  <span class="hapl-rcell hapl-rcell--rate">8.70%</span>
-                  <span class="hapl-rcell hapl-rcell--emi">₹78,578</span>
-                  <span class="hapl-rcell hapl-rcell--fee">₹15,000</span>
-                </div>
-
-                <div class="hapl-row hapl-row--3">
-                  <div class="hapl-row-sticky">
-                    <div class="hapl-cb"><svg viewBox="0 0 14 14" fill="none"><polyline class="hapl-tick" points="2.5,7 5.5,10 11.5,4"/></svg></div>
-                    <img class="hapl-logo" src="/images/banks/axis-bank.png" alt="Axis Bank">
-                    <span class="hapl-rname">Axis Bank</span>
-                  </div>
-                  <span class="hapl-rcell hapl-rcell--rate">8.75%</span>
-                  <span class="hapl-rcell hapl-rcell--emi">₹78,862</span>
-                  <span class="hapl-rcell hapl-rcell--fee">₹10,000</span>
-                </div>
-
-                <div class="hapl-row hapl-row--4">
-                  <div class="hapl-row-sticky">
-                    <div class="hapl-cb"><svg viewBox="0 0 14 14" fill="none"><polyline class="hapl-tick" points="2.5,7 5.5,10 11.5,4"/></svg></div>
-                    <img class="hapl-logo" src="/images/banks/icici-bank.png" alt="ICICI Bank">
-                    <span class="hapl-rname">ICICI Bank</span>
-                  </div>
-                  <span class="hapl-rcell hapl-rcell--rate">8.90%</span>
-                  <span class="hapl-rcell hapl-rcell--emi">₹79,664</span>
-                  <span class="hapl-rcell hapl-rcell--fee">₹15,000</span>
-                </div>
-
-                <div class="hapl-row hapl-row--5">
-                  <div class="hapl-row-sticky">
-                    <div class="hapl-cb"><svg viewBox="0 0 14 14" fill="none"><polyline class="hapl-tick" points="2.5,7 5.5,10 11.5,4"/></svg></div>
-                    <img class="hapl-logo" src="/images/banks/kotak-mahindra-bank.png" alt="Kotak">
-                    <span class="hapl-rname">Kotak</span>
-                  </div>
-                  <span class="hapl-rcell hapl-rcell--rate">9.00%</span>
-                  <span class="hapl-rcell hapl-rcell--emi">₹80,462</span>
-                  <span class="hapl-rcell hapl-rcell--fee">₹20,000</span>
-                </div>
-
+              <div class="hapl-bank hapl-bank--3">
+                <span class="hapl-bank-name">Axis Bank</span>
+                <span class="hapl-bank-rate">8.75%</span>
               </div>
-
-              <!-- Floating apply once dock — matches real product -->
-              <div class="hapl-dock">
-                <span class="hapl-dock-count">
-                  <span class="hapl-dock-n">3</span> banks
-                </span>
-                <button class="hapl-dock-btn" tabindex="-1">Apply once</button>
+              <div class="hapl-bank hapl-bank--4">
+                <span class="hapl-bank-name">ICICI Bank</span>
+                <span class="hapl-bank-rate">8.90%</span>
               </div>
-
-            </div>
-
-            <!-- Screen: submitted -->
-            <div class="hapl-screen hapl-screen--done">
-              <div class="hapl-done-icon">
-                <svg viewBox="0 0 44 44" fill="none">
-                  <circle cx="22" cy="22" r="21" stroke="#1d1d1f" stroke-width="1.5" opacity=".12"/>
-                  <polyline class="hapl-done-tick" points="12,22 19,29 32,14" stroke="#1d1d1f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+              <div class="hapl-bank hapl-bank--5">
+                <span class="hapl-bank-name">Kotak</span>
+                <span class="hapl-bank-rate">9.00%</span>
               </div>
-              <p class="hapl-done-h">Application submitted.</p>
-              <p class="hapl-done-sub">Sent to SBI, HDFC Bank, and Axis Bank.</p>
-              <p class="hapl-done-note">They'll come back with their best offers.</p>
             </div>
 
           </div>
         </div>
-
       </div>
     </section>
     </div>
@@ -2501,64 +2090,6 @@
   <script src="js/shroffin-home-stance.js?v=home-story-8"></script>
   <script src="js/shroffin-scrub.js?v=home-story-8"></script>
   <script>
-  /* Apply-once demo animation — runs when .hapl-phone enters view, loops */
-  (function () {
-    var phone = document.querySelector('.hapl-phone');
-    if (!phone) return;
-
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-    /* If reduced motion: just show s3 (all selected, dock visible) statically */
-    if (reduce.matches) {
-      phone.classList.add('hapl-s3');
-      return;
-    }
-
-    /* Sequence: [stateClass, holdMs] */
-    var SEQ = [
-      [null,      1200],  /* idle — user scanning the list */
-      ['hapl-s1', 700],   /* taps SBI */
-      ['hapl-s2', 700],   /* taps HDFC Bank */
-      ['hapl-s3', 1600],  /* taps Axis Bank — dock slides up, user pauses */
-      ['hapl-s4', 420],   /* taps Apply once */
-      ['hapl-s5', 2800],  /* submitted — reads confirmation */
-    ];
-
-    var idx = 0;
-    var timer = null;
-    var STATES = ['hapl-s1','hapl-s2','hapl-s3','hapl-s4','hapl-s5'];
-
-    function applyState(cls) {
-      STATES.forEach(function (s) { phone.classList.remove(s); });
-      if (cls) phone.classList.add(cls);
-    }
-
-    function step() {
-      var entry = SEQ[idx];
-      applyState(entry[0]);
-      idx = (idx + 1) % SEQ.length;
-      timer = setTimeout(step, entry[1]);
-    }
-
-    /* Start when phone enters viewport */
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            if (!timer) step();
-          } else {
-            clearTimeout(timer);
-            timer = null;
-            idx = 0;
-            applyState(null);
-          }
-        });
-      }, { threshold: 0.4 });
-      io.observe(phone);
-    } else {
-      step();
-    }
-  })();
   </script>
 </body>
 </html>

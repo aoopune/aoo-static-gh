@@ -1,0 +1,812 @@
+{
+  "universe_count": 80,
+  "universe_issue_files": [
+    "wb-rec-260815-1929/issue-01-hero-headline-cta-uneven-spacing.md",
+    "wb-rec-260815-1929/issue-02-journey-section-copy-too-complex.md",
+    "wb-rec-260815-1929/issue-03-transparent-supporting-lines-add-no-value.md",
+    "wb-rec-260815-1929/issue-04-zero-scroll-shows-two-bare-zeros.md",
+    "wb-rec-260815-1929/issue-05-zero-commissions-wording-and-perspective.md",
+    "wb-rec-260815-1951/issue-01-both-zeros-visible-on-scroll-looks-broken.md",
+    "wb-rec-260815-1951/issue-02-zero-commissions-bias-mixed-bank-customer-context.md",
+    "wb-rec-260815-1951/issue-03-zero-supporting-sentence-too-small-and-unclear.md",
+    "wb-rec-260815-1951/issue-04-spam-hard-sell-push-notifications-overlap.md",
+    "wb-rec-260815-1951/issue-05-four-homepage-story-sections-may-be-too-many.md",
+    "wb-rec-260815-1951/issue-06-reengineered-journey-sentence-formation-not-coherent.md",
+    "wb-rec-260815-2000/issue-01-homepage-story-full-slides-need-consolidation.md",
+    "wb-rec-260815-2000/issue-02-homepage-story-section-scroll-fade.md",
+    "wb-rec-260815-2000/issue-03-built-around-you-accordion-one-line.md",
+    "wb-rec-260815-2000/issue-04-built-around-you-side-preview-duplicate.md",
+    "wb-rec-260815-2009/issue-01-standardized-view-product-not-shown-visually.md",
+    "wb-rec-260815-2009/issue-02-homepage-unique-points-duplicated-across-sections.md",
+    "wb-rec-260815-2009/issue-03-site-help-strip-not-flush-to-footer.md",
+    "wb-rec-260815-2009/issue-04-footer-treated-as-ignored-legal-block.md",
+    "wb-rec-260815-2018/issue-01-home-footer-disclaimer-not-responsible-tone.md",
+    "wb-rec-260815-2106/issue-01-all-public-private-exclusive-not-checkboxes.md",
+    "wb-rec-260815-2106/issue-02-concessions-learn-more-takes-you-away.md",
+    "wb-rec-260815-2106/issue-03-concessions-page-missing-back.md",
+    "wb-rec-260815-2106/issue-04-filters-missing-public-private-floating-fixed-tradeoffs.md",
+    "wb-rec-260815-2106/issue-05-overdraft-facility-unexplained.md",
+    "wb-rec-260815-2116/issue-01-monthly-income-helper-sets-does-not-explain-why.md",
+    "wb-rec-260815-2116/issue-02-property-helper-sets-ceiling-unknown-in-india.md",
+    "wb-rec-260815-2116/issue-03-property-agreement-value-label-too-complex.md",
+    "wb-rec-260815-2125/issue-01-cibil-score-exact-text-instead-of-range-dropdown.md",
+    "wb-rec-260815-2134/issue-01-cibil-single-exact-vs-min-max-range.md",
+    "wb-rec-260815-2134/issue-02-bank-options-one-rate-for-cibil-band.md",
+    "wb-rec-260815-2204/issue-01-loan-inputs-advise-what-to-change.md",
+    "wb-rec-260815-2206/issue-01-explore-banks-missing-hacks-intelligence.md",
+    "wb-rec-260815-2213/issue-01-explore-banks-missing-intelligence-advice-layer.md",
+    "wb-rec-260815-2222/issue-01-explore-banks-missing-top-three-offer-optimizations.md",
+    "wb-rec-260815-2231/issue-01-cibil-number-vs-dropdown-same-range.md",
+    "wb-rec-260815-2231/issue-02-explore-banks-land-average-intelligence-then-list.md",
+    "wb-rec-260815-2240/issue-01-explore-banks-not-obvious-at-a-glance.md",
+    "wb-rec-260815-2240/issue-02-form-fields-dont-carry-first-inputs-or-show-roi.md",
+    "wb-rec-260815-2240/issue-03-adjust-eligibility-not-simple-english.md",
+    "wb-rec-260815-2240/issue-04-adjust-eligibility-looks-unopenable-but-is-dropdown.md",
+    "wb-rec-260815-2240/issue-05-see-options-label-unclear.md",
+    "wb-rec-260815-2240/issue-06-see-options-not-below-centered.md",
+    "wb-rec-260815-2249/issue-01-adjust-eligibility-hidden-not-shown-as-columns.md",
+    "wb-rec-260815-2302/issue-01-collapsed-eligibility-fields-must-still-affect.md",
+    "wb-rec-260815-2302/issue-02-coapplicant-yes-gives-ideas-to-inflate-loan.md",
+    "wb-rec-260815-2304/issue-01-extra-eligibility-should-stay-visible-prefilled.md",
+    "wb-rec-260815-2304/issue-02-loan-form-fields-lack-importance-indication.md",
+    "wb-rec-260815-2304/issue-03-see-options-explore-banks-naming.md",
+    "wb-rec-260815-2313/issue-01-loan-form-importance-not-shown-by-order-color.md",
+    "wb-rec-260815-2313/issue-02-adjust-eligibility-fields-should-not-disappear.md",
+    "wb-rec-260815-2313/issue-03-loan-form-info-icons-need-arranging.md",
+    "wb-rec-260815-2313/issue-04-copy-extra-words-raise-cognitive-load.md",
+    "wb-rec-260815-2322/issue-01-compare-banks-button.md",
+    "wb-rec-260815-2322/issue-02-banks-vs-lenders-wording.md",
+    "wb-rec-260815-2322/issue-03-results-tabs-table-gap-too-large.md",
+    "wb-rec-260815-2322/issue-04-edit-form-needs-button.md",
+    "wb-rec-260815-2332/issue-01-eligibility-form-missing-clear-button.md",
+    "wb-rec-260815-2332/issue-02-exact-rate-and-loan-amount-without-star.md",
+    "wb-rec-260815-2332/issue-03-lenders-word-not-used-everywhere-instead-of-banks.md",
+    "wb-rec-260815-2332/issue-04-apply-once-not-above-row-checkboxes.md",
+    "wb-rec-260815-2332/issue-05-data-last-checked-on-not-correct-english.md",
+    "wb-rec-260815-2332/issue-06-no-in-page-search-for-named-bank.md",
+    "wb-rec-260815-2341/issue-01-scheme-facts-only-in-more-details.md",
+    "wb-rec-260815-2341/issue-02-more-cue-underline-plus-misleading-bank-label.md",
+    "wb-rec-260815-2341/issue-03-loan-amount-calc-not-neat-needs-color.md",
+    "wb-rec-260815-2355/issue-01-loan-amount-how-calculated-steps-unlabeled-unsequenced.md",
+    "wb-rec-260815-2355/issue-02-emi-how-calculated-formula-unlabeled-12-and-0-006.md",
+    "wb-rec-260815-2355/issue-03-charges-footnote-marks-dash-looks-like-link-want-stars.md",
+    "wb-rec-260816-0004/issue-01-processing-fee-star-note-missing-definition-mandatory-guide.md",
+    "wb-rec-260816-0004/issue-02-property-check-copy-omits-bank-wont-accept-own-report.md",
+    "wb-rec-260816-0004/issue-03-high-processing-fee-banks-not-labeled-as-highest.md",
+    "wb-rec-260816-0004/issue-04-charges-drawer-step-bars-too-narrow-dont-wrap.md",
+    "wb-rec-260816-0013/issue-01-government-charges-same-on-every-bank-and-duplicated-in-card.md",
+    "wb-rec-260816-0013/issue-02-rate-change-charge-too-complex-legal-jargon.md",
+    "wb-rec-260816-0013/issue-03-overdue-charge-no-rupee-calculation.md",
+    "wb-rec-260816-0029/issue-01-other-charges-missing-emi-miss-calculation-drawer.md",
+    "wb-rec-260816-0029/issue-02-banks-missing-emi-miss-penalty-labels.md",
+    "wb-rec-260816-0031/issue-01-charge-notes-legal-jargon-not-friendly-lawyer.md",
+    "wb-rec-260816-0031/issue-02-table-missing-scheme-names-multiple-schemes.md"
+  ],
+  "zero_issue_folders": [
+    "wb-rec-260815-1928",
+    "wb-rec-260815-1950",
+    "wb-rec-260815-2201"
+  ],
+  "themes_written": [
+    "theme-01-hero-headline-cta-uneven-spacing.md",
+    "theme-02-homepage-sentences-too-heavy-or-empty.md",
+    "theme-03-zero-block-scroll-looks-broken.md",
+    "theme-04-zero-commissions-mix-bank-and-customer.md",
+    "theme-05-homepage-story-slides-too-many.md",
+    "theme-06-built-around-you-does-not-show-the-product.md",
+    "theme-07-help-strip-and-footer-disclaimer.md",
+    "theme-08-filters-exclusive-and-unexplained.md",
+    "theme-09-concessions-learn-more-takes-you-away.md",
+    "theme-10-loan-input-helpers-too-complex.md",
+    "theme-11-cibil-exact-number-not-a-range.md",
+    "theme-12-explore-banks-missing-hacks-intelligence.md",
+    "theme-13-extra-eligibility-hidden-behind-adjust.md",
+    "theme-14-see-options-not-compare-banks.md",
+    "theme-15-loan-form-does-not-show-importance.md",
+    "theme-16-banks-vs-lenders-wording.md",
+    "theme-17-results-tabs-gap-and-apply-once.md",
+    "theme-18-edit-clear-and-named-bank-search.md",
+    "theme-19-scheme-names-not-in-the-product.md",
+    "theme-20-charges-and-calculations-dont-explain.md"
+  ],
+  "theme_count": 20,
+  "assignment": [
+    {
+      "issue_file": "wb-rec-260815-1929/issue-01-hero-headline-cta-uneven-spacing.md",
+      "theme_file": "theme-01-hero-headline-cta-uneven-spacing.md",
+      "thread_title": "Uneven space above the headline and below the button"
+    },
+    {
+      "issue_file": "wb-rec-260815-1929/issue-02-journey-section-copy-too-complex.md",
+      "theme_file": "theme-02-homepage-sentences-too-heavy-or-empty.md",
+      "thread_title": "Journey lines too wordy and too clause-heavy"
+    },
+    {
+      "issue_file": "wb-rec-260815-1929/issue-03-transparent-supporting-lines-add-no-value.md",
+      "theme_file": "theme-02-homepage-sentences-too-heavy-or-empty.md",
+      "thread_title": "Transparent supporting line adds little or no value"
+    },
+    {
+      "issue_file": "wb-rec-260815-1929/issue-04-zero-scroll-shows-two-bare-zeros.md",
+      "theme_file": "theme-03-zero-block-scroll-looks-broken.md",
+      "thread_title": "Two bare zeros on scroll look broken"
+    },
+    {
+      "issue_file": "wb-rec-260815-1929/issue-05-zero-commissions-wording-and-perspective.md",
+      "theme_file": "theme-04-zero-commissions-mix-bank-and-customer.md",
+      "thread_title": "\u201cZero commissions\u201d / \u201cZero bias\u201d mix bank and customer"
+    },
+    {
+      "issue_file": "wb-rec-260815-1951/issue-01-both-zeros-visible-on-scroll-looks-broken.md",
+      "theme_file": "theme-03-zero-block-scroll-looks-broken.md",
+      "thread_title": "Two bare zeros on scroll look broken"
+    },
+    {
+      "issue_file": "wb-rec-260815-1951/issue-02-zero-commissions-bias-mixed-bank-customer-context.md",
+      "theme_file": "theme-04-zero-commissions-mix-bank-and-customer.md",
+      "thread_title": "\u201cZero commissions\u201d / \u201cZero bias\u201d mix bank and customer"
+    },
+    {
+      "issue_file": "wb-rec-260815-1951/issue-03-zero-supporting-sentence-too-small-and-unclear.md",
+      "theme_file": "theme-04-zero-commissions-mix-bank-and-customer.md",
+      "thread_title": "Supporting line too small and missing the gist"
+    },
+    {
+      "issue_file": "wb-rec-260815-1951/issue-04-spam-hard-sell-push-notifications-overlap.md",
+      "theme_file": "theme-02-homepage-sentences-too-heavy-or-empty.md",
+      "thread_title": "Best of all trio overlaps and the point is unclear"
+    },
+    {
+      "issue_file": "wb-rec-260815-1951/issue-05-four-homepage-story-sections-may-be-too-many.md",
+      "theme_file": "theme-05-homepage-story-slides-too-many.md",
+      "thread_title": "Four (then six) full-screen story slides need consolidation"
+    },
+    {
+      "issue_file": "wb-rec-260815-1951/issue-06-reengineered-journey-sentence-formation-not-coherent.md",
+      "theme_file": "theme-02-homepage-sentences-too-heavy-or-empty.md",
+      "thread_title": "Journey story is coherent; sentence formation is not"
+    },
+    {
+      "issue_file": "wb-rec-260815-2000/issue-01-homepage-story-full-slides-need-consolidation.md",
+      "theme_file": "theme-05-homepage-story-slides-too-many.md",
+      "thread_title": "Four (then six) full-screen story slides need consolidation"
+    },
+    {
+      "issue_file": "wb-rec-260815-2000/issue-02-homepage-story-section-scroll-fade.md",
+      "theme_file": "theme-03-zero-block-scroll-looks-broken.md",
+      "thread_title": "The Zero story section fades on scroll"
+    },
+    {
+      "issue_file": "wb-rec-260815-2000/issue-03-built-around-you-accordion-one-line.md",
+      "theme_file": "theme-06-built-around-you-does-not-show-the-product.md",
+      "thread_title": "Accordion shows one line / one point per screen"
+    },
+    {
+      "issue_file": "wb-rec-260815-2000/issue-04-built-around-you-side-preview-duplicate.md",
+      "theme_file": "theme-06-built-around-you-does-not-show-the-product.md",
+      "thread_title": "Side preview is a duplicate, not the real product"
+    },
+    {
+      "issue_file": "wb-rec-260815-2009/issue-01-standardized-view-product-not-shown-visually.md",
+      "theme_file": "theme-06-built-around-you-does-not-show-the-product.md",
+      "thread_title": "Standardized-view claim is not shown as a product"
+    },
+    {
+      "issue_file": "wb-rec-260815-2009/issue-02-homepage-unique-points-duplicated-across-sections.md",
+      "theme_file": "theme-05-homepage-story-slides-too-many.md",
+      "thread_title": "Later sections repeat unique points and bury a seventh"
+    },
+    {
+      "issue_file": "wb-rec-260815-2009/issue-03-site-help-strip-not-flush-to-footer.md",
+      "theme_file": "theme-07-help-strip-and-footer-disclaimer.md",
+      "thread_title": "Help strip sits in a padded gap instead of on the footer"
+    },
+    {
+      "issue_file": "wb-rec-260815-2009/issue-04-footer-treated-as-ignored-legal-block.md",
+      "theme_file": "theme-07-help-strip-and-footer-disclaimer.md",
+      "thread_title": "Footer is ignored legal; Disclaimer reads \u201cwe are not responsible\u201d"
+    },
+    {
+      "issue_file": "wb-rec-260815-2018/issue-01-home-footer-disclaimer-not-responsible-tone.md",
+      "theme_file": "theme-07-help-strip-and-footer-disclaimer.md",
+      "thread_title": "Footer is ignored legal; Disclaimer reads \u201cwe are not responsible\u201d"
+    },
+    {
+      "issue_file": "wb-rec-260815-2106/issue-01-all-public-private-exclusive-not-checkboxes.md",
+      "theme_file": "theme-08-filters-exclusive-and-unexplained.md",
+      "thread_title": "Exclusive pills instead of checkboxes both on"
+    },
+    {
+      "issue_file": "wb-rec-260815-2106/issue-02-concessions-learn-more-takes-you-away.md",
+      "theme_file": "theme-09-concessions-learn-more-takes-you-away.md",
+      "thread_title": "Learn more takes you off the filter; options lack their own i"
+    },
+    {
+      "issue_file": "wb-rec-260815-2106/issue-03-concessions-page-missing-back.md",
+      "theme_file": "theme-09-concessions-learn-more-takes-you-away.md",
+      "thread_title": "Concessions page has no Back after Learn more"
+    },
+    {
+      "issue_file": "wb-rec-260815-2106/issue-04-filters-missing-public-private-floating-fixed-tradeoffs.md",
+      "theme_file": "theme-08-filters-exclusive-and-unexplained.md",
+      "thread_title": "Missing Public vs Private and Floating vs Fixed trade-offs"
+    },
+    {
+      "issue_file": "wb-rec-260815-2106/issue-05-overdraft-facility-unexplained.md",
+      "theme_file": "theme-08-filters-exclusive-and-unexplained.md",
+      "thread_title": "Overdraft unexplained except a higher-rate note"
+    },
+    {
+      "issue_file": "wb-rec-260815-2116/issue-01-monthly-income-helper-sets-does-not-explain-why.md",
+      "theme_file": "theme-10-loan-input-helpers-too-complex.md",
+      "thread_title": "Monthly income helper \u201cSets\u201d does not say why"
+    },
+    {
+      "issue_file": "wb-rec-260815-2116/issue-02-property-helper-sets-ceiling-unknown-in-india.md",
+      "theme_file": "theme-10-loan-input-helpers-too-complex.md",
+      "thread_title": "Property helper \u201cSets\u201d and \u201cceiling\u201d"
+    },
+    {
+      "issue_file": "wb-rec-260815-2116/issue-03-property-agreement-value-label-too-complex.md",
+      "theme_file": "theme-10-loan-input-helpers-too-complex.md",
+      "thread_title": "Label \u201cProperty agreement value\u201d is too complex"
+    },
+    {
+      "issue_file": "wb-rec-260815-2125/issue-01-cibil-score-exact-text-instead-of-range-dropdown.md",
+      "theme_file": "theme-11-cibil-exact-number-not-a-range.md",
+      "thread_title": "CIBIL input is an exact number instead of a range dropdown"
+    },
+    {
+      "issue_file": "wb-rec-260815-2134/issue-01-cibil-single-exact-vs-min-max-range.md",
+      "theme_file": "theme-11-cibil-exact-number-not-a-range.md",
+      "thread_title": "CIBIL input is an exact number instead of a range dropdown"
+    },
+    {
+      "issue_file": "wb-rec-260815-2134/issue-02-bank-options-one-rate-for-cibil-band.md",
+      "theme_file": "theme-11-cibil-exact-number-not-a-range.md",
+      "thread_title": "Bank table shows only one rate for a CIBIL band"
+    },
+    {
+      "issue_file": "wb-rec-260815-2204/issue-01-loan-inputs-advise-what-to-change.md",
+      "theme_file": "theme-12-explore-banks-missing-hacks-intelligence.md",
+      "thread_title": "Missing hacks / advice / top-three optimizations"
+    },
+    {
+      "issue_file": "wb-rec-260815-2206/issue-01-explore-banks-missing-hacks-intelligence.md",
+      "theme_file": "theme-12-explore-banks-missing-hacks-intelligence.md",
+      "thread_title": "Missing hacks / advice / top-three optimizations"
+    },
+    {
+      "issue_file": "wb-rec-260815-2213/issue-01-explore-banks-missing-intelligence-advice-layer.md",
+      "theme_file": "theme-12-explore-banks-missing-hacks-intelligence.md",
+      "thread_title": "Missing hacks / advice / top-three optimizations"
+    },
+    {
+      "issue_file": "wb-rec-260815-2222/issue-01-explore-banks-missing-top-three-offer-optimizations.md",
+      "theme_file": "theme-12-explore-banks-missing-hacks-intelligence.md",
+      "thread_title": "Missing hacks / advice / top-three optimizations"
+    },
+    {
+      "issue_file": "wb-rec-260815-2231/issue-01-cibil-number-vs-dropdown-same-range.md",
+      "theme_file": "theme-11-cibil-exact-number-not-a-range.md",
+      "thread_title": "CIBIL input is an exact number instead of a range dropdown"
+    },
+    {
+      "issue_file": "wb-rec-260815-2231/issue-02-explore-banks-land-average-intelligence-then-list.md",
+      "theme_file": "theme-12-explore-banks-missing-hacks-intelligence.md",
+      "thread_title": "First land should show averages, intelligence, then the list, at a glance"
+    },
+    {
+      "issue_file": "wb-rec-260815-2240/issue-01-explore-banks-not-obvious-at-a-glance.md",
+      "theme_file": "theme-12-explore-banks-missing-hacks-intelligence.md",
+      "thread_title": "First land should show averages, intelligence, then the list, at a glance"
+    },
+    {
+      "issue_file": "wb-rec-260815-2240/issue-02-form-fields-dont-carry-first-inputs-or-show-roi.md",
+      "theme_file": "theme-12-explore-banks-missing-hacks-intelligence.md",
+      "thread_title": "Fields do not carry the first inputs or show ROI first"
+    },
+    {
+      "issue_file": "wb-rec-260815-2240/issue-03-adjust-eligibility-not-simple-english.md",
+      "theme_file": "theme-13-extra-eligibility-hidden-behind-adjust.md",
+      "thread_title": "\u201cAdjust eligibility\u201d is not simple English"
+    },
+    {
+      "issue_file": "wb-rec-260815-2240/issue-04-adjust-eligibility-looks-unopenable-but-is-dropdown.md",
+      "theme_file": "theme-13-extra-eligibility-hidden-behind-adjust.md",
+      "thread_title": "Adjust eligibility looks unopenable but is a dropdown"
+    },
+    {
+      "issue_file": "wb-rec-260815-2240/issue-05-see-options-label-unclear.md",
+      "theme_file": "theme-14-see-options-not-compare-banks.md",
+      "thread_title": "See options label is unclear; should be Compare banks"
+    },
+    {
+      "issue_file": "wb-rec-260815-2240/issue-06-see-options-not-below-centered.md",
+      "theme_file": "theme-14-see-options-not-compare-banks.md",
+      "thread_title": "See options is not below Adjust eligibility and not centered"
+    },
+    {
+      "issue_file": "wb-rec-260815-2249/issue-01-adjust-eligibility-hidden-not-shown-as-columns.md",
+      "theme_file": "theme-13-extra-eligibility-hidden-behind-adjust.md",
+      "thread_title": "Extras hidden instead of columns; must still count; stay visible and prefilled"
+    },
+    {
+      "issue_file": "wb-rec-260815-2302/issue-01-collapsed-eligibility-fields-must-still-affect.md",
+      "theme_file": "theme-13-extra-eligibility-hidden-behind-adjust.md",
+      "thread_title": "Extras hidden instead of columns; must still count; stay visible and prefilled"
+    },
+    {
+      "issue_file": "wb-rec-260815-2302/issue-02-coapplicant-yes-gives-ideas-to-inflate-loan.md",
+      "theme_file": "theme-13-extra-eligibility-hidden-behind-adjust.md",
+      "thread_title": "Co-applicant Yes coaches inflating the loan"
+    },
+    {
+      "issue_file": "wb-rec-260815-2304/issue-01-extra-eligibility-should-stay-visible-prefilled.md",
+      "theme_file": "theme-13-extra-eligibility-hidden-behind-adjust.md",
+      "thread_title": "Extras hidden instead of columns; must still count; stay visible and prefilled"
+    },
+    {
+      "issue_file": "wb-rec-260815-2304/issue-02-loan-form-fields-lack-importance-indication.md",
+      "theme_file": "theme-15-loan-form-does-not-show-importance.md",
+      "thread_title": "Importance not shown by marks, order, or color"
+    },
+    {
+      "issue_file": "wb-rec-260815-2304/issue-03-see-options-explore-banks-naming.md",
+      "theme_file": "theme-14-see-options-not-compare-banks.md",
+      "thread_title": "See options label is unclear; should be Compare banks"
+    },
+    {
+      "issue_file": "wb-rec-260815-2313/issue-01-loan-form-importance-not-shown-by-order-color.md",
+      "theme_file": "theme-15-loan-form-does-not-show-importance.md",
+      "thread_title": "Importance not shown by marks, order, or color"
+    },
+    {
+      "issue_file": "wb-rec-260815-2313/issue-02-adjust-eligibility-fields-should-not-disappear.md",
+      "theme_file": "theme-13-extra-eligibility-hidden-behind-adjust.md",
+      "thread_title": "Extras hidden instead of columns; must still count; stay visible and prefilled"
+    },
+    {
+      "issue_file": "wb-rec-260815-2313/issue-03-loan-form-info-icons-need-arranging.md",
+      "theme_file": "theme-15-loan-form-does-not-show-importance.md",
+      "thread_title": "Info icons need arranging"
+    },
+    {
+      "issue_file": "wb-rec-260815-2313/issue-04-copy-extra-words-raise-cognitive-load.md",
+      "theme_file": "theme-02-homepage-sentences-too-heavy-or-empty.md",
+      "thread_title": "Extra words raise cognitive load; freshness line is not correct English"
+    },
+    {
+      "issue_file": "wb-rec-260815-2322/issue-01-compare-banks-button.md",
+      "theme_file": "theme-14-see-options-not-compare-banks.md",
+      "thread_title": "See options label is unclear; should be Compare banks"
+    },
+    {
+      "issue_file": "wb-rec-260815-2322/issue-02-banks-vs-lenders-wording.md",
+      "theme_file": "theme-16-banks-vs-lenders-wording.md",
+      "thread_title": "Banks vs lenders / NBFCs \u2014 use lenders everywhere"
+    },
+    {
+      "issue_file": "wb-rec-260815-2322/issue-03-results-tabs-table-gap-too-large.md",
+      "theme_file": "theme-17-results-tabs-gap-and-apply-once.md",
+      "thread_title": "Gap between result tabs and the table is too large"
+    },
+    {
+      "issue_file": "wb-rec-260815-2322/issue-04-edit-form-needs-button.md",
+      "theme_file": "theme-18-edit-clear-and-named-bank-search.md",
+      "thread_title": "Edit / Clear needs a button"
+    },
+    {
+      "issue_file": "wb-rec-260815-2332/issue-01-eligibility-form-missing-clear-button.md",
+      "theme_file": "theme-18-edit-clear-and-named-bank-search.md",
+      "thread_title": "Edit / Clear needs a button"
+    },
+    {
+      "issue_file": "wb-rec-260815-2332/issue-02-exact-rate-and-loan-amount-without-star.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Exact rates and loan amounts without a star"
+    },
+    {
+      "issue_file": "wb-rec-260815-2332/issue-03-lenders-word-not-used-everywhere-instead-of-banks.md",
+      "theme_file": "theme-16-banks-vs-lenders-wording.md",
+      "thread_title": "Banks vs lenders / NBFCs \u2014 use lenders everywhere"
+    },
+    {
+      "issue_file": "wb-rec-260815-2332/issue-04-apply-once-not-above-row-checkboxes.md",
+      "theme_file": "theme-17-results-tabs-gap-and-apply-once.md",
+      "thread_title": "Apply once is not on top of the row checkboxes"
+    },
+    {
+      "issue_file": "wb-rec-260815-2332/issue-05-data-last-checked-on-not-correct-english.md",
+      "theme_file": "theme-02-homepage-sentences-too-heavy-or-empty.md",
+      "thread_title": "Extra words raise cognitive load; freshness line is not correct English"
+    },
+    {
+      "issue_file": "wb-rec-260815-2332/issue-06-no-in-page-search-for-named-bank.md",
+      "theme_file": "theme-18-edit-clear-and-named-bank-search.md",
+      "thread_title": "No in-page search for a named bank"
+    },
+    {
+      "issue_file": "wb-rec-260815-2341/issue-01-scheme-facts-only-in-more-details.md",
+      "theme_file": "theme-19-scheme-names-not-in-the-product.md",
+      "thread_title": "Scheme facts only in More details, not in the product"
+    },
+    {
+      "issue_file": "wb-rec-260815-2341/issue-02-more-cue-underline-plus-misleading-bank-label.md",
+      "theme_file": "theme-19-scheme-names-not-in-the-product.md",
+      "thread_title": "More / plus / underline cue is confusing and the bank label is misleading"
+    },
+    {
+      "issue_file": "wb-rec-260815-2341/issue-03-loan-amount-calc-not-neat-needs-color.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "How-calculated steps unlabeled; not neat; bars don\u2019t wrap"
+    },
+    {
+      "issue_file": "wb-rec-260815-2355/issue-01-loan-amount-how-calculated-steps-unlabeled-unsequenced.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "How-calculated steps unlabeled; not neat; bars don\u2019t wrap"
+    },
+    {
+      "issue_file": "wb-rec-260815-2355/issue-02-emi-how-calculated-formula-unlabeled-12-and-0-006.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "How-calculated steps unlabeled; not neat; bars don\u2019t wrap"
+    },
+    {
+      "issue_file": "wb-rec-260815-2355/issue-03-charges-footnote-marks-dash-looks-like-link-want-stars.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Footnote marks look like links; want stars"
+    },
+    {
+      "issue_file": "wb-rec-260816-0004/issue-01-processing-fee-star-note-missing-definition-mandatory-guide.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Processing fee note missing definition; high-fee banks unlabeled"
+    },
+    {
+      "issue_file": "wb-rec-260816-0004/issue-02-property-check-copy-omits-bank-wont-accept-own-report.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Property check copy omits that the bank will not accept your own report"
+    },
+    {
+      "issue_file": "wb-rec-260816-0004/issue-03-high-processing-fee-banks-not-labeled-as-highest.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Processing fee note missing definition; high-fee banks unlabeled"
+    },
+    {
+      "issue_file": "wb-rec-260816-0004/issue-04-charges-drawer-step-bars-too-narrow-dont-wrap.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "How-calculated steps unlabeled; not neat; bars don\u2019t wrap"
+    },
+    {
+      "issue_file": "wb-rec-260816-0013/issue-01-government-charges-same-on-every-bank-and-duplicated-in-card.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Government charges same on every bank and duplicated in the card"
+    },
+    {
+      "issue_file": "wb-rec-260816-0013/issue-02-rate-change-charge-too-complex-legal-jargon.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Rate-change and charge notes are legal jargon, not a friendly lawyer"
+    },
+    {
+      "issue_file": "wb-rec-260816-0013/issue-03-overdue-charge-no-rupee-calculation.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Overdue / EMI miss has no rupee drawer and no highest/lowest labels"
+    },
+    {
+      "issue_file": "wb-rec-260816-0029/issue-01-other-charges-missing-emi-miss-calculation-drawer.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Overdue / EMI miss has no rupee drawer and no highest/lowest labels"
+    },
+    {
+      "issue_file": "wb-rec-260816-0029/issue-02-banks-missing-emi-miss-penalty-labels.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Overdue / EMI miss has no rupee drawer and no highest/lowest labels"
+    },
+    {
+      "issue_file": "wb-rec-260816-0031/issue-01-charge-notes-legal-jargon-not-friendly-lawyer.md",
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Rate-change and charge notes are legal jargon, not a friendly lawyer"
+    },
+    {
+      "issue_file": "wb-rec-260816-0031/issue-02-table-missing-scheme-names-multiple-schemes.md",
+      "theme_file": "theme-19-scheme-names-not-in-the-product.md",
+      "thread_title": "Table cannot show scheme names or two schemes of the same bank"
+    }
+  ],
+  "ungrouped": [],
+  "continuation_threads": [
+    {
+      "theme_file": "theme-02-homepage-sentences-too-heavy-or-empty.md",
+      "thread_title": "Best of all trio overlaps and the point is unclear",
+      "issue_files_in_order": [
+        "wb-rec-260815-1951/issue-04-spam-hard-sell-push-notifications-overlap.md"
+      ],
+      "continuation": "continues_into_wb-rec-260815-2000"
+    },
+    {
+      "theme_file": "theme-02-homepage-sentences-too-heavy-or-empty.md",
+      "thread_title": "Journey story is coherent; sentence formation is not",
+      "issue_files_in_order": [
+        "wb-rec-260815-1951/issue-06-reengineered-journey-sentence-formation-not-coherent.md"
+      ],
+      "continuation": "continues_into_wb-rec-260815-2000"
+    },
+    {
+      "theme_file": "theme-02-homepage-sentences-too-heavy-or-empty.md",
+      "thread_title": "Extra words raise cognitive load; freshness line is not correct English",
+      "issue_files_in_order": [
+        "wb-rec-260815-2313/issue-04-copy-extra-words-raise-cognitive-load.md",
+        "wb-rec-260815-2332/issue-05-data-last-checked-on-not-correct-english.md"
+      ],
+      "continuation": "standalone"
+    },
+    {
+      "theme_file": "theme-03-zero-block-scroll-looks-broken.md",
+      "thread_title": "Two bare zeros on scroll look broken",
+      "issue_files_in_order": [
+        "wb-rec-260815-1929/issue-04-zero-scroll-shows-two-bare-zeros.md",
+        "wb-rec-260815-1951/issue-01-both-zeros-visible-on-scroll-looks-broken.md"
+      ],
+      "continuation": "1929-04 standalone speech; 1951-01 continues from 1950"
+    },
+    {
+      "theme_file": "theme-04-zero-commissions-mix-bank-and-customer.md",
+      "thread_title": "\u201cZero commissions\u201d / \u201cZero bias\u201d mix bank and customer",
+      "issue_files_in_order": [
+        "wb-rec-260815-1929/issue-05-zero-commissions-wording-and-perspective.md",
+        "wb-rec-260815-1951/issue-02-zero-commissions-bias-mixed-bank-customer-context.md"
+      ],
+      "continuation": "1929-05 into 1950; 1951-02 into 2000"
+    },
+    {
+      "theme_file": "theme-05-homepage-story-slides-too-many.md",
+      "thread_title": "Four (then six) full-screen story slides need consolidation",
+      "issue_files_in_order": [
+        "wb-rec-260815-1951/issue-05-four-homepage-story-sections-may-be-too-many.md",
+        "wb-rec-260815-2000/issue-01-homepage-story-full-slides-need-consolidation.md"
+      ],
+      "continuation": "1951-05 into 2000-01 into 2009"
+    },
+    {
+      "theme_file": "theme-05-homepage-story-slides-too-many.md",
+      "thread_title": "Later sections repeat unique points and bury a seventh",
+      "issue_files_in_order": [
+        "wb-rec-260815-2009/issue-02-homepage-unique-points-duplicated-across-sections.md"
+      ],
+      "continuation": "continues_from_2000"
+    },
+    {
+      "theme_file": "theme-06-built-around-you-does-not-show-the-product.md",
+      "thread_title": "Side preview is a duplicate, not the real product",
+      "issue_files_in_order": [
+        "wb-rec-260815-2000/issue-04-built-around-you-side-preview-duplicate.md"
+      ],
+      "continuation": "continues_into_2009"
+    },
+    {
+      "theme_file": "theme-06-built-around-you-does-not-show-the-product.md",
+      "thread_title": "Standardized-view claim is not shown as a product",
+      "issue_files_in_order": [
+        "wb-rec-260815-2009/issue-01-standardized-view-product-not-shown-visually.md"
+      ],
+      "continuation": "continues_from_2000"
+    },
+    {
+      "theme_file": "theme-07-help-strip-and-footer-disclaimer.md",
+      "thread_title": "Footer is ignored legal; Disclaimer reads \u201cwe are not responsible\u201d",
+      "issue_files_in_order": [
+        "wb-rec-260815-2009/issue-04-footer-treated-as-ignored-legal-block.md",
+        "wb-rec-260815-2018/issue-01-home-footer-disclaimer-not-responsible-tone.md"
+      ],
+      "continuation": "2009-04 into 2018-01"
+    },
+    {
+      "theme_file": "theme-11-cibil-exact-number-not-a-range.md",
+      "thread_title": "CIBIL input is an exact number instead of a range dropdown",
+      "issue_files_in_order": [
+        "wb-rec-260815-2125/issue-01-cibil-score-exact-text-instead-of-range-dropdown.md",
+        "wb-rec-260815-2134/issue-01-cibil-single-exact-vs-min-max-range.md",
+        "wb-rec-260815-2231/issue-01-cibil-number-vs-dropdown-same-range.md"
+      ],
+      "continuation": "2125-01 into 2134-01; 2231-01 later return"
+    },
+    {
+      "theme_file": "theme-12-explore-banks-missing-hacks-intelligence.md",
+      "thread_title": "Missing hacks / advice / top-three optimizations",
+      "issue_files_in_order": [
+        "wb-rec-260815-2204/issue-01-loan-inputs-advise-what-to-change.md",
+        "wb-rec-260815-2206/issue-01-explore-banks-missing-hacks-intelligence.md",
+        "wb-rec-260815-2213/issue-01-explore-banks-missing-intelligence-advice-layer.md",
+        "wb-rec-260815-2222/issue-01-explore-banks-missing-top-three-offer-optimizations.md"
+      ],
+      "continuation": "2204\u21922206\u21922213\u21922222\u21922231"
+    },
+    {
+      "theme_file": "theme-12-explore-banks-missing-hacks-intelligence.md",
+      "thread_title": "First land should show averages, intelligence, then the list, at a glance",
+      "issue_files_in_order": [
+        "wb-rec-260815-2231/issue-02-explore-banks-land-average-intelligence-then-list.md",
+        "wb-rec-260815-2240/issue-01-explore-banks-not-obvious-at-a-glance.md"
+      ],
+      "continuation": "2231-02 into 2240-01"
+    },
+    {
+      "theme_file": "theme-13-extra-eligibility-hidden-behind-adjust.md",
+      "thread_title": "\u201cAdjust eligibility\u201d is not simple English",
+      "issue_files_in_order": [
+        "wb-rec-260815-2240/issue-03-adjust-eligibility-not-simple-english.md"
+      ],
+      "continuation": "continues_into_2249"
+    },
+    {
+      "theme_file": "theme-13-extra-eligibility-hidden-behind-adjust.md",
+      "thread_title": "Extras hidden instead of columns; must still count; stay visible and prefilled",
+      "issue_files_in_order": [
+        "wb-rec-260815-2249/issue-01-adjust-eligibility-hidden-not-shown-as-columns.md",
+        "wb-rec-260815-2302/issue-01-collapsed-eligibility-fields-must-still-affect.md",
+        "wb-rec-260815-2304/issue-01-extra-eligibility-should-stay-visible-prefilled.md",
+        "wb-rec-260815-2313/issue-02-adjust-eligibility-fields-should-not-disappear.md"
+      ],
+      "continuation": "2249\u21922302-01\u21922304-01; 2313-02 same vanish defect"
+    },
+    {
+      "theme_file": "theme-13-extra-eligibility-hidden-behind-adjust.md",
+      "thread_title": "Co-applicant Yes coaches inflating the loan",
+      "issue_files_in_order": [
+        "wb-rec-260815-2302/issue-02-coapplicant-yes-gives-ideas-to-inflate-loan.md"
+      ],
+      "continuation": "from 2249 into 2304"
+    },
+    {
+      "theme_file": "theme-14-see-options-not-compare-banks.md",
+      "thread_title": "See options label is unclear; should be Compare banks",
+      "issue_files_in_order": [
+        "wb-rec-260815-2240/issue-05-see-options-label-unclear.md",
+        "wb-rec-260815-2304/issue-03-see-options-explore-banks-naming.md",
+        "wb-rec-260815-2322/issue-01-compare-banks-button.md"
+      ],
+      "continuation": "2322-01 continues from 2313"
+    },
+    {
+      "theme_file": "theme-14-see-options-not-compare-banks.md",
+      "thread_title": "See options is not below Adjust eligibility and not centered",
+      "issue_files_in_order": [
+        "wb-rec-260815-2240/issue-06-see-options-not-below-centered.md"
+      ],
+      "continuation": "continues_into_2249"
+    },
+    {
+      "theme_file": "theme-15-loan-form-does-not-show-importance.md",
+      "thread_title": "Importance not shown by marks, order, or color",
+      "issue_files_in_order": [
+        "wb-rec-260815-2304/issue-02-loan-form-fields-lack-importance-indication.md",
+        "wb-rec-260815-2313/issue-01-loan-form-importance-not-shown-by-order-color.md"
+      ],
+      "continuation": "2304-02 into 2313-01"
+    },
+    {
+      "theme_file": "theme-16-banks-vs-lenders-wording.md",
+      "thread_title": "Banks vs lenders / NBFCs \u2014 use lenders everywhere",
+      "issue_files_in_order": [
+        "wb-rec-260815-2322/issue-02-banks-vs-lenders-wording.md",
+        "wb-rec-260815-2332/issue-03-lenders-word-not-used-everywhere-instead-of-banks.md"
+      ],
+      "continuation": "2332-03 continues from 2322"
+    },
+    {
+      "theme_file": "theme-18-edit-clear-and-named-bank-search.md",
+      "thread_title": "Edit / Clear needs a button",
+      "issue_files_in_order": [
+        "wb-rec-260815-2322/issue-04-edit-form-needs-button.md",
+        "wb-rec-260815-2332/issue-01-eligibility-form-missing-clear-button.md"
+      ],
+      "continuation": "2322-04 into 2332-01"
+    },
+    {
+      "theme_file": "theme-19-scheme-names-not-in-the-product.md",
+      "thread_title": "Scheme facts only in More details, not in the product",
+      "issue_files_in_order": [
+        "wb-rec-260815-2341/issue-01-scheme-facts-only-in-more-details.md"
+      ],
+      "continuation": "continues_from_2332"
+    },
+    {
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "How-calculated steps unlabeled; not neat; bars don\u2019t wrap",
+      "issue_files_in_order": [
+        "wb-rec-260815-2341/issue-03-loan-amount-calc-not-neat-needs-color.md",
+        "wb-rec-260815-2355/issue-01-loan-amount-how-calculated-steps-unlabeled-unsequenced.md",
+        "wb-rec-260815-2355/issue-02-emi-how-calculated-formula-unlabeled-12-and-0-006.md",
+        "wb-rec-260816-0004/issue-04-charges-drawer-step-bars-too-narrow-dont-wrap.md"
+      ],
+      "continuation": "2341-03 into 2355-01"
+    },
+    {
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Footnote marks look like links; want stars",
+      "issue_files_in_order": [
+        "wb-rec-260815-2355/issue-03-charges-footnote-marks-dash-looks-like-link-want-stars.md"
+      ],
+      "continuation": "continues_into_0004"
+    },
+    {
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Processing fee note missing definition; high-fee banks unlabeled",
+      "issue_files_in_order": [
+        "wb-rec-260816-0004/issue-01-processing-fee-star-note-missing-definition-mandatory-guide.md",
+        "wb-rec-260816-0004/issue-03-high-processing-fee-banks-not-labeled-as-highest.md"
+      ],
+      "continuation": "0004-01 from 2355"
+    },
+    {
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Government charges same on every bank and duplicated in the card",
+      "issue_files_in_order": [
+        "wb-rec-260816-0013/issue-01-government-charges-same-on-every-bank-and-duplicated-in-card.md"
+      ],
+      "continuation": "continues_from_0004"
+    },
+    {
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Rate-change and charge notes are legal jargon, not a friendly lawyer",
+      "issue_files_in_order": [
+        "wb-rec-260816-0013/issue-02-rate-change-charge-too-complex-legal-jargon.md",
+        "wb-rec-260816-0031/issue-01-charge-notes-legal-jargon-not-friendly-lawyer.md"
+      ],
+      "continuation": "standalone"
+    },
+    {
+      "theme_file": "theme-20-charges-and-calculations-dont-explain.md",
+      "thread_title": "Overdue / EMI miss has no rupee drawer and no highest/lowest labels",
+      "issue_files_in_order": [
+        "wb-rec-260816-0013/issue-03-overdue-charge-no-rupee-calculation.md",
+        "wb-rec-260816-0029/issue-01-other-charges-missing-emi-miss-calculation-drawer.md",
+        "wb-rec-260816-0029/issue-02-banks-missing-emi-miss-penalty-labels.md"
+      ],
+      "continuation": "0013-03 into 0029"
+    }
+  ],
+  "card_files_read": [
+    "wb-rec-260815-1929/_theme-cards.json",
+    "wb-rec-260815-1951/_theme-cards.json",
+    "wb-rec-260815-2000/_theme-cards.json",
+    "wb-rec-260815-2009/_theme-cards.json",
+    "wb-rec-260815-2018/_theme-cards.json",
+    "wb-rec-260815-2106/_theme-cards.json",
+    "wb-rec-260815-2116/_theme-cards.json",
+    "wb-rec-260815-2125/_theme-cards.json",
+    "wb-rec-260815-2134/_theme-cards.json",
+    "wb-rec-260815-2204/_theme-cards.json",
+    "wb-rec-260815-2206/_theme-cards.json",
+    "wb-rec-260815-2213/_theme-cards.json",
+    "wb-rec-260815-2222/_theme-cards.json",
+    "wb-rec-260815-2231/_theme-cards.json",
+    "wb-rec-260815-2240/_theme-cards.json",
+    "wb-rec-260815-2249/_theme-cards.json",
+    "wb-rec-260815-2302/_theme-cards.json",
+    "wb-rec-260815-2304/_theme-cards.json",
+    "wb-rec-260815-2313/_theme-cards.json",
+    "wb-rec-260815-2322/_theme-cards.json",
+    "wb-rec-260815-2332/_theme-cards.json",
+    "wb-rec-260815-2341/_theme-cards.json",
+    "wb-rec-260815-2355/_theme-cards.json",
+    "wb-rec-260816-0004/_theme-cards.json",
+    "wb-rec-260816-0013/_theme-cards.json",
+    "wb-rec-260816-0029/_theme-cards.json",
+    "wb-rec-260816-0031/_theme-cards.json"
+  ],
+  "every_universe_path_assigned_once": true,
+  "evidence_sources_used": [
+    "issue-*.md only"
+  ],
+  "forbidden_files_opened": [],
+  "cards_are_map_not_evidence": true,
+  "issue_bodies_read": true,
+  "live_find_count": 80,
+  "live_find_matched_parent_list": true,
+  "empty_contributors_cited": [
+    "wb-rec-260815-1928",
+    "wb-rec-260815-1950",
+    "wb-rec-260815-2201"
+  ],
+  "card_files_read_complete": true
+}

@@ -1,0 +1,80 @@
+{
+  "folder": "wb-rec-260816-0029",
+  "sequence_index": 29,
+  "issue_count": 2,
+  "cards": [
+    {
+      "path": "issue-01-other-charges-missing-emi-miss-calculation-drawer.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260816-0029/issue-01-other-charges-missing-emi-miss-calculation-drawer.md",
+      "issue_id": "wb-rec-260816-0029/issue-01-other-charges-missing-emi-miss-calculation-drawer",
+      "issue_title": "Other charges has no drawer that calculates extra money for one missed EMI",
+      "summary_4_lines": [
+        "On Explore banks, Other charges, overdue and EMI bounce show only static rates and rupee fees.",
+        "They said every other charge needs a drawer with a calculation inside, not just a yearly percent.",
+        "They want the extra money for a month if one EMI is missed, including the bounce fee, by clicking the underlined charge.",
+        "They said some banks charge about 24% and one miss can mean taking out double money."
+      ],
+      "pinpoint": "On Explore banks Other charges, overdue and EMI bounce values are not clickable calculation drawers, so a user cannot see extra rupees for one missed EMI including bounce.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks (from URL / screenshots; pages.json empty)",
+      "on_screen_object": "Other charges table cells for Overdue charge and EMI bounce charge (and the Notes drawers under the table)",
+      "tags": ["interaction", "data", "trust", "copy", "missing-calculation"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260816-0013",
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-02-banks-missing-emi-miss-penalty-labels.md"],
+      "quotes_sample": [
+        "For every type of audio charge, I need a drawer and I need a calculation in the drawer.",
+        "And I need to know the underlines. I need to click them and do the calculations.",
+        "If one EMI is missed for a month, we need total extra money."
+      ],
+      "related_discussion_one_liners": [
+        "Tied the missing calculation to bank choice: even if another bank is 0.1% cheaper on interest, do not take a bank where one missed EMI means withdrawing double money.",
+        "That warning is also part of the intelligence; ranking/labeling is written as a separate issue (issue-02).",
+        "They said \"Interest rate is extraordinary\" while still on this table — a slightly better rate is not the whole story next to overdue/bounce.",
+        "They wanted the same underline-click pattern they already use for some range links (DCB overdue, Union Bank rate-change range).",
+        "Previous recording wb-rec-260816-0013 already attacked the overdue percent as \"annum\" that does not show next month’s total; this recording adds the drawer, the underlines, and bounce in the same total."
+      ],
+      "kind_hint": "missing-emi-miss-calculation-drawer",
+      "distinct_from_other_files_in_this_folder": "This is the missing clickable calculation drawer on Other charges overdue and EMI bounce cells; issue-02 is bank-row labels for lowest vs highest EMI-miss penalty, not the cell calculator."
+    },
+    {
+      "path": "issue-02-banks-missing-emi-miss-penalty-labels.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260816-0029/issue-02-banks-missing-emi-miss-penalty-labels.md",
+      "issue_id": "wb-rec-260816-0029/issue-02-banks-missing-emi-miss-penalty-labels",
+      "issue_title": "Banks are not labeled as lowest or highest EMI-miss penalty",
+      "summary_4_lines": [
+        "On Explore banks Other charges they said banks need labels for EMI-miss penalty, not only raw overdue and bounce numbers.",
+        "They named Jammu and Kashmir Bank as among the lowest penalty and IndusInd Bank as among the highest.",
+        "They said that ranking must be told to the site’s intelligence, even before someone takes a loan.",
+        "A bank that is 0.1% cheaper on interest should still be rejected if one missed EMI costs double."
+      ],
+      "pinpoint": "On Explore banks Other charges, bank rows are not labeled as lowest or highest EMI-miss penalty, and that ranking is not fed to the product intelligence.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks (from URL / screenshots; pages.json empty)",
+      "on_screen_object": "Lender rows on Other charges, especially Jammu and Kashmir Bank and IndusInd Bank",
+      "tags": ["trust", "copy", "data", "intelligence", "labels"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260816-0013",
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-01-other-charges-missing-emi-miss-calculation-drawer.md"],
+      "quotes_sample": [
+        "We need to put labels on the bank.",
+        "It is one of the least penalty for EMI misses bank.",
+        "And Indus land bank is one of the highest penalties for EMI misses bank."
+      ],
+      "related_discussion_one_liners": [
+        "The extra-money drawer and clicking overdue/bounce underlines belong to issue 01; they are the mechanism, this issue is the bank-level label/intelligence.",
+        "They compared a 0.1% interest advantage with \"withdraw double money.\"",
+        "They said \"Interest rate is extraordinary\" between the label talk and the overdue/bounce calculation talk — rate alone is not the ranking they want.",
+        "Previous folder wb-rec-260816-0013 already had IndusInd 24.00% p.a. overdue on screen while they attacked the overdue percent; this folder is where they name J&K vs IndusInd as least/highest and demand labels."
+      ],
+      "kind_hint": "missing-emi-miss-penalty-labels",
+      "distinct_from_other_files_in_this_folder": "This is missing least/highest EMI-miss-penalty labels on lender rows (J&K vs IndusInd) fed to intelligence; issue-01 is the overdue/bounce cell calculation drawer, not the bank-level ranking."
+    }
+  ]
+}

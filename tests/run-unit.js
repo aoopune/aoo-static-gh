@@ -98,6 +98,9 @@ testApfSearch()
     testReviewCapture();
   })
   .finally(function () {
+    testIntelligence();
+  })
+  .finally(function () {
     console.log('Unit tests: ' + passed + ' passed, ' + failed + ' failed');
     process.exit(failed > 0 ? 1 : 0);
   });
@@ -2981,4 +2984,120 @@ function testReviewCapture() {
   ok(md.indexOf('हे फिल्टर लहान आहे') !== -1, 'review markdown keeps Marathi speech');
   ok(md.indexOf('/pages/home-loan-compare.html') !== -1, 'review markdown includes page path');
   ok(md.indexOf('Apply once') !== -1, 'review markdown includes click labels');
+}
+
+// ─── Intelligence layer tests (T01–T10) ───────────────────────────────────────
+function testIntelligence() {
+  var hlcI = require('../src/hlc-intelligence.js');
+  var hlc = require('../src/home-loan-compare.js');
+  var fs = require('fs');
+  var path = require('path');
+
+  var DATASET = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '../data/home-loans-compare.json'), 'utf8'
+  ));
+
+  function syncMatchFn(q) {
+    var prefiltered = DATASET.offers.filter(function(o) { return hlc.prefilterOffer(o, q); });
+    return hlc.pickBestOfferPerBank(prefiltered).map(function(o) {
+      return hlc.enrichMatchedRow(o, q, DATASET.bank_charges, DATASET.government_charges, DATASET.part_prepayment_rules);
+    });
+  }
+
+  var BASE_FILTERS = {
+    rateFloating: true, fixedRate: false, bankPublic: true, bankPrivate: true,
+    womenApplicant: false, greenHome: false, govtPsu: false, insurance: false,
+    facilityTermLoan: true, overdraft: false
+  };
+
+  function makeQuery(valueOverrides, filterOverrides) {
+    return hlc.queryFromInputs(Object.assign({
+      age: '35', cibilScore: '680', monthlyIncome: '80000', existingEmis: '0',
+      tenureYears: '20', propertyValue: '6000000', occupation: 'Salaried',
+      purpose: 'Purchase', includeCoApplicant: 'no'
+    }, valueOverrides || {}), Object.assign({}, BASE_FILTERS, filterOverrides || {}));
+  }
+
+  function makeCtx(overrides) {
+    var q = (overrides && overrides.query) ? overrides.query : makeQuery();
+    var ctx = { query: q };
+    if (overrides && overrides.rows !== undefined) {
+      ctx.rows = overrides.rows;
+    } else {
+      ctx.rows = syncMatchFn(q);
+    }
+    ctx.matchFnSync = syncMatchFn;
+    ctx.helpers = { emiFromLoan: hlc.emiFromLoan };
+    return ctx;
+  }
+
+  // T01: CIBIL band tip fires with positive rupeeImpact
+  var ctx1 = makeCtx({});
+  var tip1 = hlcI.tipCibilBand(ctx1);
+  ok(tip1 !== null, 'T01 tipCibilBand must fire for score 680');
+  ok(tip1 !== null && tip1.rupeeImpact > 0, 'T01 rupeeImpact must be positive');
+  ok(tip1 !== null && /\d/.test(tip1.body), 'T01 body must contain a number');
+
+  // T02: CIBIL already at 825+ — tip suppressed
+  var q2 = makeQuery({ cibilScore: '825' });
+  var ctx2 = makeCtx({ query: q2 });
+  var tip2 = hlcI.tipCibilBand(ctx2);
+  ok(tip2 === null, 'T02 tipCibilBand must be suppressed at 825');
+
+  // T03: Women tip suppressed when filter already on
+  var q3 = makeQuery({}, { womenApplicant: true });
+  var ctx3 = makeCtx({ query: q3 });
+  var tip3 = hlcI.tipWomen(ctx3);
+  ok(tip3 === null, 'T03 tipWomen must suppress when filter already on');
+
+  // T04: buildIntelligence never returns more than 3 tips
+  var ctx4 = makeCtx({});
+  var intel4 = hlcI.buildIntelligence(ctx4);
+  ok(intel4.tips.length <= 3, 'T04 buildIntelligence max 3 tips');
+
+  // T05: Zero rows → empty intelligence
+  var ctx5 = makeCtx({ rows: [] });
+  var intel5 = hlcI.buildIntelligence(ctx5);
+  ok(intel5.tips.length === 0, 'T05 zero rows → no tips');
+  ok(intel5.status === '', 'T05 zero rows → empty status');
+
+  // T06: No banned words in any tip body
+  var ctx6 = makeCtx({});
+  var intel6 = hlcI.buildIntelligence(ctx6);
+  var BANNED = /\b(AI|LLM|powered by|machine learning|Google Flights|best CIBIL)\b/i;
+  intel6.tips.forEach(function(t) {
+    ok(!BANNED.test(t.heading + ' ' + t.body), 'T06 no banned copy in tip: ' + t.heading);
+  });
+
+  // T07: Every tip body contains at least one numeric figure
+  var ctx7 = makeCtx({});
+  var intel7 = hlcI.buildIntelligence(ctx7);
+  intel7.tips.forEach(function(t) {
+    ok(/[\d\u20b9%]/.test(t.body), 'T07 tip body has a figure: ' + t.heading);
+  });
+
+  // T08: tipProcessingFee fires when spread is large enough
+  var ctx8 = makeCtx({});
+  var fees8 = ctx8.rows.map(function(r) { return r.processingFee; }).filter(function(x) { return Number.isFinite(x) && x >= 0; });
+  if (fees8.length >= 2 && Math.max.apply(null, fees8) - Math.min.apply(null, fees8) >= 5000) {
+    var tip8 = hlcI.tipProcessingFee(ctx8);
+    ok(tip8 !== null, 'T08 tipProcessingFee must fire with large spread');
+    ok(tip8 !== null && tip8.rupeeImpact >= 5000, 'T08 tipProcessingFee rupeeImpact >= 5000');
+  } else {
+    ok(true, 'T08 skipped — data spread < 5000');
+  }
+
+  // T09: buildStatusLine returns a string with rate figures
+  var ctx9 = makeCtx({});
+  var status9 = hlcI.buildStatusLine(ctx9);
+  ok(typeof status9 === 'string' && status9.length > 0, 'T09 buildStatusLine non-empty');
+  ok(/\d+\.\d+%/.test(status9), 'T09 buildStatusLine contains rate figure');
+
+  // T10: tips are sorted descending by rupeeImpact
+  var ctx10 = makeCtx({});
+  var intel10 = hlcI.buildIntelligence(ctx10);
+  for (var i = 1; i < intel10.tips.length; i++) {
+    ok(intel10.tips[i - 1].rupeeImpact >= intel10.tips[i].rupeeImpact, 'T10 tips sorted by rupeeImpact');
+  }
+  ok(true, 'T10 sort check done');
 }

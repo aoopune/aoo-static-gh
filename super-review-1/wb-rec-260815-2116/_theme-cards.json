@@ -1,0 +1,118 @@
+{
+  "folder": "wb-rec-260815-2116",
+  "sequence_index": 9,
+  "issue_count": 3,
+  "cards": [
+    {
+      "path": "issue-01-monthly-income-helper-sets-does-not-explain-why.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2116/issue-01-monthly-income-helper-sets-does-not-explain-why.md",
+      "issue_id": "wb-rec-260815-2116/issue-01-monthly-income-helper-sets-does-not-explain-why",
+      "issue_title": "Monthly income helper starts with “Sets” and does not say why income is asked",
+      "summary_4_lines": [
+        "On Explore banks, the line under Monthly income says banks use it to set how much loan they can offer, and to use take-home pay, not CTC.",
+        "They said that sentence can be better: it is the main eligibility input, but “Sets” does not work.",
+        "The line does not answer why the site wants monthly income, or what income does in loan processing.",
+        "They were fine with “take-home, not CTC.” The problem is the “Sets…” sentence itself."
+      ],
+      "pinpoint": "On Explore banks, the Monthly income helper “Sets how much loan banks can offer you. Use take-home, not CTC.” is a bad sentence: they said “Sets” does not work and the line does not tell the user why monthly income is asked or how it works in loan processing, even though this is the main eligibility input.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Helper under Monthly income: “Sets how much loan banks can offer you. Use take-home, not CTC.” plus About Monthly income (i)",
+      "tags": ["copy", "trust", "eligibility"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-02-property-helper-sets-ceiling-unknown-in-india.md"],
+      "quotes_sample": [
+        "This sentence can be better. This is your main eligibility criteria.",
+        "The problem with this sentence is that the sets don't work.",
+        "Why do you want my monthly income?"
+      ],
+      "related_discussion_one_liners": [
+        "They called this the main eligibility criteria while on this helper, not a second field.",
+        "They accepted take-home vs CTC (“stay home, not CDC” in ASR) and said keep that note.",
+        "After “That's what sets how much bank loan works. But…” they moved to the property helper (issue-02): same “Sets” pattern, different object."
+      ],
+      "kind_hint": "monthly-income-helper-sets-no-why",
+      "distinct_from_other_files_in_this_folder": "This is the Monthly income helper “Sets…” line not explaining why income is asked; issue-02 is the Property helper’s “Sets/ceiling” wording, and issue-03 is the Property agreement value field label."
+    },
+    {
+      "path": "issue-02-property-helper-sets-ceiling-unknown-in-india.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2116/issue-02-property-helper-sets-ceiling-unknown-in-india.md",
+      "issue_id": "wb-rec-260815-2116/issue-02-property-helper-sets-ceiling-unknown-in-india",
+      "issue_title": "Property helper uses “Sets” and “ceiling,” a word they said India does not know",
+      "summary_4_lines": [
+        "On Explore banks, the line under Property agreement value says it sets the ceiling on the loan against this house, and to use the sale agreement price.",
+        "They read that line and said nobody in India knows “ceiling.”",
+        "They also said this sentence starts with “Sets,” the same problem as Monthly income.",
+        "That helper wording is the issue, not the field name (that is a separate issue)."
+      ],
+      "pinpoint": "On Explore banks, the Property agreement value helper “Sets the ceiling on the loan against this house. Use the sale agreement price.” is badly worded: they said the sentence starts with “Sets” and that nobody in India knows the word “ceiling.”",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Helper under Property agreement value: “Sets the ceiling on the loan against this house. Use the sale agreement price.” plus About Property agreement value (i)",
+      "tags": ["copy", "trust"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-01-monthly-income-helper-sets-does-not-explain-why.md",
+        "issue-03-property-agreement-value-label-too-complex.md"
+      ],
+      "quotes_sample": [
+        "No one in India knows about ceilings.",
+        "This sentence starts with sets.",
+        "And the word ceiling doesn't work in India."
+      ],
+      "related_discussion_one_liners": [
+        "They stay on this field after the ceiling line (“All the properties are in this house” / “Let's talk about it”).",
+        "They treat the helper as something they must rewrite, not a one-off nit (“Our requirements have been captured in this. So we have to change the loop.”).",
+        "Same “Sets” pattern as issue-01; the extra India-specific “ceiling” problem is why this is a separate file.",
+        "Immediately after, they switch to the label “Property agreement value” (issue-03)."
+      ],
+      "kind_hint": "property-helper-sets-ceiling-unknown",
+      "distinct_from_other_files_in_this_folder": "This is the Property agreement value helper using “Sets” and “ceiling”; issue-01 is the Monthly income helper not explaining why income is asked, and issue-03 is the field label being too complex."
+    },
+    {
+      "path": "issue-03-property-agreement-value-label-too-complex.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2116/issue-03-property-agreement-value-label-too-complex.md",
+      "issue_id": "wb-rec-260815-2116/issue-03-property-agreement-value-label-too-complex",
+      "issue_title": "Label “Property agreement value” is too complex for the box",
+      "summary_4_lines": [
+        "On Explore banks, the second box is labelled Property agreement value.",
+        "They said that name is complex: it stacks adjectives, and a user will not know which value to type.",
+        "They spent the rest of the recording trying shorter names (property value as per agreement, official property value) and whether to use the (i).",
+        "They ended leaning to a shorter “as per agreement” form, not the current three-word label."
+      ],
+      "pinpoint": "On Explore banks, the label “Property agreement value” on the property box is too complex: they said it overloads adjectives, a user will not know which value (agreement vs registry vs market) to enter, and they wanted a simpler name such as property value as per agreement.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Field label “Property agreement value*” on #hlc-property-value (placeholder 62,50,000) plus About Property agreement value (i)",
+      "tags": ["copy", "trust", "form-label"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-02-property-helper-sets-ceiling-unknown-in-india.md"],
+      "quotes_sample": [
+        "But the property agreement value is complex.",
+        "Like we overload adjectives.",
+        "If you just put the agreement value, which agreement?"
+      ],
+      "related_discussion_one_liners": [
+        "Recent purchase: use registrar/sale agreement; otherwise banks do their own valuation, usually below market, so enter a conservative figure.",
+        "8-crore example: felt value vs agreement; “the amount on the agreement is white.”",
+        "Agreement vs registry are different words; “agreement value” alone is ambiguous (which agreement?).",
+        "(i) as a possible place to explain official vs market (“Official property value” / “Should I click on i?”), not a substitute for a clear label.",
+        "Character-count / shorter box: “as per agreement” is five or six extra letters and they wanted a small one; dropping “agreement” would read as market value so they kept “as per agreement”; last Age (i) clicks are move-on, not an Age issue."
+      ],
+      "kind_hint": "property-agreement-value-label-too-complex",
+      "distinct_from_other_files_in_this_folder": "This is the field label “Property agreement value” being too complex for the box; issue-01 is the Monthly income helper, and issue-02 is the Property helper sentence (“Sets” / “ceiling”), not the name."
+    }
+  ]
+}

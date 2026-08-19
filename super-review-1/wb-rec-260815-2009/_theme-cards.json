@@ -1,0 +1,153 @@
+{
+  "folder": "wb-rec-260815-2009",
+  "sequence_index": 6,
+  "issue_count": 4,
+  "cards": [
+    {
+      "path": "issue-01-standardized-view-product-not-shown-visually.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2009/issue-01-standardized-view-product-not-shown-visually.md",
+      "issue_id": "wb-rec-260815-2009/issue-01-standardized-view-product-not-shown-visually",
+      "issue_title": "Standardized-view section does not show the product as one market view",
+      "summary_4_lines": [
+        "On the homepage dark block that says the whole market now sits in one standardized view, they could not see that view as a product.",
+        "They skipped the video, asked what the block even is, and rejected a plus-button or Excel-sheet overlay as too complex.",
+        "They then tabled the section instead of adding graphics.",
+        "This is the homepage unique-point copy, not a separate product page."
+      ],
+      "pinpoint": "At about 00:09–01:35 they were on that dark unique-point block; they said the standardized-view claim is something you have to see in the product itself, the current block does not show it, and extra graphics (plus button / Excel background) would be too complex, so they stopped discussing the section.",
+      "page_url": "http://localhost:8765/",
+      "page_title": "Shroffin",
+      "on_screen_object": "Homepage dark region 'We completely re-engineered your home loan journey' and the paragraph 'Now, the entire market sits in one standardized view…'",
+      "tags": ["copy", "layout", "trust", "product-demo"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260815-2000",
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-02-homepage-unique-points-duplicated-across-sections.md"],
+      "quotes_sample": [
+        "But what is this?",
+        "Oh no, why are you making it so complex?",
+        "Actually, let's not talk about this section."
+      ],
+      "related_discussion_one_liners": [
+        "Analogized how a product looks when it is given in the starting.",
+        "Already watching the video, so they should not have to tell the one-view line.",
+        "Do not want to be scammed; other sites' visuals exist; do not want clicking.",
+        "Paid more attention to wording than graphics; wordings can be written immediately.",
+        "\"It can be cancelled\" / \"same problem\" sat on this visual, not a second defect; later mapped accordion \"Every bank's home loan in the same layout\" back to this standardized-view point (issue 02)."
+      ],
+      "kind_hint": "standardized-view-not-shown-as-product",
+      "distinct_from_other_files_in_this_folder": "This is the dark unique-point block claiming one standardized view without showing that view as a product, not later sections repeating unique points, not help-strip spacing, and not footer-as-ignored-legal."
+    },
+    {
+      "path": "issue-02-homepage-unique-points-duplicated-across-sections.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2009/issue-02-homepage-unique-points-duplicated-across-sections.md",
+      "issue_id": "wb-rec-260815-2009/issue-02-homepage-unique-points-duplicated-across-sections",
+      "issue_title": "Later homepage unique-point sections repeat earlier points and bury a seventh",
+      "summary_4_lines": [
+        "After the dark unique-point blocks, Built around you, Scattered everywhere, and the other dark screens say the same six points again.",
+        "They treated \"Help toward what you need\" as a new seventh point whose sentence they could not parse.",
+        "They said to scrap Scattered everywhere as a section, keep only useful words, and rebuild the four dark sections so seven points flow in few polished words.",
+        "This is homepage information architecture, not a separate bug in one accordion click."
+      ],
+      "pinpoint": "From about 01:36 they clicked through Built around you, mapped four items back to unique points already covered, named Help toward what you need as a seventh unclear point, then said to scrap Scattered everywhere and refactor the four dark sections into a coherent seven-point story with very few words.",
+      "page_url": "http://localhost:8765/",
+      "page_title": "Shroffin",
+      "on_screen_object": "Built around you accordion (#home-built-trigger-0..4), Scattered everywhere. Consolidated here. video section, and the four dark unique-point sections",
+      "tags": ["copy", "navigation", "layout"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260815-2000",
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-01-standardized-view-product-not-shown-visually.md"],
+      "quotes_sample": [
+        "I think this is the seventh unique point that we want to convey.",
+        "So this sentence what does it mean?",
+        "Let's scrap this section as well."
+      ],
+      "related_discussion_one_liners": [
+        "Mapped accordion rows to earlier claims: we bring everything to you; every bank's loan the same way → standardized view; browse before number; one application; you can do it yourself or ask us but you still choose.",
+        "Liked the Help line as a feeling (\"It's nice.\" \"It makes you dance.\") without knowing what the sentence meant.",
+        "\"scattered\" / \"consolidated\" might be reusable words but \"we don't want to get carried away\" and \"We are not writing an essay.\"",
+        "Standardization / scatterization / consolidation was a warning against essay-like copy, not a third issue.",
+        "Play/Pause on the Scattered video was inspection, not a player bug."
+      ],
+      "kind_hint": "unique-points-duplicated-across-sections",
+      "distinct_from_other_files_in_this_folder": "This is later homepage blocks restating unique points and burying an unclear seventh (Help toward what you need), not the missing product visual on the standardized-view block, not help-strip padding, and not footer legal-fit."
+    },
+    {
+      "path": "issue-03-site-help-strip-not-flush-to-footer.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2009/issue-03-site-help-strip-not-flush-to-footer.md",
+      "issue_id": "wb-rec-260815-2009/issue-03-site-help-strip-not-flush-to-footer",
+      "issue_title": "Get-help strip sits in a padded gap instead of on the footer",
+      "summary_4_lines": [
+        "The peach \"Need some help? Chat now or call…\" bar is a short strip, but it sits in a large empty gap above the footer.",
+        "They measured that gap in the inspector as 52px above and 64px below and called the orange margin overlay the thing to fix.",
+        "They said this must not be its own full-screen section; it should sit on the footer on every page, with no extra padding.",
+        "They also said help belongs with Support in the nav, not as a seventh story block."
+      ],
+      "pinpoint": "From about 05:14 they called this strip too big because of padding above and below; inspector showed margin 52px 0 64px as orange overlay; they said stick the strip to the footer with no padding, on every page, and do not treat it as an independent full-screen section.",
+      "page_url": "http://localhost:8765/",
+      "page_title": "Shroffin",
+      "on_screen_object": "aside.site-help-strip (Need some help? Chat now / call); complementary landmark Get help",
+      "tags": ["layout", "spacing", "interaction"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-04-footer-treated-as-ignored-legal-block.md"],
+      "quotes_sample": [
+        "This strip is very big.",
+        "this padding above it, padding below it is causing some issues",
+        "It needs to be fixed to the footer."
+      ],
+      "related_discussion_one_liners": [
+        "Earlier holes/stuck-to-footer talk was about a previous version of this strip.",
+        "\"This footer has a big heat strip\" — ASR heat/help; on-screen it is the help strip, not a heat map.",
+        "\"these two will fly away\" / \"put on the navel\" / \"Navel has support\" — join to nav Support (dropdown already labeled Support), not a literal navel.",
+        "\"It is just for some help.\" They contrasted full-screen sections (occupy whole screen, then scroll) with this mini strip.",
+        "Checking the footer immediately after is the handoff to issue 04, not a second help-strip defect."
+      ],
+      "kind_hint": "help-strip-not-flush-to-footer",
+      "distinct_from_other_files_in_this_folder": "This is the Need-some-help strip's 52px/64px margin making it a padded mini-section instead of sitting on the footer, not unique-point copy or duplication, and not treating the footer itself as an ignored legal block."
+    },
+    {
+      "path": "issue-04-footer-treated-as-ignored-legal-block.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2009/issue-04-footer-treated-as-ignored-legal-block.md",
+      "issue_id": "wb-rec-260815-2009/issue-04-footer-treated-as-ignored-legal-block",
+      "issue_title": "Footer is treated as a nobody-cares legal block that may not fit",
+      "summary_4_lines": [
+        "After the help strip they looked at the footer itself: columns, disclaimer line, and \"Read the full disclaimer.\"",
+        "They said footer UI is not something anyone cares about, it is not a disclaimer, and anything important has to live somewhere else.",
+        "They still called the legal/compliance lines okay as legal stuff, then asked whether the footer fits the site from their own perspective — one said it should not, the other said it does.",
+        "That \"does it fit\" question is unfinished here and continues in the next recording on the disclaimer language."
+      ],
+      "pinpoint": "From about 08:12 they inspected the homepage footer, said footer UI is not a disclaimer and no one cares, said important content must be shown elsewhere, then asked whether the footer fits from their perspective (it should not / yes it does) while the disclaimer summary stayed on screen.",
+      "page_url": "http://localhost:8765/",
+      "page_title": "Shroffin",
+      "on_screen_object": "footer.site-footer, p.site-footer-disclaimer-summary, details.site-footer-disclaimer-more (Read the full disclaimer)",
+      "tags": ["copy", "trust", "layout"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "continues_into_next",
+      "continued_from_folder": null,
+      "continued_into_folder": "wb-rec-260815-2018",
+      "related_issue_files": ["issue-03-site-help-strip-not-flush-to-footer.md"],
+      "quotes_sample": [
+        "Footer UI, no one cares.",
+        "It is not a disclaimer.",
+        "does it fits or not?"
+      ],
+      "related_discussion_one_liners": [
+        "\"Okay, home page is done.\" / \"No, check the footer now.\"",
+        "Help-strip placement (issue 03) is adjacent but they had already finished that when they switched to footer UI.",
+        "\"Everyone knows this is just legal stuff\" is their own framing of why a footer might be ignored, not a separate defect."
+      ],
+      "kind_hint": "footer-ignored-legal-block",
+      "distinct_from_other_files_in_this_folder": "This is treating the footer UI and disclaimer as a nobody-cares legal dump that may not fit the site, not the help strip's gap above the footer and not homepage unique-point visuals or duplication."
+    }
+  ]
+}

@@ -7216,3 +7216,101 @@ button.hlc-bank-name-text:focus-visible {
     transform: none;
   }
 }
+
+/* ─── HLC Intelligence Panel ─────────────────────────────────────────── */
+.hlc-intelligence {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 56rem;
+  margin-inline: auto;
+  margin-block: 0 1.5rem;
+  padding: 1.25rem clamp(1.45rem, 3.1vw, 2.15rem) 1.5rem;
+  border-radius: var(--hlc-field-radius, 0.5rem);
+  position: relative;
+  isolation: isolate;
+  /* Reveal-tier entrance */
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hlc-intelligence::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--hlc-page-bg, #fcfcfd);
+  box-shadow:
+    0 1px 2px rgba(60, 64, 67, 0.08),
+    0 8px 20px rgba(60, 64, 67, 0.1);
+}
+.hlc-intelligence.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hlc-intel-status {
+  font-size: 0.875rem;
+  color: var(--hlc-text-secondary, #5f6368);
+  margin: 0 0 1rem;
+  line-height: 1.5;
+}
+.hlc-intel-tips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+@media (min-width: 834px) {
+  .hlc-intel-tips {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+.hlc-intel-tip {
+  background: transparent;
+  border-left: 2px solid var(--hlc-line-soft, rgba(108, 128, 155, 0.18));
+  padding: 0.75rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.hlc-intel-horizon {
+  display: inline-block;
+  font-size: 0.625rem;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 0.12em 0.48em;
+  background: var(--hlc-chip-bg, rgba(95, 99, 104, 0.09));
+  color: var(--hlc-text-secondary, #5f6368);
+  width: fit-content;
+}
+.hlc-intel-heading {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--hlc-text-primary, #202124);
+  line-height: 1.4;
+}
+.hlc-intel-body {
+  font-size: 0.8125rem;
+  color: var(--hlc-text-secondary, #5f6368);
+  line-height: 1.55;
+  margin: 0;
+}
+.hlc-intel-disclaimer {
+  font-size: 0.6875rem;
+  color: var(--hlc-text-tertiary, #80868b);
+  margin: 0.85rem 0 0;
+  text-align: right;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hlc-intelligence {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}

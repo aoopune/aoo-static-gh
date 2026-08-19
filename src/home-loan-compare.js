@@ -1,6 +1,7 @@
 "use strict";
 
 const { Engine } = require("json-rules-engine");
+const hlcIntelligence = require("./hlc-intelligence.js");
 
 /** Stamped by scripts/stamp-asset-versions.js → js/hlc-data-url.generated.js */
 function resolveCompareDataUrl() {
@@ -6991,6 +6992,7 @@ function initPage() {
     propertyValue: document.getElementById("hlc-property-value"),
     loanHint: document.getElementById("hlc-loan-hint"),
     incomeBasisNote: document.getElementById("hlc-income-basis-note"),
+    intelligencePanel: document.getElementById("hlc-intelligence"),
     status: document.getElementById("hlc-status"),
     meta: document.getElementById("hlc-match-meta"),
     headTable: document.querySelector(".hlc-compare--head"),
@@ -7194,6 +7196,47 @@ function initPage() {
     const text = rows.length ? incomeBasisNote(rows[0]) : "";
     el.incomeBasisNote.textContent = text;
     el.incomeBasisNote.hidden = !text;
+  }
+
+  function updateIntelligencePanel() {
+    if (!el.intelligencePanel) return;
+    const rows = state.rows || [];
+    if (!rows.length) {
+      el.intelligencePanel.hidden = true;
+      return;
+    }
+    const intel = hlcIntelligence.buildIntelligence({
+      query: readQuery(),
+      rows: rows,
+      dataset: state.dataset,
+      matchFnSync: function(q) {
+        if (!state.dataset) return [];
+        try {
+          const prefiltered = state.dataset.offers.filter(function(offer) {
+            return prefilterOffer(offer, q);
+          });
+          return pickBestOfferPerBank(prefiltered).map(function(offer) {
+            return enrichMatchedRow(
+              offer, q,
+              state.dataset.bank_charges,
+              state.dataset.government_charges,
+              state.dataset.part_prepayment_rules
+            );
+          });
+        } catch (e) { return []; }
+      },
+      helpers: {
+        emiFromLoan: emiFromLoan,
+        missedEmiMonthTotal: missedEmiMonthTotal
+      }
+    });
+    hlcIntelligence.renderIntelligenceHtml(el.intelligencePanel, intel);
+    el.intelligencePanel.classList.remove("is-visible");
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        el.intelligencePanel.classList.add("is-visible");
+      });
+    });
   }
 
   function applicantLabel(id) {
@@ -10436,6 +10479,7 @@ function rateChangeMethodDescription(method) {
     state.rows = await matchOffers(state.dataset, query, state.engine);
     updateLoanHint();
     updateIncomeBasisNote();
+    updateIntelligencePanel();
     applyPrepaymentMethodToRows(state.rows, state.prepaymentMethod);
     applyRateChangeMethodToRows(state.rows, state.rateChangeMethod);
     state.showAllBanks = false;

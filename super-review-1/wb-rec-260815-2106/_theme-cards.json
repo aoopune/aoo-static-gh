@@ -1,0 +1,194 @@
+{
+  "folder": "wb-rec-260815-2106",
+  "sequence_index": 8,
+  "issue_count": 5,
+  "cards": [
+    {
+      "path": "issue-01-all-public-private-exclusive-not-checkboxes.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2106/issue-01-all-public-private-exclusive-not-checkboxes.md",
+      "issue_id": "wb-rec-260815-2106/issue-01-all-public-private-exclusive-not-checkboxes",
+      "issue_title": "All, Public, and Private are exclusive buttons, not checkboxes both on",
+      "summary_4_lines": [
+        "On Explore banks, Bank type is three buttons — All, Public, Private — and only one can be on at a time.",
+        "They said Public and Private should both be ticked by default, and All is not a separate filter.",
+        "They said the same exclusive-button pattern is wrong for Floating vs Fixed and Term loan vs Overdraft.",
+        "They compared it to checkboxes they have seen on Apple and Amazon, where more than one can stay on."
+      ],
+      "pinpoint": "On Explore banks Filters, Bank type is an exclusive All/Public/Private control; they said Public and Private should both be ticked by default and All is not a separate filter — and they said the same exclusive-button pattern is wrong for Floating/Fixed and Term loan/Overdraft.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Filters > Bank type exclusive pills All / Public / Private (same exclusive pattern on Rate Floating/Fixed and Facility Term loan/Overdraft)",
+      "tags": ["interaction", "filters", "bank-type", "checkboxes", "exclusive-control"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-04-filters-missing-public-private-floating-fixed-tradeoffs.md",
+        "issue-05-overdraft-facility-unexplained.md"
+      ],
+      "quotes_sample": [
+        "Both are ticked by default. All is not a separate filter.",
+        "All the checkboxes.",
+        "Why do we need a separate button?"
+      ],
+      "related_discussion_one_liners": [
+        "Apple/Amazon analogy for multi-select checkboxes (not an Apple/Amazon bug on this site); “What is the difference? Why do we need a button?”",
+        "Confused by exclusive pills vs ticking several boxes; “I feel the same when I press and hold one button.”",
+        "Filter gaps between heading and subheading praised (“these gaps actually work”) — not an issue.",
+        "Mobile vs desktop aside while still on the exclusive pills — not a separate named defect; later “keep both of them selected by default” restates the same default-both-on rule (also sits with issue-04).",
+        "Empty lender table when Private is exclusive was on screen; they did not call the empty results a defect."
+      ],
+      "kind_hint": "exclusive-filter-pills-not-checkboxes",
+      "distinct_from_other_files_in_this_folder": "This is Bank type / Rate / Facility as exclusive one-at-a-time buttons instead of checkboxes both on, not missing public-vs-private or floating-vs-fixed trade-off copy, not unexplained Overdraft, and not concessions Learn more or missing Back."
+    },
+    {
+      "path": "issue-02-concessions-learn-more-takes-you-away.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2106/issue-02-concessions-learn-more-takes-you-away.md",
+      "issue_id": "wb-rec-260815-2106/issue-02-concessions-learn-more-takes-you-away",
+      "issue_title": "Concessions Learn more takes you off the filter instead of explaining each option there",
+      "summary_4_lines": [
+        "On Explore banks, Concessions has one small i next to the heading, then Learn more that opens another page.",
+        "They said do not take the user to someone else — write the facts on the concessions filter.",
+        "Each option (Women applicant, Green home, Insurance) also needs its own i, because they need to know what Insurance concessions are without leaving.",
+        "They used the other page only to talk through first name on the papers, the 0.05–0.3 range, and stacking woman + green home."
+      ],
+      "pinpoint": "On Explore banks, Concessions has one heading tooltip plus Learn more that leaves the page; they said do not take the user somewhere else, write the facts on the filter, and give each option (including Insurance) its own i.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Filters > Concessions heading i-tooltip and Learn more link (div#hlc-help-concessions > a); Women applicant / Green home / Insurance checkboxes with no per-option i",
+      "tags": ["copy", "navigation", "filters", "concessions", "tooltips", "learn-more"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-03-concessions-page-missing-back.md"],
+      "quotes_sample": [
+        "You shouldn't take this to someone else.",
+        "But each of these options also need to have their own eye information.",
+        "Because I need to know what insurance concessions are."
+      ],
+      "related_discussion_one_liners": [
+        "Opened About Borrower heading i before Concessions — not named as its own defect in this stretch.",
+        "On the concessions page they decoded first name on the property: multiple names can be on the papers; she has to be one of them / an individual.",
+        "“Nice, bro.” twice while reading the cards — praise of the Guide content, not of taking people there from the filter.",
+        "Range talk: 0.05 to 0.3 or 0.2 as total discounts; stacking “woman and greenhouse” (Green home); still wanted local i, not more Guide prose.",
+        "Missing Back on the destination is issue-03, not this file."
+      ],
+      "kind_hint": "concessions-learn-more-off-page",
+      "distinct_from_other_files_in_this_folder": "This is Concessions Learn more leaving Explore banks plus only one heading i instead of per-option i on the filter, not the destination page missing Back, and not the exclusive-button or trade-off/overdraft copy issues."
+    },
+    {
+      "path": "issue-03-concessions-page-missing-back.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2106/issue-03-concessions-page-missing-back.md",
+      "issue_id": "wb-rec-260815-2106/issue-03-concessions-page-missing-back",
+      "issue_title": "Concessions page has no Back after Learn more",
+      "summary_4_lines": [
+        "Learn more from Explore banks opens the concessions Guide page.",
+        "That page’s header is Guide plus Explore banks — there is no Back.",
+        "They said “No back. Where is the back?” and “This is mobile.”",
+        "They had to leave by using the Guide chrome, then return to Explore banks."
+      ],
+      "pinpoint": "After Learn more from Explore banks, the concessions Guide page has no Back; they asked where the back is and said this is mobile.",
+      "page_url": "http://localhost:8765/pages/concessions.html#bank-rates",
+      "page_title": "Home loan concessions – Shroffin",
+      "on_screen_object": "Guide header on concessions.html (Guide wordmark, chapter nav, Explore banks CTA) — no Back control",
+      "tags": ["navigation", "back", "concessions", "mobile", "guide"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-02-concessions-learn-more-takes-you-away.md"],
+      "quotes_sample": [
+        "No back.",
+        "Where is the back?",
+        "This is mobile."
+      ],
+      "related_discussion_one_liners": [
+        "“Is this blue?” immediately before “No back.” — likely the Explore banks / Guide chrome color, not a separate named color defect.",
+        "“Nice, bro.” while reading concession cards — content praise, not navigation.",
+        "They did get back via Guide header / goto explore-banks; that path is what they used, not a Back button.",
+        "Off-page Learn more as the reason they were here is issue-02."
+      ],
+      "kind_hint": "concessions-page-missing-back",
+      "distinct_from_other_files_in_this_folder": "This is the concessions Guide destination missing a Back control after Learn more, not Learn more taking you off the filter, and not the Explore banks exclusive-button, trade-off, or Overdraft issues."
+    },
+    {
+      "path": "issue-04-filters-missing-public-private-floating-fixed-tradeoffs.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2106/issue-04-filters-missing-public-private-floating-fixed-tradeoffs.md",
+      "issue_id": "wb-rec-260815-2106/issue-04-filters-missing-public-private-floating-fixed-tradeoffs",
+      "issue_title": "Filters do not tell you why to pick Public vs Private or Floating vs Fixed",
+      "summary_4_lines": [
+        "On Explore banks, Bank type and Rate are just labels. Fixed only says it is about 1–2% higher.",
+        "They listed real trade-offs themselves (public process is hard, service, rate about 0.5, processing fee vs private).",
+        "Then they asked: tell me what I should select — and keep both selected by default.",
+        "They said put those trade-offs here only, including why to pick Floating vs Fixed."
+      ],
+      "pinpoint": "On Explore banks Filters, Bank type and Rate do not explain the trade-offs, so they asked what they should select; they said tell the public-vs-private and floating-vs-fixed trade-offs here only, and keep both selected by default.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Filters > Bank type All/Public/Private and Rate Floating/Fixed (Fixed only has “About 1–2% higher”)",
+      "tags": ["copy", "filters", "trade-offs", "bank-type", "rate", "trust"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-01-all-public-private-exclusive-not-checkboxes.md"],
+      "quotes_sample": [
+        "Tell me what should I select?",
+        "You tell me the trade-offs here only.",
+        "Why I should select each of them? For floating and fixed."
+      ],
+      "related_discussion_one_liners": [
+        "Public trade-offs they supplied: application process a little difficult; complete end-to-end service not good; but the rate is 0.5.",
+        "Private trade-offs they supplied: service not that good; rates not as good as public; processing fee also not that good.",
+        "“And you keep both of them selected by default” overlaps issue-01’s default-both-on rule; kept here as part of “what should I select?”",
+        "Fixed’s “About 1–2% higher” is the only on-screen hint; they still asked for floating vs fixed trade-offs.",
+        "Empty results when they later left Private+Fixed+Overdraft on were not discussed as this issue."
+      ],
+      "kind_hint": "missing-filter-tradeoff-copy",
+      "distinct_from_other_files_in_this_folder": "This is missing decision copy on Bank type and Rate so a customer knows why to pick each, not the exclusive-button control (issue-01) and not unexplained Overdraft (issue-05)."
+    },
+    {
+      "path": "issue-05-overdraft-facility-unexplained.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2106/issue-05-overdraft-facility-unexplained.md",
+      "issue_id": "wb-rec-260815-2106/issue-05-overdraft-facility-unexplained",
+      "issue_title": "Overdraft facility is unexplained beyond a higher-rate note",
+      "summary_4_lines": [
+        "On Explore banks, Facility is Term loan or Overdraft. Overdraft only says it is about 0.15–1% higher.",
+        "They asked what that facility is (the transcript said “order of facility”).",
+        "They then explained a savings-linked overdraft themselves: loan 20 lakh, 5 lakh in savings, interest on 15 lakh, extra cost about 0.25.",
+        "They said you should explain it like this — it is very important."
+      ],
+      "pinpoint": "On Explore banks, Overdraft is not explained except “About 0.15–1% higher”; they asked what that facility is, explained savings-linked overdraft themselves, and said the page should explain it like that.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Filters > Facility exclusive pills Term loan / Overdraft (Overdraft sublabel “About 0.15–1% higher”)",
+      "tags": ["copy", "filters", "facility", "overdraft", "explanation"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-01-all-public-private-exclusive-not-checkboxes.md"],
+      "quotes_sample": [
+        "What is an order of an order of facility?",
+        "There is a normal loan which is linked to your savings account.",
+        "You should explain it like this. We should learn this. It is very important."
+      ],
+      "related_discussion_one_liners": [
+        "Exclusive Term/Overdraft buttons are also part of issue-01’s “same here” uniformity talk; this file is the missing explanation, not the exclusive control.",
+        "Worked example: 20 lakh loan, 5 lakh in savings, interest on 15 lakh; take out or keep the 5 lakh.",
+        "Cost they stated “more than 0.25 interest” vs on-screen “About 0.15–1% higher” — teaching the idea, not auditing the 0.15–1 band.",
+        "People with a lot of cash can keep money there; “I don't have any other option.”",
+        "Empty Private+Fixed+Overdraft results in late screenshots were not discussed."
+      ],
+      "kind_hint": "overdraft-facility-unexplained",
+      "distinct_from_other_files_in_this_folder": "This is Overdraft unexplained except a higher-rate note, not the exclusive Facility pills (issue-01) and not missing Public/Private or Floating/Fixed trade-off copy (issue-04)."
+    }
+  ]
+}

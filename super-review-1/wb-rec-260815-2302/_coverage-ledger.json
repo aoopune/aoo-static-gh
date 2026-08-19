@@ -1,0 +1,597 @@
+{
+  "folder": "wb-rec-260815-2302",
+  "sequence_index": 20,
+  "recording_id": "1c3a6e22-3a9a-475d-8d5b-350dfe605171",
+  "started_at": "2026-08-15T17:32:34.848Z",
+  "ended_at": "2026-08-15T17:34:36.510Z",
+  "duration_ms": 121662,
+  "prev_folder": "wb-rec-260815-2249",
+  "next_folder": "wb-rec-260815-2304",
+  "files_in_folder": [
+    "audio.json",
+    "audio.lrc",
+    "audio.srt",
+    "audio.text",
+    "audio.tsv",
+    "audio.txt",
+    "audio.vtt",
+    "audio.webm",
+    "audio_sentences.txt",
+    "console.json",
+    "events.json",
+    "index.html",
+    "manifest.json",
+    "pages.json",
+    "replay.spec.ts",
+    "screenshots/0000.jpg",
+    "screenshots/0001.jpg",
+    "screenshots/0002.jpg",
+    "screenshots/0003.jpg",
+    "screenshots/0004.jpg",
+    "screenshots/0005.jpg",
+    "screenshots/0006.jpg",
+    "screenshots/0007.jpg",
+    "screenshots/0008.jpg",
+    "screenshots/0009.jpg",
+    "screenshots/0010.jpg",
+    "screenshots/0011.jpg",
+    "screenshots/0012.jpg",
+    "screenshots/0013.jpg",
+    "screenshots/0014.jpg",
+    "screenshots/0015.jpg",
+    "screenshots/0016.jpg",
+    "screenshots/0017.jpg",
+    "screenshots/0018.jpg",
+    "screenshots/index.json",
+    "tabs.json",
+    "viewer.css",
+    "viewer.js"
+  ],
+  "file_status": {
+    "audio.json": "fully_read_chunked",
+    "audio.lrc": "fully_read",
+    "audio.srt": "fully_read",
+    "audio.text": "fully_read",
+    "audio.tsv": "fully_read",
+    "audio.txt": "fully_read",
+    "audio.vtt": "fully_read",
+    "audio.webm": "binary_audio_untranscribed_use_text_artifacts",
+    "audio_sentences.txt": "fully_read",
+    "console.json": "fully_read",
+    "events.json": "fully_read",
+    "index.html": "fully_read",
+    "manifest.json": "fully_read",
+    "pages.json": "fully_read",
+    "replay.spec.ts": "fully_read",
+    "screenshots/0000.jpg": "fully_read_image",
+    "screenshots/0001.jpg": "fully_read_image",
+    "screenshots/0002.jpg": "fully_read_image",
+    "screenshots/0003.jpg": "fully_read_image",
+    "screenshots/0004.jpg": "fully_read_image",
+    "screenshots/0005.jpg": "fully_read_image",
+    "screenshots/0006.jpg": "fully_read_image",
+    "screenshots/0007.jpg": "fully_read_image",
+    "screenshots/0008.jpg": "fully_read_image",
+    "screenshots/0009.jpg": "fully_read_image",
+    "screenshots/0010.jpg": "fully_read_image",
+    "screenshots/0011.jpg": "fully_read_image",
+    "screenshots/0012.jpg": "fully_read_image",
+    "screenshots/0013.jpg": "fully_read_image",
+    "screenshots/0014.jpg": "fully_read_image",
+    "screenshots/0015.jpg": "fully_read_image",
+    "screenshots/0016.jpg": "fully_read_image",
+    "screenshots/0017.jpg": "fully_read_image",
+    "screenshots/0018.jpg": "fully_read_image",
+    "screenshots/index.json": "fully_read",
+    "tabs.json": "fully_read",
+    "viewer.css": "player_chrome_fully_read_confirmed",
+    "viewer.js": "player_chrome_fully_read_confirmed"
+  },
+  "files_missing_expected": [],
+  "screenshots_index_count": 19,
+  "screenshots_files_seen": 19,
+  "issues_written": [
+    "issue-01-collapsed-eligibility-fields-must-still-affect.md",
+    "issue-02-coapplicant-yes-gives-ideas-to-inflate-loan.md"
+  ],
+  "issue_count": 2,
+  "zero_issue_reason": null,
+  "continuations": [
+    {
+      "issue_file": "issue-01-collapsed-eligibility-fields-must-still-affect.md",
+      "direction": "from",
+      "other_folder": "wb-rec-260815-2249"
+    },
+    {
+      "issue_file": "issue-01-collapsed-eligibility-fields-must-still-affect.md",
+      "direction": "into",
+      "other_folder": "wb-rec-260815-2304"
+    },
+    {
+      "issue_file": "issue-02-coapplicant-yes-gives-ideas-to-inflate-loan.md",
+      "direction": "from",
+      "other_folder": "wb-rec-260815-2249"
+    },
+    {
+      "issue_file": "issue-02-coapplicant-yes-gives-ideas-to-inflate-loan.md",
+      "direction": "into",
+      "other_folder": "wb-rec-260815-2304"
+    }
+  ],
+  "prev_boundary_read": true,
+  "next_boundary_read": true,
+  "file_usage": [
+    {
+      "path": "audio.json",
+      "bytes": 81981,
+      "status": "fully_read_chunked",
+      "facts_taken": [
+        "Whisper language mr (wrong)",
+        "43 segments covering 0-115.28s",
+        "drop down form too big; things have to be affected; existing EMI big thing; FOIR naming; surprise later lose trust; this is all mandatory; do not give ideas because it increases loan amount; who pays rent",
+        "word probs: we 0.027, affected 0.206, fixed 0.0009, Yesterday 0.022, fixers 0.246, rent 0.319"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.lrc",
+      "bytes": 2474,
+      "status": "fully_read",
+      "facts_taken": [
+        "timed lyric lines matching srt for dropdown/EMI/trust/mandatory and co-applicant stretch"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.srt",
+      "bytes": 2938,
+      "status": "fully_read",
+      "facts_taken": [
+        "43 cues 00:00:00,000-00:01:55,280",
+        "primary speech clock for both issues"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.text",
+      "bytes": 1356,
+      "status": "fully_read",
+      "facts_taken": [
+        "plain transcript of full session including drop down, existing EMI, mandatory, give ideas, rent"
+      ],
+      "used_for": [
+        "supports_issue"
+      ]
+    },
+    {
+      "path": "audio.tsv",
+      "bytes": 1892,
+      "status": "fully_read",
+      "facts_taken": [
+        "ms starts: 0 drop-down; 4640 affected; 42160 existing EMI; 57780 EMI not fixed; 59020 trust; 73090 mandatory; 82370 give ideas; 90950 increases loan; 106800 rent"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.txt",
+      "bytes": 2517,
+      "status": "fully_read",
+      "facts_taken": [
+        "Whisper timed dump matching srt wording"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.vtt",
+      "bytes": 2527,
+      "status": "fully_read",
+      "facts_taken": [
+        "WebVTT clone of srt cues"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.webm",
+      "bytes": 1955355,
+      "status": "binary_audio_untranscribed_use_text_artifacts",
+      "facts_taken": [
+        "binary mic 1955355 bytes; speech taken from text artifacts not playback"
+      ],
+      "used_for": [
+        "checked_no_extra_signal"
+      ]
+    },
+    {
+      "path": "audio_sentences.txt",
+      "bytes": 1312,
+      "status": "fully_read",
+      "facts_taken": [
+        "one-block transcript of whole ~2 min session"
+      ],
+      "used_for": [
+        "supports_issue"
+      ]
+    },
+    {
+      "path": "console.json",
+      "bytes": 2,
+      "status": "fully_read",
+      "facts_taken": [
+        "empty array []; no console errors"
+      ],
+      "used_for": [
+        "checked_no_extra_signal"
+      ]
+    },
+    {
+      "path": "events.json",
+      "bytes": 20919,
+      "status": "fully_read",
+      "facts_taken": [
+        "34 events",
+        "clicks details#hlc-form-more at 4186,5699,72017,74010",
+        "focus/click #hlc-existing-emis 42881-43073",
+        "Yes 87684 then #hlc-coapplicant yes 88588",
+        "scroll y=333.5 at 90822",
+        "No 103644 then value no 104546",
+        "url always explore-banks.html"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "index.html",
+      "bytes": 38315,
+      "status": "fully_read",
+      "facts_taken": [
+        "player_shell_with_inlined_json_fully_read",
+        "inlined id 1c3a6e22-3a9a-475d-8d5b-350dfe605171",
+        "start_url explore-banks.html",
+        "34 events 19 shots",
+        "same click locators as events.json",
+        "no extra discussion beyond JSON"
+      ],
+      "used_for": [
+        "checked_no_extra_signal",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 3472,
+      "status": "fully_read",
+      "facts_taken": [
+        "id 1c3a6e22-3a9a-475d-8d5b-350dfe605171",
+        "started 2026-08-15T17:32:34.848Z ended 2026-08-15T17:34:36.510Z duration_ms 121662",
+        "start_url http://localhost:8765/pages/explore-banks.html",
+        "events_count 34 screenshots_count 19 console_count 0 tabs_count 1 pages_count 1",
+        "viewport 1366x768 dsf 2",
+        "audio.file audio.webm"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "pages.json",
+      "bytes": 13206,
+      "status": "fully_read",
+      "facts_taken": [
+        "title Explore banks – Shroffin",
+        "form Loan inputs",
+        "Existing EMIs required false",
+        "Share of income for EMIs /FOIR required false",
+        "Co-applicant income and Co-applicant EMIs present required false",
+        "Tenure required true"
+      ],
+      "used_for": [
+        "supports_issue"
+      ]
+    },
+    {
+      "path": "replay.spec.ts",
+      "bytes": 4036,
+      "status": "fully_read",
+      "facts_taken": [
+        "goto explore-banks.html",
+        "clicks details#hlc-form-more then #hlc-existing-emis then Yes/#hlc-coapplicant yes then No/no"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0000.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=200 start; Adjust eligibility open; Existing EMIs 555 cards 0 FOIR 55% Co-applicant No"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0001.jpg",
+      "bytes": 89420,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=4590 after first chevron; extra block collapsed to summary line"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0002.jpg",
+      "bytes": 84645,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=6101 extra block open again"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0003.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=14202 extras open during credit-card story"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0004.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=24201 extras still open"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0005.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=32201 extras still open"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0006.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=40202 extras open just before Existing EMIs click"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0007.jpg",
+      "bytes": 85649,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=43289 Existing EMIs focused 555 blue underline"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0008.jpg",
+      "bytes": 85677,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=52201 Existing EMIs still focused during FOIR talk"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0009.jpg",
+      "bytes": 85677,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=60202 still focused during trust talk"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0010.jpg",
+      "bytes": 85677,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=68203 still focused before second collapse"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0011.jpg",
+      "bytes": 88793,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=72418 extra block collapsed while saying mandatory"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0012.jpg",
+      "bytes": 84957,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=74413 extra block open again"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0013.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=84202 Co-applicant still No before Yes"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0014.jpg",
+      "bytes": 91768,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=88086 Co-applicant Yes; extra income/EMI/card fields visible"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0015.jpg",
+      "bytes": 98970,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=96202 Yes still on; extra fields visible after scroll"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0016.jpg",
+      "bytes": 89730,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=104048 Co-applicant No; extra fields gone"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0017.jpg",
+      "bytes": 96115,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=112202 Co-applicant No remains; results Canara Bank visible"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0018.jpg",
+      "bytes": 96115,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=120202 end; Co-applicant No"
+      ],
+      "used_for": [
+        "supports_issue",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/index.json",
+      "bytes": 10082,
+      "status": "fully_read",
+      "facts_taken": [
+        "19 shots t=200..120202",
+        "0001 interaction collapsed extras",
+        "0007 interaction Existing EMIs",
+        "0011/0012 interaction chevron",
+        "0014 Yes extras",
+        "0016 No"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "tabs.json",
+      "bytes": 160,
+      "status": "fully_read",
+      "facts_taken": [
+        "one tab 1351502398 url explore-banks.html entered_at 1786815154848 left_at 1786815276409"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "viewer.css",
+      "bytes": 17895,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": [
+        "17895 bytes generic player chrome; no session talk"
+      ],
+      "used_for": [
+        "checked_no_extra_signal"
+      ]
+    },
+    {
+      "path": "viewer.js",
+      "bytes": 32334,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": [
+        "32334 bytes generic player feed/shots/audio; no session talk"
+      ],
+      "used_for": [
+        "checked_no_extra_signal"
+      ]
+    }
+  ]
+}

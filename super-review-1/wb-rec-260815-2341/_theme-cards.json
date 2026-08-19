@@ -1,0 +1,118 @@
+{
+  "folder": "wb-rec-260815-2341",
+  "sequence_index": 25,
+  "issue_count": 3,
+  "cards": [
+    {
+      "path": "issue-01-scheme-facts-only-in-more-details.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2341/issue-01-scheme-facts-only-in-more-details.md",
+      "issue_id": "wb-rec-260815-2341/issue-01-scheme-facts-only-in-more-details",
+      "issue_title": "Maha Super Housing Loan scheme facts live only in More details, not in the product",
+      "summary_4_lines": [
+        "The scheme name and facts for Bank of Maharashtra’s Maha Super Housing Loan are useful: a customer could take them to the branch and say “this is your scheme.”",
+        "Those facts sit only in the More details drawer. They said Bank of Maharashtra itself has no answer to “what is your scheme?”",
+        "If someone already thinks their loan is under some other scheme, they may never open this dump and never see it.",
+        "They said this static bank information should live in the product itself, not as a blog."
+      ],
+      "pinpoint": "On Explore banks, Bank of Maharashtra Maha Super Housing Loan scheme facts (bank, scheme name, facility, purpose, rate type, borrower category) exist only as static content in the More details drawer; they said a customer can take this to the manager as the bank’s scheme, but Bank of Maharashtra itself has no answer, a customer who already thinks they are under a scheme will miss it, and this static information should be out in the product, not a blog.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "More details drawer → Scheme accordion for Bank of Maharashtra · Maha Super Housing Loan",
+      "tags": ["copy", "navigation", "trust", "missing"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260815-2332",
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-02-more-cue-underline-plus-misleading-bank-label.md"],
+      "quotes_sample": [
+        "No, this is definitely good information.",
+        "There is no answer in the bank of Maharashtra.",
+        "It should be in the product."
+      ],
+      "related_discussion_one_liners": [
+        "Super Housing Loan as the named scheme they do not necessarily want — they still need the bank to name its scheme.",
+        "Other banks put a page per bank; they will talk about that page later; not as a blog.",
+        "Better way to show the money / this is the best way; ASR “draw points are good” as praise of the drawer dump’s points.",
+        "More details is good but “not important” relative to putting the same facts in the product.",
+        "Continues the previous recording’s More details versus table (vertical vs horizontal); plus/underline/More-about-the-bank cue is a separate problem (issue-02)."
+      ],
+      "kind_hint": "scheme-facts-only-in-more-details",
+      "distinct_from_other_files_in_this_folder": "This is that Maha Super Housing Loan scheme identity only lives in the More details dump instead of the product, not the table More cue/label and not the loan-amount how-calculated layout."
+    },
+    {
+      "path": "issue-02-more-cue-underline-plus-misleading-bank-label.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2341/issue-02-more-cue-underline-plus-misleading-bank-label.md",
+      "issue_id": "wb-rec-260815-2341/issue-02-more-cue-underline-plus-misleading-bank-label",
+      "issue_title": "More / plus / underline cue is confusing, and More about Bank of Maharashtra is a little misleading",
+      "summary_4_lines": [
+        "The extra-info control on Bank of Maharashtra is hard to notice: they said the bank did not underline it, they put a clip/plus, and asked how anyone would guess underline.",
+        "They said extra info should not be big, not on the phone, and the column should not be big — put a plus sign.",
+        "The button reads like more about the bank. They said if you take Maha Super Housing Loan you should know more about the loan.",
+        "They called that a little misleading, not standard, and “more and more” if you just write More."
+      ],
+      "pinpoint": "On Explore banks, the extra-info control on the Bank of Maharashtra row (More / clip / plus / possible underline) is hard to guess, and the label More about Bank of Maharashtra is a little misleading because they said a Super Housing Loan customer should know more about the loan, not more about the bank; putting More on the loan amount instead opens calculations, which they treated as a different, clearer job.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Compare-table Bank of Maharashtra row: More button (accessible name More about Bank of Maharashtra) plus the bank-name / loan-amount underlines that open drawers",
+      "tags": ["copy", "navigation", "interaction", "trust"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-01-scheme-facts-only-in-more-details.md"],
+      "quotes_sample": [
+        "The bank of Maharashtra didn't underline it.",
+        "How to guess underline?",
+        "It is a little misleading."
+      ],
+      "related_discussion_one_liners": [
+        "ADD.info / plus sign / not big / not on the phone / column not big — brainstorming the cue, still the same issue.",
+        "Generally, when people are told what is inside, they click it.",
+        "Brief EMI drawer open/close (₹37,938) while comparing which numbers are clickable — related, not a separate EMI issue.",
+        "“This is the dump of all information” ties back to issue-01’s static dump, but here the attack is the cue and label.",
+        "ASR “solenoid” while they say they used to write more details — quoted raw; likely a mishear of a prior label, not an on-screen solenoid."
+      ],
+      "kind_hint": "more-cue-underline-plus-misleading-bank-label",
+      "distinct_from_other_files_in_this_folder": "This is how extra info is cued and labeled on the Bank of Maharashtra row (More / plus / underline / more about the bank vs the loan), not where scheme facts live and not the loan-amount steps’ neatness."
+    },
+    {
+      "path": "issue-03-loan-amount-calc-not-neat-needs-color.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2341/issue-03-loan-amount-calc-not-neat-needs-color.md",
+      "issue_id": "wb-rec-260815-2341/issue-03-loan-amount-calc-not-neat-needs-color",
+      "issue_title": "Loan-amount how-calculated drawer is not neat and needs a color code for the min of two",
+      "summary_4_lines": [
+        "They opened how Bank of Maharashtra’s ₹48,00,000 was calculated and said you just follow 1, 2, 3, 4, 5 — the information is great.",
+        "They then said it is not just neat: a color code would show the two limits, left-side vs right-side calculation, 1-2-3 then minimum of 2.",
+        "They also asked where 240 months is, then mapped it to 20 years on the table.",
+        "This walk is unfinished: the next recording starts by arranging the same steps."
+      ],
+      "pinpoint": "On Explore banks, the Bank of Maharashtra loan-amount how-calculated drawer (six steps to ₹48,00,000) is information they like if you follow 1–5, but they said it is not just neat: they want a color code so the two limits show as left-side vs right-side 1-2-3 then minimum of 2, and they had to hunt 240 months against the table’s 20 years.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Loan amount drawer for Bank of Maharashtra · Maha Super Housing Loan (opened from ₹48,00,000 — Show how loan amount for Bank of Maharashtra was calculated); six numbered steps including 240 months and Lowest of these limits",
+      "tags": ["layout", "data", "interaction", "copy"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "continues_into_next",
+      "continued_from_folder": null,
+      "continued_into_folder": "wb-rec-260815-2355",
+      "related_issue_files": [],
+      "quotes_sample": [
+        "It's not just neat.",
+        "If you have a color code, it will show you.",
+        "Minimum of 2."
+      ],
+      "related_discussion_one_liners": [
+        "Praise: information is great; just follow 1–5; math is correct.",
+        "Credit-card hypothetical (“10 lakhs”) while looking at 10.00% load — related walk of step 3, not a separate missing-10-lakh bug.",
+        "“I have to pay 14,000” / “what about this? I don't know” while on eligibility vs EMI leftover — same neatness/color problem.",
+        "“20% … that's the limit” near the end — related to LTV/limit talk on the same cards.",
+        "Next recording wb-rec-260815-2355 continues: arrange steps, unlabeled 80/55/10, names and labels."
+      ],
+      "kind_hint": "loan-amount-calc-not-neat-color-min-of-2",
+      "distinct_from_other_files_in_this_folder": "This is the loan-amount how-calculated drawer’s neatness, color code, min-of-two limits, and 240 months vs 20 years — not scheme facts living only in More details and not the More/plus/underline bank label."
+    }
+  ]
+}

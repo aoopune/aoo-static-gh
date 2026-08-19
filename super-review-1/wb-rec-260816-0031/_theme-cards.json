@@ -1,0 +1,81 @@
+{
+  "folder": "wb-rec-260816-0031",
+  "sequence_index": 30,
+  "issue_count": 2,
+  "cards": [
+    {
+      "path": "issue-01-charge-notes-legal-jargon-not-friendly-lawyer.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260816-0031/issue-01-charge-notes-legal-jargon-not-friendly-lawyer.md",
+      "issue_id": "wb-rec-260816-0031/issue-01-charge-notes-legal-jargon-not-friendly-lawyer",
+      "issue_title": "Charge notes use legal jargon instead of friendly-lawyer advice",
+      "summary_4_lines": [
+        "On Explore banks Other charges, the notes under Rate change charge (and they said Overdue and EMI bounce notes are the same) are written in legal terms like MCLR and BPLR.",
+        "They said every symbol they have to read uses only legal language.",
+        "They want it to sound like a friendly lawyer on the customer’s team: how the rate is decided, and when to pick floating vs fixed.",
+        "They do not want the customer to have to use legal language."
+      ],
+      "pinpoint": "On Explore banks Other charges, Rate change charge notes (and they said Overdue and EMI bounce notes are the same) use legal terms such as MCLR and BPLR instead of friendly-lawyer advice on how the rate is decided and when to choose floating vs fixed.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Other charges Notes, especially details#hlc-charge-note-rate-change-charge (MCLR / BPLR / benchmark-switch text), plus overdue and EMI-bounce notes they called the same",
+      "tags": ["copy", "trust", "notes", "legal-jargon", "rate-change", "intelligence"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-02-table-missing-scheme-names-multiple-schemes.md"],
+      "quotes_sample": [
+        "I feel that all the symbols that I have to read, I have to use only legal language.",
+        "Versus it should be like a friendly lawyer who is in your team to help you out.",
+        "For example, look at this. MCLR, BPLR, these are the things."
+      ],
+      "related_discussion_one_liners": [
+        "Want five or six agencies whose rate is taken (raw ASR HR; likely repo / external-benchmark) with no advantage or disadvantage — the customer chooses.",
+        "If not much stress, go with “RBI report” (ASR; notes talk RBI / repo-linked); if market/economy is going down or rates will rise, take fixed.",
+        "Fixed can be 0.25 higher than floating (already written); intelligence should say if India is going down do not take fixed — floating is better long term.",
+        "Same-note check: overdue and EMI bounce notes are “again the same.”",
+        "Thematic cousin (not this file’s continuation): wb-rec-260816-0013 Rate change as too complex/legal; previous folder wb-rec-260816-0029 ended on EMI-miss drawers and labels, not this wording."
+      ],
+      "kind_hint": "legal-charge-notes",
+      "distinct_from_other_files_in_this_folder": "This is the Other charges notes/symbols using legal jargon (MCLR, BPLR) instead of friendly-lawyer rate-choice advice, not the bank table missing scheme names."
+    },
+    {
+      "path": "issue-02-table-missing-scheme-names-multiple-schemes.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260816-0031/issue-02-table-missing-scheme-names-multiple-schemes.md",
+      "issue_id": "wb-rec-260816-0031/issue-02-table-missing-scheme-names-multiple-schemes",
+      "issue_title": "Table does not show scheme names or multiple schemes of the same bank",
+      "summary_4_lines": [
+        "On Explore banks, the bank table and the Yes Bank More drawer do not show a real scheme name — only a generic product such as Home Loan.",
+        "They said they cannot tell which scheme they are looking at, and the table cannot show two schemes of the same bank.",
+        "They walked women vs general schemes and PMAY: a woman can be eligible for more than one scheme at once and must be told.",
+        "They also talked about auto-picking the best scheme and hiding the name — that is their debate, not a second issue."
+      ],
+      "pinpoint": "On Explore banks, the table and Yes Bank More drawer do not show a real scheme name, and they cannot show two applicable schemes of the same bank, so a customer who qualifies for more than one (women vs general, PMAY) cannot see or choose.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Bank options table lender cells (scheme/product line under the bank name) and Yes Bank More drawer (Scheme name: Home Loan); Purpose Regular/Top-up; Filters Women applicant",
+      "tags": ["data", "copy", "schemes", "table", "filters", "women-applicant", "top-up"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-01-charge-notes-legal-jargon-not-friendly-lawyer.md"],
+      "quotes_sample": [
+        "I don't even know the name of the scheme.",
+        "But where are the multiple schemes?",
+        "You can't use any bank of the same bank in this table."
+      ],
+      "related_discussion_one_liners": [
+        "Top-up vs Regular: one thought Top-up meant two schemes of the same bank; corrected as a purpose selection, and the table still shows one scheme per bank.",
+        "If only one scheme can apply, they do not need the name upfront — “the customer only has to pay the bank off. But there is no scheme.”",
+        "Canara Bank (ASR Canada Bank): women get a discount, not different schemes, but the bank wrote the scheme is only for women — they disagreed with that writing.",
+        "“What should we do in Himalaya?” (raw ASR): pick the best scheme and hide the name versus the woman must know two schemes should be selected (PM Yojana and SCM Yojana); closing: do not add scheme-name information.",
+        "Last-minute wrap-up: compare-and-apply product still not taken; homepage and compare done so far — not a second issue."
+      ],
+      "kind_hint": "table-missing-scheme-names",
+      "distinct_from_other_files_in_this_folder": "This is the bank table and Yes Bank More drawer not showing real scheme names or two applicable schemes of the same bank, not the legal-jargon charge notes."
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "folder": "wb-rec-260816-0004",
+  "sequence_index": 27,
+  "issue_count": 4,
+  "cards": [
+    {
+      "path": "issue-01-processing-fee-star-note-missing-definition-mandatory-guide.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260816-0004/issue-01-processing-fee-star-note-missing-definition-mandatory-guide.md",
+      "issue_id": "wb-rec-260816-0004/issue-01-processing-fee-star-note-missing-definition-mandatory-guide",
+      "issue_title": "Processing fee star note has no definition, mandatory line, or guide",
+      "summary_4_lines": [
+        "On Explore banks → Charges, the Processing fee * note never says what a processing fee is.",
+        "It does not say the fee is mandatory, or that it is due even if the loan is not disbursed.",
+        "It also has no short guide on how private vs public banks charge (minimum vs variable).",
+        "They opened that * twice and asked for one sentence, then a mandatory line, then a guide — and said there is no guide."
+      ],
+      "pinpoint": "On Explore banks Charges, the Processing fee * note explains only that a login fee is bundled and not listed separately; it does not define the fee in one sentence, does not say it is mandatory / due on sanction not only on disbursement, and has no private-vs-public fee guide.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Charges table header 'Processing fee *' note button (th#hlc-th-processingFee > button) and Notes block heading 'Processing fee'",
+      "tags": ["copy", "charges", "processing-fee", "notes", "guide", "trust"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260815-2355",
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-03-high-processing-fee-banks-not-labeled-as-highest.md"
+      ],
+      "quotes_sample": [
+        "So, first I want to know what is a processing fee.",
+        "So, you have to write, this is a mandatory fee.",
+        "There is no guide."
+      ],
+      "related_discussion_one_liners": [
+        "Argued “successful loan disbursement / successful application”: “There is no success.” / “Not only successful.”",
+        "ASR “function letter” treated as sanction letter: pay the full fee to proceed with the sanctioned loan.",
+        "Fee is non-refundable; you pay even when there is only one application.",
+        "Asked whether there is a way to avoid the fee — that is why they wanted “mandatory” written first.",
+        "Private vs public “minimum / variable” is the second line they wanted in the same guide, not a separate issue."
+      ],
+      "kind_hint": "missing-processing-fee-definition-mandatory-guide",
+      "distinct_from_other_files_in_this_folder": "This is the Processing fee * note missing a one-sentence definition, a mandatory/due-on-sanction line, and a private-vs-public guide — not the highest-in-market ranking label on high-fee banks (issue-03), not property-check own-report copy (issue-02), and not drawer step-bar wrap layout (issue-04)."
+    },
+    {
+      "path": "issue-02-property-check-copy-omits-bank-wont-accept-own-report.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260816-0004/issue-02-property-check-copy-omits-bank-wont-accept-own-report.md",
+      "issue_id": "wb-rec-260816-0004/issue-02-property-check-copy-omits-bank-wont-accept-own-report",
+      "issue_title": "Property check copy never says the bank will not accept your own report",
+      "summary_4_lines": [
+        "On Explore banks → Charges they opened Indian Bank’s property-check drawer.",
+        "The drawer lists Legal and technical, Title search, and Valuation, plus an industry-average disclaimer.",
+        "It never says the bank still does its own check and will not take a report the customer already paid for.",
+        "They said even if your brother is a lawyer and the title is already clear, the bank will not accept that report."
+      ],
+      "pinpoint": "The property-check drawer copy lists the three checks and an industry-average disclaimer but never states that the bank will still run its own check and will not accept a report the customer already obtained.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Property check charges drawer for Indian Bank · IB Home Loan (Legal and technical / Title search report / Valuation)",
+      "tags": ["copy", "charges", "property-check", "trust", "mandatory"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-04-charges-drawer-step-bars-too-narrow-dont-wrap.md"
+      ],
+      "quotes_sample": [
+        "Even if you have done it, the report will not be accepted by the bank.",
+        "This is mandatory. The bank does it."
+      ],
+      "related_discussion_one_liners": [
+        "First job of the site is to help the customer save money; “don’t worry, we have the same page.”",
+        "Called this one of the cheapest fees.",
+        "Analogized Google Flights / “search and check,” sitting in a chair, needing a comfortable table.",
+        "If you are a broker they can still do broker work because “intelligence has become cheap.”",
+        "That talk is advice on this charge, not a second defect; later SBI and Punjab & Sind property-check drawers use the same three-step copy without the “won’t accept your report” line."
+      ],
+      "kind_hint": "property-check-own-report-not-accepted",
+      "distinct_from_other_files_in_this_folder": "This is omitted property-check copy that the bank will not accept a report the customer already paid for — not the Processing fee * note missing definition/mandatory/guide (issue-01), not highest-fee ranking labels (issue-03), and not the narrow numbered step-bar wrap layout (issue-04)."
+    },
+    {
+      "path": "issue-03-high-processing-fee-banks-not-labeled-as-highest.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260816-0004/issue-03-high-processing-fee-banks-not-labeled-as-highest.md",
+      "issue_id": "wb-rec-260816-0004/issue-03-high-processing-fee-banks-not-labeled-as-highest",
+      "issue_title": "High processing-fee banks are not labeled as among the highest",
+      "summary_4_lines": [
+        "On Explore banks → Charges they opened Canara (₹10,000 cap), DCB (₹96,000), and IDFC FIRST (₹1,44,000).",
+        "Those rows only show the rupee amount and a calculation drawer.",
+        "They said the site must write that these banks are among the highest for processing fees in the market.",
+        "IDFC FIRST at 3% / ₹1,44,000 was called out as known for the highest processing fee in the whole market — with no such label on screen."
+      ],
+      "pinpoint": "High processing-fee banks are shown only as rupee amounts (Canara capped ₹10,000, DCB 2% ₹96,000, IDFC FIRST 3% ₹1,44,000) with no on-screen label that they are among the highest processing-fee lenders in the market.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Processing fee cells and drawers for Canara Bank ₹10,000, DCB Bank ₹96,000, IDFC FIRST Bank ₹1,44,000",
+      "tags": ["copy", "charges", "processing-fee", "ranking", "intelligence"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-01-processing-fee-star-note-missing-definition-mandatory-guide.md"
+      ],
+      "quotes_sample": [
+        "And you have to write that these banks are one of the highest who charge processing fees.",
+        "This bank is known for the highest amount of processing fees in the whole market."
+      ],
+      "related_discussion_one_liners": [
+        "Google Flights / “search and check,” comfortable table, broker, “intelligence has become cheap” — they want the table to give that intelligence, not only a number.",
+        "Risk-model talk: high-risk borrowers pay high interest because default chance is higher.",
+        "“No EMI” furniture as an analogy.",
+        "“What is this? 3 million? You can put it on the website.” — how they think about labeling expensive banks, not a separate UI bug.",
+        "They asked “Highest?” as confirmation."
+      ],
+      "kind_hint": "high-processing-fee-not-labeled-highest",
+      "distinct_from_other_files_in_this_folder": "This is missing on-screen “among the highest in the market” labels on Canara, DCB, and IDFC FIRST processing-fee amounts — not the * note missing definition/mandatory/guide (issue-01), not property-check own-report copy (issue-02), and not drawer step-bar wrap (issue-04)."
+    },
+    {
+      "path": "issue-04-charges-drawer-step-bars-too-narrow-dont-wrap.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260816-0004/issue-04-charges-drawer-step-bars-too-narrow-dont-wrap.md",
+      "issue_id": "wb-rec-260816-0004/issue-04-charges-drawer-step-bars-too-narrow-dont-wrap",
+      "issue_title": "Charges drawer step bars are too narrow and do not wrap",
+      "summary_4_lines": [
+        "On Explore banks they opened property-check drawers (SBI, then Punjab & Sind) and later a loan-amount drawer.",
+        "Those drawers stack numbered steps (1, 2, 3, 4…) in a single skinny column.",
+        "They said the bar is small; if 1–2–3–4 try to sit in that width they will split; steps should come down one after another and flow.",
+        "They showed the same pattern on the loan-amount drawer and called it a repeatable, external layout — not a one-off."
+      ],
+      "pinpoint": "Numbered step bars in the charges/loan-amount drawers are a single narrow column that does not wrap, so 1–2–3–4 crowd or split instead of flowing down one after another.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Numbered step cards in property-check and loan-amount drawers (1 Legal and technical, 2 Title search, 3 Valuation, 4 Total; and 1–6 on loan amount)",
+      "tags": ["layout", "drawer", "spacing", "wrap", "charges"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-02-property-check-copy-omits-bank-wont-accept-own-report.md"
+      ],
+      "quotes_sample": [
+        "And this bar is small.",
+        "If it is the width, 1, 2, 3, 4, it will split.",
+        "It will flow."
+      ],
+      "related_discussion_one_liners": [
+        "Said keep the standard on the side of the panel — then “No.”",
+        "Used “2 is here, put a line like this” as a wrap sketch.",
+        "“If the mat is normal from the top” treated as width (ASR), because they are talking about the bar’s width.",
+        "Indian Bank’s earlier property-check drawer (issue-02) used the same stacked steps; they only attacked the layout here."
+      ],
+      "kind_hint": "drawer-step-bars-too-narrow-dont-wrap",
+      "distinct_from_other_files_in_this_folder": "This is numbered step bars in charges/loan-amount drawers being too narrow and not wrapping — not the property-check “won’t accept your own report” copy (issue-02), not the Processing fee * note text (issue-01), and not highest-fee ranking labels (issue-03)."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "folder": "wb-rec-260815-2302",
+  "sequence_index": 20,
+  "issue_count": 2,
+  "cards": [
+    {
+      "path": "issue-01-collapsed-eligibility-fields-must-still-affect.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2302/issue-01-collapsed-eligibility-fields-must-still-affect.md",
+      "issue_id": "wb-rec-260815-2302/issue-01-collapsed-eligibility-fields-must-still-affect",
+      "issue_title": "Collapsed extra loan fields must still change the bank results",
+      "summary_4_lines": [
+        "On Explore banks they hide extra eligibility fields so the form stays short.",
+        "They still want those hidden numbers — existing EMIs, FOIR, and the rest — to change what banks show.",
+        "If the site later surprises the user, they said they will lose trust.",
+        "They treated that surprise as a product failure, not a small design nicety."
+      ],
+      "pinpoint": "On Explore banks, they collapse Adjust eligibility so the form is not too big, but they insist the collapsed fields (especially Existing EMIs and FOIR) must still change bank options; a later surprise would make them lose trust in the website.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Loan inputs form details#hlc-form-more (Adjust eligibility) and #hlc-existing-emis Existing EMIs, plus FOIR / extra eligibility fields inside it",
+      "tags": ["layout", "interaction", "trust", "data", "eligibility", "form"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "both",
+      "continued_from_folder": "wb-rec-260815-2249",
+      "continued_into_folder": "wb-rec-260815-2304",
+      "related_issue_files": ["issue-02-coapplicant-yes-gives-ideas-to-inflate-loan.md"],
+      "quotes_sample": [
+        "So we have to drop down so that the form doesn't get too big.",
+        "Correct. But actually these things have to be affected.",
+        "That means if I get a surprise later, I will lose my trust from the website."
+      ],
+      "related_discussion_one_liners": [
+        "Credit-card rejection analogy: decent salary and strong score still rejected; they don't even get the Scapia/HDFC card; issuers were looking at education; they get card-to-card but not such a card.",
+        "Named Debt-to-debt utilization ratio / Fixed obligation to something (join: FOIR on this form; utilization/DTI in the card story); agreed that's why EMI is not fixed.",
+        "Trust echo: one said they would lose trust; the other echoed they will lose trust; first said they still have to think; Bro nothing; this is all mandatory.",
+        "Previous recording already argued these extra columns are optional to fill but make a big difference to loan amount and EMI.",
+        "Next recording opens that they don't want a surprise later, then talks pre-filled fields, importance marks, and tooltips that would show what existing EMIs do to the figure."
+      ],
+      "kind_hint": "hidden-eligibility-must-still-affect",
+      "distinct_from_other_files_in_this_folder": "This is the collapse-for-size vs still-must-count problem on extra eligibility fields (Existing EMIs and FOIR changing bank results); the other file is about Co-applicant Yes coaching a bigger loan."
+    },
+    {
+      "path": "issue-02-coapplicant-yes-gives-ideas-to-inflate-loan.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2302/issue-02-coapplicant-yes-gives-ideas-to-inflate-loan.md",
+      "issue_id": "wb-rec-260815-2302/issue-02-coapplicant-yes-gives-ideas-to-inflate-loan",
+      "issue_title": "Turning Co-applicant to Yes teaches people they can add someone to get a bigger loan",
+      "summary_4_lines": [
+        "On Explore banks, Co-applicant is a No/Yes control under Adjust eligibility.",
+        "They said they do not want to give applicants the idea that adding a co-applicant increases the loan.",
+        "They switched Yes, extra income/EMI/card boxes appeared, then they switched back to No.",
+        "They also asked who would actually pay, while those extra boxes were on screen."
+      ],
+      "pinpoint": "On Explore banks, setting Co-applicant to Yes reveals extra income/EMI/card boxes and they said they do not want to give applicants the idea that adding a co-applicant increases the loan; they tried Yes, then switched back to No.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Loan inputs → Adjust eligibility → Co-applicant No/Yes (div#hlc-coapplicant-row) and extra Co-applicant income / EMIs / card limits fields",
+      "tags": ["co-applicant", "eligibility", "trust", "copy", "form", "coaching"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "both",
+      "continued_from_folder": "wb-rec-260815-2249",
+      "continued_into_folder": "wb-rec-260815-2304",
+      "related_issue_files": ["issue-01-collapsed-eligibility-fields-must-still-affect.md"],
+      "quotes_sample": [
+        "Yesterday, I didn't want to give ideas to any applicant.",
+        "I don't want to give ideas to any other applicant.",
+        "Because it increases the loan amount."
+      ],
+      "related_discussion_one_liners": [
+        "After Yes, Brother please give me the fixers and counting 1, 2, 2, 1, 1, 1 while the extra co-applicant boxes are on screen; likely counting those new fields (ASR fixers low-confidence).",
+        "Who is going to pay the rent / Whoever is going to pay the rent while looking at Co-applicant income/EMIs; likely who pays (EMI/loan), not a separate rent product.",
+        "The earlier extra-fields / trust / mandatory talk is issue-01, not this issue."
+      ],
+      "kind_hint": "coapplicant-yes-coaches-bigger-loan",
+      "distinct_from_other_files_in_this_folder": "This is the Co-applicant Yes path coaching applicants that adding someone increases the loan; the other file is collapsed extra eligibility fields still having to change bank results."
+    }
+  ]
+}

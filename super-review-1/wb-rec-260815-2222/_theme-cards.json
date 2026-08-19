@@ -1,0 +1,42 @@
+{
+  "folder": "wb-rec-260815-2222",
+  "sequence_index": 16,
+  "issue_count": 1,
+  "cards": [
+    {
+      "path": "issue-01-explore-banks-missing-top-three-offer-optimizations.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2222/issue-01-explore-banks-missing-top-three-offer-optimizations.md",
+      "issue_id": "wb-rec-260815-2222/issue-01-explore-banks-missing-top-three-offer-optimizations",
+      "issue_title": "Explore banks has no top-three offer optimizations",
+      "summary_4_lines": [
+        "On Explore banks they said a feature still has to be built: top three optimizations so a user can reach a better offer over the next few months to a year.",
+        "The page they sat on only shows loan inputs and a Canara Bank row. There are no tips, no next-best-offer path, and no intelligence block.",
+        "They also said that feature must not be labeled AI, must be accurate (salary, gap between offers), and should look like product advice the way Google Flights shows low prices."
+      ],
+      "pinpoint": "On Explore banks, while idle on the loan form and Canara Bank row, they said this feature still needs to be built: take the list of offers and suggest the top three optimizations so the user can reach the best offer in the next few months to one year — and that advice must not be shown as AI.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Explore banks main view (loan inputs + bank options table); missing top-three optimizations / tips block",
+      "tags": ["missing-feature", "copy", "trust", "product", "explore-banks"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "both",
+      "continued_from_folder": "wb-rec-260815-2213",
+      "continued_into_folder": "wb-rec-260815-2231",
+      "related_issue_files": [],
+      "quotes_sample": [
+        "You suggest top three optimizations that the user can reach the best offer in the next few months to one year.",
+        "should we show them that this is all AI driven? No, no. Zero.",
+        "Top 3 tips. But they must be accurate."
+      ],
+      "related_discussion_one_liners": [
+        "Complexity: “not very complex” unless “age” is added; they already have a list of offers and do not actually use an LLM.",
+        "Engineering vs customer: Postgres/backend analogy — AI is “just another engineering tool”; Netflix (“We think you will like this”) and Google Flights (low prices without saying AI) as how to show intelligence.",
+        "Trust of basis: if AI and “the actual CA” disagree, people trust the CA; “You are an AI driven company in engineering… I have lost my trust. You said you are a CA driven company.”",
+        "Competitor Birbal: funding goes to AI companies and tele-calling is now AI; they should not copy “we are AI” for funding — “It is not our competition.”",
+        "Helpfulness risk (“how can you be so helpful?” / “you are giving so much money”) they said is okay; company-trust talk (no bank income, “two kids working in the basement,” strong testimonials, Reddit launch, talk to every customer, surveys + gift cards) continues into wb-rec-260815-2231."
+      ],
+      "kind_hint": "missing-top-three-offer-optimizations"
+    }
+  ]
+}

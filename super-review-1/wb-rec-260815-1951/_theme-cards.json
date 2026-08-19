@@ -1,0 +1,226 @@
+{
+  "folder": "wb-rec-260815-1951",
+  "sequence_index": 4,
+  "issue_count": 6,
+  "cards": [
+    {
+      "path": "issue-01-both-zeros-visible-on-scroll-looks-broken.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-1951/issue-01-both-zeros-visible-on-scroll-looks-broken.md",
+      "issue_id": "wb-rec-260815-1951/issue-01-both-zeros-visible-on-scroll-looks-broken",
+      "issue_title": "Both “Zero” lines show at once while scrolling, so the page looks broken",
+      "summary_4_lines": [
+        "When you scroll through the Zero commissions / Zero bias block, both giant “Zero” words sit on screen together.",
+        "The extra words (commissions, bias) are missing in that moment, so it can look like the site is broken.",
+        "They wanted one Zero at a time: first Zero commissions, then Zero bias, then the next sentence.",
+        "If there is nothing left to show, they said the page could just let people explore."
+      ],
+      "pinpoint": "On the homepage Zero commissions / Zero bias block, scrolling shows both large “Zero” words at once without commissions/bias, which they said makes it unclear whether the website is broken; they wanted sequential reveal (first Zero commissions, then Zero bias, then the next sentence).",
+      "page_url": "http://localhost:8765/",
+      "page_title": "Shroffin",
+      "on_screen_object": "h2#home-zero-title “Zero commissions. / Zero bias.” full-page story block",
+      "tags": ["layout", "scroll", "animation", "homepage", "zero-commissions"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260815-1950",
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-02-zero-commissions-bias-mixed-bank-customer-context.md",
+        "issue-03-zero-supporting-sentence-too-small-and-unclear.md"
+      ],
+      "quotes_sample": [
+        "So, in this section, I found the problem that when you scroll up, you can see both the zeroes.",
+        "And you don't know if the website is broken or not.",
+        "Or if there is nothing to show, you can explore."
+      ],
+      "related_discussion_one_liners": [
+        "Opening “Just give me 9 minutes.” / “9 minutes?” is session setup, not a site defect.",
+        "After this they stay on the same block and attack the words commissions and bias (issue 02) and the small supporting sentence (issue 03).",
+        "“Or if there is nothing to show, you can explore” is their fallback if a sequential reveal has no next beat."
+      ],
+      "kind_hint": "zero-block-scroll",
+      "distinct_from_other_files_in_this_folder": "This is the mid-scroll layout glitch where both giant Zero words show at once without commissions/bias, not the meaning of those words, the supporting line, Best of all copy, four-section count, or journey sentence formation."
+    },
+    {
+      "path": "issue-02-zero-commissions-bias-mixed-bank-customer-context.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-1951/issue-02-zero-commissions-bias-mixed-bank-customer-context.md",
+      "issue_id": "wb-rec-260815-1951/issue-02-zero-commissions-bias-mixed-bank-customer-context",
+      "issue_title": "“Zero commissions” and “Zero bias” mix bank and customer, so the words are unclear",
+      "summary_4_lines": [
+        "As a customer, “commissions” first sounds like a fee taken from you, not a fee from the bank.",
+        "Then “Zero bias” asks you to switch meaning: now it is about not pushing any bank.",
+        "The block never says whether this whole stretch is website-and-bank or website-and-customer.",
+        "They said that mix makes the section hard to understand."
+      ],
+      "pinpoint": "On the homepage Zero commissions / Zero bias heading, “commissions” is read as a fee taken from the customer, then “Zero bias” forces a switch to website-and-bank (not pushing a bank); they said the section mixes those two contexts and is not easy to understand.",
+      "page_url": "http://localhost:8765/",
+      "page_title": "Shroffin",
+      "on_screen_object": "h2#home-zero-title lines “Zero commissions.” and “Zero bias.”",
+      "tags": ["copy", "wording", "trust", "homepage", "zero-commissions", "zero-bias"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "continues_into_next",
+      "continued_from_folder": null,
+      "continued_into_folder": "wb-rec-260815-2000",
+      "related_issue_files": [
+        "issue-01-both-zeros-visible-on-scroll-looks-broken.md",
+        "issue-03-zero-supporting-sentence-too-small-and-unclear.md"
+      ],
+      "quotes_sample": [
+        "when I read the word commissions, I feel, instantly as a consumer, I don't know which commission I am talking about.",
+        "What does this do? It doesn't make it easy to understand.",
+        "Somewhere, it should be said that either this whole section is about website and bank, or this whole section is about website and customer. It should not be mixed in the context."
+      ],
+      "related_discussion_one_liners": [
+        "They then explain the intended gist: we don’t take commission/money from the bank, so we have no bias to push a bank; ranking is customer benefit; no one can pay to change ranking — content they want in the last sentence (issue 03).",
+        "“At least in Shroffin, in polished English, we have to convey this gist” and “96% or 98% conversation can be done in just 300 words” is how they want the words written, not a second defect.",
+        "ASR “Shraddhan” is Shroffin (on-screen logo)."
+      ],
+      "kind_hint": "mixed-bank-customer-context",
+      "distinct_from_other_files_in_this_folder": "This is the commissions/bias wording mixing customer-fee vs bank-push contexts, not the dual-Zero scroll glitch, the supporting line’s size/gist, Best of all overlap, four-section count, or journey sentence formation."
+    },
+    {
+      "path": "issue-03-zero-supporting-sentence-too-small-and-unclear.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-1951/issue-03-zero-supporting-sentence-too-small-and-unclear.md",
+      "issue_id": "wb-rec-260815-1951/issue-03-zero-supporting-sentence-too-small-and-unclear",
+      "issue_title": "The Zero-block supporting line is too small and does not say the gist",
+      "summary_4_lines": [
+        "Under Zero commissions / Zero bias sits a small line: a fair view of every lender listed on the platform, none ranked or pushed ahead.",
+        "They said that line is very small, and “listed on a platform” could be said better.",
+        "The gist they wanted: a fair view of lenders in the market, ranked fairly, no one pushed forward, and no one can pay to change the ranking.",
+        "They asked for that gist in simple polished English, not big words."
+      ],
+      "pinpoint": "On the homepage Zero commissions / Zero bias block, the small supporting sentence is too small and “every lender listed on a platform” does not carry the gist they wanted: a fair view of all lenders in the market, ranked fairly, no one pushed forward, and no one can pay to change the ranking.",
+      "page_url": "http://localhost:8765/",
+      "page_title": "Shroffin",
+      "on_screen_object": "Supporting sentence under h2#home-zero-title: “So you get a fair view of every lender listed on our platform, with none ranked or pushed ahead of another.”",
+      "tags": ["copy", "wording", "typography", "homepage", "zero-commissions"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-01-both-zeros-visible-on-scroll-looks-broken.md",
+        "issue-02-zero-commissions-bias-mixed-bank-customer-context.md"
+      ],
+      "quotes_sample": [
+        "every lender listed on a platform might have better wording.",
+        "the size of this sentence is very small.",
+        "fair view of lenders and no one has been pushed forward."
+      ],
+      "related_discussion_one_liners": [
+        "The intended meaning of Zero commissions / Zero bias (issue 02) is the content they want this last sentence to carry.",
+        "“96% or 98% conversation can be done in just 300 words” is their bar for simple English.",
+        "ASR “Shraddhan” = Shroffin (logo)."
+      ],
+      "kind_hint": "zero-supporting-sentence-too-small",
+      "distinct_from_other_files_in_this_folder": "This is the small supporting line under the Zero heading being too small and missing the fair-view / ranking-not-for-sale gist, not the dual-Zero scroll, the commissions/bias context mix, Best of all wording, four-section count, or journey sentences."
+    },
+    {
+      "path": "issue-04-spam-hard-sell-push-notifications-overlap.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-1951/issue-04-spam-hard-sell-push-notifications-overlap.md",
+      "issue_id": "wb-rec-260815-1951/issue-04-spam-hard-sell-push-notifications-overlap",
+      "issue_title": "“Spam calls, a hard sell, or pushy notifications” overlap and their point is unclear",
+      "summary_4_lines": [
+        "The Best of all line lists three things you will not get: spam calls, a hard sell, and pushy notifications.",
+        "They asked what those three are for, and how they differ.",
+        "Hard sell, spam, and WhatsApp pings overlap; the real promise they wanted was: no rush, look at your own pace, no extra calls, no buy/sell nags."
+      ],
+      "pinpoint": "On the homepage Best of all block, the trio “spam calls, a hard sell, or pushy notifications” is unclear: they asked what the three are for and how they differ; spam and hard sell overlap; the point they wanted was no urgency — look at your own pace, no extra calls, no buy/sell nags.",
+      "page_url": "http://localhost:8765/",
+      "page_title": "Shroffin",
+      "on_screen_object": "Best of all block: “without spam calls, a hard sell, or pushy notifications.” (main > div > section:nth-of-type(4) > … > p > span:nth-of-type(2))",
+      "tags": ["copy", "wording", "homepage", "best-of-all", "spam"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "continues_into_next",
+      "continued_from_folder": null,
+      "continued_into_folder": "wb-rec-260815-2000",
+      "related_issue_files": ["issue-05-four-homepage-story-sections-may-be-too-many.md"],
+      "quotes_sample": [
+        "what is the significance of these three things? What is the difference between these three things?",
+        "Spam call and hard sell are a bit intersected.",
+        "we don't make any urgency"
+      ],
+      "related_discussion_one_liners": [
+        "Hard sell = chasing documents you didn’t send.",
+        "Push notifications = WhatsApp, “pre-uploaded.”",
+        "Spam = selling data so others call; extra calls.",
+        "This block is one of the “four sections” they later ask to trim (issue 05)."
+      ],
+      "kind_hint": "spam-hard-sell-push-overlap",
+      "distinct_from_other_files_in_this_folder": "This is the Best of all trio (spam calls / hard sell / pushy notifications) overlapping and missing a clear no-urgency point, not Zero-block scroll or copy, not whether four story slides should be cut, and not journey sentence formation."
+    },
+    {
+      "path": "issue-05-four-homepage-story-sections-may-be-too-many.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-1951/issue-05-four-homepage-story-sections-may-be-too-many.md",
+      "issue_id": "wb-rec-260815-1951/issue-05-four-homepage-story-sections-may-be-too-many",
+      "issue_title": "The four homepage story blocks may be too many — they asked if some can be cut",
+      "summary_4_lines": [
+        "After walking the Zero and Best of all slides, they asked whether those four story sections are all needed.",
+        "They asked if some of them can be trimmed.",
+        "The next recording keeps that question: Transparent as a whole slide, Zero already said, Best of all already said."
+      ],
+      "pinpoint": "On the homepage, after Zero commissions and Best of all, they asked whether “these four sections” are all needed and whether some can be trimmed; that question continues on the next recording as whole slides that only repeat a quality.",
+      "page_url": "http://localhost:8765/",
+      "page_title": "Shroffin",
+      "on_screen_object": "The stacked homepage story sections: Transparent like never before; Zero commissions / Zero bias; Best of all / own pace; Built around you (and the re-engineered journey block they then treat as the story to keep)",
+      "tags": ["structure", "homepage", "length", "story-sections"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "continues_into_next",
+      "continued_from_folder": null,
+      "continued_into_folder": "wb-rec-260815-2000",
+      "related_issue_files": [
+        "issue-04-spam-hard-sell-push-notifications-overlap.md",
+        "issue-06-reengineered-journey-sentence-formation-not-coherent.md"
+      ],
+      "quotes_sample": [
+        "Now, I have a concern that these four sections do we need these four sections?",
+        "Can we trim some of these sections?"
+      ],
+      "related_discussion_one_liners": [
+        "They immediately sketch the re-engineered journey as a title plus three parts (issue 06).",
+        "2000: “I don't think we should do an entire slide” about Transparent; “Zero commission, zero bias. We have already said this.”"
+      ],
+      "kind_hint": "four-homepage-story-sections",
+      "distinct_from_other_files_in_this_folder": "This is a structure/length question about whether all four homepage story slides are needed, separate from the wording of Zero, Best of all, or the journey sentences themselves."
+    },
+    {
+      "path": "issue-06-reengineered-journey-sentence-formation-not-coherent.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-1951/issue-06-reengineered-journey-sentence-formation-not-coherent.md",
+      "issue_id": "wb-rec-260815-1951/issue-06-reengineered-journey-sentence-formation-not-coherent",
+      "issue_title": "“We completely re-engineered your home loan journey” is a coherent story, but the sentences are not",
+      "summary_4_lines": [
+        "They kept that title and wanted three parts under it: market you can compare, unique information without giving your details, then apply once and the bank finishes.",
+        "They said the first part should be much bigger.",
+        "The story itself they called coherent; the wording and sentence formation they said is not."
+      ],
+      "pinpoint": "On the homepage re-engineered-journey block (#home-lead-title plus the three body sentences), they said the story is coherent but the word / sentence formation is not; they wanted a title plus three parts, with the first (market comparability / unique information) much bigger.",
+      "page_url": "http://localhost:8765/",
+      "page_title": "Shroffin",
+      "on_screen_object": "h2#home-lead-title “We completely re-engineered your home loan journey.” and the three body lines under it",
+      "tags": ["copy", "wording", "structure", "homepage", "journey"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "continues_into_next",
+      "continued_from_folder": null,
+      "continued_into_folder": "wb-rec-260815-2000",
+      "related_issue_files": ["issue-05-four-homepage-story-sections-may-be-too-many.md"],
+      "quotes_sample": [
+        "We have to keep a title and in that part, we have to show three sections.",
+        "The hope is to make the first section much bigger.",
+        "This is definitely a coherent story. But the word or the sentence formation is not that coherent."
+      ],
+      "related_discussion_one_liners": [
+        "Unique information without giving your information; make you powerful/knowledgeable without taking anything in return; flip the game so the bank completes it.",
+        "“This is actually not a team point” (ASR twice) — related aside on what kind of point this is, not a second defect.",
+        "Standardized everything in one section; don’t give information until one shot to everyone.",
+        "2000 continues: this section has three things; then they judge Transparent as a whole extra slide (issue 05)."
+      ],
+      "kind_hint": "reengineered-journey-sentence-formation",
+      "distinct_from_other_files_in_this_folder": "This is the re-engineered journey title’s sentence formation not being coherent (keep title + three parts, first much bigger), not whether four story slides should be cut and not Zero or Best of all wording."
+    }
+  ]
+}

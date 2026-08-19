@@ -1,0 +1,388 @@
+{
+  "folder": "wb-rec-260815-1928",
+  "sequence_index": 1,
+  "recording_id": "0e425297-58f5-4389-a6f2-acf5a0096f92",
+  "started_at": "2026-08-15T13:58:43.088Z",
+  "ended_at": "2026-08-15T13:58:48.077Z",
+  "duration_ms": 4989,
+  "prev_folder": "NONE",
+  "next_folder": "wb-rec-260815-1929",
+  "files_in_folder": [
+    "audio.json",
+    "audio.lrc",
+    "audio.srt",
+    "audio.text",
+    "audio.tsv",
+    "audio.txt",
+    "audio.vtt",
+    "audio.webm",
+    "console.json",
+    "events.json",
+    "index.html",
+    "manifest.json",
+    "pages.json",
+    "replay.spec.ts",
+    "screenshots/0000.png",
+    "screenshots/index.json",
+    "tabs.json",
+    "viewer.css",
+    "viewer.js"
+  ],
+  "file_status": {
+    "audio.json": "fully_read",
+    "audio.lrc": "fully_read",
+    "audio.srt": "fully_read",
+    "audio.text": "fully_read",
+    "audio.tsv": "fully_read",
+    "audio.txt": "fully_read",
+    "audio.vtt": "fully_read",
+    "audio.webm": "binary_audio_untranscribed_use_text_artifacts",
+    "console.json": "fully_read",
+    "events.json": "fully_read",
+    "index.html": "player_shell_with_inlined_json_fully_read",
+    "manifest.json": "fully_read",
+    "pages.json": "fully_read",
+    "replay.spec.ts": "fully_read",
+    "screenshots/0000.png": "fully_read_image",
+    "screenshots/index.json": "fully_read",
+    "tabs.json": "fully_read",
+    "viewer.css": "player_chrome_fully_read_confirmed",
+    "viewer.js": "player_chrome_fully_read_confirmed"
+  },
+  "files_missing_expected": [
+    "audio_sentences.txt"
+  ],
+  "screenshots_index_count": 1,
+  "screenshots_files_seen": 1,
+  "issues_written": [],
+  "issue_count": 0,
+  "zero_issue_reason": "This ~5s clip has no recoverable speech (all ASR artifacts empty or header-only; audio.json segments=[] and text=\"\"), no clicks/focus/input/scroll/notes, and only a start landmark_snapshot plus one start screenshot of the Shroffin homepage at http://localhost:8765/. They did not treat any on-screen object as wrong in this folder. The next recording begins ~32s later with a fresh review intro; the first homepage complaint (hero spacing) is first spoken there, not here. Screenshot-only homepage content was not turned into issues.",
+  "continuations": {
+    "from_prev": false,
+    "into_next": false,
+    "notes": "PREV is NONE. NEXT wb-rec-260815-1929 starts a new review (\"So this is a review of the website between two co-founders...\") then raises hero-block spacing. That talk is not present in this folder's empty transcript or events, so no issue file is written here and no continuation pair is claimed."
+  },
+  "prev_boundary_read": {
+    "folder": "NONE",
+    "read": "N/A",
+    "reason": "sequence_index 1; assigned previous recording is NONE"
+  },
+  "next_boundary_read": {
+    "folder": "wb-rec-260815-1929",
+    "read": true,
+    "manifest": {
+      "id": "fb743d3e-45ef-48e2-a191-4c7147d743cb",
+      "start_url": "http://localhost:8765/",
+      "started_at": "2026-08-15T13:59:20.405Z",
+      "ended_at": "2026-08-15T14:08:27.240Z",
+      "duration_ms": 546835,
+      "events_count": 115,
+      "screenshots_count": 66
+    },
+    "gap_after_this_recording_ms": 32328,
+    "first_speech_audio_text": "So this is a review of the website between two co-founders, 15th August, 2026, and we are looking for every issue that we find over here.",
+    "first_speech_srt_cue": "00:00:03,320 --> 00:00:15,320",
+    "first_issue_spoken_in_next_not_here": "First thing I see in this top block, which has the Get a Fair View of Home Loans, this text, is that the amount of spacing above this text and below the CBE is not even.",
+    "first_5_screenshots": [
+      "screenshots/0000.png t=193 reason=start url=http://localhost:8765/ same homepage hero as this folder",
+      "screenshots/0001.png t=8194 reason=periodic same homepage",
+      "screenshots/0002.png t=16195 reason=periodic same homepage",
+      "screenshots/0003.png t=26194 reason=periodic same homepage",
+      "screenshots/0004.png t=34195 reason=periodic same homepage"
+    ],
+    "first_20_non_idle_events": [
+      "t=192 landmark_snapshot url=http://localhost:8765/ title=Shroffin",
+      "t=21017 focus name=Replay getByRole(button Replay)",
+      "t=32808 scroll y=4",
+      "t=33597 scroll y=0",
+      "t=40073 scroll y=315.5",
+      "t=41574 scroll y=319.5",
+      "t=43508 scroll y=766.5",
+      "t=44307 scroll y=415.5",
+      "t=52042 scroll y=457",
+      "t=53908 scroll y=543",
+      "t=55208 scroll y=1234",
+      "t=56841 scroll y=1355",
+      "t=58875 scroll y=1595.5",
+      "t=63487 click locator=main > div > section:nth-of-type(1) > div > div > div",
+      "t=242829 click locator=.../div/div",
+      "t=246141 click locator=.../p:nth-of-type(1)",
+      "t=250498 scroll y=1207.5",
+      "t=252407 click locator=section:nth-of-type(1) ... div",
+      "t=254786 click locator=.../div/div",
+      "t=254952 click name=home-lead-title getByRole(heading)"
+    ],
+    "continuation_verdict": "Next folder starts the review; this folder has no unfinished topic and is not a continuation source."
+  },
+  "joined_timeline": [
+    {
+      "t_ms": 0,
+      "clock": "00:00:00.000",
+      "said": "(no ASR; all speech artifacts empty)",
+      "did": "session start; tab entered http://localhost:8765/",
+      "saw": "not yet captured",
+      "where": "http://localhost:8765/ title Shroffin"
+    },
+    {
+      "t_ms": 198,
+      "clock": "00:00:00.198",
+      "said": "(silence)",
+      "did": "landmark_snapshot only; no click/focus/input/scroll",
+      "saw": "homepage landmarks/headings (hero H1, Explore banks, Replay/Play, guide/tools/support nav, footer)",
+      "where": "http://localhost:8765/"
+    },
+    {
+      "t_ms": 199,
+      "clock": "00:00:00.199",
+      "said": "(silence)",
+      "did": "start screenshot",
+      "saw": "screenshots/0000.png homepage hero: Shroffin logo, Guide/Tools/Support/About, H1 fair-view headline, Explore banks, product demo mockup",
+      "where": "http://localhost:8765/"
+    },
+    {
+      "t_ms": 4989,
+      "clock": "00:00:04.989",
+      "said": "(silence through end)",
+      "did": "session end; tab left_at 1786802328052",
+      "saw": "same start frame; no later shots",
+      "where": "http://localhost:8765/"
+    }
+  ],
+  "asr_reconciliation": {
+    "audio.text": "empty file (0 bytes)",
+    "audio.txt": "empty file (0 bytes)",
+    "audio.srt": "empty file (0 bytes)",
+    "audio.vtt": "WEBVTT header only (10 bytes), no cues",
+    "audio.tsv": "header only: start\\tend\\ttext (16 bytes), no rows",
+    "audio.lrc": "empty file (0 bytes)",
+    "audio.json": "segments=[], language=en, text=\"\" (64 bytes); no word timestamps",
+    "audio_sentences.txt": "missing",
+    "conflict": false,
+    "chosen_reading": "no speech recovered; all copies agree on emptiness",
+    "audio.webm": "binary_audio_untranscribed_use_text_artifacts; 76539 bytes present but not listen-able; text artifacts are the speech and they are empty"
+  },
+  "index_html_extraction": {
+    "status": "player_shell_with_inlined_json_fully_read",
+    "title": "Workbooks Recording",
+    "inlined_in_html_comments": true,
+    "script_tag_sentinels_unreplaced": [
+      "__MANIFEST_JSON__",
+      "__EVENTS_JSON__",
+      "__CONSOLE_JSON__",
+      "__TABS_JSON__",
+      "__SHOTS_JSON__"
+    ],
+    "extracted_session_id": "0e425297-58f5-4389-a6f2-acf5a0096f92",
+    "extracted_start_url": "http://localhost:8765/",
+    "extracted_started_at": "2026-08-15T13:58:43.088Z",
+    "extracted_ended_at": "2026-08-15T13:58:48.077Z",
+    "extracted_duration_ms": 4989,
+    "extracted_events_count": 1,
+    "extracted_screenshots_count": 1,
+    "extracted_console_count": 0,
+    "extracted_tabs": [
+      {
+        "tab_id": 1351502398,
+        "url": "http://localhost:8765/",
+        "entered_at": 1786802323088,
+        "left_at": 1786802328052
+      }
+    ],
+    "extracted_screenshot_list": [
+      "screenshots/0000.png t=199 reason=start"
+    ],
+    "adds_discussion_beyond_json": false
+  },
+  "player_chrome": {
+    "viewer.js": {
+      "bytes": 32334,
+      "role": "generic Workbooks bundle viewer (load inline JSON, activity feed, console/network/shots/tabs/manifest panes, audio align, lightbox)",
+      "session_specific_talk": false,
+      "status": "player_chrome_fully_read_confirmed"
+    },
+    "viewer.css": {
+      "bytes": 17895,
+      "role": "generic viewer styles (header, tabs, feed, badges, lightbox, audio footer)",
+      "session_specific_talk": false,
+      "status": "player_chrome_fully_read_confirmed"
+    }
+  },
+  "file_usage": [
+    {
+      "path": "audio.json",
+      "bytes": 64,
+      "status": "fully_read",
+      "facts_taken": [
+        "Fully consumed in one read: {\"segments\": [], \"language\": \"en\", \"text\": \"\"}. No word-level timestamps."
+      ],
+      "used_for": ["checked_no_extra_signal", "timeline_alignment"]
+    },
+    {
+      "path": "audio.lrc",
+      "bytes": 0,
+      "status": "fully_read",
+      "facts_taken": [
+        "Empty file; no lyric cues."
+      ],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "audio.srt",
+      "bytes": 0,
+      "status": "fully_read",
+      "facts_taken": [
+        "Empty file; no SRT cues to align to events."
+      ],
+      "used_for": ["checked_no_extra_signal", "timeline_alignment"]
+    },
+    {
+      "path": "audio.text",
+      "bytes": 0,
+      "status": "fully_read",
+      "facts_taken": [
+        "Empty file; no prose transcript."
+      ],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "audio.tsv",
+      "bytes": 16,
+      "status": "fully_read",
+      "facts_taken": [
+        "Header only: start\\tend\\ttext; zero data rows, so no millisecond speech spans."
+      ],
+      "used_for": ["checked_no_extra_signal", "timeline_alignment"]
+    },
+    {
+      "path": "audio.txt",
+      "bytes": 0,
+      "status": "fully_read",
+      "facts_taken": [
+        "Empty file; agrees with audio.text."
+      ],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "audio.vtt",
+      "bytes": 10,
+      "status": "fully_read",
+      "facts_taken": [
+        "WEBVTT header only; no cues."
+      ],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "audio.webm",
+      "bytes": 76539,
+      "status": "binary_audio_untranscribed_use_text_artifacts",
+      "facts_taken": [
+        "Binary mic file present (76539 bytes). Cannot listen. Speech taken only from empty text artifacts, not treated as a skipped session."
+      ],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "console.json",
+      "bytes": 2,
+      "status": "fully_read",
+      "facts_taken": [
+        "Empty array []; no console errors captured (console_count 0)."
+      ],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "events.json",
+      "bytes": 7496,
+      "status": "fully_read",
+      "facts_taken": [
+        "One event only: kind=landmark_snapshot t=198 ts=1786802323286 url=http://localhost:8765/ title=Shroffin tab_id=1351502398.",
+        "No click, dblclick, focus, input, change, submit, key, scroll, navigation, marker, or note.",
+        "Page object names from snapshot: H1 Get a fair view of home loans...; Explore banks link; Replay/Play buttons; Global nav Guide/Tools/Support/About; footer."
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "index.html",
+      "bytes": 18778,
+      "status": "player_shell_with_inlined_json_fully_read",
+      "facts_taken": [
+        "Generic Workbooks viewer shell; HTML comments inline full manifest/events/console/tabs/shots matching the JSON files.",
+        "Live script tags still hold __MANIFEST_JSON__ sentinels.",
+        "Extracted id 0e425297-58f5-4389-a6f2-acf5a0096f92, localhost:8765/, duration 4989, 1 event, 1 shot. No extra discussion beyond JSON."
+      ],
+      "used_for": ["checked_no_extra_signal", "timeline_alignment"]
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 3420,
+      "status": "fully_read",
+      "facts_taken": [
+        "format workbooks-recording/2.2; id 0e425297-58f5-4389-a6f2-acf5a0096f92; start_url http://localhost:8765/; urls [homepage only]; started_at 2026-08-15T13:58:43.088Z ended_at 2026-08-15T13:58:48.077Z duration_ms 4989; events_count 1 screenshots_count 1 console_count 0 tabs_count 1 pages_count 1; mic true; viewport 1366x768 dsf 2; audio.file audio.webm; capture_model semantic."
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "pages.json",
+      "bytes": 11191,
+      "status": "fully_read",
+      "facts_taken": [
+        "One page p1 url http://localhost:8765/ title Shroffin first_visit_t 198 screenshot screenshots/0000.png.",
+        "Used to name on-screen objects (hero H1, Explore banks, Replay/Play, nav, footer) without inventing defects."
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "replay.spec.ts",
+      "bytes": 494,
+      "status": "fully_read",
+      "facts_taken": [
+        "Playwright replay: page.goto homepage, start screenshot, comment unknown event kind landmark_snapshot. Confirms no interactions to replay."
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "screenshots/0000.png",
+      "bytes": 273659,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "Looked at image: Shroffin homepage hero at start — logo, Guide/Tools/Support/About, fair-view headline, Explore banks, bank-comparison product mockup on landscape. Used only to confirm where they were, not to invent visual bugs."
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "screenshots/index.json",
+      "bytes": 245,
+      "status": "fully_read",
+      "facts_taken": [
+        "One shot: screenshots/0000.png t=199 reason=start url=http://localhost:8765/ mask_rects=[] redaction_mode=black bytes=273659. For any speech T, nearest shot ≤ T is 0000; there is no next shot."
+      ],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "tabs.json",
+      "bytes": 136,
+      "status": "fully_read",
+      "facts_taken": [
+        "Single tab 1351502398 url http://localhost:8765/ entered_at 1786802323088 left_at 1786802328052; no tab switch."
+      ],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "viewer.css",
+      "bytes": 17895,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": [
+        "Generic replay-player stylesheet (header, tabs, feed, badges, lightbox, audio footer). No session-specific review talk."
+      ],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "viewer.js",
+      "bytes": 32334,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": [
+        "Generic replay-player script: parse inlined JSON, render activity/console/network/shots/tabs/manifest, audio seek. No session-specific review talk."
+      ],
+      "used_for": ["checked_no_extra_signal"]
+    }
+  ]
+}

@@ -1,0 +1,225 @@
+{
+  "folder": "wb-rec-260815-2332",
+  "sequence_index": 24,
+  "issue_count": 6,
+  "cards": [
+    {
+      "path": "issue-01-eligibility-form-missing-clear-button.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2332/issue-01-eligibility-form-missing-clear-button.md",
+      "issue_id": "wb-rec-260815-2332/issue-01-eligibility-form-missing-clear-button",
+      "issue_title": "Adjust eligibility has no Clear button",
+      "summary_4_lines": [
+        "The loan form at the top of Explore banks is filled (existing EMIs ₹555 and the other fields), and they want a way to wipe it.",
+        "They ask whether there is a button for that, say every product has one, then accept going on without it.",
+        "This continues the same “edit form needs a button” talk from the previous recording.",
+        "The form shows See options but no Clear / reset control."
+      ],
+      "pinpoint": "On Explore banks, the expanded Adjust eligibility card has no Clear (or reset) button; at 00:10 they said it is a good idea to clear the form and asked if there is a button, noting everyone has one.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Adjust eligibility / Loan inputs card (Existing EMIs ₹555, See options) — missing Clear/reset button",
+      "tags": ["interaction", "missing-control", "loan-form", "eligibility"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260815-2322",
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-04-apply-once-not-above-row-checkboxes.md"],
+      "quotes_sample": [
+        "It's a good idea to clear this.",
+        "Do you have a button for this?",
+        "Everyone has a button like this."
+      ],
+      "related_discussion_one_liners": [
+        "After “I accept.” they praise Overview / Charges / Other charges tabs (“These tabs are the best. Columns belong to this tab.”) — praise, not this issue.",
+        "Chrome-like tab animation praised in the same stretch.",
+        "Sort arrows: “I definitely like this button. Up and down.” — praise.",
+        "Filters “Clear all” is a different control; they did not click it."
+      ],
+      "kind_hint": "eligibility-form-missing-clear",
+      "distinct_from_other_files_in_this_folder": "This is a missing Clear/reset on the filled Adjust eligibility form, not Apply-once placement, banks-vs-lenders wording, asterisks on figures, footer English, or named-bank search."
+    },
+    {
+      "path": "issue-02-exact-rate-and-loan-amount-without-star.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2332/issue-02-exact-rate-and-loan-amount-without-star.md",
+      "issue_id": "wb-rec-260815-2332/issue-02-exact-rate-and-loan-amount-without-star",
+      "issue_title": "Exact rates and loan amounts shown without a star",
+      "summary_4_lines": [
+        "The results table prints exact rates (8.75%, 8.80%) and odd exact loan amounts (₹47,92,101) with no asterisk.",
+        "They say that exact figure without a star, then that they will put a star — including in charges — so the site stands behind the number.",
+        "They also notice age caps changing how much loan appears (₹5,000 / ₹15,000 / ₹20,000 in speech) while looking at those cells."
+      ],
+      "pinpoint": "On Explore banks Overview, exact Rate and Loan amount figures are shown without a star; at 02:07 they said the site has taken an exact amount without a star (8.7, 8.8) and that they will put a star, including in charges.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Bank options table cells: Rate (8.75%, 8.80%) and Loan amount (₹48,00,000 vs Bank of Maharashtra ₹47,92,101) — no asterisk/footnote",
+      "tags": ["trust", "copy", "data", "rates", "asterisk"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-03-lenders-word-not-used-everywhere-instead-of-banks.md"],
+      "quotes_sample": [
+        "They have taken an exact amount without a star.",
+        "So I will put a star.",
+        "At least stand behind something."
+      ],
+      "related_discussion_one_liners": [
+        "“What is this?” plus spoken “Rs.99.99” / “Rs.7,99” is ASR of the odd ₹47,92,101 amount, not a second issue.",
+        "Age restrictions (max 30; if you are 50 you get a smaller loan) explain why amounts differ, still on the same exact-figure problem.",
+        "“Charges are okay.” then “At least stand behind something.” / “I don't know if this is a star or not.”",
+        "EMI drawer math (exact ₹42,418) is inspecting how an exact EMI is built; they close it; not a separate defect here.",
+        "Later More details “How the rate is built” (7.25% = 5.25+2.80−0.80) is related confidence in exact rates, not a new complaint."
+      ],
+      "kind_hint": "exact-figures-without-star",
+      "distinct_from_other_files_in_this_folder": "This is exact Rate and Loan amount cells with no asterisk so the product can stand behind the number, not form Clear, lenders wording, Apply placement, footer English, or bank-name search."
+    },
+    {
+      "path": "issue-03-lenders-word-not-used-everywhere-instead-of-banks.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2332/issue-03-lenders-word-not-used-everywhere-instead-of-banks.md",
+      "issue_id": "wb-rec-260815-2332/issue-03-lenders-word-not-used-everywhere-instead-of-banks",
+      "issue_title": "Say lenders everywhere, not banks",
+      "summary_4_lines": [
+        "They look at the results table and say “Lenders” is the right word.",
+        "They want that word used everywhere instead of “banks”.",
+        "The table header already says Lenders, but the rest of the page still says banks (Explore banks, Apply once to 33 banks, Show 23 more banks).",
+        "This continues the banks-vs-lenders wording talk from the previous recording."
+      ],
+      "pinpoint": "On Explore banks, they said Lenders is a good word and you can put lenders everywhere instead of banks; the column already says Lenders while the page title, Apply once to 33 banks, and Show 23 more banks still say banks.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Page title / remaining “banks” copy vs table column header “Lenders” (and Apply once / Show more labels that still say banks)",
+      "tags": ["copy", "wording", "lenders", "banks"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260815-2322",
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-02-exact-rate-and-loan-amount-without-star.md",
+        "issue-06-no-in-page-search-for-named-bank.md"
+      ],
+      "quotes_sample": [
+        "Lenders is a good word.",
+        "You can put lenders everywhere instead of banks.",
+        "It's okay."
+      ],
+      "related_discussion_one_liners": [
+        "“It's okay.” after the instruction — they are not dropping the preference; they are allowing the review to continue.",
+        "Search-for-SBI talk later still says “25–30 banks” / “search the bank” (issue-06).",
+        "Tab praise just before this is unrelated."
+      ],
+      "kind_hint": "lenders-everywhere-not-banks",
+      "distinct_from_other_files_in_this_folder": "This is the product word lenders vs remaining banks copy on title and buttons, not finding a named bank with search, not asterisks on numbers, and not control placement."
+    },
+    {
+      "path": "issue-04-apply-once-not-above-row-checkboxes.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2332/issue-04-apply-once-not-above-row-checkboxes.md",
+      "issue_id": "wb-rec-260815-2332/issue-04-apply-once-not-above-row-checkboxes",
+      "issue_title": "Apply once is not on top of the row checkboxes",
+      "summary_4_lines": [
+        "After calling the table beautiful, they say Apply should sit here on top of these checkboxes.",
+        "The checkboxes are the first column of each bank row; Apply once sits up on the right of the tab bar.",
+        "They then select all rows so Apply once lights up, which is the same control they wanted moved."
+      ],
+      "pinpoint": "On Explore banks, Apply once sits on the right of the Overview tab bar rather than on top of the row checkboxes; at 03:17 they said Apply should come here on top of these checkboxes.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Apply once button (#hlc-apply-btn) vs the bank-row checkboxes in the first table column",
+      "tags": ["layout", "interaction", "apply", "checkboxes"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-01-eligibility-form-missing-clear-button.md",
+        "issue-06-no-in-page-search-for-named-bank.md"
+      ],
+      "quotes_sample": [
+        "Beautiful.",
+        "Apply should come here on top of these checkboxes."
+      ],
+      "related_discussion_one_liners": [
+        "“Beautiful.” is about the table they are looking at, immediately before the placement instruction.",
+        "Selecting all / deselecting is them operating the same checkbox + Apply once system.",
+        "The brief apply.html visit (Review your application) is a click-through, not a new complaint in this recording."
+      ],
+      "kind_hint": "apply-once-not-above-checkboxes",
+      "distinct_from_other_files_in_this_folder": "This is Apply once sitting on the tab bar’s right instead of on top of the row checkboxes, not the eligibility Clear button, lenders wording, or in-page search."
+    },
+    {
+      "path": "issue-05-data-last-checked-on-not-correct-english.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2332/issue-05-data-last-checked-on-not-correct-english.md",
+      "issue_id": "wb-rec-260815-2332/issue-05-data-last-checked-on-not-correct-english",
+      "issue_title": "“Data last checked on” is not correct English",
+      "summary_4_lines": [
+        "Under the bank table a line reads “Data last checked on 14 July 2026”.",
+        "They say that sentence is not correct English and ask for polished English.",
+        "They suggest wording like “Accuracy guaranteed” or “updated as of”."
+      ],
+      "pinpoint": "On Explore banks, the line under the table “Data last checked on 14 July 2026” is the sentence they called not correct English (03:32), asking for polished English such as Accuracy guaranteed or updated as of.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Footer line under the bank table: “Data last checked on 14 July 2026”",
+      "tags": ["copy", "english", "trust", "freshness"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [],
+      "quotes_sample": [
+        "This sentence, data last checked on, is not correct English.",
+        "Just make it good polished English.",
+        "Something like maybe Accuracy guaranteed or updated as of."
+      ],
+      "related_discussion_one_liners": [
+        "Suggested replacements (“Accuracy guaranteed” / “updated as of”) are brainstorming, not extra issues.",
+        "“Navani is sorting” / “Are you going to jail?” right after is a side conversation (ASR of a name + joke) while they stay on this page, not a second product defect."
+      ],
+      "kind_hint": "data-last-checked-english",
+      "distinct_from_other_files_in_this_folder": "This is the table-footer freshness sentence’s English, not asterisks on Rate/Loan cells, lenders vs banks wording, or missing controls."
+    },
+    {
+      "path": "issue-06-no-in-page-search-for-named-bank.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2332/issue-06-no-in-page-search-for-named-bank.md",
+      "issue_id": "wb-rec-260815-2332/issue-06-no-in-page-search-for-named-bank",
+      "issue_title": "No way on the page to search for a named bank",
+      "summary_4_lines": [
+        "They imagine 25–30 banks on the list and ask how they would find SBI.",
+        "There is no search box; they open Floating, show 23 more banks, and talk about cognitive load if search is added.",
+        "They say when the list opens, rate should already be sorted lowest to highest, and that Control-F can hold a search instead of a new control."
+      ],
+      "pinpoint": "On Explore banks, with ~10 rows then Show 23 more banks, there is no in-page search for a named bank; at 04:40 they asked how to search for SBI among 25–30 banks, then said a search control is extra cognitive load and Control-F will hold it, with default sort by rate lowest to highest.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Bank options list (first ~10 rows + “Show 23 more banks”) with no in-page search field for a bank name such as SBI",
+      "tags": ["interaction", "search", "cognitive-load", "sort", "navigation"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-03-lenders-word-not-used-everywhere-instead-of-banks.md",
+        "issue-04-apply-once-not-above-row-checkboxes.md"
+      ],
+      "quotes_sample": [
+        "Suppose there are 25-30 banks here.",
+        "Then how do I search for it?",
+        "Control F will hold it."
+      ],
+      "related_discussion_one_liners": [
+        "“Navani is sorting / going to jail / perfect bank” — side talk, not a second issue.",
+        "“Let's see the floating slip” → they click Floating (ASR of the rate-type filter).",
+        "“I don't want to show the survey” — ASR; joined with not adding a search UI / extra widget.",
+        "“It's like a search symbol” — analogy that sort/rate already works like search.",
+        "More details / charges / vertical-vs-horizontal after 06:23 is a new stretch of exploration, mostly praise, not this search issue; next recording continues More details for Bank of Maharashtra."
+      ],
+      "kind_hint": "no-in-page-bank-search",
+      "distinct_from_other_files_in_this_folder": "This is missing in-page search for a named bank (SBI) plus cognitive-load / Ctrl+F / default rate-sort talk, not the banks-vs-lenders word, Apply-once placement, or eligibility Clear."
+    }
+  ]
+}

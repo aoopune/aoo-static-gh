@@ -1,0 +1,158 @@
+{
+  "folder": "wb-rec-260815-2313",
+  "sequence_index": 22,
+  "issue_count": 4,
+  "cards": [
+    {
+      "path": "issue-01-loan-form-importance-not-shown-by-order-color.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2313/issue-01-loan-form-importance-not-shown-by-order-color.md",
+      "issue_id": "wb-rec-260815-2313/issue-01-loan-form-importance-not-shown-by-order-color",
+      "issue_title": "Loan form does not show what matters most by order or color",
+      "summary_4_lines": [
+        "On Explore banks, filling the loan form does not by itself show which inputs matter most.",
+        "They wanted top-to-bottom to mean importance (how much money, then rate, then tenure) and left-to-right to mean column importance.",
+        "They said colors, sequence, and order should do that work so the user becomes “intelligent” without an explanation.",
+        "They said this may not be the most urgent change right now, but it should still be done."
+      ],
+      "pinpoint": "On Explore banks, the Loan inputs form does not encode which fields matter most; they said filling it should make the user intelligent without explanation, using top-to-bottom importance (money, rate, tenure), left-to-right column importance, and colors/sequence/order.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Loan inputs form on Explore banks",
+      "tags": ["layout", "form", "importance", "color", "order"],
+      "severity_as_spoken": "medium",
+      "confidence": "high",
+      "continuation": "continues_from_prev",
+      "continued_from_folder": "wb-rec-260815-2304",
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-02-adjust-eligibility-fields-should-not-disappear.md",
+        "issue-03-loan-form-info-icons-need-arranging.md",
+        "issue-04-copy-extra-words-raise-cognitive-load.md"
+      ],
+      "quotes_sample": [
+        "While filling this form, I become intelligent.",
+        "And this is the most important property, the tenure.",
+        "And you can use just colors and sequencing and order, right?"
+      ],
+      "related_discussion_one_liners": [
+        "Joke that the other person thinks they will be “hit” if they have to explain the form.",
+        "Later restated that people are trained left-to-right and up-to-down: “People usually train left to right. Up to down. We do the same.”",
+        "Tesla going to mass market, foolproof vs “full-proof,” and climbing from non-stupid to stupid sit with issue 04, not as a second form-layout defect.",
+        "Rate / amount / tenure as three affected outputs was already in progress in wb-rec-260815-2304."
+      ],
+      "kind_hint": "form-importance-order-color",
+      "distinct_from_other_files_in_this_folder": "This is the Loan inputs form not encoding field importance by top-to-bottom/left-to-right order, color, or sequence — not extra fields vanishing, not arranging (i) tooltips, and not extra words in site copy."
+    },
+    {
+      "path": "issue-02-adjust-eligibility-fields-should-not-disappear.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2313/issue-02-adjust-eligibility-fields-should-not-disappear.md",
+      "issue_id": "wb-rec-260815-2313/issue-02-adjust-eligibility-fields-should-not-disappear",
+      "issue_title": "Extra eligibility fields should not vanish",
+      "summary_4_lines": [
+        "On Explore banks they opened Adjust eligibility and said those extra fields should not disappear.",
+        "They said it is fine if the fields stay pre-filled.",
+        "They then set Co-applicant to No, and the extra co-applicant fields went away.",
+        "The object is the extra fields under Adjust eligibility, not the main loan card."
+      ],
+      "pinpoint": "On Explore banks, extra fields under Adjust eligibility vanish (they said they should not disappear like that); pre-filled is acceptable. After Co-applicant No, the extra co-applicant fields are gone.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Adjust eligibility extra fields, including Co-applicant Yes/No",
+      "tags": ["form", "interaction", "adjust-eligibility", "co-applicant"],
+      "severity_as_spoken": "unstated",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": ["issue-01-loan-form-importance-not-shown-by-order-color.md"],
+      "quotes_sample": [
+        "Let's talk about adjustability.",
+        "That it should not disappear like this.",
+        "And there is no problem if it is pre-filled."
+      ],
+      "related_discussion_one_liners": [
+        "Sits next to issue 01 (form order/color) but is a different object: visibility of extra fields, not ranking of main fields.",
+        "They did not say pre-filled values are dishonest."
+      ],
+      "kind_hint": "adjust-eligibility-fields-vanish",
+      "distinct_from_other_files_in_this_folder": "This is extra Adjust eligibility fields vanishing (including after Co-applicant No), not ranking main loan-card fields by order/color, not arranging info-icon tooltips, and not extra words raising cognitive load."
+    },
+    {
+      "path": "issue-03-loan-form-info-icons-need-arranging.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2313/issue-03-loan-form-info-icons-need-arranging.md",
+      "issue_id": "wb-rec-260815-2313/issue-03-loan-form-info-icons-need-arranging",
+      "issue_title": "Loan form info icons need arranging",
+      "summary_4_lines": [
+        "On Explore banks they pointed at the many (i) icons on the loan form.",
+        "They said to arrange all of those tooltips, then argued about whether to read them.",
+        "They opened Credit card limits, Tenure, and Existing EMIs.",
+        "The object is the info-icon tooltips on Loan inputs, not the field order."
+      ],
+      "pinpoint": "On Explore banks, the (i) tooltips on the loan form need arranging; they said to arrange them, then opened Credit card limits, Tenure, and Existing EMIs instead of leaving the cluster as-is.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Info-icon tooltips on Loan inputs (Credit card limits, Tenure, Existing EMIs)",
+      "tags": ["copy", "tooltips", "info-icons", "form"],
+      "severity_as_spoken": "unstated",
+      "confidence": "medium",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-01-loan-form-importance-not-shown-by-order-color.md",
+        "issue-04-copy-extra-words-raise-cognitive-load.md"
+      ],
+      "quotes_sample": [
+        "Let's arrange all these tooltips.",
+        "Let's not read all the tooltips.",
+        "No, read it."
+      ],
+      "related_discussion_one_liners": [
+        "They imagined most of the public as “stupid” and said details do not impress those people.",
+        "They talked about climbing a ladder from non-stupid to stupid and making the product foolproof — audience talk for why tooltips/copy must be simple, not a second tooltip defect.",
+        "Tesla / foolproof spelling sits with issue 04."
+      ],
+      "kind_hint": "loan-form-info-icons-arranging",
+      "distinct_from_other_files_in_this_folder": "This is the (i) tooltip cluster on Loan inputs needing arranging (Credit card limits, Tenure, Existing EMIs), not field importance by order/color, not extra eligibility fields disappearing, and not extra words in quoted site copy."
+    },
+    {
+      "path": "issue-04-copy-extra-words-raise-cognitive-load.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2313/issue-04-copy-extra-words-raise-cognitive-load.md",
+      "issue_id": "wb-rec-260815-2313/issue-04-copy-extra-words-raise-cognitive-load",
+      "issue_title": "Extra words in site copy raise cognitive load",
+      "summary_4_lines": [
+        "They treated site sentences as too heavy: extra “no”s and extra clauses make people work harder.",
+        "They contrasted “Compare all and apply in one shot. And banks will compete for you” with the lighter “Compare and apply. Let banks compete.”",
+        "They also said stacked claims like Structure / No commission / No bias load too much context.",
+        "They looked up “cognitive load” on Google while the Explore banks form stayed on screen."
+      ],
+      "pinpoint": "Site sentences add extra words that raise cognitive load: repeating “no” (no x, no y, no z vs no x, y, z) and long CTAs (“Compare all and apply in one shot. And banks will compete for you” vs “Compare and apply. Let banks compete.”).",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Site copy they quoted (Structure / No commission / No bias; Compare all and apply in one shot) discussed while Explore banks Loan inputs was on screen",
+      "tags": ["copy", "cognitive-load", "wording"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "standalone",
+      "continued_from_folder": null,
+      "continued_into_folder": null,
+      "related_issue_files": [
+        "issue-01-loan-form-importance-not-shown-by-order-color.md",
+        "issue-03-loan-form-info-icons-need-arranging.md"
+      ],
+      "quotes_sample": [
+        "There is a cognitive load.",
+        "No x, no y, no z. This cognitive load has increased.",
+        "Compare all and apply in one shot. And banks will compete for you. The load has increased."
+      ],
+      "related_discussion_one_liners": [
+        "Before the Google search: a “stupid” public, details that do not impress, and not worrying if some smart traffic arrives — why copy must stay light, not a separate page defect.",
+        "Climbing a ladder; foolproof vs “full-proof” / waterproof / airproof; Tesla going to mass market.",
+        "After the compare/apply contrast: training-data / PR-then-code analogy — models follow common instructions with less training.",
+        "They closed by saying people train left-to-right and up-to-down — the same principle as issue 01’s form order."
+      ],
+      "kind_hint": "copy-extra-words-cognitive-load",
+      "distinct_from_other_files_in_this_folder": "This is extra words in quoted site sentences raising cognitive load (stacked “no”s and a long compare-and-apply CTA), not form-field ranking by order/color, not vanishing Adjust eligibility fields, and not arranging info-icon tooltips."
+    }
+  ]
+}

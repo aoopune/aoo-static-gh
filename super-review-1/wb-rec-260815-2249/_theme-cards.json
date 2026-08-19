@@ -1,0 +1,43 @@
+{
+  "folder": "wb-rec-260815-2249",
+  "sequence_index": 19,
+  "issue_count": 1,
+  "cards": [
+    {
+      "path": "issue-01-adjust-eligibility-hidden-not-shown-as-columns.md",
+      "abs_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/wb-rec-260815-2249/issue-01-adjust-eligibility-hidden-not-shown-as-columns.md",
+      "issue_id": "wb-rec-260815-2249/issue-01-adjust-eligibility-hidden-not-shown-as-columns",
+      "issue_title": "Extra eligibility questions are hidden instead of shown as columns",
+      "summary_4_lines": [
+        "On Explore banks, extra loan questions (existing EMIs, credit cards, income share, tenure, co-applicant) sit behind “Adjust eligibility,” not as columns on the bank list.",
+        "They said those extras should be shown directly; the bank table only has about four or five columns, and opening the extra block makes the form huge.",
+        "The same extras look optional, but they said skipping them still blocks the customer and the answers change the loan amount and EMI a lot.",
+        "They asked why the important ones are not mandatory, and walked each extra: existing EMI and credit cards are not for everyone; income share / an upper limit are; co-applicant is not."
+      ],
+      "pinpoint": "On Explore banks, extra eligibility inputs (Existing EMIs, Credit card limits, Share of income for EMIs / FOIR, Tenure, Co-applicant) are collapsed under Adjust eligibility instead of shown as columns; they are treated as optional even though they change loan amount and EMI, and Tenure is required but lives inside that optional-looking block.",
+      "page_url": "http://localhost:8765/pages/explore-banks.html",
+      "page_title": "Explore banks – Shroffin",
+      "on_screen_object": "Loan inputs details#hlc-form-more (“Adjust eligibility”) extras, and Bank options table columns (Lenders, Rate, Loan amount, Tenure, EMI)",
+      "tags": ["layout", "copy", "interaction", "data", "eligibility", "optional-vs-required", "table-columns"],
+      "severity_as_spoken": "high",
+      "confidence": "high",
+      "continuation": "both",
+      "continued_from_folder": "wb-rec-260815-2240",
+      "continued_into_folder": "wb-rec-260815-2302",
+      "related_issue_files": [],
+      "quotes_sample": [
+        "What we need to do is, instead of adjusting the availability, we need to show the columns here.",
+        "But if they don't fill, they can't go.",
+        "Then why is there no mandating?"
+      ],
+      "related_discussion_one_liners": [
+        "Showing extras as columns is “a big challenge”; opening Adjust eligibility already made the form “so big.”",
+        "They still have to “show the banks” and “the banks and intelligence”; “the customer does not ask for the bank” — people decide loan amount and EMI, not a bank name first.",
+        "“The formula is getting bigger.” “There are so many questions.”",
+        "Field walk: expenses same for everyone; Existing EMI and credit card limits not for everyone; everyone needs the “upper limit” / share of income (differs by bank); nobody on a 10-year tenure asks for a 15-year limit; co-applicant is not for everyone.",
+        "“In general, people only fill the upper limit.” Closing aside, not part of the issue: “This guy is playing a song.”"
+      ],
+      "kind_hint": "hidden-eligibility-columns"
+    }
+  ]
+}

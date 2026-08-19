@@ -1,0 +1,415 @@
+{
+  "folder": "wb-rec-260815-2249",
+  "sequence_index": 19,
+  "recording_id": "55f40b18-3bf3-46a3-b169-7adabe6886b1",
+  "started_at": "2026-08-15T17:19:17.338Z",
+  "ended_at": "2026-08-15T17:21:34.102Z",
+  "duration_ms": 136764,
+  "prev_folder": "wb-rec-260815-2240",
+  "next_folder": "wb-rec-260815-2302",
+  "files_in_folder": [
+    "audio.json",
+    "audio.lrc",
+    "audio.srt",
+    "audio.text",
+    "audio.tsv",
+    "audio.txt",
+    "audio.vtt",
+    "audio.webm",
+    "audio_sentences.txt",
+    "console.json",
+    "events.json",
+    "index.html",
+    "manifest.json",
+    "pages.json",
+    "replay.spec.ts",
+    "screenshots/0000.jpg",
+    "screenshots/0001.jpg",
+    "screenshots/0002.jpg",
+    "screenshots/0003.jpg",
+    "screenshots/0004.jpg",
+    "screenshots/0005.jpg",
+    "screenshots/0006.jpg",
+    "screenshots/0007.jpg",
+    "screenshots/0008.jpg",
+    "screenshots/0009.jpg",
+    "screenshots/0010.jpg",
+    "screenshots/0011.jpg",
+    "screenshots/0012.jpg",
+    "screenshots/0013.jpg",
+    "screenshots/0014.jpg",
+    "screenshots/0015.jpg",
+    "screenshots/0016.jpg",
+    "screenshots/0017.jpg",
+    "screenshots/0018.jpg",
+    "screenshots/0019.jpg",
+    "screenshots/index.json",
+    "tabs.json",
+    "viewer.css",
+    "viewer.js"
+  ],
+  "file_status": {
+    "audio.json": "fully_read_chunked",
+    "audio.lrc": "fully_read",
+    "audio.srt": "fully_read",
+    "audio.text": "fully_read",
+    "audio.tsv": "fully_read",
+    "audio.txt": "fully_read",
+    "audio.vtt": "fully_read",
+    "audio.webm": "binary_audio_untranscribed_use_text_artifacts",
+    "audio_sentences.txt": "fully_read",
+    "console.json": "fully_read",
+    "events.json": "fully_read",
+    "index.html": "player_shell_with_inlined_json_fully_read",
+    "manifest.json": "fully_read",
+    "pages.json": "fully_read",
+    "replay.spec.ts": "fully_read",
+    "screenshots/0000.jpg": "fully_read_image",
+    "screenshots/0001.jpg": "fully_read_image",
+    "screenshots/0002.jpg": "fully_read_image",
+    "screenshots/0003.jpg": "fully_read_image",
+    "screenshots/0004.jpg": "fully_read_image",
+    "screenshots/0005.jpg": "fully_read_image",
+    "screenshots/0006.jpg": "fully_read_image",
+    "screenshots/0007.jpg": "fully_read_image",
+    "screenshots/0008.jpg": "fully_read_image",
+    "screenshots/0009.jpg": "fully_read_image",
+    "screenshots/0010.jpg": "fully_read_image",
+    "screenshots/0011.jpg": "fully_read_image",
+    "screenshots/0012.jpg": "fully_read_image",
+    "screenshots/0013.jpg": "fully_read_image",
+    "screenshots/0014.jpg": "fully_read_image",
+    "screenshots/0015.jpg": "fully_read_image",
+    "screenshots/0016.jpg": "fully_read_image",
+    "screenshots/0017.jpg": "fully_read_image",
+    "screenshots/0018.jpg": "fully_read_image",
+    "screenshots/0019.jpg": "fully_read_image",
+    "screenshots/index.json": "fully_read",
+    "tabs.json": "fully_read",
+    "viewer.css": "player_chrome_fully_read_confirmed",
+    "viewer.js": "player_chrome_fully_read_confirmed"
+  },
+  "files_missing_expected": [],
+  "screenshots_index_count": 20,
+  "screenshots_files_seen": 20,
+  "issues_written": ["issue-01-adjust-eligibility-hidden-not-shown-as-columns.md"],
+  "issue_count": 1,
+  "zero_issue_reason": null,
+  "continuations": [
+    {
+      "issue_file": "issue-01-adjust-eligibility-hidden-not-shown-as-columns.md",
+      "direction": "from",
+      "other_folder": "wb-rec-260815-2240"
+    },
+    {
+      "issue_file": "issue-01-adjust-eligibility-hidden-not-shown-as-columns.md",
+      "direction": "into",
+      "other_folder": "wb-rec-260815-2302"
+    }
+  ],
+  "prev_boundary_read": true,
+  "next_boundary_read": true,
+  "file_usage": [
+    {
+      "path": "audio.json",
+      "bytes": 79052,
+      "status": "fully_read_chunked",
+      "facts_taken": [
+        "35 segments; language tag mr (wrong); concatenated text matches srt family with small phrasing swaps",
+        "word availability probability ~0.078 at 7.91–8.39s; culture ~0.45; intelligence ~0.49",
+        "segment 1 1.21–13.59s show columns instead of adjusting availability; segment 11 59.05–65.67s optional columns"
+      ],
+      "used_for": ["supports_issue", "timeline_alignment"]
+    },
+    {
+      "path": "audio.lrc",
+      "bytes": 2286,
+      "status": "fully_read",
+      "facts_taken": ["lyric timestamps match srt cues 00:01.210 through 02:15.470 including optional-columns and song aside"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "audio.srt",
+      "bytes": 2662,
+      "status": "fully_read",
+      "facts_taken": [
+        "cue 1 00:00:01,210 show columns here instead of adjusting availability",
+        "cues 2–3 only 4 columns then 5 columns",
+        "cues 11–18 optional columns; if they don't fill they can't go; why no mandating",
+        "cues 23–33 Existing EMI / credit cards / upper limit / share of income / co-applicant walk",
+        "cue 35 00:02:13,070 this guy is playing a song (aside)"
+      ],
+      "used_for": ["supports_issue", "timeline_alignment"]
+    },
+    {
+      "path": "audio.text",
+      "bytes": 1376,
+      "status": "fully_read",
+      "facts_taken": ["plain transcript of columns vs Adjust eligibility, optional columns, mandating, field-by-field walk, song aside"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "audio.tsv",
+      "bytes": 1834,
+      "status": "fully_read",
+      "facts_taken": ["ms clock 1210–135470; optional-columns block starts 59050; last issue speech 127770; song 133070–135470"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "audio.txt",
+      "bytes": 2321,
+      "status": "fully_read",
+      "facts_taken": ["timed dump same sentences as srt/vtt"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "audio.vtt",
+      "bytes": 2331,
+      "status": "fully_read",
+      "facts_taken": ["WEBVTT cues match srt wording and clocks"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "audio.webm",
+      "bytes": 2198076,
+      "status": "binary_audio_untranscribed_use_text_artifacts",
+      "facts_taken": ["binary mic webm present; speech taken from text artifacts not this file"],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "audio_sentences.txt",
+      "bytes": 1340,
+      "status": "fully_read",
+      "facts_taken": ["single-block transcript of the same optional-columns / mandating / field walk"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "console.json",
+      "bytes": 2,
+      "status": "fully_read",
+      "facts_taken": ["empty array; no console errors captured"],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "events.json",
+      "bytes": 20170,
+      "status": "fully_read",
+      "facts_taken": [
+        "43 events on http://localhost:8765/pages/explore-banks.html",
+        "clicks See options #hlc-see-options at 1995 and 35477; submit #hlc-inputs",
+        "repeated clicks details#hlc-form-more summary at 6728, 15088, 42631, 59854, 61021, 66595, 80139, 96787",
+        "scrolls y=214, 134.5, 249.5, 30; no typing of extra fields this session"
+      ],
+      "used_for": ["supports_issue", "timeline_alignment"]
+    },
+    {
+      "path": "index.html",
+      "bytes": 37621,
+      "status": "player_shell_with_inlined_json_fully_read",
+      "facts_taken": [
+        "generic Workbooks player shell; links viewer.css and viewer.js",
+        "HTML comment inlines recording id 55f40b18-3bf3-46a3-b169-7adabe6886b1, Explore banks URL, events, 20 screenshot rows",
+        "no extra reviewer discussion beyond JSON already in events/manifest"
+      ],
+      "used_for": ["checked_no_extra_signal", "timeline_alignment"]
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 3472,
+      "status": "fully_read",
+      "facts_taken": [
+        "id 55f40b18-3bf3-46a3-b169-7adabe6886b1",
+        "start_url http://localhost:8765/pages/explore-banks.html",
+        "started_at 2026-08-15T17:19:17.338Z ended_at 2026-08-15T17:21:34.102Z duration_ms 136764",
+        "events_count 43 screenshots_count 20 console_count 0 tabs_count 1 pages_count 1 mic true viewport 1366x768"
+      ],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "pages.json",
+      "bytes": 13206,
+      "status": "fully_read",
+      "facts_taken": [
+        "title Explore banks – Shroffin",
+        "Loan inputs: Existing EMIs optional, Share of income for EMIs / FOIR optional, Tenure required, Co-applicant income/EMIs optional",
+        "headings include Loan inputs and Bank options"
+      ],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "replay.spec.ts",
+      "bytes": 3999,
+      "status": "fully_read",
+      "facts_taken": ["Playwright replay of See options twice and repeated details#hlc-form-more clicks; idle comments at end"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "screenshots/0000.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": ["t=185 start; Adjust eligibility expanded; Existing EMIs, Credit card limits, FOIR 55%, Tenure 20, Co-applicant No, See options"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0001.jpg",
+      "bytes": 108422,
+      "status": "fully_read_image",
+      "facts_taken": ["t=2397 after See options; five-column bank table Lenders Rate Loan amount Tenure EMI; Canara 8.80% loan ₹5400 EMI ₹48"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0002.jpg",
+      "bytes": 100927,
+      "status": "fully_read_image",
+      "facts_taken": ["t=7134; Adjust eligibility collapsed over bank table"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0003.jpg",
+      "bytes": 85302,
+      "status": "fully_read_image",
+      "facts_taken": ["t=15490; extras expanded again during 4-columns/5-columns speech"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0004.jpg",
+      "bytes": 85261,
+      "status": "fully_read_image",
+      "facts_taken": ["t=24186 periodic; expanded form during how-big / show-banks talk"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0005.jpg",
+      "bytes": 85261,
+      "status": "fully_read_image",
+      "facts_taken": ["t=32186 periodic; same expanded extras"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0006.jpg",
+      "bytes": 109704,
+      "status": "fully_read_image",
+      "facts_taken": ["t=35880 after second See options; five-column table again"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0007.jpg",
+      "bytes": 107065,
+      "status": "fully_read_image",
+      "facts_taken": ["t=43034 collapsed extras over table"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0008.jpg",
+      "bytes": 87008,
+      "status": "fully_read_image",
+      "facts_taken": ["t=52186; Explore banks heading; collapsed extras; table headers"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0009.jpg",
+      "bytes": 91583,
+      "status": "fully_read_image",
+      "facts_taken": ["t=60186; extras expanded during optional-columns speech"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0010.jpg",
+      "bytes": 89420,
+      "status": "fully_read_image",
+      "facts_taken": ["t=61423; collapsed with table Canara EMI ₹48"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "screenshots/0011.jpg",
+      "bytes": 85558,
+      "status": "fully_read_image",
+      "facts_taken": ["t=67000; expanded; Existing EMIs visible during field walk"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0012.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": ["t=76186; expanded extras during so-many-questions talk"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0013.jpg",
+      "bytes": 89764,
+      "status": "fully_read_image",
+      "facts_taken": ["t=80540; collapsed with table"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "screenshots/0014.jpg",
+      "bytes": 90712,
+      "status": "fully_read_image",
+      "facts_taken": ["t=90186; collapsed; credit-card / upper-limit talk nearby"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "screenshots/0015.jpg",
+      "bytes": 84947,
+      "status": "fully_read_image",
+      "facts_taken": ["t=97188; expanded as they name Existing EMI and credit cards"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0016.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": ["t=106187; expanded; FOIR 55% default; Co-applicant No"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0017.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": ["t=116186; expanded; tenure / co-applicant talk"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0018.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": ["t=124186; expanded; people only fill upper limit"],
+      "used_for": ["supports_issue"]
+    },
+    {
+      "path": "screenshots/0019.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": ["t=132186; same expanded form during playing-a-song aside"],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "screenshots/index.json",
+      "bytes": 10010,
+      "status": "fully_read",
+      "facts_taken": ["20 shots t=185 through 132186; reasons start/interaction/periodic; all url Explore banks; mask_rects on some fields"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "tabs.json",
+      "bytes": 160,
+      "status": "fully_read",
+      "facts_taken": ["one tab url http://localhost:8765/pages/explore-banks.html for the whole session"],
+      "used_for": ["timeline_alignment"]
+    },
+    {
+      "path": "viewer.css",
+      "bytes": 17895,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": ["generic Workbooks replay player CSS 660 lines; no session-specific talk"],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "viewer.js",
+      "bytes": 32334,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": ["generic Workbooks replay player JS 746 lines; no session-specific talk"],
+      "used_for": ["checked_no_extra_signal"]
+    }
+  ]
+}
