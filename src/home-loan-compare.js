@@ -2486,6 +2486,216 @@ function formatPartPrepaymentMaximumFY(rule) {
   );
 }
 
+/** Intelligence + tips: prefer digital rules, then offline, then first published row. */
+const PREPAYMENT_SIMULATION_YEAR = 3;
+
+function pickPrimaryPartPrepaymentRule(rules) {
+  const list = rules || [];
+  if (!list.length) return null;
+  const digital = list.filter(function (rule) {
+    return rule && rule.mode === "digital";
+  });
+  const offline = list.filter(function (rule) {
+    return rule && rule.mode === "offline";
+  });
+  return digital[0] || offline[0] || list[0] || null;
+}
+
+function partPrepaymentLockInMonths(rule) {
+  if (!rule) return 0;
+  const count = rule.part_payment_not_allowed_for_first;
+  if (count == null || count === 0) return 0;
+  const basis = rule.part_payment_not_allowed_for_first_basis || "EMIs";
+  if (basis === "EMIs" || basis === "Months") return Number(count);
+  if (basis === "Days") return Math.ceil(Number(count) / 30);
+  return Number(count);
+}
+
+function resolvePartPrepaymentMinimum(rule, emiAmount) {
+  if (!rule) return 0;
+  const parts = [];
+  if (
+    rule.minimum_part_payment_amount_flat_inr != null &&
+    Number.isFinite(Number(rule.minimum_part_payment_amount_flat_inr))
+  ) {
+    parts.push(Number(rule.minimum_part_payment_amount_flat_inr));
+  }
+  if (
+    rule.minimum_part_payment_amount_of_emis != null &&
+    Number.isFinite(Number(rule.minimum_part_payment_amount_of_emis)) &&
+    emiAmount > 0
+  ) {
+    parts.push(Number(rule.minimum_part_payment_amount_of_emis) * emiAmount);
+  }
+  if (!parts.length) return 0;
+  if (rule.whichever_is_lower === "Yes" && parts.length > 1) {
+    return Math.min.apply(null, parts);
+  }
+  return Math.max.apply(null, parts);
+}
+
+function resolvePartPrepaymentMaximum(rule, outstanding) {
+  const caps = [outstanding];
+  if (!rule) return outstanding;
+  if (
+    rule.maximum_part_payment_month_inr != null &&
+    Number.isFinite(Number(rule.maximum_part_payment_month_inr))
+  ) {
+    caps.push(Number(rule.maximum_part_payment_month_inr));
+  }
+  if (
+    rule.maximum_part_payment_year_percent != null &&
+    Number.isFinite(Number(rule.maximum_part_payment_year_percent))
+  ) {
+    caps.push(
+      outstanding * (Number(rule.maximum_part_payment_year_percent) / 100)
+    );
+  }
+  if (
+    rule.maximum_part_payment_percent != null &&
+    Number.isFinite(Number(rule.maximum_part_payment_percent))
+  ) {
+    caps.push(outstanding * (Number(rule.maximum_part_payment_percent) / 100));
+  }
+  return Math.min.apply(
+    null,
+    caps.filter(function (value) {
+      return Number.isFinite(value) && value > 0;
+    })
+  );
+}
+
+function walkOutstandingPrincipal(loanAmount, roiDecimal, emi, months) {
+  let remaining = loanAmount;
+  for (let month = 0; month < months; month += 1) {
+    const interest = remaining * (roiDecimal / 12);
+    const principal = emi - interest;
+    remaining -= principal;
+  }
+  return Math.max(0, remaining);
+}
+
+function computePrepaymentChargeAmount(charge, prepayAmount) {
+  if (!charge || isPrepaymentNotCharged(charge)) return 0;
+  const amount = computeProcessingFee(charge, prepayAmount);
+  if (amount == null || !Number.isFinite(amount)) return null;
+  return roundInrToPaise(amount);
+}
+
+function buildPartPrepaymentIntelNotes(rule, scenario) {
+  const notes = [];
+  if (rule) {
+    const lockIn = formatPartPrepaymentLockIn(rule);
+    if (lockIn && lockIn !== "None") {
+      notes.push("First part-prepayment after " + lockIn);
+    }
+    const minimum = formatPartPrepaymentMinimum(rule);
+    if (minimum) notes.push("Minimum per request: " + minimum);
+    const fyCap = formatPartPrepaymentMaximumFY(rule);
+    if (fyCap) notes.push("FY cap: " + fyCap);
+    const via = humanizePartPrepayToken(rule.per_part_prepayment_done_via);
+    if (via) notes.push("Pay via " + via);
+  }
+  if (scenario.prepayCharge > 0) {
+    notes.push(
+      "Prepayment charge on this amount: " + formatInr(scenario.prepayCharge)
+    );
+  } else if (scenario.chargeKnownNil) {
+    notes.push("No prepayment charge published for this match");
+  }
+  return notes;
+}
+
+/**
+ * Deterministic part-prepayment scenario for intelligence.
+ * Uses enriched row fields: loan terms, partPrepaymentRules, prepayOwnFundsCharge.
+ */
+function simulatePartPrepaymentScenario(row, helpers, options) {
+  const opts = options || {};
+  const year = opts.year != null ? Number(opts.year) : PREPAYMENT_SIMULATION_YEAR;
+  if (!row || !helpers || typeof helpers.emiFromLoan !== "function") return null;
+
+  const loanAmount = Number(row.loanAmount);
+  const tenureYears = Number(row.tenureYears);
+  let roiDecimal = row.roiDecimal;
+  if (roiDecimal == null && row.effectiveRoiPct != null) {
+    roiDecimal = Number(row.effectiveRoiPct) / 100;
+  }
+  if (
+    !Number.isFinite(loanAmount) ||
+    loanAmount < 1000000 ||
+    !Number.isFinite(tenureYears) ||
+    tenureYears <= year ||
+    !Number.isFinite(roiDecimal) ||
+    roiDecimal <= 0
+  ) {
+    return null;
+  }
+
+  const emiBefore = helpers.emiFromLoan(loanAmount, roiDecimal, tenureYears);
+  if (!Number.isFinite(emiBefore) || emiBefore <= 0) return null;
+
+  const simMonths = year * 12;
+  const outstandingBefore = walkOutstandingPrincipal(
+    loanAmount,
+    roiDecimal,
+    emiBefore,
+    simMonths
+  );
+  if (outstandingBefore <= 0) return null;
+
+  const rule = pickPrimaryPartPrepaymentRule(row.partPrepaymentRules);
+  const lockInMonths = partPrepaymentLockInMonths(rule);
+  if (lockInMonths > 0 && simMonths <= lockInMonths) return null;
+
+  const minRequired = resolvePartPrepaymentMinimum(rule, emiBefore);
+  const maxAllowed = resolvePartPrepaymentMaximum(rule, outstandingBefore);
+  let prepayAmount = outstandingBefore * 0.05;
+  if (prepayAmount < minRequired) prepayAmount = minRequired;
+  if (prepayAmount > maxAllowed) prepayAmount = maxAllowed;
+  if (prepayAmount <= 0 || prepayAmount >= outstandingBefore) return null;
+
+  const charge = row.prepayOwnFundsCharge || null;
+  const chargeKnownNil = Boolean(charge && isPrepaymentNotCharged(charge));
+  const prepayChargeRaw = computePrepaymentChargeAmount(charge, prepayAmount);
+  if (prepayChargeRaw === null) return null;
+  const prepayCharge = prepayChargeRaw;
+
+  const outstandingAfter = outstandingBefore - prepayAmount;
+  const emiAfter = helpers.emiFromLoan(
+    outstandingAfter,
+    roiDecimal,
+    tenureYears - year
+  );
+  if (!Number.isFinite(emiAfter) || emiAfter <= 0) return null;
+
+  const emiDrop = Math.round(emiBefore - emiAfter);
+  if (emiDrop < 200) return null;
+
+  const remainingMonths = (tenureYears - year) * 12;
+  const lifetimeSaving = emiDrop * remainingMonths;
+  const netSaving = lifetimeSaving - prepayCharge;
+  if (netSaving < 5000) return null;
+
+  const scenario = {
+    year: year,
+    bankName: row.bankName || "",
+    rule: rule,
+    lockInMonths: lockInMonths,
+    outstandingBefore: outstandingBefore,
+    prepayAmount: prepayAmount,
+    prepayCharge: prepayCharge,
+    chargeKnownNil: chargeKnownNil,
+    emiBefore: emiBefore,
+    emiAfter: emiAfter,
+    emiDrop: emiDrop,
+    lifetimeSaving: lifetimeSaving,
+    netSaving: netSaving
+  };
+  scenario.constraintNotes = buildPartPrepaymentIntelNotes(rule, scenario);
+  return scenario;
+}
+
 function formatPartPrepaymentPortalDays(rule) {
   const minDays = rule.part_payment_reflects_in_portal_days_min;
   const maxDays = rule.part_payment_reflects_in_portal_days_max;
@@ -6289,6 +6499,14 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges, partPrep
     hideBasis: true
   });
   const emiBounceChargeDisplay = formatResolvedBounceDisplay(emiBounceCharge);
+  const missedEmiWalk = missedEmiMonthTotal(
+    overdueCharge,
+    emiBounceCharge,
+    terms.emi,
+    roiDecimal,
+    terms.loanAmount,
+    terms.tenureMonths
+  );
   const processingFee = computeProcessingFee(processingCharge, terms.loanAmount);
   const propertyCheckChargesList = listPropertyCheckCharges(
     bankCharges,
@@ -6394,6 +6612,7 @@ function enrichMatchedRow(offer, query, bankCharges, governmentCharges, partPrep
     emiBounceChargeDisplay: emiBounceChargeDisplay,
     emiBounceShownNote: applicableSlabSentence(emiBounceCharge, chargeCase),
     emiBounceDetailFootnote: "",
+    missedEmiTotal: missedEmiWalk.total,
     prepayLabel: formatPrepayLabel(prepayOwnFundsCharge),
     prepayPct:
       prepayOwnFundsCharge && prepayOwnFundsCharge.percentage != null
@@ -6857,12 +7076,85 @@ function columnWidthClass(column) {
   if (column.key === "rateChangeChargeDisplay") {
     return "hlc-col-w-rate-change";
   }
+  if (column.key === "propertyCheckCharges") {
+    return "hlc-col-w-property-check";
+  }
+  if (column.key === "processingFee") {
+    return "hlc-col-w-processing";
+  }
+  if (column.key === "governmentCharges") {
+    return "hlc-col-w-govt";
+  }
   if (column.type === "pct") return "hlc-col-w-pct";
   if (column.type === "inr") return "hlc-col-w-inr";
   if (column.type === "charge") return "hlc-col-w-charge";
   if (column.key === "tenureLabel") return "hlc-col-w-tenure";
   if (column.key === "otherChargeNote") return "hlc-col-w-note";
   return "hlc-col-w-text";
+}
+
+/** Material info mark — same glyph as form / filter field help. */
+const FIELD_HELP_MARK_SVG =
+  '<svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>';
+
+/**
+ * Exact column-help copy for Overview / Charges headers. Teaching numbers are
+ * fixed examples — never live calculated values.
+ */
+const COLUMN_HELP_TEXT = {
+  effectiveRoiPct:
+    "The annual interest on your outstanding loan. Concessions you ticked are already in this number. On ₹50 lakh over 20 years, 8.50% versus 9.00% is ₹1,600 more every month (0.50% rate gap). Click More on the row to see how that bank builds the rate.",
+  loanAmount:
+    "How much this bank will give you on what you've entered. Changes every time you change a form field. Built from income, minus running EMIs and card load, capped by property and age. Bank verifies from documents. What you see here is an estimate.",
+  tenureLabel:
+    "How many years this bank gives you to repay, capped by your age. Shorter tenure means higher EMI, which means less loan on the same income. On a floating loan you can prepay any time without a charge and cut this down yourself.",
+  emi:
+    "Estimated monthly payment on this loan amount, rate, and tenure. After this EMI, check if what's left is enough to live on. Doesn't include insurance premiums or pre EMI interest during construction.",
+  processingFee:
+    "The bank's charge to process your file. Mandatory. Not returned if you back out after they've started. Part of it, sometimes called a login fee, is taken upfront. The rest when you accept the sanction. Compare this column with the rate column — a cheap rate with ₹1.44 lakh in fees can cost more in year one.",
+  propertyCheckCharges:
+    "What you pay for the bank to verify the property: legal search, title check, valuer's visit. Click the amount to see how the four items add up for your loan size. This is not stamp duty. Stamp duty is in the government charges column.",
+  governmentCharges:
+    "Stamp duty, registration, CERSAI filing, and notice of intimation. All set by the government, not the bank. Same number on almost every bank row for your state — that's normal, not a mistake. Budget this on top of your down payment. Click the amount to see the four item breakdown.",
+  prepaymentChargeDisplay:
+    "What the bank charges if you pay the loan off early or move it to another bank. Floating home loan to an individual: zero almost every time. RBI doesn't allow prepayment charges on these. Fixed rate loans can charge 1 to 2%. Check this cell before you pick fixed. Matters a lot if you expect a lump sum in a few years.",
+  rateChangeChargeDisplay:
+    "What the bank charges if you ask to switch how your rate works later — floating to fixed, fixed to floating, or a benchmark change. Charged per switch, not once for the whole loan. Most people on a floating repo linked loan never pay this. Know the cost before you lock into fixed.",
+  overdueChargeDisplay:
+    "Extra interest when your EMI comes in late. A percentage per year on the overdue amount, for the days it stays that way. 2% per annum on a ₹40,000 EMI for 30 late days is about ₹790 extra (2% × EMI × days/365). Some banks give a few days before the charge kicks in. A cheap rate bank with a high overdue charge hurts badly on one bad month.",
+  emiBounceChargeDisplay:
+    "Flat fee every time your EMI auto debit fails — not enough balance, wrong account, mandate expired. Even if you transfer the EMI the same day, the bounce fee still comes. Ranges ₹200 to ₹750 depending on the bank. One missed auto debit with overdue interest can add ₹1,000 or more that month."
+};
+
+function columnHelpHtml(column) {
+  const text = COLUMN_HELP_TEXT[column.key];
+  if (!text) return "";
+  const id = "hlc-help-col-" + column.key;
+  return (
+    '<span class="hlc-field-help-anchor">' +
+    '<button type="button" class="hlc-field-help" aria-expanded="false" aria-controls="' +
+    escapeHtml(id) +
+    '" aria-label="About ' +
+    escapeHtml(column.label) +
+    '">' +
+    '<span class="hlc-field-help-mark" aria-hidden="true">' +
+    FIELD_HELP_MARK_SVG +
+    "</span></button>" +
+    '<div class="hlc-field-help-popover" id="' +
+    escapeHtml(id) +
+    '" role="tooltip" hidden>' +
+    '<p class="hlc-field-help-text">' +
+    escapeHtml(text) +
+    "</p></div></span>"
+  );
+}
+
+/** Close portaled field-help before table head HTML is replaced. */
+function closeOpenFieldHelp() {
+  if (!document.querySelector(".hlc-field-help-popover.is-open")) return;
+  document.dispatchEvent(
+    new KeyboardEvent("keydown", { key: "Escape", bubbles: true })
+  );
 }
 
 const FIELD_BOX_ACTIVATE_SKIP =
@@ -6993,6 +7285,8 @@ function initPage() {
     loanHint: document.getElementById("hlc-loan-hint"),
     incomeBasisNote: document.getElementById("hlc-income-basis-note"),
     intelligencePanel: document.getElementById("hlc-intelligence"),
+    intelMore: document.getElementById("hlc-intel-more"),
+    intelPlus: document.getElementById("hlc-intel-plus"),
     status: document.getElementById("hlc-status"),
     meta: document.getElementById("hlc-match-meta"),
     headTable: document.querySelector(".hlc-compare--head"),
@@ -7198,11 +7492,22 @@ function initPage() {
     el.incomeBasisNote.hidden = !text;
   }
 
+  function closeIntelligencePanel() {
+    if (!el.intelligencePanel) return;
+    el.intelligencePanel.classList.remove(
+      "is-visible",
+      "is-tips-expanded",
+      "is-tips-open",
+      "is-tips-more"
+    );
+    el.intelligencePanel.hidden = true;
+  }
+
   function updateIntelligencePanel() {
     if (!el.intelligencePanel) return;
     const rows = state.rows || [];
     if (!rows.length) {
-      el.intelligencePanel.hidden = true;
+      closeIntelligencePanel();
       return;
     }
     const intel = hlcIntelligence.buildIntelligence({
@@ -7227,7 +7532,8 @@ function initPage() {
       },
       helpers: {
         emiFromLoan: emiFromLoan,
-        missedEmiMonthTotal: missedEmiMonthTotal
+        missedEmiMonthTotal: missedEmiMonthTotal,
+        simulatePartPrepaymentScenario: simulatePartPrepaymentScenario
       }
     });
     hlcIntelligence.renderIntelligenceHtml(el.intelligencePanel, intel);
@@ -7236,6 +7542,20 @@ function initPage() {
       requestAnimationFrame(function() {
         el.intelligencePanel.classList.add("is-visible");
       });
+    });
+  }
+
+  if (el.intelMore && el.intelligencePanel && !el.intelMore.dataset.hlcBound) {
+    el.intelMore.dataset.hlcBound = "1";
+    el.intelMore.addEventListener("click", function() {
+      hlcIntelligence.toggleIntelligenceTips(el.intelligencePanel);
+    });
+  }
+
+  if (el.intelPlus && el.intelligencePanel && !el.intelPlus.dataset.hlcBound) {
+    el.intelPlus.dataset.hlcBound = "1";
+    el.intelPlus.addEventListener("click", function() {
+      hlcIntelligence.toggleIntelligenceTipsMore(el.intelligencePanel);
     });
   }
 
@@ -8073,19 +8393,23 @@ function initPage() {
             "</select>"
           : "";
       const useChargeHeader = state.group === "laterCharges";
+      const helpHtml = columnHelpHtml(column);
+      const titleRow =
+        '<span class="hlc-column-title">' +
+        '<span class="hlc-column-title-text">' +
+        escapeHtml(column.label) +
+        "</span>" +
+        footnoteHtml +
+        helpHtml +
+        sortInd +
+        "</span>";
       const headerLabel = useChargeHeader
         ? '<span class="hlc-column-label">' +
-          '<span class="hlc-column-title">' +
-          '<span class="hlc-column-title-text">' +
-          escapeHtml(column.label) +
-          "</span>" +
-          footnoteHtml +
-          sortInd +
-          "</span>" +
+          titleRow +
           (isPrepayment ? prepaymentMethods : "") +
           (isRateChange ? rateChangeMethods : "") +
           "</span>"
-        : escapeHtml(column.label);
+        : titleRow;
       headHtml +=
         '<th class="' +
         columnAlignClass(column) +
@@ -8100,11 +8424,10 @@ function initPage() {
         (footnoteMarker ? ' aria-describedby="hlc-charges-note"' : "") +
         ">" +
         headerLabel +
-        (useChargeHeader ? "" : footnoteHtml) +
-        (useChargeHeader ? "" : sortInd) +
         "</th>";
     });
     headHtml += "</tr>";
+    closeOpenFieldHelp();
     el.head.innerHTML = headHtml;
 
     updateChargesFootnote(footnoteState.text);
@@ -10910,6 +11233,12 @@ function rateChangeMethodDescription(method) {
     el.head.addEventListener("click", function (event) {
       if (event.target.closest(".hlc-header-select")) return;
       if (event.target.closest(".hlc-col-footnote[data-note-target]")) return;
+      /* Help opens on document click; skip sort so the i does not re-order. */
+      if (
+        event.target.closest(".hlc-field-help, .hlc-field-help-popover")
+      ) {
+        return;
+      }
       const header = event.target.closest("th.hlc-sortable");
       if (!header) return;
       const key = header.getAttribute("data-sort");
@@ -11646,6 +11975,15 @@ module.exports = {
   formatPrepaymentChargeDisplay,
   formatPrepaymentChargeDetail,
   listPartPrepaymentRulesForOffer,
+  pickPrimaryPartPrepaymentRule,
+  partPrepaymentLockInMonths,
+  resolvePartPrepaymentMinimum,
+  resolvePartPrepaymentMaximum,
+  walkOutstandingPrincipal,
+  computePrepaymentChargeAmount,
+  simulatePartPrepaymentScenario,
+  buildPartPrepaymentIntelNotes,
+  PREPAYMENT_SIMULATION_YEAR,
   buildPartPrepaymentRulePairs,
   drawerPartPrepaymentRulesHtml,
   applyPrepaymentMethodToRows,

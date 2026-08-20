@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home apply — once demo</title>
+  <meta name="robots" content="noindex">
+  <!--
+    Section copy already says the words.
+    Shows a real-looking home loan application, then banks, then competing rates.
+  -->
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <style>
+    :root {
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --ink: #1d1d1f;
+      --muted: #6e6e73;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: #0a0a0a;
+      color: #f5f5f7;
+      font-family: "Google Sans Flex", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    html.is-embed,
+    body.is-embed {
+      background: transparent;
+    }
+
+    .stage {
+      width: 100%;
+      height: 100%;
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.25rem;
+      padding: 1.75rem 1.15rem;
+    }
+
+    body:not(.is-embed) .stage {
+      min-height: 100svh;
+    }
+
+    .app {
+      width: min(268px, 78vw);
+      padding: 1.35rem 1.3rem 1.25rem;
+      border-radius: 16px;
+      background: #f5f5f7;
+      color: var(--ink);
+      box-shadow:
+        0 0 0 0.5px rgba(255, 255, 255, 0.06),
+        0 24px 48px rgba(0, 0, 0, 0.42);
+      opacity: 0;
+      transform: translateY(14px);
+      transition:
+        opacity 1.1s var(--ease),
+        transform 1.45s var(--ease);
+    }
+
+    .app.is-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .app.is-out {
+      opacity: 0;
+      transform: translateY(8px);
+      transition-duration: 0.95s, 1.2s;
+    }
+
+    .app-kicker {
+      margin: 0 0 0.3rem;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+    }
+
+    .app-title {
+      margin: 0 0 1.05rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      column-gap: 0.85rem;
+      row-gap: 0.55rem;
+      margin: 0;
+    }
+
+    .facts dt {
+      margin: 0;
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .facts dd {
+      margin: 0;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+      text-align: right;
+    }
+
+    .banks {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: clamp(1.1rem, 3vw, 1.75rem);
+    }
+
+    .bank {
+      margin: 0;
+      width: 4.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition:
+        opacity 1.05s var(--ease),
+        transform 1.4s var(--ease);
+    }
+
+    .bank.is-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .bank.is-out {
+      opacity: 0;
+      transform: translateY(4px);
+      transition-duration: 0.9s, 1.15s;
+    }
+
+    .bank img {
+      display: block;
+      width: 40px;
+      height: 40px;
+      border-radius: 9px;
+      object-fit: contain;
+    }
+
+    .offer {
+      margin: 0;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+      color: rgba(245, 245, 247, 0.72);
+      opacity: 0;
+      transform: translateY(8px);
+      transition:
+        opacity 1.05s var(--ease),
+        transform 1.4s var(--ease),
+        color 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .offer.is-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .bank.is-lead .offer {
+      color: #f5f5f7;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .app,
+      .bank,
+      .offer {
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage" aria-hidden="true">
+    <article class="app" id="app">
+      <p class="app-kicker">Home loan</p>
+      <h2 class="app-title">Application</h2>
+      <dl class="facts">
+        <dt>Amount</dt>
+        <dd>₹48,00,000</dd>
+        <dt>Tenure</dt>
+        <dd>20 years</dd>
+        <dt>City</dt>
+        <dd>Pune</dd>
+        <dt>Property</dt>
+        <dd>Ready to move</dd>
+      </dl>
+    </article>
+
+    <ul class="banks">
+      <li class="bank" data-bank>
+        <img src="../images/banks/hdfc-bank.png" alt="" width="40" height="40">
+        <p class="offer" data-offer>8.40%</p>
+      </li>
+      <li class="bank" data-bank>
+        <img src="../images/banks/state-bank-of-india.png" alt="" width="40" height="40">
+        <p class="offer" data-offer>8.55%</p>
+      </li>
+      <li class="bank" data-bank>
+        <img src="../images/banks/icici-bank.png" alt="" width="40" height="40">
+        <p class="offer" data-offer>8.35%</p>
+      </li>
+      <li class="bank" data-bank>
+        <img src="../images/banks/bank-of-maharashtra.png" alt="" width="40" height="40">
+        <p class="offer" data-offer>8.50%</p>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      if (params.get("embed") === "1") {
+        document.documentElement.classList.add("is-embed");
+        document.body.classList.add("is-embed");
+      }
+
+      var reduce =
+        typeof window.matchMedia === "function" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      var app = document.getElementById("app");
+      var banks = Array.prototype.slice.call(document.querySelectorAll("[data-bank]"));
+      var offers = Array.prototype.slice.call(document.querySelectorAll("[data-offer]"));
+
+      var timers = [];
+      function later(fn, ms) {
+        timers.push(window.setTimeout(fn, reduce ? Math.min(ms, 40) : ms));
+      }
+      function clearTimers() {
+        timers.forEach(function (id) {
+          window.clearTimeout(id);
+        });
+        timers = [];
+      }
+
+      function clearAll() {
+        app.classList.remove("is-in", "is-out");
+        banks.forEach(function (b) {
+          b.classList.remove("is-in", "is-out", "is-lead");
+        });
+        offers.forEach(function (o) {
+          o.classList.remove("is-in");
+        });
+      }
+
+      function runOnce() {
+        clearTimers();
+        clearAll();
+
+        later(function () {
+          app.classList.add("is-in");
+        }, reduce ? 40 : 320);
+
+        later(function () {
+          banks.forEach(function (bank, i) {
+            later(function () {
+              bank.classList.add("is-in");
+            }, i * (reduce ? 40 : 220));
+          });
+        }, reduce ? 700 : 1700);
+
+        later(function () {
+          offers.forEach(function (offer, i) {
+            later(function () {
+              offer.classList.add("is-in");
+              if (i === 2) banks[i].classList.add("is-lead");
+            }, i * (reduce ? 40 : 200));
+          });
+        }, reduce ? 1600 : 3400);
+      }
+
+      runOnce();
+    })();
+  </script>
+</body>
+</html>

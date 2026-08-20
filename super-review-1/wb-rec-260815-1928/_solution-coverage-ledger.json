@@ -1,0 +1,248 @@
+{
+  "folder": "wb-rec-260815-1928",
+  "sequence_index": 1,
+  "recording_id": "0e425297-58f5-4389-a6f2-acf5a0096f92",
+  "started_at": "2026-08-15T13:58:43.088Z",
+  "ended_at": "2026-08-15T13:58:48.077Z",
+  "duration_ms": 4989,
+  "prev_folder": null,
+  "next_folder": "wb-rec-260815-1929",
+  "files_in_folder": [
+    "audio.json",
+    "audio.lrc",
+    "audio.srt",
+    "audio.text",
+    "audio.tsv",
+    "audio.txt",
+    "audio.vtt",
+    "audio.webm",
+    "console.json",
+    "events.json",
+    "index.html",
+    "manifest.json",
+    "pages.json",
+    "replay.spec.ts",
+    "screenshots/0000.png",
+    "screenshots/index.json",
+    "tabs.json",
+    "viewer.css",
+    "viewer.js"
+  ],
+  "file_status": {
+    "audio.json": "fully_read_empty_segments_empty_text",
+    "audio.lrc": "fully_read_empty_file",
+    "audio.srt": "fully_read_empty_file",
+    "audio.text": "fully_read_empty_file",
+    "audio.tsv": "fully_read_header_only_no_cues",
+    "audio.txt": "fully_read_empty_file",
+    "audio.vtt": "fully_read_webvtt_header_only",
+    "audio.webm": "binary_audio_untranscribed_use_text_artifacts",
+    "console.json": "fully_read_empty_array",
+    "events.json": "fully_read_one_landmark_snapshot_t198",
+    "index.html": "player_shell_with_inlined_json_fully_read",
+    "manifest.json": "fully_read",
+    "pages.json": "fully_read",
+    "replay.spec.ts": "fully_read",
+    "screenshots/0000.png": "image_read_home_hero_explore_banks",
+    "screenshots/index.json": "fully_read_one_shot",
+    "tabs.json": "fully_read",
+    "viewer.css": "player_chrome_fully_read_confirmed",
+    "viewer.js": "player_chrome_fully_read_confirmed"
+  },
+  "files_missing_expected": ["audio_sentences.txt"],
+  "helper_issue_files_read": [],
+  "screenshots_index_count": 1,
+  "screenshots_files_seen": 1,
+  "solutions_written": [],
+  "solution_count": 0,
+  "zero_solution_reason": "4989ms idle home load with empty ASR in every speech artifact, one landmark_snapshot and one start screenshot, and no click/note/marker proposing any direction; next-folder review talk starts after a ~32s gap and is not spoken here.",
+  "linked_issues": [],
+  "continuations": {
+    "from_prev": false,
+    "into_next": false,
+    "notes": "PREV is NONE. This clip has no spoken topic. Next folder wb-rec-260815-1929 starts 2026-08-15T13:59:20.405Z (~32s later) on the same URL with co-founder review framing at audio ~3320ms; first non-idle acts there are focus Replay (~21017ms), then scrolls, then a click. Ideas in that later speech are not discussed in this folder and were not written here."
+  },
+  "prev_boundary_read": {
+    "folder": null,
+    "status": "NONE"
+  },
+  "next_boundary_read": {
+    "folder": "wb-rec-260815-1929",
+    "recording_id": "fb743d3e-45ef-48e2-a191-4c7147d743cb",
+    "manifest_started_at": "2026-08-15T13:59:20.405Z",
+    "manifest_ended_at": "2026-08-15T14:08:27.240Z",
+    "duration_ms": 546835,
+    "audio_text_srt_tsv_start": "So this is a review of the website between two co-founders, 15th August, 2026... then hero spacing / journey copy; first speech ~3320ms",
+    "first_screenshots": [
+      "screenshots/0000.png",
+      "screenshots/0001.png",
+      "screenshots/0002.png",
+      "screenshots/0003.png",
+      "screenshots/0004.png"
+    ],
+    "first_20_non_idle_events": [
+      {"kind": "landmark_snapshot", "t": "present_at_bundle_start", "url": "http://localhost:8765/"},
+      {"kind": "focus", "t": 21017, "name": "Replay"},
+      {"kind": "scroll", "t": 32808, "y": 4},
+      {"kind": "scroll", "t": 33597, "y": 0},
+      {"kind": "scroll", "t": 40073, "y": 315.5},
+      {"kind": "scroll", "t": 41574, "y": 319.5},
+      {"kind": "scroll", "t": 43508, "y": 766.5},
+      {"kind": "scroll", "t": 44307, "y": 415.5},
+      {"kind": "scroll", "t": 52042, "y": 457},
+      {"kind": "scroll", "t": 53908, "y": 543},
+      {"kind": "scroll", "t": 55208, "y": 1234},
+      {"kind": "scroll", "t": 56841, "y": 1355},
+      {"kind": "scroll", "t": 58875, "y": 1595.5},
+      {"kind": "click", "t": 63487, "css": "main > div > section:nth-of-type(1) > div > div > div"}
+    ],
+    "boundary_issue_files": [
+      "issue-01-hero-headline-cta-uneven-spacing.md",
+      "issue-02-journey-section-copy-too-complex.md",
+      "issue-03-transparent-supporting-lines-add-no-value.md",
+      "issue-04-zero-scroll-shows-two-bare-zeros.md",
+      "issue-05-zero-commissions-wording-and-perspective.md"
+    ],
+    "boundary_solution_files": []
+  },
+  "issue_files_left_untouched": true,
+  "coverage_ledger_left_untouched": true,
+  "index_html_extract": "Workbooks player shell; HTML comment contains assembled copies of manifest/events/console/tabs/shots matching this recording (id 0e425297-58f5-4389-a6f2-acf5a0096f92, duration_ms 4989, events_count 1, screenshots_count 1); live script tags still hold __MANIFEST_JSON__ and sibling sentinels; no operator discussion in viewer chrome.",
+  "viewer_js": {
+    "bytes": 32334,
+    "status": "player_chrome_fully_read_confirmed",
+    "role": "generic file:// bundle viewer: load inline JSON, activity/console/network/shots/tabs/manifest panes, audio align"
+  },
+  "viewer_css": {
+    "bytes": 17895,
+    "status": "player_chrome_fully_read_confirmed",
+    "role": "generic viewer chrome styles (header, tabs, feed, lightbox, audio footer)"
+  },
+  "joined_timeline": [
+    {
+      "t_ms": 0,
+      "said": "(no ASR in any speech artifact)",
+      "did": "session start; tab entered http://localhost:8765/",
+      "on_screen": "not yet captured",
+      "page": "http://localhost:8765/"
+    },
+    {
+      "t_ms": 198,
+      "said": "(silence)",
+      "did": "landmark_snapshot only; no click",
+      "on_screen": "home landmarks: Global nav, hero Get a fair view..., Explore banks product demo",
+      "page": "Shroffin http://localhost:8765/"
+    },
+    {
+      "t_ms": 199,
+      "said": "(silence)",
+      "did": "start screenshot",
+      "on_screen": "hero headline Get a fair view of home loans...; Explore banks CTA; product mockup with Adjust eligibility / Apply once table",
+      "page": "http://localhost:8765/"
+    },
+    {
+      "t_ms": 4989,
+      "said": "(silence through end)",
+      "did": "tab left_at ~4964ms after enter; recording end",
+      "on_screen": "same start frame; no second shot",
+      "page": "http://localhost:8765/"
+    }
+  ],
+  "file_usage": [
+    {
+      "path": "audio.json",
+      "facts_taken": "segments []; language en; text empty string; fully consumed in one read",
+      "used_for": "checked_no_extra_signal"
+    },
+    {
+      "path": "audio.lrc",
+      "facts_taken": "0-byte empty file; no lyric cues",
+      "used_for": "checked_no_extra_signal"
+    },
+    {
+      "path": "audio.srt",
+      "facts_taken": "0-byte empty file; no subtitle cues",
+      "used_for": "checked_no_extra_signal"
+    },
+    {
+      "path": "audio.text",
+      "facts_taken": "0-byte empty transcript",
+      "used_for": "checked_no_extra_signal"
+    },
+    {
+      "path": "audio.tsv",
+      "facts_taken": "header only start/end/text; no rows",
+      "used_for": "checked_no_extra_signal"
+    },
+    {
+      "path": "audio.txt",
+      "facts_taken": "0-byte empty file",
+      "used_for": "checked_no_extra_signal"
+    },
+    {
+      "path": "audio.vtt",
+      "facts_taken": "WEBVTT header only; no cues",
+      "used_for": "checked_no_extra_signal"
+    },
+    {
+      "path": "audio.webm",
+      "facts_taken": "binary mic file 76539 bytes; not played or transcribed; text artifacts empty",
+      "used_for": "timeline_alignment"
+    },
+    {
+      "path": "console.json",
+      "facts_taken": "empty array []; console_count 0",
+      "used_for": "checked_no_extra_signal"
+    },
+    {
+      "path": "events.json",
+      "facts_taken": "single landmark_snapshot t=198 ts=1786802323286 url=http://localhost:8765/ title=Shroffin; headings include hero and later sections; actions include Explore banks link; no click/input/scroll/note",
+      "used_for": "timeline_alignment"
+    },
+    {
+      "path": "index.html",
+      "facts_taken": "player_shell_with_inlined_json_fully_read; comment-inlined manifest id 0e425297-58f5-4389-a6f2-acf5a0096f92 duration 4989 one event one shot; script sentinels unused; Activity/Console/Network/Screenshots/Tabs/Manifest chrome only",
+      "used_for": "checked_no_extra_signal"
+    },
+    {
+      "path": "manifest.json",
+      "facts_taken": "id 0e425297-58f5-4389-a6f2-acf5a0096f92 start_url http://localhost:8765/ started_at 2026-08-15T13:58:43.088Z ended_at 2026-08-15T13:58:48.077Z duration_ms 4989 events_count 1 screenshots_count 1 mic true viewport 1366x768",
+      "used_for": "timeline_alignment"
+    },
+    {
+      "path": "pages.json",
+      "facts_taken": "one page p1 url http://localhost:8765/ title Shroffin first_visit_t 198 screenshot screenshots/0000.png; hero h1 Get a fair view of home loans and apply to your chosen banks in one go.; Explore banks action",
+      "used_for": "timeline_alignment"
+    },
+    {
+      "path": "replay.spec.ts",
+      "facts_taken": "goto http://localhost:8765/; screenshot recorded-session-start; comment unknown event kind landmark_snapshot; no interaction steps",
+      "used_for": "timeline_alignment"
+    },
+    {
+      "path": "screenshots/0000.png",
+      "facts_taken": "home hero with Shroffin nav, headline Get a fair view of home loans..., Explore banks button, Explore banks product demo table mockup; no overlay UI of a spoken proposal",
+      "used_for": "timeline_alignment"
+    },
+    {
+      "path": "screenshots/index.json",
+      "facts_taken": "one entry file screenshots/0000.png t=199 reason=start url=http://localhost:8765/ bytes=273659 mask_rects empty",
+      "used_for": "timeline_alignment"
+    },
+    {
+      "path": "tabs.json",
+      "facts_taken": "one tab_id 1351502398 url http://localhost:8765/ entered_at 1786802323088 left_at 1786802328052",
+      "used_for": "timeline_alignment"
+    },
+    {
+      "path": "viewer.css",
+      "facts_taken": "17895 bytes generic Workbooks viewer styles; player_chrome_fully_read_confirmed",
+      "used_for": "checked_no_extra_signal"
+    },
+    {
+      "path": "viewer.js",
+      "facts_taken": "32334 bytes generic Workbooks viewer script; player_chrome_fully_read_confirmed; no session-specific solution text",
+      "used_for": "checked_no_extra_signal"
+    }
+  ]
+}

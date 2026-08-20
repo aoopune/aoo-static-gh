@@ -1,0 +1,484 @@
+{
+  "mode": "recommend_then_confirm_apply",
+  "phase": "A_recommend",
+  "website_untouched": true,
+  "solutions_file": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/FUNDAMENTAL-SOLUTIONS-SUGGESTIONS-AND-IDEAS.md",
+  "recheck_file": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/themes/_theme-fundamentals-recheck.md",
+  "site_scan_ledger": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/themes/_theme-site-scan-ledger.json",
+  "open_theme_ids": [
+    "theme-02",
+    "theme-04",
+    "theme-07",
+    "theme-09",
+    "theme-10",
+    "theme-11",
+    "theme-12",
+    "theme-13",
+    "theme-14",
+    "theme-15",
+    "theme-16",
+    "theme-17",
+    "theme-18",
+    "theme-19",
+    "theme-20"
+  ],
+  "closed_or_absent_theme_ids": [
+    "theme-01",
+    "theme-03",
+    "theme-05",
+    "theme-06",
+    "theme-08"
+  ],
+  "recommendations": [
+    {
+      "id": "Rec-01",
+      "theme_id": "theme-02",
+      "place_ids": [
+        "R02-best-overlap"
+      ],
+      "solution_numbers": [
+        2,
+        6
+      ],
+      "confidence": "high",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "content/pages/home.body.html"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:content -- --write && rg -n \"home-best-body|home-best-aside\" content/pages/home.body.html index.html"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-02",
+      "theme_id": "theme-02",
+      "place_ids": [
+        "R02-transparent-empty"
+      ],
+      "solution_numbers": [
+        3
+      ],
+      "confidence": "high",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "content/pages/home.body.html"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:content -- --write && rg -n \"home-clear-body\" content/pages/home.body.html index.html"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-03",
+      "theme_id": "theme-02",
+      "place_ids": [
+        "R02-freshness"
+      ],
+      "solution_numbers": [
+        56
+      ],
+      "confidence": "high",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "src/home-loan-compare.js"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && rg -n \"formatFreshnessLabel|Updated|Last checked\" src/home-loan-compare.js && npm run build:compare"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-04",
+      "theme_id": "theme-04",
+      "place_ids": [
+        "R04-zero-mix"
+      ],
+      "solution_numbers": [
+        5
+      ],
+      "confidence": "medium",
+      "needs_founder_word_choice": true,
+      "apply_default": "ask-first",
+      "files": [
+        "content/pages/home.body.html"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:content -- --write && rg -n \"home-zero\" content/pages/home.body.html index.html"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-05",
+      "theme_id": "theme-07",
+      "place_ids": [
+        "R07-disclaimer"
+      ],
+      "solution_numbers": [
+        16,
+        17
+      ],
+      "confidence": "medium",
+      "needs_founder_word_choice": true,
+      "apply_default": "ask-first",
+      "files": [
+        "partials/site-footer.html"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:footer && npm run check:footer"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-06",
+      "theme_id": "theme-09",
+      "place_ids": [
+        "R09-learn-more"
+      ],
+      "solution_numbers": [
+        22
+      ],
+      "confidence": "high",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "content/pages/explore-banks.body.html"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:content -- --write && rg -n \"hlc-concession|concessions.html\" content/pages/explore-banks.body.html pages/explore-banks.html"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-07",
+      "theme_id": "theme-09",
+      "place_ids": [
+        "R09-no-back"
+      ],
+      "solution_numbers": [
+        22
+      ],
+      "confidence": "medium",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "partials/guide-localnav.html",
+        "content/guide/concessions.body.html"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:guide-localnav && rg -n \"Back to compare|explore-banks\" pages/concessions.html partials/guide-localnav.html"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-08",
+      "theme_id": "theme-10",
+      "place_ids": [
+        "R10-sets-row",
+        "R10-sets-emi",
+        "R10-property-label"
+      ],
+      "solution_numbers": [
+        23,
+        24
+      ],
+      "confidence": "high",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "content/pages/explore-banks.body.html"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:content -- --write && rg -n \"hlc-form-row-about|as per agreement|Agreement\" content/pages/explore-banks.body.html pages/explore-banks.html"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-09",
+      "theme_id": "theme-11",
+      "place_ids": [
+        "R11-cibil"
+      ],
+      "solution_numbers": [
+        25,
+        27,
+        37
+      ],
+      "confidence": "low",
+      "needs_founder_word_choice": true,
+      "apply_default": "ask-first",
+      "files": [
+        "content/pages/explore-banks.body.html",
+        "src/home-loan-compare.js"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:content -- --write && npm run build:compare && npm test"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-10",
+      "theme_id": "theme-12",
+      "place_ids": [
+        "R12-intelligence"
+      ],
+      "solution_numbers": [
+        19,
+        28,
+        40
+      ],
+      "confidence": "medium",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "content/pages/explore-banks.body.html",
+        "src/hlc-intelligence.js",
+        "src/home-loan-compare.js",
+        "css/shroffin-explore-banks.css"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:compare && npm run build:content -- --write && rg -n \"hlc-intelligence\" content/pages/explore-banks.body.html pages/explore-banks.html"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-11",
+      "theme_id": "theme-13",
+      "place_ids": [
+        "R13-coapplicant"
+      ],
+      "solution_numbers": [
+        44
+      ],
+      "confidence": "high",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "content/pages/explore-banks.body.html"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:content -- --write && rg -n \"coapplicant-copy|borrow\" content/pages/explore-banks.body.html pages/explore-banks.html"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-12",
+      "theme_id": "theme-14",
+      "place_ids": [
+        "R14-title",
+        "R14-compare-btn"
+      ],
+      "solution_numbers": [
+        46
+      ],
+      "confidence": "medium",
+      "needs_founder_word_choice": true,
+      "apply_default": "ask-first",
+      "files": [
+        "content/pages/explore-banks.body.html",
+        "templates/layouts/explore-banks.html"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:content -- --write && rg -n \"hlc-title-wash|Compare\" content/pages/explore-banks.body.html pages/explore-banks.html"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-13",
+      "theme_id": "theme-15",
+      "place_ids": [
+        "R15-importance"
+      ],
+      "solution_numbers": [
+        45,
+        47
+      ],
+      "confidence": "medium",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "content/pages/explore-banks.body.html",
+        "css/shroffin-explore-banks.css"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:content -- --write && rg -n \"hlc-importance|importance\" content/pages/explore-banks.body.html css/shroffin-explore-banks.css pages/explore-banks.html"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-14",
+      "theme_id": "theme-16",
+      "place_ids": [
+        "R16-banks-chrome",
+        "R16-lenders-header"
+      ],
+      "solution_numbers": [
+        48
+      ],
+      "confidence": "medium",
+      "needs_founder_word_choice": true,
+      "apply_default": "ask-first",
+      "files": [
+        "content/pages/explore-banks.body.html",
+        "src/home-loan-compare.js",
+        "templates/layouts/explore-banks.html",
+        "partials/guide-localnav.html"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:content -- --write && npm run build:compare && npm run build:guide-localnav && rg -n \"Explore banks|Lenders|Bank type|Bank options\" content/pages/explore-banks.body.html pages/explore-banks.html src/home-loan-compare.js"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-15",
+      "theme_id": "theme-17",
+      "place_ids": [
+        "R17-apply-bar",
+        "R17-tabs"
+      ],
+      "solution_numbers": [
+        49,
+        55
+      ],
+      "confidence": "medium",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "content/pages/explore-banks.body.html",
+        "css/shroffin-explore-banks.css",
+        "src/home-loan-compare.js"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:content -- --write && npm run build:compare && rg -n \"hlc-apply-bar|hlc-results-actions|hlc-row-apply\" css/shroffin-explore-banks.css content/pages/explore-banks.body.html"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-16",
+      "theme_id": "theme-18",
+      "place_ids": [
+        "R18-no-edit-clear"
+      ],
+      "solution_numbers": [
+        51,
+        53
+      ],
+      "confidence": "high",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "content/pages/explore-banks.body.html",
+        "src/home-loan-compare.js",
+        "css/shroffin-explore-banks.css"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:content -- --write && npm run build:compare && rg -n \"hlc-edit-inputs|hlc-clear-form|Edit details|Start fresh\" content/pages/explore-banks.body.html src/home-loan-compare.js pages/explore-banks.html"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-17",
+      "theme_id": "theme-18",
+      "place_ids": [
+        "R18-no-search"
+      ],
+      "solution_numbers": [
+        57
+      ],
+      "confidence": "high",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "src/home-loan-compare.js"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && rg -n \"DEFAULT_SORT_KEY|bank search|hlc-bank-search\" src/home-loan-compare.js content/pages/explore-banks.body.html && test \"$(rg -c 'DEFAULT_SORT_KEY = \"effectiveRoiPct\"' src/home-loan-compare.js)\" = \"1\""
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-18",
+      "theme_id": "theme-19",
+      "place_ids": [
+        "R19-scheme-drawer",
+        "R19-row-bank-only"
+      ],
+      "solution_numbers": [
+        58,
+        59
+      ],
+      "confidence": "medium",
+      "needs_founder_word_choice": true,
+      "apply_default": "ask-first",
+      "files": [
+        "src/home-loan-compare.js",
+        "css/shroffin-explore-banks.css"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:compare && rg -n \"scheme|hlc-bank-scheme|More about\" src/home-loan-compare.js js/home-loan-compare.bundle.js"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-19",
+      "theme_id": "theme-20",
+      "place_ids": [
+        "R20-footnotes"
+      ],
+      "solution_numbers": [
+        54,
+        62
+      ],
+      "confidence": "medium",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "src/home-loan-compare.js",
+        "css/shroffin-explore-banks.css"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:compare && rg -n \"PROCESSING_FEE_MARKER|PROPERTY_CHECK_MARKER|GOVERNMENT_CHARGES_MARKER\" src/home-loan-compare.js"
+      ],
+      "status": "proposed"
+    },
+    {
+      "id": "Rec-20",
+      "theme_id": "theme-20",
+      "place_ids": [
+        "R20-calc-drawer",
+        "R20-charges-note"
+      ],
+      "solution_numbers": [
+        60,
+        63,
+        67
+      ],
+      "confidence": "medium",
+      "needs_founder_word_choice": false,
+      "apply_default": "include",
+      "files": [
+        "src/home-loan-compare.js",
+        "content/pages/explore-banks.body.html"
+      ],
+      "verify_commands": [
+        "cd \"/home/yash/Projects Etc & aoo/aoo-static-gh\" && npm run build:compare && npm test"
+      ],
+      "status": "proposed"
+    }
+  ],
+  "no_matching_solution_themes": [],
+  "every_open_theme_addressed_or_logged": true,
+  "counts": {
+    "open_themes": 15,
+    "recommendations": 20,
+    "high": 8,
+    "medium": 11,
+    "low": 1,
+    "ask_first": 6,
+    "include": 14,
+    "no_matching_solution": 0
+  }
+}

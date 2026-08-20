@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home lead compare frame</title>
+  <meta name="robots" content="noindex">
+  <!--
+    Embeddable compare demo for home-feature visual.
+    Interactive: select lenders + Overview / Charges / Other charges.
+  -->
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="../css/shroffin-shell.css">
+  <link rel="stylesheet" href="../css/shroffin-product-demo.css">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css">
+  <style>
+    :root {
+      --win: 860px;
+      --bank: 260px;
+      --rate: 80px;
+      --loan: 130px;
+      --tenure: 100px;
+      --emi: 112px;
+      --fee: 148px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: #0a0a0a;
+      color: #1d1d1f;
+      font-family: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    body {
+      position: relative;
+    }
+
+    .fit {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: var(--win);
+      flex: 0 0 auto;
+      transform-origin: top left;
+    }
+
+    .win {
+      width: var(--win);
+      height: 460px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fcfcfd;
+      box-shadow:
+        0 0 0 0.5px rgba(255, 255, 255, 0.08),
+        0 12px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    .pane {
+      padding: 10px 12px 8px;
+      background: #fcfcfd;
+      color: #1d1d1f;
+      height: calc(460px - 52px);
+      overflow: auto;
+    }
+
+    .win .spd-safari { height: 52px; }
+    .win .spd-safari-toolbar {
+      height: 52px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      grid-template-columns: none;
+    }
+    .win .spd-safari-tools--lead { flex: 0 0 auto; }
+    .win .spd-safari-center { flex: 1 1 auto; justify-content: stretch; }
+    .win .spd-safari-field { width: 100%; max-width: none; }
+    .win .spd-safari-cluster,
+    .win .spd-safari-tools--trail,
+    .win .spd-safari-btn--shield { display: none !important; }
+
+    .pane.explore-banks-page {
+      --hlc-page-bg: #fcfcfd;
+      --hlc-header-bg: color-mix(in srgb, rgb(108 128 155) 5.5%, #fcfcfd);
+      --hlc-bank-col-width: var(--bank);
+      --hlc-filter-width: 0px;
+      --hlc-filter-gap: 0px;
+      --hlc-filter-pull: 0px;
+      --hlc-tabs-indent: 0px;
+      --hlc-pull: 0px;
+      min-height: 0 !important;
+      height: auto !important;
+    }
+
+    .pane .hlc-results-shell {
+      display: block !important;
+      margin: 0;
+      height: auto !important;
+      min-height: 0 !important;
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+
+    .pane .hlc-results-head {
+      margin: 0 0 4px !important;
+      margin-left: 0 !important;
+      width: 100%;
+      max-width: none;
+      flex-direction: row !important;
+      align-items: flex-end !important;
+    }
+
+    .pane .hlc-results-actions {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: flex-end !important;
+      justify-content: flex-start !important;
+      gap: 0 !important;
+      width: 100% !important;
+    }
+
+    .pane .hlc-results-actions .hlc-apply-bar {
+      display: flex !important;
+      flex: 0 0 var(--bank) !important;
+      width: var(--bank) !important;
+      max-width: var(--bank) !important;
+      order: -1 !important;
+      margin: 0 !important;
+      padding: 0 6px 6px 0 !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      gap: 0.55rem !important;
+    }
+
+    .pane .hlc-results-actions .hlc-apply-bar .hlc-btn-primary {
+      flex: 0 0 auto !important;
+      order: -1 !important;
+      min-height: 38px !important;
+      padding: 0 16px !important;
+      font-size: 14.5px !important;
+    }
+
+    .pane .hlc-apply-count {
+      font-size: 14px !important;
+      white-space: nowrap;
+    }
+
+    .pane .hlc-column-tab {
+      min-height: 38px !important;
+      padding: 6px 14px 8px !important;
+      font-size: 14.5px !important;
+      cursor: pointer;
+    }
+
+    .pane .hlc-filters,
+    .pane .hlc-filters-control,
+    .pane .hlc-field-help,
+    .pane .hlc-paddle,
+    .pane .hlc-scroll-hint,
+    .pane .hlc-sort-ind,
+    .pane .hlc-apply-dock { display: none !important; }
+
+    .pane .hlc-compare-stage {
+      display: block !important;
+      grid-template-columns: none !important;
+      gap: 0 !important;
+      margin: 0 !important;
+      width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+    }
+
+    .pane .hlc-compare-table-area,
+    .pane .hlc-table-wrap,
+    .pane .hlc-table-scroll {
+      display: block !important;
+      margin: 0 !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+
+    .pane .hlc-table-wrap[hidden],
+    .pane .hlc-charges-note[hidden] {
+      display: none !important;
+    }
+
+    .pane .hlc-charges-note {
+      margin: 8px 0 0;
+      padding: 0 2px;
+    }
+    .pane .hlc-charges-note-body {
+      margin: 0;
+      font-size: 11.5px;
+      line-height: 1.35;
+      color: #6e6e73;
+    }
+
+    .pane .hlc-compare {
+      width: 100% !important;
+      min-width: 0 !important;
+      table-layout: fixed !important;
+      font-size: 14.5px !important;
+      border-collapse: collapse;
+    }
+
+    .pane .hlc-compare col.c-bank { width: var(--bank); }
+    .pane .hlc-compare col.c-rate { width: var(--rate); }
+    .pane .hlc-compare col.c-loan { width: var(--loan); }
+    .pane .hlc-compare col.c-tenure { width: var(--tenure); }
+    .pane .hlc-compare col.c-emi { width: var(--emi); }
+    .pane .hlc-compare col.c-fee { width: var(--fee); }
+    .pane .hlc-compare col.c-later { width: 140px; }
+
+    .pane .hlc-compare th.hlc-sticky-col,
+    .pane .hlc-compare td.hlc-sticky-col {
+      position: static !important;
+      left: auto !important;
+      width: var(--bank) !important;
+      min-width: var(--bank) !important;
+      max-width: var(--bank) !important;
+    }
+    .pane .hlc-compare th.hlc-sticky-col::before,
+    .pane .hlc-compare td.hlc-sticky-col::before { display: none !important; }
+
+    .pane .hlc-compare th,
+    .pane .hlc-compare td {
+      padding: 8px 8px !important;
+    }
+
+    .pane .hlc-bank-name-text { font-size: 14.5px; }
+
+    .pane .hlc-compare tbody tr:last-child td {
+      border-bottom-color: transparent;
+    }
+
+    .pane .hlc-selectable-row { cursor: pointer; }
+    .pane .hlc-select-all { cursor: pointer; }
+
+    .pane .hlc-charge-amount {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      font: inherit;
+      color: inherit;
+      cursor: inherit;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="fit" id="fit">
+    <div class="win" id="demo" role="region" aria-label="Compare lenders demo">
+      <div class="spd-safari" aria-hidden="true">
+        <div class="spd-safari-toolbar">
+          <div class="spd-safari-tools spd-safari-tools--lead">
+            <div class="spd-traffic"><span></span><span></span><span></span></div>
+          </div>
+          <div class="spd-safari-center">
+            <div class="spd-safari-field">
+              <span class="spd-lock"></span>
+              <span class="spd-url">shroffin.com/explore-banks</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pane explore-banks-page">
+        <section class="hlc-results-shell is-visible">
+          <div class="hlc-results-head">
+            <div class="hlc-results-actions">
+              <div class="hlc-results-tools-lead">
+                <div class="hlc-column-tabs-scroller">
+                  <div class="hlc-column-tabs" role="tablist" aria-label="Column groups">
+                    <button type="button" class="hlc-column-tab" role="tab" data-demo-tab="essentials" aria-current="page" aria-selected="true">Overview</button>
+                    <button type="button" class="hlc-column-tab" role="tab" data-demo-tab="charges" aria-selected="false">Charges</button>
+                    <button type="button" class="hlc-column-tab" role="tab" data-demo-tab="later" aria-selected="false">Other charges</button>
+                  </div>
+                </div>
+              </div>
+              <div class="hlc-apply-bar">
+                <span class="hlc-apply-count" data-demo-count><span class="hlc-apply-count-n">1</span> selected</span>
+                <button type="button" class="hlc-btn-primary" data-demo-apply>Apply once</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="hlc-compare-stage">
+            <div class="hlc-compare-table-area">
+
+              <!-- Overview -->
+              <div class="hlc-table-wrap" data-demo-panel="essentials">
+                <div class="hlc-table-scroll">
+                  <table class="hlc-compare" data-group="essentials">
+                    <colgroup>
+                      <col class="c-bank"><col class="c-rate"><col class="c-loan"><col class="c-tenure"><col class="c-emi">
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th scope="col" class="hlc-sticky-col">
+                          <div class="hlc-bank-head">
+                            <button type="button" class="hlc-select-all" data-demo-select-all data-state="some" aria-label="Select all lenders">
+                              <svg class="hlc-select-all-dash" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                              <svg class="hlc-select-all-tick" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </button>
+                            <span class="hlc-bank-head-label">Lenders</span>
+                          </div>
+                        </th>
+                        <th scope="col" class="hlc-col-num">Rate</th>
+                        <th scope="col" class="hlc-col-num">Loan amount</th>
+                        <th scope="col" class="hlc-col-text">Tenure (yrs)</th>
+                        <th scope="col" class="hlc-col-num">EMI</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="hlc-selectable-row is-selected" data-demo-row data-bank="bom" aria-selected="true">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bank-of-maharashtra.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">Bank of Maharashtra</span></div></div></div></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">7.25%</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                        <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹39,519</span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="canara" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/canara-bank.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">Canara Bank</span></div></div></div></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">7.30%</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                        <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹39,670</span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="bob" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bank-of-baroda.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">Bank of Baroda</span></div></div></div></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">7.40%</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                        <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹39,974</span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="icici" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/icici-bank.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">ICICI Bank</span></div></div></div></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">7.45%</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                        <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹40,127</span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="axis" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/axis-bank.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">Axis Bank</span></div></div></div></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">7.50%</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                        <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹40,280</span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="hdfc" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/hdfc-bank.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">HDFC Bank</span></div></div></div></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">7.55%</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
+                        <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹40,433</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Charges -->
+              <div class="hlc-table-wrap" data-demo-panel="charges" hidden>
+                <div class="hlc-table-scroll">
+                  <table class="hlc-compare" data-group="charges">
+                    <colgroup>
+                      <col class="c-bank"><col class="c-fee"><col class="c-fee"><col class="c-fee">
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th scope="col" class="hlc-sticky-col">
+                          <div class="hlc-bank-head">
+                            <button type="button" class="hlc-select-all" data-demo-select-all data-state="some" aria-label="Select all lenders">
+                              <svg class="hlc-select-all-dash" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                              <svg class="hlc-select-all-tick" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </button>
+                            <span class="hlc-bank-head-label">Lenders</span>
+                          </div>
+                        </th>
+                        <th scope="col" class="hlc-col-num">Processing fees<sup class="hlc-col-footnote" aria-hidden="true">*</sup></th>
+                        <th scope="col" class="hlc-col-num">Property check<sup class="hlc-col-footnote" aria-hidden="true">†</sup></th>
+                        <th scope="col" class="hlc-col-num">Government charges</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="hlc-selectable-row is-selected" data-demo-row data-bank="bom" aria-selected="true">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bank-of-maharashtra.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">Bank of Maharashtra</span></div></div></div></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹12,500</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹13,400</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹31,100</span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="canara" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/canara-bank.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">Canara Bank</span></div></div></div></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹10,000</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹14,100</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹31,100</span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="bob" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bank-of-baroda.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">Bank of Baroda</span></div></div></div></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹15,000</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹13,500</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹31,100</span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="icici" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/icici-bank.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">ICICI Bank</span></div></div></div></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹45,000</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹12,000</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹31,100</span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="axis" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/axis-bank.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">Axis Bank</span></div></div></div></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹50,000</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹12,500</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹31,100</span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="hdfc" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/hdfc-bank.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">HDFC Bank</span></div></div></div></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹48,000</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹13,000</span></td>
+                        <td class="hlc-col-num"><span class="hlc-cell-value">₹31,100</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="hlc-charges-note" data-demo-panel="charges" hidden>
+                <p class="hlc-charges-note-body">* Part of the processing fee is often taken upfront as a login fee. † Property check charges are a typical average and exclude GST.</p>
+              </div>
+
+              <!-- Other charges -->
+              <div class="hlc-table-wrap" data-demo-panel="later" hidden>
+                <div class="hlc-table-scroll">
+                  <table class="hlc-compare" data-group="laterCharges">
+                    <colgroup>
+                      <col class="c-bank"><col class="c-later"><col class="c-later"><col class="c-later">
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th scope="col" class="hlc-sticky-col">
+                          <div class="hlc-bank-head">
+                            <button type="button" class="hlc-select-all" data-demo-select-all data-state="some" aria-label="Select all lenders">
+                              <svg class="hlc-select-all-dash" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                              <svg class="hlc-select-all-tick" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </button>
+                            <span class="hlc-bank-head-label">Lenders</span>
+                          </div>
+                        </th>
+                        <th scope="col" class="hlc-col-text">Rate change<sup class="hlc-col-footnote" aria-hidden="true">°</sup></th>
+                        <th scope="col" class="hlc-col-text">Overdue<sup class="hlc-col-footnote" aria-hidden="true">‡</sup></th>
+                        <th scope="col" class="hlc-col-text">EMI bounce<sup class="hlc-col-footnote" aria-hidden="true">^</sup></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="hlc-selectable-row is-selected" data-demo-row data-bank="bom" aria-selected="true">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bank-of-maharashtra.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">Bank of Maharashtra</span></div></div></div></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹5,000</span></span></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">2.00% p.a.</span></span></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹500</span></span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="canara" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/canara-bank.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">Canara Bank</span></div></div></div></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">0.25%</span></span></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">0%</span></span></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹300</span></span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="bob" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/bank-of-baroda.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">Bank of Baroda</span></div></div></div></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹5,000</span></span></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">2.00% p.a.</span></span></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹500</span></span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="icici" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/icici-bank.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">ICICI Bank</span></div></div></div></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">0.50%</span></span></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">2.00% p.a.</span></span></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹500</span></span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="axis" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/axis-bank.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">Axis Bank</span></div></div></div></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹10,000</span></span></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">2.00% p.a.</span></span></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹500</span></span></td>
+                      </tr>
+                      <tr class="hlc-selectable-row" data-demo-row data-bank="hdfc" aria-selected="false">
+                        <td class="hlc-sticky-col"><div class="hlc-bank-cell"><span class="hlc-row-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.4 6.2 4.8 8.6 9.6 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="hlc-bank-cell-text"><div class="hlc-bank-name"><img class="hlc-bank-logo" src="../images/banks/hdfc-bank.png" alt="" width="26" height="26"><span class="hlc-bank-name-text">HDFC Bank</span></div></div></div></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹10,000</span></span></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">2.00% p.a.</span></span></td>
+                        <td class="hlc-col-text"><span class="hlc-charge-rule"><span class="hlc-charge-rule-main">₹450</span></span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="hlc-charges-note" data-demo-panel="later" hidden>
+                <p class="hlc-charges-note-body">° Usually each rate-type switch. ‡ On overdue amount. ^ Per bounce.</p>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.getElementById("demo");
+      if (!root) return;
+
+      var selected = { bom: true };
+
+      function setTab(name) {
+        root.querySelectorAll("[data-demo-tab]").forEach(function (tab) {
+          var on = tab.getAttribute("data-demo-tab") === name;
+          tab.setAttribute("aria-selected", on ? "true" : "false");
+          if (on) tab.setAttribute("aria-current", "page");
+          else tab.removeAttribute("aria-current");
+        });
+        root.querySelectorAll("[data-demo-panel]").forEach(function (panel) {
+          var on = panel.getAttribute("data-demo-panel") === name;
+          if (on) panel.removeAttribute("hidden");
+          else panel.setAttribute("hidden", "");
+        });
+      }
+
+      function paintSelection() {
+        var ids = Object.keys(selected).filter(function (id) { return selected[id]; });
+        var n = ids.length;
+        var total = root.querySelectorAll('[data-demo-panel="essentials"] [data-demo-row]').length;
+
+        root.querySelectorAll("[data-demo-row]").forEach(function (row) {
+          var on = !!selected[row.getAttribute("data-bank")];
+          row.classList.toggle("is-selected", on);
+          row.setAttribute("aria-selected", on ? "true" : "false");
+        });
+
+        var state = n === 0 ? "none" : n === total ? "all" : "some";
+        root.querySelectorAll("[data-demo-select-all]").forEach(function (btn) {
+          btn.setAttribute("data-state", state);
+        });
+
+        var countEl = root.querySelector("[data-demo-count]");
+        var applyBtn = root.querySelector("[data-demo-apply]");
+        if (countEl) {
+          countEl.innerHTML = '<span class="hlc-apply-count-n">' + n + "</span> selected";
+          countEl.hidden = n === 0;
+        }
+        if (applyBtn) applyBtn.disabled = n === 0;
+      }
+
+      function toggleBank(id) {
+        selected[id] = !selected[id];
+        paintSelection();
+      }
+
+      function setAll(on) {
+        root.querySelectorAll('[data-demo-panel="essentials"] [data-demo-row]').forEach(function (row) {
+          selected[row.getAttribute("data-bank")] = on;
+        });
+        paintSelection();
+      }
+
+      root.querySelectorAll("[data-demo-tab]").forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          setTab(tab.getAttribute("data-demo-tab"));
+        });
+      });
+
+      root.addEventListener("click", function (e) {
+        var selectAll = e.target.closest("[data-demo-select-all]");
+        if (selectAll && root.contains(selectAll)) {
+          e.preventDefault();
+          var state = selectAll.getAttribute("data-state");
+          setAll(state !== "all");
+          return;
+        }
+        var row = e.target.closest("[data-demo-row]");
+        if (row && root.contains(row)) {
+          toggleBank(row.getAttribute("data-bank"));
+        }
+      });
+
+      var applyBtn = root.querySelector("[data-demo-apply]");
+      if (applyBtn) {
+        applyBtn.addEventListener("click", function () {
+          var n = Object.keys(selected).filter(function (id) { return selected[id]; }).length;
+          if (!n) return;
+          applyBtn.textContent = "Applied (" + n + ")";
+          window.setTimeout(function () {
+            applyBtn.textContent = "Apply once";
+          }, 1400);
+        });
+      }
+
+      paintSelection();
+
+      /* Fixed design size so tabs don't resize the demo. */
+      var DESIGN_W = 860;
+      var DESIGN_H = 460;
+      /* Soft hang-off only — fill the slot so the table stays readable */
+      var BOTTOM_CUT = 24;
+      var RIGHT_CUT = 32;
+      var NUDGE_DOWN = 54; /* small shift down inside the card */
+
+      function fitFrame() {
+        var el = document.getElementById("fit");
+        if (!el) return;
+        var vw = Math.max(window.innerWidth, 1);
+        var vh = Math.max(window.innerHeight, 1);
+        /* Slightly larger than the slot → light lower-right crop, more UI in view */
+        var s = Math.min((vw + RIGHT_CUT) / DESIGN_W, (vh + BOTTOM_CUT) / DESIGN_H);
+        var scaledW = DESIGN_W * s;
+        var scaledH = DESIGN_H * s;
+        var left = vw - scaledW + RIGHT_CUT;
+        var top = Math.max(4, vh - scaledH + BOTTOM_CUT) + NUDGE_DOWN;
+        el.style.left = left + "px";
+        el.style.top = top + "px";
+        el.style.transform = "scale(" + s + ")";
+      }
+      window.addEventListener("resize", fitFrame);
+      if (typeof ResizeObserver !== "undefined") {
+        new ResizeObserver(fitFrame).observe(document.documentElement);
+      }
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(fitFrame);
+      }
+      fitFrame();
+      window.setTimeout(fitFrame, 100);
+      window.setTimeout(fitFrame, 400);
+    })();
+  </script>
+</body>
+</html>

@@ -26,6 +26,14 @@
     --shroffin-focus: #0071e3;
     --shroffin-focus-width: 2px;
     --shroffin-focus-offset: 3px;
+    /* Frosted globalnav — same grey as home hero / footer base; blur stays on the bar. */
+    --shroffin-gn-frost: #f5f7f9;
+    --shroffin-gn-bg: rgba(245, 247, 249, 0.8);
+    --shroffin-gn-bg-fallback: rgba(245, 247, 249, 0.96);
+    --shroffin-gn-bg-open: rgba(245, 247, 249, 0.92);
+    /* Dim behind open menus — not the menu frost (bar + dropdown only). */
+    --shroffin-gn-veil: rgba(29, 29, 31, 0.28);
+    --shroffin-gn-border: rgba(0, 0, 0, 0.05);
     --shroffin-gn-height: 48px;
     /* How much of the main bar stays pinned — full when fixed; 0 when it scrolls away. */
     --shroffin-gn-offset: var(--shroffin-gn-height);
@@ -335,7 +343,7 @@
   .apf-label {
     font-size: var(--shroffin-field-label-size);
     font-weight: 500;
-    letter-spacing: 0.01em;
+    letter-spacing: normal;
     color: var(--shroffin-muted);
   }
 
@@ -353,7 +361,7 @@
     color: var(--shroffin-ink);
     font: inherit;
     font-size: var(--shroffin-field-font-size);
-    letter-spacing: -0.01em;
+    letter-spacing: normal;
     transition: border-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
   }
 
@@ -497,11 +505,15 @@
     inset-inline: 0;
     z-index: var(--shroffin-z-nav);
     block-size: var(--shroffin-gn-height);
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--shroffin-gn-bg);
+    border-block-end: none;
+    box-shadow: 0 0.5px 0 var(--shroffin-gn-border);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     backdrop-filter: saturate(180%) blur(20px);
     font-family: var(--shroffin-font);
-    transition: background-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
+    transition:
+      background-color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+      box-shadow var(--shroffin-micro-duration) var(--shroffin-color-ease);
   }
 
   /* Guide pages (any width): main bar scrolls away; Guide sub-bar stays pinned.
@@ -528,13 +540,13 @@
   /* Browsers without backdrop-filter: fall back to a near-solid bar so text stays legible. */
   @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
     .globalnav {
-      background: rgba(255, 255, 255, 0.96);
+      background: var(--shroffin-gn-bg-fallback);
     }
   }
 
   .globalnav.flyout-open,
   .globalnav.compact-open {
-    background: rgba(255, 255, 255, 0.92);
+    background: var(--shroffin-gn-bg-open);
   }
 
   .globalnav-content {
@@ -670,7 +682,8 @@
     overscroll-behavior: contain;
     visibility: hidden;
     pointer-events: none;
-    background: #fafafc;
+    /* Same surface as the open bar — not the page veil. */
+    background: var(--shroffin-gn-frost);
     transition:
       max-block-size var(--shroffin-ui-duration) var(--shroffin-ease),
       visibility var(--shroffin-ui-duration) var(--shroffin-ease);
@@ -833,9 +846,10 @@
     inset-inline: 0;
     inset-block-end: 0;
     z-index: var(--shroffin-z-veil);
-    background: rgba(232, 232, 237, 0.4);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    backdrop-filter: saturate(180%) blur(20px);
+    /* Dark dim only — keeps frost on the bar + dropdown, not the whole page. */
+    background: var(--shroffin-gn-veil);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -967,7 +981,7 @@
     overflow: hidden;
     visibility: hidden;
     pointer-events: none;
-    background: #fafafc;
+    background: var(--shroffin-gn-frost);
     transition:
       block-size var(--shroffin-ui-duration) var(--shroffin-ease),
       visibility var(--shroffin-ui-duration) var(--shroffin-ease);
@@ -998,7 +1012,7 @@
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-    background: #fafafc;
+    background: var(--shroffin-gn-frost);
     transition: transform var(--shroffin-ui-duration) var(--shroffin-ease);
   }
 
@@ -1054,7 +1068,7 @@
     font-size: 1.75rem;
     font-weight: 600;
     line-height: 1.14286;
-    letter-spacing: -0.01em;
+    letter-spacing: normal;
     text-align: start;
     text-decoration: none;
     cursor: pointer;
@@ -1067,7 +1081,7 @@
     font-size: 1.0625rem;
     font-weight: 600;
     line-height: 1.23536;
-    letter-spacing: 0;
+    letter-spacing: normal;
   }
 
   .globalnav-compact-item--with-value {
@@ -1088,7 +1102,7 @@
     font-size: 0.875rem;
     font-weight: 400;
     line-height: 1.35;
-    letter-spacing: 0;
+    letter-spacing: normal;
   }
 
   .globalnav-compact-item--drill::after {
@@ -1107,7 +1121,7 @@
     font-size: 0.75rem;
     font-weight: 600;
     line-height: 1.3334;
-    letter-spacing: 0.02em;
+    letter-spacing: normal;
   }
 
   .globalnav.compact-open .globalnav-compact-panel--root .globalnav-compact-list > li {
@@ -1257,7 +1271,7 @@
     max-width: 12em;
     font-size: 40px;
     font-weight: 700;
-    letter-spacing: 0;
+    letter-spacing: normal;
     line-height: 1.1;
     color: var(--shroffin-ink);
   }
@@ -1271,7 +1285,7 @@
     /* Phone default; 735–833 kept small by the max-width: 833 override below. */
     font-size: 15px;
     font-weight: 700;
-    letter-spacing: 0.012em;
+    letter-spacing: normal;
     line-height: 1.3;
     color: var(--shroffin-ink);
   }
@@ -1294,14 +1308,14 @@
     .site-prefooter-cta-title {
       margin-block-end: 7px;
       font-size: 72px;
-      letter-spacing: -0.012em;
+      letter-spacing: normal;
       line-height: 1.05556;
     }
 
     .site-prefooter-cta-lead {
       margin-block-end: 28px;
       font-size: 24px;
-      letter-spacing: 0.009em;
+      letter-spacing: normal;
       line-height: 1.16667;
     }
   }
@@ -1315,14 +1329,14 @@
     .site-prefooter-cta-title {
       margin-block-end: 12px;
       font-size: 96px;
-      letter-spacing: -0.015em;
+      letter-spacing: normal;
       line-height: 1.04167;
     }
 
     .site-prefooter-cta-lead {
       margin-block-end: 41px;
       font-size: 40px;
-      letter-spacing: 0;
+      letter-spacing: normal;
       line-height: 1.1;
     }
   }
@@ -1331,7 +1345,7 @@
   @media (max-width: 833px) {
     .site-prefooter-cta-lead {
       font-size: 15px;
-      letter-spacing: 0.012em;
+      letter-spacing: normal;
       line-height: 1.3;
     }
   }
@@ -1372,7 +1386,7 @@
     margin-inline: auto;
     font-size: clamp(0.95rem, 2.2vw, 1.05rem);
     font-weight: 400;
-    letter-spacing: -0.01em;
+    letter-spacing: normal;
     line-height: 1.5;
     color: var(--shroffin-ink);
   }
@@ -1499,7 +1513,7 @@
     font-family: var(--shroffin-font);
     font-size: 0.875rem;
     line-height: 1.3334;
-    letter-spacing: -0.01em;
+    letter-spacing: normal;
   }
 
   .site-footer-inner {
@@ -1573,7 +1587,7 @@
     font-size: 0.875rem;
     font-weight: 600;
     line-height: 1.3334;
-    letter-spacing: -0.01em;
+    letter-spacing: normal;
   }
 
   .site-footer-list {
@@ -1597,7 +1611,7 @@
     max-inline-size: 100%;
     color: var(--shroffin-muted);
     font-weight: 400;
-    letter-spacing: -0.01em;
+    letter-spacing: normal;
     /* Wrap between words only — never mid-label (e.g. LinkedIn → LinkedI / n). */
     overflow-wrap: normal;
     word-break: normal;
@@ -1663,7 +1677,7 @@
     background: transparent;
     color: inherit;
     font: inherit;
-    letter-spacing: inherit;
+    letter-spacing: normal;
     text-align: start;
     cursor: text;
   }
@@ -1771,7 +1785,7 @@
     color: var(--shroffin-ink);
     font-size: 0.875rem;
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: normal;
   }
 
   .site-footer-disclaimer {
@@ -1952,7 +1966,7 @@
     line-height: 1.35;
     color: var(--shroffin-muted);
     font-weight: 400;
-    letter-spacing: -0.01em;
+    letter-spacing: normal;
     text-decoration: none;
     white-space: nowrap;
     transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2568,6 +2582,78 @@
 .guide-seg-panel.is-sel-fading {
   opacity: 0;
   pointer-events: none;
+}
+
+/*
+ * Dark-surface title washes (home story band).
+ * Apple product kit: each beat gets its own hue story (not one shared blue).
+ * Mid-rich stops — clear colour travel, readable on #1a1a1a (≥ 3:1 large text).
+ */
+.home-title-wash {
+  background-image: var(--home-title-g);
+  background-size: 100% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+}
+
+/* Violet → magenta → blue */
+.home-title-wash--siri {
+  --home-title-g: linear-gradient(90deg, #5e5ce6 0%, #bf5af2 42%, #2997ff 100%);
+}
+
+/* Blue → cyan → teal (privacy) */
+.home-title-wash--privacy {
+  --home-title-g: linear-gradient(90deg, #0a84ff 0%, #64d2ff 45%, #00c7be 100%);
+}
+
+/* Teal → green (calm / no urgency) */
+.home-title-wash--sea {
+  --home-title-g: linear-gradient(90deg, #00c7be 0%, #30d158 52%, #64d96a 100%);
+}
+
+/* Indigo → violet → rose (fairness) */
+.home-title-wash--dusk {
+  --home-title-g: linear-gradient(90deg, #5e5ce6 0%, #bf5af2 48%, #ff375f 100%);
+}
+
+/* Cyan → blue → indigo */
+.home-title-wash--sky {
+  --home-title-g: linear-gradient(90deg, #64d2ff 0%, #0a84ff 42%, #5e5ce6 100%);
+}
+
+/* Blue → indigo → violet (apply) */
+.home-title-wash--chip {
+  --home-title-g: linear-gradient(90deg, #0071e3 0%, #5e5ce6 50%, #bf5af2 100%);
+}
+
+/*
+ * Hollow “Transparent” outline — same treatment as the former home-clear display:
+ * empty fill + light stroke so the word itself reads as see-through.
+ */
+.home-clear-word {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  letter-spacing: normal;
+  -webkit-text-stroke: clamp(1.25px, 0.028em, 2.25px) rgba(245, 245, 247, 0.62);
+  paint-order: stroke fill;
+}
+
+@media (forced-colors: active) {
+  .home-title-wash {
+    background-image: none;
+    color: CanvasText;
+    -webkit-text-fill-color: CanvasText;
+  }
+
+  .home-clear-word {
+    color: CanvasText;
+    -webkit-text-fill-color: CanvasText;
+    -webkit-text-stroke: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

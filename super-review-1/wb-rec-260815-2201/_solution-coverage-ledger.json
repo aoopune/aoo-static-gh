@@ -1,0 +1,273 @@
+{
+  "folder": "wb-rec-260815-2201",
+  "sequence_index": 12,
+  "recording_id": "d522b06c-e432-4037-b050-9e734263df9f",
+  "started_at": "2026-08-15T16:31:29.295Z",
+  "ended_at": "2026-08-15T16:31:40.541Z",
+  "duration_ms": 11246,
+  "prev_folder": "wb-rec-260815-2134",
+  "next_folder": "wb-rec-260815-2204",
+  "files_in_folder": [
+    "audio.json",
+    "audio.lrc",
+    "audio.srt",
+    "audio.text",
+    "audio.tsv",
+    "audio.txt",
+    "audio.vtt",
+    "audio.webm",
+    "audio_sentences.txt",
+    "console.json",
+    "events.json",
+    "index.html",
+    "manifest.json",
+    "pages.json",
+    "replay.spec.ts",
+    "screenshots/0000.jpg",
+    "screenshots/0001.jpg",
+    "screenshots/index.json",
+    "tabs.json",
+    "viewer.css",
+    "viewer.js"
+  ],
+  "file_status": {
+    "audio.json": "fully_read_chunked",
+    "audio.lrc": "fully_read",
+    "audio.srt": "fully_read",
+    "audio.text": "fully_read",
+    "audio.tsv": "fully_read",
+    "audio.txt": "fully_read",
+    "audio.vtt": "fully_read",
+    "audio.webm": "binary_audio_untranscribed_use_text_artifacts",
+    "audio_sentences.txt": "fully_read",
+    "console.json": "fully_read",
+    "events.json": "fully_read",
+    "index.html": "player_shell_with_inlined_json_fully_read",
+    "manifest.json": "fully_read",
+    "pages.json": "fully_read",
+    "replay.spec.ts": "fully_read",
+    "screenshots/0000.jpg": "fully_read_image",
+    "screenshots/0001.jpg": "fully_read_image",
+    "screenshots/index.json": "fully_read",
+    "tabs.json": "fully_read",
+    "viewer.css": "player_chrome_fully_read_confirmed",
+    "viewer.js": "player_chrome_fully_read_confirmed"
+  },
+  "files_missing_expected": ["none"],
+  "helper_issue_files_read": ["_coverage-ledger.json"],
+  "screenshots_index_count": 2,
+  "screenshots_files_seen": 2,
+  "solutions_written": [],
+  "solution_count": 0,
+  "zero_solution_reason": "11.2s idle on Explore banks with no clicks; all speech artifacts agree this is personal bar-plan talk (Mahendra / go alone / tomorrow / not alone) never applied as a site pattern, convenience rule, or company idea; screenshots 0000.jpg and 0001.jpg are the unchanged Loan inputs form; not a continuation of prev CIBIL/charges (~21 min earlier) or next monthly-income/hacks recap (~2.5 min later).",
+  "linked_issues": [],
+  "continuations": [],
+  "prev_boundary_read": true,
+  "next_boundary_read": true,
+  "issue_files_left_untouched": true,
+  "file_usage": [
+    {
+      "path": "audio.json",
+      "bytes": 9260,
+      "status": "fully_read_chunked",
+      "facts_taken": [
+        "4 segments, language tagged mr (do not trust; speech is English)",
+        "avg_logprob -0.77345, no_speech_prob 0.22357 on all segments",
+        "full text: Mahendra, do you want to go to the bar? No, I can. I can go alone. And will you go tomorrow? Because I don't want to go to the bar alone.",
+        "word bar at 9.38s probability 0.907; first bar? at 2.54s probability 0.143; do 0.062; Mahendra 0.277"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "audio.lrc",
+      "bytes": 246,
+      "status": "fully_read",
+      "facts_taken": [
+        "same four timed lines as srt: bar question, go alone, tomorrow, not go to the bar alone"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "audio.srt",
+      "bytes": 286,
+      "status": "fully_read",
+      "facts_taken": [
+        "cues 00:00:00,000-00:00:02,540 Mahendra, do you want to go to the bar?",
+        "00:00:03,920-00:00:05,500 No, I can. I can go alone.",
+        "00:00:06,360-00:00:07,060 And will you go tomorrow?",
+        "00:00:07,780-00:00:09,920 Because I don't want to go to the bar alone."
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "audio.text",
+      "bytes": 142,
+      "status": "fully_read",
+      "facts_taken": [
+        "plain dump matches srt/json: bar plans only, no site words"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "audio.tsv",
+      "bytes": 195,
+      "status": "fully_read",
+      "facts_taken": [
+        "ms clock: 0-2540, 3920-5500, 6360-7060, 7780-9920 same four sentences as srt"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "audio.txt",
+      "bytes": 250,
+      "status": "fully_read",
+      "facts_taken": [
+        "whisper line dump with same four spans as vtt; no extra solution language"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "audio.vtt",
+      "bytes": 260,
+      "status": "fully_read",
+      "facts_taken": [
+        "WEBVTT same four cues as srt"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "audio.webm",
+      "bytes": 177099,
+      "status": "binary_audio_untranscribed_use_text_artifacts",
+      "facts_taken": [
+        "binary mic file present; not played or re-transcribed; speech taken from text artifacts"
+      ],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "audio_sentences.txt",
+      "bytes": 137,
+      "status": "fully_read",
+      "facts_taken": [
+        "one paragraph of the four bar sentences concatenated; file present (not missing)"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "console.json",
+      "bytes": 2,
+      "status": "fully_read",
+      "facts_taken": [
+        "empty array []; no console errors captured"
+      ],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "events.json",
+      "bytes": 8905,
+      "status": "fully_read",
+      "facts_taken": [
+        "2 events: landmark_snapshot t=202 url explore-banks.html title Explore banks – Shroffin; idle t=605 duration_ms=7673",
+        "no click, focus, input, scroll, or navigation"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "index.html",
+      "bytes": 20707,
+      "status": "player_shell_with_inlined_json_fully_read",
+      "facts_taken": [
+        "generic Workbooks viewer shell; comment sentinels contain inlined manifest id d522b06c-e432-4037-b050-9e734263df9f, start_url explore-banks.html, started_at 2026-08-15T16:31:29.295Z, ended_at 2026-08-15T16:31:40.541Z, duration_ms 11246, events_count 2, screenshots_count 2",
+        "body script tags still hold __MANIFEST_JSON__ etc placeholders; no session discussion beyond recorder chrome"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 3469,
+      "status": "fully_read",
+      "facts_taken": [
+        "id d522b06c-e432-4037-b050-9e734263df9f, start_url http://localhost:8765/pages/explore-banks.html",
+        "started_at 2026-08-15T16:31:29.295Z ended_at 2026-08-15T16:31:40.541Z duration_ms 11246",
+        "events_count 2 screenshots_count 2 console_count 0 tabs_count 1 pages_count 1 mic true viewport 1366x768",
+        "audio.file audio.webm capture_model semantic"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "pages.json",
+      "bytes": 13206,
+      "status": "fully_read",
+      "facts_taken": [
+        "one page p1 Explore banks – Shroffin, h1 Explore banks., form Loan inputs, regions Filters and Bank options",
+        "fields include Monthly income, Property agreement value, Age, CIBIL score, Existing EMIs, FOIR, Tenure, co-applicant",
+        "first_visit_t 202 screenshot screenshots/0000.jpg — names the idle screen, not a discussed direction"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "replay.spec.ts",
+      "bytes": 593,
+      "status": "fully_read",
+      "facts_taken": [
+        "goto explore-banks.html; comments unknown event kind landmark_snapshot; idle 7673ms; no interaction locators"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "screenshots/0000.jpg",
+      "bytes": 87761,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=203 start: Explore banks Loan inputs card (income 12000, property 6000, age 35, CIBIL 780, Self-employed, Regular), Adjust eligibility collapsed, See options, Overview tab, Apply once, Filters/Clear all, table headers Lenders Rate Loan amount Tenure EMI",
+        "unchanged form; speech not about any of these controls"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "screenshots/0001.jpg",
+      "bytes": 87726,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=8204 periodic: same Explore banks viewport as 0000.jpg (same filled values and collapsed Adjust eligibility); no UI change during bar talk"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "screenshots/index.json",
+      "bytes": 1018,
+      "status": "fully_read",
+      "facts_taken": [
+        "2 shots: 0000.jpg t=203 reason start; 0001.jpg t=8204 reason periodic; both explore-banks.html; same mask_rects heuristic at (487,633) and (515,677); redaction_mode black"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "tabs.json",
+      "bytes": 160,
+      "status": "fully_read",
+      "facts_taken": [
+        "one tab 1351502398 stay on http://localhost:8765/pages/explore-banks.html entered_at 1786811489295 left_at 1786811500490"
+      ],
+      "used_for": ["timeline_alignment", "checked_no_extra_signal"]
+    },
+    {
+      "path": "viewer.css",
+      "bytes": 17895,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": [
+        "generic Workbooks bundle viewer styles (header, activity feed, badges, lightbox, audio footer); 661 lines; no session-specific talk"
+      ],
+      "used_for": ["checked_no_extra_signal"]
+    },
+    {
+      "path": "viewer.js",
+      "bytes": 32334,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": [
+        "generic Workbooks bundle viewer IIFE: loadInline JSON, activity/console/network/shots/tabs/manifest/audio/lightbox; 746 lines; no session-specific talk"
+      ],
+      "used_for": ["checked_no_extra_signal"]
+    }
+  ]
+}

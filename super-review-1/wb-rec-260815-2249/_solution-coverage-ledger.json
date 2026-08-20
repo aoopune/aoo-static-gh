@@ -1,0 +1,590 @@
+{
+  "folder": "wb-rec-260815-2249",
+  "sequence_index": 19,
+  "recording_id": "55f40b18-3bf3-46a3-b169-7adabe6886b1",
+  "started_at": "2026-08-15T17:19:17.338Z",
+  "ended_at": "2026-08-15T17:21:34.102Z",
+  "duration_ms": 136764,
+  "prev_folder": "wb-rec-260815-2240",
+  "next_folder": "wb-rec-260815-2302",
+  "files_in_folder": [
+    "_theme-cards.json",
+    "audio.json",
+    "audio.lrc",
+    "audio.srt",
+    "audio.text",
+    "audio.tsv",
+    "audio.txt",
+    "audio.vtt",
+    "audio.webm",
+    "audio_sentences.txt",
+    "console.json",
+    "events.json",
+    "index.html",
+    "manifest.json",
+    "pages.json",
+    "replay.spec.ts",
+    "screenshots/0000.jpg",
+    "screenshots/0001.jpg",
+    "screenshots/0002.jpg",
+    "screenshots/0003.jpg",
+    "screenshots/0004.jpg",
+    "screenshots/0005.jpg",
+    "screenshots/0006.jpg",
+    "screenshots/0007.jpg",
+    "screenshots/0008.jpg",
+    "screenshots/0009.jpg",
+    "screenshots/0010.jpg",
+    "screenshots/0011.jpg",
+    "screenshots/0012.jpg",
+    "screenshots/0013.jpg",
+    "screenshots/0014.jpg",
+    "screenshots/0015.jpg",
+    "screenshots/0016.jpg",
+    "screenshots/0017.jpg",
+    "screenshots/0018.jpg",
+    "screenshots/0019.jpg",
+    "screenshots/index.json",
+    "tabs.json",
+    "viewer.css",
+    "viewer.js"
+  ],
+  "file_status": {
+    "_theme-cards.json": "fully_read",
+    "audio.json": "fully_read_chunked",
+    "audio.lrc": "fully_read",
+    "audio.srt": "fully_read",
+    "audio.text": "fully_read",
+    "audio.tsv": "fully_read",
+    "audio.txt": "fully_read",
+    "audio.vtt": "fully_read",
+    "audio.webm": "binary_audio_untranscribed_use_text_artifacts",
+    "audio_sentences.txt": "fully_read",
+    "console.json": "fully_read",
+    "events.json": "fully_read",
+    "index.html": "player_shell_with_inlined_json_fully_read",
+    "manifest.json": "fully_read",
+    "pages.json": "fully_read",
+    "replay.spec.ts": "fully_read",
+    "screenshots/0000.jpg": "fully_read_image",
+    "screenshots/0001.jpg": "fully_read_image",
+    "screenshots/0002.jpg": "fully_read_image",
+    "screenshots/0003.jpg": "fully_read_image",
+    "screenshots/0004.jpg": "fully_read_image",
+    "screenshots/0005.jpg": "fully_read_image",
+    "screenshots/0006.jpg": "fully_read_image",
+    "screenshots/0007.jpg": "fully_read_image",
+    "screenshots/0008.jpg": "fully_read_image",
+    "screenshots/0009.jpg": "fully_read_image",
+    "screenshots/0010.jpg": "fully_read_image",
+    "screenshots/0011.jpg": "fully_read_image",
+    "screenshots/0012.jpg": "fully_read_image",
+    "screenshots/0013.jpg": "fully_read_image",
+    "screenshots/0014.jpg": "fully_read_image",
+    "screenshots/0015.jpg": "fully_read_image",
+    "screenshots/0016.jpg": "fully_read_image",
+    "screenshots/0017.jpg": "fully_read_image",
+    "screenshots/0018.jpg": "fully_read_image",
+    "screenshots/0019.jpg": "fully_read_image",
+    "screenshots/index.json": "fully_read",
+    "tabs.json": "fully_read",
+    "viewer.css": "player_chrome_fully_read_confirmed",
+    "viewer.js": "player_chrome_fully_read_confirmed"
+  },
+  "files_missing_expected": [
+    "none"
+  ],
+  "helper_issue_files_read": [
+    "issue-01-adjust-eligibility-hidden-not-shown-as-columns.md"
+  ],
+  "screenshots_index_count": 20,
+  "screenshots_files_seen": 20,
+  "solutions_written": [
+    "solution-01-show-extra-eligibility-as-direct-columns.md",
+    "solution-02-mandate-income-share-not-every-extra.md"
+  ],
+  "solution_count": 2,
+  "zero_solution_reason": null,
+  "linked_issues": [
+    {
+      "solution_file": "solution-01-show-extra-eligibility-as-direct-columns.md",
+      "issue_file": "issue-01-adjust-eligibility-hidden-not-shown-as-columns.md"
+    },
+    {
+      "solution_file": "solution-02-mandate-income-share-not-every-extra.md",
+      "issue_file": "issue-01-adjust-eligibility-hidden-not-shown-as-columns.md"
+    }
+  ],
+  "continuations": [
+    {
+      "solution_file": "solution-01-show-extra-eligibility-as-direct-columns.md",
+      "direction": "from",
+      "other_folder": "wb-rec-260815-2240"
+    },
+    {
+      "solution_file": "solution-01-show-extra-eligibility-as-direct-columns.md",
+      "direction": "into",
+      "other_folder": "wb-rec-260815-2302"
+    },
+    {
+      "solution_file": "solution-02-mandate-income-share-not-every-extra.md",
+      "direction": "into",
+      "other_folder": "wb-rec-260815-2302"
+    }
+  ],
+  "prev_boundary_read": true,
+  "next_boundary_read": true,
+  "issue_files_left_untouched": true,
+  "file_usage": [
+    {
+      "path": "_theme-cards.json",
+      "bytes": 3396,
+      "status": "fully_read",
+      "facts_taken": [
+        "issue-run theme card for extras-vs-columns; not session speech"
+      ],
+      "used_for": [
+        "checked_no_extra_signal"
+      ]
+    },
+    {
+      "path": "audio.json",
+      "bytes": 79052,
+      "status": "fully_read_chunked",
+      "facts_taken": [
+        "35 Whisper segments; language mr ignored; availability p~0.078; culture p~0.45; intelligence p~0.49; word times for columns and mandating talk"
+      ],
+      "used_for": [
+        "supports_solution",
+        "supports_idea",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.lrc",
+      "bytes": 2286,
+      "status": "fully_read",
+      "facts_taken": [
+        "lyric timestamps matching all 35 speech cues"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.srt",
+      "bytes": 2662,
+      "status": "fully_read",
+      "facts_taken": [
+        "primary speech clock cues 1-35 including show columns and no mandating"
+      ],
+      "used_for": [
+        "supports_solution",
+        "supports_idea",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.text",
+      "bytes": 1376,
+      "status": "fully_read",
+      "facts_taken": [
+        "plain transcript of columns/optional/mandating/field walk"
+      ],
+      "used_for": [
+        "supports_solution",
+        "supports_idea"
+      ]
+    },
+    {
+      "path": "audio.tsv",
+      "bytes": 1834,
+      "status": "fully_read",
+      "facts_taken": [
+        "ms start/end 1210-135470 for every cue"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.txt",
+      "bytes": 2321,
+      "status": "fully_read",
+      "facts_taken": [
+        "timed dump same family as srt"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.vtt",
+      "bytes": 2331,
+      "status": "fully_read",
+      "facts_taken": [
+        "WEBVTT same cues as srt"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.webm",
+      "bytes": 2198076,
+      "status": "binary_audio_untranscribed_use_text_artifacts",
+      "facts_taken": [
+        "binary mic 2198076 bytes; not played; use text artifacts"
+      ],
+      "used_for": [
+        "checked_no_extra_signal"
+      ]
+    },
+    {
+      "path": "audio_sentences.txt",
+      "bytes": 1340,
+      "status": "fully_read",
+      "facts_taken": [
+        "one-block transcript of same session talk"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "console.json",
+      "bytes": 2,
+      "status": "fully_read",
+      "facts_taken": [
+        "empty array; no console errors"
+      ],
+      "used_for": [
+        "checked_no_extra_signal"
+      ]
+    },
+    {
+      "path": "events.json",
+      "bytes": 20170,
+      "status": "fully_read",
+      "facts_taken": [
+        "43 events; See options 1995/35477; form-more toggles; scrolls; landmark Explore banks"
+      ],
+      "used_for": [
+        "supports_solution",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "index.html",
+      "bytes": 37621,
+      "status": "player_shell_with_inlined_json_fully_read",
+      "facts_taken": [
+        "player shell; HTML comment inlines id 55f40b18-3bf3-46a3-b169-7adabe6886b1 Explore banks 20 shots; no extra discussion"
+      ],
+      "used_for": [
+        "checked_no_extra_signal",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 3472,
+      "status": "fully_read",
+      "facts_taken": [
+        "id 55f40b18-3bf3-46a3-b169-7adabe6886b1; start_url explore-banks; duration_ms 136764; screenshots_count 20; viewport 1366x768"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "pages.json",
+      "bytes": 13206,
+      "status": "fully_read",
+      "facts_taken": [
+        "title Explore banks \u2013 Shroffin; Loan inputs extras Existing EMIs FOIR Tenure* co-applicant"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "replay.spec.ts",
+      "bytes": 3999,
+      "status": "fully_read",
+      "facts_taken": [
+        "Playwright See options twice and repeated hlc-form-more clicks plus idle gaps"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0000.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=185 start Adjust eligibility open Existing EMIs Credit cards FOIR Tenure Co-applicant"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0001.jpg",
+      "bytes": 108422,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=2397 five-column bank table Canara 8.80% loan 5400 EMI 48"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0002.jpg",
+      "bytes": 100927,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=7134 extras collapsed over table"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0003.jpg",
+      "bytes": 85302,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=15490 extras expanded during 4/5 columns speech"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0004.jpg",
+      "bytes": 85261,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=24186 expanded form how-big talk"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0005.jpg",
+      "bytes": 85261,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=32186 same expanded form"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0006.jpg",
+      "bytes": 109704,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=35880 table after second See options"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0007.jpg",
+      "bytes": 107065,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=43034 collapsed extras over table"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0008.jpg",
+      "bytes": 87008,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=52186 Explore banks heading collapsed extras table headers"
+      ],
+      "used_for": [
+        "related_discussion"
+      ]
+    },
+    {
+      "path": "screenshots/0009.jpg",
+      "bytes": 91583,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=60186 extras open during optional columns speech"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0010.jpg",
+      "bytes": 89420,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=61423 collapsed with Canara EMI 48"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0011.jpg",
+      "bytes": 85558,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=67000 extras open Existing EMIs"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0012.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=76186 extras open field walk"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0013.jpg",
+      "bytes": 89764,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=80540 collapsed during so many questions"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0014.jpg",
+      "bytes": 90712,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=90186 collapsed near credit-card/upper-limit talk"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0015.jpg",
+      "bytes": 84947,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=97188 extras open Existing EMI credit cards"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0016.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=106187 FOIR 55% Co-applicant No"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0017.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=116186 extras open tenure co-applicant talk"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0018.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=124186 extras open people only fill upper limit"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0019.jpg",
+      "bytes": 85275,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "t=132186 same form during playing a song aside"
+      ],
+      "used_for": [
+        "checked_no_extra_signal"
+      ]
+    },
+    {
+      "path": "screenshots/index.json",
+      "bytes": 10010,
+      "status": "fully_read",
+      "facts_taken": [
+        "20 shots t/reason/url all localhost explore-banks"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "tabs.json",
+      "bytes": 160,
+      "status": "fully_read",
+      "facts_taken": [
+        "one tab Explore banks whole session tab_id 1351502398"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "viewer.css",
+      "bytes": 17895,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": [
+        "17895 bytes generic replay player styles; no session talk"
+      ],
+      "used_for": [
+        "checked_no_extra_signal"
+      ]
+    },
+    {
+      "path": "viewer.js",
+      "bytes": 32334,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": [
+        "32334 bytes generic replay player script; no session talk"
+      ],
+      "used_for": [
+        "checked_no_extra_signal"
+      ]
+    }
+  ],
+  "viewer_js_bytes": 32334,
+  "viewer_css_bytes": 17895,
+  "viewer_confirmation": "generic replay player; no session-specific discussion"
+}

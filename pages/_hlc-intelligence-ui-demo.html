@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intelligence — strip + More details demo</title>
+  <meta name="robots" content="noindex">
+  <style>
+    /*
+      Strip contract:
+      — eyebrow + status always visible
+      — tip headings only by default
+      — More expands horizon + body under each heading
+    */
+    :root {
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --text: #1d1d1f;
+      --text-2: #6e6e73;
+      --text-3: #86868b;
+      --line: rgba(0, 0, 0, 0.088);
+      --page: #f5f5f7;
+      --surface: #ffffff;
+      --link: #0066cc;
+      --focus: #0071e3;
+      --module-radius: 8px;
+      --content: 896px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+        "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--page);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.47059;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .demo-chrome {
+      width: min(100% - 48px, var(--content));
+      margin: 0 auto;
+      padding: 40px 0 8px;
+    }
+
+    @media (max-width: 733px) {
+      .demo-chrome {
+        width: min(100% - 40px, var(--content));
+        padding-top: 28px;
+      }
+    }
+
+    .demo-note {
+      margin: 0 0 20px;
+      font-size: 14px;
+      line-height: 1.42859;
+      color: var(--text-3);
+      max-width: 36em;
+    }
+
+    .demo-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .demo-toolbar button {
+      font: inherit;
+      font-size: 12px;
+      padding: 8px 14px;
+      min-height: 36px;
+      border: 0;
+      border-radius: 980px;
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--text-2);
+      cursor: pointer;
+    }
+
+    .demo-toolbar button[aria-pressed="true"] {
+      background: var(--text);
+      color: #fff;
+    }
+
+    .demo-toolbar button:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .demo-stage {
+      width: min(100% - 48px, var(--content));
+      margin: 0 auto 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    @media (max-width: 733px) {
+      .demo-stage {
+        width: min(100% - 40px, var(--content));
+        margin-bottom: 72px;
+      }
+    }
+
+    .module {
+      position: relative;
+      isolation: isolate;
+      background: transparent;
+      border-radius: var(--module-radius);
+      overflow: visible;
+    }
+
+    .module::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      background: var(--surface);
+      box-shadow:
+        0 1px 2px rgba(60, 64, 67, 0.08),
+        0 8px 20px rgba(60, 64, 67, 0.1);
+    }
+
+    .hlc-intelligence::before {
+      background: linear-gradient(180deg, #f7f9fc 0%, #f3f6fa 100%);
+    }
+
+    .fake-form {
+      padding: clamp(1.75rem, 3.4vw, 2.35rem) clamp(1.45rem, 3.1vw, 2.15rem) 2.15rem;
+    }
+
+    .fake-form-label {
+      margin: 0 0 28px;
+      font-size: 12px;
+      color: var(--text-3);
+    }
+
+    .fake-fields {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 32px 40px;
+    }
+
+    @media (max-width: 833px) {
+      .fake-fields {
+        grid-template-columns: 1fr 1fr;
+        gap: 22px 28px;
+      }
+    }
+
+    .fake-field {
+      font-size: 21px;
+      line-height: 1.19048;
+    }
+
+    @media (max-width: 733px) {
+      .fake-field { font-size: 19px; }
+    }
+
+    .fake-field span {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: var(--text-3);
+    }
+
+    .fake-compare {
+      display: inline-block;
+      margin-top: 36px;
+      font-size: 17px;
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    .hlc-intelligence {
+      padding: clamp(1.35rem, 2.8vw, 1.85rem) clamp(1.45rem, 3.1vw, 2.15rem)
+        clamp(1.25rem, 2.4vw, 1.65rem);
+      opacity: 0;
+      transform: translateY(12px);
+      transition:
+        opacity 1s var(--ease),
+        transform 1.2s var(--ease);
+    }
+
+    .hlc-intelligence.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hlc-intelligence[hidden] { display: none !important; }
+
+    .hlc-intel-head { margin: 0 0 0.55rem; }
+
+    .hlc-intel-eyebrow {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.33337;
+      color: var(--text-3);
+    }
+
+    .hlc-intel-status {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.47059;
+      color: var(--text);
+      overflow-wrap: break-word;
+    }
+
+    @media (min-width: 734px) {
+      .hlc-intel-status {
+        font-size: 19px;
+        line-height: 1.4211;
+      }
+    }
+
+    .hlc-intelligence:not(.is-tips-open) .hlc-intel-tips {
+      list-style: none;
+      overflow: hidden;
+      max-height: 0;
+      margin: 0;
+      padding: 0;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .hlc-intelligence.is-tips-open .hlc-intel-tips {
+      list-style: none;
+      overflow: visible;
+      max-height: 40rem;
+      margin: 1rem 0 0;
+      padding: 0.95rem 0 0;
+      border-top: 1px solid var(--line);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      transition:
+        max-height 1.35s var(--ease),
+        opacity 1.05s var(--ease),
+        visibility 0s linear 0s;
+    }
+
+    .hlc-intel-tips[hidden] { display: none !important; }
+
+    @media (max-width: 733px) {
+      .hlc-intelligence:not(.is-tips-open) .hlc-intel-tips,
+      .hlc-intelligence.is-tips-open .hlc-intel-tips {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hlc-intel-tip {
+      min-width: 0;
+      padding: 0 1.25rem;
+      border-right: 1px solid var(--line);
+    }
+
+    .hlc-intel-tip:first-child { padding-left: 0; }
+    .hlc-intel-tip:last-child {
+      padding-right: 0;
+      border-right: 0;
+    }
+
+    @media (max-width: 733px) {
+      .hlc-intel-tip {
+        padding: 0.65rem 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .hlc-intel-tip:first-child { padding-top: 0; }
+      .hlc-intel-tip:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+    }
+
+    .hlc-intel-heading {
+      display: block;
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.33337;
+      color: var(--text);
+    }
+
+    @media (min-width: 734px) {
+      .hlc-intel-heading {
+        font-size: 16px;
+        line-height: 1.375;
+      }
+    }
+
+    .hlc-intel-tip-detail {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        grid-template-rows 1.35s var(--ease),
+        opacity 1.05s var(--ease),
+        visibility 0s linear 1.35s;
+    }
+
+    .hlc-intel-tip-detail-clip {
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .hlc-intelligence.is-tips-expanded .hlc-intel-tip-detail {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition:
+        grid-template-rows 1.35s var(--ease),
+        opacity 1.05s var(--ease),
+        visibility 0s linear 0s;
+    }
+
+    .hlc-intelligence.is-tips-expanded .hlc-intel-heading {
+      margin-bottom: 0.45rem;
+    }
+
+    .hlc-intel-horizon {
+      display: block;
+      margin: 0 0 0.4rem;
+      font-size: 12px;
+      line-height: 1.33337;
+      color: var(--text-3);
+    }
+
+    .hlc-intel-body {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.42859;
+      color: var(--text-2);
+      max-width: 36em;
+    }
+
+    @media (max-width: 733px) {
+      .hlc-intel-body { max-width: none; }
+    }
+
+    .hlc-intel-more {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      width: max-content;
+      max-width: 100%;
+      margin: 0.85rem auto 0;
+      padding: 9px 6px;
+      min-height: 44px;
+      border: 0;
+      background: transparent;
+      color: var(--link);
+      font: inherit;
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+    .hlc-intel-more[hidden] { display: none !important; }
+
+    .hlc-intel-more-chevron {
+      display: inline-flex;
+      width: 1.05em;
+      height: 1.05em;
+      transition: transform 0.85s var(--ease);
+    }
+
+    .hlc-intel-more-chevron svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+
+    .hlc-intel-more[aria-expanded="true"] .hlc-intel-more-chevron {
+      transform: rotate(180deg);
+    }
+
+    .hlc-intel-more:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
+
+    .hlc-intel-more:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .fake-results {
+      padding: 1.5rem clamp(1.45rem, 3.1vw, 2.15rem) 1.75rem;
+    }
+
+    .fake-results-tools {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      font-size: 14px;
+      color: var(--text-3);
+    }
+
+    .fake-tab.is-current {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .fake-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .fake-table th,
+    .fake-table td {
+      text-align: left;
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hlc-intelligence,
+      .hlc-intel-tip-detail,
+      .hlc-intel-more-chevron {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-chrome">
+    <p class="demo-note">
+      After Compare: only the status strip. More opens tip headings side by side
+      with body text under each. Show less folds them back.
+    </p>
+    <div class="demo-toolbar" role="group" aria-label="Demo states">
+      <button type="button" id="demo-3" aria-pressed="true">3 tips</button>
+      <button type="button" id="demo-status" aria-pressed="false">Status only</button>
+      <button type="button" id="demo-one" aria-pressed="false">1 tip</button>
+    </div>
+  </div>
+
+  <div class="demo-stage">
+    <div class="module fake-form" aria-hidden="true">
+      <p class="fake-form-label">Your details</p>
+      <div class="fake-fields">
+        <div class="fake-field"><span>Loan amount</span>₹45 lakh</div>
+        <div class="fake-field"><span>Income</span>₹1.2 lakh / mo</div>
+        <div class="fake-field"><span>CIBIL</span>720</div>
+        <div class="fake-field"><span>Tenure</span>20 years</div>
+      </div>
+      <a class="fake-compare" href="#" onclick="return false;">Compare</a>
+    </div>
+
+    <section
+      class="module hlc-intelligence is-visible"
+      id="hlc-intelligence"
+      aria-labelledby="hlc-intelligence-sr-heading"
+    >
+      <h2 id="hlc-intelligence-sr-heading" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">
+        From your matched list
+      </h2>
+
+      <div class="hlc-intel-head">
+        <p class="hlc-intel-eyebrow">From your matched list</p>
+      </div>
+
+      <p class="hlc-intel-status" id="hlc-intel-status" role="status"></p>
+
+      <ol class="hlc-intel-tips" id="hlc-intel-tips" aria-label="Facts from your matched list"></ol>
+
+      <button type="button" class="hlc-intel-more" id="hlc-intel-more" aria-expanded="false" aria-controls="hlc-intel-tips" hidden></button>
+    </section>
+
+    <div class="module fake-results" aria-hidden="true">
+      <div class="fake-results-tools">
+        <span class="fake-tab is-current">Overview</span>
+        <span class="fake-tab">Charges</span>
+        <span class="fake-tab">Other charges</span>
+      </div>
+      <table class="fake-table">
+        <thead>
+          <tr>
+            <th>Bank</th>
+            <th>Rate</th>
+            <th>EMI</th>
+            <th>Processing</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>HDFC Bank</td>
+            <td>8.40%</td>
+            <td>₹38,640</td>
+            <td>₹18,500</td>
+          </tr>
+          <tr>
+            <td>SBI</td>
+            <td>8.50%</td>
+            <td>₹38,920</td>
+            <td>₹6,500</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var MAX = 3;
+      var SAMPLE_STATUS =
+        "Across 33 banks for your profile, Punjab National Bank is cheapest at 7.25% — Central Bank of India is next at 7.30%";
+
+      var SAMPLE_TIPS = [
+        {
+          kind: "cibil",
+          horizon: "Before you apply",
+          heading: "At 720 CIBIL your best rate is 8.70% — 750 cuts it to 8.40%",
+          body: "That 0.30% gap is ₹1,200/mo (₹2.9 lakh over 20 years) on your matched list. Banks still set final terms."
+        },
+        {
+          kind: "existingEmis",
+          horizon: "Now",
+          heading: "₹25,000/mo EMIs cap you at ₹45 lakh — clear them for ₹62 lakh",
+          body: "Banks count existing EMIs against income. That ₹17 lakh gap is the biggest eligibility difference on this profile."
+        },
+        {
+          kind: "prepayment",
+          horizon: "Over months",
+          heading: "₹2 lakh prepayment at year 3 cuts EMI from ₹38,640 to ₹36,910",
+          body: "That EMI cut is ₹2.1 lakh over the remaining term on HDFC Bank at the current rate path."
+        }
+      ];
+
+      var el = {
+        panel: document.getElementById("hlc-intelligence"),
+        status: document.getElementById("hlc-intel-status"),
+        tips: document.getElementById("hlc-intel-tips"),
+        more: document.getElementById("hlc-intel-more"),
+        btn3: document.getElementById("demo-3"),
+        btnStatus: document.getElementById("demo-status"),
+        btnOne: document.getElementById("demo-one")
+      };
+
+      var tips = SAMPLE_TIPS.slice(0, 3);
+
+      function esc(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function setPressed(active) {
+        [el.btn3, el.btnStatus, el.btnOne].forEach(function (b) {
+          b.setAttribute("aria-pressed", b === active ? "true" : "false");
+        });
+      }
+
+      var CHEVRON =
+        '<span class="hlc-intel-more-chevron" aria-hidden="true">' +
+        '<svg viewBox="0 -960 960 960" focusable="false">' +
+        '<path fill="currentColor" d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/>' +
+        "</svg></span>";
+
+      function syncMore(open) {
+        if (!tips.length) {
+          el.panel.classList.remove("is-tips-open", "is-tips-expanded");
+          el.more.hidden = true;
+          el.more.setAttribute("aria-expanded", "false");
+          return;
+        }
+        el.more.hidden = false;
+        el.more.setAttribute("aria-expanded", open ? "true" : "false");
+        el.more.innerHTML =
+          '<span class="hlc-intel-more-label">' +
+          (open ? "Show less" : "More") +
+          "</span>" +
+          CHEVRON;
+        if (open) {
+          el.panel.classList.add("is-tips-open", "is-tips-expanded");
+        } else {
+          el.panel.classList.remove("is-tips-open", "is-tips-expanded");
+        }
+      }
+
+      function setOpen(open) {
+        var details = el.tips.querySelectorAll(".hlc-intel-tip-detail");
+        for (var i = 0; i < details.length; i++) {
+          details[i].setAttribute("aria-hidden", open ? "false" : "true");
+        }
+        el.tips.setAttribute("aria-hidden", open ? "false" : "true");
+        syncMore(open);
+      }
+
+      function render() {
+        el.status.textContent = SAMPLE_STATUS;
+        el.tips.innerHTML = tips
+          .slice(0, MAX)
+          .map(function (t) {
+            return (
+              '<li class="hlc-intel-tip">' +
+              '<strong class="hlc-intel-heading">' +
+              esc(t.heading) +
+              "</strong>" +
+              '<div class="hlc-intel-tip-detail" aria-hidden="true">' +
+              '<div class="hlc-intel-tip-detail-clip">' +
+              '<span class="hlc-intel-horizon">' +
+              esc(t.horizon) +
+              "</span>" +
+              '<p class="hlc-intel-body">' +
+              esc(t.body) +
+              "</p>" +
+              "</div>" +
+              "</div>" +
+              "</li>"
+            );
+          })
+          .join("");
+        el.tips.hidden = tips.length === 0;
+        setOpen(false);
+        el.panel.hidden = false;
+        el.panel.classList.add("is-visible");
+      }
+
+      el.more.addEventListener("click", function () {
+        setOpen(!el.panel.classList.contains("is-tips-open"));
+      });
+
+      el.btn3.addEventListener("click", function () {
+        setPressed(el.btn3);
+        tips = SAMPLE_TIPS.slice(0, 3);
+        render();
+      });
+      el.btnStatus.addEventListener("click", function () {
+        setPressed(el.btnStatus);
+        tips = [];
+        render();
+      });
+      el.btnOne.addEventListener("click", function () {
+        setPressed(el.btnOne);
+        tips = SAMPLE_TIPS.slice(0, 1);
+        render();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

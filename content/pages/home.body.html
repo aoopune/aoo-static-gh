@@ -146,88 +146,262 @@
     </section>
 
     <div class="home-story-dark">
-    <section class="home-lead" aria-labelledby="home-lead-title">
-      <div class="home-lead-track">
-        <div class="home-lead-pin">
-          <div class="home-lead-inner">
-            <div class="home-lead-intro">
-              <h2 class="home-lead-line home-moment" id="home-lead-title"><span class="home-lead-title-line">We completely re-engineered</span> <span class="home-lead-title-line">your home loan journey.</span></h2>
-              <p class="home-lead-line home-moment">Lender details that were scattered are now in one place so you can compare them side by side.</p>
+    <!-- Feature cards: title above, then one window (copy left, picture right) -->
+    <section class="home-feature home-feature--compare" aria-labelledby="home-lead-title">
+      <h2 class="home-feature-title" id="home-lead-title">Your home loan journey, now <span class="home-title-wash home-title-wash--siri">completely re-engineered</span>.</h2>
+      <div class="home-feature-card home-feature-card--compare">
+        <div class="home-feature-copy">
+          <p class="home-feature-body home-feature-body--bright">
+            <span class="home-feature-body-line">Lender details that were scattered are now in one place</span>
+            <span class="home-feature-body-line">so you can compare them side by side.</span>
+          </p>
+        </div>
+        <div class="home-feature-visual home-feature-visual--compare">
+          <iframe
+            class="home-lead-compare-frame"
+            title="Compare lenders demo — select banks and switch Overview, Charges, and Other charges"
+            src="pages/_home-lead-compare-frame.html?v=24"
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-feature" aria-labelledby="home-browse-title">
+      <h2 class="home-feature-title" id="home-browse-title">Explore everything, <span class="home-title-wash home-title-wash--privacy">reveal nothing</span>.</h2>
+      <div class="home-feature-card">
+        <div class="home-feature-copy">
+          <p class="home-feature-body home-feature-body--bright">You can look through all of it without surrendering your phone number or email.</p>
+        </div>
+        <div class="home-feature-visual home-feature-visual--browse">
+          <iframe
+            class="home-browse-privacy-frame"
+            title="Browse lenders demo — flip banks and see EMI without sharing contact details"
+            src="pages/_home-browse-privacy-mock.html?embed=1&v=8"
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-feature" aria-labelledby="home-best-title">
+      <h2 class="home-feature-title" id="home-best-title">
+        <span class="home-feature-title-line">Best of all,</span>
+        <span class="home-feature-title-line"><span class="home-title-wash home-title-wash--sea">no noise</span> from us.</span>
+      </h2>
+      <div class="home-feature-card">
+        <div class="home-feature-copy">
+          <p class="home-feature-body home-feature-body--bright">
+            <span class="home-feature-body-line">Only to help you, or</span>
+            <span class="home-feature-body-line">to share an update.</span>
+            <span class="home-feature-body-line">That’s it.</span>
+          </p>
+        </div>
+        <div class="home-feature-visual home-calm-phone" aria-hidden="true" data-home-calm-phone>
+          <div class="hcp-stage">
+            <div class="hcp-device">
+              <span class="hcp-btn hcp-btn--silent"></span>
+              <span class="hcp-btn hcp-btn--vol-up"></span>
+              <span class="hcp-btn hcp-btn--vol-down"></span>
+              <span class="hcp-btn hcp-btn--power"></span>
+              <div class="hcp-bezel">
+                <div class="hcp-screen">
+                  <div class="hcp-wallpaper"></div>
+                  <div class="hcp-island"></div>
+                  <div class="hcp-status">
+                    <span class="hcp-time">9:41</span>
+                    <span class="hcp-status-icons">
+                      <svg class="hcp-signal-svg" viewBox="0 0 17 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.6"/><rect x="4.5" y="5.5" width="3" height="6.5" rx="0.6"/><rect x="9" y="3" width="3" height="9" rx="0.6"/><rect x="13.5" y="0" width="3" height="12" rx="0.6"/></svg>
+                      <svg class="hcp-wifi-svg" viewBox="0 0 16 12" aria-hidden="true"><path d="M8 9.6a1.35 1.35 0 1 1 0 2.7 1.35 1.35 0 0 1 0-2.7Zm0-3.55c1.7 0 3.25.62 4.45 1.65l-1.15 1.2A4.55 4.55 0 0 0 8 7.55c-1.2 0-2.3.42-3.2 1.12L3.65 7.5A6.7 6.7 0 0 1 8 6.05Zm0-3.5c2.7 0 5.15 1 7.05 2.65L13.9 6.4A8.85 8.85 0 0 0 8 4.05c-2.2 0-4.2.75-5.85 2.05L.95 4.9A11.3 11.3 0 0 1 8 2.55Z"/></svg>
+                      <svg class="hcp-battery-svg" viewBox="0 0 27 13" aria-hidden="true"><rect x="0.6" y="0.6" width="22" height="11.8" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="2.2" y="2.3" width="16.5" height="8.4" rx="1.3"/><path d="M24.2 4.2h1.1c.9 0 1.5.6 1.5 1.4v1.8c0 .8-.6 1.4-1.5 1.4h-1.1V4.2Z" opacity="0.4"/></svg>
+                    </span>
+                  </div>
+                  <div class="hcp-lock">
+                    <p class="hcp-date">Friday 21</p>
+                    <p class="hcp-clock">9:41</p>
+                  </div>
+                  <div class="hcp-stack">
+                    <div class="hcp-item">
+                      <span class="hcp-icon-wrap" aria-hidden="true">
+                        <img
+                          class="hcp-icon"
+                          src="images/logos/logo-mark-blue-clear-300x300.png"
+                          alt=""
+                          width="300"
+                          height="300"
+                          decoding="async"
+                        >
+                      </span>
+                      <div class="hcp-text">
+                        <div class="hcp-row">
+                          <span class="hcp-app">Shroffin</span>
+                          <span class="hcp-time-ago">now</span>
+                        </div>
+                        <span class="hcp-line">Home loan comparison updated</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="home-browse" aria-labelledby="home-browse-statement">
-      <div class="home-browse-track">
-        <div class="home-browse-pin">
-          <div class="home-browse-inner">
-            <p class="home-browse-line home-moment" id="home-browse-statement">You can <span class="home-browse-strong">look through all of it</span> <span class="home-browse-strong">without surrendering your phone number or email</span>.</p>
-          </div>
+    <section class="home-feature" aria-labelledby="home-zero-title">
+      <h2 class="home-feature-title" id="home-zero-title">
+        <span class="home-feature-title-line">Zero bank commissions.</span>
+        <span class="home-feature-title-line"><span class="home-title-wash home-title-wash--dusk">Zero bias</span>.</span>
+      </h2>
+      <div class="home-feature-card">
+        <div class="home-feature-copy">
+          <p class="home-feature-body home-feature-body--bright">So you get a fair view of every lender, with no paid rankings and no one pushed ahead of another.</p>
         </div>
-      </div>
-    </section>
-
-    <section class="home-best" aria-labelledby="home-best-title">
-      <div class="home-best-track">
-        <div class="home-best-pin">
-          <div class="home-best-inner">
-            <h2 class="home-best-display home-moment" id="home-best-title">
-              <span class="home-best-lead">Best of all,</span>
-              <span class="home-best-aside">we do not create any urgency.</span>
-            </h2>
-            <p class="home-best-body home-moment"><span class="home-best-body-line">No unnecessary calls.</span><span class="home-best-body-line">No sales pitch.</span><span class="home-best-body-line">No pushy notifications.</span></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="home-zero" aria-labelledby="home-zero-title">
-      <div class="home-zero-track">
-        <div class="home-zero-pin">
-          <div class="home-zero-inner">
-            <h2 class="home-zero-display" id="home-zero-title">
-              <span class="home-zero-pair">
-                <span class="home-zero-zero">Zero</span>
-                <span class="home-zero-rest">bank commissions.</span>
-              </span>
-              <span class="home-zero-pair">
-                <span class="home-zero-zero">Zero</span>
-                <span class="home-zero-rest">bias.</span>
-              </span>
-            </h2>
-            <p class="home-zero-body"><span class="home-zero-body-lead">So you get a fair view of every lender in the market,</span><span class="home-zero-body-tail"> with no paid rankings and no one pushed ahead of another.</span></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="home-clear" aria-labelledby="home-clear-title">
-      <div class="home-clear-track">
-        <div class="home-clear-pin">
-          <div class="home-clear-inner">
-            <h2 class="home-clear-display home-moment" id="home-clear-title">
-              <span class="home-clear-word">Transparent,</span>
-              <span class="home-clear-aside"><span class="home-clear-aside-word">like</span> <span class="home-clear-aside-word">never</span> <span class="home-clear-aside-word">before.</span></span>
-            </h2>
-            <p class="home-clear-body home-moment"><span class="home-clear-body-lead">You know before you choose.</span></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="home-lead" aria-labelledby="home-apply-title">
-      <div class="home-lead-track">
-        <div class="home-lead-pin">
-          <div class="home-lead-inner">
-            <div class="home-lead-stack">
-              <h2 class="home-lead-line home-moment" id="home-apply-title"><span class="home-lead-strong">Now,</span> apply only once.</h2>
-              <p class="home-lead-line home-lead-soft home-moment">Send one application to every bank you chose and let them compete for you.</p>
-              <p class="home-lead-line home-moment">You may go through it alone, or we will go through it with you.</p>
-              <p class="home-lead-line home-moment">The decision remains yours.</p>
+        <div
+          class="home-feature-visual home-level-field"
+          aria-hidden="true"
+          data-home-level-field
+        >
+          <div class="hlf-stage">
+            <div class="hlf-panel">
+              <ul class="hlf-grid">
+                <li class="hlf-tile" style="--i: 0">
+                  <img class="hlf-logo" src="images/banks/state-bank-of-india.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 1">
+                  <img class="hlf-logo" src="images/banks/hdfc-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 2">
+                  <img class="hlf-logo" src="images/banks/icici-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 3">
+                  <img class="hlf-logo" src="images/banks/axis-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 4">
+                  <img class="hlf-logo" src="images/banks/kotak-mahindra-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 5">
+                  <img class="hlf-logo" src="images/banks/bank-of-baroda.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 6">
+                  <img class="hlf-logo" src="images/banks/canara-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 7">
+                  <img class="hlf-logo" src="images/banks/punjab-national-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 8">
+                  <img class="hlf-logo" src="images/banks/bank-of-maharashtra.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 9">
+                  <img class="hlf-logo" src="images/banks/union-bank-of-india.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 10">
+                  <img class="hlf-logo" src="images/banks/bank-of-india.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 11">
+                  <img class="hlf-logo" src="images/banks/indian-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 12">
+                  <img class="hlf-logo" src="images/banks/idfc-first-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 13">
+                  <img class="hlf-logo" src="images/banks/yes-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 14">
+                  <img class="hlf-logo" src="images/banks/indusind-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 15">
+                  <img class="hlf-logo" src="images/banks/federal-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 16">
+                  <img class="hlf-logo" src="images/banks/bandhan-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 17">
+                  <img class="hlf-logo" src="images/banks/central-bank-of-india.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 18">
+                  <img class="hlf-logo" src="images/banks/city-union-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 19">
+                  <img class="hlf-logo" src="images/banks/csb-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 20">
+                  <img class="hlf-logo" src="images/banks/dcb-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 21">
+                  <img class="hlf-logo" src="images/banks/dhanlaxmi-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 22">
+                  <img class="hlf-logo" src="images/banks/idbi-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 23">
+                  <img class="hlf-logo" src="images/banks/indian-overseas-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 24">
+                  <img class="hlf-logo" src="images/banks/jammu-kashmir-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 25">
+                  <img class="hlf-logo" src="images/banks/karnataka-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 26">
+                  <img class="hlf-logo" src="images/banks/karur-vysya-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 27">
+                  <img class="hlf-logo" src="images/banks/nainital-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 28">
+                  <img class="hlf-logo" src="images/banks/punjab-sind-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 29">
+                  <img class="hlf-logo" src="images/banks/rbl-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 30">
+                  <img class="hlf-logo" src="images/banks/south-indian-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 31">
+                  <img class="hlf-logo" src="images/banks/tamilnad-mercantile-bank.png" alt="" width="40" height="40">
+                </li>
+                <li class="hlf-tile" style="--i: 32">
+                  <img class="hlf-logo" src="images/banks/uco-bank.png" alt="" width="40" height="40">
+                </li>
+              </ul>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-feature" aria-labelledby="home-clear-title">
+      <h2 class="home-feature-title" id="home-clear-title"><span class="home-clear-word">Transparent</span>, like never before.</h2>
+      <div class="home-feature-card">
+        <div class="home-feature-copy">
+          <p class="home-feature-body home-feature-body--bright">Know everything about your choice before you make it.</p>
+        </div>
+        <div class="home-feature-visual home-feature-visual--transparent">
+          <iframe
+            class="home-transparent-frame"
+            title="Transparent demo — State Bank of India More details with expandable sections you can open"
+            src="pages/_home-transparent-mock.html?embed=1&v=7"
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-feature" aria-labelledby="home-apply-title">
+      <h2 class="home-feature-title" id="home-apply-title">Now, <span class="home-title-wash home-title-wash--chip">Apply Only Once</span>.</h2>
+      <div class="home-feature-card">
+        <div class="home-feature-copy">
+          <p class="home-feature-body home-feature-body--bright">Send one application to every bank you chose and let them compete for you.</p>
+        </div>
+        <div class="home-feature-visual home-feature-visual--apply" aria-hidden="true">
+          <iframe
+            class="home-apply-once-frame"
+            title="Apply once demo — one application sent to every bank you chose"
+            src="pages/_home-apply-once-mock.html?embed=1&v=10"
+            loading="lazy"
+          ></iframe>
         </div>
       </div>
     </section>

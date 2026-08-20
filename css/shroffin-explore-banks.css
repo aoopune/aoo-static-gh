@@ -38,10 +38,10 @@
     rgb(108 128 155) 5.5%,
     var(--hlc-page-bg)
   );
-  /* Nav: solid frosted white — reads as its own bar above the cool canvas. */
-  --hlc-nav-bg: rgba(255, 255, 255, 0.92);
-  --hlc-nav-bg-solid: #fff;
-  --hlc-nav-border: rgba(108, 128, 155, 0.16);
+  /* Nav: frosted #f5f7f9 — same family as shell globalnav; blur stays on the bar. */
+  --hlc-nav-bg: var(--shroffin-gn-bg-open, rgba(245, 247, 249, 0.92));
+  --hlc-nav-bg-solid: var(--shroffin-gn-frost, #f5f7f9);
+  --hlc-nav-border: var(--shroffin-gn-border, rgba(0, 0, 0, 0.05));
   --hlc-rank-helpful-num: #137333;
   --hlc-rank-helpful-ink: #0d652d;
   --hlc-rank-helpful-bg: #e6f4ea;
@@ -89,7 +89,7 @@
   margin: 0;
   font-size: clamp(1.75rem, 4.8vw, 2.75rem);
   font-weight: 600;
-  letter-spacing: -0.035em;
+  letter-spacing: normal;
   line-height: 1.08;
   white-space: nowrap;
   opacity: 0;
@@ -121,7 +121,7 @@
   color: var(--shroffin-muted, #6e6e73);
   font-size: var(--shroffin-type-lead, clamp(1.125rem, 2.4vw, 1.3rem));
   font-weight: 400;
-  letter-spacing: -0.015em;
+  letter-spacing: normal;
   line-height: 1.5;
   text-wrap: balance;
   opacity: 0;
@@ -145,7 +145,7 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  letter-spacing: -0.025em;
+  letter-spacing: normal;
   line-height: 1.2;
 }
 
@@ -229,7 +229,7 @@
   width: 100%;
   max-width: 56rem;
   margin-inline: auto;
-  padding-bottom: 1.75rem;
+  padding-bottom: 0.55rem;
 }
 
 
@@ -273,7 +273,7 @@
 
 .hlc-form-row {
   position: relative;
-  gap: 0.75rem;
+  gap: 0.25rem;
   height: 100%;
   padding: 0 0 1.35rem;
   border: none;
@@ -293,11 +293,11 @@
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-form-row--hero {
-  gap: 0.75rem;
+  gap: 0.25rem;
 }
 
 .hlc-form-row--hero {
-  gap: 0.55rem;
+  gap: 0.25rem;
 }
 
 .hlc-form-row-fields,
@@ -347,7 +347,7 @@
 .hlc-form-row-support,
 .hlc-form-row-live {
   margin: 0;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   line-height: 1.45;
 }
 
@@ -371,17 +371,17 @@
   display: inline-flex;
   align-items: center;
   padding: 0;
-  font-size: 1.125rem;
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  color: #1d1d1f;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  color: #636373;
   border: none;
   background: none;
   white-space: nowrap;
 }
 
 .hlc-form-row--hero .hlc-form-row-about {
-  font-size: 1.125rem;
+  font-size: 1rem;
 }
 
 .hlc-form-row-support {
@@ -390,7 +390,7 @@
   padding: 0;
   font-size: 0.6875rem;
   font-weight: 400;
-  letter-spacing: -0.012em;
+  letter-spacing: normal;
   color: rgba(29, 29, 31, 0.56);
   border: none;
   background: none;
@@ -470,10 +470,10 @@
   flex-wrap: nowrap;
   column-gap: 0;
   font-size: var(--shroffin-field-label-size, 1.125rem);
-  font-weight: 500;
-  letter-spacing: -0.015em;
+  font-weight: 400;
+  letter-spacing: normal;
   line-height: 1.2;
-  color: var(--shroffin-muted, #6e6e73);
+  color: #636373;
   white-space: nowrap;
 }
 
@@ -489,8 +489,8 @@
 
 .explore-banks-page .hlc-inputs-card .hlc-field--hero .hlc-field-label {
   font-size: var(--shroffin-field-label-size, 1.125rem);
-  font-weight: 500;
-  letter-spacing: -0.015em;
+  font-weight: 400;
+  letter-spacing: normal;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field--property .hlc-field-label {
@@ -513,9 +513,9 @@
 .explore-banks-page .hlc-inputs-card .hlc-field-label-qualifier {
   font-size: 0.875rem;
   font-weight: 400;
-  color: var(--shroffin-muted, #6e6e73);
+  color: #636373;
   margin-left: 0.3em;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   line-height: 1.2;
   align-self: baseline;
   white-space: nowrap;
@@ -525,16 +525,28 @@
   /* Half-width boxes: the name wraps instead of pushing the box wider. */
   .explore-banks-page .hlc-inputs-card .hlc-field-label {
     font-size: var(--shroffin-field-label-size, 1.125rem);
-    font-weight: 400;
-    letter-spacing: -0.015em;
+    font-weight: 300;
+    letter-spacing: normal;
     line-height: 1.2;
     white-space: normal;
   }
 
+  .hlc-coapplicant-card-title {
+    font-weight: 300;
+  }
+
   .explore-banks-page .hlc-inputs-card .hlc-field--hero .hlc-field-label {
     font-size: var(--shroffin-field-label-size, 1.125rem);
-    font-weight: 400;
+    font-weight: 300;
     white-space: normal;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-prefix,
+  .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-suffix,
+  .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-select-face-tag,
+  .explore-banks-page .hlc-inputs-card .hlc-field--hero .hlc-prefix,
+  .explore-banks-page .hlc-inputs-card .hlc-form-row--hero .hlc-prefix {
+    font-weight: 300;
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-field-label-tail {
@@ -547,9 +559,9 @@
   .explore-banks-page .hlc-inputs-card .hlc-field-label-qualifier {
     font-size: 0.857em;
     font-weight: 400;
-    color: var(--shroffin-muted, #6e6e73);
+    color: #636373;
     margin-left: 0;
-    letter-spacing: -0.01em;
+    letter-spacing: normal;
     line-height: 1.2;
     align-self: baseline;
     white-space: normal;
@@ -562,12 +574,12 @@
   }
 
   .hlc-form-row-about {
-    font-size: 1rem;
+    font-size: 0.875rem;
     white-space: normal;
   }
 
   .hlc-form-row--hero .hlc-form-row-about {
-    font-size: 1rem;
+    font-size: 0.875rem;
   }
 
 
@@ -771,26 +783,27 @@
 }
 
 .hlc-coapplicant-inline {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.35rem;
-  flex-wrap: wrap;
+  display: block;
+  min-width: 0;
 }
 
 .hlc-coapplicant-copy {
   margin: 0;
-  flex: 0 1 auto;
   min-width: 0;
   font-size: 0.9375rem;
   line-height: 1.35;
-  letter-spacing: -0.015em;
-  color: var(--shroffin-ink, #1d1d1f);
+  letter-spacing: normal;
+  color: #6e6e6f;
 }
 
 .hlc-coapplicant-pills {
-  width: auto;
-  max-width: none;
+  display: inline;
+  white-space: nowrap;
+}
+
+/* Keep the sentence end + Add together so wrap happens earlier in the copy. */
+.hlc-coapplicant-tail {
+  white-space: nowrap;
 }
 
 .hlc-coapplicant-action {
@@ -802,15 +815,20 @@
   background: none;
   padding: 0;
   margin: 0;
-  color: rgba(29, 29, 31, 0.72);
+  color: var(--shroffin-link, #3f62c8);
   font: inherit;
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.35;
-  letter-spacing: -0.015em;
+  letter-spacing: normal;
   text-decoration: underline;
   text-underline-offset: 0.14em;
   cursor: pointer;
+}
+
+.hlc-coapplicant-action:hover,
+.hlc-coapplicant-action:focus-visible {
+  color: var(--shroffin-link-active, #2f4ba0);
 }
 
 .hlc-coapplicant-action-arrow {
@@ -902,7 +920,7 @@
   max-width: 62ch;
   font-size: 0.875rem;
   line-height: 1.45;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   color: var(--shroffin-ink-muted, #6e6e73);
 }
 
@@ -936,12 +954,14 @@
   min-width: 0;
 }
 
+/* Same type as field labels so Co-applicant 1–6 read as labels, not captions. */
 .hlc-coapplicant-card-title {
   margin: 0;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--shroffin-ink-muted, #6e6e73);
+  font-size: var(--shroffin-field-label-size, 1.125rem);
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.2;
+  color: #636373;
 }
 
 .hlc-coapplicant-remove,
@@ -952,7 +972,7 @@
   padding: 0.35rem 0;
   font: inherit;
   font-size: 0.875rem;
-  letter-spacing: -0.015em;
+  letter-spacing: normal;
   color: var(--shroffin-link, #0071e3);
   text-decoration: underline;
   text-underline-offset: 0.14em;
@@ -1037,13 +1057,13 @@
 
 .hlc-field--hero input {
   font-size: 1.125rem;
-  font-weight: 500;
-  letter-spacing: -0.025em;
+  font-weight: 600;
+  letter-spacing: normal;
 }
 
 .hlc-field--hero .hlc-prefix {
   font-size: 1.125rem;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 @media (min-width: 600px) {
@@ -1115,6 +1135,10 @@
     padding: 1.35rem 0.95rem 1.7rem;
   }
 
+  .hlc-intelligence {
+    padding: 1.35rem 0.95rem 1.7rem;
+  }
+
   .hlc-form-fields {
     gap: 1.55rem;
   }
@@ -1171,15 +1195,15 @@
   padding: 0.35rem 0 0.4rem;
 }
 
-/* Fixed unit marks (₹, years) stay muted so they read as labels, not values. */
+/* Fixed unit marks (₹, years) match field-label weight. */
 .hlc-prefix,
 .hlc-suffix {
   flex: 0 0 auto;
   font-size: var(--shroffin-field-font-size, 1.125rem);
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  letter-spacing: normal;
   text-transform: none;
-  color: var(--shroffin-muted, #6e6e73);
+  color: #636373;
   line-height: 1.25;
   padding-bottom: 0.02rem;
 }
@@ -1191,7 +1215,7 @@
   min-width: 0;
   font: inherit;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   text-transform: none;
   padding: 0;
   min-height: 1.5rem;
@@ -1215,11 +1239,11 @@
   background: transparent;
   font: inherit;
   font-size: var(--shroffin-field-font-size, 1.125rem);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: var(--shroffin-ink, #1d1d1f);
+  font-weight: 600;
+  letter-spacing: normal;
+  color: #1d1d1f;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%236e6e73' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23636373' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.35rem center;
   padding-right: 1.35rem;
@@ -1255,7 +1279,7 @@
   height: 8px;
   transform: translateY(-50%);
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%236e6e73' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23636373' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-size: 12px 8px;
 }
@@ -1291,17 +1315,17 @@
   flex: 0 0 auto;
   pointer-events: none;
   font-size: var(--shroffin-field-font-size, 1.125rem);
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: normal;
   line-height: 1.25;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: #1d1d1f;
   white-space: nowrap;
   overflow: visible;
 }
 
 .hlc-select-face-tag {
   font-weight: 400;
-  color: var(--shroffin-muted, #6e6e73);
+  color: #636373;
 }
 
 .hlc-select-face-tag[hidden] {
@@ -1333,7 +1357,7 @@
   padding: 0.55rem 0.7rem;
   font-size: 0.9375rem;
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   white-space: nowrap;
   border: none;
   border-radius: var(--shroffin-seg-option-radius, 9px);
@@ -1367,7 +1391,7 @@
   display: block;
   font-size: 0.625rem;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   line-height: 1.25;
   color: inherit;
   opacity: 0.72;
@@ -1417,7 +1441,7 @@
   color: rgba(29, 29, 31, 0.56);
   font-size: 0.9375rem;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   text-transform: none;
   line-height: 1.45;
 }
@@ -1465,7 +1489,7 @@
   font: inherit;
   font-size: inherit;
   font-weight: inherit;
-  letter-spacing: inherit;
+  letter-spacing: normal;
   line-height: inherit;
   text-align: left;
 }
@@ -1544,8 +1568,8 @@
   .hlc-select-face,
   .hlc-select-face-tag
 ) {
-  color: var(--shroffin-ink, #1d1d1f);
-  caret-color: var(--shroffin-ink, #1d1d1f);
+  color: #1d1d1f;
+  caret-color: #1d1d1f;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell.is-invalid),
@@ -1565,6 +1589,9 @@
   padding-bottom: 0;
 }
 
+/*
+ * Value shell hugs the control — label | value, no stretch across the field.
+ */
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) > .hlc-input-shell,
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) > .hlc-input-shell:focus-within,
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) > .hlc-input-shell.is-invalid {
@@ -1590,30 +1617,41 @@
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) input,
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) select:not(.hlc-inline-pct-select),
-.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-select-face,
-.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-select-face-tag {
+.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-select-face {
   font-size: var(--shroffin-field-font-size, 1.25rem);
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.2;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   min-height: 0;
   padding: 0;
+  color: #1d1d1f;
+  caret-color: #1d1d1f;
+}
+
+.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-select-face-tag {
+  font-size: var(--shroffin-field-font-size, 1.25rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: normal;
+  min-height: 0;
+  padding: 0;
+  color: #636373;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-prefix {
   font-size: var(--shroffin-field-unit-size, var(--shroffin-field-font-size, 1.25rem));
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.2;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   min-height: 0;
   padding: 0;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-suffix {
   font-size: var(--shroffin-field-font-size, 1.25rem);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.2;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   min-height: 0;
   padding: 0;
 }
@@ -1625,15 +1663,16 @@
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-prefix,
-.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-suffix,
-.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell):is(:hover, :focus-within) .hlc-prefix,
-.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell):is(:hover, :focus-within) .hlc-suffix {
+.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-suffix {
   display: flex;
   align-items: center;
+  flex: 0 0 auto;
   height: 1.2em;
   line-height: 1.2;
   padding-bottom: 0;
-  color: var(--shroffin-muted, #6e6e73);
+  color: #636373;
+  pointer-events: none;
+  user-select: none;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) input,
@@ -1698,7 +1737,14 @@
 .explore-banks-page .hlc-inputs-card .hlc-field--hero input,
 .explore-banks-page .hlc-inputs-card .hlc-field--hero .hlc-prefix {
   font-size: var(--shroffin-field-font-size, 0.9375rem);
-  font-weight: 500;
+}
+
+.explore-banks-page .hlc-inputs-card .hlc-field--hero input {
+  font-weight: 600;
+}
+
+.explore-banks-page .hlc-inputs-card .hlc-field--hero .hlc-prefix {
+  font-weight: 400;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-input-shell--hero {
@@ -1736,7 +1782,7 @@
 .explore-banks-page .hlc-inputs-card .hlc-form-row--hero .hlc-field-label {
   font-size: var(--shroffin-field-label-size, 1.125rem);
   line-height: 1.2;
-  letter-spacing: -0.015em;
+  letter-spacing: normal;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-form-row--hero .hlc-field-label-qualifier {
@@ -1746,10 +1792,17 @@
 .explore-banks-page .hlc-inputs-card .hlc-form-row--hero .hlc-field input,
 .explore-banks-page .hlc-inputs-card .hlc-form-row--hero .hlc-prefix {
   font-size: var(--shroffin-field-font-size, 1.25rem);
-  font-weight: 500;
   line-height: 1.2;
   min-height: 0;
   padding: 0;
+}
+
+.explore-banks-page .hlc-inputs-card .hlc-form-row--hero .hlc-field input {
+  font-weight: 600;
+}
+
+.explore-banks-page .hlc-inputs-card .hlc-form-row--hero .hlc-prefix {
+  font-weight: 400;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field input[data-hlc-max-digits="10"] {
@@ -1791,7 +1844,6 @@
     width: 3.25ch;
     flex: 0 0 3.25ch;
   }
-
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-input-shell--select {
@@ -2075,7 +2127,7 @@
     --hlc-box-min-height: 3.25rem;
     --hlc-label-value-gap: 0.45rem;
     /* Section name to its boxes, and section to section. */
-    --hlc-head-gap: 0.3rem;
+    --hlc-head-gap: 0.1rem;
     --hlc-group-gap: 1.05rem;
     /* Note type, and one line of it. */
     --hlc-note-size: clamp(0.6875rem, 3.2vw, 0.75rem);
@@ -2255,7 +2307,7 @@
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-input-shell:has(input[data-hlc-format="money"]) input[data-hlc-format="money"] {
-    letter-spacing: -0.025em;
+    letter-spacing: normal;
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-field input[data-hlc-format="money"] {
@@ -2335,14 +2387,18 @@
     white-space: normal;
   }
 
-  /* The co-applicant nudge is one sentence: its action stays in the line. */
+  /* Co-applicant copy + Add are one sentence; Add wraps with the last line. */
   .explore-banks-page .hlc-inputs-card .hlc-coapplicant-inline {
     display: block;
   }
 
-  .explore-banks-page .hlc-inputs-card .hlc-coapplicant-copy,
+  .explore-banks-page .hlc-inputs-card .hlc-coapplicant-copy {
+    display: block;
+  }
+
   .explore-banks-page .hlc-inputs-card .hlc-coapplicant-pills {
     display: inline;
+    white-space: nowrap;
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-coapplicant-action {
@@ -2392,7 +2448,7 @@
   font: inherit;
   font-size: inherit;
   font-weight: inherit;
-  letter-spacing: inherit;
+  letter-spacing: normal;
   line-height: inherit;
   text-align: left;
   vertical-align: baseline;
@@ -2680,7 +2736,7 @@
   margin: 0;
   font-size: clamp(1.15rem, 2.4vw, 1.35rem);
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: normal;
   line-height: 1.25;
   color: var(--shroffin-ink, #1d1d1f);
   text-wrap: balance;
@@ -2824,7 +2880,8 @@
     width: auto;
   }
 
-  .explore-banks-page .hlc-panel--inputs {
+  .explore-banks-page .hlc-panel--inputs,
+  .explore-banks-page .hlc-intelligence {
     max-width: calc(100% - var(--hlc-tabs-indent, 0px));
     margin-inline: auto;
   }
@@ -2923,7 +2980,7 @@
   margin: 0 0 1.25rem;
   font-size: 1.25rem;
   font-weight: 600;
-  letter-spacing: -0.025em;
+  letter-spacing: normal;
   line-height: 1.2;
   color: var(--shroffin-ink, #1d1d1f);
 }
@@ -3232,7 +3289,7 @@
   .hlc-filters-toggle-label {
     font-size: 0.75rem;
     font-weight: 500;
-    letter-spacing: -0.01em;
+    letter-spacing: normal;
     line-height: 1;
     text-transform: lowercase;
   }
@@ -3276,7 +3333,7 @@
     color: #fff;
     font-size: 0.625rem;
     font-weight: 600;
-    letter-spacing: -0.02em;
+    letter-spacing: normal;
     line-height: 1;
   }
 
@@ -3525,7 +3582,7 @@
   font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.2;
-  letter-spacing: -0.015em;
+  letter-spacing: normal;
 }
 
 /*
@@ -3686,6 +3743,26 @@
   min-width: 0;
 }
 
+/* Header i sits on the title row with footnote marks + sort — never under. */
+.hlc-compare thead th .hlc-column-title .hlc-field-help-anchor {
+  flex: 0 0 auto;
+  margin-left: 0.2em;
+  align-self: center;
+}
+
+.hlc-compare thead th .hlc-column-title .hlc-field-help {
+  width: 0.95em;
+  height: 0.95em;
+  min-width: 0.95em;
+  min-height: 0.95em;
+  font-size: 1em;
+}
+
+.hlc-coapplicant-copy .hlc-field-help-anchor {
+  margin-left: 0.2em;
+  vertical-align: -0.08em;
+}
+
 /* Sit under the title inside existing th padding — out of flow so row height stays put. */
 .hlc-header-select,
 .hlc-prepay-header-select {
@@ -3711,7 +3788,7 @@
   color: var(--shroffin-muted, #6e6e73);
   font-size: 0.625rem;
   font-weight: 400;
-  letter-spacing: -0.005em;
+  letter-spacing: normal;
   line-height: 1.2;
   transform: translateX(-50%);
   cursor: pointer;
@@ -3768,7 +3845,7 @@
   width: 100%;
   font-size: 0.875rem;
   line-height: 1.35;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   color: var(--shroffin-muted, #6e6e73);
 }
 
@@ -3790,7 +3867,7 @@
   font-size: 1.125rem;
   font-weight: 600;
   line-height: 1.35;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   color: #1d1d1f;
 }
 
@@ -3813,7 +3890,7 @@
   font-size: inherit;
   font-weight: 500;
   line-height: 1.35;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   cursor: pointer;
   min-height: 0;
   transition: color var(--shroffin-micro-duration, 0.5s)
@@ -3883,14 +3960,14 @@
   font-size: inherit;
   font-weight: 600;
   line-height: 1.35;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   color: inherit;
 }
 
 .hlc-charges-note-markers {
   font-weight: 500;
   color: var(--shroffin-muted, #6e6e73);
-  letter-spacing: 0.02em;
+  letter-spacing: normal;
 }
 
 .hlc-charges-note-chevron {
@@ -4103,7 +4180,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   border-collapse: separate;
   border-spacing: 0;
   font-size: 0.9375rem;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
 }
 
 /*
@@ -4117,23 +4194,35 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 }
 
 .hlc-compare col.hlc-col-w-pct {
-  width: 6.5rem;
+  width: 8.25rem;
 }
 
 .hlc-compare col.hlc-col-w-inr {
-  width: 11rem;
+  width: 12.5rem;
+}
+
+.hlc-compare col.hlc-col-w-processing {
+  width: 13.5rem;
+}
+
+.hlc-compare col.hlc-col-w-property-check {
+  width: 16rem;
+}
+
+.hlc-compare col.hlc-col-w-govt {
+  width: 14.5rem;
 }
 
 .hlc-compare col.hlc-col-w-charge {
-  width: 13rem;
+  width: 15.5rem;
 }
 
 .hlc-compare col.hlc-col-w-prepayment {
-  width: 13rem;
+  width: 15.5rem;
 }
 
 .hlc-compare col.hlc-col-w-rate-change {
-  width: 13rem;
+  width: 15.5rem;
 }
 
 /* Absorbs leftover table width so charge columns stay 13rem and sit on the right. */
@@ -4174,7 +4263,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 .hlc-compare[data-group="laterCharges"] col.hlc-col-w-charge,
 .hlc-compare[data-group="laterCharges"] col.hlc-col-w-prepayment,
 .hlc-compare[data-group="laterCharges"] col.hlc-col-w-rate-change {
-  width: 13rem;
+  width: 15.5rem;
 }
 
 @media (min-width: 834px) {
@@ -4209,22 +4298,21 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 
   .hlc-compare[data-group="laterCharges"][data-charge-count="4"] .hlc-column-title {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
     width: 100%;
     min-width: 0;
     max-width: 100%;
     flex: 1 1 auto;
-    white-space: normal;
+    white-space: nowrap;
   }
 
   .hlc-compare[data-group="laterCharges"][data-charge-count="4"] .hlc-column-title-text {
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     min-width: 0;
-    white-space: normal;
+    white-space: nowrap;
     text-align: center;
-    overflow-wrap: break-word;
   }
 }
 
@@ -4241,7 +4329,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 }
 
 .hlc-compare col.hlc-col-w-tenure {
-  width: 7.5rem;
+  width: 10rem;
 }
 
 .hlc-compare col.hlc-col-w-note {
@@ -4267,7 +4355,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   color: var(--shroffin-ink, #1d1d1f);
   font-size: 0.9375rem;
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   text-transform: none;
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -4552,7 +4640,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   color: var(--shroffin-muted, #6e6e73);
   font-size: 0.6875rem;
   font-weight: 400;
-  letter-spacing: -0.005em;
+  letter-spacing: normal;
   line-height: 1.35;
   text-decoration: none;
 }
@@ -4657,7 +4745,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   font-variant-numeric: tabular-nums lining-nums;
   font-feature-settings: "tnum" 1, "lnum" 1;
   line-height: inherit;
-  letter-spacing: inherit;
+  letter-spacing: normal;
   cursor: pointer;
   transition:
     text-decoration-color var(--shroffin-micro-duration, 0.5s)
@@ -4746,7 +4834,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   font-size: 0.625rem;
   font-weight: 600;
   font-variant-numeric: normal;
-  letter-spacing: 0.01em;
+  letter-spacing: normal;
   line-height: 1.25;
   white-space: nowrap;
   text-decoration: none;
@@ -4971,7 +5059,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   align-items: center;
   gap: 0.45rem;
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   line-height: 1.25;
   white-space: normal;
   min-width: 0;
@@ -4992,7 +5080,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   color: inherit;
   font: inherit;
   font-weight: inherit;
-  letter-spacing: inherit;
+  letter-spacing: normal;
   line-height: inherit;
   text-align: left;
   /* Same dotted blue cue as loan amount / calculation cells. */
@@ -5142,7 +5230,7 @@ button.hlc-bank-name-text:focus-visible {
   font: inherit;
   font-size: 17px;
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   line-height: 1.3;
   padding: 0.5rem 0.85rem;
   min-height: var(--shroffin-btn-touch, 44px);
@@ -5335,7 +5423,7 @@ button.hlc-bank-name-text:focus-visible {
   margin: 0;
   font-size: 1.35rem;
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: normal;
   line-height: 1.25;
   color: var(--shroffin-ink, #1d1d1f);
   text-align: left;
@@ -5343,7 +5431,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-drawer--sections .hlc-drawer-top h3 {
   font-size: 1.75rem;
-  letter-spacing: -0.03em;
+  letter-spacing: normal;
 }
 
 .hlc-drawer-top p {
@@ -5383,7 +5471,7 @@ button.hlc-bank-name-text:focus-visible {
   font-size: 1.0625rem;
   font-weight: 400;
   line-height: 1.35;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
 }
 
 .hlc-drawer--sections .hlc-drawer-body {
@@ -5462,7 +5550,7 @@ button.hlc-bank-name-text:focus-visible {
   padding: 0 0.15rem;
   font-size: 1.0625rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   text-transform: none;
   color: var(--shroffin-ink, #1d1d1f);
 }
@@ -5481,7 +5569,7 @@ button.hlc-bank-name-text:focus-visible {
   font-size: 1.0625rem;
   font-weight: 600;
   line-height: 1.35;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   color: var(--shroffin-ink, #1d1d1f);
 }
 
@@ -5504,7 +5592,7 @@ button.hlc-bank-name-text:focus-visible {
   font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.35;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   cursor: pointer;
   min-height: 44px;
   transition: color var(--shroffin-micro-duration, 0.5s)
@@ -5592,13 +5680,13 @@ button.hlc-bank-name-text:focus-visible {
   font-size: 1.0625rem;
   font-weight: 600;
   line-height: 1.35;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   color: inherit;
 }
 
 .hlc-drawer-group--nested .hlc-drawer-label {
   font-size: 1rem;
-  letter-spacing: -0.015em;
+  letter-spacing: normal;
   color: #3a3a3c;
 }
 
@@ -5712,7 +5800,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-fee-table th {
   font-size: 1.0625rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   line-height: 1.3;
   vertical-align: baseline;
 }
@@ -5727,7 +5815,7 @@ button.hlc-bank-name-text:focus-visible {
   color: var(--shroffin-muted, #6e6e73);
   font-size: 0.75rem;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   line-height: 1.35;
 }
 
@@ -5979,7 +6067,7 @@ button.hlc-bank-name-text:focus-visible {
   color: var(--shroffin-ink, #1d1d1f);
   font-size: 1.0625rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   line-height: 1.3;
   border-bottom: 1px solid var(--shroffin-line, #e8e8ed);
 }
@@ -5993,7 +6081,7 @@ button.hlc-bank-name-text:focus-visible {
   font-size: clamp(2.25rem, 8vw, 3rem);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.03em;
+  letter-spacing: normal;
   line-height: 1.05;
 }
 
@@ -6364,7 +6452,7 @@ button.hlc-bank-name-text:focus-visible {
   color: #3a3a3c;
   font-size: 1rem;
   font-weight: 600;
-  letter-spacing: -0.015em;
+  letter-spacing: normal;
   line-height: 1.35;
 }
 
@@ -6396,7 +6484,7 @@ button.hlc-bank-name-text:focus-visible {
   color: var(--shroffin-ink, #1d1d1f);
   font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   line-height: 1.35;
 }
 
@@ -6415,7 +6503,7 @@ button.hlc-bank-name-text:focus-visible {
   color: var(--shroffin-ink, #1d1d1f);
   font-size: 0.875rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   line-height: 1.35;
 }
 
@@ -6437,7 +6525,7 @@ button.hlc-bank-name-text:focus-visible {
   color: var(--shroffin-ink, #1d1d1f);
   font-size: 0.875rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   line-height: 1.35;
 }
 
@@ -6484,7 +6572,7 @@ button.hlc-bank-name-text:focus-visible {
   color: var(--shroffin-ink, #1d1d1f);
   font-size: 1.0625rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   line-height: 1.3;
 }
 
@@ -6530,7 +6618,7 @@ button.hlc-bank-name-text:focus-visible {
   color: var(--shroffin-muted, #6e6e73);
   font-size: 0.75rem;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   line-height: 1.45;
 }
 
@@ -6550,7 +6638,7 @@ button.hlc-bank-name-text:focus-visible {
   color: var(--shroffin-muted, #6e6e73);
   font-size: 1rem;
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   line-height: 1.2;
   white-space: nowrap;
 }
@@ -6769,6 +6857,9 @@ button.hlc-bank-name-text:focus-visible {
   }
 
   .hlc-compare[data-group="charges"] col.hlc-col-w-inr,
+  .hlc-compare[data-group="charges"] col.hlc-col-w-processing,
+  .hlc-compare[data-group="charges"] col.hlc-col-w-property-check,
+  .hlc-compare[data-group="charges"] col.hlc-col-w-govt,
   .hlc-compare[data-group="laterCharges"] col.hlc-col-w-charge,
   .hlc-compare[data-group="laterCharges"] col.hlc-col-w-prepayment,
   .hlc-compare[data-group="laterCharges"] col.hlc-col-w-rate-change {
@@ -6886,8 +6977,8 @@ button.hlc-bank-name-text:focus-visible {
 
 .explore-banks-page .globalnav {
   background: var(--hlc-nav-bg);
-  border-block-end: 1px solid var(--hlc-nav-border);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+  border-block-end: none;
+  box-shadow: 0 0.5px 0 var(--hlc-nav-border);
 }
 
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
@@ -6952,7 +7043,7 @@ button.hlc-bank-name-text:focus-visible {
   font-family: inherit;
   font-size: 0.9375rem;
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   line-height: 1.25;
   text-align: left;
   white-space: normal;
@@ -7056,7 +7147,7 @@ button.hlc-bank-name-text:focus-visible {
   font-size: 1em;
   font-weight: 400;
   line-height: 1;
-  letter-spacing: 0;
+  letter-spacing: normal;
   text-decoration: none;
   cursor: help;
   appearance: none;
@@ -7153,7 +7244,7 @@ button.hlc-bank-name-text:focus-visible {
   font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.45;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   white-space: normal;
   overflow-wrap: anywhere;
 }
@@ -7165,7 +7256,7 @@ button.hlc-bank-name-text:focus-visible {
   font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.45;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
 }
 
 .hlc-field-help-list li + li {
@@ -7218,99 +7309,432 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 /* ─── HLC Intelligence Panel ─────────────────────────────────────────── */
+/*
+ * Strip contract (progressive disclosure):
+ * 1) Default after Compare: eyebrow + status only.
+ * 2) More → tip headings side-by-side with body under each (is-tips-open + is-tips-expanded).
+ * 3) Show less → back to status strip.
+ * Same column + card chrome as .hlc-inputs-card.
+ */
 .hlc-intelligence {
+  --hlc-intel-line: rgba(0, 0, 0, 0.088);
+  --hlc-intel-radius: var(--hlc-field-radius, 0.5rem);
   box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
   width: 100%;
   max-width: 56rem;
   margin-inline: auto;
-  margin-block: 0 1.5rem;
-  padding: 1.25rem clamp(1.45rem, 3.1vw, 2.15rem) 1.5rem;
-  border-radius: var(--hlc-field-radius, 0.5rem);
-  position: relative;
-  isolation: isolate;
-  /* Reveal-tier entrance */
+  margin-block: 0 1.25rem;
+  padding: clamp(1.35rem, 2.8vw, 1.85rem) clamp(1.45rem, 3.1vw, 2.15rem)
+    clamp(1.25rem, 2.4vw, 1.65rem);
+  background: transparent;
+  border-radius: var(--hlc-intel-radius);
+  overflow: visible;
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(12px);
   transition:
-    opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 1.45s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 1s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    transform 1.2s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
 }
+
 .hlc-intelligence::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: var(--hlc-page-bg, #fcfcfd);
+  /* Same surface as guide chapter cards */
+  background: #f7f7f7;
+  border: none;
   box-shadow:
     0 1px 2px rgba(60, 64, 67, 0.08),
     0 8px 20px rgba(60, 64, 67, 0.1);
+  transform: translateZ(0);
 }
+
 .hlc-intelligence.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
-.hlc-intel-status {
-  font-size: 0.875rem;
-  color: var(--hlc-text-secondary, #5f6368);
-  margin: 0 0 1rem;
-  line-height: 1.5;
+
+.hlc-intelligence[hidden] {
+  display: none !important;
 }
-.hlc-intel-tips {
-  list-style: none;
+
+.hlc-intel-head {
+  margin: 0 0 0.55rem;
+  min-width: 0;
+}
+
+.hlc-intel-eyebrow {
   margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.75rem;
+  min-width: 0;
+  font-size: 0.75rem; /* 12px — strip label */
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.33337;
+  color: var(--hlc-text-tertiary, #86868b);
 }
-@media (min-width: 834px) {
-  .hlc-intel-tips {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+
+.hlc-intel-status {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  font-size: 1.0625rem; /* 17px */
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.47059;
+  color: var(--hlc-text-primary, var(--shroffin-ink, #1d1d1f));
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 734px) {
+  .hlc-intel-status {
+    font-size: 1.1875rem; /* 19px */
+    line-height: 1.4211;
   }
 }
-.hlc-intel-tip {
-  background: transparent;
-  border-left: 2px solid var(--hlc-line-soft, rgba(108, 128, 155, 0.18));
-  padding: 0.75rem 0.85rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-.hlc-intel-horizon {
-  display: inline-block;
-  font-size: 0.625rem;
-  letter-spacing: 0.01em;
-  font-weight: 600;
-  text-transform: uppercase;
-  border-radius: 999px;
-  padding: 0.12em 0.48em;
-  background: var(--hlc-chip-bg, rgba(95, 99, 104, 0.09));
-  color: var(--hlc-text-secondary, #5f6368);
-  width: fit-content;
-}
-.hlc-intel-heading {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--hlc-text-primary, #202124);
-  line-height: 1.4;
-}
-.hlc-intel-body {
-  font-size: 0.8125rem;
-  color: var(--hlc-text-secondary, #5f6368);
-  line-height: 1.55;
+
+/*
+ * Tip row: collapsed until is-tips-open.
+ * Soft max-height fold — stays in the tree (no [hidden] flash).
+ */
+.hlc-intelligence:not(.is-tips-open) .hlc-intel-tips {
+  list-style: none;
+  overflow: hidden;
+  max-height: 0;
   margin: 0;
+  padding: 0;
+  border-top-width: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 0;
+  transition:
+    max-height 1.2s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity 1s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    visibility 0s linear 1.2s,
+    margin 0.85s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    padding 0.85s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
 }
-.hlc-intel-disclaimer {
-  font-size: 0.6875rem;
-  color: var(--hlc-text-tertiary, #80868b);
-  margin: 0.85rem 0 0;
-  text-align: right;
+
+.hlc-intelligence.is-tips-open .hlc-intel-tips {
+  list-style: none;
+  overflow: visible;
+  max-height: 200rem;
+  margin: 1rem 0 0;
+  padding: 0.95rem 0 0;
+  border-top: 1px solid var(--hlc-intel-line);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 0;
+  row-gap: 1.5rem;
+  transition:
+    max-height 1.35s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity 1.05s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    visibility 0s linear 0s,
+    margin 0.85s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    padding 0.85s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
 }
+
+.hlc-intel-tips[hidden] {
+  display: none !important;
+}
+
+/* Tips beyond the first 3 — only after + (is-tips-more) */
+.hlc-intelligence.is-tips-open:not(.is-tips-more) .hlc-intel-tip--extra {
+  display: none;
+}
+
+@media (max-width: 733px) {
+  .hlc-intelligence:not(.is-tips-open) .hlc-intel-tips,
+  .hlc-intelligence.is-tips-open .hlc-intel-tips {
+    grid-template-columns: 1fr;
+  }
+
+  .hlc-intelligence.is-tips-open .hlc-intel-tips {
+    row-gap: 0;
+  }
+}
+
+.hlc-intel-tip {
+  min-width: 0;
+  padding: 0 1.25rem;
+  border-right: 1px solid var(--hlc-intel-line);
+}
+
+/* End of each row of 3 — no right border */
+.hlc-intel-tip:nth-child(3n) {
+  padding-right: 0;
+  border-right: 0;
+}
+
+.hlc-intel-tip:nth-child(3n + 1) {
+  padding-left: 0;
+}
+
+@media (max-width: 733px) {
+  .hlc-intel-tip,
+  .hlc-intel-tip:nth-child(3n),
+  .hlc-intel-tip:nth-child(3n + 1) {
+    padding: 0.65rem 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--hlc-intel-line);
+  }
+
+  .hlc-intel-tip:first-child {
+    padding-top: 0;
+  }
+
+  .hlc-intel-tip:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+}
+
+.hlc-intel-heading {
+  display: block;
+  margin: 0;
+  font-size: 0.9375rem; /* 15px — fits three-up */
+  font-weight: 600;
+  letter-spacing: normal;
+  line-height: 1.33337;
+  color: var(--hlc-text-primary, var(--shroffin-ink, #1d1d1f));
+}
+
+@media (min-width: 734px) {
+  .hlc-intel-heading {
+    font-size: 1rem; /* 16px */
+    line-height: 1.375;
+  }
+}
+
+.hlc-intelligence.is-tips-expanded .hlc-intel-heading {
+  margin-bottom: 0.45rem;
+}
+
+/*
+ * Detail (horizon + body) opens with is-tips-expanded (set together with is-tips-open).
+ */
+.hlc-intel-tip-detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    grid-template-rows 1.35s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity 1.05s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    visibility 0s linear 1.35s;
+}
+
+.hlc-intel-tip-detail-clip {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.hlc-intelligence.is-tips-expanded .hlc-intel-tip-detail {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    grid-template-rows 1.35s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity 1.05s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    visibility 0s linear 0s;
+}
+
+.hlc-intel-horizon {
+  display: block;
+  margin: 0 0 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.33337;
+  color: var(--hlc-text-tertiary, #86868b);
+  text-transform: none;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  width: auto;
+}
+
+.hlc-intel-body {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.42859;
+  color: var(--hlc-text-secondary, var(--shroffin-muted, #6e6e73));
+  max-width: 36em;
+}
+
+@media (max-width: 733px) {
+  .hlc-intel-body {
+    max-width: none;
+  }
+}
+
+.hlc-intel-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: 100%;
+  margin: 0.85rem auto 0;
+  padding: 0.55rem 0.35rem;
+  min-height: 2.75rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--shroffin-link, #0066cc);
+  font: inherit;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.23536;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: color var(--shroffin-micro-duration, 0.5s)
+    var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.hlc-intel-more[hidden] {
+  display: none !important;
+}
+
+/* +N — reveal tips beyond the first three */
+.hlc-intel-plus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  margin: 1rem auto 0;
+  padding: 0;
+  border: 1px solid var(--hlc-intel-line, rgba(0, 0, 0, 0.088));
+  border-radius: 980px;
+  background: transparent;
+  color: var(--shroffin-link, #0066cc);
+  font: inherit;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  letter-spacing: normal;
+  line-height: 1;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    color var(--shroffin-micro-duration, 0.5s)
+      var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+    border-color var(--shroffin-micro-duration, 0.5s)
+      var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+    background-color var(--shroffin-micro-duration, 0.5s)
+      var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.hlc-intel-plus[hidden] {
+  display: none !important;
+}
+
+.hlc-intel-plus-label {
+  display: block;
+  line-height: 1;
+}
+
+.hlc-intel-plus:hover {
+  background: rgba(0, 102, 204, 0.06);
+  border-color: rgba(0, 102, 204, 0.28);
+}
+
+.hlc-intel-plus:focus-visible {
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline-offset: 3px;
+}
+
+/* Keep More under the + when both show */
+.hlc-intelligence.is-tips-open .hlc-intel-more {
+  margin-top: 0.35rem;
+}
+
+.hlc-intel-more-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.05em;
+  height: 1.05em;
+  flex: 0 0 auto;
+  transition: transform 0.85s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.hlc-intel-more-chevron svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.hlc-intel-more[aria-expanded="true"] .hlc-intel-more-chevron {
+  transform: rotate(180deg);
+}
+
+.hlc-intel-more:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.hlc-intel-more:hover .hlc-intel-more-chevron {
+  text-decoration: none;
+}
+
+.hlc-intel-more:focus-visible {
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hlc-intelligence {
     transition: none;
     opacity: 1;
     transform: none;
+  }
+
+  .hlc-intelligence:not(.is-tips-open) .hlc-intel-tips,
+  .hlc-intelligence.is-tips-open .hlc-intel-tips,
+  .hlc-intel-tip-detail,
+  .hlc-intelligence.is-tips-expanded .hlc-intel-tip-detail,
+  .hlc-intel-more-chevron {
+    transition: none;
+    animation: none;
+  }
+
+  .hlc-intel-tip-detail {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .hlc-intelligence.is-tips-expanded .hlc-intel-tip-detail {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .hlc-intel-more[aria-expanded="true"] .hlc-intel-more-chevron {
+    transform: rotate(180deg);
   }
 }

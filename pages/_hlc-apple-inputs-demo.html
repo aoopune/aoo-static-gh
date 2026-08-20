@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Loan inputs — Apple anatomy (label out, grey on control)</title>
+  <meta name="robots" content="noindex">
+  <style>
+    /*
+      Same layout as Explore banks (hero + 2×2 pairs + co-applicant + Compare).
+      True Apple field anatomy: quiet label outside, grey fill only on control,
+      strong value contrast.
+    */
+    :root {
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-color: cubic-bezier(0.4, 0, 0.2, 1);
+      --text: #1d1d1f;
+      --text-2: #6e6e73;
+      --text-3: #86868b;
+      --page: #f5f5f7;
+      --surface: #ffffff;
+      --line: rgba(0, 0, 0, 0.12);
+      --line-soft: rgba(0, 0, 0, 0.08);
+      --fill: #f5f5f7;
+      --fill-hover: #efeff1;
+      --blue: #0071e3;
+      --blue-press: #0077ed;
+      --link: #0066cc;
+      --focus: #0071e3;
+      --danger: #ff3b30;
+      --card-radius: 18px;
+      --control-radius: 12px;
+      --col-gap: 1.35rem;
+    }
+
+    @media (min-width: 735px) {
+      :root { --card-radius: 22px; --control-radius: 14px; }
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+        "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--page);
+      line-height: 1.47059;
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: normal;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .demo-note {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 16px 20px 0;
+      font-size: 12px;
+      letter-spacing: normal;
+      color: var(--text-3);
+    }
+
+    .demo-note a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    .demo-note a:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.15em;
+    }
+
+    .stage {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 28px 20px 96px;
+    }
+
+    @media (min-width: 834px) {
+      .stage { padding: 40px 24px 120px; }
+    }
+
+    .page-title {
+      margin: 0 0 28px;
+      text-align: center;
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 600;
+      letter-spacing: normal;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    /* One card — same shell as live */
+    .inputs-card {
+      position: relative;
+      isolation: isolate;
+      padding: 28px 22px 36px;
+      border-radius: var(--card-radius);
+      background: var(--surface);
+      box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.04),
+        0 8px 28px rgba(0, 0, 0, 0.08);
+    }
+
+    @media (min-width: 834px) {
+      .inputs-card {
+        padding: 36px 36px 44px;
+      }
+    }
+
+    .apple-form {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Mobile: stack. Desktop: hero full + 2×2 pairs */
+    .form-pairs {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-width: 0;
+    }
+
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+      padding: 0 0 22px;
+    }
+
+    .form-row + .form-row {
+      padding-top: 6px;
+    }
+
+    /*
+      First-demo visual hierarchy (kept; layout unchanged):
+      Title strongest → section about quiet → field label quiet →
+      value strongest in the row (grey shell only on the control).
+    */
+    .form-row-about {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: normal;
+      line-height: 1.38462;
+      color: var(--text-2);
+    }
+
+    @media (min-width: 834px) {
+      .form-row-about {
+        font-size: 14px;
+        letter-spacing: normal;
+      }
+    }
+
+    .form-row-fields {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      min-width: 0;
+      align-items: start;
+    }
+
+    .form-row--hero .form-row-fields {
+      gap: 14px;
+    }
+
+    @media (min-width: 600px) {
+      .form-row--hero .form-row-fields {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .form-row--rate .form-row-fields,
+      .form-row--choices .form-row-fields {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+    }
+
+    @media (min-width: 834px) {
+      .form-pairs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: var(--col-gap);
+        row-gap: 0;
+        align-items: start;
+      }
+
+      .form-row--hero,
+      .form-row--coapplicant {
+        grid-column: 1 / -1;
+      }
+
+      .form-row--reduce,
+      .form-row--rate {
+        grid-column: 1;
+      }
+
+      .form-row--emi,
+      .form-row--choices {
+        grid-column: 2;
+      }
+
+      .form-row--reduce,
+      .form-row--emi {
+        padding-bottom: 28px;
+      }
+
+      .form-row--rate,
+      .form-row--choices {
+        padding-top: 8px;
+        padding-bottom: 22px;
+      }
+
+      .form-row--emi,
+      .form-row--choices {
+        padding-left: 8px;
+      }
+
+      .form-row--reduce .form-row-fields,
+      .form-row--emi .form-row-fields {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .form-row--rate .form-row-fields,
+      .form-row--choices .form-row-fields {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .form-row--coapplicant {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        border-top: 1px solid var(--line-soft);
+        margin-top: 4px;
+      }
+    }
+
+    /*
+      Field anatomy (Apple) without changing live layout:
+      Same row: quiet label LEFT (no fill) · grey control RIGHT only.
+      Strong value ink. Not label-above / stacked.
+    */
+    .field {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 12px;
+      width: 100%;
+      min-width: 0;
+      min-height: 44px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: text;
+    }
+
+    .field--select { cursor: pointer; }
+
+    .field-label-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 0;
+    }
+
+    .field-label {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: normal;
+      line-height: 1.38462;
+      color: var(--text-2);
+      white-space: nowrap;
+    }
+
+    @media (min-width: 834px) {
+      .field-label {
+        font-size: 14px;
+        letter-spacing: normal;
+      }
+    }
+
+    .field-label-qual {
+      font-size: 12px;
+      color: var(--text-3);
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .req { color: var(--text-3); }
+
+    .help {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      min-height: 20px;
+      border-radius: 50%;
+      color: var(--text-3);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: color 0.45s var(--ease-color), background 0.45s var(--ease-color);
+      position: relative;
+    }
+
+    .help:hover,
+    .help[aria-expanded="true"] {
+      color: var(--blue);
+      background: rgba(0, 113, 227, 0.1);
+    }
+
+    .help:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .help svg {
+      width: 15px;
+      height: 15px;
+      display: block;
+    }
+
+    .help-popover {
+      position: absolute;
+      z-index: 40;
+      left: 0;
+      top: calc(100% + 8px);
+      width: min(300px, calc(100vw - 48px));
+      padding: 12px 14px;
+      background: var(--surface);
+      border-radius: 12px;
+      box-shadow:
+        0 0 0 0.5px rgba(0, 0, 0, 0.08),
+        0 10px 30px rgba(0, 0, 0, 0.14);
+      font-size: 13px;
+      line-height: 1.38462;
+      letter-spacing: normal;
+      color: var(--text-2);
+      font-weight: 400;
+    }
+
+    .help-popover[hidden] { display: none !important; }
+    .help-popover p { margin: 0; }
+    .help-popover a {
+      display: inline-block;
+      margin-top: 8px;
+      color: var(--link);
+      text-decoration: none;
+    }
+    .help-popover a:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.15em;
+    }
+
+    /* Grey only on the control — right side, same row as label */
+    .shell {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      flex: 1 1 auto;
+      min-width: 2.75rem;
+      max-width: 100%;
+      margin-left: auto;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: var(--control-radius);
+      background: var(--fill);
+      border: 1px solid transparent;
+      transition:
+        background 0.45s var(--ease-color),
+        border-color 0.45s var(--ease-color),
+        box-shadow 0.75s var(--ease);
+    }
+
+    .field:hover .shell {
+      background: var(--fill-hover);
+    }
+
+    .field:focus-within .shell {
+      background: #fff;
+      border-color: rgba(0, 113, 227, 0.45);
+      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.16);
+    }
+
+    .prefix,
+    .suffix {
+      flex-shrink: 0;
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: normal;
+      color: var(--text-2);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .shell input,
+    .shell select {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 0;
+      background: transparent;
+      margin: 0;
+      padding: 0;
+      min-width: 2.75rem;
+      min-height: 2.75rem;
+      font: inherit;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: normal;
+      line-height: 1.23536;
+      color: var(--text);
+      outline: none;
+      text-align: right;
+      caret-color: var(--blue);
+    }
+
+    /* Value fills the shell — hit the control, not the glyphs. */
+    .shell input {
+      flex: 1 1 auto;
+      width: auto;
+      max-width: none;
+      field-sizing: fixed;
+    }
+
+    /* Hero amounts = top of hierarchy inside the card */
+    .form-row--hero .shell {
+      min-height: 48px;
+      padding: 10px 14px;
+    }
+
+    .form-row--hero .shell input {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: normal;
+      color: var(--text);
+    }
+
+    .form-row--hero .prefix {
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text-2);
+    }
+
+    @media (min-width: 834px) {
+      .form-row--hero .shell input,
+      .form-row--hero .prefix {
+        font-size: 24px;
+      }
+    }
+
+    .shell select {
+      cursor: pointer;
+      padding-right: 16px;
+      width: auto;
+      max-width: 11rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236e6e73' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0 center;
+    }
+
+    .field-note {
+      width: 100%;
+      flex: 1 0 100%;
+      margin: 0;
+      padding: 0;
+      font-size: 12px;
+      letter-spacing: normal;
+      line-height: 1.33337;
+      color: var(--text-3);
+      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 4px 6px;
+    }
+
+    .inline-pct {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 0;
+      background: var(--fill);
+      border-radius: 6px;
+      padding: 2px 20px 2px 8px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: normal;
+      color: var(--text);
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' fill='none'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%236e6e73' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 6px center;
+      min-height: 24px;
+    }
+
+    .inline-pct:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    /* Co-applicant bar — copy + Add read as one continuous sentence */
+    .co-bar {
+      display: block;
+      padding: 4px 0;
+      min-width: 0;
+    }
+
+    .co-copy {
+      margin: 0;
+      min-width: 0;
+      font-size: 14px;
+      letter-spacing: normal;
+      line-height: 1.357;
+      color: var(--text-2);
+    }
+
+    .co-copy-tail {
+      white-space: nowrap;
+    }
+
+    .co-copy .btn--add {
+      display: inline-flex;
+      vertical-align: baseline;
+      white-space: nowrap;
+    }
+
+    @media (min-width: 834px) {
+      .co-copy {
+        font-size: 15px;
+        letter-spacing: normal;
+      }
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      font: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 980px;
+      transition:
+        background 0.45s var(--ease-color),
+        color 0.45s var(--ease-color),
+        transform 0.75s var(--ease),
+        opacity 0.45s var(--ease-color);
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .btn--add {
+      min-height: 36px;
+      padding: 6px 16px;
+      background: var(--fill);
+      color: var(--blue);
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: normal;
+    }
+
+    .btn--add:hover { background: rgba(0, 113, 227, 0.12); }
+    .btn--add[aria-pressed="true"] {
+      background: rgba(0, 113, 227, 0.14);
+      color: var(--text);
+    }
+
+    .btn--add svg { width: 10px; height: 10px; }
+
+    .btn--text {
+      min-height: 36px;
+      padding: 6px 10px;
+      background: transparent;
+      color: var(--blue);
+      font-size: 14px;
+    }
+
+    .btn--text:hover { opacity: 0.72; }
+
+    .btn--danger {
+      min-height: 32px;
+      padding: 4px 8px;
+      background: transparent;
+      color: var(--danger);
+      font-size: 13px;
+    }
+
+    .btn--compare {
+      min-height: 48px;
+      padding: 10px 28px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 17px;
+      letter-spacing: normal;
+      gap: 8px;
+      box-shadow:
+        0 2px 8px rgba(0, 113, 227, 0.28),
+        0 8px 24px rgba(0, 113, 227, 0.18);
+    }
+
+    .btn--compare:hover { background: var(--blue-press); }
+    .btn--compare:active { transform: scale(0.98); }
+    .btn--compare svg { width: 18px; height: 18px; }
+
+    .co-fields[hidden] { display: none !important; }
+
+    .co-fields {
+      margin-top: 12px;
+      padding-top: 4px;
+    }
+
+    .co-card {
+      margin: 0 0 12px;
+      padding: 8px 12px 12px;
+      border-radius: 14px;
+      background: var(--fill);
+    }
+
+    .co-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .co-card-title {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: normal;
+      text-transform: uppercase;
+      color: var(--text-2);
+    }
+
+    .co-card-fields {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 600px) {
+      .co-card-fields {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .co-foot {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 12px;
+      padding-top: 4px;
+    }
+
+    .co-limit {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-3);
+    }
+
+    /* Compare docks on card edge like live */
+    .form-actions {
+      display: flex;
+      justify-content: center;
+      margin: 8px 0 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .form-submit {
+      position: absolute;
+      left: 50%;
+      bottom: -24px;
+      transform: translateX(-50%);
+    }
+
+    .intel {
+      margin: 40px 0 0;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.04);
+      font-size: 13px;
+      letter-spacing: normal;
+      line-height: 1.38462;
+      color: var(--text-2);
+      text-align: center;
+    }
+
+    .status {
+      margin: 12px 0 0;
+      min-height: 1.2em;
+      font-size: 12px;
+      letter-spacing: normal;
+      color: var(--text-3);
+      text-align: center;
+    }
+
+    .status[data-tone="ok"] { color: #248a3d; }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <p class="demo-note">
+    Design check · live layout · first-demo hierarchy restored (quiet sections · quiet labels · strong values) ·
+    <a href="explore-banks.html">Open live page</a>
+  </p>
+
+  <div class="stage">
+    <h1 class="page-title">Explore banks.</h1>
+
+    <div class="inputs-card">
+      <form class="apple-form" id="apple-inputs" autocomplete="off" novalidate>
+        <h2 class="visually-hidden">Loan inputs</h2>
+
+        <div class="form-pairs">
+          <!-- Hero -->
+          <div class="form-row form-row--hero">
+            <p class="form-row-about">Sets how much you can borrow</p>
+            <div class="form-row-fields">
+              <label class="field" for="hlc-monthly-income">
+                <span class="field-label-row">
+                  <span class="field-label">Net monthly income<sup class="req" aria-hidden="true">*</sup></span>
+                  <span style="position:relative;display:inline-flex">
+                    <button type="button" class="help" aria-expanded="false" aria-controls="help-income" aria-label="About Net monthly income">
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.25"/><path d="M8 7.2v3.6M8 5.35h.01" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="help-popover" id="help-income" role="tooltip" hidden>
+                      <p>Banks use this to work out how big an EMI you can carry. Use take-home after PF and tax — not CTC.</p>
+                      <a href="guide.html#loan-amount">Learn more</a>
+                    </div>
+                  </span>
+                </span>
+                <span class="shell">
+                  <span class="prefix" aria-hidden="true">₹</span>
+                  <input type="text" id="hlc-monthly-income" name="monthlyIncome" value="1,00,000" inputmode="numeric" autocomplete="off" data-format="money" data-max-digits="10" required>
+                </span>
+              </label>
+
+              <label class="field" for="hlc-property-value">
+                <span class="field-label-row">
+                  <span class="field-label">Property value <span class="field-label-qual">as per agreement</span><sup class="req" aria-hidden="true">*</sup></span>
+                  <span style="position:relative;display:inline-flex">
+                    <button type="button" class="help" aria-expanded="false" aria-controls="help-property" aria-label="About Property value">
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.25"/><path d="M8 7.2v3.6M8 5.35h.01" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="help-popover" id="help-property" role="tooltip" hidden>
+                      <p>Banks won’t lend more than a fixed share of this price. Use the agreement amount.</p>
+                      <a href="guide.html#loan-amount-property">Learn more</a>
+                    </div>
+                  </span>
+                </span>
+                <span class="shell">
+                  <span class="prefix" aria-hidden="true">₹</span>
+                  <input type="text" id="hlc-property-value" name="propertyValue" value="62,50,000" inputmode="numeric" autocomplete="off" data-format="money" data-max-digits="10" required>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Reduce -->
+          <div class="form-row form-row--reduce">
+            <p class="form-row-about">Cuts how much you can borrow</p>
+            <div class="form-row-fields">
+              <label class="field" for="hlc-existing-emis">
+                <span class="field-label-row">
+                  <span class="field-label">Total existing EMIs</span>
+                  <span style="position:relative;display:inline-flex">
+                    <button type="button" class="help" aria-expanded="false" aria-controls="help-emis" aria-label="About Total existing EMIs">
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.25"/><path d="M8 7.2v3.6M8 5.35h.01" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="help-popover" id="help-emis" role="tooltip" hidden>
+                      <p>Every rupee you’re already paying in EMIs comes off what banks allow for this home loan.</p>
+                      <a href="guide.html#loan-amount">Learn more</a>
+                    </div>
+                  </span>
+                </span>
+                <span class="shell">
+                  <span class="prefix" aria-hidden="true">₹</span>
+                  <input type="text" id="hlc-existing-emis" name="existingEmis" value="0" inputmode="numeric" autocomplete="off" data-format="money" data-max-digits="10">
+                </span>
+              </label>
+
+              <div class="field" id="field-cards">
+                <span class="field-label-row">
+                  <label class="field-label" for="hlc-card-limits">Total credit card limits</label>
+                  <span style="position:relative;display:inline-flex">
+                    <button type="button" class="help" aria-expanded="false" aria-controls="help-cards" aria-label="About Total credit card limits">
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.25"/><path d="M8 7.2v3.6M8 5.35h.01" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="help-popover" id="help-cards" role="tooltip" hidden>
+                      <p>Banks treat a share of your total credit limit as a monthly commitment, even if you owe nothing.</p>
+                      <a href="guide.html#loan-amount">Learn more</a>
+                    </div>
+                  </span>
+                </span>
+                <span class="shell">
+                  <span class="prefix" aria-hidden="true">₹</span>
+                  <input type="text" id="hlc-card-limits" name="cardLimits" value="0" inputmode="numeric" autocomplete="off" data-format="money" data-max-digits="10">
+                </span>
+                <p class="field-note">
+                  About
+                  <select class="inline-pct" id="hlc-card-load-pct" name="cardLoadPct" aria-label="Share of this credit card limit counted as monthly EMI">
+                    <option value="0">0%</option>
+                    <option value="5">5%</option>
+                    <option value="10" selected>10%</option>
+                  </select>
+                  of this limit counts as monthly EMI
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- EMI / FOIR -->
+          <div class="form-row form-row--emi">
+            <p class="form-row-about">Sets loan amount and monthly EMI</p>
+            <div class="form-row-fields">
+              <label class="field field--select" for="hlc-foir">
+                <span class="field-label-row">
+                  <span class="field-label">EMI limit / FOIR</span>
+                  <span style="position:relative;display:inline-flex">
+                    <button type="button" class="help" aria-expanded="false" aria-controls="help-foir" aria-label="About EMI limit / FOIR">
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.25"/><path d="M8 7.2v3.6M8 5.35h.01" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="help-popover" id="help-foir" role="tooltip" hidden>
+                      <p>Share of take-home banks allow for all EMIs. Leave at 55% unless you know your bank differs.</p>
+                      <a href="guide.html#loan-amount">Learn more</a>
+                    </div>
+                  </span>
+                </span>
+                <span class="shell">
+                  <select id="hlc-foir" name="foirPct">
+                    <option value="50">50%</option>
+                    <option value="55" selected>55% (default)</option>
+                    <option value="60">60%</option>
+                    <option value="65">65%</option>
+                    <option value="70">70%</option>
+                  </select>
+                </span>
+              </label>
+
+              <label class="field" for="hlc-tenure">
+                <span class="field-label-row">
+                  <span class="field-label">Loan tenure<sup class="req" aria-hidden="true">*</sup></span>
+                  <span style="position:relative;display:inline-flex">
+                    <button type="button" class="help" aria-expanded="false" aria-controls="help-tenure" aria-label="About Loan tenure">
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.25"/><path d="M8 7.2v3.6M8 5.35h.01" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="help-popover" id="help-tenure" role="tooltip" hidden>
+                      <p>How many years you take to repay — the biggest lever on monthly EMI.</p>
+                      <a href="guide.html#tenure">Learn more</a>
+                    </div>
+                  </span>
+                </span>
+                <span class="shell">
+                  <input type="text" id="hlc-tenure" name="tenureYears" value="20" inputmode="numeric" autocomplete="off" data-format="digits" data-max-digits="2" data-max="30" required>
+                  <span class="suffix" aria-hidden="true">years</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Rate -->
+          <div class="form-row form-row--rate">
+            <p class="form-row-about">Changes your rate, tenure, and offers</p>
+            <div class="form-row-fields">
+              <label class="field" for="hlc-age">
+                <span class="field-label-row">
+                  <span class="field-label">Age<sup class="req" aria-hidden="true">*</sup></span>
+                  <span style="position:relative;display:inline-flex">
+                    <button type="button" class="help" aria-expanded="false" aria-controls="help-age" aria-label="About Age">
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.25"/><path d="M8 7.2v3.6M8 5.35h.01" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="help-popover" id="help-age" role="tooltip" hidden>
+                      <p>Age caps how many years banks will give you. They want the loan closed before you stop earning.</p>
+                      <a href="guide.html#tenure">Learn more</a>
+                    </div>
+                  </span>
+                </span>
+                <span class="shell">
+                  <input type="text" id="hlc-age" name="age" value="35" inputmode="numeric" autocomplete="off" data-format="digits" data-max-digits="2" required>
+                  <span class="suffix" aria-hidden="true">years</span>
+                </span>
+              </label>
+
+              <label class="field" for="hlc-cibil">
+                <span class="field-label-row">
+                  <span class="field-label">CIBIL score<sup class="req" aria-hidden="true">*</sup></span>
+                  <span style="position:relative;display:inline-flex">
+                    <button type="button" class="help" aria-expanded="false" aria-controls="help-cibil" aria-label="About CIBIL score">
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.25"/><path d="M8 7.2v3.6M8 5.35h.01" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="help-popover" id="help-cibil" role="tooltip" hidden>
+                      <p>This moves the rate. Higher score, lower rate. Put what you remember.</p>
+                    </div>
+                  </span>
+                </span>
+                <span class="shell">
+                  <input type="text" id="hlc-cibil" name="cibilScore" value="780" inputmode="numeric" autocomplete="off" data-format="digits" data-max-digits="3" data-max="900" required>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Choices -->
+          <div class="form-row form-row--choices">
+            <p class="form-row-about">Changes loan type and which plans you see</p>
+            <div class="form-row-fields">
+              <label class="field field--select" for="hlc-occupation">
+                <span class="field-label-row">
+                  <span class="field-label">Occupation<sup class="req" aria-hidden="true">*</sup></span>
+                  <span style="position:relative;display:inline-flex">
+                    <button type="button" class="help" aria-expanded="false" aria-controls="help-occupation" aria-label="About Occupation">
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.25"/><path d="M8 7.2v3.6M8 5.35h.01" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="help-popover" id="help-occupation" role="tooltip" hidden>
+                      <p>Salaried and self-employed get different rate bands, banks, and documents.</p>
+                      <a href="guide-documents.html#income">Learn more</a>
+                    </div>
+                  </span>
+                </span>
+                <span class="shell">
+                  <select id="hlc-occupation" name="occupation" required>
+                    <option value="Salaried" selected>Salaried</option>
+                    <option value="Self-Employed">Self-employed</option>
+                  </select>
+                </span>
+              </label>
+
+              <label class="field field--select" for="hlc-purpose">
+                <span class="field-label-row">
+                  <span class="field-label">Purpose<sup class="req" aria-hidden="true">*</sup></span>
+                  <span style="position:relative;display:inline-flex">
+                    <button type="button" class="help" aria-expanded="false" aria-controls="help-purpose" aria-label="About Purpose">
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.25"/><path d="M8 7.2v3.6M8 5.35h.01" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>
+                    </button>
+                    <div class="help-popover" id="help-purpose" role="tooltip" hidden>
+                      <p>New is buying or building. Top-up is borrowing against a house you already have a loan on.</p>
+                    </div>
+                  </span>
+                </span>
+                <span class="shell">
+                  <select id="hlc-purpose" name="purpose" required>
+                    <option value="Regular Home Loan" selected>New</option>
+                    <option value="Top-up Loan">Top-up</option>
+                  </select>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Co-applicant -->
+          <div class="form-row form-row--coapplicant">
+            <div class="co-bar">
+              <p class="co-copy">
+                Add a co-applicant with income to borrow
+                <span class="co-copy-tail">
+                  more.
+                  <span style="position:relative;display:inline-flex;vertical-align:middle;margin-left:2px">
+                    <button type="button" class="help" aria-expanded="false" aria-controls="help-co" aria-label="About co-applicant">
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.25"/><path d="M8 7.2v3.6M8 5.35h.01" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>
+                    </button>
+                  </span>
+                  <button type="button" class="btn btn--add" id="hlc-co-toggle" aria-pressed="false" aria-controls="hlc-coapplicant-fields" aria-label="Add co-applicant">
+                    <span id="hlc-co-toggle-label">Add</span>
+                    <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </span>
+              </p>
+              <div class="help-popover" id="help-co" role="tooltip" hidden>
+                <p>A co-applicant’s income gets added to yours. Their EMIs count too.</p>
+              </div>
+              <input type="hidden" id="hlc-coapplicant" name="includeCoApplicant" value="no">
+            </div>
+            <div class="co-fields" id="hlc-coapplicant-fields" hidden>
+              <div id="hlc-coapplicant-list"></div>
+              <div class="co-foot">
+                <button type="button" class="btn btn--text" id="hlc-coapplicant-add">+ Add another co-applicant</button>
+                <p class="co-limit" id="hlc-coapplicant-limit" role="status"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <div class="form-submit">
+            <button type="submit" class="btn btn--compare" id="hlc-see-options">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7.5 4.5 6.4 5.6l3.4 3.4H2v1.6h7.8L6.4 14l1.1 1.1 5.3-5.3-5.3-5.3Zm9 0-5.3 5.3 5.3 5.3 1.1-1.1-3.4-3.4H22V9h-7.8l3.4-3.4-1.1-1.1Z"/></svg>
+              Compare
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <p class="intel" id="apple-intel">
+      Across 33 banks for your profile, Punjab National Bank is cheapest at 7.25% — Central Bank of India is next at 7.30%.
+    </p>
+    <p class="status" id="apple-status" role="status" aria-live="polite"></p>
+  </div>
+
+  <script>
+    (function () {
+      var MAX_CO = 5;
+      var RELATIONSHIPS = [
+        { value: "Spouse", label: "Spouse" },
+        { value: "Father", label: "Father" },
+        { value: "Mother", label: "Mother" },
+        { value: "Son", label: "Son" },
+        { value: "Daughter", label: "Daughter" },
+        { value: "Brother", label: "Brother" },
+        { value: "Sister", label: "Sister" },
+        { value: "Other", label: "Someone else" }
+      ];
+      var OCCUPATIONS = [
+        { value: "Salaried", label: "Salaried" },
+        { value: "Self-employed", label: "Self-employed" },
+        { value: "Pensioner", label: "Pensioner" },
+        { value: "Not earning", label: "Not earning" }
+      ];
+
+      function digitCount(s) {
+        return String(s || "").replace(/\D/g, "").length;
+      }
+
+      function truncateDigits(s, max) {
+        return String(s || "").replace(/\D/g, "").slice(0, max);
+      }
+
+      function parseMoney(s) {
+        var n = Number(String(s || "").replace(/,/g, "").replace(/[^\d.]/g, ""));
+        return Number.isFinite(n) ? n : NaN;
+      }
+
+      function formatInr(n) {
+        var str = String(Math.trunc(Math.abs(n)));
+        if (str.length <= 3) return str;
+        var last3 = str.slice(-3);
+        var rest = str.slice(0, -3).replace(/\B(?=(\d{2})+(?!\d))/g, ",");
+        return rest + "," + last3;
+      }
+
+      function applyMoneyFormat(input, maxDigits) {
+        var digits = truncateDigits(input.value, maxDigits);
+        input.value = digits ? formatInr(Number(digits)) : "";
+      }
+
+      function bindFormatted(input) {
+        var format = input.getAttribute("data-format");
+        if (!format) return;
+        var maxDigits = Number(input.getAttribute("data-max-digits")) || 10;
+        var maxAttr = input.getAttribute("data-max");
+        var maxValue =
+          maxAttr != null && maxAttr !== "" && Number.isFinite(Number(maxAttr))
+            ? Number(maxAttr)
+            : null;
+        var money = format === "money";
+
+        function digitsOnly() {
+          var next = truncateDigits(input.value, maxDigits);
+          if (maxValue != null) {
+            var n = Number(next);
+            if (Number.isFinite(n) && n > maxValue) next = String(maxValue);
+          }
+          return next;
+        }
+
+        function pretty() {
+          if (money) {
+            var d = truncateDigits(input.value, maxDigits);
+            input.value = d ? formatInr(Number(d)) : "";
+            return;
+          }
+          var n = parseMoney(input.value);
+          if (!Number.isFinite(n)) {
+            input.value = digitsOnly();
+            return;
+          }
+          var capped = maxValue != null && n > maxValue ? maxValue : n;
+          input.value = String(Math.trunc(capped));
+        }
+
+        input.addEventListener("beforeinput", function (event) {
+          if (event.isComposing) return;
+          if (event.inputType && event.inputType.indexOf("insert") !== 0) return;
+          var data = event.data;
+          if (data == null || data === "") return;
+          var start = input.selectionStart;
+          var end = input.selectionEnd;
+          if (typeof start !== "number" || typeof end !== "number") return;
+          var next = input.value.slice(0, start) + data + input.value.slice(end);
+          if (digitCount(next) > maxDigits) {
+            event.preventDefault();
+            return;
+          }
+          if (maxValue != null && !money) {
+            var nextNumber = Number(truncateDigits(next, maxDigits));
+            if (Number.isFinite(nextNumber) && nextNumber > maxValue) event.preventDefault();
+          }
+        });
+
+        input.addEventListener("input", function () {
+          if (money) {
+            applyMoneyFormat(input, maxDigits);
+            return;
+          }
+          var next = digitsOnly();
+          if (input.value !== next) input.value = next;
+        });
+
+        input.addEventListener("blur", pretty);
+        input.addEventListener("change", pretty);
+        if (!money) {
+          input.addEventListener("focus", function () {
+            var n = parseMoney(input.value);
+            input.value = Number.isFinite(n) ? digitsOnly() : truncateDigits(input.value, maxDigits);
+          });
+        }
+      }
+
+      document.querySelectorAll("input[data-format]").forEach(bindFormatted);
+
+      var openHelp = null;
+      function closeHelp() {
+        if (!openHelp) return;
+        openHelp.btn.setAttribute("aria-expanded", "false");
+        openHelp.pop.hidden = true;
+        openHelp = null;
+      }
+
+      document.querySelectorAll(".help").forEach(function (btn) {
+        var id = btn.getAttribute("aria-controls");
+        var pop = id && document.getElementById(id);
+        if (!pop) return;
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (openHelp && openHelp.btn === btn) {
+            closeHelp();
+            return;
+          }
+          closeHelp();
+          btn.setAttribute("aria-expanded", "true");
+          pop.hidden = false;
+          openHelp = { btn: btn, pop: pop };
+        });
+      });
+
+      document.addEventListener("click", function (e) {
+        if (!openHelp) return;
+        if (openHelp.pop.contains(e.target) || openHelp.btn.contains(e.target)) return;
+        closeHelp();
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeHelp();
+      });
+
+      var listEl = document.getElementById("hlc-coapplicant-list");
+      var fieldsEl = document.getElementById("hlc-coapplicant-fields");
+      var toggleBtn = document.getElementById("hlc-co-toggle");
+      var toggleLabel = document.getElementById("hlc-co-toggle-label");
+      var hiddenCo = document.getElementById("hlc-coapplicant");
+      var addBtn = document.getElementById("hlc-coapplicant-add");
+      var limitEl = document.getElementById("hlc-coapplicant-limit");
+
+      function optionsHtml(list, selected) {
+        return list
+          .map(function (o) {
+            return (
+              '<option value="' +
+              o.value +
+              '"' +
+              (o.value === selected ? " selected" : "") +
+              ">" +
+              o.label +
+              "</option>"
+            );
+          })
+          .join("");
+      }
+
+      function blankCo() {
+        return {
+          relationship: "Spouse",
+          occupation: "Salaried",
+          age: "",
+          cibilScore: "",
+          monthlyIncome: "0",
+          existingEmis: "0",
+          cardLimits: "0"
+        };
+      }
+
+      function readCards() {
+        var out = [];
+        listEl.querySelectorAll(".co-card").forEach(function (card) {
+          var get = function (field) {
+            var el = card.querySelector('[data-co-field="' + field + '"]');
+            return el ? el.value : "";
+          };
+          out.push({
+            relationship: get("relationship") || "Spouse",
+            occupation: get("occupation") || "Salaried",
+            age: get("age"),
+            cibilScore: get("cibilScore"),
+            monthlyIncome: get("monthlyIncome") || "0",
+            existingEmis: get("existingEmis") || "0",
+            cardLimits: get("cardLimits") || "0"
+          });
+        });
+        return out;
+      }
+
+      function moneyField(id, field, label, value) {
+        return (
+          '<label class="field" for="' +
+          id +
+          '"><span class="field-label-row"><span class="field-label">' +
+          label +
+          '</span></span><span class="shell"><span class="prefix" aria-hidden="true">₹</span>' +
+          '<input type="text" id="' +
+          id +
+          '" data-co-field="' +
+          field +
+          '" value="' +
+          value +
+          '" inputmode="numeric" autocomplete="off" data-format="money" data-max-digits="10"></span></label>'
+        );
+      }
+
+      function cardHtml(index, values) {
+        var n = index + 1;
+        var p = "hlc-co-" + n + "-";
+        return (
+          '<div class="co-card" data-co-index="' +
+          index +
+          '"><div class="co-card-head"><h3 class="co-card-title">Co-applicant ' +
+          n +
+          '</h3><button type="button" class="btn btn--danger" data-co-remove="' +
+          index +
+          '" aria-label="Remove co-applicant ' +
+          n +
+          '">Remove</button></div><div class="co-card-fields">' +
+          '<label class="field field--select" for="' +
+          p +
+          'relationship"><span class="field-label-row"><span class="field-label">Relation to you</span></span><span class="shell"><select id="' +
+          p +
+          'relationship" data-co-field="relationship">' +
+          optionsHtml(RELATIONSHIPS, values.relationship) +
+          '</select></span></label>' +
+          '<label class="field field--select" for="' +
+          p +
+          'occupation"><span class="field-label-row"><span class="field-label">Work</span></span><span class="shell"><select id="' +
+          p +
+          'occupation" data-co-field="occupation">' +
+          optionsHtml(OCCUPATIONS, values.occupation) +
+          '</select></span></label>' +
+          '<label class="field" for="' +
+          p +
+          'age"><span class="field-label-row"><span class="field-label">Age</span></span><span class="shell"><input type="text" id="' +
+          p +
+          'age" data-co-field="age" value="' +
+          (values.age || "") +
+          '" inputmode="numeric" autocomplete="off" data-format="digits" data-max-digits="2"><span class="suffix" aria-hidden="true">years</span></span></label>' +
+          '<label class="field" for="' +
+          p +
+          'cibil"><span class="field-label-row"><span class="field-label">CIBIL score</span></span><span class="shell"><input type="text" id="' +
+          p +
+          'cibil" data-co-field="cibilScore" value="' +
+          (values.cibilScore || "") +
+          '" inputmode="numeric" autocomplete="off" data-format="digits" data-max-digits="3" data-max="900"></span></label>' +
+          moneyField(p + "income", "monthlyIncome", "Monthly income", values.monthlyIncome || "0") +
+          moneyField(p + "emis", "existingEmis", "Existing EMIs", values.existingEmis || "0") +
+          moneyField(p + "cards", "cardLimits", "Card limits", values.cardLimits || "0") +
+          "</div></div>"
+        );
+      }
+
+      function syncChrome(count) {
+        var on = count > 0;
+        hiddenCo.value = on ? "yes" : "no";
+        toggleBtn.setAttribute("aria-pressed", on ? "true" : "false");
+        toggleLabel.textContent = "Add";
+        if (on) fieldsEl.removeAttribute("hidden");
+        else fieldsEl.setAttribute("hidden", "");
+        addBtn.hidden = count >= MAX_CO;
+        limitEl.textContent =
+          count >= MAX_CO
+            ? "Most lenders cap a joint loan at six borrowers in total."
+            : "";
+      }
+
+      function render(list) {
+        var rows = (list || []).slice(0, MAX_CO);
+        listEl.innerHTML = rows
+          .map(function (v, i) {
+            return cardHtml(i, Object.assign(blankCo(), v));
+          })
+          .join("");
+        listEl.querySelectorAll("input[data-format]").forEach(bindFormatted);
+        syncChrome(rows.length);
+      }
+
+      toggleBtn.addEventListener("click", function () {
+        if (hiddenCo.value === "yes") render([]);
+        else render([blankCo()]);
+      });
+
+      addBtn.addEventListener("click", function () {
+        var rows = readCards();
+        if (rows.length >= MAX_CO) return;
+        rows.push(blankCo());
+        render(rows);
+        var cards = listEl.querySelectorAll(".co-card");
+        var last = cards[cards.length - 1];
+        var first = last && last.querySelector("select, input");
+        if (first) first.focus();
+      });
+
+      listEl.addEventListener("click", function (e) {
+        var btn = e.target.closest("[data-co-remove]");
+        if (!btn) return;
+        var index = Number(btn.getAttribute("data-co-remove"));
+        var rows = readCards();
+        if (index < 0 || index >= rows.length) return;
+        rows.splice(index, 1);
+        render(rows);
+      });
+
+      document.getElementById("apple-inputs").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var status = document.getElementById("apple-status");
+        status.dataset.tone = "ok";
+        status.textContent =
+          "Ready · demo only — layout matches live; skin is Apple. No bank table here.";
+      });
+    })();
+  </script>
+</body>
+</html>

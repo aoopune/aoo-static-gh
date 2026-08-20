@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intelligence box — Apple-simple colour options</title>
+  <meta name="robots" content="noindex">
+  <style>
+    /*
+      Apple-simple only.
+      Principle: the card stays almost white. Magic is a whisper —
+      a soft mist, a faint edge glow, or a cool pearl wash.
+      Never loud mesh, never rainbow fill, never texture noise.
+      Font colours locked to live intelligence box.
+    */
+    :root {
+      --ease: cubic-bezier(0.28, 0.11, 0.32, 1);
+      --text: #1d1d1f;
+      --text-2: #6e6e73;
+      --text-3: #86868b;
+      --line: rgba(0, 0, 0, 0.088);
+      --page: #f5f5f7;
+      --link: #0066cc;
+      --focus: #0071e3;
+      --icon: #6e6e73;
+      --module-radius: 8px;
+      --content: 720px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+        "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--page);
+      font-size: 17px;
+      line-height: 1.47059;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: min(100% - 48px, var(--content));
+      margin: 0 auto;
+      padding: 48px 0 96px;
+    }
+
+    @media (max-width: 733px) {
+      .wrap {
+        width: min(100% - 40px, var(--content));
+        padding-top: 32px;
+      }
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 600;
+      letter-spacing: -0.022em;
+      line-height: 1.1;
+    }
+
+    .lede {
+      margin: 0 0 28px;
+      max-width: 34em;
+      color: var(--text-2);
+      font-size: 17px;
+    }
+
+    .note {
+      margin: 0 0 40px;
+      color: var(--text-3);
+      font-size: 14px;
+      line-height: 1.42859;
+      max-width: 36em;
+    }
+
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 48px;
+    }
+
+    .toc a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 6px 14px;
+      border-radius: 980px;
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--text-2);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .toc a:hover { color: var(--text); }
+    .toc a:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+    .style-block {
+      margin: 0 0 52px;
+      scroll-margin-top: 24px;
+    }
+
+    .style-meta h2 {
+      margin: 0 0 6px;
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: -0.016em;
+    }
+
+    .style-meta p {
+      margin: 0 0 16px;
+      color: var(--text-2);
+      font-size: 14px;
+      line-height: 1.45;
+      max-width: 38em;
+    }
+
+    .intel {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      border-radius: var(--module-radius);
+      padding: 2rem 1.85rem 2rem;
+      box-shadow:
+        0 1px 2px rgba(60, 64, 67, 0.06),
+        0 6px 16px rgba(60, 64, 67, 0.08);
+    }
+
+    .intel-head {
+      margin: 0 0 12px;
+    }
+
+    .eyebrow {
+      margin: 0;
+      font-size: 17px;
+      color: var(--text-3);
+      line-height: 1.23536;
+    }
+
+    .tip {
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tip:last-of-type { border-bottom: 0; padding-bottom: 0; }
+    .tip:first-of-type { padding-top: 4px; }
+
+    .horizon {
+      display: block;
+      margin: 0 0 8px;
+      font-size: 12px;
+      color: var(--text-3);
+    }
+
+    .heading {
+      display: block;
+      margin: 0 0 10px;
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.21053;
+    }
+
+    .body {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.42859;
+      max-width: 28em;
+    }
+
+    .more {
+      display: block;
+      margin: 22px auto 0;
+      width: max-content;
+      border: 0;
+      background: transparent;
+      color: var(--link);
+      font: inherit;
+      font-size: 17px;
+      cursor: default;
+    }
+
+    /* ── 1 Today (plain white) ── */
+    .s1 { background: #ffffff; }
+
+    /* ── 2 Soft system blue (Apple grouped fill tint) ── */
+    .s2 {
+      background: linear-gradient(
+        180deg,
+        #f7f9fc 0%,
+        #f3f6fa 100%
+      );
+    }
+
+    /* ── 3 Whisper mist — one soft bloom, almost white ── */
+    .s3 {
+      background:
+        radial-gradient(
+          120% 90% at 50% -20%,
+          rgba(210, 225, 245, 0.55) 0%,
+          rgba(255, 255, 255, 0) 60%
+        ),
+        #ffffff;
+    }
+
+    /* ── 4 Apple Intelligence mist — four corners, very pale ── */
+    .s4 {
+      background:
+        radial-gradient(80% 60% at 0% 0%, rgba(186, 200, 255, 0.22) 0%, transparent 55%),
+        radial-gradient(80% 60% at 100% 0%, rgba(180, 220, 255, 0.2) 0%, transparent 55%),
+        radial-gradient(80% 60% at 100% 100%, rgba(230, 200, 240, 0.16) 0%, transparent 55%),
+        radial-gradient(80% 60% at 0% 100%, rgba(190, 235, 220, 0.16) 0%, transparent 55%),
+        #ffffff;
+    }
+
+    /* ── 5 Soft edge glow — white card, thin spectrum ring ── */
+    .s5 {
+      background: #ffffff;
+    }
+    .s5::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(
+        135deg,
+        rgba(120, 190, 255, 0.55),
+        rgba(180, 160, 255, 0.45),
+        rgba(255, 170, 210, 0.4),
+        rgba(140, 220, 200, 0.45),
+        rgba(120, 190, 255, 0.55)
+      );
+      background-size: 200% 200%;
+      animation: edge-shift 10s linear infinite;
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      opacity: 0.85;
+    }
+
+    @keyframes edge-shift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* ── 6 Cool pearl — barely cooler than white ── */
+    .s6 {
+      background:
+        linear-gradient(
+          165deg,
+          #fafbfd 0%,
+          #f5f7fb 48%,
+          #f8fafc 100%
+        );
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .s5::before { animation: none; }
+    }
+
+    .pick {
+      margin-top: 8px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+      color: var(--text-2);
+      font-size: 15px;
+      line-height: 1.5;
+      max-width: 36em;
+    }
+
+    .pick h2 {
+      margin: 0 0 10px;
+      font-size: 19px;
+      color: var(--text);
+    }
+
+    .pick ol {
+      margin: 0;
+      padding-left: 1.2em;
+    }
+
+    .pick li { margin: 0 0 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Apple-simple colour options</h1>
+    <p class="lede">
+      How Apple would likely treat this: keep the card almost white.
+      Add only a quiet cool tint, a soft mist, or a thin glowing edge.
+      No loud blobs. No rainbow fills. Fonts unchanged.
+    </p>
+    <p class="note">
+      Open: <a href="http://localhost:8765/pages/_hlc-intelligence-color-styles.html">localhost:8765/pages/_hlc-intelligence-color-styles.html</a>
+    </p>
+
+    <nav class="toc" aria-label="Jump to option">
+      <a href="#s1">1 Plain white</a>
+      <a href="#s2">2 Soft system blue</a>
+      <a href="#s3">3 Whisper mist</a>
+      <a href="#s4">4 Soft spectrum mist</a>
+      <a href="#s5">5 Thin edge glow</a>
+      <a href="#s6">6 Cool pearl</a>
+    </nav>
+
+    <section class="style-block" id="s1">
+      <div class="style-meta">
+        <h2>1 · Plain white</h2>
+        <p>Today’s look. Baseline — no magic, just the same white as the form.</p>
+      </div>
+      <article class="intel s1">
+        <div class="intel-head">
+          <p class="eyebrow">From your matched list</p>
+          <button type="button" class="icon-btn" tabindex="-1" aria-hidden="true">×</button>
+        </div>
+        <div class="tip">
+          <span class="horizon">Across your list</span>
+          <strong class="heading">Rates cluster tightly for your profile</strong>
+          <p class="body">Most matched offers sit within a narrow band, so small fee differences can matter more than the rate headline.</p>
+        </div>
+        <div class="tip">
+          <span class="horizon">On tenure</span>
+          <strong class="heading">A shorter term lifts EMI more than rate</strong>
+          <p class="body">In this set, cutting a few years changes monthly outflow more than switching between nearby rates.</p>
+        </div>
+        <button type="button" class="more" tabindex="-1">More (2)</button>
+      </article>
+    </section>
+
+    <section class="style-block" id="s2">
+      <div class="style-meta">
+        <h2>2 · Soft system blue</h2>
+        <p>One quiet cool grey-blue fill — like Apple’s secondary surfaces. Reads as “different from the form,” not as decoration.</p>
+      </div>
+      <article class="intel s2">
+        <div class="intel-head">
+          <p class="eyebrow">From your matched list</p>
+          <button type="button" class="icon-btn" tabindex="-1" aria-hidden="true">×</button>
+        </div>
+        <div class="tip">
+          <span class="horizon">Across your list</span>
+          <strong class="heading">Rates cluster tightly for your profile</strong>
+          <p class="body">Most matched offers sit within a narrow band, so small fee differences can matter more than the rate headline.</p>
+        </div>
+        <div class="tip">
+          <span class="horizon">On tenure</span>
+          <strong class="heading">A shorter term lifts EMI more than rate</strong>
+          <p class="body">In this set, cutting a few years changes monthly outflow more than switching between nearby rates.</p>
+        </div>
+        <button type="button" class="more" tabindex="-1">More (2)</button>
+      </article>
+    </section>
+
+    <section class="style-block" id="s3">
+      <div class="style-meta">
+        <h2>3 · Whisper mist</h2>
+        <p>White card with one soft blue bloom from the top. Feels lit, not painted.</p>
+      </div>
+      <article class="intel s3">
+        <div class="intel-head">
+          <p class="eyebrow">From your matched list</p>
+          <button type="button" class="icon-btn" tabindex="-1" aria-hidden="true">×</button>
+        </div>
+        <div class="tip">
+          <span class="horizon">Across your list</span>
+          <strong class="heading">Rates cluster tightly for your profile</strong>
+          <p class="body">Most matched offers sit within a narrow band, so small fee differences can matter more than the rate headline.</p>
+        </div>
+        <div class="tip">
+          <span class="horizon">On tenure</span>
+          <strong class="heading">A shorter term lifts EMI more than rate</strong>
+          <p class="body">In this set, cutting a few years changes monthly outflow more than switching between nearby rates.</p>
+        </div>
+        <button type="button" class="more" tabindex="-1">More (2)</button>
+      </article>
+    </section>
+
+    <section class="style-block" id="s4">
+      <div class="style-meta">
+        <h2>4 · Soft spectrum mist</h2>
+        <p>Apple Intelligence idea, toned way down: faint blue / lilac / mint at the corners, white in the middle. Magic you notice second.</p>
+      </div>
+      <article class="intel s4">
+        <div class="intel-head">
+          <p class="eyebrow">From your matched list</p>
+          <button type="button" class="icon-btn" tabindex="-1" aria-hidden="true">×</button>
+        </div>
+        <div class="tip">
+          <span class="horizon">Across your list</span>
+          <strong class="heading">Rates cluster tightly for your profile</strong>
+          <p class="body">Most matched offers sit within a narrow band, so small fee differences can matter more than the rate headline.</p>
+        </div>
+        <div class="tip">
+          <span class="horizon">On tenure</span>
+          <strong class="heading">A shorter term lifts EMI more than rate</strong>
+          <p class="body">In this set, cutting a few years changes monthly outflow more than switching between nearby rates.</p>
+        </div>
+        <button type="button" class="more" tabindex="-1">More (2)</button>
+      </article>
+    </section>
+
+    <section class="style-block" id="s5">
+      <div class="style-meta">
+        <h2>5 · Thin edge glow</h2>
+        <p>White inside. A hairline spectrum border that slowly shifts — the Apple Intelligence “ring,” not a coloured fill.</p>
+      </div>
+      <article class="intel s5">
+        <div class="intel-head">
+          <p class="eyebrow">From your matched list</p>
+          <button type="button" class="icon-btn" tabindex="-1" aria-hidden="true">×</button>
+        </div>
+        <div class="tip">
+          <span class="horizon">Across your list</span>
+          <strong class="heading">Rates cluster tightly for your profile</strong>
+          <p class="body">Most matched offers sit within a narrow band, so small fee differences can matter more than the rate headline.</p>
+        </div>
+        <div class="tip">
+          <span class="horizon">On tenure</span>
+          <strong class="heading">A shorter term lifts EMI more than rate</strong>
+          <p class="body">In this set, cutting a few years changes monthly outflow more than switching between nearby rates.</p>
+        </div>
+        <button type="button" class="more" tabindex="-1">More (2)</button>
+      </article>
+    </section>
+
+    <section class="style-block" id="s6">
+      <div class="style-meta">
+        <h2>6 · Cool pearl</h2>
+        <p>Almost white, slightly cooler. The quietest change that still separates this card from the form above.</p>
+      </div>
+      <article class="intel s6">
+        <div class="intel-head">
+          <p class="eyebrow">From your matched list</p>
+          <button type="button" class="icon-btn" tabindex="-1" aria-hidden="true">×</button>
+        </div>
+        <div class="tip">
+          <span class="horizon">Across your list</span>
+          <strong class="heading">Rates cluster tightly for your profile</strong>
+          <p class="body">Most matched offers sit within a narrow band, so small fee differences can matter more than the rate headline.</p>
+        </div>
+        <div class="tip">
+          <span class="horizon">On tenure</span>
+          <strong class="heading">A shorter term lifts EMI more than rate</strong>
+          <p class="body">In this set, cutting a few years changes monthly outflow more than switching between nearby rates.</p>
+        </div>
+        <button type="button" class="more" tabindex="-1">More (2)</button>
+      </article>
+    </section>
+
+    <div class="pick">
+      <h2>If Apple had to ship one</h2>
+      <ol>
+        <li><strong>3 Whisper mist</strong> or <strong>4 Soft spectrum mist</strong> — white first, magic second.</li>
+        <li><strong>5 Thin edge glow</strong> — if the signal should be “intelligence,” not a new paint colour.</li>
+        <li><strong>2 Soft system blue</strong> or <strong>6 Cool pearl</strong> — if you want almost no drama at all.</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>

@@ -18,6 +18,8 @@ function lakhStr(n) {
   return (l < 1 ? Math.round(n).toLocaleString("en-IN") : (Math.round(l * 10) / 10) + " lakh");
 }
 function moStr(n) { return "\u20b9" + Math.abs(Math.round(n)).toLocaleString("en-IN") + "/mo"; }
+function inrStr(n) { return "\u20b9" + Math.abs(roundInr(n)).toLocaleString("en-IN"); }
+function pctStr(n) { return Number(n).toFixed(2) + "%"; }
 
 // ─── matchOffersSync is injected via ctx.matchFnSync ─────────────────────────
 // Counterfactual query builder — clones query, mutates only the target field,
@@ -49,6 +51,18 @@ function bestRate(rows) {
   }
   return r === Infinity ? null : r;
 }
+function bestRateRow(rows) {
+  var best = null;
+  var r = Infinity;
+  for (var i = 0; i < rows.length; i++) {
+    var v = finiteOr(rows[i].effectiveRoiPct, Infinity);
+    if (v < r) {
+      r = v;
+      best = rows[i];
+    }
+  }
+  return best;
+}
 function bestEmi(rows) {
   var e = Infinity;
   for (var i = 0; i < rows.length; i++) {
@@ -59,6 +73,7 @@ function bestEmi(rows) {
 }
 
 // ─── Tip A: CIBIL band upgrade ────────────────────────────────────────────────
+// Pattern: straight news (score + both rates in title). Body = gap ₹ + scope.
 function tipCibilBand(ctx) {
   var q = ctx.query; var rows = ctx.rows; var matchFn = ctx.matchFnSync;
   if (!q.cibilScore || q.cibilScore >= 825) return null;
@@ -83,13 +98,14 @@ function tipCibilBand(ctx) {
   return {
     kind: "cibil",
     horizon: HORIZON.BEFORE,
-    heading: "A higher CIBIL opens a cheaper rate",
-    body: "Your CIBIL is " + q.cibilScore + ". If it reaches " + nextStep + ", the best available rate drops from " + currentBestRate.toFixed(2) + "% to " + cfRate.toFixed(2) + "% \u2014 saving you " + moStr(emiDelta) + " (\u20b9" + lakhStr(totalSaving) + " total over " + tenureYears + " years).",
+    heading: "At " + q.cibilScore + " CIBIL your best rate is " + pctStr(currentBestRate) + " \u2014 " + nextStep + " cuts it to " + pctStr(cfRate),
+    body: "That " + pctStr(rateDrop) + " gap is " + moStr(emiDelta) + " (\u20b9" + lakhStr(totalSaving) + " over " + tenureYears + " years) on your matched list at CIBIL " + nextStep + ". Banks still set final terms.",
     rupeeImpact: totalSaving
   };
 }
 
 // ─── Tip B: Occupation — self-employed switch ─────────────────────────────────
+// Pattern: straight news (match counts + optional rate/EMI). Body = so-what.
 function tipOccupation(ctx) {
   var q = ctx.query; var rows = ctx.rows; var matchFn = ctx.matchFnSync;
   if (!q.occupation || q.occupation === "Salaried") return null;
@@ -102,16 +118,27 @@ function tipOccupation(ctx) {
   var emiDelta = rateDrop > 0 ? roundInr((bestEmi(rows) || 0) - (bestEmi(cfRows) || 0)) : 0;
   if (delta < 2 && emiDelta < 50) return null;
   var tenureYears = finiteOr(q.tenureYears, 20);
+  var salariedCount = cfRows.length;
+  var heading = "Self-employed matches " + rows.length + " bank" + (rows.length === 1 ? "" : "s") + " \u2014 salaried co-applicant reaches " + salariedCount;
+  if (rateDrop > 0.05 && currentBestRate && cfRate) {
+    heading += "; best rate " + pctStr(currentBestRate) + " \u2192 " + pctStr(cfRate);
+  }
+  var body = "That is " + delta + " more option" + (delta === 1 ? "" : "s") + " on the salaried counterfactual";
+  if (rateDrop > 0.05) {
+    body += ", and " + moStr(emiDelta) + " less EMI at the new best rate";
+  }
+  body += ". Banks price self-employed income tighter; a salaried co-applicant widens the list.";
   return {
     kind: "occupation",
     horizon: HORIZON.MONTHS,
-    heading: "Adding a salaried co-applicant unlocks more banks",
-    body: "Self-employed applicants match " + rows.length + " bank" + (rows.length === 1 ? "" : "s") + ". Adding a salaried co-applicant opens " + delta + " more option" + (delta === 1 ? "" : "s") + (rateDrop > 0.05 ? " \u2014 and the best rate drops " + rateDrop.toFixed(2) + "% (saves " + moStr(emiDelta) + "/mo)" : "") + ".",
+    heading: heading,
+    body: body,
     rupeeImpact: emiDelta * tenureYears * 12 || delta * 1000
   };
 }
 
 // ─── Tip C: Women applicant discount ─────────────────────────────────────────
+// Pattern: straight news (both rates). Body = ₹ proof + KYC note. Ban "several".
 function tipWomen(ctx) {
   var q = ctx.query; var rows = ctx.rows; var matchFn = ctx.matchFnSync;
   if (q.productFilters && q.productFilters.womenApplicant) return null;
@@ -125,16 +152,19 @@ function tipWomen(ctx) {
   if (emiDelta < 100) return null;
   var tenureYears = finiteOr(q.tenureYears, 20);
   var total = emiDelta * tenureYears * 12;
+  var cfBest = bestRateRow(cfRows);
+  var bankClause = cfBest && cfBest.bankName ? " at " + cfBest.bankName : "";
   return {
     kind: "women",
     horizon: HORIZON.BEFORE,
-    heading: "Women applicant rate is lower at several banks",
-    body: "If the primary applicant is a woman, the best available rate drops " + rateDrop.toFixed(2) + "% \u2014 saving " + moStr(emiDelta) + " (\u20b9" + lakhStr(total) + " over " + tenureYears + " years). No special proof needed; standard KYC is enough.",
+    heading: "Women as primary: best rate on your list " + pctStr(currentBestRate) + " \u2192 " + pctStr(cfRate) + bankClause,
+    body: "That " + pctStr(rateDrop) + " cut is " + moStr(emiDelta) + " (\u20b9" + lakhStr(total) + " over " + tenureYears + " years) on the women-applicant counterfactual. Standard KYC is enough; no special proof.",
     rupeeImpact: total
   };
 }
 
 // ─── Tip D: Existing EMI headroom ─────────────────────────────────────────────
+// Pattern: straight news (existing EMI + both loan limits). Body = eligibility lever.
 function tipExistingEmis(ctx) {
   var q = ctx.query;
   if (!q.existingEmis || q.existingEmis < 5000) return null;
@@ -147,13 +177,14 @@ function tipExistingEmis(ctx) {
   return {
     kind: "existingEmis",
     horizon: HORIZON.NOW,
-    heading: "Existing EMIs are cutting your loan limit",
-    body: "Your current EMIs of \u20b9" + q.existingEmis.toLocaleString("en-IN") + "/mo are reducing your loan eligibility. Clearing them before applying could raise your loan limit from \u20b9" + lakhStr(currentLoan) + " to \u20b9" + lakhStr(cfLoan) + " \u2014 a \u20b9" + lakhStr(loanDelta) + " difference.",
+    heading: moStr(q.existingEmis) + " EMIs cap you at \u20b9" + lakhStr(currentLoan) + " \u2014 clear them for \u20b9" + lakhStr(cfLoan),
+    body: "Banks count existing EMIs against income. That \u20b9" + lakhStr(loanDelta) + " gap is the eligibility difference on this profile between current EMIs and cleared EMIs.",
     rupeeImpact: loanDelta
   };
 }
 
 // ─── Tip E: Age × tenure trap ─────────────────────────────────────────────────
+// Pattern: angle (asked vs list cap + EMI). Scope to matched rows — never "most banks".
 function tipAgeTenure(ctx) {
   var q = ctx.query; var rows = ctx.rows;
   if (!q.age || !q.tenureYears) return null;
@@ -170,25 +201,33 @@ function tipAgeTenure(ctx) {
   var fullTenureEmi = null;
   for (var j = 0; j < rows.length; j++) {
     var r = rows[j];
-    if (!r.roi || !r.loanAmount) continue;
+    if (!r.loanAmount) continue;
+    var roiDec = finiteOr(r.roiDecimal, null);
+    if (roiDec == null) {
+      var pct = finiteOr(r.effectiveRoiPct, null);
+      if (pct == null) continue;
+      roiDec = pct / 100;
+    }
     if (ctx.helpers && ctx.helpers.emiFromLoan) {
-      fullTenureEmi = ctx.helpers.emiFromLoan(r.loanAmount, r.roi / 100, q.tenureYears);
-      forcedEmi = ctx.helpers.emiFromLoan(r.loanAmount, r.roi / 100, maxActualTenure);
+      fullTenureEmi = ctx.helpers.emiFromLoan(r.loanAmount, roiDec, q.tenureYears);
+      forcedEmi = ctx.helpers.emiFromLoan(r.loanAmount, roiDec, maxActualTenure);
     }
     break;
   }
   if (!fullTenureEmi || forcedEmi <= fullTenureEmi + 100) return null;
   var emiDiff = roundInr(forcedEmi - fullTenureEmi);
+  var trappedCount = trapped.length;
   return {
     kind: "ageTenure",
     horizon: HORIZON.NOW,
-    heading: "Your age is forcing a shorter loan \u2014 EMI is higher",
-    body: "You asked for " + q.tenureYears + " years. Most banks cap you at " + maxActualTenure + " years because of your age, which pushes EMI up by " + moStr(emiDiff) + ". Applying 2\u20133 years earlier (or with a younger co-applicant) restores the full tenure.",
+    heading: "You asked for " + q.tenureYears + " years \u2014 " + trappedCount + " banks on your list cap you at " + maxActualTenure + ", EMI up " + moStr(emiDiff),
+    body: "Age rules shorten tenure on those " + trappedCount + " matches, so monthly cost jumps on this list. Banks still set final terms.",
     rupeeImpact: emiDiff * maxActualTenure * 12
   };
 }
 
 // ─── Tip F: Missed-EMI penalty spread ────────────────────────────────────────
+// Pattern: straight news (both banks + both ₹). Body = spread meaning.
 function tipMissPenalty(ctx) {
   var rows = ctx.rows;
   if (rows.length < 2) return null;
@@ -203,13 +242,14 @@ function tipMissPenalty(ctx) {
   return {
     kind: "missPenalty",
     horizon: HORIZON.NOW,
-    heading: "Missed-EMI penalty varies a lot across banks",
-    body: "Miss one EMI at " + low.bank + " and you owe \u20b9" + roundInr(low.total).toLocaleString("en-IN") + " extra. At " + high.bank + " that climbs to \u20b9" + roundInr(high.total).toLocaleString("en-IN") + " \u2014 a \u20b9" + roundInr(spread).toLocaleString("en-IN") + " difference for the same mistake.",
+    heading: "One missed EMI: " + inrStr(low.total) + " at " + low.bank + ", " + inrStr(high.total) + " at " + high.bank,
+    body: "Same miss, " + inrStr(spread) + " apart on your list. Penalty size is a day-one risk difference, not a rate story.",
     rupeeImpact: spread
   };
 }
 
 // ─── Tip G: Floating vs fixed ─────────────────────────────────────────────────
+// Pattern: straight news + judgment (filter state + both rates). Body = ₹ + mechanism.
 function tipFixedVsFloating(ctx) {
   var q = ctx.query; var rows = ctx.rows; var matchFn = ctx.matchFnSync;
   var allFixed = rows.length > 0 && rows.every(function(r) { return r.rateType === "Fixed"; });
@@ -223,16 +263,18 @@ function tipFixedVsFloating(ctx) {
   if (rateDrop < 0.1) return null;
   var emiDelta = roundInr((bestEmi(rows) || 0) - (bestEmi(cfRows) || 0));
   var tenureYears = finiteOr(q.tenureYears, 20);
+  var total = emiDelta * tenureYears * 12;
   return {
     kind: "fixedVsFloating",
     horizon: HORIZON.NOW,
-    heading: "Your filter shows fixed-rate loans only \u2014 floating is cheaper",
-    body: "All matched offers are fixed rate at " + curRate.toFixed(2) + "%. Floating-rate options start at " + cfRate.toFixed(2) + "%, saving " + moStr(emiDelta) + " right now (\u20b9" + lakhStr(emiDelta * tenureYears * 12) + " over the term). Fixed locks the rate; floating tracks RBI\u2019s repo.",
-    rupeeImpact: emiDelta * tenureYears * 12
+    heading: "Your filter is fixed-only at " + pctStr(curRate) + " \u2014 floating starts at " + pctStr(cfRate),
+    body: "That is " + moStr(emiDelta) + " less now (\u20b9" + lakhStr(total) + " over the term) on the floating counterfactual for this profile. Fixed locks the rate; floating tracks RBI\u2019s repo.",
+    rupeeImpact: total
   };
 }
 
 // ─── Tip H: Green home discount ──────────────────────────────────────────────
+// Pattern: straight news (both rates). Body = ₹. Ban "some banks".
 function tipGreen(ctx) {
   var q = ctx.query; var rows = ctx.rows; var matchFn = ctx.matchFnSync;
   if (q.productFilters && q.productFilters.greenHome) return null;
@@ -244,16 +286,19 @@ function tipGreen(ctx) {
   var emiDelta = roundInr((bestEmi(rows) || 0) - (bestEmi(cfRows) || 0));
   if (emiDelta < 100) return null;
   var tenureYears = finiteOr(q.tenureYears, 20);
+  var cfBest = bestRateRow(cfRows);
+  var bankClause = cfBest && cfBest.bankName ? " at " + cfBest.bankName : "";
   return {
     kind: "green",
     horizon: HORIZON.BEFORE,
-    heading: "Green-rated property gets a lower rate at some banks",
-    body: "If your property has a green rating (IGBC / GRIHA), the best available rate drops " + rateDrop.toFixed(2) + "% \u2014 saving " + moStr(emiDelta) + " every month.",
+    heading: "Green-rated property: best rate on your list " + pctStr(curRate) + " \u2192 " + pctStr(cfRate) + bankClause,
+    body: "That " + pctStr(rateDrop) + " cut is " + moStr(emiDelta) + " every month on the green-home counterfactual (IGBC / GRIHA). Banks still set final terms.",
     rupeeImpact: emiDelta * tenureYears * 12
   };
 }
 
 // ─── Tip I: Processing fee spread ────────────────────────────────────────────
+// Pattern: straight news (both banks + both ₹). Already ₹-led; name actors in title.
 function tipProcessingFee(ctx) {
   var rows = ctx.rows;
   if (rows.length < 2) return null;
@@ -268,58 +313,262 @@ function tipProcessingFee(ctx) {
   return {
     kind: "processingFee",
     horizon: HORIZON.NOW,
-    heading: "Processing fees differ by \u20b9" + lakhStr(spread) + " across banks",
-    body: low.bank + " charges \u20b9" + roundInr(low.fee).toLocaleString("en-IN") + " upfront. " + high.bank + " charges \u20b9" + roundInr(high.fee).toLocaleString("en-IN") + " \u2014 a day-one difference of \u20b9" + roundInr(spread).toLocaleString("en-IN") + " before your first EMI.",
+    heading: "Processing fee: " + inrStr(low.fee) + " at " + low.bank + ", " + inrStr(high.fee) + " at " + high.bank,
+    body: "Day-one gap of " + inrStr(spread) + " on your list before the first EMI. Fee size does not change the rate — it changes cash out at sanction.",
+    rupeeImpact: spread
+  };
+}
+
+// ─── Tip J: Government charges at sanction ───────────────────────────────────
+// Uses governmentCharges total from the enriched pipeline (same as Charges tab).
+function tipGovernmentCharges(ctx) {
+  var rows = ctx.rows;
+  if (rows.length < 2) return null;
+  var totals = rows.map(function(r) {
+    return { bank: r.bankName, total: finiteOr(r.governmentCharges, -1) };
+  }).filter(function(x) { return x.total >= 0; });
+  if (totals.length < 2) return null;
+  totals.sort(function(a, b) { return a.total - b.total; });
+  var low = totals[0];
+  var high = totals[totals.length - 1];
+  var spread = high.total - low.total;
+  if (spread < 1000) return null;
+  return {
+    kind: "governmentCharges",
+    horizon: HORIZON.NOW,
+    heading: "Government charges at sanction: " + inrStr(low.total) + " at " + low.bank + ", " + inrStr(high.total) + " at " + high.bank,
+    body: "Stamp duty, CERSAI, and other government fees on your list differ by " + inrStr(spread) + " for this loan amount and state. These sit outside the bank processing fee.",
     rupeeImpact: spread
   };
 }
 
 // ─── Tip K: Part-prepayment power ────────────────────────────────────────────
+// Pattern: straight news (prepay ₹ + EMI before/after). Rules + charge from enriched row.
 function tipPrepayment(ctx) {
   var rows = ctx.rows;
   if (!rows.length) return null;
-  var best = rows[0];
-  var loanAmt = finiteOr(best.loanAmount, 0);
-  if (loanAmt < 1000000) return null; // skip < ₹10L
-  var tenureYears = finiteOr(ctx.query.tenureYears, 20);
-  var roi = finiteOr(best.roi, 8.5) / 100;
-  if (!ctx.helpers || !ctx.helpers.emiFromLoan) return null;
-  var fullEmi = ctx.helpers.emiFromLoan(loanAmt, roi, tenureYears);
-  // Simulate one prepayment of 5% principal at year 3
-  var prepayAmt = loanAmt * 0.05;
-  var remainingAfter3 = loanAmt;
-  for (var m = 0; m < 36; m++) {
-    var interest = remainingAfter3 * (roi / 12);
-    var principal = fullEmi - interest;
-    remainingAfter3 -= principal;
+  var simulate = ctx.helpers && ctx.helpers.simulatePartPrepaymentScenario;
+  if (typeof simulate !== "function") return null;
+
+  var leader = bestRateRow(rows);
+  var scenario = leader ? simulate(leader, ctx.helpers) : null;
+  var targetRow = leader;
+  if (!scenario) {
+    for (var i = 0; i < rows.length; i++) {
+      var candidate = simulate(rows[i], ctx.helpers);
+      if (candidate) {
+        scenario = candidate;
+        targetRow = rows[i];
+        break;
+      }
+    }
   }
-  remainingAfter3 -= prepayAmt;
-  if (remainingAfter3 <= 0) return null;
-  var newEmi = ctx.helpers.emiFromLoan(remainingAfter3, roi, tenureYears - 3);
-  var emiDrop = roundInr(fullEmi - newEmi);
-  if (emiDrop < 200) return null;
-  var saving = emiDrop * (tenureYears - 3) * 12;
+  if (!scenario || !targetRow) return null;
+
+  var bankLabel = scenario.bankName || targetRow.bankName || "your top match";
+  var body = "That EMI cut is \u20b9" + lakhStr(scenario.lifetimeSaving) + " over the remaining term on " + bankLabel + " at the current rate path";
+  if (scenario.prepayCharge > 0) {
+    body += ", minus " + inrStr(scenario.prepayCharge) + " prepayment charge on this amount (\u20b9" + lakhStr(scenario.netSaving) + " net)";
+  }
+  body += ".";
+  if (scenario.constraintNotes && scenario.constraintNotes.length) {
+    body += " " + scenario.constraintNotes.join(". ") + ".";
+  }
+
   return {
     kind: "prepayment",
     horizon: HORIZON.MONTHS,
-    heading: "A one-time prepayment at year 3 can save real money",
-    body: "Paying \u20b9" + lakhStr(prepayAmt) + " extra at year 3 (5% of your loan) drops EMI from " + moStr(fullEmi) + " to " + moStr(newEmi) + " \u2014 saving \u20b9" + lakhStr(saving) + " over the remaining term. Floating-rate loans have zero penalty for this.",
-    rupeeImpact: saving
+    heading: inrStr(scenario.prepayAmount) + " prepayment at year " + scenario.year + " cuts EMI from " + moStr(scenario.emiBefore) + " to " + moStr(scenario.emiAfter),
+    body: body,
+    rupeeImpact: scenario.netSaving
   };
 }
 
-// ─── Status line (tight spread note) ─────────────────────────────────────────
-function buildStatusLine(ctx) {
+function secondBestRateRow(rows) {
+  var rated = [];
+  for (var i = 0; i < rows.length; i++) {
+    var v = finiteOr(rows[i].effectiveRoiPct, null);
+    if (v != null) rated.push(rows[i]);
+  }
+  if (rated.length < 2) return null;
+  rated.sort(function(a, b) { return a.effectiveRoiPct - b.effectiveRoiPct; });
+  var bestRate = rated[0].effectiveRoiPct;
+  for (var j = 1; j < rated.length; j++) {
+    if (rated[j].effectiveRoiPct > bestRate + 0.0001) return rated[j];
+  }
+  return null;
+}
+
+function rateSpreadPct(rows) {
+  var lo = bestRate(rows);
+  if (lo == null) return null;
+  var hi = lo;
+  for (var i = 0; i < rows.length; i++) {
+    var v = finiteOr(rows[i].effectiveRoiPct, null);
+    if (v != null && v > hi) hi = v;
+  }
+  return +(hi - lo).toFixed(2);
+}
+
+function extremumOnRows(rows, getter) {
+  var entries = [];
+  for (var i = 0; i < rows.length; i++) {
+    var v = getter(rows[i]);
+    if (v != null && Number.isFinite(v)) {
+      entries.push({ row: rows[i], bank: rows[i].bankName, value: v });
+    }
+  }
+  if (entries.length < 2) return null;
+  entries.sort(function(a, b) { return a.value - b.value; });
+  var low = entries[0];
+  var high = entries[entries.length - 1];
+  return { low: low, high: high, gap: high.value - low.value };
+}
+
+function leaderIsWorstOn(rows, leader, getter, minGap) {
+  var ex = extremumOnRows(rows, getter);
+  if (!ex || ex.gap < minGap) return null;
+  var leaderVal = getter(leader);
+  if (leaderVal == null || !Number.isFinite(leaderVal)) return null;
+  if (leaderVal < ex.high.value - 0.001) return null;
+  return {
+    leaderValue: leaderVal,
+    lowValue: ex.low.value,
+    lowBank: ex.low.bank,
+    gap: ex.gap
+  };
+}
+
+var STATUS_THRESHOLDS = {
+  rateSpreadTight: 0.30,
+  rateEdge: 0.15,
+  processingFeeGap: 5000,
+  governmentChargesGap: 1000,
+  missedEmiGap: 500
+};
+
+function pickLeaderCostOutlier(rows, leader) {
+  var candidates = [];
+  var missed = leaderIsWorstOn(rows, leader, function(r) {
+    return finiteOr(r.missedEmiTotal, null);
+  }, STATUS_THRESHOLDS.missedEmiGap);
+  if (missed) {
+    candidates.push({
+      kind: "missedEmi",
+      gap: missed.gap,
+      leaderValue: missed.leaderValue,
+      lowBank: missed.lowBank,
+      priority: missed.gap
+    });
+  }
+  var fee = leaderIsWorstOn(rows, leader, function(r) {
+    var f = finiteOr(r.processingFee, -1);
+    return f >= 0 ? f : null;
+  }, STATUS_THRESHOLDS.processingFeeGap);
+  if (fee) {
+    candidates.push({
+      kind: "processingFee",
+      gap: fee.gap,
+      leaderValue: fee.leaderValue,
+      lowBank: fee.lowBank,
+      priority: fee.gap
+    });
+  }
+  var govt = leaderIsWorstOn(rows, leader, function(r) {
+    var g = finiteOr(r.governmentCharges, -1);
+    return g >= 0 ? g : null;
+  }, STATUS_THRESHOLDS.governmentChargesGap);
+  if (govt) {
+    candidates.push({
+      kind: "governmentCharges",
+      gap: govt.gap,
+      leaderValue: govt.leaderValue,
+      lowBank: govt.lowBank,
+      priority: govt.gap
+    });
+  }
+  if (!candidates.length) return null;
+  candidates.sort(function(a, b) { return b.priority - a.priority; });
+  return candidates[0];
+}
+
+function banksForYouPhrase(n) {
+  if (n === 1) return "1 bank";
+  return n + " banks";
+}
+
+function formatLeaderOutlierClause(outlier) {
+  if (outlier.kind === "missedEmi") {
+    return "one missed EMI there costs " + inrStr(outlier.leaderValue) + ", highest among these matches";
+  }
+  if (outlier.kind === "processingFee") {
+    return "its processing fee is " + inrStr(outlier.gap) + " above " + outlier.lowBank;
+  }
+  if (outlier.kind === "governmentCharges") {
+    return "government charges at sanction are " + inrStr(outlier.gap) + " above " + outlier.lowBank;
+  }
+  return "";
+}
+
+// One personalized sentence: your match set + one computed story. Never a ticker dump.
+function buildStatusStory(ctx) {
   var rows = ctx.rows;
-  if (!rows.length) return "";
-  var rates = rows.map(function(r) { return finiteOr(r.effectiveRoiPct, null); }).filter(Boolean);
-  if (!rates.length) return "";
-  var lo = Math.min.apply(null, rates);
-  var hi = Math.max.apply(null, rates);
-  var bestRow = rows[0];
-  var spread = hi - lo;
-  var tightNote = spread < 0.3 ? " Rates are tightly clustered \u2014 non-rate costs matter more here." : "";
-  return "Rates for your profile: " + lo.toFixed(2) + "%\u2013" + hi.toFixed(2) + "%. Lowest: " + bestRow.bankName + "." + tightNote;
+  if (!rows.length) return { kind: "empty", line: "" };
+  var leader = bestRateRow(rows);
+  if (!leader) return { kind: "empty", line: "" };
+  var lo = finiteOr(leader.effectiveRoiPct, null);
+  if (lo == null) return { kind: "empty", line: "" };
+  var bank = leader.bankName || "A matched bank";
+  var n = rows.length;
+
+  if (n === 1) {
+    return {
+      kind: "single",
+      line: "For your profile, only " + bank + " matches \u2014 at " + pctStr(lo) + "."
+    };
+  }
+
+  var across = "Across " + banksForYouPhrase(n) + " for your profile, ";
+  var spread = rateSpreadPct(rows);
+  var outlier = pickLeaderCostOutlier(rows, leader);
+
+  if (outlier) {
+    return {
+      kind: "leaderOutlier",
+      outlierKind: outlier.kind,
+      line: across + bank + " is cheapest at " + pctStr(lo) + " \u2014 " + formatLeaderOutlierClause(outlier) + "."
+    };
+  }
+
+  if (spread != null && spread < STATUS_THRESHOLDS.rateSpreadTight) {
+    var bandLabel = spread < 0.01 ? "under 0.01" : spread.toFixed(2);
+    return {
+      kind: "tightBand",
+      spread: spread,
+      line: across + "rates sit in a " + bandLabel + "% band \u2014 fees, government charges, and penalties matter more than the headline rate."
+    };
+  }
+
+  var runner = secondBestRateRow(rows);
+  if (runner) {
+    var edgeGap = +(runner.effectiveRoiPct - lo).toFixed(2);
+    if (edgeGap > 0 && edgeGap < STATUS_THRESHOLDS.rateEdge) {
+      return {
+        kind: "edge",
+        line: across + bank + " is cheapest at " + pctStr(lo) + " \u2014 " + runner.bankName + " is next at " + pctStr(runner.effectiveRoiPct) + "."
+      };
+    }
+  }
+
+  return {
+    kind: "leader",
+    line: across + bank + " is cheapest at " + pctStr(lo) + "."
+  };
+}
+
+// ─── Status line ─────────────────────────────────────────────────────────────
+function buildStatusLine(ctx) {
+  return buildStatusStory(ctx).line;
 }
 
 // ─── Row flags (for table badges) ────────────────────────────────────────────
@@ -352,36 +601,252 @@ function buildIntelligence(ctx) {
     tipMissPenalty(ctx),
     tipFixedVsFloating(ctx),
     tipProcessingFee(ctx),
+    tipGovernmentCharges(ctx),
     tipPrepayment(ctx)
   ].filter(Boolean);
   candidates.sort(function(a, b) { return b.rupeeImpact - a.rupeeImpact; });
   return {
     status:   buildStatusLine(ctx),
-    tips:     candidates.slice(0, 3),
+    // Engine may return many; UI strip shows INTEL_TIPS_MAX headings, details behind More.
+    tips:     candidates,
     rowFlags: buildRowFlags(ctx),
     allIn:    ""
   };
 }
 
+/**
+ * Strip contract:
+ * - Default after Compare: eyebrow + status only.
+ * - More opens the tip row (first INTEL_TIPS_PREVIEW tips, side-by-side + body).
+ * - + reveals every remaining tip (all tips stay in the DOM).
+ * - Show less returns to the status strip and collapses extras.
+ */
+var INTEL_TIPS_PREVIEW = 3;
+/** @deprecated Alias — preview window, not a hard cap on tip count. */
+var INTEL_TIPS_MAX = INTEL_TIPS_PREVIEW;
+
+function tipItemHtml(t, isExtra) {
+  return '<li class="hlc-intel-tip'
+    + (isExtra ? " hlc-intel-tip--extra" : "")
+    + '"'
+    + (isExtra ? ' aria-hidden="true"' : "")
+    + ">"
+    + '<strong class="hlc-intel-heading">' + escHtml(t.heading) + "</strong>"
+    + '<div class="hlc-intel-tip-detail" aria-hidden="true">'
+    + '<div class="hlc-intel-tip-detail-clip">'
+    + '<span class="hlc-intel-horizon hlc-intel-horizon--' + escHtml(t.kind) + '">' + escHtml(t.horizon) + "</span>"
+    + '<p class="hlc-intel-body">' + escHtml(t.body) + "</p>"
+    + "</div>"
+    + "</div>"
+    + "</li>";
+}
+
+var INTEL_MORE_CHEVRON =
+  '<span class="hlc-intel-more-chevron" aria-hidden="true">'
+  + '<svg viewBox="0 -960 960 960" focusable="false">'
+  + '<path fill="currentColor" d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/>'
+  + "</svg></span>";
+
+function ensureIntelMoreStructure(moreEl) {
+  if (!moreEl) return null;
+  var label = moreEl.querySelector ? moreEl.querySelector(".hlc-intel-more-label") : null;
+  var chev = moreEl.querySelector ? moreEl.querySelector(".hlc-intel-more-chevron") : null;
+  if (!label || !chev) {
+    moreEl.innerHTML = '<span class="hlc-intel-more-label"></span>' + INTEL_MORE_CHEVRON;
+    label = moreEl.querySelector ? moreEl.querySelector(".hlc-intel-more-label") : null;
+  }
+  return label;
+}
+
+/** Strip ↔ tip row. Hidden when there are no tips. */
+function syncIntelMoreButton(moreEl, hasTips, open) {
+  if (!moreEl) return;
+  if (!hasTips) {
+    moreEl.hidden = true;
+    moreEl.setAttribute("aria-expanded", "false");
+    return;
+  }
+  moreEl.hidden = false;
+  moreEl.setAttribute("aria-expanded", open ? "true" : "false");
+  var text = open ? "Show less" : "More";
+  var label = ensureIntelMoreStructure(moreEl);
+  if (label) {
+    label.textContent = text;
+  } else {
+    moreEl.innerHTML = '<span class="hlc-intel-more-label">' + text + "</span>" + INTEL_MORE_CHEVRON;
+  }
+}
+
+/**
+ * + control for tips beyond the preview row.
+ * Visible only while the tip row is open and extras exist.
+ */
+function syncIntelPlusButton(plusEl, extraCount, tipsOpen, extrasOpen) {
+  if (!plusEl) return;
+  var n = Math.max(0, Number(extraCount) || 0);
+  if (!tipsOpen || n === 0) {
+    plusEl.hidden = true;
+    plusEl.setAttribute("aria-expanded", "false");
+    plusEl.removeAttribute("data-extra-count");
+    return;
+  }
+  plusEl.hidden = false;
+  plusEl.setAttribute("aria-expanded", extrasOpen ? "true" : "false");
+  plusEl.setAttribute("data-extra-count", String(n));
+  plusEl.setAttribute(
+    "aria-label",
+    extrasOpen ? "Show fewer tips" : ("Show " + n + " more tip" + (n === 1 ? "" : "s"))
+  );
+  var label = plusEl.querySelector ? plusEl.querySelector(".hlc-intel-plus-label") : null;
+  var text = extrasOpen ? "−" : ("+" + n);
+  if (label) {
+    label.textContent = text;
+  } else {
+    plusEl.innerHTML = '<span class="hlc-intel-plus-label">' + text + "</span>";
+  }
+}
+
+function tipNodesIn(panelEl) {
+  var tipsEl = panelEl ? panelEl.querySelector("#hlc-intel-tips") : null;
+  return tipsEl ? tipsEl.querySelectorAll(".hlc-intel-tip") : [];
+}
+
+function tipExtraNodesIn(panelEl) {
+  var tipsEl = panelEl ? panelEl.querySelector("#hlc-intel-tips") : null;
+  return tipsEl ? tipsEl.querySelectorAll(".hlc-intel-tip--extra") : [];
+}
+
+function tipDetailNodesIn(panelEl) {
+  var tipsEl = panelEl ? panelEl.querySelector("#hlc-intel-tips") : null;
+  return tipsEl ? tipsEl.querySelectorAll(".hlc-intel-tip-detail") : [];
+}
+
+function syncTipDetailAria(panelEl, open) {
+  var details = tipDetailNodesIn(panelEl);
+  for (var i = 0; i < details.length; i++) {
+    var tip = details[i].parentNode;
+    var isExtra = tip && tip.classList && tip.classList.contains("hlc-intel-tip--extra");
+    var extrasOpen = panelEl.classList.contains("is-tips-more");
+    var visible = open && (!isExtra || extrasOpen);
+    details[i].setAttribute("aria-hidden", visible ? "false" : "true");
+  }
+}
+
+function syncExtraTipAria(panelEl, extrasOpen) {
+  var extras = tipExtraNodesIn(panelEl);
+  for (var i = 0; i < extras.length; i++) {
+    extras[i].setAttribute("aria-hidden", extrasOpen ? "false" : "true");
+  }
+}
+
+/** Reveal/hide tips beyond the first INTEL_TIPS_PREVIEW (+ control). */
+function setIntelligenceTipsMore(panelEl, extrasOpen) {
+  if (!panelEl) return;
+  var plusEl = panelEl.querySelector("#hlc-intel-plus");
+  var extras = tipExtraNodesIn(panelEl);
+  var extraCount = extras.length;
+  if (!extraCount || !panelEl.classList.contains("is-tips-open")) {
+    panelEl.classList.remove("is-tips-more");
+    syncExtraTipAria(panelEl, false);
+    syncIntelPlusButton(plusEl, extraCount, panelEl.classList.contains("is-tips-open"), false);
+    syncTipDetailAria(panelEl, panelEl.classList.contains("is-tips-open"));
+    return;
+  }
+  if (extrasOpen) panelEl.classList.add("is-tips-more");
+  else panelEl.classList.remove("is-tips-more");
+  syncExtraTipAria(panelEl, !!extrasOpen);
+  syncIntelPlusButton(plusEl, extraCount, true, !!extrasOpen);
+  syncTipDetailAria(panelEl, true);
+}
+
+function toggleIntelligenceTipsMore(panelEl) {
+  if (!panelEl) return;
+  setIntelligenceTipsMore(panelEl, !panelEl.classList.contains("is-tips-more"));
+}
+
+/**
+ * Open/close the tip row (strip ↔ first 3 tips with bodies).
+ * Closing also collapses the + extras row.
+ */
+function setIntelligenceTipsExpanded(panelEl, open) {
+  if (!panelEl) return;
+  var moreEl = panelEl.querySelector("#hlc-intel-more");
+  var plusEl = panelEl.querySelector("#hlc-intel-plus");
+  var tipsEl = panelEl.querySelector("#hlc-intel-tips");
+  var tips = tipNodesIn(panelEl);
+  var extras = tipExtraNodesIn(panelEl);
+  var hasTips = tips.length > 0;
+  if (!hasTips) {
+    panelEl.classList.remove("is-tips-open", "is-tips-expanded", "is-tips-more");
+    if (tipsEl) tipsEl.setAttribute("aria-hidden", "true");
+    syncIntelMoreButton(moreEl, false, false);
+    syncIntelPlusButton(plusEl, 0, false, false);
+    return;
+  }
+  if (open) {
+    panelEl.classList.add("is-tips-open", "is-tips-expanded");
+  } else {
+    panelEl.classList.remove("is-tips-open", "is-tips-expanded", "is-tips-more");
+  }
+  if (tipsEl) tipsEl.setAttribute("aria-hidden", open ? "false" : "true");
+  if (!open) syncExtraTipAria(panelEl, false);
+  syncTipDetailAria(panelEl, !!open);
+  syncIntelMoreButton(moreEl, true, !!open);
+  syncIntelPlusButton(plusEl, extras.length, !!open, false);
+}
+
+/** Toggle tip row (strip ↔ preview tips). */
+function toggleIntelligenceTips(panelEl) {
+  if (!panelEl) return;
+  setIntelligenceTipsExpanded(panelEl, !panelEl.classList.contains("is-tips-open"));
+}
+
+function expandIntelligenceTips(panelEl) {
+  setIntelligenceTipsExpanded(panelEl, true);
+}
+
 // ─── Render ───────────────────────────────────────────────────────────────────
 function renderIntelligenceHtml(panelEl, intel) {
   if (!panelEl) return;
-  if (!intel || !intel.tips || !intel.tips.length) {
+  var statusEl = panelEl.querySelector("#hlc-intel-status");
+  var tipsEl = panelEl.querySelector("#hlc-intel-tips");
+  var moreEl = panelEl.querySelector("#hlc-intel-more");
+  var plusEl = panelEl.querySelector("#hlc-intel-plus");
+  var status = intel && intel.status != null ? String(intel.status).trim() : "";
+  var tips = intel && Array.isArray(intel.tips) ? intel.tips.slice() : [];
+  var hasTips = tips.length > 0;
+  var hasStatus = status.length > 0;
+  if (!intel || (!hasStatus && !hasTips)) {
+    if (statusEl) statusEl.textContent = "";
+    if (tipsEl) {
+      tipsEl.innerHTML = "";
+      tipsEl.hidden = true;
+      tipsEl.setAttribute("aria-hidden", "true");
+    }
+    syncIntelMoreButton(moreEl, false, false);
+    syncIntelPlusButton(plusEl, 0, false, false);
     panelEl.hidden = true;
+    panelEl.classList.remove("is-tips-open", "is-tips-expanded", "is-tips-more");
     return;
   }
-  var statusEl = panelEl.querySelector("#hlc-intel-status");
-  if (statusEl) statusEl.textContent = intel.status || "";
-  var tipsEl = panelEl.querySelector("#hlc-intel-tips");
+  if (statusEl) statusEl.textContent = status;
+  /* Fresh Compare always lands on the status strip — tip row closed. */
+  panelEl.classList.remove("is-tips-open", "is-tips-expanded", "is-tips-more");
   if (tipsEl) {
-    tipsEl.innerHTML = intel.tips.map(function(t) {
-      return '<li class="hlc-intel-tip">'
-        + '<span class="hlc-intel-horizon hlc-intel-horizon--' + escHtml(t.kind) + '">' + escHtml(t.horizon) + '</span>'
-        + '<strong class="hlc-intel-heading">' + escHtml(t.heading) + '</strong>'
-        + '<p class="hlc-intel-body">' + escHtml(t.body) + '</p>'
-        + '</li>';
-    }).join("");
+    if (hasTips) {
+      tipsEl.innerHTML = tips.map(function(t, i) {
+        return tipItemHtml(t, i >= INTEL_TIPS_PREVIEW);
+      }).join("");
+      tipsEl.hidden = false;
+      tipsEl.setAttribute("aria-hidden", "true");
+    } else {
+      tipsEl.innerHTML = "";
+      tipsEl.hidden = true;
+      tipsEl.setAttribute("aria-hidden", "true");
+    }
   }
+  syncIntelMoreButton(moreEl, hasTips, false);
+  syncIntelPlusButton(plusEl, Math.max(0, tips.length - INTEL_TIPS_PREVIEW), false, false);
   panelEl.hidden = false;
 }
 
@@ -396,6 +861,13 @@ function escHtml(s) {
 module.exports = {
   buildIntelligence: buildIntelligence,
   renderIntelligenceHtml: renderIntelligenceHtml,
+  expandIntelligenceTips: expandIntelligenceTips,
+  toggleIntelligenceTips: toggleIntelligenceTips,
+  setIntelligenceTipsExpanded: setIntelligenceTipsExpanded,
+  setIntelligenceTipsMore: setIntelligenceTipsMore,
+  toggleIntelligenceTipsMore: toggleIntelligenceTipsMore,
+  INTEL_TIPS_MAX: INTEL_TIPS_MAX,
+  INTEL_TIPS_PREVIEW: INTEL_TIPS_PREVIEW,
   // Exported for unit tests:
   tipCibilBand: tipCibilBand,
   tipOccupation: tipOccupation,
@@ -406,8 +878,14 @@ module.exports = {
   tipMissPenalty: tipMissPenalty,
   tipFixedVsFloating: tipFixedVsFloating,
   tipProcessingFee: tipProcessingFee,
+  tipGovernmentCharges: tipGovernmentCharges,
   tipPrepayment: tipPrepayment,
   buildStatusLine: buildStatusLine,
+  buildStatusStory: buildStatusStory,
+  pickLeaderCostOutlier: pickLeaderCostOutlier,
   buildRowFlags: buildRowFlags,
-  CIBIL_UPGRADE_STEPS: CIBIL_UPGRADE_STEPS
+  bestRate: bestRate,
+  bestRateRow: bestRateRow,
+  CIBIL_UPGRADE_STEPS: CIBIL_UPGRADE_STEPS,
+  HORIZON: HORIZON
 };

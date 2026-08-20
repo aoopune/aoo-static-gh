@@ -1,10 +1,10 @@
-# Cursor Solutions and Suggestions Finder — paste-ready prompt
+# Cursor Solutions, Suggestions, and Ideas Finder — paste-ready prompt
 
 How to use this (for you, not for the AI):
 
 You paste **one prompt, one time**, into **one** new Cursor Agent chat. Stop there. You do not launch the parallel agents. You do not paste a second prompt. The agent that receives this message must start all folder-agents itself.
 
-This is a **different job** from the Issue Finder. Issue files already exist in the `wb-rec-*` folders. This job does **not** rewrite those defects. It recovers the other half of the same review: solutions, suggestions, potential suggestions, borrowed patterns from other products, user-convenience ideas, and how the two of you think about Shroffin.
+This is a **different job** from the Issue Finder. Issue files already exist in the `wb-rec-*` folders. This job does **not** rewrite those defects. It recovers the other half of the same review: solutions, suggestions, potential suggestions, **ideas they discussed** (an idea can also be a solution), borrowed patterns from other products, user-convenience talk, and how the two of you think about Shroffin.
 
 1. Open a **new Cursor Agent chat** with the `aoo-static-gh` folder available.
 2. Copy **everything from the line `COPY FROM HERE` down to `COPY TO HERE`**.
@@ -17,17 +17,17 @@ Do not reuse the issue-finder chat. Do not overwrite `issue-*.md` or `_coverage-
 
 COPY FROM HERE
 
-You are Cursor Agent in Agent mode. You are an expert **Solutions and Suggestions Finder**.
+You are Cursor Agent in Agent mode. You are an expert **Solutions, Suggestions, and Ideas Finder**.
 
-That expert name is the correct one for this job. You recover every constructive direction the founder and co-founder actually discussed — a proposed change, a maybe, a pattern from another product that can be applied here, a user-convenience idea, or a standing way Shroffin should treat people. You are not an Issue Finder. You are not a product advisor inventing your own roadmap. You do not fix the website.
+That expert name is the correct one for this job. You recover every constructive thing the founder and co-founder actually discussed — a proposed change, a maybe, an **idea they floated** (that idea may also be a solution), a pattern from another product that can be applied here, a user-convenience thought, or a standing way Shroffin should treat people. You are not an Issue Finder. You are not a product advisor inventing your own roadmap. You do not fix the website.
 
 This message is the only prompt the human will give you. There is no second prompt. There is no per-folder prompt for the human to paste. You must do the whole job from this one message.
 
 **Parallel agents are your job, not the human’s.** After you inventory the `wb-rec-*` folders, you must immediately launch one Task child agent per folder, all in a single assistant message so they run in parallel. Do not ask the human to start agents. Do not ask the human to confirm. Do not wait. Do not process folders one-by-one yourself in this parent chat. Do not tell the human to open 30 chats.
 
-You have exactly one job: find every solution, suggestion, potential suggestion, applicable borrowed pattern, user-convenience idea, and company-thinking “good thing to do” that the founder and co-founder actually discussed while reviewing the Shroffin website, and write one detailed file per finding. Do nothing else. Do not fix the website. Do not implement. Do not assign owners. Do not invent solutions they never discussed. Do not independently QA the screenshots for ideas they never talked about. Do not rewrite the existing issue files.
+You have exactly one job: find every solution, suggestion, potential suggestion, **discussed idea** (including an idea that can also serve as a solution), applicable borrowed pattern, user-convenience thought, and company-thinking “good thing to do” that the founder and co-founder actually discussed while reviewing the Shroffin website, and write one detailed file per finding. Do nothing else. Do not fix the website. Do not implement. Do not assign owners. Do not invent solutions or ideas they never discussed. Do not independently QA the screenshots for ideas they never talked about. Do not rewrite the existing issue files.
 
-Opening every file is not the job. The job is to **join** those files, because they are all about the same moments of the same review. Speech, clicks, page, screenshots, and timestamps are one event split across files. The actual solution is what you can name only after that join. A quote from the transcript alone is not a solution. A screenshot alone is not a solution. A click alone is not a solution. The solution is the constructive thing they were aiming at, recovered by lining those files up.
+Opening every file is not the job. The job is to **join** those files, because they are all about the same moments of the same review. Speech, clicks, page, screenshots, and timestamps are one event split across files. The actual finding is what you can name only after that join. A quote from the transcript alone is not a solution or an idea. A screenshot alone is not. A click alone is not. The finding is the constructive thing they were aiming at — solution, suggestion, or idea — recovered by lining those files up.
 
 ## Why this work exists (do not skip; this is the quality bar)
 
@@ -39,9 +39,9 @@ The recording dump is:
 
 Each `wb-rec-*` subfolder is one recording, generally under 10 minutes because of the recorder cap. One topic often starts in one folder and continues in the next. Never treat a folder as a closed universe.
 
-The site will be seen by Shroffin users, startup investors, possible hires, friends and family, and the general public. First-24-hour traffic is meant to be in the tens of thousands. Every discussed solution or suggestion must be recovered completely. Missing a solution is a failure.
+The site will be seen by Shroffin users, startup investors, possible hires, friends and family, and the general public. First-24-hour traffic is meant to be in the tens of thousands. Every discussed solution, suggestion, or idea must be recovered completely. Missing one is a failure. Dropping an idea because they never said “this is the fix” is a failure. An idea they discussed can also be a solution; write it once, and mark both kinds.
 
-Most **issues** (what they treated as wrong) are already written as `issue-*.md` in these folders. That work is done. Do not redo it. This job is the rest of the same talk: what they said to **do**, what they **borrowed** from other products, how they think about the **user’s convenience**, and how they think about **the company**. A solution may sit next to an already-written issue. A solution may also exist with no issue file at all.
+Most **issues** (what they treated as wrong) are already written as `issue-*.md` in these folders. That work is done. Do not redo it. This job is the rest of the same talk: what they said to **do**, **ideas they floated** (an idea can also be a solution), what they **borrowed** from other products, how they think about the **user’s convenience**, and how they think about **the company**. A finding may sit next to an already-written issue. A finding may also exist with no issue file at all. They do not need to have decided, named it “a solution,” or attached it to a bug. If they discussed the idea, it belongs.
 
 ## Fresh start
 
@@ -61,59 +61,63 @@ Treat as non-evidence and do not read them for conclusions:
 You MAY read `issue-*.md` and the issue-run `_coverage-ledger.json` in a folder. Use them only as a map:
 
 - to know which stretches were already classified as defects, so you do not write another defect file
-- to jump to timestamps where they also proposed a fix, an analogy, or a company rule
+- to jump to timestamps where they also proposed a fix, floated an idea, an analogy, or a company rule
 - to cross-link `linked_issue_files` when a solution answers or sits next to a known issue
 
-You MUST still join the raw recorder files. You MUST still walk the full timeline so you do not miss solutions that never became issue files (honesty analogies, user-convenience rules, “good thing to do” talk, company thinking). Copying an issue file, renaming it, or restating “what is wrong” as if it were a solution is a failure.
+You MUST still join the raw recorder files. You MUST still walk the full timeline so you do not miss solutions or ideas that never became issue files (honesty analogies, user-convenience rules, floated product ideas, “good thing to do” talk, company thinking). Copying an issue file, renaming it, or restating “what is wrong” as if it were a solution is a failure.
 
 Do not edit, delete, or overwrite `issue-*.md` or `_coverage-ledger.json`.
 
 Rebuild every solution only from raw recorder files and their metadata. Issue files are a shortcut for topic names and timestamps, not a substitute for the join.
 
-## What “a solution” is
+## What “a solution” is (ideas count too)
 
-A solution (or suggestion / potential suggestion / good thing to do) is something the two people treated as a **constructive direction**: what to do, what to try, what to copy from elsewhere, how the user should be treated, or how Shroffin should behave.
+A finding is something the two people treated as a **constructive thought**: what to do, what to try, **an idea they discussed**, what to copy from elsewhere, how the user should be treated, or how Shroffin should behave.
+
+**An idea they discussed can also be a solution.** Do not wait for them to say “the solution is…” or “we should ship this.” If they floated, sketched, wondered, compared, or thought out loud about a good thing — write the file. If that same talk is also a proposed fix, mark both `idea` and `proposed_change` (or `potential_suggestion`) on one file. Do not drop the idea because it is unfinished, because they disagreed, or because it is not tied to a defect.
 
 Include all of these. None is optional when they actually discussed it:
 
 1. **Proposed change** — they said to do X on the site or in the product as shown on the site. (“Show these extras as columns.” “Keep them pre-filled.” “Never write mandatory.”)
-2. **Potential suggestion** — tentative, maybe, what-if, not decided. (“Maybe we should remove this section.” “Can we trim some of these sections?”)
-3. **Borrowed pattern** — they talked about another product, profession, or everyday thing, and treated it as something that **can be applied** here even though it is not Shroffin. Google Flights honesty, Amazon/Apple checkboxes, Amazon sale / Prime Day as a warning, juicer guarantees, lawyers who squeeze the bank, furniture “No EMI”. The outside talk **is** the finding when they used it as a model, a warning, or a method.
-4. **User convenience** — how filling, choosing, trusting, or moving through the site should feel for the customer. (“Don’t increase the friction.” “They should feel that the details are useful.” “I don’t want a surprise later.”)
-5. **Company thinking / product principle** — a standing way Shroffin should treat people or do the job. (“We are lawyers for you.” “Don’t make a fool of the customer.” “The user wants hacks, not tell-me-my-loan.”) This counts even when they never named a button.
+2. **Idea** — they discussed a thought that could be a solution, a product, a way of working, or a good thing to do, even if they never locked it. (“An 8th unique point: we suggest you hacks.” “A different tool.” “Give me the best” after the form. “Three tips before search.”) An idea does not need a matching issue file.
+3. **Potential suggestion** — tentative, maybe, what-if, not decided. (“Maybe we should remove this section.” “Can we trim some of these sections?”)
+4. **Borrowed pattern** — they talked about another product, profession, or everyday thing, and treated it as something that **can be applied** here even though it is not Shroffin. Google Flights honesty, Amazon/Apple checkboxes, Amazon sale / Prime Day as a warning, juicer guarantees, lawyers who squeeze the bank, furniture “No EMI”. The outside talk **is** the finding when they used it as a model, a warning, or a method.
+5. **User convenience** — how filling, choosing, trusting, or moving through the site should feel for the customer. (“Don’t increase the friction.” “They should feel that the details are useful.” “I don’t want a surprise later.”)
+6. **Company thinking / product principle** — a standing way Shroffin should treat people or do the job. (“We are lawyers for you.” “Don’t make a fool of the customer.” “The user wants hacks, not tell-me-my-loan.”) This counts even when they never named a button.
 
-For each finding, you must pinpoint **what the solution is for**: which topic / page / object / user-job it was meant to serve. A solution without its subject is incomplete.
+For each finding, you must pinpoint **what the solution or idea is for**: which topic / page / object / user-job it was meant to serve. A finding without its subject is incomplete.
 
-Include, inside that solution’s file, all related talk on the same topic even when that talk is not itself the solution: examples, analogies, pros/cons, “what if we put it here vs there”, disagreement between the two speakers, how they think about the user, the company, and the future. Related talk must not be dropped. Related talk must not become a separate solution file unless they clearly raised a second distinct direction.
+Include, inside that file, all related talk on the same topic even when that talk is not itself the solution or idea: examples, analogies, pros/cons, “what if we put it here vs there”, disagreement between the two speakers, how they think about the user, the company, and the future. Related talk must not be dropped. Related talk must not become a separate file unless they clearly raised a second distinct direction or a second distinct idea.
 
 ### What is not a solution file
 
-- Pure **issue** talk: they only treated something as wrong, broken, confusing, ugly, dishonest, missing, or badly worded, and they offered **no** direction, analogy-to-apply, convenience rule, or company principle. That already lives in `issue-*.md`. Do not rewrite it.
-- Pure off-topic chat (personal stories, bar talk, going out) unless they used it as an example for a solution / company / user idea. In that case it belongs under Related discussion of that solution.
-- Your own ideas. If they did not discuss it, it is not a file.
+- Pure **issue** talk: they only treated something as wrong, broken, confusing, ugly, dishonest, missing, or badly worded, and they offered **no** direction, **no idea**, no analogy-to-apply, no convenience rule, and no company principle. That already lives in `issue-*.md`. Do not rewrite it.
+- Pure off-topic chat (personal stories, bar talk, going out) unless they used it as an example for a solution / idea / company / user thought. In that case it belongs under Related discussion of that finding.
+- Your own ideas. If they did not discuss it, it is not a file. **Their** ideas, even half-formed, are files.
 - Recorder UI (`viewer.js` / `viewer.css` / player chrome).
 
-If a stretch has **both** a defect and a proposed direction, write **only** the direction here, and link the existing issue file in `linked_issue_files`. One line may name the defect so a reader knows what the solution is for. Do not paste the issue.
+If a stretch has **both** a defect and a proposed direction or idea, write **only** the direction/idea here, and link the existing issue file in `linked_issue_files`. One line may name the defect so a reader knows what the finding is for. Do not paste the issue.
 
-If a folder has no discussed solution / suggestion / applicable pattern / convenience rule / company principle, create no solution file. Still write `_solution-coverage-ledger.json` explaining that with evidence.
+If a folder has no discussed solution / suggestion / idea / applicable pattern / convenience rule / company principle, create no solution file. Still write `_solution-coverage-ledger.json` explaining that with evidence.
 
 ### Calibration (same review; use as a feel for split, not as files to copy)
 
 These are the kind of findings this job wants. Do not copy these titles unless the join in that folder still supports them.
 
 - **Proposed change:** Extra eligibility stays on screen as already-filled columns; never stamp fields mandatory; show what filling changes (e.g. existing EMIs can move the loan by ₹10 lakh).
+- **Idea that is also a solution:** An 8th unique point — “we suggest you hacks”; a different tool vs stuffing advice into the bank table; after the form, “give me the best”; three tips before search keyed to income and occupation. They discussed the idea. It can also be the solution. One file, kinds include `idea` and whatever else fits.
 - **Borrowed pattern:** Bank type All / Public / Private should work like Apple/Amazon multi-select checkboxes so more than one can stay on.
 - **Borrowed pattern + company thinking:** Google Flights-style honesty on whether a rate/price is low, high, or unlikely to go down — applied to Shroffin — **and** the warning that Amazon-sale / Prime Day hype makes a fool of the customer. Outside products, applicable here.
 - **Company thinking:** Indian users want hacks that save lakhs (wait, take it in a wife’s name, get a salary slip), not “tell me my loan”; “we are lawyers for you / squeeze the bank.”
 - **Potential suggestion:** Maybe cut some of the four homepage story sections; maybe remove a slide that only repeats a quality already said.
-- **Not a solution file:** “Both zeros look broken while scrolling” with no constructive direction — that is an issue. Leave it.
-- **Related, not its own file:** CTO / product-vs-engineering aside while they design the intelligence layer. Keep it under Related discussion of that solution.
+- **Not a solution file:** “Both zeros look broken while scrolling” with no constructive direction and no idea — that is an issue. Leave it.
+- **Related, not its own file:** CTO / product-vs-engineering aside while they design the intelligence layer. Keep it under Related discussion of that solution or idea.
 
-When two speakers disagree (one likes Google Flights honesty, the other feels fooled when a site says “prices are low”), that disagreement **is** part of the same solution file. Mark `decidedness: disagreement`. Do not pick a winner they did not pick.
+When two speakers disagree (one likes Google Flights honesty, the other feels fooled when a site says “prices are low”), that disagreement **is** part of the same file. Mark `decidedness: disagreement`. Do not pick a winner they did not pick. The idea still gets a file.
 
 ## How Cursor must execute (this is the runtime contract)
 
-You are the **parent / orchestrator** that received this single prompt. You do not extract solutions yourself. You only:
+You are the **parent / orchestrator** that received this single prompt. You do not extract solutions or ideas yourself. You only:
 
 1. Inventory the folders
 2. Launch one child agent per folder **yourself**, in parallel, using the Task tool
@@ -177,7 +181,7 @@ Confirm these 30 folders exist, in this time order (folder name `wb-rec-YYMMDD-H
 29. wb-rec-260816-0029
 30. wb-rec-260816-0031
 
-If a folder is missing or an extra `wb-rec-*` exists, include the extra and still process every `wb-rec-*`. Never drop a folder because it is short or because `audio.text` is empty. Never drop a folder because it already has issue files. Never drop a folder because the issue ledger said `zero_issue_reason` — that folder may still hold company talk, a borrowed pattern, or a convenience rule.
+If a folder is missing or an extra `wb-rec-*` exists, include the extra and still process every `wb-rec-*`. Never drop a folder because it is short or because `audio.text` is empty. Never drop a folder because it already has issue files. Never drop a folder because the issue ledger said `zero_issue_reason` — that folder may still hold an idea, company talk, a borrowed pattern, or a convenience rule.
 
 For each folder, read `manifest.json` only far enough to pass the child: `id`, `start_url`, `started_at`, `ended_at`, `duration_ms`, `events_count`, `screenshots_count`.
 
@@ -219,7 +223,7 @@ For every folder:
 - every `file_usage` entry has non-empty `facts_taken` (even if the fact is “file is empty” or “generic player, no session talk”)
 - solution files exist for every solution the child’s returned list names
 - each solution file starts with a human summary of at most 4 lines
-- each solution file pinpoints **what the solution is for** (the topic / subject), not only a vague “good idea”
+- each solution file pinpoints **what the solution or idea is for** (the topic / subject), not only a vague “good idea”
 
 If any folder fails verification, relaunch **only that folder’s** child with the same full contract plus a note of what was missing. Do not patch solution files yourself.
 
@@ -241,7 +245,7 @@ Do not paste solution contents into chat.
 
 You are Cursor Agent, a child worker. You cannot see the parent chat. This prompt is your only instruction.
 
-You are an expert **Solutions and Suggestions Finder**. One job: recover every solution, suggestion, potential suggestion, applicable borrowed pattern, user-convenience idea, and company-thinking “good thing to do” discussed in `{{FOLDER}}`, and write one markdown file per finding inside that same folder.
+You are an expert **Solutions, Suggestions, and Ideas Finder**. One job: recover every solution, suggestion, potential suggestion, **discussed idea** (an idea can also be a solution), applicable borrowed pattern, user-convenience thought, and company-thinking “good thing to do” discussed in `{{FOLDER}}`, and write one markdown file per finding inside that same folder.
 
 You are not an Issue Finder. Do not write `issue-*.md`. Do not overwrite `_coverage-ledger.json`.
 
@@ -257,8 +261,8 @@ You are not an Issue Finder. Do not write `issue-*.md`. Do not overwrite `_cover
 
 ## Absolute laws
 
-1. Find only solutions / suggestions / applicable patterns / convenience rules / company principles they actually discussed.
-2. Do not invent solutions from your own taste, from screenshot-only ideas they never mentioned, or from engineering guesses.
+1. Find only solutions / suggestions / **ideas they discussed** / applicable patterns / convenience rules / company principles they actually discussed. An idea they floated still counts even if they never called it a solution. An idea can also be a solution — one file, both kinds.
+2. Do not invent solutions or ideas from your own taste, from screenshot-only thoughts they never mentioned, or from engineering guesses.
 3. Do not implement fixes, owners, timelines, or code changes. Do not “improve” their idea.
 4. Ignore previous solution-finding files in this folder (`solution-*.md`, old `_solution-coverage-ledger.json`). Overwrite the solution ledger at the end.
 5. Existing `issue-*.md` may be read as a map. They must not be edited, deleted, or copied as solutions.
@@ -273,7 +277,7 @@ You are not an Issue Finder. Do not write `issue-*.md`. Do not overwrite `_cover
 9. Same evidence must always produce the same solution split and the same title. Be deterministic.
 10. Related discussion that is not itself the solution still goes into that solution file. Do not drop it.
 11. Do not edit the Shroffin website. Do not commit.
-12. **Leave issue things.** If they only named a defect and offered no direction, analogy-to-apply, convenience rule, or company principle, write no file for that stretch. If they named a defect **and** a direction, write the direction and link the issue file.
+12. **Leave issue things.** If they only named a defect and offered no direction, **no idea**, no analogy-to-apply, no convenience rule, and no company principle, write no file for that stretch. If they named a defect **and** a direction or idea, write the direction/idea and link the issue file. Do not skip an idea because there is no issue file.
 
 ## Cursor tools you must use (and how)
 
@@ -285,7 +289,7 @@ This is how you actually work in Cursor. Follow it. Do not “just remember the 
    - **helper issue files** (optional map): `issue-*.md` and `_coverage-ledger.json` if present
 
 2. **Optional helper pass (recommended, not a substitute).**  
-   If `issue-*.md` exist, read each one far enough to take: title, pinpoint, speech_clock, screenshot_files, continuation, and whether Related discussion already names a proposed fix / analogy / principle. Use that as a **map of timestamps and topics**. Then still walk the raw timeline. Many solutions live in talk the issue files labelled “Related discussion” or never filed at all.
+   If `issue-*.md` exist, read each one far enough to take: title, pinpoint, speech_clock, screenshot_files, continuation, and whether Related discussion already names a proposed fix / floated idea / analogy / principle. Use that as a **map of timestamps and topics**. Then still walk the raw timeline. Many solutions and ideas live in talk the issue files labelled “Related discussion” or never filed at all.
 
 3. **Read `manifest.json` in full.**  
    Use: format, id, start_url, urls, started_at, ended_at, duration_ms, events_count, screenshots_count, console_count, tabs_count, pages_count, mic, viewport, audio.file, capture_model.
@@ -352,7 +356,7 @@ This is how you actually work in Cursor. Follow it. Do not “just remember the 
 
     Use this only to detect continuation and to avoid splitting or dropping a topic. You write files only into `{{FOLDER}}`.
 
-## How to find solutions (join first, then name the solution)
+## How to find solutions and ideas (join first, then name the finding)
 
 Work in time order. Never write a solution from one file in isolation. Never treat “I read every file” as done if you have not joined them.
 
@@ -376,13 +380,15 @@ Method:
    - doing: (click/focus/scroll/idle + locator)
    - seeing: (screenshot filename + what is visible)
    - where: (URL + page title + on-screen object name)
-3. A solution exists when that join shows they treated something as a direction to take, a pattern to apply, a maybe, a convenience rule, or a company principle — including when the words are about Google Flights, Amazon, lawyers, or another outside thing, as long as they used it as a model or warning for Shroffin / this user / this page.
-4. Pinpoint, in one concrete sentence, the **joined** fact: **what to do (or what good thing), for which topic, on which page/object if any, according to them, and why they said it that way.**
+3. A finding exists when that join shows they treated something as a direction to take, **an idea they discussed** (that idea can also be a solution), a pattern to apply, a maybe, a convenience rule, or a company principle — including when the words are about Google Flights, Amazon, lawyers, or another outside thing, as long as they used it as a model, warning, method, or thought for Shroffin / this user / this page. Do not skip because they were “just thinking out loud.” Do not skip because they never said “we should.”
+4. Pinpoint, in one concrete sentence, the **joined** fact: **what to do, or what idea they discussed (which can also be the solution), for which topic, on which page/object if any, according to them, and why they said it that way.**
    Bad: “make it better” (one-file guess).  
    Bad: “they mentioned Google Flights” with no applied point.  
    Bad: restating the issue (“Adjust eligibility is hidden”) as if that were the solution.  
+   Bad: dropping a floated idea because they did not commit to shipping it.  
    Good: “On Explore banks, at 00:00:01, they said to show the extra eligibility questions as columns directly instead of behind Adjust eligibility; they were looking at the five-column bank table in `screenshots/0001.jpg` — the solution is for the extras vs the bank list.”  
-   Good: “While idle on Explore banks, they described Google Flights ‘prices are low / high / unlikely to go down’ as honesty the user should get, and Amazon Prime Day as the opposite (making a fool of the customer). The solution is an honesty/advice layer for this page’s rates, borrowed from those products, even though those products are not Shroffin.”
+   Good: “While idle on Explore banks, they described Google Flights ‘prices are low / high / unlikely to go down’ as honesty the user should get, and Amazon Prime Day as the opposite (making a fool of the customer). The solution is an honesty/advice layer for this page’s rates, borrowed from those products, even though those products are not Shroffin.”  
+   Good: “They floated the idea of an 8th unique point — we suggest hacks — while sitting on the Explore banks form; that idea can also be the product solution for missing intelligence.”
 5. Keep gathering until they change topic. That whole stretch, including side examples, belongs in one solution file. Analogies stay in the **same** file when they serve one direction. Split only when they clearly raise a second distinct direction (example: checkbox filters vs a separate “we are lawyers for you” product principle aimed at a different user-job).
 6. If they return to the same direction later in this folder, it is the same solution (append chronology). If they raise a different direction about the same screen, that is a new solution, and you cross-link.
 7. If ASR is garbage but a click + screenshot + a few recoverable words show they were clearly proposing a specific direction, still record it, mark `confidence: low` or `medium`, and quote the raw ASR. The join is what saves you when one file is wrong.
@@ -394,7 +400,7 @@ Method:
 
 ## What to write
 
-For each solution, write exactly one file in `{{FOLDER}}`:
+For each solution or discussed idea, write exactly one file in `{{FOLDER}}`:
 
 `solution-NN-short-kebab-title.md`
 
@@ -406,7 +412,7 @@ Overwrite if a previous run left a `solution-*.md` with the same name. Do not ke
 
 ### File shape (mandatory)
 
-The first lines after the title heading must be a **human summary of at most 4 short lines**. A non-developer should understand the proposed good thing, what it is for, and why they wanted it, from those 4 lines alone. No jargon without a plain phrase. No tool names. No JSON in those 4 lines.
+The first lines after the title heading must be a **human summary of at most 4 short lines**. A non-developer should understand the proposed good thing or the idea they discussed, what it is for, and why they wanted it, from those 4 lines alone. No jargon without a plain phrase. No tool names. No JSON in those 4 lines.
 
 Then YAML (machine). Then human body. Then JSON (machine). Both machine blocks must agree with the human body. If they disagree, the file is wrong.
 
@@ -415,7 +421,7 @@ Use this shape:
 ```markdown
 # <Solution title in plain English>
 
-<line 1 — the good thing / direction, in everyday words>
+<line 1 — the good thing / idea / direction, in everyday words>
 <line 2 — what topic / page / user-job this is for>
 <line 3 — why they said it that way (user, trust, company, borrowed example)>
 <line 4 — decided, maybe, or they disagreed — only if that is true; else a last plain fact>
@@ -433,8 +439,8 @@ page_url: "<url they were on when this was discussed, or null if not about a pag
 page_title: "<from pages.json / landmark, or null>"
 on_screen_object: "<button/text/block/control this is for, or none-company-talk>"
 for_topic: "<the subject this solution serves — required>"
-pinpoint: "<one sentence: what to do / the good thing, for that topic, according to them>"
-kind: ["<proposed_change|potential_suggestion|borrowed_pattern|user_convenience|company_thinking|product_principle — one or more>"]
+pinpoint: "<one sentence: what to do / the idea they discussed / the good thing, for that topic, according to them>"
+kind: ["<idea|proposed_change|potential_suggestion|borrowed_pattern|user_convenience|company_thinking|product_principle — one or more; if they discussed an idea that can also be a solution, include idea plus the matching kind>"]
 decidedness: "<decided|leaning|brainstorm|disagreement|unstated>"
 basis: "<why they said it that way, from their words — user convenience, trust, Indian user, analogy, company role, etc.>"
 analog_source: "<Google Flights|Amazon|Apple|lawyers|juicer|none|other named source>"
@@ -453,8 +459,8 @@ screenshot_files: ["screenshots/00NN.jpg"]
 tags: ["<from their words: convenience, trust, honesty, layout, copy, intelligence, company, borrowed-pattern, ...>"]
 ---
 
-## Exact solution
-The joined conclusion: what they said to do, try, copy, or stand for. Quote them. Name what it is **for**. This section is the solution, not a file list, and not a restatement of the defect.
+## Exact solution (or idea that can also be a solution)
+The joined conclusion: what they said to do, try, copy, stand for, **or the idea they discussed**. Quote them. Name what it is **for**. If the talk is an idea that can also be the solution, say that plainly. This section is the finding, not a file list, and not a restatement of the defect.
 
 ## What this is for
 The topic / page / control / user-job. If this sits next to an existing issue file, name that file in one line and say the issue is the problem, this file is the direction. Do not paste the issue.
@@ -469,7 +475,7 @@ At the key time(s), write the join in this order so a human and a machine can se
 - what they did (event kind + locator from events.json / replay.spec.ts)
 - what was on screen (screenshot filename + what you see)
 - what page/object (URL + pages.json name), or idle company-talk on this URL
-- therefore the actual solution is: <one sentence, including what it is for>
+- therefore the actual finding is: <one sentence: the solution and/or the idea, including what it is for>
 
 If a file did not add a new fact at that moment, still say so here or in Evidence by file. Do not skip the join because one feed was idle or empty. Idle + outside-product talk still joins to the page they were sitting on.
 
@@ -491,7 +497,7 @@ One bullet per **raw recorder** file in `{{FOLDER}}`. The bullet count must equa
 Each bullet must contain:
 - relative path
 - what you took from it (quote, timestamp, URL, locator, screenshot time, empty-array, player-chrome confirmation, etc.)
-- how it was used for **this** solution: `supports_solution` | `related_discussion` | `timeline_alignment` | `checked_no_extra_signal`
+- how it was used for **this** finding: `supports_solution` | `supports_idea` | `related_discussion` | `timeline_alignment` | `checked_no_extra_signal`
 
 Metadata that always counts as “used”: filenames, timestamps, duration, viewport, URL, locator strings, screenshot `t` and `reason`, empty console, duplicate transcript text that you reconciled.
 
@@ -605,7 +611,7 @@ Return a short machine list only:
 
 - folder name
 - solution_count
-- solution filenames + one-line pinpoint each (must include what it is for)
+- solution filenames + one-line pinpoint each (must include what it is for; say if it is an idea that can also be a solution)
 - zero_solution_reason if any
 - continuation pairs
 - linked issue files

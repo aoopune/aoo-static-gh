@@ -1,0 +1,575 @@
+{
+  "folder": "wb-rec-260816-0029",
+  "sequence_index": 29,
+  "recording_id": "1ce6b2c1-5803-4478-9e29-c1f823caae0f",
+  "started_at": "2026-08-15T18:59:02.434Z",
+  "ended_at": "2026-08-15T19:01:28.697Z",
+  "duration_ms": 146263,
+  "prev_folder": "wb-rec-260816-0013",
+  "next_folder": "wb-rec-260816-0031",
+  "files_in_folder": [
+    "_theme-cards.json",
+    "audio.json",
+    "audio.lrc",
+    "audio.srt",
+    "audio.text",
+    "audio.tsv",
+    "audio.txt",
+    "audio.vtt",
+    "audio.webm",
+    "audio_sentences.txt",
+    "console.json",
+    "events.json",
+    "index.html",
+    "manifest.json",
+    "pages.json",
+    "replay.spec.ts",
+    "screenshots/0000.png",
+    "screenshots/0001.png",
+    "screenshots/0002.png",
+    "screenshots/0003.jpg",
+    "screenshots/0004.png",
+    "screenshots/0005.png",
+    "screenshots/0006.png",
+    "screenshots/0007.png",
+    "screenshots/0008.png",
+    "screenshots/0009.png",
+    "screenshots/0010.png",
+    "screenshots/0011.png",
+    "screenshots/0012.png",
+    "screenshots/0013.png",
+    "screenshots/0014.png",
+    "screenshots/0015.jpg",
+    "screenshots/0016.jpg",
+    "screenshots/index.json",
+    "tabs.json",
+    "viewer.css",
+    "viewer.js"
+  ],
+  "file_status": {
+    "_theme-cards.json": "fully_read",
+    "audio.json": "fully_read_chunked",
+    "audio.lrc": "fully_read",
+    "audio.srt": "fully_read",
+    "audio.text": "fully_read",
+    "audio.tsv": "fully_read",
+    "audio.txt": "fully_read",
+    "audio.vtt": "fully_read",
+    "audio.webm": "binary_audio_untranscribed_use_text_artifacts",
+    "audio_sentences.txt": "fully_read",
+    "console.json": "fully_read",
+    "events.json": "fully_read",
+    "index.html": "fully_read",
+    "manifest.json": "fully_read",
+    "pages.json": "fully_read",
+    "replay.spec.ts": "fully_read",
+    "screenshots/0000.png": "fully_read_image",
+    "screenshots/0001.png": "fully_read_image",
+    "screenshots/0002.png": "fully_read_image",
+    "screenshots/0003.jpg": "fully_read_image",
+    "screenshots/0004.png": "fully_read_image",
+    "screenshots/0005.png": "fully_read_image",
+    "screenshots/0006.png": "fully_read_image",
+    "screenshots/0007.png": "fully_read_image",
+    "screenshots/0008.png": "fully_read_image",
+    "screenshots/0009.png": "fully_read_image",
+    "screenshots/0010.png": "fully_read_image",
+    "screenshots/0011.png": "fully_read_image",
+    "screenshots/0012.png": "fully_read_image",
+    "screenshots/0013.png": "fully_read_image",
+    "screenshots/0014.png": "fully_read_image",
+    "screenshots/0015.jpg": "fully_read_image",
+    "screenshots/0016.jpg": "fully_read_image",
+    "screenshots/index.json": "fully_read",
+    "tabs.json": "fully_read",
+    "viewer.css": "player_chrome_fully_read_confirmed",
+    "viewer.js": "player_chrome_fully_read_confirmed"
+  },
+  "files_missing_expected": [],
+  "helper_issue_files_read": [
+    "issue-01-other-charges-missing-emi-miss-calculation-drawer.md",
+    "issue-02-banks-missing-emi-miss-penalty-labels.md"
+  ],
+  "screenshots_index_count": 17,
+  "screenshots_files_seen": 17,
+  "solutions_written": [
+    "solution-01-clickable-charge-drawer-emi-miss-calculation.md",
+    "solution-02-bank-emi-miss-penalty-labels-and-intelligence.md"
+  ],
+  "solution_count": 2,
+  "zero_solution_reason": null,
+  "linked_issues": [
+    {
+      "solution_file": "solution-01-clickable-charge-drawer-emi-miss-calculation.md",
+      "issue_file": "issue-01-other-charges-missing-emi-miss-calculation-drawer.md"
+    },
+    {
+      "solution_file": "solution-02-bank-emi-miss-penalty-labels-and-intelligence.md",
+      "issue_file": "issue-02-banks-missing-emi-miss-penalty-labels.md"
+    }
+  ],
+  "continuations": [
+    {
+      "solution_file": "solution-01-clickable-charge-drawer-emi-miss-calculation.md",
+      "direction": "from",
+      "other_folder": "wb-rec-260816-0013"
+    },
+    {
+      "solution_file": "solution-02-bank-emi-miss-penalty-labels-and-intelligence.md",
+      "direction": "from",
+      "other_folder": "wb-rec-260816-0013"
+    }
+  ],
+  "prev_boundary_read": true,
+  "next_boundary_read": true,
+  "issue_files_left_untouched": true,
+  "file_usage": [
+    {
+      "path": "_theme-cards.json",
+      "bytes": 6222,
+      "status": "fully_read",
+      "facts_taken": [
+        "issue card summaries for drawer calc and bank labels",
+        "continuation continues_from_prev wb-rec-260816-0013"
+      ],
+      "used_for": [
+        "timestamp_map",
+        "checked_no_extra_signal"
+      ]
+    },
+    {
+      "path": "audio.json",
+      "bytes": 79185,
+      "status": "fully_read_chunked",
+      "facts_taken": [
+        "25 Whisper segments",
+        "language mr wrong",
+        "audio->other charge ASR conflict",
+        "segments 6-9 13-18 25 for labels/intelligence"
+      ],
+      "used_for": [
+        "supports_solution",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.lrc",
+      "bytes": 2065,
+      "status": "fully_read",
+      "facts_taken": [
+        "timed cues match srt for drawer labels overdue bounce"
+      ],
+      "used_for": [
+        "supports_solution",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.srt",
+      "bytes": 2331,
+      "status": "fully_read",
+      "facts_taken": [
+        "25 cues",
+        "primary speech clock 7830-132850 ms",
+        "drawer calculation underlines labels intelligence quotes"
+      ],
+      "used_for": [
+        "supports_solution",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.text",
+      "bytes": 1415,
+      "status": "fully_read",
+      "facts_taken": [
+        "full untimed transcript matches srt content"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "audio.tsv",
+      "bytes": 1746,
+      "status": "fully_read",
+      "facts_taken": [
+        "ms start/end for all 25 cues",
+        "7830 35610 73930 109430 129970 key joins"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "audio.txt",
+      "bytes": 2090,
+      "status": "fully_read",
+      "facts_taken": [
+        "timed whisper dump same wording as srt"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "audio.vtt",
+      "bytes": 2100,
+      "status": "fully_read",
+      "facts_taken": [
+        "WEBVTT cues identical to srt"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "audio.webm",
+      "bytes": 2350857,
+      "status": "binary_audio_untranscribed_use_text_artifacts",
+      "facts_taken": [
+        "binary mic recording present",
+        "not played per contract"
+      ],
+      "used_for": [
+        "checked_no_extra_signal"
+      ]
+    },
+    {
+      "path": "audio_sentences.txt",
+      "bytes": 1389,
+      "status": "fully_read",
+      "facts_taken": [
+        "single paragraph transcript"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "console.json",
+      "bytes": 2,
+      "status": "fully_read",
+      "facts_taken": [
+        "empty array no console errors"
+      ],
+      "used_for": [
+        "checked_no_extra_signal"
+      ]
+    },
+    {
+      "path": "events.json",
+      "bytes": 6230,
+      "status": "fully_read",
+      "facts_taken": [
+        "58 events",
+        "focus Collapse all t=7519",
+        "scroll y 697-3207 through Other charges",
+        "no overdue/bounce cell click"
+      ],
+      "used_for": [
+        "timeline_alignment",
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "index.html",
+      "bytes": 21267,
+      "status": "fully_read",
+      "facts_taken": [
+        "workbooks replay viewer",
+        "inlined manifest id 1ce6b2c1",
+        "58 events 17 screenshots",
+        "no session-specific talk"
+      ],
+      "used_for": [
+        "player_shell_with_inlined_json_fully_read",
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 3472,
+      "status": "fully_read",
+      "facts_taken": [
+        "id 1ce6b2c1-5803-4478-9e29-c1f823caae0f",
+        "start_url explore-banks.html",
+        "duration_ms 146263",
+        "17 screenshots 58 events"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "pages.json",
+      "bytes": 2,
+      "status": "fully_read",
+      "facts_taken": [
+        "empty array pages_count 0 in manifest"
+      ],
+      "used_for": [
+        "checked_no_extra_signal"
+      ]
+    },
+    {
+      "path": "replay.spec.ts",
+      "bytes": 2769,
+      "status": "fully_read",
+      "facts_taken": [
+        "goto explore-banks.html",
+        "only idle comments no charge clicks"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0000.png",
+      "bytes": 250919,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "Other charges start",
+        "CSB 24% overdue",
+        "static overdue bounce cells"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0001.png",
+      "bytes": 310633,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "after Collapse all focus",
+        "overdue bounce columns visible"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0002.png",
+      "bytes": 315833,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "Axis through Central Bank Other charges band"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0003.jpg",
+      "bytes": 118322,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "periodic jpeg t=24199",
+        "same table with heuristic masks"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0004.png",
+      "bytes": 274459,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "CSB 24.00% p.a. overdue",
+        "DCB blue overdue range link",
+        "during 24% bank speech"
+      ],
+      "used_for": [
+        "supports_solution",
+        "related_discussion"
+      ]
+    },
+    {
+      "path": "screenshots/0005.png",
+      "bytes": 274459,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "CSB Canara band during pre-loan warning scroll"
+      ],
+      "used_for": [
+        "related_discussion"
+      ]
+    },
+    {
+      "path": "screenshots/0006.png",
+      "bytes": 274459,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "same CSB 24% region"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "screenshots/0007.png",
+      "bytes": 240503,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "DCB link IDFC complex overdue not calculator"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0008.png",
+      "bytes": 254190,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "IndusInd 24%/750",
+        "J&K 0.20%/200 same viewport",
+        "no penalty labels on names"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0009.png",
+      "bytes": 261056,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "J&K IndusInd pair during least/highest label speech t=74200"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0010.png",
+      "bytes": 265431,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "J&K IndusInd Kotak rows visible"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0011.png",
+      "bytes": 253349,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "IndusInd J&K HDFC ICICI band"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0012.png",
+      "bytes": 232742,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "Notes Collapse all at table bottom",
+        "drawer pattern reference"
+      ],
+      "used_for": [
+        "supports_solution",
+        "related_discussion"
+      ]
+    },
+    {
+      "path": "screenshots/0013.png",
+      "bytes": 254740,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "J&K row during overdue bounce calc scroll"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0014.png",
+      "bytes": 248182,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "IndusInd row highlighted 24%/750 unlabeled"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0015.jpg",
+      "bytes": 118152,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "table top during intelligence already visible t=130199"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/0016.jpg",
+      "bytes": 119472,
+      "status": "fully_read_image",
+      "facts_taken": [
+        "same top band t=140199"
+      ],
+      "used_for": [
+        "supports_solution"
+      ]
+    },
+    {
+      "path": "screenshots/index.json",
+      "bytes": 5219,
+      "status": "fully_read",
+      "facts_taken": [
+        "17 shots indexed",
+        "t/reason/url for each",
+        "mask_rects on 0003 0015 0016"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "tabs.json",
+      "bytes": 160,
+      "status": "fully_read",
+      "facts_taken": [
+        "single tab explore-banks.html entire session"
+      ],
+      "used_for": [
+        "timeline_alignment"
+      ]
+    },
+    {
+      "path": "viewer.css",
+      "bytes": 17895,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": [
+        "generic workbooks replay styles 660 lines",
+        "no session talk"
+      ],
+      "used_for": [
+        "player_chrome_fully_read_confirmed"
+      ]
+    },
+    {
+      "path": "viewer.js",
+      "bytes": 32334,
+      "status": "player_chrome_fully_read_confirmed",
+      "facts_taken": [
+        "generic bundle viewer 746 lines",
+        "loadInline renderFeed setupAudio",
+        "no session talk"
+      ],
+      "used_for": [
+        "player_chrome_fully_read_confirmed"
+      ]
+    }
+  ]
+}

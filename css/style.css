@@ -17,7 +17,7 @@
   --bg: color-mix(in srgb, #0071e3 0.75%, #ffffff);
   --bg-surface: #ffffff;
   --bg-elevated: #ffffff;
-  --bg-nav: rgba(255, 255, 255, 0.92);
+  --bg-nav: rgba(245, 247, 249, 0.92);
   --nav-text: #0f172a;
   --nav-text-hover: #0d9488;
   --nav-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.04);
@@ -125,7 +125,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 .site-logo {
   font-weight: 700;
   font-size: 1.25rem;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   color: var(--nav-text);
   flex-shrink: 0;
 }
@@ -256,7 +256,7 @@ main {
 main h1 {
   font-size: 1.875rem;
   font-weight: 700;
-  letter-spacing: -0.025em;
+  letter-spacing: normal;
   margin: 0 0 var(--space-6);
   line-height: 1.25;
   color: var(--text);
@@ -265,7 +265,7 @@ main h1 {
 main h2 {
   font-size: 1.375rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   margin: 0 0 var(--space-4);
   color: var(--text);
 }
@@ -573,7 +573,7 @@ main.home-main {
   margin: 0 0 var(--space-1);
   font-size: clamp(1.35rem, 2.85vw, 2rem);
   font-weight: 500;
-  letter-spacing: -0.03em;
+  letter-spacing: normal;
   line-height: 1.2;
   color: var(--text);
   white-space: nowrap;
@@ -848,7 +848,7 @@ main.home-main {
   font-weight: 600;
   font-size: 0.8125rem;
   text-transform: none;
-  letter-spacing: 0.01em;
+  letter-spacing: normal;
 }
 
 /* Sticky column headers for all tables */
@@ -1028,7 +1028,7 @@ main.compare-main #table-wrapper + p {
   margin-bottom: var(--space-1);
   font-size: 0.8125rem;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: normal;
 }
 
 .result-card-value {
@@ -1227,7 +1227,7 @@ textarea { min-height: 100px; resize: vertical; }
 .about-mission {
   font-size: 1.5rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   line-height: 1.4;
   color: var(--text);
   max-width: 38em;
@@ -1544,7 +1544,7 @@ textarea { min-height: 100px; resize: vertical; }
   font-weight: 600;
   color: var(--primary-dark);
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: normal;
 }
 
 /* FAQ container spacing */
@@ -2229,7 +2229,7 @@ img, video, iframe, object, embed { max-width: 100%; height: auto; }
 .ins-eyebrow {
   font-size: 0.75rem;
   font-weight: 500;
-  letter-spacing: 0.04em;
+  letter-spacing: normal;
   text-transform: uppercase;
   color: var(--text-muted);
   margin: 0 0 var(--space-4);
@@ -2246,7 +2246,7 @@ img, video, iframe, object, embed { max-width: 100%; height: auto; }
 .ins-hero h1 {
   font-size: clamp(2rem, 5vw, 2.75rem);
   font-weight: 600;
-  letter-spacing: -0.035em;
+  letter-spacing: normal;
   line-height: 1.1;
   margin: 0 0 var(--space-4);
   color: var(--text);
@@ -2255,7 +2255,7 @@ img, video, iframe, object, embed { max-width: 100%; height: auto; }
   font-size: 1.25rem;
   font-weight: 400;
   line-height: 1.45;
-  letter-spacing: -0.015em;
+  letter-spacing: normal;
   color: var(--text-secondary);
   margin: 0;
   max-width: 28em;
@@ -2270,7 +2270,7 @@ img, video, iframe, object, embed { max-width: 100%; height: auto; }
 .ins-h2 {
   font-size: 1.5rem;
   font-weight: 600;
-  letter-spacing: -0.025em;
+  letter-spacing: normal;
   line-height: 1.2;
   margin: 0 0 var(--space-5);
   color: var(--text);
@@ -2301,7 +2301,7 @@ img, video, iframe, object, embed { max-width: 100%; height: auto; }
 .ins-pair-q {
   font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: normal;
   text-transform: uppercase;
   color: var(--text-muted);
   margin: 0 0 var(--space-2);
@@ -2309,7 +2309,7 @@ img, video, iframe, object, embed { max-width: 100%; height: auto; }
 .ins-pair-a {
   font-size: 1.25rem;
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   line-height: 1.35;
   color: var(--text);
   margin: 0;
@@ -2345,7 +2345,7 @@ img, video, iframe, object, embed { max-width: 100%; height: auto; }
 .ins-path-label {
   font-size: 1.375rem;
   font-weight: 600;
-  letter-spacing: -0.025em;
+  letter-spacing: normal;
   color: var(--text);
 }
 .ins-path-desc {
@@ -2382,7 +2382,7 @@ img, video, iframe, object, embed { max-width: 100%; height: auto; }
 .ins-point-title {
   font-size: 1.125rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   color: var(--text);
 }
 .ins-point-body {
@@ -2415,7 +2415,7 @@ img, video, iframe, object, embed { max-width: 100%; height: auto; }
 .ins-rows li > span:first-child {
   font-size: 0.9375rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   color: var(--text);
 }
 .ins-rows li > span:last-child {

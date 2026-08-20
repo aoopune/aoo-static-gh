@@ -12,7 +12,7 @@
             <form class="hlc-form" id="hlc-inputs" autocomplete="off" novalidate aria-labelledby="hlc-inputs-heading">
               <div class="hlc-form-pairs">
                 <div class="hlc-form-row hlc-form-row--hero">
-                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Determines how much you can borrow</p></div>
+                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Sets how much you can borrow</p></div>
                   <div class="hlc-form-row-fields">
                   <label class="hlc-field hlc-field--hero" for="hlc-monthly-income">
                     <span class="hlc-field-label-row">
@@ -25,7 +25,7 @@
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-monthly-income" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Sets how much loan banks can offer you. Use take-home, not CTC.</p>
+                      <p class="hlc-field-help-text">Banks use this to work out how big an EMI you can carry. That becomes your loan size in the table. On ₹1,00,000 take-home, banks allow about ₹55,000 in total EMIs across all loans (FOIR 55%). Use what lands in your account after PF and tax — not CTC. Type CTC and the table looks bigger than what the bank will give you.</p>
                       <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
                     </div></span></span>
                     </span>
@@ -46,7 +46,7 @@
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-property-value" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Sets the ceiling on the loan against this house. Use the sale agreement price.</p>
+                      <p class="hlc-field-help-text">Banks won't lend more than a fixed share of this price, and that share caps your loan. On a ₹62.5 lakh agreement you'll get roughly ₹47 to 50 lakh (about 75–80% of the price). The rest is your down payment. Use the amount on your sale agreement or registered document, not the broker's quote. For an existing house the bank sends its own valuer and usually comes in below market.</p>
                       <a class="hlc-field-help-more" href="guide.html#loan-amount-property">Learn more</a>
                     </div></span></span></span>
                     </span>
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="hlc-form-row hlc-form-row--reduce">
-                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Reduces how much you can borrow</p></div>
+                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Cuts how much you can borrow</p></div>
                   <div class="hlc-form-row-fields">
                     <label class="hlc-field" for="hlc-existing-emis">
                       <span class="hlc-field-label-row">
@@ -72,7 +72,7 @@
                         >
                           <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-existing-emis" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Each rupee of EMI here comes off what you can borrow.</p>
+                        <p class="hlc-field-help-text">Every rupee you're already paying in EMIs comes off what banks allow for this home loan. ₹25,000 of running EMIs takes about ₹27 lakh off your home loan (loan that EMI room could have carried). Include car, personal, education, business loans, and anything you've guaranteed. Rent and SIPs don't belong here — banks see every live loan on your bureau report anyway.</p>
                         <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
                       </div></span></span>
                     </span>
@@ -92,7 +92,7 @@
                         >
                           <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-card-limits" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Banks count 10% of all card limits as an EMI. That cuts the loan.</p>
+                        <p class="hlc-field-help-text">Banks treat a share of your total credit limit as a monthly commitment, even if you owe nothing. ₹3 lakh of limits at 10% comes to ₹30,000 counted as EMI (10% of total limits). That removes about ₹33 lakh from your loan (loan that ₹30,000 EMI room could have carried). Add up the limit on every card, including unused ones — the balance doesn't matter. Closing cards you don't use a month before applying gets that room back.</p>
                         <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
                       </div></span></span></label></span>
                       </div>
@@ -119,7 +119,7 @@
                 </div>
 
                 <div class="hlc-form-row hlc-form-row--emi">
-                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Alters loan amount and EMI</p></div>
+                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Sets loan amount and monthly EMI</p></div>
                   <div class="hlc-form-row-fields">
                     <label class="hlc-field hlc-field--foir" for="hlc-foir">
                       <span class="hlc-field-label-row">
@@ -132,7 +132,7 @@
                         >
                           <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-foir" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Share of take-home that can go to EMIs. 55% is the usual cap. Leave it unless you know another figure.</p>
+                        <p class="hlc-field-help-text">This is the share of your take-home banks allow for all EMIs put together, home loan included. It's their rule, not yours. Drop from 55% to 50% on a ₹1 lakh salary and you lose about ₹5.5 lakh of loan (₹5,000 less EMI room a month). Leave at 55% unless you know your bank uses something different. Government employees and co-applicants sometimes get a better number.</p>
                         <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
                       </div></span></span>
                     </span>
@@ -160,7 +160,7 @@
                         >
                           <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-tenure" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">How many years you want to repay. Longer years, smaller EMI, more interest.</p>
+                        <p class="hlc-field-help-text">How many years you take to repay — this is the biggest lever on your monthly EMI. ₹50 lakh at 9%: 20 years is ₹45,000 a month and ₹58 lakh in interest; 30 years is ₹40,000 a month and ₹95 lakh in interest. On floating loans you can pay more any time without a charge. A longer tenure now for a smaller EMI costs nothing if you prepay later.</p>
                         <a class="hlc-field-help-more" href="guide.html#tenure">Learn more</a>
                       </div></span></span>
                     </span>
@@ -174,7 +174,7 @@
                 </div>
 
                 <div class="hlc-form-row hlc-form-row--rate">
-                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Alters rate, tenure and offers</p></div>
+                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Changes your rate, tenure, and offers</p></div>
                   <div class="hlc-form-row-fields">
                     <label class="hlc-field" for="hlc-age">
                       <span class="hlc-field-label-row">
@@ -187,7 +187,7 @@
                         >
                           <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-age" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Sets the longest tenure banks will allow.</p>
+                        <p class="hlc-field-help-text">Banks want the loan closed before you stop earning, so age caps how many years they'll give you. At 50, most banks give 10 years max. Same income, higher EMI, smaller loan. Salaried usually means close by 60. Self employed 65 to 70 depending on the bank. A younger co-applicant lets you use their age instead.</p>
                         <a class="hlc-field-help-more" href="guide.html#tenure">Learn more</a>
                       </div></span></span>
                     </span>
@@ -208,7 +208,7 @@
                         >
                           <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-cibil" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Changes the rates banks show you.</p>
+                        <p class="hlc-field-help-text">This moves the rate column. Higher score, lower rate. Half a percent on ₹50 lakh over 20 years is ₹1,600 more every month and ₹4 lakh more over the loan (0.50% rate gap). You don't need the exact number — put what you remember. Paying on time and keeping card use below 30% can push this up in a few months.</p>
                       </div></span></span>
                     </span>
                       <span class="hlc-input-shell">
@@ -220,7 +220,7 @@
                 </div>
 
                 <div class="hlc-form-row hlc-form-row--choices">
-                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Alters scheme and loan type</p></div>
+                  <div class="hlc-form-row-head"><p class="hlc-form-row-about">Changes loan type and which plans you see</p></div>
                   <div class="hlc-form-row-fields">
                     <label class="hlc-field hlc-field--occupation" for="hlc-occupation">
                       <span class="hlc-field-label-row">
@@ -233,7 +233,7 @@
                         >
                           <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-occupation" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Changes which offers and rates you see.</p>
+                        <p class="hlc-field-help-text">Salaried and self employed get different rate bands, different banks, and different documents. Self employed is usually quoted 0.25 to 1% more than salaried. Pick whichever occupation earns most of your income. That's what the bank will call you from your documents.</p>
                         <a class="hlc-field-help-more" href="guide-documents.html#income">Learn more</a>
                       </div></span></span>
                     </span>
@@ -259,7 +259,7 @@
                         >
                           <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-purpose" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Top-up adds money on a home loan you already have.</p>
+                        <p class="hlc-field-help-text">This switches the product type. New is buying or building. Top up is borrowing against a house you already have a loan on. Top up rates are usually 0.5 to 1% higher and capped by how much you've already paid off. Tax deduction on top up interest works only if the money goes into the house — not a wedding, not a car, not a business.</p>
                       </div></span></span>
                     </span>
                       <span class="hlc-input-shell hlc-input-shell--select hlc-input-shell--has-face">
@@ -282,17 +282,25 @@
                       <div class="hlc-coapplicant-row" id="hlc-coapplicant-row">
                         <div class="hlc-coapplicant-toggle-cell">
                           <div class="hlc-coapplicant-inline">
-                            <p class="hlc-coapplicant-copy">To get a higher loan amount, add a co-applicant with income.</p>
-                            <div class="hlc-coapplicant-pills">
-                              <button
+                            <p class="hlc-coapplicant-copy">Add a co-applicant with income to borrow <span class="hlc-coapplicant-tail">more.<span class="hlc-field-help-anchor"><button
+                              type="button"
+                              class="hlc-field-help"
+                              aria-expanded="false"
+                              aria-controls="hlc-help-coapplicant"
+                              aria-label="About co-applicant"
+                            >
+                              <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
+                            </button></span> <span class="hlc-coapplicant-pills"><button
                                 type="button"
                                 class="hlc-coapplicant-action"
                                 id="hlc-co-toggle"
                                 aria-pressed="false"
                                 aria-controls="hlc-coapplicant-fields"
                                 aria-label="Add co-applicant"
-                              ><span class="hlc-coapplicant-action-label">Add</span><svg class="hlc-coapplicant-action-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                            </div>
+                              ><span class="hlc-coapplicant-action-label">Add</span><svg class="hlc-coapplicant-action-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span></span></p>
+                            <div class="hlc-field-help-popover" id="hlc-help-coapplicant" role="tooltip" hidden>
+                            <p class="hlc-field-help-text">A co-applicant's income gets added to yours. Banks recalculate your EMI room from the combined number. A second salary of ₹50,000 can add roughly ₹30 to 40 lakh to the loan, depending on existing EMIs (extra income under FOIR). Their EMIs count too. Add them only if their income is clean and their loans are low.</p>
+                          </div>
                             <input type="hidden" id="hlc-coapplicant" name="includeCoApplicant" value="no">
                           </div>
                         </div>
@@ -330,11 +338,45 @@
             hidden
           >
             <h2 class="visually-hidden" id="hlc-intelligence-sr-heading">
-              Three things worth knowing for your loan
+              From your matched list
             </h2>
-            <p class="hlc-intel-status" id="hlc-intel-status" role="status" aria-live="polite"></p>
-            <ol class="hlc-intel-tips" id="hlc-intel-tips" aria-label="Top tips for your loan"></ol>
-            <p class="hlc-intel-disclaimer">Figures are indicative. Banks decide final terms.</p>
+
+            <div class="hlc-intel-head">
+              <p class="hlc-intel-eyebrow">From your matched list</p>
+            </div>
+
+            <p
+              class="hlc-intel-status"
+              id="hlc-intel-status"
+              role="status"
+              aria-live="polite"
+            ></p>
+
+            <ol
+              class="hlc-intel-tips"
+              id="hlc-intel-tips"
+              aria-label="Facts from your matched list"
+            ></ol>
+
+            <button
+              type="button"
+              class="hlc-intel-plus"
+              id="hlc-intel-plus"
+              aria-expanded="false"
+              aria-controls="hlc-intel-tips"
+              hidden
+            >
+              <span class="hlc-intel-plus-label">+</span>
+            </button>
+
+            <button
+              type="button"
+              class="hlc-intel-more"
+              id="hlc-intel-more"
+              aria-expanded="false"
+              aria-controls="hlc-intel-tips"
+              hidden
+            ></button>
           </section>
 
           <div
@@ -426,7 +468,7 @@
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-borrower" role="tooltip" hidden>
-                    <p class="hlc-field-help-text">Only if you work for the government or a PSU, or you’re a pensioner.</p>
+                    <p class="hlc-field-help-text">Tick this if you work for the government, a PSU, or draw a pension. Some banks hold a lower rate for these jobs — usually 0.05 to 0.25% off. On ₹50 lakh over 20 years that's around ₹78,000 saved (from that rate cut). Bank checks from your employment letter. Get it in the sanction letter, not just agreed at the branch.</p>
                   </div></span>
                     </span>
                   </legend>
@@ -451,7 +493,7 @@
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-concessions" role="tooltip" hidden>
-                    <p class="hlc-field-help-text">Turns on rate cuts that apply to you.</p>
+                    <p class="hlc-field-help-text">Tick what applies to you. Each cut is usually 0.05 to 0.10% off the rate; some stack. 0.20% on ₹50 lakh over 20 years saves about ₹1.5 lakh (from stacked cuts). Insurance is the one to watch: the rate cut can cost less than the premium they add to your loan. You can't be forced to buy their cover.</p>
                     <a class="hlc-field-help-more" href="concessions.html#bank-rates">Learn more</a>
                   </div></span>
                     </span>
@@ -485,7 +527,7 @@
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-bank-type" role="tooltip" hidden>
-                    <p class="hlc-field-help-text">Shows only that kind of bank.</p>
+                    <p class="hlc-field-help-text">Narrows the table to public banks, private banks, or both. Public usually runs 0.25 to 0.50% lower on rate but needs more branch visits. Private is faster, somewhat higher rate and fees. Leave both on to see the full market. You can move to another bank later.</p>
                   </div></span>
                     </span>
                   </legend>
@@ -520,7 +562,7 @@
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-rate" role="tooltip" hidden>
-                    <p class="hlc-field-help-text">Floating is on by default.</p>
+                    <p class="hlc-field-help-text">Floating moves when RBI changes the repo rate. Fixed stays locked for a period, usually 5 years. Fixed is about 1 to 2% higher. On ₹50 lakh over 20 years that's ₹3,300 more a month (from that higher fixed rate). Floating home loans to individuals have no prepayment charge; fixed loans can. Know that before you pick fixed thinking it's safer.</p>
                     <a class="hlc-field-help-more" href="guide.html#rates">Learn more</a>
                   </div></span>
                     </span>
@@ -556,7 +598,7 @@
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-facility" role="tooltip" hidden>
-                    <p class="hlc-field-help-text">Loan of ₹20 lakh with ₹5 lakh in savings, you pay interest on ₹15 lakh. You can pull that ₹5 lakh or leave it. Costs about 0.15–1% more. For people with spare cash.</p>
+                    <p class="hlc-field-help-text">Term loan is the same EMI every month. Overdraft links the loan to a savings account — money you keep there reduces the interest you pay. ₹20 lakh loan with ₹5 lakh in the linked account, you pay interest on ₹15 lakh (loan minus parked balance). You can take that ₹5 lakh out any time. Overdraft costs 0.15 to 1% more per year. Worth it only if you'll actually keep a good amount sitting in that account.</p>
                     <a class="hlc-field-help-more" href="guide.html#loan-structure">Learn more</a>
                   </div></span>
                     </span>
@@ -581,7 +623,7 @@
                         >
                           <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-overdraft" role="tooltip" hidden>
-                        <p class="hlc-field-help-text">Overdraft lets you park extra money and redraw within your limit, but it is usually costlier than a regular term loan.</p>
+                        <p class="hlc-field-help-text">Your loan sits in a linked savings account. Money you park there cuts the interest. You can pull it out when you need it. Costs 0.15 to 1% more per year than the same bank's term loan. Only makes sense if you'll keep a real surplus in that account month after month.</p>
                       </div></span></span>
                         <span class="hlc-filter-option-note">Idle money saves interest. About 0.15–1% higher than term loan</span>
                       </span>

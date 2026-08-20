@@ -2986,7 +2986,7 @@ function testReviewCapture() {
   ok(md.indexOf('Apply once') !== -1, 'review markdown includes click labels');
 }
 
-// ─── Intelligence layer tests (T01–T10) ───────────────────────────────────────
+// ─── Intelligence layer tests (T01–T20) ───────────────────────────────────────
 function testIntelligence() {
   var hlcI = require('../src/hlc-intelligence.js');
   var hlc = require('../src/home-loan-compare.js');
@@ -3027,16 +3027,24 @@ function testIntelligence() {
       ctx.rows = syncMatchFn(q);
     }
     ctx.matchFnSync = syncMatchFn;
-    ctx.helpers = { emiFromLoan: hlc.emiFromLoan };
+    ctx.helpers = {
+      emiFromLoan: hlc.emiFromLoan,
+      simulatePartPrepaymentScenario: hlc.simulatePartPrepaymentScenario
+    };
     return ctx;
   }
 
-  // T01: CIBIL band tip fires with positive rupeeImpact
+  var VAGUE_TITLE = /\b(a lot|several|some banks|real money|worth knowing|opens a cheaper|varies a lot|is cheaper)\b/i;
+
+  // T01: CIBIL band tip fires with positive rupeeImpact + news title facts
   var ctx1 = makeCtx({});
   var tip1 = hlcI.tipCibilBand(ctx1);
   ok(tip1 !== null, 'T01 tipCibilBand must fire for score 680');
   ok(tip1 !== null && tip1.rupeeImpact > 0, 'T01 rupeeImpact must be positive');
   ok(tip1 !== null && /\d/.test(tip1.body), 'T01 body must contain a number');
+  ok(tip1 !== null && tip1.heading.indexOf('680') !== -1, 'T01 heading names current CIBIL');
+  ok(tip1 !== null && /\d+\.\d+%/.test(tip1.heading), 'T01 heading contains rate figure');
+  ok(tip1 !== null && !VAGUE_TITLE.test(tip1.heading), 'T01 heading not vague');
 
   // T02: CIBIL already at 825+ — tip suppressed
   var q2 = makeQuery({ cibilScore: '825' });
@@ -3050,10 +3058,14 @@ function testIntelligence() {
   var tip3 = hlcI.tipWomen(ctx3);
   ok(tip3 === null, 'T03 tipWomen must suppress when filter already on');
 
-  // T04: buildIntelligence never returns more than 3 tips
+  // T04: buildIntelligence returns ranked tips; UI previews first 3
   var ctx4 = makeCtx({});
   var intel4 = hlcI.buildIntelligence(ctx4);
-  ok(intel4.tips.length <= 3, 'T04 buildIntelligence max 3 tips');
+  ok(Array.isArray(intel4.tips), 'T04 buildIntelligence returns tips array');
+  ok(hlcI.INTEL_TIPS_MAX === 3, 'T04 strip tip max is 3');
+  ok(hlcI.INTEL_TIPS_PREVIEW === 3, 'T04 preview alias still 3');
+  // Every tip kind can fire at most once → hard ceiling is the tip catalog size
+  ok(intel4.tips.length <= 11, 'T04 tips cannot exceed tip catalog size');
 
   // T05: Zero rows → empty intelligence
   var ctx5 = makeCtx({ rows: [] });
@@ -3069,29 +3081,104 @@ function testIntelligence() {
     ok(!BANNED.test(t.heading + ' ' + t.body), 'T06 no banned copy in tip: ' + t.heading);
   });
 
-  // T07: Every tip body contains at least one numeric figure
+  // T07: Every tip heading and body contain at least one numeric figure
   var ctx7 = makeCtx({});
   var intel7 = hlcI.buildIntelligence(ctx7);
   intel7.tips.forEach(function(t) {
+    ok(/[\d\u20b9%]/.test(t.heading), 'T07 tip heading has a figure: ' + t.heading);
     ok(/[\d\u20b9%]/.test(t.body), 'T07 tip body has a figure: ' + t.heading);
+    ok(!VAGUE_TITLE.test(t.heading), 'T07 tip heading not vague: ' + t.heading);
   });
 
-  // T08: tipProcessingFee fires when spread is large enough
+  // T08: tipProcessingFee fires when spread is large enough — names both banks + ₹
   var ctx8 = makeCtx({});
   var fees8 = ctx8.rows.map(function(r) { return r.processingFee; }).filter(function(x) { return Number.isFinite(x) && x >= 0; });
   if (fees8.length >= 2 && Math.max.apply(null, fees8) - Math.min.apply(null, fees8) >= 5000) {
     var tip8 = hlcI.tipProcessingFee(ctx8);
     ok(tip8 !== null, 'T08 tipProcessingFee must fire with large spread');
     ok(tip8 !== null && tip8.rupeeImpact >= 5000, 'T08 tipProcessingFee rupeeImpact >= 5000');
+    ok(tip8 !== null && tip8.heading.indexOf('Processing fee:') === 0, 'T08 heading starts with Processing fee:');
+    ok(tip8 !== null && (tip8.heading.match(/\u20b9/g) || []).length >= 2, 'T08 heading has two ₹ amounts');
   } else {
     ok(true, 'T08 skipped — data spread < 5000');
   }
 
-  // T09: buildStatusLine returns a string with rate figures
+  // T09: buildStatusLine is one personalized sentence — your match count + one story
   var ctx9 = makeCtx({});
   var status9 = hlcI.buildStatusLine(ctx9);
+  var story9 = hlcI.buildStatusStory(ctx9);
+  var lowest9 = hlcI.bestRateRow(ctx9.rows);
   ok(typeof status9 === 'string' && status9.length > 0, 'T09 buildStatusLine non-empty');
-  ok(/\d+\.\d+%/.test(status9), 'T09 buildStatusLine contains rate figure');
+  ok(lowest9, 'T09 has lowest-rate row');
+  ok(story9.kind === 'leader' || story9.kind === 'leaderOutlier' || story9.kind === 'edge' || story9.kind === 'tightBand', 'T09 story kind is computed');
+  ok(/^Across \d+ banks for your profile, /.test(status9) || /^For your profile, only /.test(status9), 'T09 opens as personalized sentence');
+  ok(status9.indexOf(String(ctx9.rows.length) + ' banks for your profile') !== -1 || ctx9.rows.length === 1, 'T09 embeds match count from this profile');
+  if (story9.kind === 'leader' || story9.kind === 'leaderOutlier' || story9.kind === 'edge') {
+    ok(status9.indexOf(lowest9.bankName) !== -1, 'T09 names true lowest-rate bank');
+    ok(status9.indexOf(Number(lowest9.effectiveRoiPct).toFixed(2) + '%') !== -1, 'T09 includes leader rate');
+  }
+  ok(status9.indexOf('Rates on your list:') === -1, 'T09 no label-shaped Rates on your list opener');
+  ok(status9.indexOf('rates run to') === -1, 'T09 no parameter dump of band high');
+  ok(status9.indexOf('edges the list') === -1, 'T09 no sports-ticker phrasing');
+  if (ctx9.rows.length >= 2 && lowest9) {
+    var shuffled = ctx9.rows.slice().sort(function(a, b) {
+      return (b.effectiveRoiPct || 0) - (a.effectiveRoiPct || 0);
+    });
+    var statusShuf = hlcI.buildStatusLine({ rows: shuffled });
+    if (hlcI.buildStatusStory({ rows: shuffled }).kind !== 'tightBand') {
+      ok(statusShuf.indexOf(lowest9.bankName) !== -1, 'T09 still names true lowest after row order flip');
+    }
+  }
+
+  // T09b: leaderOutlier when cheapest bank is worst on processing fee (synthetic)
+  var synthLeader = {
+    bankName: 'Alpha Bank', bankKey: 'alpha', effectiveRoiPct: 7.25,
+    processingFee: 150000, missedEmiTotal: 1000, emi: 40000, loanAmount: 5000000, tenureYears: 20
+  };
+  var synthLowFee = {
+    bankName: 'Beta Bank', bankKey: 'beta', effectiveRoiPct: 7.40,
+    processingFee: 2500, missedEmiTotal: 1000, emi: 40500, loanAmount: 5000000, tenureYears: 20
+  };
+  var storyOutlier = hlcI.buildStatusStory({ rows: [synthLeader, synthLowFee] });
+  ok(storyOutlier.kind === 'leaderOutlier', 'T09b leaderOutlier when leader has highest processing fee');
+  ok(storyOutlier.line.indexOf('Across 2 banks for your profile, Alpha Bank is cheapest at 7.25%') === 0, 'T09b personalized opener + leader');
+  ok(storyOutlier.line.indexOf('processing fee is') !== -1, 'T09b processing fee outlier clause');
+  ok(storyOutlier.line.indexOf('Beta Bank') !== -1, 'T09b names comparison bank');
+
+  // T09c: tight band story when rates cluster and no leader outlier
+  var synthA = { bankName: 'Bank A', effectiveRoiPct: 7.25, processingFee: 5000, missedEmiTotal: 2000 };
+  var synthB = { bankName: 'Bank B', effectiveRoiPct: 7.30, processingFee: 5200, missedEmiTotal: 2100 };
+  var synthC = { bankName: 'Bank C', effectiveRoiPct: 7.40, processingFee: 5100, missedEmiTotal: 2050 };
+  var storyTight = hlcI.buildStatusStory({ rows: [synthA, synthB, synthC] });
+  ok(storyTight.kind === 'tightBand', 'T09c tightBand when spread < 0.30% and no outlier');
+  ok(storyTight.line.indexOf('Across 3 banks for your profile, rates sit in a') === 0, 'T09c personalized tight-band sentence');
+  ok(storyTight.line.indexOf('fees, government charges, and penalties matter more') !== -1, 'T09c tight band so-what');
+
+  // T09d: edge story when leader barely ahead
+  var synthEdgeLead = { bankName: 'Edge Lead', effectiveRoiPct: 7.25, processingFee: 5000, missedEmiTotal: 2000 };
+  var synthEdgeTrail = { bankName: 'Edge Trail', effectiveRoiPct: 7.30, processingFee: 5100, missedEmiTotal: 2050 };
+  var synthEdgeFar = { bankName: 'Edge Far', effectiveRoiPct: 9.50, processingFee: 5200, missedEmiTotal: 2100 };
+  var storyEdge = hlcI.buildStatusStory({ rows: [synthEdgeLead, synthEdgeTrail, synthEdgeFar] });
+  ok(storyEdge.kind === 'edge', 'T09d edge when gap to runner-up < 0.15%');
+  ok(storyEdge.line.indexOf('Across 3 banks for your profile, Edge Lead is cheapest at 7.25%') === 0, 'T09d personalized edge sentence');
+  ok(storyEdge.line.indexOf('Edge Trail is next at 7.30%') !== -1, 'T09d names runner-up rate');
+
+  // T09e: missedEmiTotal populated on enriched rows (pipeline accuracy)
+  var ctx9e = makeCtx({});
+  var withMiss = ctx9e.rows.filter(function(r) { return Number.isFinite(r.missedEmiTotal) && r.missedEmiTotal > 0; });
+  ok(withMiss.length > 0, 'T09e enriched rows include missedEmiTotal from pipeline');
+
+  // T09f: different match counts change the personalized frame
+  var qNarrow = makeQuery({}, { bankPublic: true, bankPrivate: false });
+  var ctxNarrow = makeCtx({ query: qNarrow });
+  var statusNarrow = hlcI.buildStatusLine(ctxNarrow);
+  var statusWide = hlcI.buildStatusLine(makeCtx({}));
+  if (ctxNarrow.rows.length > 0 && ctxNarrow.rows.length !== makeCtx({}).rows.length) {
+    ok(statusNarrow !== statusWide, 'T09f status changes when match set changes');
+    ok(statusNarrow.indexOf(String(ctxNarrow.rows.length) + ' banks for your profile') !== -1 || ctxNarrow.rows.length === 1, 'T09f narrow profile embeds its own count');
+  } else {
+    ok(true, 'T09f skipped — public-only filter did not change match count');
+  }
 
   // T10: tips are sorted descending by rupeeImpact
   var ctx10 = makeCtx({});
@@ -3100,4 +3187,344 @@ function testIntelligence() {
     ok(intel10.tips[i - 1].rupeeImpact >= intel10.tips[i].rupeeImpact, 'T10 tips sorted by rupeeImpact');
   }
   ok(true, 'T10 sort check done');
+
+  // T11: Missed-EMI penalty title names both banks and both totals
+  var ctx11 = makeCtx({});
+  var tip11 = hlcI.tipMissPenalty(ctx11);
+  if (tip11) {
+    ok(tip11.heading.indexOf('One missed EMI:') === 0, 'T11 missPenalty news title');
+    ok((tip11.heading.match(/\u20b9/g) || []).length >= 2, 'T11 heading has two ₹ amounts');
+    ok(!/varies a lot/i.test(tip11.heading), 'T11 no vague varies-a-lot');
+  } else {
+    ok(true, 'T11 skipped — miss penalty tip did not fire');
+  }
+
+  // T12: Existing EMIs title carries before/after loan limits
+  var q12 = makeQuery({ existingEmis: '45000', monthlyIncome: '150000', propertyValue: '15000000' });
+  var ctx12 = makeCtx({ query: q12 });
+  var tip12 = hlcI.tipExistingEmis(ctx12);
+  if (tip12) {
+    ok(/\/mo EMIs cap you at/.test(tip12.heading), 'T12 existingEmis news title shape');
+    ok(tip12.heading.indexOf('clear them for') !== -1, 'T12 heading has clear-them counterfactual');
+    ok((tip12.heading.match(/\u20b9/g) || []).length >= 3, 'T12 heading has EMI + two limits');
+  } else {
+    ok(true, 'T12 skipped — existingEmis tip did not fire on this profile');
+  }
+
+  // T13: Fixed-only filter tip puts both rates in the title
+  var q13 = makeQuery({}, { rateFloating: false, fixedRate: true });
+  var ctx13 = makeCtx({ query: q13 });
+  var tip13 = hlcI.tipFixedVsFloating(ctx13);
+  if (tip13) {
+    ok(/fixed-only at \d+\.\d+%/.test(tip13.heading), 'T13 fixed rate in title');
+    ok(/floating starts at \d+\.\d+%/.test(tip13.heading), 'T13 floating rate in title');
+    ok(!/is cheaper/.test(tip13.heading), 'T13 no bare cheaper claim');
+  } else {
+    ok(true, 'T13 skipped — fixedVsFloating tip did not fire');
+  }
+
+  // T14: Age×tenure scopes to list count — never "most banks"
+  var q14 = makeQuery({ age: '58', tenureYears: '20' });
+  var ctx14 = makeCtx({ query: q14 });
+  var tip14 = hlcI.tipAgeTenure(ctx14);
+  if (tip14) {
+    ok(/You asked for \d+ years/.test(tip14.heading), 'T14 asked tenure in title');
+    ok(/banks on your list cap you at/.test(tip14.heading), 'T14 scoped list cap in title');
+    ok(/EMI up \u20b9/.test(tip14.heading), 'T14 EMI delta in title');
+    ok(!/most banks/i.test(tip14.heading + ' ' + tip14.body), 'T14 no industry-wide most banks');
+  } else {
+    ok(true, 'T14 skipped — ageTenure tip did not fire');
+  }
+
+  // T15: Prepayment title has prepay ₹ and EMI before/after; uses published rules/charge
+  var ctx15 = makeCtx({});
+  var tip15 = hlcI.tipPrepayment(ctx15);
+  if (tip15) {
+    ok(/prepayment at year \d+ cuts EMI from/.test(tip15.heading), 'T15 prepayment news title');
+    ok((tip15.heading.match(/\u20b9/g) || []).length >= 3, 'T15 heading has prepay + two EMIs');
+    ok(!/real money/i.test(tip15.heading), 'T15 no real-money filler');
+    ok(!/RBI/i.test(tip15.body), 'T15 body uses published bank data, not generic RBI note');
+    ok(
+      /Minimum per request|FY cap|Pay via|No prepayment charge published|prepayment charge on this amount/i.test(tip15.body),
+      'T15 body cites part-prepayment rules or published charge'
+    );
+  } else {
+    ok(true, 'T15 skipped — prepayment tip did not fire');
+  }
+
+  // T16: Women tip (when it fires) puts both rates in title — no "several"
+  var tip16 = hlcI.tipWomen(makeCtx({}));
+  if (tip16) {
+    ok(/Women as primary:/.test(tip16.heading), 'T16 women news title');
+    ok((tip16.heading.match(/\d+\.\d+%/g) || []).length >= 2, 'T16 both rates in title');
+    ok(!/several/i.test(tip16.heading), 'T16 no several');
+  } else {
+    ok(true, 'T16 skipped — women tip did not fire');
+  }
+
+  // T17: Green tip (when it fires) puts both rates in title — no "some banks"
+  var tip17 = hlcI.tipGreen(makeCtx({}));
+  if (tip17) {
+    ok(/Green-rated property:/.test(tip17.heading), 'T17 green news title');
+    ok((tip17.heading.match(/\d+\.\d+%/g) || []).length >= 2, 'T17 both rates in title');
+    ok(!/some banks/i.test(tip17.heading), 'T17 no some banks');
+  } else {
+    ok(true, 'T17 skipped — green tip did not fire');
+  }
+
+  // T18: Occupation tip (self-employed) puts match counts in title
+  var q18 = makeQuery({ occupation: 'Self-employed' });
+  var ctx18 = makeCtx({ query: q18 });
+  var tip18 = hlcI.tipOccupation(ctx18);
+  if (tip18) {
+    ok(/Self-employed matches \d+ bank/.test(tip18.heading), 'T18 occupation count in title');
+    ok(/salaried co-applicant reaches \d+/.test(tip18.heading), 'T18 salaried counterfactual count in title');
+  } else {
+    ok(true, 'T18 skipped — occupation tip did not fire');
+  }
+
+  // T19: CIBIL heading embeds both computed rates from the tip pipeline
+  if (tip1) {
+    var curRateMatch = tip1.heading.match(/best rate is (\d+\.\d+)%/);
+    var nextRateMatch = tip1.heading.match(/cuts it to (\d+\.\d+)%/);
+    ok(!!curRateMatch && !!nextRateMatch, 'T19 CIBIL heading parses both rates');
+    ok(tip1.body.indexOf('matched list') !== -1, 'T19 CIBIL body scopes to matched list');
+  }
+
+  // T20: status + tip set never use banned vague title fillers when tips exist
+  var intel20 = hlcI.buildIntelligence(makeCtx({}));
+  ok(!VAGUE_TITLE.test(intel20.status), 'T20 status not vague');
+  ok(intel20.status.indexOf('Rates on your list:') === -1, 'T20 status not a parameter label');
+  ok(/^Across \d+ banks for your profile, |^For your profile, only /.test(intel20.status), 'T20 status is one personalized sentence');
+  intel20.tips.forEach(function(t) {
+    ok(t.heading.split(/[\d\u20b9%]/).length >= 3, 'T20 heading has ≥2 concrete tokens: ' + t.heading);
+  });
+
+  // T21: Government charges tip fires when spread is large enough
+  var ctx21 = makeCtx({});
+  var govtTotals = ctx21.rows.map(function(r) { return r.governmentCharges; }).filter(function(x) { return Number.isFinite(x) && x >= 0; });
+  if (govtTotals.length >= 2 && Math.max.apply(null, govtTotals) - Math.min.apply(null, govtTotals) >= 1000) {
+    var tip21 = hlcI.tipGovernmentCharges(ctx21);
+    ok(tip21 !== null, 'T21 tipGovernmentCharges must fire with large spread');
+    ok(tip21 !== null && tip21.heading.indexOf('Government charges at sanction:') === 0, 'T21 heading shape');
+    ok(tip21 !== null && (tip21.heading.match(/\u20b9/g) || []).length >= 2, 'T21 heading has two ₹ amounts');
+    ok(tip21 !== null && /stamp duty|CERSAI|government fees/i.test(tip21.body), 'T21 body names government fee types');
+  } else {
+    ok(true, 'T21 skipped — government spread < 1000');
+  }
+
+  // T22: simulatePartPrepaymentScenario uses rules + charge from enriched row
+  var row22 = ctx21.rows.find(function(r) {
+    return r.partPrepaymentRules && r.partPrepaymentRules.length && r.loanAmount >= 1000000;
+  });
+  if (row22) {
+    var sim22 = hlc.simulatePartPrepaymentScenario(row22, { emiFromLoan: hlc.emiFromLoan });
+    ok(sim22 !== null, 'T22 simulation runs on row with part-prepayment rules');
+    if (sim22) {
+      ok(sim22.prepayAmount > 0 && sim22.emiDrop >= 200, 'T22 simulation has positive prepay and EMI drop');
+      ok(Array.isArray(sim22.constraintNotes), 'T22 simulation returns constraint notes from rules');
+    }
+  } else {
+    ok(true, 'T22 skipped — no enriched row with part-prepayment rules');
+  }
+
+  // T23: leaderOutlier can surface government charges on cheapest bank
+  var synthGovLead = {
+    bankName: 'Gov Lead', bankKey: 'gov-lead', effectiveRoiPct: 7.25,
+    processingFee: 5000, governmentCharges: 32000, missedEmiTotal: 1000
+  };
+  var synthGovLow = {
+    bankName: 'Gov Low', bankKey: 'gov-low', effectiveRoiPct: 7.40,
+    processingFee: 5100, governmentCharges: 29000, missedEmiTotal: 1000
+  };
+  var storyGov = hlcI.buildStatusStory({ rows: [synthGovLead, synthGovLow] });
+  ok(storyGov.kind === 'leaderOutlier', 'T23 leaderOutlier when leader has highest government charges');
+  ok(storyGov.line.indexOf('government charges at sanction are') !== -1, 'T23 government outlier clause');
+
+  // T24: renderIntelligenceHtml shows status-only (no tips)
+  var fakePanel24 = {
+    hidden: true,
+    classList: { remove: function() {}, add: function() {} },
+    statusEl: { textContent: "" },
+    tipsEl: { innerHTML: "STALE", hidden: false },
+    moreEl: { hidden: false, setAttribute: function() {}, removeAttribute: function() {}, innerHTML: "x" },
+    querySelector: function(sel) {
+      if (sel === "#hlc-intel-status") return this.statusEl;
+      if (sel === "#hlc-intel-tips") return this.tipsEl;
+      if (sel === "#hlc-intel-more") return this.moreEl;
+      return null;
+    }
+  };
+  hlcI.renderIntelligenceHtml(fakePanel24, {
+    status: "Across 2 banks for your profile, Alpha Bank is cheapest at 7.25%.",
+    tips: []
+  });
+  ok(fakePanel24.hidden === false, 'T24 status-only panel is shown');
+  ok(fakePanel24.statusEl.textContent.indexOf('Alpha Bank') !== -1, 'T24 status text set');
+  ok(fakePanel24.tipsEl.innerHTML === "", 'T24 tips list cleared when empty');
+  ok(fakePanel24.tipsEl.hidden === true, 'T24 tips list hidden when empty');
+  ok(fakePanel24.moreEl.hidden === true, 'T24 more button hidden when no tips');
+
+  // T25: renderIntelligenceHtml hides when status and tips both empty
+  var fakePanel25 = {
+    hidden: false,
+    classList: { remove: function() {}, add: function() {} },
+    statusEl: { textContent: "old" },
+    tipsEl: { innerHTML: "<li>old</li>", hidden: false },
+    moreEl: { hidden: false, setAttribute: function() {}, removeAttribute: function() {}, innerHTML: "x" },
+    querySelector: function(sel) {
+      if (sel === "#hlc-intel-status") return this.statusEl;
+      if (sel === "#hlc-intel-tips") return this.tipsEl;
+      if (sel === "#hlc-intel-more") return this.moreEl;
+      return null;
+    }
+  };
+  hlcI.renderIntelligenceHtml(fakePanel25, { status: "", tips: [] });
+  ok(fakePanel25.hidden === true, 'T25 empty intel hides panel');
+  ok(fakePanel25.statusEl.textContent === "", 'T25 status cleared');
+  ok(fakePanel25.tipsEl.innerHTML === "", 'T25 tips cleared');
+  ok(fakePanel25.tipsEl.hidden === true, 'T25 tips list hidden when panel empty');
+
+  // T26: strip-only by default; More opens 3 tips; + reveals the rest
+  var tipStub = function(kind) {
+    return { kind: kind, horizon: "Now", heading: "Fee is \u20b91,000", body: "Gap is \u20b9500 on list." };
+  };
+  var fakePanel26 = {
+    hidden: true,
+    classList: {
+      _open: false,
+      _expanded: false,
+      _more: false,
+      contains: function(name) {
+        if (name === "is-tips-open") return !!this._open;
+        if (name === "is-tips-expanded") return !!this._expanded;
+        if (name === "is-tips-more") return !!this._more;
+        return false;
+      },
+      remove: function() {
+        for (var i = 0; i < arguments.length; i++) {
+          if (arguments[i] === "is-tips-open") this._open = false;
+          if (arguments[i] === "is-tips-expanded") this._expanded = false;
+          if (arguments[i] === "is-tips-more") this._more = false;
+        }
+      },
+      add: function() {
+        for (var i = 0; i < arguments.length; i++) {
+          if (arguments[i] === "is-tips-open") this._open = true;
+          if (arguments[i] === "is-tips-expanded") this._expanded = true;
+          if (arguments[i] === "is-tips-more") this._more = true;
+        }
+      }
+    },
+    statusEl: { textContent: "" },
+    tipsEl: {
+      innerHTML: "",
+      hidden: true,
+      attrs: {},
+      setAttribute: function(k, v) { this.attrs[k] = v; }
+    },
+    moreEl: {
+      hidden: true,
+      attrs: {},
+      innerHTML: "",
+      setAttribute: function(k, v) { this.attrs[k] = v; },
+      removeAttribute: function(k) { delete this.attrs[k]; },
+      querySelector: function() { return null; }
+    },
+    plusEl: {
+      hidden: true,
+      attrs: {},
+      innerHTML: '<span class="hlc-intel-plus-label">+</span>',
+      setAttribute: function(k, v) { this.attrs[k] = v; },
+      removeAttribute: function(k) { delete this.attrs[k]; },
+      querySelector: function(sel) {
+        if (sel !== ".hlc-intel-plus-label") return null;
+        var self = this;
+        return {
+          set textContent(v) {
+            self.innerHTML = '<span class="hlc-intel-plus-label">' + v + "</span>";
+          },
+          get textContent() {
+            return self.innerHTML;
+          }
+        };
+      }
+    },
+    querySelector: function(sel) {
+      if (sel === "#hlc-intel-status") return this.statusEl;
+      if (sel === "#hlc-intel-tips") return this.tipsEl;
+      if (sel === "#hlc-intel-more") return this.moreEl;
+      if (sel === "#hlc-intel-plus") return this.plusEl;
+      return null;
+    }
+  };
+  hlcI.renderIntelligenceHtml(fakePanel26, {
+    status: "Across 2 banks for your profile, Alpha Bank is cheapest at 7.25%.",
+    tips: [tipStub("a"), tipStub("b"), tipStub("c"), tipStub("d"), tipStub("e")]
+  });
+  ok(fakePanel26.hidden === false, 'T26 panel shown with tips');
+  ok(fakePanel26.classList._open === false, 'T26 starts as status strip (tips closed)');
+  ok((fakePanel26.tipsEl.innerHTML.match(/<li class="hlc-intel-tip/g) || []).length === 5, 'T26 renders all tip items');
+  ok((fakePanel26.tipsEl.innerHTML.match(/hlc-intel-tip--extra/g) || []).length === 2, 'T26 marks tips beyond preview as extra');
+  ok(fakePanel26.moreEl.hidden === false, 'T26 more control visible when tips exist');
+  ok(fakePanel26.plusEl.hidden === true, 'T26 plus hidden while strip closed');
+  ok(fakePanel26.moreEl.innerHTML.indexOf("More") !== -1, 'T26 more label is More');
+
+  var extraNodes = [
+    { setAttribute: function(k, v) { this[k] = v; }, classList: { contains: function(n) { return n === "hlc-intel-tip--extra"; } } },
+    { setAttribute: function(k, v) { this[k] = v; }, classList: { contains: function(n) { return n === "hlc-intel-tip--extra"; } } }
+  ];
+  var tipNodes = [
+    { classList: { contains: function() { return false; } } },
+    { classList: { contains: function() { return false; } } },
+    { classList: { contains: function() { return false; } } },
+    extraNodes[0],
+    extraNodes[1]
+  ];
+  var detailNodes = [
+    { setAttribute: function(k, v) { this[k] = v; }, parentNode: tipNodes[0] },
+    { setAttribute: function(k, v) { this[k] = v; }, parentNode: tipNodes[1] },
+    { setAttribute: function(k, v) { this[k] = v; }, parentNode: tipNodes[2] },
+    { setAttribute: function(k, v) { this[k] = v; }, parentNode: tipNodes[3] },
+    { setAttribute: function(k, v) { this[k] = v; }, parentNode: tipNodes[4] }
+  ];
+  fakePanel26.tipsEl.querySelectorAll = function(sel) {
+    if (sel === ".hlc-intel-tip") return tipNodes;
+    if (sel === ".hlc-intel-tip--extra") return extraNodes;
+    if (sel === ".hlc-intel-tip-detail") return detailNodes;
+    return [];
+  };
+  hlcI.expandIntelligenceTips(fakePanel26);
+  ok(fakePanel26.classList._open === true, 'T26 expand sets is-tips-open');
+  ok(fakePanel26.classList._expanded === true, 'T26 expand shows tip bodies under headings');
+  ok(fakePanel26.plusEl.hidden === false, 'T26 plus visible after tip row opens');
+  ok(fakePanel26.plusEl.innerHTML.indexOf("+2") !== -1, 'T26 plus shows remaining count');
+  ok(fakePanel26.moreEl.innerHTML.indexOf("Show less") !== -1, 'T26 more label becomes Show less');
+  ok(detailNodes[0]["aria-hidden"] === "false", 'T26 preview details visible when open');
+  ok(detailNodes[3]["aria-hidden"] === "true", 'T26 extra details stay hidden until plus');
+
+  hlcI.toggleIntelligenceTipsMore(fakePanel26);
+  ok(fakePanel26.classList._more === true, 'T26 plus opens remaining tips');
+  ok(extraNodes[0]["aria-hidden"] === "false", 'T26 extras aria-hidden false after plus');
+  ok(detailNodes[3]["aria-hidden"] === "false", 'T26 extra details visible after plus');
+  ok(fakePanel26.plusEl.innerHTML.indexOf("\u2212") !== -1, 'T26 plus becomes minus when extras open');
+
+  hlcI.toggleIntelligenceTips(fakePanel26);
+  ok(fakePanel26.classList._open === false, 'T26 toggle closes tip heading row');
+  ok(fakePanel26.classList._more === false, 'T26 closing tip row also collapses extras');
+  ok(fakePanel26.plusEl.hidden === true, 'T26 plus hidden after strip close');
+  ok(fakePanel26.moreEl.innerHTML.indexOf("More") !== -1, 'T26 more label restored after close');
+  ok(fakePanel26.moreEl.attrs["aria-expanded"] === "false", 'T26 more aria-expanded false after close');
+
+  // Soft-command ban on tip bodies (news + limit, not orders)
+  var SOFT_COMMAND = /\b(raising the score|is the lever|applying earlier|confirm the certificate|if you open floating|before you pick a bank|you should|must apply)\b/i;
+  var intelSoft = hlcI.buildIntelligence(makeCtx({}));
+  intelSoft.tips.forEach(function(t) {
+    ok(!SOFT_COMMAND.test(t.body), 'soft-command ban on buildIntelligence tip body: ' + t.kind);
+  });
+  [tip1, tip12, tip13, tip14, tip17].forEach(function(t) {
+    if (t) {
+      ok(!SOFT_COMMAND.test(t.body), 'soft-command ban on fired tip body: ' + t.kind);
+    }
+  });
 }
