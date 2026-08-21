@@ -473,19 +473,32 @@
     updatePageActions();
   }
 
+  /** One bank → "bank"; otherwise "banks". */
+  function bankNoun(n) {
+    return Number(n) === 1 ? "bank" : "banks";
+  }
+
+  function banksCountLabel(n) {
+    return String(n) + " " + bankNoun(n);
+  }
+
   function renderContactRecap(data) {
     var n = (data.banks && data.banks.length) || 0;
     var recapN = $("hl-apply-recap-n");
+    var recapNoun = $("hl-apply-recap-noun");
     var recap = $("hl-apply-recap");
     if (recapN) recapN.textContent = String(n);
+    if (recapNoun) recapNoun.textContent = bankNoun(n);
     if (recap) recap.hidden = n <= 0;
   }
 
   function renderBankSummary(data) {
     var n = (data.banks && data.banks.length) || 0;
     var nEl = $("hl-apply-n");
+    var nNoun = $("hl-apply-n-noun");
     var list = $("hl-apply-banks");
     if (nEl) nEl.textContent = String(n);
+    if (nNoun) nNoun.textContent = bankNoun(n);
     if (!list) return;
     list.innerHTML = "";
 
@@ -1005,9 +1018,7 @@
     if (!host) return;
     var n = (data.banks && data.banks.length) || 0;
     var bankLine =
-      n === 1
-        ? "We've got your application for 1 bank."
-        : "We've got your application for " + n + " banks.";
+      "We've got your application for " + banksCountLabel(n) + ".";
     host.innerHTML =
       '<div class="hl-apply-success-panel" role="dialog" aria-modal="true" aria-labelledby="hl-success-title">' +
       '<h2 id="hl-success-title" class="hl-apply-success-title">' +

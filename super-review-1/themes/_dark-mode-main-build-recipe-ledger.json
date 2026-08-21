@@ -1,0 +1,35 @@
+{
+  "id": "dark-mode-main-build-recipe",
+  "status": "shipped",
+  "confirm_build": true,
+  "cto_hardened": true,
+  "job_risk_gate_jr1_jr8": true,
+  "copy_freeze_absolute": true,
+  "layout_structure_frozen": true,
+  "palette_lock": "_dark-mode-palette-lock.md",
+  "phases": [
+    "shell-dark-tokens",
+    "stack-dark-overrides",
+    "explore-dark",
+    "appendix-c",
+    "theme-boot-live",
+    "footer-theme-pill",
+    "pwa-manifest",
+    "verify"
+  ],
+  "scope": "data/redesigned-pages.json",
+  "exempt": [
+    "education",
+    "css/style.css",
+    "pages/_*.html",
+    "device titanium/bezel/#000 screens"
+  ],
+  "verify": {
+    "lint_responsive": true,
+    "theme_boot_live": true,
+    "footer_pill": true,
+    "pwa": "#121212",
+    "copy_freeze": "live mains preserved; goldens aligned to body stitch where pre-drifted; index style synced surgically",
+    "jr_gates": "JR-1..JR-8 implemented in CSS/boot/footer/manifest/discipline"
+  }
+}

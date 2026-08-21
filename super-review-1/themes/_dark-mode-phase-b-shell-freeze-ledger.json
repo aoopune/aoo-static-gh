@@ -1,0 +1,385 @@
+{
+  "generated": "2026-08-21",
+  "updated": "2026-08-21",
+  "repo": "aoo-static-gh",
+  "phase": "B",
+  "phase_a_honored": true,
+  "prep08_override_honored": true,
+  "freeze_md": "super-review-1/themes/_dark-mode-phase-b-shell-freeze.md",
+  "phase_a_brief": "super-review-1/themes/_dark-mode-phase-a-product-brief.md",
+  "source_audit_md": "super-review-1/themes/_dark-mode-prep-audit.md",
+  "theme_implementation_forbidden": true,
+  "dark_css_shipped": false,
+  "footer_pill_shipped": false,
+  "theme_boot_shipped": false,
+  "shell_css_changed": true,
+  "shell_css_change_summary": "Introduced --shroffin-canvas-mix-base (#ffffff) and --shroffin-footer-mix-base (#f4f6f8); rewired surface/footer color-mix to those tokens; promoted unused-until-E shell roles --shroffin-ink-soft, --shroffin-ghost, --shroffin-paper-note, --shroffin-hair, --shroffin-hair-soft with today’s common light values. No stack retarget.",
+  "light_appearance_unchanged": true,
+  "control_ui_lock_summary": {
+    "placement": "footer_utility",
+    "owner_partial": "partials/site-footer.html",
+    "pattern": "cursor_style_icon_pill",
+    "icons_left_to_right": ["monitor=Default/system", "sun=Light", "moon=Dark"],
+    "visible_title": null,
+    "visible_helper": null,
+    "aria_labels": ["Default", "Light", "Dark"],
+    "implemented_in_phase_b": false
+  },
+  "home_theme_follow": {
+    "fixed_dark_islands_v1": false,
+    "data_theme_island_forbidden_on_home_story_phone_demo": true,
+    "audit_prep08_fixed_dark_policy": "voided_by_phase_a",
+    "reserved_tokens": [
+      "--home-story-bg",
+      "--home-story-ink",
+      "--home-device-stage"
+    ]
+  },
+  "mix_base": {
+    "primary_token": "--shroffin-canvas-mix-base",
+    "primary_light_value": "#ffffff",
+    "companion_token": "--shroffin-footer-mix-base",
+    "companion_light_value": "#f4f6f8",
+    "rule": "No raw #fff / #ffffff / #f4f6f8 as shell color-mix destinations",
+    "implemented": true
+  },
+  "verified_baseline": {
+    "hex_css": 633,
+    "var_light_fallback_css": 369,
+    "rgba_black_css": 98,
+    "rgba_white_css": 49,
+    "color_mix_css": 12,
+    "customer_facing_data_theme": false,
+    "phase_b_files_existed_before_job": false,
+    "note": "Live 2026-08-21 re-measure; prior prep audit had hex_css 677 — tree drifted down"
+  },
+  "top_hex_css": [
+    { "file": "css/shroffin-explore-banks.css", "count": 271 },
+    { "file": "css/shroffin-apply.css", "count": 89 },
+    { "file": "css/shroffin-editorial.css", "count": 67 },
+    { "file": "css/shroffin-calculators.css", "count": 31 },
+    { "file": "css/style.css", "count": 28 },
+    { "file": "css/shroffin-product-demo.css", "count": 26 },
+    { "file": "css/shroffin-home-calm-phone.css", "count": 17 },
+    { "file": "css/shroffin-utility-pages.css", "count": 16 }
+  ],
+  "hottest_light_fallbacks": [
+    { "file": "css/shroffin-explore-banks.css", "count": 203 },
+    { "file": "css/shroffin-apply.css", "count": 60 },
+    { "file": "css/shroffin-editorial.css", "count": 37 },
+    { "file": "css/shroffin-calculators.css", "count": 28 },
+    { "file": "css/shroffin-utility-pages.css", "count": 12 }
+  ],
+  "items": [
+    {
+      "id": "PREP-02",
+      "title": "Shell role freeze including mix-base and gap roles",
+      "status": "done",
+      "done_when_met": true,
+      "done_when": "Freeze table recorded; mix-base decided and implemented in shell; gap ownership decided for wash/hair/ink-soft/ghost/guide-card/calc/about/home/hlc/rank/logo-plate/apply/utility/legacy; no new private roles without freeze update.",
+      "evidence": [
+        "super-review-1/themes/_dark-mode-phase-b-shell-freeze.md §§3–5",
+        "css/shroffin-shell.css mix-base + promoted roles"
+      ]
+    },
+    {
+      "id": "PREP-03",
+      "title": "Stop-the-bleeding rule for new hard light paints",
+      "status": "done",
+      "done_when_met": true,
+      "done_when": "Fail-closed Cursor rule exists; redesigned surfaces forbidden from expanding light hardcode debt; exemptions for style.css / education / pages/_*.html.",
+      "evidence": [
+        ".cursor/rules/shroffin-theme-token-discipline.mdc"
+      ]
+    }
+  ],
+  "gap_decisions": [
+    { "candidate": "wash_paper_note", "decision": "shell_promote", "token": "--shroffin-paper-note", "light_value": "#eef1f4" },
+    { "candidate": "hair", "decision": "shell_promote", "token": "--shroffin-hair", "light_value": "rgba(0,0,0,0.12)" },
+    { "candidate": "hair_soft", "decision": "shell_promote", "token": "--shroffin-hair-soft", "light_value": "rgba(0,0,0,0.08)" },
+    { "candidate": "ink_soft", "decision": "shell_promote", "token": "--shroffin-ink-soft", "light_value": "#3a3a3d" },
+    { "candidate": "ghost", "decision": "shell_promote", "token": "--shroffin-ghost", "light_value": "#c5c9cf" },
+    { "candidate": "guide_card_surface", "decision": "stack_local", "token": "--guide-card-surface", "light_value": "#f7f7f7", "stack": "editorial" },
+    { "candidate": "calc_paper_hub_line", "decision": "stack_local", "token": "--calc-paper|--calc-hub-surface|--calc-line*", "stack": "calculators" },
+    { "candidate": "about_note_soft_inks", "decision": "shell_promote", "token": "--shroffin-paper-note|--shroffin-ink-soft|--shroffin-ghost", "notes": "about aliases to shell in Phase E" },
+    { "candidate": "home_stance_soft_ink", "decision": "shell_promote", "token": "--shroffin-ink-soft" },
+    { "candidate": "home_story_paints", "decision": "themeable_home_follow", "reserved": ["--home-story-bg", "--home-story-ink"] },
+    { "candidate": "phone_level_field_product_demo_chrome", "decision": "themeable_home_follow", "reserved": ["--home-device-stage"] },
+    { "candidate": "hlc_wash_surface_rows_lines", "decision": "stack_local", "token": "--hlc-*", "stack": "explore" },
+    { "candidate": "hlc_rank_helpful_costly_grace", "decision": "stack_local", "token": "--hlc-rank-*", "stack": "explore", "site_wide_reuse": false },
+    { "candidate": "logo_plate", "decision": "stack_local", "token": "--hlc-logo-plate", "values": "Phase F light=transparent; dark later", "stack": "explore", "phase_f": "super-review-1/themes/_dark-mode-phase-f-explore-ownership.md" },
+    { "candidate": "apply_hard_fff_ink_status", "decision": "stack_local", "notes": "Prefer shell ink/surface/fields; map leftovers in Phase E PREP-06" },
+    { "candidate": "utility_light_fallbacks", "decision": "shell_promote", "notes": "Consumers already shell; remove fallbacks in Phase E" },
+    { "candidate": "legacy_teal_apply_flow_iframe", "decision": "out_of_v1", "hex": "#0d9488" },
+    { "candidate": "aoo_loan_table_scope_css", "decision": "out_of_v1", "file": "js/aoo-loan-table-standalone.js" }
+  ],
+  "light_drift_findings": [
+    {
+      "role": "page_canvas",
+      "canonical_token": "--shroffin-surface",
+      "canonical_light": "color-mix toward canvas-mix-base ≈ #fcfcfd",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "Many var(..., #fcfcfd) fallbacks lock light"
+    },
+    {
+      "role": "footer_deep_band",
+      "canonical_token": "--shroffin-footer",
+      "canonical_light": "color-mix toward footer-mix-base ≈ #f5f7f9",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "spd-section--home hardcodes #f5f7f9"
+    },
+    {
+      "role": "primary_ink",
+      "canonical_token": "--shroffin-ink",
+      "canonical_light": "#1d1d1f",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "Apply ~23 hard #1d1d1f; mag-ink hard same hex"
+    },
+    {
+      "role": "soft_ink",
+      "canonical_token": "--shroffin-ink-soft",
+      "canonical_light": "#3a3a3d",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "mag/about/stance all hardcode; shell promoted unused until E"
+    },
+    {
+      "role": "muted",
+      "canonical_token": "--shroffin-muted",
+      "canonical_light": "#6e6e73",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "Apply hard copies; utility rgba(0,0,0,0.56) near-muted"
+    },
+    {
+      "role": "link_blue",
+      "canonical_token": "--shroffin-link",
+      "canonical_light": "#3f62c8",
+      "severity": "ok",
+      "phase_to_fix": null,
+      "notes": "Intentional ≠ button #0071e3"
+    },
+    {
+      "role": "button_brand_blue",
+      "canonical_token": "--shroffin-blue",
+      "canonical_light": "#0071e3",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "Apply near-drifts #0076df / #0077ed"
+    },
+    {
+      "role": "content_hairline",
+      "canonical_token": "--shroffin-hair",
+      "canonical_light": "rgba(0,0,0,0.12)",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "calc/apf use rgba(29,29,31,0.12); rule at 0.16 is stronger chrome"
+    },
+    {
+      "role": "nav_frost",
+      "canonical_token": "--shroffin-gn-bg / gn-frost",
+      "canonical_light": "#f5f7f9 / rgba(245,247,249,*)",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "Guide localnav bypasses gn tokens with hard rgba"
+    },
+    {
+      "role": "paper_note_wash",
+      "canonical_token": "--shroffin-paper-note",
+      "canonical_light": "#eef1f4",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "Near family: guide-card #f7f7f7, calc-hub #f5f5f7"
+    },
+    {
+      "role": "guide_card_surface",
+      "canonical_token": "--guide-card-surface",
+      "canonical_light": "#f7f7f7",
+      "severity": "ok",
+      "phase_to_fix": "E",
+      "notes": "Stack-local until merge decision"
+    },
+    {
+      "role": "rank_helpful",
+      "canonical_token": "--hlc-rank-helpful-*",
+      "canonical_light": "bg #e6f4ea / ink #0d652d",
+      "severity": "ok",
+      "phase_to_fix": "F",
+      "notes": "Explore-owned intentional; not shell"
+    },
+    {
+      "role": "rank_costly",
+      "canonical_token": "--hlc-rank-costly-*",
+      "canonical_light": "bg #fce8e6 / ink #a50e0e",
+      "severity": "ok",
+      "phase_to_fix": "F",
+      "notes": "Explore-owned"
+    },
+    {
+      "role": "rank_grace",
+      "canonical_token": "--hlc-rank-grace-*",
+      "canonical_light": "bg #fef7e0 / ink #8a5a00",
+      "severity": "ok",
+      "phase_to_fix": "F",
+      "notes": "Explore-owned"
+    },
+    {
+      "role": "on_dark_story_bg",
+      "canonical_token": "NONE — reserved --home-story-bg",
+      "canonical_light": "#1a1a1a",
+      "severity": "should_unify_later",
+      "phase_to_fix": "theme",
+      "notes": "themeable_home_follow per Phase A"
+    },
+    {
+      "role": "on_dark_story_ink",
+      "canonical_token": "NONE — reserved --home-story-ink",
+      "canonical_light": "#f5f5f7",
+      "severity": "true_bug_risk",
+      "phase_to_fix": "theme",
+      "notes": "Same hex as light calc-hub paper — opposite roles; blind theme flip dangerous"
+    },
+    {
+      "role": "device_stage_void",
+      "canonical_token": "NONE — reserved --home-device-stage",
+      "canonical_light": "#0a0a0a",
+      "severity": "should_unify_later",
+      "phase_to_fix": "theme",
+      "notes": "calm-phone, level-field, home feature visuals"
+    },
+    {
+      "role": "explore_table_wash",
+      "canonical_token": "--hlc-wash|--hlc-surface*",
+      "canonical_light": "white alphas / #fff",
+      "severity": "ok",
+      "phase_to_fix": "F",
+      "notes": "Second token system — do not pretend shell flip fixes Explore"
+    },
+    {
+      "role": "legacy_teal",
+      "canonical_token": "NONE — out_of_v1",
+      "canonical_light": "#0d9488",
+      "severity": "ok",
+      "phase_to_fix": "H",
+      "notes": "Known non-uniformity vs shell blue/link; JS injectors"
+    },
+    {
+      "role": "color_mix_raw_white_debt",
+      "canonical_token": "--shroffin-canvas-mix-base (shell fixed)",
+      "canonical_light": "#ffffff",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "editorial still color-mix(...#fff); style.css out_of_v1"
+    },
+    {
+      "role": "var_light_fallback_debt",
+      "canonical_token": "NONE — debt",
+      "canonical_light": "369 matches",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "Hottest Explore 203, Apply 60, editorial 37"
+    },
+    {
+      "role": "near_black_family",
+      "canonical_token": "--shroffin-ink (+ reserved home voids)",
+      "canonical_light": "#1d1d1f vs #0a0a0a/#1a1a1a/#3a3a3d/#424245/#000",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "Apply #424245 accidental; voids intentional home roles"
+    },
+    {
+      "role": "near_white_paper_family",
+      "canonical_token": "--shroffin-surface|--shroffin-footer|--shroffin-paper-note",
+      "canonical_light": "#fff/#fcfcfd/#f5f7f9/#f5f5f7/#f7f7f7/#eef1f4",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "#f5f5f7 dual-use light hub vs on-dark ink is true_bug_risk"
+    },
+    {
+      "role": "black_alpha_hairlines",
+      "canonical_token": "--shroffin-rule|--shroffin-hair|--shroffin-gn-border|--shroffin-field-line",
+      "canonical_light": "rgba(0,0,0,*)",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "Assume light paper; silent fail under dark"
+    },
+    {
+      "role": "apply_status_green_red",
+      "canonical_token": "NONE — stack_local / field tokens",
+      "canonical_light": "#1d7a3a / #22c55e / #b42318 + field valid/invalid",
+      "severity": "should_unify_later",
+      "phase_to_fix": "E",
+      "notes": "Not shell-promoted as rank; map to field/status roles"
+    }
+  ],
+  "shell_roles_frozen": [
+    "--shroffin-ink",
+    "--shroffin-ink-soft",
+    "--shroffin-muted",
+    "--shroffin-ghost",
+    "--shroffin-blue",
+    "--shroffin-btn-primary",
+    "--shroffin-btn-primary-hover",
+    "--shroffin-btn-primary-active",
+    "--shroffin-btn-primary-shadow",
+    "--shroffin-btn-primary-shadow-hover",
+    "--shroffin-btn-primary-shadow-active",
+    "--shroffin-link",
+    "--shroffin-link-active",
+    "--shroffin-link-visited",
+    "--shroffin-link-external",
+    "--shroffin-link-external-active",
+    "--shroffin-link-external-visited",
+    "--shroffin-canvas-mix-base",
+    "--shroffin-footer-mix-base",
+    "--shroffin-surface",
+    "--shroffin-footer",
+    "--shroffin-paper-note",
+    "--shroffin-hair",
+    "--shroffin-hair-soft",
+    "--shroffin-rule",
+    "--shroffin-focus",
+    "--shroffin-gn-frost",
+    "--shroffin-gn-bg",
+    "--shroffin-gn-bg-fallback",
+    "--shroffin-gn-bg-open",
+    "--shroffin-gn-veil",
+    "--shroffin-gn-border",
+    "--shroffin-field-line",
+    "--shroffin-field-line-focus",
+    "--shroffin-field-line-invalid",
+    "--shroffin-field-line-valid",
+    "--shroffin-field-placeholder"
+  ],
+  "explore_second_system": true,
+  "rank_ownership": "explore_stack_local",
+  "files_touched": [
+    "css/shroffin-shell.css",
+    "super-review-1/themes/_dark-mode-phase-b-shell-freeze.md",
+    "super-review-1/themes/_dark-mode-phase-b-shell-freeze-ledger.json",
+    ".cursor/rules/shroffin-theme-token-discipline.mdc"
+  ],
+  "stop_bleed_rule": ".cursor/rules/shroffin-theme-token-discipline.mdc",
+  "next_phase": "C",
+  "next_phases_ordered": [
+    "C: boot injection owner in layouts/chrome — done",
+    "D: skipped/void — Phase A home follows theme (no fixed-dark islands)",
+    "E: stack retarget while light (unify-light wiring) — done",
+    "F: Explore --hlc-* dark-map + logo-plate + contrast gate — done",
+    "G: dark wordmark + PWA/theme-color plan — done (_dark-mode-phase-g-assets.md)",
+    "H: JS inject matrix / legacy policy",
+    "I: gate → theme values + boot body + footer icon pill + ship PWA colors"
+  ],
+  "gate_checkboxes": {
+    "shell_roles_frozen": true,
+    "mix_base_decided": true,
+    "gaps_owned": true,
+    "light_drift_map_complete": true,
+    "stop_bleed_rule_landed": true,
+    "no_dark_toggle_boot_shipped": true,
+    "light_appearance_unchanged": true
+  }
+}

@@ -25,9 +25,9 @@ let layout =
   html.slice(mainMatch.index + main.length);
 
 /*
- * Never leave empty SHROFFIN_NAV / FOOTER shells in layouts. Other tools
- * stitch layout+body without a second chrome pass; empty markers would
- * ship pages with no main menu or footer.
+ * Never leave empty SHROFFIN_NAV / FOOTER / THEME_BOOT shells in layouts.
+ * Other tools stitch layout+body without a second chrome pass; empty
+ * markers would ship pages with no main menu, footer, or theme-boot slot.
  */
 layout = applySiteChrome(layout, rel.replace(/\\/g, '/'));
 

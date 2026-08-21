@@ -1,31 +1,38 @@
 ---
-description: Guide/content tile corner radii must match calm product-page responsive ladder
-globs: "pages/*.html"
+description: Content card corners use one shell radius (home / guide / calc / utility / Explore cards)
+globs: "pages/*.html,css/shroffin-*.css,templates/layouts/*.html"
 alwaysApply: false
 ---
 
-# Guide tile corner radius
+# Content card corner radius
 
-Rounded content tiles (`.guide-tile`, `--guide-radius`) follow calm product-page `.tile` ladder — not a single fixed radius.
+Large content cards share one shell token — the same corner as home `.home-feature-card`.
 
-## Ladder (mobile-first)
+## Source of truth
 
-| Viewport | `--guide-radius` |
+| Token | Value |
 |---|---|
-| Default (phone) | `10px` |
-| `min-width: 735px` | `30px` |
-| `min-width: 1069px` | `40px` |
+| `--shroffin-card-radius` | `16px` (in `css/shroffin-shell.css` `:root`) |
 
-Source: reference product-page CSS — `.tile` uses `40px` desktop, `30px` ≤1068px, `10px` ≤734px.
+Stack aliases (do not invent a second ladder):
+
+- Guide: `--guide-radius` → chapter cards **and** flip faces (front + back)
+- Calculators: `--calc-hub-radius` → hub tiles
+- Explore: `.hlc-inputs-card` / `--hlc-intel-radius` → inputs + intel cards
+- Home: `.home-feature-card`
+- Utility: notice / toc / table-wrap panels
+- Product demo window: `--spd-window-radius` (aliases the shell token)
+
+Same on phone and desktop — **no** viewport-scaled radius.
 
 ## Always
 
-1. Drive tile corners through `--guide-radius` (or the same numeric ladder).
-2. Keep the three-step responsive radius when adding or cloning guide-style pages.
-3. Use normal CSS `border-radius` — do **not** invent squircle / continuous-curvature shapes for web tiles (that reference site does not).
+1. Drive content-card corners through `var(--shroffin-card-radius)` (or a stack alias that points at it).
+2. Keep front and back flip faces on the same token as chapter cards.
+3. Use normal CSS `border-radius` — do **not** invent squircle / continuous-curvature shapes for web cards.
 
 ## Never
 
-- Do not hardcode a single tile radius (e.g. only `28px`) on guide tiles.
-- Do not use pill radius (`980px`) for tile/card containers — pills are for buttons only.
-- Do not change this ladder casually to “look rounder”; match the table above unless the user asks otherwise.
+- Do not reintroduce a phone/tablet/desktop radius ladder for guide or calc cards.
+- Do not use pill radius (`980px` / `--shroffin-btn-radius`) for card containers — pills are for buttons only.
+- Do not apply `--shroffin-card-radius` to fields, chips, segments, logo plates, or device chrome — those keep their own tokens.

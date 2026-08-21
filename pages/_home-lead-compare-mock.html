@@ -11,7 +11,7 @@
   -->
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css">
+  <link rel="stylesheet" href="../css/shroffin-shell.min.css?v=home-wash-8">
   <link rel="stylesheet" href="../css/shroffin-product-demo.css">
   <link rel="stylesheet" href="../css/shroffin-explore-banks.css">
   <style>
@@ -29,8 +29,8 @@
 
     html, body {
       margin: 0;
-      background: #1d1d1f;
-      color: #f5f5f7;
+      background: var(--shroffin-surface, #fcfcfd);
+      color: var(--shroffin-ink, #1d1d1f);
       font-family: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
       -webkit-font-smoothing: antialiased;
     }
@@ -73,7 +73,7 @@
       width: var(--win);
       border-radius: 12px;
       overflow: hidden;
-      background: #fcfcfd;
+      background: var(--shroffin-surface);
       box-shadow:
         0 0 0 0.5px rgba(255, 255, 255, 0.1),
         0 18px 36px rgba(0, 0, 0, 0.5);
@@ -109,13 +109,13 @@
 
     .pane {
       padding: 10px 12px 8px;
-      background: #fcfcfd;
+      background: var(--shroffin-surface);
       color: #1d1d1f;
     }
 
     .pane.explore-banks-page {
-      --hlc-page-bg: #fcfcfd;
-      --hlc-header-bg: color-mix(in srgb, rgb(108 128 155) 5.5%, #fcfcfd);
+      --hlc-page-bg: var(--shroffin-surface);
+      --hlc-header-bg: color-mix(in srgb, rgb(108 128 155) 5.5%, var(--shroffin-surface));
       --hlc-bank-col-width: var(--bank);
       --hlc-filter-width: 0px;
       --hlc-filter-gap: 0px;
@@ -286,11 +286,30 @@
       pointer-events: none;
     }
   </style>
+
+<script>
+(function () {
+  /* Same-origin demo frames: follow parent html[data-theme]. */
+  function syncTheme() {
+    try {
+      var t = parent.document.documentElement.getAttribute("data-theme");
+      if (t === "dark" || t === "light") {
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      }
+    } catch (e) {}
+  }
+  syncTheme();
+  try {
+    parent.document.addEventListener("shroffin-theme-change", syncTheme);
+  } catch (e) {}
+})();
+</script>
 </head>
 <body>
   <div class="shot">
     <h1>We completely re-engineered your home loan journey.</h1>
-    <p>Lender details that were scattered are now in one place so you can compare them side by side.</p>
+    <p>Lender details that were scattered are now in one place, so you can compare them side by side.</p>
 
     <div class="win" id="demo" role="region" aria-label="Compare lenders demo">
       <div class="spd-safari" aria-hidden="true">

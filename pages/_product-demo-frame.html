@@ -5,11 +5,8 @@
   <meta name="viewport" content="width=1640">
   <meta name="robots" content="noindex, nofollow">
   <title>Explore banks demo frame – Shroffin</title>
-  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=disclaimer-3">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=product-ui-9">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=f3bec90686">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=9a081894a0">
   <style>
     /*
      * Frame chrome only. Do NOT re-layout the product —
@@ -20,7 +17,7 @@
      */
     html, body {
       margin: 0;
-      background: #fcfcfd;
+      background: var(--shroffin-surface);
     }
     /*
      * Scroll only inside this frame document (html overflow).
@@ -32,7 +29,7 @@
       overflow-x: hidden;
       overflow-y: auto;
       scrollbar-width: none;
-      background: #fcfcfd;
+      background: var(--shroffin-surface);
     }
     html::-webkit-scrollbar { display: none; }
     body {
@@ -41,57 +38,34 @@
       min-height: 100%;
       overflow: visible;
       position: relative;
-      background: #fcfcfd;
+      background: var(--shroffin-surface);
     }
 
     .explore-banks-main {
       padding-top: 0 !important;
       min-height: 0 !important;
-      background: #fcfcfd;
+      background: var(--shroffin-surface);
     }
 
     /* Keep the working shell pad; title sits in the same rhythm as live */
     .hlc-shell {
       padding-top: 1.75rem !important;
       padding-bottom: 2.5rem !important;
-      background: #fcfcfd;
+      background: var(--shroffin-surface);
     }
 
     /*
-     * Demo-scoped hero: same type + wash as live Explore banks, but sized for
-     * this fixed canvas. Do not pull full-page live padding (it breaks the frame).
+     * Hero type + wash come from shroffin-explore-banks.css tokens.
+     * Only kill entrance animation so the title is visible in the loop.
      */
     .hlc-hero {
-      display: block !important;
-      box-sizing: border-box;
-      width: 100%;
-      max-width: min(48rem, 100%);
-      margin: 0 auto 2.35rem;
-      padding: 2.5rem 1rem;
-      text-align: center;
+      margin-bottom: 0.5rem;
+      padding-block: clamp(0.8rem, 2.4vw, 1.4rem);
     }
 
     .hlc-title {
-      margin: 0;
-      font-size: 3.5rem;
-      font-weight: 600;
-      letter-spacing: normal;
-      line-height: 1.02;
-      white-space: nowrap;
-      text-align: center;
       opacity: 1 !important;
       animation: none !important;
-    }
-
-    .hlc-title-wash {
-      display: inline-block;
-      max-width: 100%;
-      background-image: linear-gradient(90deg, #202027 0%, #485879 100%);
-      background-size: 100% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: #202027;
-      -webkit-text-fill-color: transparent;
     }
 
     /* Help marks are decorative in the demo — never steal the scripted clicks */
@@ -183,6 +157,25 @@
       transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
   </style>
+
+<script>
+(function () {
+  /* Same-origin demo frames: follow parent html[data-theme]. */
+  function syncTheme() {
+    try {
+      var t = parent.document.documentElement.getAttribute("data-theme");
+      if (t === "dark" || t === "light") {
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      }
+    } catch (e) {}
+  }
+  syncTheme();
+  try {
+    parent.document.addEventListener("shroffin-theme-change", syncTheme);
+  } catch (e) {}
+})();
+</script>
 </head>
 <body class="explore-banks-page" data-spd-root>
   <div class="spd-cursor" data-spd-cursor aria-hidden="true">
@@ -342,10 +335,7 @@
                         <div class="hlc-coapplicant-row">
                           <div class="hlc-coapplicant-toggle-cell">
                             <div class="hlc-coapplicant-inline">
-                              <p class="hlc-coapplicant-copy">Add a co-applicant with income to borrow more.</p>
-                              <div class="hlc-coapplicant-pills">
-                                <button type="button" class="hlc-coapplicant-action" aria-pressed="false" tabindex="-1" aria-label="Add co-applicant"><span class="hlc-coapplicant-action-label">Add</span><svg class="hlc-coapplicant-action-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                              </div>
+                              <p class="hlc-coapplicant-copy">Add a co-applicant with income to borrow <span class="hlc-coapplicant-tail">more.<span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-label="About co-applicant" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span> <span class="hlc-coapplicant-pills"><button type="button" class="hlc-coapplicant-action" aria-pressed="false" tabindex="-1" aria-label="Add co-applicant"><span class="hlc-coapplicant-action-label">Add</span><svg class="hlc-coapplicant-action-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span></span></p>
                             </div>
                           </div>
                         </div>
@@ -376,6 +366,65 @@
               <span></span><span></span><span></span>
             </div>
           </div>
+
+          <section class="hlc-intelligence" data-spd-intelligence hidden aria-labelledby="spd-intelligence-sr-heading">
+            <h2 class="visually-hidden" id="spd-intelligence-sr-heading">From your matched list</h2>
+            <div class="hlc-intel-head">
+              <p class="hlc-intel-eyebrow">From your matched list</p>
+            </div>
+            <p class="hlc-intel-status" data-spd-intel-status role="status" aria-live="polite">
+              Across 15 banks for your profile, Bank of Maharashtra is cheapest at 7.25% — Indian Overseas Bank is next at 7.25%.
+            </p>
+            <ol class="hlc-intel-tips" data-spd-intel-tips id="spd-intel-tips" aria-label="Facts from your matched list" aria-hidden="true">
+              <li class="hlc-intel-tip">
+                <span class="hlc-intel-horizon hlc-intel-horizon--cibil">Before you apply</span>
+                <strong class="hlc-intel-heading">At 780 CIBIL your best rate is 7.25% — stay at or above 750 to keep this band</strong>
+                <div class="hlc-intel-tip-detail" aria-hidden="true">
+                  <div class="hlc-intel-tip-detail-clip">
+                    <p class="hlc-intel-body">Banks still set final terms from full underwriting.</p>
+                  </div>
+                </div>
+              </li>
+              <li class="hlc-intel-tip">
+                <span class="hlc-intel-horizon hlc-intel-horizon--fee">At sanction</span>
+                <strong class="hlc-intel-heading">Processing fee: ₹2,500 at Bank of Maharashtra, ₹10,000 at HDFC Bank</strong>
+                <div class="hlc-intel-tip-detail" aria-hidden="true">
+                  <div class="hlc-intel-tip-detail-clip">
+                    <p class="hlc-intel-body">Fees differ more than the headline rate on this list.</p>
+                  </div>
+                </div>
+              </li>
+              <li class="hlc-intel-tip">
+                <span class="hlc-intel-horizon hlc-intel-horizon--penalty">If you miss</span>
+                <strong class="hlc-intel-heading">One missed EMI: ₹1,180 at Bank of Maharashtra, ₹2,950 at Axis Bank</strong>
+                <div class="hlc-intel-tip-detail" aria-hidden="true">
+                  <div class="hlc-intel-tip-detail-clip">
+                    <p class="hlc-intel-body">Penalty rules vary by bank even when rates look the same.</p>
+                  </div>
+                </div>
+              </li>
+            </ol>
+            <button
+              type="button"
+              class="hlc-intel-plus"
+              data-spd-intel-plus
+              aria-expanded="false"
+              aria-controls="spd-intel-tips"
+              hidden
+              tabindex="-1"
+            >
+              <span class="hlc-intel-plus-label">+</span>
+            </button>
+            <button
+              type="button"
+              class="hlc-intel-more"
+              data-spd-intel-more
+              aria-expanded="false"
+              aria-controls="spd-intel-tips"
+              hidden
+              tabindex="-1"
+            ></button>
+          </section>
 
           <section class="hlc-results-shell" data-spd-results hidden aria-live="polite">
             <div class="hlc-results-head">
@@ -410,10 +459,13 @@
                   </button>
                 </div>
                 <div class="hlc-apply-bar">
+                  <span class="hlc-apply-count" data-spd-apply-count hidden aria-live="polite"></span>
                   <button type="button" class="hlc-btn-primary" data-spd-apply disabled tabindex="-1">Apply once</button>
                 </div>
               </div>
             </div>
+
+            <p class="hlc-income-basis-note" data-spd-income-basis-note role="status" aria-live="polite" hidden></p>
 
             <div class="hlc-compare-stage">
               <aside
@@ -435,8 +487,13 @@
                 <div class="hlc-filters-scroll">
 
                   <fieldset class="hlc-filter-group">
-                    <legend class="hlc-filter-legend">Borrower</legend>
-                    <div class="hlc-filter-checks">
+                    <legend class="hlc-filter-legend" id="spd-borrower-label">
+                      <span class="hlc-field-label-row">
+                        <span class="hlc-field-label-text">Borrower</span>
+                        <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-label="About Borrower" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span>
+                      </span>
+                    </legend>
+                    <div class="hlc-filter-checks hlc-borrower-chips" role="group" aria-labelledby="spd-borrower-label">
                       <label class="hlc-filter-option">
                         <input type="checkbox" data-spd-filter="govt" data-spd-default-pressed="false" tabindex="-1" />
                         <span class="hlc-filter-option-label">Govt / PSU employee and pensioner</span>
@@ -445,8 +502,13 @@
                   </fieldset>
 
                   <fieldset class="hlc-filter-group">
-                    <legend class="hlc-filter-legend">Concessions</legend>
-                    <div class="hlc-filter-checks">
+                    <legend class="hlc-filter-legend" id="spd-concessions-label">
+                      <span class="hlc-field-label-row">
+                        <span class="hlc-field-label-text">Concessions</span>
+                        <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-label="About Concessions" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span>
+                      </span>
+                    </legend>
+                    <div class="hlc-filter-checks hlc-concession-chips" role="group" aria-labelledby="spd-concessions-label">
                       <label class="hlc-filter-option">
                         <input type="checkbox" data-spd-filter="women" data-spd-default-pressed="false" tabindex="-1" />
                         <span class="hlc-filter-option-label">Women applicant</span>
@@ -463,7 +525,12 @@
                   </fieldset>
 
                 <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="spd-bank-type-label">Bank type</legend>
+                  <legend class="hlc-filter-legend" id="spd-bank-type-label">
+                    <span class="hlc-field-label-row">
+                      <span class="hlc-field-label-text">Bank type</span>
+                      <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-label="About Bank type" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span>
+                    </span>
+                  </legend>
                   <div class="hlc-filter-checks" role="group" aria-labelledby="spd-bank-type-label">
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-spd-filter="Public" data-spd-default-pressed="true" checked tabindex="-1" />
@@ -483,7 +550,12 @@
                 </fieldset>
 
                 <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="spd-rate-label">Rate</legend>
+                  <legend class="hlc-filter-legend" id="spd-rate-label">
+                    <span class="hlc-field-label-row">
+                      <span class="hlc-field-label-text">Rate</span>
+                      <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-label="About Rate" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span>
+                    </span>
+                  </legend>
                   <div class="hlc-filter-checks" role="group" aria-labelledby="spd-rate-label">
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-spd-filter="Floating" data-spd-default-pressed="true" checked tabindex="-1" />
@@ -503,7 +575,12 @@
                 </fieldset>
 
                 <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="spd-facility-label">Facility</legend>
+                  <legend class="hlc-filter-legend" id="spd-facility-label">
+                    <span class="hlc-field-label-row">
+                      <span class="hlc-field-label-text">Facility</span>
+                      <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-label="About Facility" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span>
+                    </span>
+                  </legend>
                   <div class="hlc-filter-checks" role="group" aria-labelledby="spd-facility-label">
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-spd-filter="Term" data-spd-default-pressed="true" checked tabindex="-1" />
@@ -515,7 +592,7 @@
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-spd-filter="OD" data-spd-default-pressed="false" tabindex="-1" />
                       <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Overdraft</span>
+                        <span class="hlc-filter-option-title">Overdraft<span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-label="About Overdraft" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span></span>
                         <span class="hlc-filter-option-note">Idle money saves interest. About 0.15–1% higher than term loan</span>
                       </span>
                     </label>
@@ -785,9 +862,9 @@
                       </tbody>
                     </table>
                   </div>
-                  <div class="hlc-show-more-wrap">
+                  <div class="hlc-show-more-wrap" hidden>
                     <button type="button" class="hlc-show-more" tabindex="-1" aria-hidden="true">
-                      <span class="hlc-show-more-label">Show 25 more banks</span>
+                      <span class="hlc-show-more-label">Show more banks</span>
                       <svg class="hlc-show-more-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                         <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
@@ -1263,6 +1340,6 @@
     </div>
   </main>
 
-  <script src="../js/shroffin-product-demo.js?v=71"></script>
+  <script src="../js/shroffin-product-demo.js?v=73"></script>
 </body>
 </html>

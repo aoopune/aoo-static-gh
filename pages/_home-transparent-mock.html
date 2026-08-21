@@ -6,12 +6,11 @@
   <title>Home transparent — clarity demo</title>
   <meta name="robots" content="noindex">
   <!--
-    Dark glass clarity sheet + playable More details dropdowns (SBI).
-    Same quiet material as the first UI — not a white product drawer.
+    Clarity sheet + playable More details (SBI).
+    Dark = glass on dark story. Light = raised paper card on light story.
   -->
-  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css">
+
+  <link rel="stylesheet" href="../css/shroffin-shell.min.css?v=home-wash-8">
   <style>
     :root {
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -19,6 +18,37 @@
       --muted: rgba(245, 245, 247, 0.55);
       --line: rgba(245, 245, 247, 0.12);
       --focus: #2997ff;
+      --panel-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      --panel-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.18);
+      --fill-soft: rgba(255, 255, 255, 0.035);
+      --fill-nested: rgba(255, 255, 255, 0.03);
+      --fill-mark: rgba(255, 255, 255, 0.06);
+      --mark-ring: rgba(255, 255, 255, 0.12);
+      --card-bg: rgba(0, 0, 0, 0.22);
+      --card-ring: rgba(255, 255, 255, 0.06);
+      --tool-hover: rgba(41, 151, 255, 0.1);
+      --foot: rgba(245, 245, 247, 0.42);
+      --scroll-thumb: rgba(245, 245, 247, 0.22);
+    }
+
+    html[data-theme="light"] {
+      --text: var(--shroffin-ink);
+      --muted: var(--shroffin-muted);
+      --line: var(--shroffin-hair-soft);
+      --focus: var(--shroffin-blue);
+      --panel-bg: var(--shroffin-canvas-mix-base);
+      --panel-shadow:
+        inset 0 0 0 0.5px var(--shroffin-hair-soft),
+        0 18px 40px color-mix(in srgb, var(--shroffin-ink) 12%, transparent);
+      --fill-soft: color-mix(in srgb, var(--shroffin-ink) 4%, var(--shroffin-canvas-mix-base));
+      --fill-nested: color-mix(in srgb, var(--shroffin-ink) 3%, var(--shroffin-canvas-mix-base));
+      --fill-mark: var(--shroffin-paper-note);
+      --mark-ring: var(--shroffin-hair-soft);
+      --card-bg: var(--shroffin-paper-note);
+      --card-ring: var(--shroffin-hair-soft);
+      --tool-hover: color-mix(in srgb, var(--shroffin-blue) 12%, transparent);
+      --foot: var(--shroffin-muted);
+      --scroll-thumb: var(--shroffin-hair);
     }
 
     * { box-sizing: border-box; }
@@ -27,7 +57,7 @@
       margin: 0;
       width: 100%;
       height: 100%;
-      background: #0a0a0a;
+      background: transparent;
       overflow: hidden;
       font-family: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
       color: var(--text);
@@ -60,11 +90,8 @@
       flex-direction: column;
       border-radius: 18px;
       overflow: hidden;
-      background:
-        linear-gradient(165deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
-      box-shadow:
-        inset 0 0 0 0.5px rgba(255, 255, 255, 0.18),
-        0 24px 48px rgba(0, 0, 0, 0.45);
+      background: var(--panel-bg);
+      box-shadow: var(--panel-shadow);
       opacity: 0;
       transform: translateY(18px) scale(0.985);
       transition:
@@ -96,8 +123,8 @@
       border-radius: 11px;
       display: grid;
       place-items: center;
-      background: rgba(255, 255, 255, 0.06);
-      box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
+      background: var(--fill-mark);
+      box-shadow: inset 0 0 0 0.5px var(--mark-ring);
       flex: 0 0 auto;
     }
 
@@ -157,7 +184,7 @@
     }
 
     .toolbar button:hover {
-      background: rgba(41, 151, 255, 0.1);
+      background: var(--tool-hover);
     }
 
     .toolbar button:focus-visible {
@@ -172,13 +199,13 @@
       -webkit-overflow-scrolling: touch;
       padding: 10px 12px 16px;
       scrollbar-width: thin;
-      scrollbar-color: rgba(245, 245, 247, 0.22) transparent;
+      scrollbar-color: var(--scroll-thumb) transparent;
     }
 
     .group {
       border-radius: 12px;
       border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.035);
+      background: var(--fill-soft);
       margin: 0 0 8px;
       overflow: hidden;
     }
@@ -232,8 +259,8 @@
 
     .card {
       border-radius: 10px;
-      background: rgba(0, 0, 0, 0.22);
-      box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.06);
+      background: var(--card-bg);
+      box-shadow: inset 0 0 0 0.5px var(--card-ring);
       padding: 2px 12px;
     }
 
@@ -271,7 +298,7 @@
       margin: 8px 0 0;
       border-radius: 10px;
       border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--fill-nested);
       overflow: hidden;
     }
 
@@ -295,7 +322,7 @@
     .foot,
     .fee-note {
       margin: 8px 4px 0;
-      color: rgba(245, 245, 247, 0.42);
+      color: var(--foot);
       font-size: 11px;
       line-height: 1.4;
     }
@@ -313,6 +340,22 @@
       }
     }
   </style>
+
+<script>
+(function () {
+  function syncTheme() {
+    try {
+      var t = parent.document.documentElement.getAttribute("data-theme");
+      if (t === "dark" || t === "light") {
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      }
+    } catch (e) {}
+  }
+  syncTheme();
+  try { parent.document.addEventListener("shroffin-theme-change", syncTheme); } catch (e) {}
+})();
+</script>
 </head>
 <body>
   <div class="stage">

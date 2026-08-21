@@ -5,13 +5,23 @@
     <ul class="globalnav-list">
       <li class="globalnav-item globalnav-item-brand">
         <a class="globalnav-link globalnav-link-brand" href="/" aria-label="Shroffin Home">
-          <img
-            class="globalnav-logo"
-            src="/images/logos/logo-h-light-clear-781x173.png"
-            alt="Shroffin"
-            width="99"
-            height="22"
-          >
+          <!-- Phase G logo swap: light mark is default until html[data-theme="dark"] (Phase I boot). CSS owner: css/shroffin-shell.css -->
+            <img
+              class="globalnav-logo globalnav-logo--light"
+              src="/images/logos/logo-h-light-clear-781x173.png"
+              alt="Shroffin"
+              width="99"
+              height="22"
+            >
+            <img
+              class="globalnav-logo globalnav-logo--dark"
+              src="/images/logos/logo-h-dark-clear-781x173.png"
+              alt=""
+              width="99"
+              height="22"
+              aria-hidden="true"
+              decoding="async"
+            >
         </a>
       </li>
       <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled

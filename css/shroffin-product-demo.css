@@ -7,20 +7,23 @@
   padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(3rem, 7vw, 5rem);
   background:
     radial-gradient(110% 70% at 50% -20%, rgba(0, 113, 227, 0.04), transparent 55%),
-    var(--shroffin-surface, #fcfcfd);
+    var(--shroffin-surface);
   font-family: var(--shroffin-font, "Google Sans Flex", "Segoe UI", Arial, sans-serif);
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
 }
 
 /* Home: product frame sits just under the CTAs (hero owns the gap above). */
 .spd-section--home {
   padding: 0 0 clamp(2.75rem, 7vw, 4.5rem);
-  background: #f5f7f9;
+  /* Phase B: themeable band → footer/deep role (same light family as #f5f7f9). */
+  background: var(--shroffin-footer);
 }
 
 .spd-section-inner {
   width: min(1180px, calc(100% - 1.5rem));
   margin-inline: auto;
+  container-type: inline-size;
+  container-name: spd-inner;
 }
 
 .spd-section--home .spd-section-inner {
@@ -29,7 +32,7 @@
 
 .spd-eyebrow {
   margin: 0 0 0.65rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: normal;
@@ -47,7 +50,7 @@
 .spd-lede {
   margin: 0 0 1.75rem;
   max-width: 36em;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: clamp(1.05rem, 2vw, 1.2rem);
   line-height: 1.45;
   letter-spacing: normal;
@@ -55,34 +58,92 @@
 
 /*
  * Stage: landscape wallpaper with the Safari window sitting on it.
- * Height is set by fit() from the frame + rim.
+ *
+ * Size is CSS-owned (container query + aspect-ratio) so first paint matches
+ * the fitted box — JS only refreshes --spd-scale / radius, never grows the
+ * stage after paint (that was the CLS culprit).
+ *
+ * LCP: wallpaper is an <img.spd-wallpaper> in HTML (fetchpriority=high),
+ * not a CSS background — so the browser can discover it immediately.
+ * Stages without that img keep the CSS background fallback.
  */
 .spd-stage {
   --spd-margin-y: 60px;
   --spd-margin-x: 130px;
-  --spd-window-radius: 16px;
-  --spd-outer-radius: calc(var(--spd-window-radius) * var(--spd-scale, 0.5));
+  --spd-canvas-w: 1640;
+  --spd-canvas-h: 1077;
+  --spd-max-vh: 0.82;
+  /* Fallback before container query units resolve / unsupported. */
+  --spd-scale: 0.45;
+  --spd-window-radius: var(--shroffin-card-radius, 16px);
+  --spd-outer-radius: calc(var(--spd-window-radius) * var(--spd-scale));
   position: relative;
-  width: 100%;
+  width: min(
+    100%,
+    calc(var(--spd-canvas-w) * 1px * var(--spd-scale) + 2 * var(--spd-margin-x))
+  );
   max-width: 100%;
+  aspect-ratio: calc(var(--spd-canvas-w) + 2 * var(--spd-margin-x) / 1px) /
+    calc(var(--spd-canvas-h) + 2 * var(--spd-margin-y) / 1px);
   height: auto;
-  min-height: calc(1077px * var(--spd-scale, 0.5) + var(--spd-margin-y) * 2);
+  min-height: 0;
   margin: 0 auto;
   border-radius: var(--spd-outer-radius);
   overflow: hidden;
   isolation: isolate;
   background-color: #776f6d;
-  background-image: url("../media/demos/product-demo-desktop.jpg?v=20260815b");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   box-shadow:
     0 1px 2px rgba(29, 29, 31, 0.05),
     0 32px 72px rgba(55, 75, 100, 0.22);
 }
 
+@supports (width: 1cqw) {
+  .spd-stage {
+    --spd-scale: min(
+      1,
+      (100cqw - 2 * var(--spd-margin-x)) / (var(--spd-canvas-w) * 1px),
+      (100svh * var(--spd-max-vh) - 2 * var(--spd-margin-y)) / (var(--spd-canvas-h) * 1px)
+    );
+  }
+}
+
+.spd-section--home .spd-stage {
+  --spd-max-vh: 0.92;
+}
+
+.spd-stage:not(:has(> .spd-wallpaper)):not(:has(> picture .spd-wallpaper)) {
+  background-image: url("../media/demos/product-demo-desktop-900.jpg?v=20260821a");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.spd-stage > picture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.spd-wallpaper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  user-select: none;
+}
+
 .spd-stage-scaler {
   position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,8 +153,8 @@
 
 .spd-window-slot {
   position: relative;
-  width: calc(1640px * var(--spd-scale, 0.5));
-  height: calc(1077px * var(--spd-scale, 0.5));
+  width: calc(var(--spd-canvas-w) * 1px * var(--spd-scale));
+  height: calc(var(--spd-canvas-h) * 1px * var(--spd-scale));
   flex: 0 0 auto;
   /* Clip here — not on the scaled .spd-window (transform breaks radius clip). */
   border-radius: var(--spd-outer-radius, 8px);
@@ -106,8 +167,8 @@
 
 .spd-stage--phone .spd-window-slot {
   /* iPhone 17 Pro screen — soft lift only, no rim / no hard clip zigzag. */
-  width: calc(402px * var(--spd-scale, 0.5));
-  height: calc(874px * var(--spd-scale, 0.5));
+  width: calc(var(--spd-canvas-w) * 1px * var(--spd-scale));
+  height: calc(var(--spd-canvas-h) * 1px * var(--spd-scale));
   border-radius: 0;
   overflow: visible;
   background: transparent;
@@ -146,7 +207,7 @@
   /* 62pt = iPhone 17 Pro display corner; scales with transform. */
   border-radius: var(--spd-window-radius, 62px);
   overflow: hidden;
-  background: #fcfcfd;
+  background: var(--shroffin-surface);
   border: 0;
   box-shadow: none;
   -webkit-backface-visibility: hidden;
@@ -165,7 +226,7 @@
   display: flex;
   flex-direction: column;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-  color: #1d1d1f;
+  color: var(--shroffin-ink);
   background: #f5f5f7;
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
 }
@@ -255,7 +316,7 @@
   height: 1.85rem;
   border-radius: 0.45rem;
   position: relative;
-  color: #1d1d1f;
+  color: var(--shroffin-ink);
   background: transparent;
 }
 
@@ -403,7 +464,7 @@
 .spd-url {
   flex: 0 1 auto;
   min-width: 0;
-  color: #1d1d1f;
+  color: var(--shroffin-ink);
   font-size: 0.8125rem;
   font-weight: 400;
   letter-spacing: normal;
@@ -422,7 +483,7 @@
 .spd-ios-top {
   display: none;
   flex: 0 0 auto;
-  background: #fcfcfd;
+  background: var(--shroffin-surface);
 }
 
 .spd-stage--phone .spd-ios-top {
@@ -457,7 +518,7 @@
   padding: 14px 26px 0;
   box-sizing: border-box;
   pointer-events: none;
-  color: #1d1d1f;
+  color: var(--shroffin-ink);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   font-weight: 600;
   font-size: 15px;
@@ -575,7 +636,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  color: #1d1d1f;
+  color: var(--shroffin-ink);
   background: rgba(255, 255, 255, 0.62);
   backdrop-filter: blur(22px) saturate(1.5);
   -webkit-backdrop-filter: blur(22px) saturate(1.5);
@@ -658,7 +719,7 @@
   height: 100%;
   border: 0;
   display: block;
-  background: #fcfcfd;
+  background: var(--shroffin-surface);
   pointer-events: none;
 }
 
@@ -687,7 +748,7 @@
   align-items: center;
   justify-content: center;
   background: #f5f5f7;
-  color: #1d1d1f;
+  color: var(--shroffin-ink);
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
@@ -764,12 +825,12 @@
 
 .spd-section--phone {
   padding: clamp(2rem, 5vw, 3.5rem) 0 clamp(2.75rem, 7vw, 4.5rem);
-  background: #f5f7f9;
+  background: var(--shroffin-footer);
 }
 
 .spd-section--home-phone {
   padding: 0 0 clamp(2.75rem, 7vw, 4.5rem);
-  background: #f5f7f9;
+  background: var(--shroffin-footer);
 }
 
 .spd-section--phone .spd-section-inner {
@@ -795,7 +856,13 @@
 }
 
 .spd-stage--phone {
-  min-height: calc(874px * var(--spd-scale, 0.5) + var(--spd-margin-y) * 2);
+  --spd-canvas-w: 402;
+  --spd-canvas-h: 874;
+  --spd-max-vh: 0.9;
+}
+
+.spd-section--home-phone .spd-stage--phone {
+  --spd-max-vh: 0.98;
 }
 
 @media (max-width: 833px) {
@@ -813,4 +880,68 @@
   .spd-section--home-phone {
     padding-bottom: clamp(2rem, 6vw, 3.5rem);
   }
+}
+
+
+html[data-theme="dark"] .spd-stage--phone .spd-ios-top {
+  background: linear-gradient(
+    180deg,
+    rgba(18, 18, 18, 0.98) 0%,
+    rgba(18, 18, 18, 0.92) 70%,
+    rgba(18, 18, 18, 0) 100%
+  );
+}
+html[data-theme="dark"] .spd-stage--phone .spd-home-indicator {
+  background: rgba(255, 255, 255, 0.72);
+}
+/* Product demo follows theme: dark chrome in dark, light chrome in light. */
+html[data-theme="dark"] .spd-section--home,
+html[data-theme="dark"] .spd-section--home-phone {
+  background: #121212;
+}
+/* Kill the cool blue desk glow on dark — it reads as a halo that never existed on light. */
+html[data-theme="dark"] .spd-section--home .spd-stage,
+html[data-theme="dark"] .spd-section--home-phone .spd-stage {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.40),
+    0 18px 40px rgba(0, 0, 0, 0.50);
+}
+html[data-theme="dark"] .spd-section--home .spd-window-slot,
+html[data-theme="dark"] .spd-section--home-phone .spd-window-slot {
+  box-shadow:
+    0 0 0 0.5px rgba(255, 255, 255, 0.08),
+    0 16px 40px rgba(0, 0, 0, 0.55);
+}
+html[data-theme="dark"] .spd-window {
+  background: #1E1E1E;
+}
+html[data-theme="dark"] .spd-safari {
+  background: #1E1E1E;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  color: #F5F5F7;
+}
+html[data-theme="dark"] .spd-traffic span {
+  background: #636366;
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
+}
+html[data-theme="dark"] .spd-safari-field .spd-url {
+  color: #C7C7CC;
+}
+html[data-theme="dark"] .spd-playback {
+  background: #2C2C2C;
+  color: #F5F5F7;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.35),
+    0 8px 20px rgba(0, 0, 0, 0.40);
+}
+html[data-theme="dark"] .spd-playback:hover {
+  background: #383838;
+}
+html[data-theme="dark"] .spd-playback:focus-visible {
+  outline-color: #0A84FF;
+}
+/* Light home: same flat band as hero (#f5f7f9 family) — no extra wash. */
+html[data-theme="light"] .spd-section--home,
+html[data-theme="light"] .spd-section--home-phone {
+  background: #f5f7f9;
 }

@@ -1,7 +1,7 @@
 /**
- * Single source for filling SHROFFIN_NAV / FOOTER / GUIDE_LOCALNAV markers.
- * Used by sync scripts and by build-content stitch so pages are never written
- * with empty chrome shells.
+ * Single source for filling SHROFFIN_NAV / FOOTER / GUIDE_LOCALNAV /
+ * THEME_BOOT markers. Used by sync scripts and by build-content stitch so
+ * pages are never written with empty chrome shells.
  */
 const fs = require('fs');
 const path = require('path');
@@ -171,6 +171,14 @@ function renderGuideLocalnav(fileRel) {
   return indentBlock(html, 4);
 }
 
+/** Early <head> theme-boot slot from partials/theme-boot.html (Phase I live). */
+function renderThemeBoot() {
+  return indentBlock(
+    fs.readFileSync(path.join(root, 'partials', 'theme-boot.html'), 'utf8').trim(),
+    2
+  );
+}
+
 function replaceMarked(source, startMarker, endMarker, replacement, fallbackRe) {
   if (source.includes(startMarker) && source.includes(endMarker)) {
     const pattern = new RegExp(
@@ -221,6 +229,16 @@ function applyGuideLocalnav(html, fileRel) {
   );
 }
 
+function applyThemeBoot(html) {
+  return replaceMarked(
+    html,
+    '<!-- SHROFFIN_THEME_BOOT_START -->',
+    '<!-- SHROFFIN_THEME_BOOT_END -->',
+    renderThemeBoot(),
+    null
+  );
+}
+
 function assertChrome(html, fileRel) {
   if (
     html.includes('<!-- SHROFFIN_NAV_START -->') &&
@@ -238,11 +256,22 @@ function assertChrome(html, fileRel) {
       'Refusing incomplete page ' + fileRel + ': footer markers without site-footer'
     );
   }
+  if (
+    html.includes('<!-- SHROFFIN_THEME_BOOT_START -->') &&
+    !/data-shroffin-theme-boot=/.test(html)
+  ) {
+    throw new Error(
+      'Refusing incomplete page ' +
+        fileRel +
+        ': theme-boot markers without partial body'
+    );
+  }
 }
 
 /** Fill every chrome slot present in html for this page path. */
 function applySiteChrome(html, fileRel) {
   var next = html;
+  next = applyThemeBoot(next);
   next = applyNav(next, fileRel);
   next = applyFooter(next, fileRel);
   next = applyGuideLocalnav(next, fileRel);
@@ -259,11 +288,13 @@ module.exports = {
   applyNav,
   applyFooter,
   applyGuideLocalnav,
+  applyThemeBoot,
   applySiteChrome,
   assertChrome,
   renderNav,
   renderFooter,
   renderGuideLocalnav,
+  renderThemeBoot,
   renderExploreBanksPrefooterCta,
   renderSiteHelpStrip
 };

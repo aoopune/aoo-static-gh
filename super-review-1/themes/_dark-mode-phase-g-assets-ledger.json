@@ -1,0 +1,114 @@
+{
+  "phase": "G",
+  "title": "Dark wordmark asset + logo swap hook + PWA/theme-color plan (PREP-10)",
+  "date": "2026-08-21",
+  "status": "complete",
+  "brief_md": "super-review-1/themes/_dark-mode-phase-g-assets.md",
+  "inputs": [
+    "super-review-1/themes/_dark-mode-founder-visual-inputs.md",
+    "super-review-1/themes/_dark-mode-founder-visual-inputs-ledger.json",
+    "super-review-1/themes/_dark-mode-phase-a-product-brief.md",
+    "super-review-1/themes/_dark-mode-phase-b-shell-freeze.md",
+    "super-review-1/themes/_dark-mode-phase-c-boot-injection.md",
+    "super-review-1/themes/_dark-mode-phase-e-unify-light.md",
+    "super-review-1/themes/_dark-mode-phase-f-explore-ownership.md",
+    ".cursor/rules/shroffin-theme-token-discipline.mdc",
+    "super-review-1/themes/_dark-mode-prep-audit.md",
+    "PREP-10"
+  ],
+  "founder_visual_inputs": {
+    "path": "super-review-1/themes/_dark-mode-founder-visual-inputs.md",
+    "status": "locked",
+    "obeyed": [
+      "wordmark: logo-h-on-black → images/logos/logo-h-dark-clear-781x173.png",
+      "PWA: dark-first toward #121212; ship values with theme activation not while site light-only",
+      "no cool-blue canvas; no full ink/frost invent",
+      "bank plate / ranks out of Phase G"
+    ]
+  },
+  "architecture": {
+    "logo_owner_partial": "partials/global-nav.html",
+    "logo_css_owner": "css/shroffin-shell.css",
+    "swap_pattern": "dual_img_css_show_hide",
+    "light_default_without_data_theme": true,
+    "dark_selector": "html[data-theme=\"dark\"]",
+    "filter_invert_forbidden": true,
+    "propagate": "npm run build:nav",
+    "check": "npm run check:nav"
+  },
+  "assets": {
+    "source_png": "etc/creatives/brand/images/logos/png/logo-h-on-black-781x173.png",
+    "dest_png": "images/logos/logo-h-dark-clear-781x173.png",
+    "dest_svg_companion": "images/logos/logo-h-dark-clear.svg",
+    "dims": "781x173",
+    "mode": "RGBA",
+    "byte_identical_to_source": true,
+    "light_mark_unchanged": "images/logos/logo-h-light-clear-781x173.png"
+  },
+  "pwa_plan": {
+    "live_manifest_changed_in_phase_g": false,
+    "today_background_color": "#ffffff",
+    "today_theme_color": "#1074de",
+    "ship_with": "Phase I theme activation",
+    "ship_background_color": "#121212",
+    "ship_manifest_theme_color": "#121212",
+    "ship_meta_theme_color_dark": "#121212",
+    "ship_meta_theme_color_light": "#fcfcfd",
+    "dual_splash_v1": false,
+    "reason_not_shipped_now": "dark_splash_while_site_still_light_only_mismatch"
+  },
+  "favicon_app_icon": {
+    "decision": "keep_current",
+    "notes": "Full-color mark assets acceptable on dark OS chrome for v1; no new commission"
+  },
+  "verify": {
+    "check_nav": "pass",
+    "check_theme_boot": "pass",
+    "boot_inert": true,
+    "customer_data_theme": false,
+    "dark_css_shipped": false,
+    "footer_pill_shipped": false,
+    "manifest_live_dark": false,
+    "light_logo_default": true
+  },
+  "items": [
+    {
+      "id": "G1",
+      "status": "done",
+      "deliverable": "images/logos/logo-h-dark-clear-781x173.png",
+      "notes": "Copied from etc logo-h-on-black-781x173.png; locked DST filename"
+    },
+    {
+      "id": "G2",
+      "status": "done",
+      "deliverable": "partials/global-nav.html + css/shroffin-shell.css dual-img CSS swap",
+      "notes": "Without data-theme, light mark visible; dark activates only under html[data-theme=dark]"
+    },
+    {
+      "id": "G3",
+      "status": "done",
+      "deliverable": "super-review-1/themes/_dark-mode-phase-g-assets.md §4",
+      "notes": "Exact ship-time #121212 / light meta #fcfcfd documented; live webmanifest unchanged"
+    },
+    {
+      "id": "G4",
+      "status": "done",
+      "deliverable": "favicon/app-icon keep decision in Phase G brief",
+      "notes": "Keep current favicon and android/apple icons"
+    },
+    {
+      "id": "PREP-10",
+      "status": "done",
+      "notes": "Asset landed; swap hook owned by partial; PWA/theme-color plan written"
+    }
+  ],
+  "forbidden_shipped": [
+    "live_data_theme",
+    "dark_css_value_sets",
+    "footer_theme_pill",
+    "dark_manifest_splash_while_light_site",
+    "bank_logo_recolor",
+    "education_legacy_theming",
+    "filter_invert"
+  ]
+}

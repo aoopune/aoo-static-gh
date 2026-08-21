@@ -1,0 +1,70 @@
+{
+  "generated": "2026-08-21",
+  "updated": "2026-08-21",
+  "repo": "aoo-static-gh",
+  "brief_md": "super-review-1/themes/_dark-mode-founder-visual-inputs.md",
+  "phase_a_brief": "super-review-1/themes/_dark-mode-phase-a-product-brief.md",
+  "phase_b_freeze": "super-review-1/themes/_dark-mode-phase-b-shell-freeze.md",
+  "prep_audit": "super-review-1/themes/_dark-mode-prep-audit.md",
+  "website_untouched": false,
+  "theme_implementation_forbidden": true,
+  "phase_g_assets": "super-review-1/themes/_dark-mode-phase-g-assets.md",
+  "ask_question_available": false,
+  "collection_method": "chat_numbered_clusters",
+  "one_line_status": "Founder visual inputs locked",
+  "home_bands_reconfirmed": "follow_theme_phase_a",
+  "items": [
+    {
+      "id": "mood",
+      "status": "locked",
+      "choice": "material_surface_ladder_calm_charcoal",
+      "recommend_was": "A_soft_cool_blue_near_black",
+      "notes": "Founder supplied Google Material dark surfaces: base #121212, raised #1E1E1E → #2C2C2C → #383838. Not cool-blue canvas (A) and not pure cinematic black UI (C). Calm Material elevation feel. Full shell twin palette still later."
+    },
+    {
+      "id": "blue_on_dark",
+      "status": "locked",
+      "choice": "apple_buy_fill_same_hex_accent_brighter",
+      "recommend_was": "B_same_family_slightly_brighter_on_dark",
+      "notes": "Filled CTAs: Apple Buy #0071e3/#0076df/#006edb flat on light+dark. Accent/link/icon blue on dark stays #0A84FF. Light brand blue exact #0071e3."
+    },
+    {
+      "id": "wordmark",
+      "status": "locked",
+      "choice": "C_logo_h_on_black_ready_now",
+      "recommend_was": "A_commission_logo_h_dark_clear",
+      "notes": "Phase G landed: aoo-static-gh/images/logos/logo-h-dark-clear-781x173.png (from etc logo-h-on-black-781x173.png) + dual-img CSS swap in partials/global-nav.html. Light mark default until data-theme. Backup not chosen: logo-h-white-clear."
+    },
+    {
+      "id": "bank_logo_plate",
+      "status": "locked",
+      "choice": "A_light_plate_behind_marks_on_dark",
+      "recommend_was": "A_light_plate",
+      "notes": "PREP-11. Do not recolor bank assets. Plate role --hlc-logo-plate (or equivalent). Hex later at Explore dark-map."
+    },
+    {
+      "id": "pwa_splash",
+      "status": "locked",
+      "choice": "A_dark_first_splash_match_first_visit",
+      "recommend_was": "A_dark_first",
+      "notes": "Phase G plan locked: ship background_color #121212 + meta theme-color dark #121212 / light #fcfcfd with Phase I. Live site.webmanifest still #ffffff / #1074de until theme activation (avoid dark-splash→light-site mismatch)."
+    },
+    {
+      "id": "rank_chips",
+      "status": "locked",
+      "choice": "A_keep_meaning_colors_retune_for_dark",
+      "recommend_was": "A_keep_meaning_retune",
+      "notes": "helpful/costly/grace stay green/red/amber meaning. PREP-15 WCAG AA text ≥4.5:1. Exact hex at Explore dark-map."
+    },
+    {
+      "id": "extras",
+      "status": "locked",
+      "choice": "B_light_brand_blue_0071e3_exact_dark_twin_ok",
+      "recommend_was": "B_after_founder_asked_what_is_recommended",
+      "notes": "Must-keep: light brand blue #0071e3 exact. Dark may use brighter twin (aligned with blue_on_dark). No other forever-frozen chrome hexes beyond mood surface ladder + this rule."
+    }
+  ],
+  "open_founder_checklist": [],
+  "phase_g_complete": true,
+  "colors_picked_when": "Final theme build after prep gate Phase I; surface ladder + rules above constrain proposals; no full invented palette in this brief"
+}

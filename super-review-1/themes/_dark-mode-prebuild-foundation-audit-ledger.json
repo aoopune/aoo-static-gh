@@ -1,0 +1,381 @@
+{
+  "generated": "2026-08-21",
+  "updated": "2026-08-21",
+  "repo": "aoo-static-gh",
+  "brief_md": "super-review-1/themes/_dark-mode-prebuild-foundation-audit.md",
+  "job": "hostile_prebuild_foundation_audit",
+  "verdict": "go",
+  "founder_locks_honored": true,
+  "main_theme_feature_shipped": false,
+  "checks": {
+    "theme_boot": {
+      "command": "npm run check:theme-boot",
+      "exit": 0,
+      "message": "Canonical theme-boot is synchronized across 24 pages."
+    },
+    "nav": {
+      "command": "npm run check:nav",
+      "exit": 0,
+      "message": "Canonical nav is synchronized across 24 pages."
+    },
+    "theme_js_injectors": {
+      "command": "npm run check:theme-js-injectors",
+      "exit": 0,
+      "message": "24 redesigned paths clear of SCOPE_CSS / apply-flow / apply-button-iframe"
+    }
+  },
+  "files_changed": [
+    "partials/theme-boot.html",
+    "super-review-1/themes/_dark-mode-prep-audit.md",
+    "super-review-1/themes/_dark-mode-prep-audit-ledger.json",
+    "super-review-1/themes/_dark-mode-prebuild-foundation-audit.md",
+    "super-review-1/themes/_dark-mode-prebuild-foundation-audit-ledger.json",
+    "(24 redesigned pages + 25 layouts via build:theme-boot / build:layout-chrome — comment sync only)"
+  ],
+  "phase_scorecard": {
+    "founder_visuals": "pass",
+    "A": "pass",
+    "B": "pass",
+    "C": "pass",
+    "D": "pass_void",
+    "E": "pass",
+    "F": "pass",
+    "G": "pass",
+    "H": "pass"
+  },
+  "items": [
+    {
+      "id": "A-mode-model",
+      "phase": "A",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "Phase A brief §2 + contract box; theme-boot comments preference key + first visit unset → dark; no live contradiction in partials",
+      "fix_applied": "n/a",
+      "notes": "First visit ≠ Default documented and not contradicted by live resolving code (boot inert)."
+    },
+    {
+      "id": "A-boot-inert-no-live-resolve",
+      "phase": "A",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "partials/theme-boot.html data-shroffin-theme-boot=inert; empty IIFE; rg '<html[^>]*data-theme' = none; no localStorage getItem for preference on live pages",
+      "fix_applied": "n/a",
+      "notes": "Expected until main build."
+    },
+    {
+      "id": "A-no-fixed-dark-islands",
+      "phase": "A",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "rg data-theme-island|fixed-dark excl review = none; home reserved --home-story-bg/ink --home-device-stage in templates/layouts/home.html + index.html",
+      "fix_applied": "yes",
+      "notes": "Code already correct. Prep-audit PREP-08 still prescribed fixed-dark — docs fixed in this job."
+    },
+    {
+      "id": "A-footer-no-wrong-appearance-ui",
+      "phase": "A",
+      "status": "pass",
+      "severity": "major",
+      "evidence": "rg Appearance|theme-pill|shroffin-color in partials/site-footer.html = none",
+      "fix_applied": "n/a",
+      "notes": "Pill deferred to main build; no half-shipped Appearance control."
+    },
+    {
+      "id": "B-shell-mix-base-promoted-roles",
+      "phase": "B",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "css/shroffin-shell.css :root --shroffin-canvas-mix-base #ffffff; --shroffin-footer-mix-base; --shroffin-ink-soft; --shroffin-ghost; --shroffin-paper-note; --shroffin-hair; --shroffin-hair-soft",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "B-stop-bleed-rule",
+      "phase": "B",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": ".cursor/rules/shroffin-theme-token-discipline.mdc alwaysApply true; forbids new light hardcodes, invert, --dark-*, fixed-dark islands, early live boot",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "B-no-dark-parallel-vocab",
+      "phase": "B",
+      "status": "pass",
+      "severity": "major",
+      "evidence": "rg -- --dark- css/shroffin-*.css css/project-approvals.css = none",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "C-theme-boot-inert",
+      "phase": "C",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "partials/theme-boot.html inert stub; check:theme-boot exit 0 across 24 pages",
+      "fix_applied": "yes",
+      "notes": "Updated stale logo-swap comment + first-visit note; re-synced 24 pages + layouts."
+    },
+    {
+      "id": "C-markers-before-css",
+      "phase": "C",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "index.html: SHROFFIN_THEME_BOOT before early js classList script and before stylesheets; check-responsive-contracts enforces order",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "C-boot-algorithm-matches-A",
+      "phase": "C",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "_dark-mode-phase-c-boot-injection.md §5 matches Phase A: light/dark/system/unset→dark; do not write system on first visit",
+      "fix_applied": "n/a",
+      "notes": "Spec only — not activated."
+    },
+    {
+      "id": "E-hex-fallback-metrics",
+      "phase": "E",
+      "status": "pass",
+      "severity": "major",
+      "evidence": "Re-measure 2026-08-21: editorial 41/0, apply 10/0, calc 2/0, guide 0/0, about 0/0, utility 2/0, APF 0/0, home 0/0, product-demo 11/0 — matches Phase E claims",
+      "fix_applied": "n/a",
+      "notes": "No regression vs Phase E ledger."
+    },
+    {
+      "id": "E-no-raw-fff-color-mix",
+      "phase": "E",
+      "status": "pass",
+      "severity": "major",
+      "evidence": "rg color-mix(...#fff) on css/shroffin-*.css + project-approvals.css = none",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "E-no-mass-light-fallbacks",
+      "phase": "E",
+      "status": "pass",
+      "severity": "major",
+      "evidence": "var(--token, #…) = 0 on all Phase E owned redesigned CSS files + shell",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "E-home-reserved-tokens",
+      "phase": "E",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "index.html + home layout --home-story-bg #1a1a1a; --home-story-ink #f5f5f7; --home-device-stage #0a0a0a; classification themeable_home_follow",
+      "fix_applied": "n/a",
+      "notes": "Light variants deferred to main build — expected."
+    },
+    {
+      "id": "F-explore-second-system",
+      "phase": "F",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "css/shroffin-explore-banks.css .explore-banks-page --hlc-* spine; discipline rule Explore stays second system",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "F-hlc-logo-plate-hook",
+      "phase": "F",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "explore CSS L91-94 --hlc-logo-plate transparent; .hlc-bank-logo uses background-color/padding/radius/inset line vars ~L5151",
+      "fix_applied": "n/a",
+      "notes": "Light = invisible; dark light-plate later."
+    },
+    {
+      "id": "F-rank-meaning-colors",
+      "phase": "F",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "--hlc-rank-helpful-* green; costly red; grace amber defs L49-56; usage rules use vars",
+      "fix_applied": "n/a",
+      "notes": "No soft/desaturated redesign."
+    },
+    {
+      "id": "F-dark-map-and-prep15",
+      "phase": "F",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "_dark-mode-phase-f-explore-ownership.md §6 PREP-15 gate + §7 dark-map selector plan; Material ladder DRAFT; cool-blue rejected",
+      "fix_applied": "n/a",
+      "notes": "Exact dark hex deferred_to_build."
+    },
+    {
+      "id": "F-founder-plate-rank-mood",
+      "phase": "F",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "Phase F §0 founder obedience table matches founder visual inputs Material #121212 ladder",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "G-dark-wordmark-asset",
+      "phase": "G",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "images/logos/logo-h-dark-clear-781x173.png 16910 bytes; PNG 781x173 RGBA; cmp byte-identical to etc logo-h-on-black-781x173.png",
+      "fix_applied": "n/a",
+      "notes": "SVG companion also present."
+    },
+    {
+      "id": "G-nav-dual-img-css-swap",
+      "phase": "G",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "partials/global-nav.html dual img; shell CSS .globalnav-logo--dark display:none; html[data-theme=dark] swap; check:nav exit 0",
+      "fix_applied": "n/a",
+      "notes": "Without data-theme, light logo shows."
+    },
+    {
+      "id": "G-pwa-plan-live-white-ok",
+      "phase": "G",
+      "status": "pass",
+      "severity": "major",
+      "evidence": "Phase G §4 ship #121212 / light meta #fcfcfd; site.webmanifest still background_color #ffffff theme_color #1074de",
+      "fix_applied": "n/a",
+      "notes": "Live white intentional until Phase I."
+    },
+    {
+      "id": "H-24-paths-injector-free",
+      "phase": "H",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "check:theme-js-injectors exit 0; apply.html loads shroffin-apply.css + home-loan-apply.js only",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "H-legacy-leave-light-education-preserved",
+      "phase": "H",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "education-loan.html + table-embed.html exist; EDUCATION_LOAN_PRODUCT / LEGACY_EDUCATION_PAGES markers in partials/global-nav.html; Phase H policy locked",
+      "fix_applied": "n/a",
+      "notes": "Not deleted."
+    },
+    {
+      "id": "H-apply-css-owned",
+      "phase": "H",
+      "status": "pass",
+      "severity": "major",
+      "evidence": "pages/apply.html → css/shroffin-apply.css; js/home-loan-apply.js has no createElement('style')",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "X-one-token-system-no-invert",
+      "phase": "cross",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "No --dark-* vocab; filter:invert only as forbid comment in shell logo block",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "X-chrome-sync-single-owners",
+      "phase": "cross",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "Boot: partials/theme-boot.html + site-chrome applyThemeBoot; Nav: partials/global-nav.html; Footer: partials/site-footer.html; package.json build/check scripts",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "X-education-hidden-preserved",
+      "phase": "cross",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "Education nav blocks commented; files preserved; redesigned 24 = data/redesigned-pages.json length 24",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "X-material-ladder-not-cool-blue",
+      "phase": "cross",
+      "status": "pass",
+      "severity": "blocker",
+      "evidence": "Founder + Phase F/G docs lock Material #121212 ladder; cool-blue rejected; no dark cool-blue palette in CSS",
+      "fix_applied": "n/a",
+      "notes": "Shell light comment 'Cool soft blue canvas' refers to light wash tint — not dark mood."
+    },
+    {
+      "id": "X-phase-d-void",
+      "phase": "D",
+      "status": "pass",
+      "severity": "major",
+      "evidence": "Phase C/A declare Phase D void; no island markers; prep-audit sequence updated this job",
+      "fix_applied": "yes",
+      "notes": "Doc alignment only."
+    },
+    {
+      "id": "DEF-live-boot",
+      "phase": "I",
+      "status": "deferred_to_build",
+      "severity": "blocker",
+      "evidence": "Boot still inert by design",
+      "fix_applied": "n/a",
+      "notes": "Main build activates partials/theme-boot.html only."
+    },
+    {
+      "id": "DEF-dark-value-sets",
+      "phase": "I",
+      "status": "deferred_to_build",
+      "severity": "blocker",
+      "evidence": "No html[data-theme=dark] token value blocks in redesigned CSS (logo swap selectors only)",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "DEF-footer-pill",
+      "phase": "I",
+      "status": "deferred_to_build",
+      "severity": "blocker",
+      "evidence": "site-footer has no theme control",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "DEF-pwa-live-values",
+      "phase": "I",
+      "status": "deferred_to_build",
+      "severity": "major",
+      "evidence": "manifest still white; Phase G documents ship values",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "DEF-blue-rank-hex-finals",
+      "phase": "I",
+      "status": "deferred_to_build",
+      "severity": "major",
+      "evidence": "Founder ledger: dark blue twin TBD; rank dark hex at Explore dark-map + PREP-15",
+      "fix_applied": "n/a",
+      "notes": null
+    },
+    {
+      "id": "FIX-doc-prep08-stale",
+      "phase": "audit_fix",
+      "status": "pass",
+      "severity": "major",
+      "evidence": "Before: prep-audit PREP-08 + ledger prescribed fixed-dark markers. After: follow-theme / Phase D void; gate checkbox wording updated; §0 points to this audit",
+      "fix_applied": "yes",
+      "notes": "Code already matched Phase A; docs were the defect."
+    },
+    {
+      "id": "FIX-boot-logo-comment",
+      "phase": "audit_fix",
+      "status": "pass",
+      "severity": "minor",
+      "evidence": "theme-boot comments now say Phase G logo landed + first visit unset → dark; build:theme-boot synchronized",
+      "fix_applied": "yes",
+      "notes": null
+    }
+  ]
+}

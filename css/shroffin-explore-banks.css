@@ -3,12 +3,14 @@
 .explore-banks-page {
   --hlc-gap: 1.25rem;
   --hlc-gap-lg: 2.35rem;
+  /* Explore steel line language (intentional ≠ shell black-alpha hair). */
   --hlc-line: rgba(108, 128, 155, 0.26);
   --hlc-line-soft: rgba(108, 128, 155, 0.14);
   --hlc-line-faint: rgba(108, 128, 155, 0.09);
-  --hlc-wash: rgba(255, 255, 255, 0.8);
-  --hlc-surface: rgba(255, 255, 255, 0.92);
-  --hlc-surface-strong: #fff;
+  /* White washes via shell mix-base — light-identical to prior rgba(255,255,255,*). */
+  --hlc-wash: color-mix(in srgb, var(--shroffin-canvas-mix-base) 80%, transparent);
+  --hlc-surface: color-mix(in srgb, var(--shroffin-canvas-mix-base) 92%, transparent);
+  --hlc-surface-strong: var(--shroffin-canvas-mix-base);
   --hlc-row-selected: #e8f0fe; /* Gmail-like cool blue wash */
   --hlc-row-hover: #f2f6fc;
   /* Very thin / faint — Gmail whisper line, not a grid rule */
@@ -17,12 +19,17 @@
   --hlc-row-lift:
     0 1px 2px rgba(60, 64, 67, 0.18),
     0 2px 8px rgba(60, 64, 67, 0.1);
+  /* Inputs + intelligence card elevation (same shape; dark twin is soft ambient only). */
+  --hlc-card-lift:
+    0 1px 2px rgba(60, 64, 67, 0.08),
+    0 8px 20px rgba(60, 64, 67, 0.1);
   --hlc-check-size: 1.125rem;
   --hlc-check-gap: 0.65rem;
-  --hlc-icon-rest: var(--shroffin-muted, #6e6e73);
-  --hlc-icon-hover: var(--shroffin-ink, #1d1d1f);
-  --hlc-icon-active: var(--shroffin-blue, #0071e3);
-  --hlc-icon-on-mark: #fff;
+  /* Shell aliases — Explore always loads shroffin-shell.css; no light hex fallbacks. */
+  --hlc-icon-rest: var(--shroffin-muted);
+  --hlc-icon-hover: var(--shroffin-ink);
+  --hlc-icon-active: var(--shroffin-blue);
+  --hlc-icon-on-mark: var(--shroffin-canvas-mix-base);
   --hlc-font-num: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
   --hlc-delta-wash: rgba(176, 142, 70, 0.16);
   --hlc-delta-duration: 2.2s;
@@ -31,17 +38,20 @@
   --hlc-filter-gap: 2rem;
   --hlc-radius: 1.1rem;
   /* Cool soft blue canvas — shared shell tokens (site-wide). */
-  --hlc-page-bg: var(--shroffin-surface, #fcfcfd);
+  --hlc-page-bg: var(--shroffin-surface);
+  /* Raised panel fill — light matches page paper; dark steps to Material #1E1E1E. */
+  --hlc-card-surface: var(--hlc-page-bg);
   /* Soft wash so column titles sit slightly apart from body rows. */
   --hlc-header-bg: color-mix(
     in srgb,
     rgb(108 128 155) 5.5%,
     var(--hlc-page-bg)
   );
-  /* Nav: frosted #f5f7f9 — same family as shell globalnav; blur stays on the bar. */
-  --hlc-nav-bg: var(--shroffin-gn-bg-open, rgba(245, 247, 249, 0.92));
-  --hlc-nav-bg-solid: var(--shroffin-gn-frost, #f5f7f9);
-  --hlc-nav-border: var(--shroffin-gn-border, rgba(0, 0, 0, 0.05));
+  /* Nav: frosted family as shell globalnav; blur stays on the bar. */
+  --hlc-nav-bg: var(--shroffin-gn-bg-open);
+  --hlc-nav-bg-solid: var(--shroffin-gn-frost);
+  --hlc-nav-border: var(--shroffin-gn-border);
+  /* Rank meaning colors — Explore-owned; dark twin needs PREP-15 contrast proof. */
   --hlc-rank-helpful-num: #137333;
   --hlc-rank-helpful-ink: #0d652d;
   --hlc-rank-helpful-bg: #e6f4ea;
@@ -50,8 +60,54 @@
   --hlc-rank-costly-bg: #fce8e6;
   --hlc-rank-grace-ink: #8a5a00;
   --hlc-rank-grace-bg: #fef7e0;
+  /* Form / section lines (promoted to page so usages need no light fallbacks). */
+  --hlc-field-radius: 0.5rem;
+  --hlc-section-line: #dde1e6;
+  --hlc-section-line-strong: #6b7787;
+  --hlc-field-box-line: #8892a4;
+  /* Inputs-card underline chrome (Explore steel; shadows shell field-line locally). */
+  --hlc-input-field-line: #8b96a8;
+  /* Explore form label ink — intentional ≠ --shroffin-muted. */
+  --hlc-field-label: #636373;
+  --hlc-field-hint: #6e6e6f;
+  --hlc-meta-ink: #5c5c5c;
+  /* Soft drawer nest ink — exact hex; not shell --shroffin-ink-soft. */
+  --hlc-ink-soft: #3a3a3c;
+  /* Text ladder used by intel + compare chrome. */
+  --hlc-text-primary: var(--shroffin-ink);
+  --hlc-text-secondary: var(--shroffin-muted);
+  --hlc-text-tertiary: #86868b;
+  /* Intelligence panel + drawer accents. */
+  --hlc-intel-line: rgba(0, 0, 0, 0.088);
+  --hlc-intel-surface: #f7f7f7;
+  --hlc-seg-track: #f2f3f5;
+  --hlc-drawer-strip: #f7f7f8;
+  --hlc-drawer-rule: #e8e8ed;
+  --hlc-link-hover: #0077ed;
+  --hlc-limit-house: #7a3410;
+  --hlc-limit-income: #234a82;
+  /* Hero title steel wash (decorative gradient — Explore-owned). */
+  --hlc-title-wash-from: #202027;
+  --hlc-title-wash-to: #485879;
+  /*
+   * Bank mark plate (PREP-11 / founder lock). Light theme = invisible.
+   * Dark twin later: light plate behind marks + optional 1px hair; never recolor bank art.
+   * Exact plate hex at Explore dark-map — not invented here.
+   */
+  --hlc-logo-plate: transparent;
+  --hlc-logo-plate-pad: 0px;
+  --hlc-logo-plate-radius: 0.2rem;
+  --hlc-logo-plate-line: transparent;
+  /* Ink-alpha border ladder — light-identical to prior literals; dark twins below. */
+  --hlc-rule-06: rgba(29, 29, 31, 0.06);
+  --hlc-rule-08: rgba(29, 29, 31, 0.08);
+  --hlc-rule-10: rgba(29, 29, 31, 0.10);
+  --hlc-rule-14: rgba(29, 29, 31, 0.14);
+  --hlc-rule-18: rgba(29, 29, 31, 0.18);
+  --hlc-rule-28: rgba(29, 29, 31, 0.28);
+  --hlc-drawer-veil: rgba(29, 29, 31, 0.35);
   background: var(--hlc-page-bg);
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-family: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
 }
 
@@ -100,7 +156,11 @@
 .hlc-title-wash {
   display: inline-block;
   max-width: 100%;
-  background-image: linear-gradient(90deg, #202027 0%, #485879 100%);
+  background-image: linear-gradient(
+    90deg,
+    var(--hlc-title-wash-from) 0%,
+    var(--hlc-title-wash-to) 100%
+  );
   background-size: 100% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -118,7 +178,7 @@
 
 .hlc-lead {
   margin: 0;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: var(--shroffin-type-lead, clamp(1.125rem, 2.4vw, 1.3rem));
   font-weight: 400;
   letter-spacing: normal;
@@ -183,7 +243,7 @@
   isolation: isolate;
   margin-top: 0;
   padding: clamp(1.75rem, 3.4vw, 2.35rem) clamp(1.45rem, 3.1vw, 2.15rem) 2.15rem;
-  border-radius: var(--hlc-field-radius, 0.5rem);
+  border-radius: var(--shroffin-card-radius, 16px);
   background: transparent;
   border: none;
   box-shadow: none;
@@ -194,11 +254,8 @@
    * on the card); hover uses a darker mix of the same hue. Do not reuse
    * the faint section divider for slots — that line is not a type-here cue.
    */
-  --hlc-field-radius: 0.5rem;
-  --hlc-section-line: #dde1e6;
-  --hlc-section-line-strong: #6b7787;
-  --hlc-field-box-line: #8892a4;
-  --shroffin-field-line: #8b96a8;
+  /* Section/field line roles live on .explore-banks-page; local field chrome only: */
+  --shroffin-field-line: var(--hlc-input-field-line);
   --shroffin-field-font-size: 1.25rem;
   --shroffin-field-label-size: 1.125rem;
   --shroffin-field-min-height: 0px;
@@ -215,12 +272,10 @@
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: var(--hlc-page-bg, #fcfcfd);
+  background: var(--hlc-card-surface);
   border: none;
-  /* Downward layered lift (contact + ambient), same shape as --hlc-row-lift. */
-  box-shadow:
-    0 1px 2px rgba(60, 64, 67, 0.08),
-    0 8px 20px rgba(60, 64, 67, 0.1);
+  /* Soft depth only — owned by --hlc-card-lift (light + dark twins). */
+  box-shadow: var(--hlc-card-lift);
   transform: translateZ(0);
 }
 
@@ -374,7 +429,7 @@
   font-size: 1rem;
   font-weight: 400;
   letter-spacing: normal;
-  color: #636373;
+  color: var(--hlc-field-label);
   border: none;
   background: none;
   white-space: nowrap;
@@ -399,7 +454,7 @@
 .hlc-form-row-live.hlc-form-row-support {
   font-size: 0.71875rem;
   font-weight: 500;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
 }
 
 .hlc-form-row-live:empty {
@@ -473,7 +528,7 @@
   font-weight: 400;
   letter-spacing: normal;
   line-height: 1.2;
-  color: #636373;
+  color: var(--hlc-field-label);
   white-space: nowrap;
 }
 
@@ -513,7 +568,7 @@
 .explore-banks-page .hlc-inputs-card .hlc-field-label-qualifier {
   font-size: 0.875rem;
   font-weight: 400;
-  color: #636373;
+  color: var(--hlc-field-label);
   margin-left: 0.3em;
   letter-spacing: normal;
   line-height: 1.2;
@@ -559,7 +614,7 @@
   .explore-banks-page .hlc-inputs-card .hlc-field-label-qualifier {
     font-size: 0.857em;
     font-weight: 400;
-    color: #636373;
+    color: var(--hlc-field-label);
     margin-left: 0;
     letter-spacing: normal;
     line-height: 1.2;
@@ -629,26 +684,26 @@
 
   .hlc-form-pairs > .hlc-form-row--hero {
     padding-bottom: 1.35rem;
-    border-bottom: 1px solid var(--hlc-section-line, #dde1e6);
+    border-bottom: 1px solid var(--hlc-section-line);
   }
 
   .hlc-form-pairs > .hlc-form-row:nth-child(2),
   .hlc-form-pairs > .hlc-form-row:nth-child(3) {
     padding-top: 1.35rem;
     padding-bottom: 1.35rem;
-    border-bottom: 1px solid var(--hlc-section-line, #dde1e6);
+    border-bottom: 1px solid var(--hlc-section-line);
   }
 
   .hlc-form-pairs > .hlc-form-row:nth-child(4),
   .hlc-form-pairs > .hlc-form-row:nth-child(5) {
     padding-top: 1.35rem;
     padding-bottom: 1.35rem;
-    border-bottom: 1px solid var(--hlc-section-line, #dde1e6);
+    border-bottom: 1px solid var(--hlc-section-line);
   }
 
   .hlc-form-pairs > .hlc-form-row:nth-child(3),
   .hlc-form-pairs > .hlc-form-row:nth-child(5) {
-    border-left: 1px solid var(--hlc-section-line, #dde1e6);
+    border-left: 1px solid var(--hlc-section-line);
     padding-left: 0;
   }
 
@@ -752,7 +807,7 @@
   gap: 0.35rem;
   padding: 1.35rem 0 0;
   border: none;
-  border-top: 1px solid var(--hlc-section-line, #dde1e6);
+  border-top: 1px solid var(--hlc-section-line);
   border-radius: 0;
   background: none;
 }
@@ -793,7 +848,7 @@
   font-size: 0.9375rem;
   line-height: 1.35;
   letter-spacing: normal;
-  color: #6e6e6f;
+  color: var(--hlc-field-hint);
 }
 
 .hlc-coapplicant-pills {
@@ -815,7 +870,7 @@
   background: none;
   padding: 0;
   margin: 0;
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   font: inherit;
   font-size: 0.9375rem;
   font-weight: 400;
@@ -828,7 +883,7 @@
 
 .hlc-coapplicant-action:hover,
 .hlc-coapplicant-action:focus-visible {
-  color: var(--shroffin-link-active, #2f4ba0);
+  color: var(--shroffin-link-active);
 }
 
 .hlc-coapplicant-action-arrow {
@@ -855,7 +910,7 @@
 }
 
 .hlc-coapplicant-action:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
   border-radius: 0.2rem;
 }
@@ -921,7 +976,7 @@
   font-size: 0.875rem;
   line-height: 1.45;
   letter-spacing: normal;
-  color: var(--shroffin-ink-muted, #6e6e73);
+  color: var(--shroffin-muted);
 }
 
 .hlc-income-basis-note[hidden] {
@@ -943,7 +998,7 @@
 
 .hlc-coapplicant-card + .hlc-coapplicant-card {
   padding-top: 1.35rem;
-  border-top: 1px solid var(--hlc-section-line, #dde1e6);
+  border-top: 1px solid var(--hlc-section-line);
 }
 
 .hlc-coapplicant-card-head {
@@ -961,7 +1016,7 @@
   font-weight: 400;
   letter-spacing: normal;
   line-height: 1.2;
-  color: #636373;
+  color: var(--hlc-field-label);
 }
 
 .hlc-coapplicant-remove,
@@ -973,7 +1028,7 @@
   font: inherit;
   font-size: 0.875rem;
   letter-spacing: normal;
-  color: var(--shroffin-link, #0071e3);
+  color: var(--shroffin-link);
   text-decoration: underline;
   text-underline-offset: 0.14em;
   cursor: pointer;
@@ -985,17 +1040,17 @@
 }
 
 .hlc-coapplicant-remove {
-  color: var(--shroffin-ink-muted, #6e6e73);
+  color: var(--shroffin-muted);
 }
 
 .hlc-coapplicant-remove:hover,
 .hlc-coapplicant-add:hover {
-  color: var(--shroffin-link-hover, #0077ed);
+  color: var(--hlc-link-hover);
 }
 
 .hlc-coapplicant-remove:focus-visible,
 .hlc-coapplicant-add:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
   border-radius: 0.2rem;
 }
@@ -1011,7 +1066,7 @@
   gap: 0.2rem;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid var(--hlc-section-line, #dde1e6);
+  border-top: 1px solid var(--hlc-section-line);
 }
 
 .hlc-coapplicant-add[hidden] {
@@ -1026,7 +1081,7 @@
   margin: 0;
   font-size: 0.8125rem;
   line-height: 1.35;
-  color: var(--shroffin-ink-muted, #6e6e73);
+  color: var(--shroffin-muted);
 }
 
 .hlc-form-more {
@@ -1203,7 +1258,7 @@
   font-weight: 400;
   letter-spacing: normal;
   text-transform: none;
-  color: #636373;
+  color: var(--hlc-field-label);
   line-height: 1.25;
   padding-bottom: 0.02rem;
 }
@@ -1241,7 +1296,7 @@
   font-size: var(--shroffin-field-font-size, 1.125rem);
   font-weight: 600;
   letter-spacing: normal;
-  color: #1d1d1f;
+  color: var(--shroffin-ink);
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23636373' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -1318,14 +1373,14 @@
   font-weight: 600;
   letter-spacing: normal;
   line-height: 1.25;
-  color: #1d1d1f;
+  color: var(--shroffin-ink);
   white-space: nowrap;
   overflow: visible;
 }
 
 .hlc-select-face-tag {
   font-weight: 400;
-  color: #636373;
+  color: var(--hlc-field-label);
 }
 
 .hlc-select-face-tag[hidden] {
@@ -1339,9 +1394,9 @@
   gap: 0.2rem;
   padding: 0.22rem;
   min-height: 3rem;
-  border: 1px solid var(--shroffin-field-line, #8b96a8);
+  border: 1px solid var(--shroffin-field-line);
   border-radius: var(--shroffin-seg-radius, 12px);
-  background: #f2f3f5;
+  background: var(--hlc-seg-track);
   overflow: hidden;
   transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -1362,7 +1417,7 @@
   border: none;
   border-radius: var(--shroffin-seg-option-radius, 9px);
   background: transparent;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   cursor: pointer;
   transition:
     background var(--shroffin-micro-duration, 0.5s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
@@ -1399,8 +1454,8 @@
 }
 
 .hlc-segmented .hlc-chip[aria-pressed="true"] {
-  background: #fff;
-  color: var(--shroffin-ink, #1d1d1f);
+  background: var(--hlc-surface-strong);
+  color: var(--shroffin-ink);
   font-weight: 500;
   box-shadow:
     0 1px 2px rgba(15, 23, 42, 0.025);
@@ -1413,17 +1468,17 @@
 
 .hlc-segmented .hlc-chip[aria-pressed="false"] {
   background: transparent;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-weight: 500;
   box-shadow: none;
 }
 
 .hlc-segmented .hlc-chip[aria-pressed="false"]:hover {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
 }
 
 .hlc-segmented .hlc-chip:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
@@ -1456,7 +1511,7 @@
   padding: 0 0.4em;
   border: none;
   border-radius: 0;
-  background: #fff;
+  background: var(--hlc-surface-strong);
   font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.2;
@@ -1516,9 +1571,9 @@
   min-height: 3.5rem;
   gap: 0.15rem 0.75rem;
   padding: 0.7rem 1rem;
-  border: 1px solid var(--hlc-field-box-line, #8892a4);
+  border: 1px solid var(--hlc-field-box-line);
   border-radius: var(--hlc-field-radius, 0.5rem);
-  background: #fff;
+  background: var(--hlc-surface-strong);
   overflow: visible;
   cursor: text;
   transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1555,7 +1610,7 @@
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell):hover,
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell):focus-within {
-  border-color: var(--hlc-section-line-strong, #6b7787);
+  border-color: var(--hlc-section-line-strong);
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell):is(:hover, :focus-within) :is(
@@ -1568,13 +1623,13 @@
   .hlc-select-face,
   .hlc-select-face-tag
 ) {
-  color: #1d1d1f;
-  caret-color: #1d1d1f;
+  color: var(--shroffin-ink);
+  caret-color: var(--shroffin-ink);
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell.is-invalid),
 .explore-banks-page .hlc-inputs-card .hlc-field:has(.hlc-input-shell.is-invalid) {
-  border-color: var(--shroffin-field-line-invalid, rgba(176, 76, 76, 0.65));
+  border-color: var(--shroffin-field-line-invalid);
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) > .hlc-field-label-row,
@@ -1624,8 +1679,8 @@
   letter-spacing: normal;
   min-height: 0;
   padding: 0;
-  color: #1d1d1f;
-  caret-color: #1d1d1f;
+  color: var(--shroffin-ink);
+  caret-color: var(--shroffin-ink);
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-select-face-tag {
@@ -1635,7 +1690,7 @@
   letter-spacing: normal;
   min-height: 0;
   padding: 0;
-  color: #636373;
+  color: var(--hlc-field-label);
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-prefix {
@@ -1670,7 +1725,7 @@
   height: 1.2em;
   line-height: 1.2;
   padding-bottom: 0;
-  color: #636373;
+  color: var(--hlc-field-label);
   pointer-events: none;
   user-select: none;
 }
@@ -2148,7 +2203,7 @@
 
   /* Card surface matches the page, so on phone its edge must be drawn. */
   .explore-banks-page .hlc-inputs-card::before {
-    border: 1px solid var(--hlc-section-line, #dde1e6);
+    border: 1px solid var(--hlc-section-line);
     box-shadow: 0 1px 10px rgba(73, 92, 118, 0.08);
   }
 
@@ -2457,7 +2512,7 @@
 
 .hlc-field .hlc-inline-pct-select:focus {
   outline: none;
-  border-bottom-color: var(--shroffin-ink, #1d1d1f);
+  border-bottom-color: var(--shroffin-ink);
 }
 
 .hlc-results-head {
@@ -2629,7 +2684,7 @@
   border-bottom: 0;
   border-radius: 8px 8px 0 0;
   background: transparent;
-  color: color-mix(in srgb, var(--shroffin-ink, #1d1d1f) 42%, transparent);
+  color: color-mix(in srgb, var(--shroffin-ink) 42%, transparent);
   font: inherit;
   font-size: var(--shroffin-btn-elevated-font, 17px);
   font-weight: 400;
@@ -2647,7 +2702,7 @@
 }
 
 .hlc-column-tab:hover {
-  color: color-mix(in srgb, var(--shroffin-ink, #1d1d1f) 72%, transparent);
+  color: color-mix(in srgb, var(--shroffin-ink) 72%, transparent);
   background: transparent;
 }
 
@@ -2657,10 +2712,10 @@
 .hlc-column-tabs.has-sel-thumb .hlc-column-tab[aria-selected="true"] {
   z-index: 2;
   margin-bottom: -1px;
-  border-color: var(--hlc-line-soft, rgba(108, 128, 155, 0.14));
+  border-color: var(--hlc-line-soft);
   border-bottom-color: transparent;
   background: var(--hlc-header-bg);
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-weight: 600;
   box-shadow: none;
   cursor: default;
@@ -2668,7 +2723,7 @@
 
 .hlc-column-tab[aria-current="page"]:hover,
 .hlc-column-tab[aria-selected="true"]:hover {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   background: var(--hlc-header-bg);
 }
 
@@ -2678,13 +2733,13 @@
 }
 
 .hlc-column-tab:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
 .hlc-status {
   margin: 0.35rem 0 0;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.875rem;
   line-height: 1.4;
 }
@@ -2738,13 +2793,13 @@
   font-weight: 600;
   letter-spacing: normal;
   line-height: 1.25;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   text-wrap: balance;
 }
 
 .hlc-searching-note {
   margin: 0.55rem 0 0;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.98rem;
   line-height: 1.5;
   text-wrap: balance;
@@ -2763,7 +2818,7 @@
   width: 0.4rem;
   height: 0.4rem;
   border-radius: 50%;
-  background: rgba(29, 29, 31, 0.28);
+  background: var(--hlc-rule-28);
   animation: hlc-search-dot 1.5s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)) infinite;
 }
 
@@ -2961,7 +3016,7 @@
   z-index: 4;
   background: var(--hlc-header-bg);
   /* Seam the active tab sits on and covers (one surface into the columns). */
-  border-top: 1px solid var(--hlc-line-soft, rgba(108, 128, 155, 0.14));
+  border-top: 1px solid var(--hlc-line-soft);
 }
 
 /* Desktop: filters always visible in the left rail. Mobile: click-to-open. */
@@ -2982,7 +3037,7 @@
   font-weight: 600;
   letter-spacing: normal;
   line-height: 1.2;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
 }
 
 .hlc-filters-head {
@@ -3027,7 +3082,7 @@
   font: inherit;
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   cursor: pointer;
   text-decoration: none;
   transition: color var(--shroffin-micro-duration, 0.5s)
@@ -3040,7 +3095,7 @@
 }
 
 .hlc-filters-clear:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
@@ -3066,7 +3121,7 @@
   font-size: 1rem;
   line-height: 1.25;
   font-weight: 600;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
 }
 
 .hlc-filter-checks {
@@ -3087,7 +3142,7 @@
   min-height: var(--shroffin-btn-touch, 44px);
   font-size: 0.875rem;
   line-height: 1.35;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   cursor: pointer;
   border-radius: 0.55rem;
   transition: background var(--shroffin-micro-duration, 0.5s)
@@ -3117,7 +3172,7 @@
   font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.3;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
 }
 
 .hlc-filter-option input {
@@ -3130,7 +3185,7 @@
   padding: 0;
   border: 1.5px solid var(--hlc-icon-rest);
   border-radius: 0.15rem;
-  background-color: #fff;
+  background-color: var(--hlc-surface-strong);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 68%;
@@ -3153,7 +3208,7 @@
 }
 
 .hlc-filter-option input:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
@@ -3184,7 +3239,7 @@
     padding-block: 0.2rem 0;
     padding-inline: max(1rem, env(safe-area-inset-left, 0px))
       max(1rem, env(safe-area-inset-right, 0px));
-    background: var(--hlc-page-bg, #fcfcfd);
+    background: var(--hlc-page-bg);
     box-shadow: none;
   }
 
@@ -3296,18 +3351,18 @@
 
   .hlc-filters-toggle:hover {
     color: var(--hlc-icon-hover);
-    background: color-mix(in srgb, var(--shroffin-ink, #1d1d1f) 5%, transparent);
+    background: color-mix(in srgb, var(--shroffin-ink) 5%, transparent);
   }
 
   .hlc-filters-toggle:focus-visible {
-    outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+    outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
     outline-offset: var(--shroffin-focus-offset, 3px);
   }
 
   .hlc-filters-control.is-open .hlc-filters-toggle,
   .hlc-filters-toggle[aria-expanded="true"] {
     color: var(--hlc-icon-active);
-    background: color-mix(in srgb, var(--shroffin-blue, #0071e3) 8%, transparent);
+    background: color-mix(in srgb, var(--shroffin-blue) 8%, transparent);
   }
 
   .hlc-filters-icon {
@@ -3329,8 +3384,8 @@
     height: 1rem;
     padding: 0 0.25rem;
     border-radius: 0.35rem;
-    background: var(--shroffin-blue, #0071e3);
-    color: #fff;
+    background: var(--shroffin-blue);
+    color: var(--hlc-icon-on-mark);
     font-size: 0.625rem;
     font-weight: 600;
     letter-spacing: normal;
@@ -3375,7 +3430,7 @@
     width: 2rem;
     height: 0.25rem;
     border-radius: 980px;
-    background: color-mix(in srgb, var(--shroffin-ink, #1d1d1f) 22%, transparent);
+    background: color-mix(in srgb, var(--shroffin-ink) 22%, transparent);
   }
 
   .hlc-filters-foot {
@@ -3383,7 +3438,7 @@
     flex: 0 0 auto;
     padding: 0.85rem 1.15rem calc(0.85rem + env(safe-area-inset-bottom, 0px));
     border-top: 1px solid var(--hlc-line-soft);
-    background: #fff;
+    background: var(--hlc-surface-strong);
   }
 
   .hlc-filters-done {
@@ -3415,7 +3470,7 @@
     padding: 0;
     border: none;
     border-radius: 0.75rem 0.75rem 0 0;
-    background: #fff;
+    background: var(--hlc-surface-strong);
     box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.14);
     display: flex;
     flex-direction: column;
@@ -3503,7 +3558,7 @@
     padding-block: 0.35rem 0;
     padding-inline: 0;
     box-shadow: none;
-    background: var(--hlc-page-bg, #fcfcfd);
+    background: var(--hlc-page-bg);
   }
 
   /*
@@ -3556,8 +3611,8 @@
   align-items: center;
   justify-content: center;
   border: 1px solid var(--hlc-line);
-  background: #fff;
-  color: var(--shroffin-ink, #1d1d1f);
+  background: var(--hlc-surface-strong);
+  color: var(--shroffin-ink);
   font: inherit;
   font-size: 0.875rem;
   padding: 0.45rem 0.9rem;
@@ -3573,12 +3628,12 @@
 .hlc-chip[aria-pressed="true"] {
   background: rgba(0, 113, 227, 0.08);
   border-color: rgba(0, 113, 227, 0.4);
-  color: var(--shroffin-blue, #0071e3);
+  color: var(--shroffin-blue);
 }
 
 .hlc-select-hint {
   margin: 0;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.2;
@@ -3592,7 +3647,7 @@
 .hlc-table-wrap {
   position: relative;
   overflow: visible;
-  border-bottom: 1px solid rgba(29, 29, 31, 0.18);
+  border-bottom: 1px solid var(--hlc-rule-18);
 }
 
 /*
@@ -3623,7 +3678,7 @@
       var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
   }
 
-  /* Right hint — flush right, gradient fades left-to-right */
+  /* Right hint — flush right; fade uses header bg so light/dark both match */
   .hlc-scroll-hint--right {
     right: 0;
     justify-content: flex-end;
@@ -3631,8 +3686,8 @@
     background: linear-gradient(
       to right,
       transparent 0%,
-      rgba(248, 248, 250, 0.88) 50%,
-      rgba(248, 248, 250, 0.97) 100%
+      color-mix(in srgb, var(--hlc-header-bg) 88%, transparent) 50%,
+      color-mix(in srgb, var(--hlc-header-bg) 97%, transparent) 100%
     );
   }
 
@@ -3643,14 +3698,14 @@
 
   /* Left hint — flush left, but offset past the sticky Bank column */
   .hlc-scroll-hint--left {
-    left: 9rem; /* matches mobile .hlc-sticky-col width */
+    left: var(--hlc-phone-bank-col, 9rem);
     justify-content: flex-start;
     padding-left: 0.5rem;
     background: linear-gradient(
       to left,
       transparent 0%,
-      rgba(248, 248, 250, 0.88) 50%,
-      rgba(248, 248, 250, 0.97) 100%
+      color-mix(in srgb, var(--hlc-header-bg) 88%, transparent) 50%,
+      color-mix(in srgb, var(--hlc-header-bg) 97%, transparent) 100%
     );
     /* Hidden until user scrolls away from the left edge */
     opacity: 0;
@@ -3666,7 +3721,7 @@
     display: block;
     width: 0.55rem;
     height: 0.55rem;
-    color: var(--shroffin-ink-muted, #6e6e73);
+    color: var(--shroffin-muted);
     flex-shrink: 0;
   }
 }
@@ -3785,7 +3840,7 @@
   background-repeat: no-repeat;
   background-position: right 0 center;
   background-size: 0.4rem 0.28rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.625rem;
   font-weight: 400;
   letter-spacing: normal;
@@ -3821,7 +3876,7 @@
 .hlc-header-select:focus-visible,
 .hlc-prepay-header-select:focus-visible,
 .hlc-rate-change-header-select:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
@@ -3836,7 +3891,7 @@
   width: 100%;
   font-size: 1rem;
   line-height: 1.5;
-  color: #5c5c5c;
+  color: var(--hlc-meta-ink);
 }
 
 .hlc-freshness-note {
@@ -3846,7 +3901,7 @@
   font-size: 0.875rem;
   line-height: 1.35;
   letter-spacing: normal;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
 }
 
 .hlc-freshness-note[hidden] {
@@ -3868,7 +3923,7 @@
   font-weight: 600;
   line-height: 1.35;
   letter-spacing: normal;
-  color: #1d1d1f;
+  color: var(--shroffin-ink);
 }
 
 .hlc-charges-note-actions {
@@ -3885,7 +3940,7 @@
   padding: 0.25rem 0;
   border: 0;
   background: transparent;
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   font: inherit;
   font-size: inherit;
   font-weight: 500;
@@ -3899,18 +3954,18 @@
 
 .hlc-charges-note-toggle-all:hover,
 .hlc-charges-note-toggle-all:focus-visible {
-  color: var(--shroffin-link-active, #2f4ba0);
+  color: var(--shroffin-link-active);
 }
 
 .hlc-charges-note-toggle-all:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
   border-radius: 0.35rem;
 }
 
 .hlc-charges-note-group + .hlc-charges-note-group {
   margin-top: 0;
-  border-top: 1px solid rgba(29, 29, 31, 0.1);
+  border-top: 1px solid var(--hlc-rule-10);
   padding-top: 0.15rem;
 }
 
@@ -3924,7 +3979,7 @@
   background: transparent;
   text-align: left;
   cursor: pointer;
-  color: #1d1d1f;
+  color: var(--shroffin-ink);
   min-height: 0;
   list-style: none;
   transition: color var(--shroffin-micro-duration, 0.5s)
@@ -3940,11 +3995,11 @@
 }
 
 .hlc-charges-note-toggle:hover {
-  color: #1d1d1f;
+  color: var(--shroffin-ink);
 }
 
 .hlc-charges-note-toggle:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
   border-radius: 0.35rem;
 }
@@ -3966,7 +4021,7 @@
 
 .hlc-charges-note-markers {
   font-weight: 500;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   letter-spacing: normal;
 }
 
@@ -4016,7 +4071,7 @@
 }
 
 .hlc-charges-note .guide-section-link {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration: none;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
@@ -4027,26 +4082,26 @@
 }
 
 .hlc-charges-note .guide-section-link:visited {
-  color: var(--shroffin-link-visited, #5a4fcf);
+  color: var(--shroffin-link-visited);
 }
 
 .hlc-charges-note .guide-section-link:hover,
 .hlc-charges-note .guide-section-link:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: var(--shroffin-link);
 }
 
 .hlc-charges-note .guide-section-link:visited:hover,
 .hlc-charges-note .guide-section-link:visited:focus-visible {
-  color: var(--shroffin-link-visited, #5a4fcf);
-  text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
+  color: var(--shroffin-link-visited);
+  text-decoration-color: var(--shroffin-link-visited);
 }
 
 .hlc-charges-note .guide-section-link:active {
-  color: var(--shroffin-link-active, #2f4ba0);
+  color: var(--shroffin-link-active);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: var(--shroffin-link-active);
 }
 
 .hlc-charges-note .guide-section-link-arrow {
@@ -4111,15 +4166,15 @@ button.hlc-col-footnote:hover,
 button.hlc-col-footnote:active,
 sup.hlc-col-footnote[data-note-target]:hover,
 sup.hlc-col-footnote[data-note-target]:active {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration-color: currentColor;
 }
 
 button.hlc-col-footnote:focus-visible,
 sup.hlc-col-footnote[data-note-target]:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration-color: currentColor;
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
@@ -4128,33 +4183,37 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
  * does not turn blue with the amount — only when the mark itself is hovered.
  */
 .hlc-charge-detail-button .hlc-col-footnote {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   text-decoration-color: currentColor;
 }
 
 .hlc-charge-detail-button:hover .hlc-col-footnote,
 .hlc-charge-detail-button:focus-visible .hlc-col-footnote,
 .hlc-charge-detail-button:active .hlc-col-footnote {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   text-decoration: underline;
   text-decoration-color: currentColor;
 }
 
 .hlc-charge-detail-button .hlc-col-footnote:hover,
 .hlc-charge-detail-button .hlc-col-footnote:active {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration-color: currentColor;
 }
 
 /*
  * Vertical: page scroll (browser bar). Horizontal: each strip scrolls sideways.
  * Head + body scrollLeft stay mirrored in JS so columns line up.
+ *
+ * overflow-y must stay hidden (not visible): with overflow-x other than
+ * visible, CSS computes visible → auto, which can spawn a vertical
+ * scrollbar that steals width and clips the second metric column on phone.
  */
 .hlc-table-head-scroll,
 .hlc-table-scroll {
   position: relative;
   overflow-x: auto;
-  overflow-y: visible;
+  overflow-y: hidden;
   max-height: none;
   -webkit-overflow-scrolling: touch;
 }
@@ -4248,7 +4307,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 
 /* Same header underline as every other th — do not zero borders here. */
 .hlc-compare thead th.hlc-col-fill {
-  border-bottom: 1px solid rgba(29, 29, 31, 0.18);
+  border-bottom: 1px solid var(--hlc-rule-18);
 }
 
 /*
@@ -4352,7 +4411,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 
 .hlc-compare th {
   background: var(--hlc-header-bg);
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 0.9375rem;
   font-weight: 500;
   letter-spacing: normal;
@@ -4375,7 +4434,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 }
 
 .hlc-sortable:hover {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
 }
 
 .hlc-sort-static {
@@ -4391,7 +4450,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   gap: 0.22rem;
   margin-left: 0.45rem;
   vertical-align: middle;
-  color: var(--shroffin-ink-muted, #6e6e73);
+  color: var(--shroffin-muted);
 }
 
 .hlc-sort-up,
@@ -4411,19 +4470,19 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 .hlc-compare th.hlc-sortable[aria-sort="none"] .hlc-sort-up,
 .hlc-compare th.hlc-sortable[aria-sort="none"] .hlc-sort-down {
   opacity: 0.42;
-  color: var(--shroffin-ink-muted, #6e6e73);
+  color: var(--shroffin-muted);
 }
 
 .hlc-compare th[aria-sort="ascending"] .hlc-sort-up,
 .hlc-compare th[aria-sort="descending"] .hlc-sort-down {
   opacity: 1;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
 }
 
 .hlc-compare th[aria-sort="ascending"] .hlc-sort-down,
 .hlc-compare th[aria-sort="descending"] .hlc-sort-up {
   opacity: 0.14;
-  color: var(--shroffin-ink-muted, #6e6e73);
+  color: var(--shroffin-muted);
 }
 
 .hlc-sort-up svg,
@@ -4489,6 +4548,16 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   z-index: 0;
   background-color: var(--hlc-page-bg);
   pointer-events: none;
+}
+
+/*
+ * Body sticky shield is what you see on Bank; match the soft row fade used
+ * on metric cell backgrounds so hover/select does not snap only on Bank.
+ */
+.hlc-compare tbody td.hlc-sticky-col::before {
+  transition:
+    background-color var(--shroffin-micro-duration, 0.5s)
+      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .hlc-compare th.hlc-sticky-col::before {
@@ -4928,6 +4997,10 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
     opacity: 0;
   }
 
+  .hlc-compare tbody td.hlc-sticky-col::before {
+    transition: none;
+  }
+
   .hlc-compare tbody tr.hlc-selectable-row:not(.is-selected):hover,
   .hlc-compare tbody tr.is-selected:hover {
     box-shadow: none;
@@ -4970,7 +5043,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   padding: 0;
   border: 1.5px solid var(--hlc-icon-rest);
   border-radius: 50%;
-  background: #fff;
+  background: var(--hlc-surface-strong);
   box-sizing: border-box;
   display: grid;
   place-items: center;
@@ -5011,7 +5084,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 }
 
 .hlc-select-all:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
@@ -5022,7 +5095,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   margin-top: 0.15rem;
   border: 1.5px solid var(--hlc-icon-rest);
   border-radius: 50%;
-  background: #fff;
+  background: var(--hlc-surface-strong);
   box-sizing: border-box;
   display: grid;
   place-items: center;
@@ -5086,7 +5159,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   /* Same dotted blue cue as loan amount / calculation cells. */
   text-decoration: underline;
   text-decoration-style: dotted;
-  text-decoration-color: var(--shroffin-link, #0066cc);
+  text-decoration-color: var(--shroffin-link);
   text-underline-offset: 0.2em;
 }
 
@@ -5097,20 +5170,26 @@ button.hlc-bank-name-text {
 .hlc-bank-name-text:hover,
 button.hlc-bank-name-text:focus-visible {
   color: inherit;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: var(--shroffin-link);
 }
 
 button.hlc-bank-name-text:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
 .hlc-bank-logo {
   flex: 0 0 auto;
+  box-sizing: border-box;
   width: 1.625rem;
   height: 1.625rem;
+  padding: var(--hlc-logo-plate-pad);
   object-fit: contain;
   object-position: center;
+  /* Plate + optional hair via tokens; light defaults are invisible (no layout shift). */
+  background-color: var(--hlc-logo-plate);
+  border-radius: var(--hlc-logo-plate-radius);
+  box-shadow: inset 0 0 0 1px var(--hlc-logo-plate-line);
 }
 
 /*
@@ -5182,7 +5261,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-empty {
   white-space: normal;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   text-align: center;
   padding: 1.75rem 1.25rem;
 }
@@ -5226,7 +5305,7 @@ button.hlc-bank-name-text:focus-visible {
   gap: var(--shroffin-link-arrow-gap, 0.35em);
   border: none;
   background: transparent;
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   font: inherit;
   font-size: 17px;
   font-weight: 500;
@@ -5247,15 +5326,15 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-show-more:hover,
 .hlc-show-more:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: var(--shroffin-link);
 }
 
 .hlc-show-more:active {
-  color: var(--shroffin-link-active, #2f4ba0);
+  color: var(--shroffin-link-active);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: var(--shroffin-link-active);
 }
 
 .hlc-show-more-arrow {
@@ -5281,14 +5360,31 @@ button.hlc-bank-name-text:focus-visible {
   .hlc-compare-table-area {
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
   }
 
   .hlc-table-wrap {
     order: 1;
+    /* Flex default min-width:auto grows with the table and breaks phone col fit. */
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .hlc-table-pin,
+  .hlc-table-head-scroll,
+  .hlc-table-scroll {
+    min-width: 0;
+    max-width: 100%;
   }
 
   .hlc-paddles {
     order: 2;
+  }
+
+  /* Keep paddles clear of the fixed Apply once dock. */
+  body.hlc-apply-dock-open .hlc-paddles {
+    margin-bottom: calc(6.25rem + env(safe-area-inset-bottom, 0px));
   }
 
   .hlc-charges-note {
@@ -5309,13 +5405,13 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-paddle {
   appearance: none;
   border: 1px solid var(--hlc-line);
-  background: #fff;
+  background: var(--hlc-surface-strong);
   width: var(--shroffin-btn-touch, 44px);
   height: var(--shroffin-btn-touch, 44px);
   border-radius: var(--shroffin-btn-radius, 980px);
   cursor: pointer;
   font-size: 1.1rem;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   transition: opacity var(--shroffin-micro-duration, 0.5s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
@@ -5327,7 +5423,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(29, 29, 31, 0.35);
+  background: var(--hlc-drawer-veil);
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--shroffin-ui-duration, 0.85s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
@@ -5348,7 +5444,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-drawer {
   position: fixed;
   z-index: 41;
-  background: #fff;
+  background: var(--hlc-surface-strong);
   box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
@@ -5397,7 +5493,7 @@ button.hlc-bank-name-text:focus-visible {
   margin: 0;
   padding: 1.35rem var(--hlc-drawer-pad-x) 1.15rem;
   border-bottom: 1px solid var(--hlc-line-soft);
-  background: #fff;
+  background: var(--hlc-surface-strong);
   z-index: 2;
 }
 
@@ -5425,7 +5521,7 @@ button.hlc-bank-name-text:focus-visible {
   font-weight: 600;
   letter-spacing: normal;
   line-height: 1.25;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   text-align: left;
 }
 
@@ -5436,7 +5532,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-drawer-top p {
   margin: 0.4rem 0 0;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.9375rem;
   line-height: 1.4;
 }
@@ -5481,7 +5577,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-icon-btn {
   appearance: none;
   border: 1px solid var(--hlc-line);
-  background: #fff;
+  background: var(--hlc-surface-strong);
   width: var(--shroffin-btn-touch, 44px);
   height: var(--shroffin-btn-touch, 44px);
   border-radius: var(--shroffin-btn-radius, 980px);
@@ -5492,7 +5588,7 @@ button.hlc-bank-name-text:focus-visible {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   margin-top: 0;
 }
 
@@ -5505,7 +5601,7 @@ button.hlc-bank-name-text:focus-visible {
   overflow-y: auto;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: rgba(29, 29, 31, 0.28) transparent;
+  scrollbar-color: var(--hlc-rule-28) transparent;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -5552,7 +5648,7 @@ button.hlc-bank-name-text:focus-visible {
   font-weight: 600;
   letter-spacing: normal;
   text-transform: none;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
 }
 
 .hlc-drawer-toolbar {
@@ -5570,7 +5666,7 @@ button.hlc-bank-name-text:focus-visible {
   font-weight: 600;
   line-height: 1.35;
   letter-spacing: normal;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
 }
 
 .hlc-drawer-actions {
@@ -5587,7 +5683,7 @@ button.hlc-bank-name-text:focus-visible {
   padding: 0.25rem 0;
   border: 0;
   background: transparent;
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   font: inherit;
   font-size: 0.9375rem;
   font-weight: 500;
@@ -5601,27 +5697,27 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-drawer-toggle-all:hover,
 .hlc-drawer-toggle-all:focus-visible {
-  color: var(--shroffin-link-active, #2f4ba0);
+  color: var(--shroffin-link-active);
 }
 
 .hlc-drawer-toggle-all:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
   border-radius: 0.35rem;
 }
 
 .hlc-drawer-group {
   margin: 0;
-  border-top: 1px solid rgba(29, 29, 31, 0.1);
+  border-top: 1px solid var(--hlc-rule-10);
 }
 
 .hlc-drawer-body > .hlc-drawer-group:last-of-type {
-  border-bottom: 1px solid rgba(29, 29, 31, 0.1);
+  border-bottom: 1px solid var(--hlc-rule-10);
 }
 
 .hlc-drawer-group--nested {
   margin: 0 0 0 0.9rem;
-  border-top: 1px solid rgba(29, 29, 31, 0.08);
+  border-top: 1px solid var(--hlc-rule-08);
   border-bottom: 0;
 }
 
@@ -5634,7 +5730,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-drawer-group--nested[open] > .hlc-drawer-toggle {
-  border-bottom: 1px solid rgba(29, 29, 31, 0.08);
+  border-bottom: 1px solid var(--hlc-rule-08);
 }
 
 .hlc-drawer-toggle {
@@ -5647,7 +5743,7 @@ button.hlc-bank-name-text:focus-visible {
   background: transparent;
   text-align: left;
   cursor: pointer;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   list-style: none;
 }
 
@@ -5660,11 +5756,11 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-drawer-toggle:hover {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
 }
 
 .hlc-drawer-toggle:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
   border-radius: 0.35rem;
 }
@@ -5687,15 +5783,15 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-drawer-group--nested .hlc-drawer-label {
   font-size: 1rem;
   letter-spacing: normal;
-  color: #3a3a3c;
+  color: var(--hlc-ink-soft);
 }
 
 .hlc-drawer-group--nested > .hlc-drawer-toggle {
-  color: #3a3a3c;
+  color: var(--hlc-ink-soft);
 }
 
 .hlc-drawer-group--nested > .hlc-drawer-toggle:hover {
-  color: #3a3a3c;
+  color: var(--hlc-ink-soft);
 }
 
 .hlc-drawer-chevron {
@@ -5709,7 +5805,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-drawer-group[open]:not(.hlc-drawer-group--nested) > .hlc-drawer-toggle {
-  border-bottom: 1px solid rgba(29, 29, 31, 0.1);
+  border-bottom: 1px solid var(--hlc-rule-10);
 }
 
 .hlc-drawer-group[open]:not(.hlc-drawer-group--nested):has(.hlc-fee-sections)
@@ -5788,9 +5884,9 @@ button.hlc-bank-name-text:focus-visible {
   top: 0;
   z-index: 1;
   padding: 0.9rem 0;
-  border-bottom: 1px solid rgba(29, 29, 31, 0.14);
-  background: #f7f7f8;
-  color: var(--shroffin-ink, #1d1d1f);
+  border-bottom: 1px solid var(--hlc-rule-14);
+  background: var(--hlc-drawer-strip);
+  color: var(--shroffin-ink);
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.35;
@@ -5812,7 +5908,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-fee-col-sub {
   display: block;
   margin-top: 0;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: normal;
@@ -5834,7 +5930,7 @@ button.hlc-bank-name-text:focus-visible {
   padding-bottom: 0.75rem;
   font-weight: 400;
   vertical-align: top;
-  border-bottom: 1px solid rgba(29, 29, 31, 0.14);
+  border-bottom: 1px solid var(--hlc-rule-14);
 }
 
 .hlc-fee-table thead tr.hlc-fee-head-unit-row th.hlc-fee-head-unit {
@@ -5843,8 +5939,8 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-slab-table td {
   padding: 0.85rem 0;
-  border-bottom: 1px solid rgba(29, 29, 31, 0.08);
-  color: var(--shroffin-muted, #6e6e73);
+  border-bottom: 1px solid var(--hlc-rule-08);
+  color: var(--shroffin-muted);
   font-size: 0.9375rem;
   line-height: 1.35;
 }
@@ -5853,7 +5949,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-slab-table td:last-child {
   width: 34%;
   padding-left: 0.75rem;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-variant-numeric: tabular-nums;
   text-align: right;
 }
@@ -5884,7 +5980,7 @@ button.hlc-bank-name-text:focus-visible {
   gap: 0.5rem 0.75rem;
   align-items: start;
   padding: 1.05rem 0;
-  border-bottom: 1px solid var(--shroffin-line, #e8e8ed);
+  border-bottom: 1px solid var(--hlc-drawer-rule);
 }
 
 .hlc-math-bar:last-child {
@@ -5897,7 +5993,7 @@ button.hlc-bank-name-text:focus-visible {
   align-items: flex-start;
   justify-content: flex-start;
   padding-top: 0.15rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.8125rem;
   font-weight: 400;
   font-variant-numeric: tabular-nums;
@@ -5919,7 +6015,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-math-bar-label {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 0.9375rem;
   font-weight: 600;
   line-height: 1.35;
@@ -5927,7 +6023,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-math-bar-note {
   margin-top: 0.4rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.875rem;
   line-height: 1.5;
 }
@@ -5938,11 +6034,11 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-math-bar--house.hlc-math-bar--limiting .hlc-math-num--result {
-  color: #7a3410;
+  color: var(--hlc-limit-house);
 }
 
 .hlc-math-bar--income.hlc-math-bar--limiting .hlc-math-num--result {
-  color: #234a82;
+  color: var(--hlc-limit-income);
 }
 
 .hlc-story-card > .hlc-drawer-group--nested {
@@ -5987,13 +6083,13 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-amort-table td {
   padding: 0.45rem 0.5rem;
   text-align: right;
-  border-bottom: 1px solid var(--shroffin-line, #e8e8ed);
+  border-bottom: 1px solid var(--hlc-drawer-rule);
   font-size: 0.8125rem;
 }
 
 .hlc-amort-table th {
   font-weight: 600;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
 }
 
 .hlc-amort-table th:first-child,
@@ -6052,11 +6148,11 @@ button.hlc-bank-name-text:focus-visible {
   gap: 0.35rem;
   margin-bottom: 1.25rem;
   padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--shroffin-line, #e8e8ed);
+  border-bottom: 1px solid var(--hlc-drawer-rule);
 }
 
 .hlc-story-lead {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 1.0625rem;
   font-weight: 500;
   line-height: 1.4;
@@ -6064,12 +6160,12 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-story-work-title {
   padding: 0.75rem 0 0.85rem;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 1.0625rem;
   font-weight: 600;
   letter-spacing: normal;
   line-height: 1.3;
-  border-bottom: 1px solid var(--shroffin-line, #e8e8ed);
+  border-bottom: 1px solid var(--hlc-drawer-rule);
 }
 
 .hlc-story-work-title + .hlc-math-bars .hlc-math-bar:first-child {
@@ -6077,7 +6173,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-story-result {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: clamp(2.25rem, 8vw, 3rem);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -6107,7 +6203,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-math-block + .hlc-math-block {
-  border-top: 1px solid rgba(29, 29, 31, 0.06);
+  border-top: 1px solid var(--hlc-rule-06);
 }
 
 .hlc-math-block-aside {
@@ -6115,7 +6211,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-math-block-label {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.4;
@@ -6123,7 +6219,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-math-block-note {
   margin-top: 0.2rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.8125rem;
   line-height: 1.45;
 }
@@ -6143,7 +6239,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-math-num {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 1rem;
   font-variant-numeric: tabular-nums;
   font-weight: 500;
@@ -6153,7 +6249,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-math-op {
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.9375rem;
   font-variant-numeric: tabular-nums;
   line-height: 1.45;
@@ -6172,7 +6268,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-math-num--result {
   font-size: 1.0625rem;
   font-weight: 600;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
 }
 
 .hlc-math-caption-row {
@@ -6185,13 +6281,13 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-math-caption-row + .hlc-math-caption-row {
-  border-top: 1px solid rgba(29, 29, 31, 0.06);
+  border-top: 1px solid var(--hlc-rule-06);
 }
 
 .hlc-math-caption {
   min-width: 0;
   flex: 1 1 auto;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.9375rem;
   line-height: 1.45;
 }
@@ -6203,20 +6299,20 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-math-caption-row--limiting .hlc-math-caption,
 .hlc-math-caption-row--limiting .hlc-math-num {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-weight: 600;
 }
 
 .hlc-math-caption-row--house.hlc-math-caption-row--limiting .hlc-math-num {
-  color: #7a3410;
+  color: var(--hlc-limit-house);
 }
 
 .hlc-math-caption-row--income.hlc-math-caption-row--limiting .hlc-math-num {
-  color: #234a82;
+  color: var(--hlc-limit-income);
 }
 
 .hlc-math-caption-row:not(.hlc-math-caption-row--limiting) .hlc-math-num {
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-weight: 400;
 }
 
@@ -6229,7 +6325,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-story-block-title {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 0.9375rem;
   font-weight: 600;
   line-height: 1.35;
@@ -6252,12 +6348,12 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-story-track {
   padding: 1rem 0 1rem 1.25rem;
-  border-left: 1px solid rgba(29, 29, 31, 0.14);
+  border-left: 1px solid var(--hlc-rule-14);
   opacity: 0.4;
 }
 
 .hlc-story-track.hlc-story-track--active {
-  border-left-color: var(--shroffin-ink, #1d1d1f);
+  border-left-color: var(--shroffin-ink);
   opacity: 1;
 }
 
@@ -6271,18 +6367,18 @@ button.hlc-bank-name-text:focus-visible {
   font-weight: 500;
   line-height: 1.35;
   margin-bottom: 0.5rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
 }
 
 .hlc-story-track--active .hlc-story-track-title {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-weight: 600;
 }
 
 .hlc-story-track-note {
   display: block;
   margin-bottom: 0.75rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.8125rem;
   line-height: 1.45;
   font-weight: 400;
@@ -6291,7 +6387,7 @@ button.hlc-bank-name-text:focus-visible {
 /* Compare section title above the min-of-two row */
 .hlc-story-compare-title {
   margin: 0.75rem 0 0.35rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.4;
@@ -6299,7 +6395,7 @@ button.hlc-bank-name-text:focus-visible {
 
 /* The active track's limiting step label is slightly stronger */
 .hlc-story-track--active .hlc-math-bar--limiting .hlc-math-bar-label {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
 }
 
 .hlc-story-math-stack {
@@ -6310,12 +6406,12 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-story-divider {
   height: 1px;
   margin: 0.875rem 0;
-  background: rgba(29, 29, 31, 0.1);
+  background: var(--hlc-rule-10);
 }
 
 .hlc-story-note {
   margin-top: 0.875rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.875rem;
   line-height: 1.45;
 }
@@ -6329,7 +6425,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-story-breakdown-row + .hlc-story-breakdown-row {
-  border-top: 1px solid rgba(29, 29, 31, 0.06);
+  border-top: 1px solid var(--hlc-rule-06);
 }
 
 .hlc-story-breakdown-main {
@@ -6342,7 +6438,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-story-breakdown-name {
   min-width: 0;
   flex: 1 1 auto;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 0.9375rem;
   font-weight: 400;
   line-height: 1.45;
@@ -6350,7 +6446,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-story-breakdown-amt {
   flex: 0 0 auto;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 1rem;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
@@ -6361,7 +6457,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-story-breakdown-how {
   margin-top: 0.25rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.875rem;
   font-variant-numeric: tabular-nums;
   line-height: 1.4;
@@ -6391,7 +6487,7 @@ button.hlc-bank-name-text:focus-visible {
   align-items: start;
   font-size: 0.9375rem;
   padding: 0.85rem 0;
-  border-bottom: 1px solid rgba(29, 29, 31, 0.08);
+  border-bottom: 1px solid var(--hlc-rule-08);
 }
 
 .hlc-drawer-card .hlc-kv:last-child {
@@ -6399,7 +6495,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-kv-label {
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   line-height: 1.35;
 }
 
@@ -6407,7 +6503,7 @@ button.hlc-bank-name-text:focus-visible {
   font-variant-numeric: tabular-nums;
   font-weight: 500;
   text-align: right;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   line-height: 1.35;
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -6417,7 +6513,7 @@ button.hlc-bank-name-text:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 0;
-  border-bottom: 1px solid rgba(29, 29, 31, 0.08);
+  border-bottom: 1px solid var(--hlc-rule-08);
 }
 
 .hlc-fee-sections:has(> .hlc-fee-charge-block):not(:has(> .hlc-drawer-group--nested)):not(
@@ -6443,13 +6539,13 @@ button.hlc-bank-name-text:focus-visible {
   gap: 0.75rem 1rem;
   margin: 0 0 0 0.9rem;
   padding: 0.5rem 0.15rem 0.5rem 0.1rem;
-  border-top: 1px solid rgba(29, 29, 31, 0.08);
+  border-top: 1px solid var(--hlc-rule-08);
   box-sizing: border-box;
 }
 
 .hlc-fee-flat-name {
   min-width: 0;
-  color: #3a3a3c;
+  color: var(--hlc-ink-soft);
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: normal;
@@ -6458,7 +6554,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-fee-flat-value {
   flex: 0 0 auto;
-  color: #3a3a3c;
+  color: var(--hlc-ink-soft);
   font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.35;
@@ -6481,7 +6577,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-fee-slab-title {
   margin: 0;
   padding: 0 0.15rem;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: normal;
@@ -6491,7 +6587,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-fee-matrix-unit {
   margin: 0.2rem 0 0.45rem;
   padding: 0 0.15rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.35;
@@ -6500,7 +6596,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-fee-category-title {
   margin: 0 0 0.5rem;
   padding: 0 0.15rem;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: normal;
@@ -6516,13 +6612,13 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-fee-charge-block + .hlc-fee-charge-block {
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(29, 29, 31, 0.08);
+  border-top: 1px solid var(--hlc-rule-08);
 }
 
 .hlc-fee-charge-title {
   margin: 0;
   padding: 0 0.15rem;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: normal;
@@ -6545,7 +6641,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-fee-amount {
   display: block;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   line-height: 1.35;
@@ -6553,7 +6649,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-fee-what {
   display: block;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-weight: 500;
   line-height: 1.35;
 }
@@ -6561,7 +6657,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-fee-detail {
   display: block;
   margin-top: 0.25rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.4;
@@ -6569,7 +6665,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-fee-particular-name {
   display: block;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 1.0625rem;
   font-weight: 600;
   letter-spacing: normal;
@@ -6579,7 +6675,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-fee-meta {
   display: block;
   margin-top: 0.2rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.4;
@@ -6588,7 +6684,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-fee-matrix th[scope="row"] {
   width: auto;
   padding-right: 0.75rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-weight: 500;
   text-align: left;
 }
@@ -6606,7 +6702,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-fee-note {
   margin: 0.55rem 0 0;
   padding: 0 0.15rem;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.5;
@@ -6615,7 +6711,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-drawer-foot {
   margin: 0.15rem 0 0;
   padding: 0.35rem 0.15rem 0;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: normal;
@@ -6635,7 +6731,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-apply-count {
   margin: 0;
-  color: var(--shroffin-muted, #6e6e73);
+  color: var(--shroffin-muted);
   font-size: 1rem;
   font-weight: 500;
   letter-spacing: normal;
@@ -6690,8 +6786,8 @@ button.hlc-bank-name-text:focus-visible {
     padding: 0.55rem 0.9rem;
     border-radius: var(--shroffin-btn-radius, 980px);
     border: none;
-    background: #e8e8ed;
-    color: var(--shroffin-ink, #1d1d1f);
+    background: var(--hlc-drawer-rule);
+    color: var(--shroffin-ink);
     box-shadow: none;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
@@ -6719,7 +6815,7 @@ button.hlc-bank-name-text:focus-visible {
     backdrop-filter: saturate(1.2) blur(16px);
     box-shadow:
       0 8px 28px rgba(0, 113, 227, 0.16),
-      0 2px 8px rgba(29, 29, 31, 0.06);
+      0 2px 8px var(--hlc-rule-06);
   }
 
   /* Banks selected — same solid blue pill as other primary CTAs. */
@@ -6782,15 +6878,16 @@ button.hlc-bank-name-text:focus-visible {
    * Phone: bank column is narrower (9rem) so metric columns have more room.
    * Bank names wrap to a second line rather than truncating — the row height
    * grows slightly, which is fine and avoids hiding lender identity.
+   * JS may set --hlc-phone-bank-col but must not shrink below this default.
    */
   .hlc-compare col.hlc-col-bank {
-    width: 9rem;
+    width: var(--hlc-phone-bank-col, 9rem);
   }
 
   .hlc-sticky-col {
-    width: 9rem;
-    min-width: 9rem;
-    max-width: 9rem;
+    width: var(--hlc-phone-bank-col, 9rem);
+    min-width: var(--hlc-phone-bank-col, 9rem);
+    max-width: var(--hlc-phone-bank-col, 9rem);
   }
 
   .hlc-compare th.hlc-sticky-col,
@@ -6812,8 +6909,9 @@ button.hlc-bank-name-text:focus-visible {
   }
 
   /*
-   * Overview only: metric cols hug content (JS measures widest value/header).
-   * Bank is measured separately. Charges / Other charges keep rem widths above.
+   * Overview only: Bank stays at the phone Bank width; Rate + Loan share the
+   * rest of the viewport when possible. Tenure / EMI keep natural widths and
+   * scroll sideways.
    */
   .hlc-compare[data-group="essentials"] {
     width: max-content;
@@ -6831,6 +6929,20 @@ button.hlc-bank-name-text:focus-visible {
   .hlc-compare[data-group="essentials"] td:not(.hlc-sticky-col) {
     padding-left: 0.35rem;
     padding-right: 0.35rem;
+  }
+
+  /* Let long Overview titles (Loan amount) wrap inside the fitted width. */
+  .hlc-compare[data-group="essentials"] th:not(.hlc-sticky-col) .hlc-column-title {
+    white-space: normal;
+  }
+
+  /* Keep Rate / Loan figures readable inside the fitted column widths. */
+  .hlc-compare[data-group="essentials"] td:not(.hlc-sticky-col) .hlc-rank-figure,
+  .hlc-compare[data-group="essentials"] td:not(.hlc-sticky-col) .hlc-cell-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
   }
 
   /*
@@ -6873,6 +6985,7 @@ button.hlc-bank-name-text:focus-visible {
   }
 
   .explore-banks-page {
+    --hlc-phone-bank-col: 9rem;
     --hlc-check-size: 0.8125rem;
     --hlc-check-gap: 0.45rem;
   }
@@ -6884,7 +6997,7 @@ button.hlc-bank-name-text:focus-visible {
   }
 
   body.hlc-apply-dock-open .hlc-compare-table-area {
-    padding-bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
   }
 
   body.hlc-apply-dock-open .hlc-toast {
@@ -6918,8 +7031,8 @@ button.hlc-bank-name-text:focus-visible {
   left: 50%;
   bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
   transform: translateX(-50%) translateY(1rem);
-  background: var(--shroffin-ink, #1d1d1f);
-  color: #fff;
+  background: var(--shroffin-ink);
+  color: var(--hlc-icon-on-mark);
   font-size: 0.875rem;
   padding: 0.65rem 1rem;
   border-radius: var(--shroffin-btn-radius, 980px);
@@ -7036,10 +7149,10 @@ button.hlc-bank-name-text:focus-visible {
   min-height: var(--shroffin-btn-touch, 44px);
   margin: 0;
   padding: 0.45rem 0.65rem;
-  border: 1px solid var(--hlc-line-soft, rgba(29, 29, 31, 0.12));
+  border: 1px solid var(--hlc-line-soft);
   border-radius: calc(var(--hlc-radius) - 0.15rem);
-  background: #fff;
-  color: var(--shroffin-muted, #6e6e73);
+  background: var(--hlc-surface-strong);
+  color: var(--shroffin-muted);
   font-family: inherit;
   font-size: 0.9375rem;
   font-weight: 500;
@@ -7055,18 +7168,18 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-toggle-chips .hlc-chip[aria-pressed="true"] {
-  color: var(--shroffin-ink, #1d1d1f);
-  border-color: rgba(29, 29, 31, 0.28);
-  background: rgba(29, 29, 31, 0.06);
+  color: var(--shroffin-ink);
+  border-color: var(--hlc-rule-28);
+  background: var(--hlc-rule-06);
 }
 
 .hlc-toggle-chips .hlc-chip[aria-pressed="false"]:hover {
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   background: rgba(29, 29, 31, 0.03);
 }
 
 .hlc-toggle-chips .hlc-chip:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
@@ -7186,7 +7299,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-field-help:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
@@ -7201,12 +7314,12 @@ button.hlc-bank-name-text:focus-visible {
   width: min(17.5rem, calc(100vw - 1.5rem));
   max-width: min(17.5rem, calc(100vw - 1.5rem));
   padding: 0.75rem 0.85rem;
-  border: 1px solid rgba(29, 29, 31, 0.1);
+  border: 1px solid var(--hlc-rule-10);
   border-radius: 12px;
-  background: #fff;
+  background: var(--hlc-surface-strong);
   box-shadow:
     0 1px 2px rgba(29, 29, 31, 0.04),
-    0 12px 28px rgba(29, 29, 31, 0.1);
+    0 12px 28px var(--hlc-rule-10);
   white-space: normal;
   overflow: visible;
   opacity: 0;
@@ -7240,7 +7353,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-field-help-text {
   margin: 0;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.45;
@@ -7252,7 +7365,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-field-help-list {
   margin: 0.45rem 0 0;
   padding: 0 0 0 1.2rem;
-  color: var(--shroffin-ink, #1d1d1f);
+  color: var(--shroffin-ink);
   font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.45;
@@ -7270,7 +7383,7 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-field-help-more {
   display: inline-block;
   margin-top: 0.55rem;
-  color: var(--shroffin-focus, #0071e3);
+  color: var(--shroffin-focus);
   font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1.3;
@@ -7280,13 +7393,13 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-field-help-more:hover,
 .hlc-field-help-more:focus-visible {
-  color: var(--shroffin-btn-primary-hover, #0058b0);
+  color: var(--shroffin-btn-primary-hover);
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }
 
 .hlc-field-help-more:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
@@ -7317,8 +7430,7 @@ button.hlc-bank-name-text:focus-visible {
  * Same column + card chrome as .hlc-inputs-card.
  */
 .hlc-intelligence {
-  --hlc-intel-line: rgba(0, 0, 0, 0.088);
-  --hlc-intel-radius: var(--hlc-field-radius, 0.5rem);
+  --hlc-intel-radius: var(--shroffin-card-radius, 16px);
   box-sizing: border-box;
   position: relative;
   isolation: isolate;
@@ -7345,11 +7457,9 @@ button.hlc-bank-name-text:focus-visible {
   z-index: -1;
   border-radius: inherit;
   /* Same surface as guide chapter cards */
-  background: #f7f7f7;
+  background: var(--hlc-intel-surface);
   border: none;
-  box-shadow:
-    0 1px 2px rgba(60, 64, 67, 0.08),
-    0 8px 20px rgba(60, 64, 67, 0.1);
+  box-shadow: var(--hlc-card-lift);
   transform: translateZ(0);
 }
 
@@ -7370,11 +7480,11 @@ button.hlc-bank-name-text:focus-visible {
 .hlc-intel-eyebrow {
   margin: 0;
   min-width: 0;
-  font-size: 0.75rem; /* 12px — strip label */
+  font-size: 1rem; /* 16px — strip label */
   font-weight: 400;
   letter-spacing: normal;
   line-height: 1.33337;
-  color: var(--hlc-text-tertiary, #86868b);
+  color: var(--hlc-text-tertiary);
 }
 
 .hlc-intel-status {
@@ -7385,7 +7495,7 @@ button.hlc-bank-name-text:focus-visible {
   font-weight: 400;
   letter-spacing: normal;
   line-height: 1.47059;
-  color: var(--hlc-text-primary, var(--shroffin-ink, #1d1d1f));
+  color: var(--hlc-text-primary);
   white-space: normal;
   overflow-wrap: break-word;
 }
@@ -7506,7 +7616,7 @@ button.hlc-bank-name-text:focus-visible {
   font-weight: 600;
   letter-spacing: normal;
   line-height: 1.33337;
-  color: var(--hlc-text-primary, var(--shroffin-ink, #1d1d1f));
+  color: var(--hlc-text-primary);
 }
 
 @media (min-width: 734px) {
@@ -7521,7 +7631,8 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 /*
- * Detail (horizon + body) opens with is-tips-expanded (set together with is-tips-open).
+ * Detail (body) opens with is-tips-expanded (set together with is-tips-open).
+ * Horizon stays above the heading and is always visible when the tip row is open.
  */
 .hlc-intel-tip-detail {
   display: grid;
@@ -7553,12 +7664,12 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-intel-horizon {
   display: block;
-  margin: 0 0 0.4rem;
+  margin: 0 0 0.3rem;
   font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: normal;
   line-height: 1.33337;
-  color: var(--hlc-text-tertiary, #86868b);
+  color: var(--hlc-text-tertiary);
   text-transform: none;
   background: none;
   padding: 0;
@@ -7572,7 +7683,7 @@ button.hlc-bank-name-text:focus-visible {
   font-weight: 400;
   letter-spacing: normal;
   line-height: 1.42859;
-  color: var(--hlc-text-secondary, var(--shroffin-muted, #6e6e73));
+  color: var(--hlc-text-secondary);
   max-width: 36em;
 }
 
@@ -7596,7 +7707,7 @@ button.hlc-bank-name-text:focus-visible {
   border: 0;
   border-radius: 0;
   background: transparent;
-  color: var(--shroffin-link, #0066cc);
+  color: var(--shroffin-link);
   font: inherit;
   font-size: 1.0625rem;
   font-weight: 400;
@@ -7627,10 +7738,10 @@ button.hlc-bank-name-text:focus-visible {
   min-height: 2.75rem;
   margin: 1rem auto 0;
   padding: 0;
-  border: 1px solid var(--hlc-intel-line, rgba(0, 0, 0, 0.088));
+  border: 1px solid var(--hlc-intel-line);
   border-radius: 980px;
   background: transparent;
-  color: var(--shroffin-link, #0066cc);
+  color: var(--shroffin-link);
   font: inherit;
   font-size: 1.0625rem;
   font-weight: 500;
@@ -7663,7 +7774,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-intel-plus:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: 3px;
 }
 
@@ -7703,7 +7814,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-intel-more:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -7737,4 +7848,127 @@ button.hlc-bank-name-text:focus-visible {
   .hlc-intel-more[aria-expanded="true"] .hlc-intel-more-chevron {
     transform: rotate(180deg);
   }
+}
+
+html[data-theme="dark"] .explore-banks-page {
+  --hlc-wash: rgba(255, 255, 255, 0.08);
+  --hlc-surface: rgba(255, 255, 255, 0.12);
+  --hlc-surface-strong: #2C2C2C;
+  --hlc-row-selected: #383838;
+  --hlc-row-hover: #2C2C2C;
+  --hlc-row-line: rgba(255, 255, 255, 0.06);
+  --hlc-row-lift:
+    0 1px 3px rgba(0, 0, 0, 0.28),
+    0 4px 14px rgba(0, 0, 0, 0.22);
+  /*
+   * Soft ambient depth only — large blur, modest opacity, no tight high-contrast
+   * offset (that reads as a second hard box behind the card on dark).
+   */
+  --hlc-card-lift:
+    0 8px 28px rgba(0, 0, 0, 0.28),
+    0 24px 56px rgba(0, 0, 0, 0.20);
+  /* Page #121212 → card #1E1E1E → fields --hlc-surface-strong #2C2C2C. */
+  --hlc-card-surface: #1E1E1E;
+  --hlc-line: rgba(154, 163, 181, 0.32);
+  --hlc-line-soft: rgba(154, 163, 181, 0.18);
+  --hlc-line-faint: rgba(154, 163, 181, 0.10);
+  --hlc-delta-wash: rgba(245, 215, 142, 0.22);
+  --hlc-rank-helpful-ink: #8FDBA5;
+  --hlc-rank-helpful-num: #A3E4B5;
+  --hlc-rank-helpful-bg: #1B3D2F;
+  --hlc-rank-costly-ink: #F2A4A0;
+  --hlc-rank-costly-num: #FFB4AB;
+  --hlc-rank-costly-bg: #3D1F1F;
+  --hlc-rank-grace-ink: #F5D78E;
+  --hlc-rank-grace-bg: #3A2E14;
+  --hlc-field-label: #A1A1A6;
+  --hlc-field-hint: #A1A1A6;
+  /* Charcoal edges on #2C2C2C fills — not cool steel (that reads chalky/whitish). */
+  --hlc-field-box-line: #484848;
+  --hlc-input-field-line: #484848;
+  --hlc-section-line: #383838;
+  --hlc-section-line-strong: #636366;
+  --hlc-seg-track: #1E1E1E;
+  --hlc-drawer-strip: #2C2C2C;
+  --hlc-drawer-rule: #383838;
+  /* Match inputs card elevation — same Material step 1 panel. */
+  --hlc-intel-surface: #1E1E1E;
+  --hlc-intel-line: rgba(255, 255, 255, 0.10);
+  --hlc-meta-ink: #A1A1A6;
+  --hlc-ink-soft: #C7C7CC;
+  --hlc-text-tertiary: #8E8E93;
+  --hlc-link-hover: #2997FF;
+  --hlc-limit-house: #E0A070;
+  --hlc-limit-income: #7EB6FF;
+  --hlc-title-wash-from: #E8EAED;
+  --hlc-title-wash-to: #A1A1A6;
+  --hlc-logo-plate: #FFFFFF;
+  --hlc-logo-plate-pad: 3px;
+  --hlc-logo-plate-radius: 0.2rem;
+  --hlc-logo-plate-line: rgba(0, 0, 0, 0.08);
+  --hlc-rule-06: rgba(255, 255, 255, 0.06);
+  --hlc-rule-08: rgba(255, 255, 255, 0.08);
+  --hlc-rule-10: rgba(255, 255, 255, 0.10);
+  --hlc-rule-14: rgba(255, 255, 255, 0.12);
+  --hlc-rule-18: rgba(255, 255, 255, 0.14);
+  --hlc-rule-28: rgba(255, 255, 255, 0.18);
+  --hlc-drawer-veil: rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="dark"] .hlc-chip[aria-pressed="true"] {
+  background: rgba(10, 132, 255, 0.14);
+  border-color: rgba(10, 132, 255, 0.45);
+  color: var(--shroffin-blue);
+}
+
+html[data-theme="dark"] .hlc-apply-dock:not([hidden]) .hlc-btn-primary:disabled {
+  background: rgba(10, 132, 255, 0.40);
+  box-shadow:
+    0 8px 28px rgba(10, 132, 255, 0.16),
+    0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+html[data-theme="dark"] .hlc-filters-scrim.is-open {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="dark"] .hlc-toggle-chips .hlc-chip[aria-pressed="true"] {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme="dark"] .hlc-toggle-chips .hlc-chip[aria-pressed="false"]:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+html[data-theme="dark"] .hlc-form-row-support {
+  color: rgba(255, 255, 255, 0.45);
+}
+html[data-theme="dark"] .hlc-field-note {
+  color: rgba(255, 255, 255, 0.45);
+}
+html[data-theme="dark"] .explore-banks-page .hlc-inputs-card .hlc-field-note.hlc-field-note--card-load {
+  color: rgba(255, 255, 255, 0.55);
+}
+html[data-theme="dark"] .hlc-searching-dots span {
+  background: rgba(255, 255, 255, 0.18);
+}
+html[data-theme="dark"] .hlc-filter-option:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+html[data-theme="dark"] .hlc-drawer-scroll {
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+html[data-theme="dark"] .hlc-drawer-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+}
+html[data-theme="dark"] .hlc-math-rule {
+  background: rgba(255, 255, 255, 0.12);
+}
+html[data-theme="dark"] .hlc-story-track:not(.hlc-story-track--active) .hlc-math-num,
+html[data-theme="dark"] .hlc-story-track:not(.hlc-story-track--active) .hlc-math-op {
+  color: rgba(255, 255, 255, 0.55);
+}
+html[data-theme="dark"] .hlc-story-divider {
+  background: rgba(255, 255, 255, 0.10);
 }

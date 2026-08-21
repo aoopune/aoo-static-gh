@@ -1,6 +1,6 @@
 /**
- * Fill empty SHROFFIN_NAV / FOOTER markers inside layout templates so a
- * naive layout+body stitch can never ship pages without chrome.
+ * Fill empty SHROFFIN_NAV / FOOTER / THEME_BOOT markers inside layout
+ * templates so a naive layout+body stitch can never ship pages without chrome.
  */
 const fs = require('fs');
 const path = require('path');
@@ -18,7 +18,8 @@ pages.forEach(function (entry) {
   const source = fs.readFileSync(layoutAbs, 'utf8');
   if (
     !source.includes('<!-- SHROFFIN_NAV_START -->') &&
-    !source.includes('<!-- SHROFFIN_FOOTER_START -->')
+    !source.includes('<!-- SHROFFIN_FOOTER_START -->') &&
+    !source.includes('<!-- SHROFFIN_THEME_BOOT_START -->')
   ) {
     return;
   }

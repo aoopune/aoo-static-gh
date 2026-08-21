@@ -631,10 +631,10 @@ function tipItemHtml(t, isExtra) {
     + '"'
     + (isExtra ? ' aria-hidden="true"' : "")
     + ">"
+    + '<span class="hlc-intel-horizon hlc-intel-horizon--' + escHtml(t.kind) + '">' + escHtml(t.horizon) + "</span>"
     + '<strong class="hlc-intel-heading">' + escHtml(t.heading) + "</strong>"
     + '<div class="hlc-intel-tip-detail" aria-hidden="true">'
     + '<div class="hlc-intel-tip-detail-clip">'
-    + '<span class="hlc-intel-horizon hlc-intel-horizon--' + escHtml(t.kind) + '">' + escHtml(t.horizon) + "</span>"
     + '<p class="hlc-intel-body">' + escHtml(t.body) + "</p>"
     + "</div>"
     + "</div>"

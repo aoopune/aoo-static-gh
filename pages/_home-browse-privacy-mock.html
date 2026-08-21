@@ -9,16 +9,51 @@
     Privacy moment (not Transparent’s detail book):
     flip through banks and open EMI — no contact fields anywhere.
   -->
-  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css">
+
+  <link rel="stylesheet" href="../css/shroffin-shell.min.css?v=home-wash-8">
   <style>
+    /*
+      Default = dark glass (story dark band).
+      Light = raised paper card on the light story stage — same UI, readable ink.
+    */
     :root {
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
       --text: #f5f5f7;
       --muted: rgba(245, 245, 247, 0.55);
       --line: rgba(245, 245, 247, 0.12);
       --focus: #2997ff;
+      --panel-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      --panel-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.18);
+      --fill-soft: rgba(255, 255, 255, 0.035);
+      --fill-hover: rgba(255, 255, 255, 0.055);
+      --fill-on: rgba(255, 255, 255, 0.1);
+      --fill-on-line: rgba(245, 245, 247, 0.28);
+      --fill-mark: rgba(255, 255, 255, 0.06);
+      --mark-ring: rgba(255, 255, 255, 0.12);
+      --sheet-bg: rgba(0, 0, 0, 0.28);
+      --sheet-ring: rgba(255, 255, 255, 0.06);
+      --scroll-thumb: rgba(245, 245, 247, 0.22);
+    }
+
+    /* Light story stage: opaque raised card + shell ink (not white-on-glass). */
+    html[data-theme="light"] {
+      --text: var(--shroffin-ink);
+      --muted: var(--shroffin-muted);
+      --line: var(--shroffin-hair-soft);
+      --focus: var(--shroffin-blue);
+      --panel-bg: var(--shroffin-canvas-mix-base);
+      --panel-shadow:
+        inset 0 0 0 0.5px var(--shroffin-hair-soft),
+        0 18px 40px color-mix(in srgb, var(--shroffin-ink) 12%, transparent);
+      --fill-soft: color-mix(in srgb, var(--shroffin-ink) 4%, var(--shroffin-canvas-mix-base));
+      --fill-hover: color-mix(in srgb, var(--shroffin-ink) 6%, var(--shroffin-canvas-mix-base));
+      --fill-on: color-mix(in srgb, var(--shroffin-ink) 8%, var(--shroffin-canvas-mix-base));
+      --fill-on-line: var(--shroffin-hair);
+      --fill-mark: var(--shroffin-paper-note);
+      --mark-ring: var(--shroffin-hair-soft);
+      --sheet-bg: var(--shroffin-paper-note);
+      --sheet-ring: var(--shroffin-hair-soft);
+      --scroll-thumb: var(--shroffin-hair);
     }
 
     * { box-sizing: border-box; }
@@ -27,7 +62,7 @@
       margin: 0;
       width: 100%;
       height: 100%;
-      background: #0a0a0a;
+      background: transparent;
       overflow: hidden;
       font-family: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
       color: var(--text);
@@ -60,11 +95,8 @@
       flex-direction: column;
       border-radius: 18px;
       overflow: hidden;
-      background:
-        linear-gradient(165deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
-      box-shadow:
-        inset 0 0 0 0.5px rgba(255, 255, 255, 0.18),
-        0 24px 48px rgba(0, 0, 0, 0.45);
+      background: var(--panel-bg);
+      box-shadow: var(--panel-shadow);
       opacity: 0;
       transform: translateY(18px) scale(0.985);
       transition:
@@ -104,7 +136,7 @@
       padding: 8px 12px 8px 8px;
       border-radius: 980px;
       border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.035);
+      background: var(--fill-soft);
       color: inherit;
       font: inherit;
       font-size: 12.5px;
@@ -119,7 +151,7 @@
     }
 
     .chip:hover {
-      background: rgba(255, 255, 255, 0.055);
+      background: var(--fill-hover);
     }
 
     .chip:focus-visible {
@@ -128,8 +160,8 @@
     }
 
     .chip.is-on {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(245, 245, 247, 0.28);
+      background: var(--fill-on);
+      border-color: var(--fill-on-line);
     }
 
     .chip img {
@@ -137,7 +169,7 @@
       height: 22px;
       border-radius: 6px;
       object-fit: contain;
-      background: rgba(255, 255, 255, 0.06);
+      background: var(--fill-mark);
     }
 
     .body {
@@ -147,7 +179,7 @@
       padding: 18px 18px 20px;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: thin;
-      scrollbar-color: rgba(245, 245, 247, 0.22) transparent;
+      scrollbar-color: var(--scroll-thumb) transparent;
     }
 
     .bank-line {
@@ -163,8 +195,8 @@
       border-radius: 11px;
       display: grid;
       place-items: center;
-      background: rgba(255, 255, 255, 0.06);
-      box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
+      background: var(--fill-mark);
+      box-shadow: inset 0 0 0 0.5px var(--mark-ring);
       flex: 0 0 auto;
     }
 
@@ -230,7 +262,7 @@
       padding: 12px;
       border-radius: 14px;
       border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.035);
+      background: var(--fill-soft);
     }
 
     .step-num {
@@ -242,8 +274,8 @@
       font-size: 11px;
       font-weight: 600;
       color: var(--muted);
-      background: rgba(255, 255, 255, 0.06);
-      box-shadow: inset 0 0 0 0.5px rgba(255, 245, 247, 0.1);
+      background: var(--fill-mark);
+      box-shadow: inset 0 0 0 0.5px var(--mark-ring);
     }
 
     .step-label {
@@ -262,8 +294,8 @@
 
     .sheet {
       border-radius: 10px;
-      background: rgba(0, 0, 0, 0.28);
-      box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.06);
+      background: var(--sheet-bg);
+      box-shadow: inset 0 0 0 0.5px var(--sheet-ring);
       padding: 10px 12px;
       font-variant-numeric: tabular-nums;
     }
@@ -306,6 +338,22 @@
       }
     }
   </style>
+
+<script>
+(function () {
+  function syncTheme() {
+    try {
+      var t = parent.document.documentElement.getAttribute("data-theme");
+      if (t === "dark" || t === "light") {
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      }
+    } catch (e) {}
+  }
+  syncTheme();
+  try { parent.document.addEventListener("shroffin-theme-change", syncTheme); } catch (e) {}
+})();
+</script>
 </head>
 <body>
   <div class="stage">

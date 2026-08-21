@@ -3,24 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- SHROFFIN_THEME_BOOT_START -->
+  <!--
+    Phase I live theme boot. Spec: _dark-mode-phase-c-boot-injection.md §5
+    Preference: localStorage['shroffin-color-preference'] ∈ {dark, light, system}
+    Resolved: html[data-theme="dark"|"light"]; first visit unset → dark (do NOT write until user taps).
+    Default (system) ≠ first visit. OS listener only when preference === system.
+    theme-color: dark #121212 / light #fcfcfd
+    FOUC: set data-theme + color-scheme + canvas background before stylesheets.
+  -->
+  <script data-shroffin-theme-boot="live">
+  (function () {
+    var KEY = 'shroffin-color-preference';
+    var root = document.documentElement;
+    function resolve(pref) {
+      if (pref === 'light') return 'light';
+      if (pref === 'dark') return 'dark';
+      if (pref === 'system') {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      return 'dark';
+    }
+    function applyThemeColor(resolved) {
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute('name', 'theme-color');
+        if (document.head.firstChild) document.head.insertBefore(meta, document.head.firstChild);
+        else document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', resolved === 'dark' ? '#121212' : '#fcfcfd');
+    }
+    function apply(resolved) {
+      root.setAttribute('data-theme', resolved);
+      root.style.colorScheme = resolved;
+      /* Critical canvas before CSS / home inline light hardcodes */
+      root.style.backgroundColor = resolved === 'dark' ? '#121212' : '#fcfcfd';
+      applyThemeColor(resolved);
+    }
+    var pref = null;
+    try { pref = localStorage.getItem(KEY); } catch (e) {}
+    if (pref !== 'dark' && pref !== 'light' && pref !== 'system') pref = null;
+    apply(resolve(pref));
+    window.__shroffinApplyColorPreference = function (next) {
+      if (next !== 'dark' && next !== 'light' && next !== 'system') return;
+      try { localStorage.setItem(KEY, next); } catch (e) {}
+      apply(resolve(next));
+      document.dispatchEvent(new CustomEvent('shroffin-theme-change', {
+        detail: { preference: next, theme: resolve(next) }
+      }));
+    };
+    try {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+        var p = null;
+        try { p = localStorage.getItem(KEY); } catch (e) {}
+        if (p === 'system') {
+          apply(resolve('system'));
+          document.dispatchEvent(new CustomEvent('shroffin-theme-change', {
+            detail: { preference: 'system', theme: resolve('system') }
+          }));
+        }
+        /* If pref unset or dark/light: ignore OS changes */
+      });
+    } catch (e) {}
+  })();
+  </script>
+  <!-- SHROFFIN_THEME_BOOT_END -->
   <script>document.documentElement.classList.add('js', 'home-boot');</script>
   <title>Shroffin</title>
+  <!-- LCP wallpaper first — do not preload fonts ahead of it (they starve LCP on slow links). -->
+  <link
+    rel="preload"
+    as="image"
+    href="media/demos/product-demo-desktop-900.webp?v=20260821a"
+    type="image/webp"
+    fetchpriority="high"
+  >
   <link rel="icon" href="favicon.ico?v=6" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="images/logos/favicon-32.png?v=6">
   <link rel="icon" type="image/png" sizes="16x16" href="images/logos/favicon-16.png?v=6">
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=6">
   <link rel="manifest" href="site.webmanifest?v=6">
-  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <style>
     :root {
       --gn-height: 48px;
-      --gn-bg: #fcfcfd;
-      --gn-bg: color-mix(in srgb, #0071e3 0.75%, #ffffff);
-      --gn-text: rgba(29, 29, 31, 0.8);
-      --gn-text-hover: #1d1d1f;
-      --gn-ink: #1d1d1f;
+      --gn-bg: var(--shroffin-surface, #fcfcfd);
+      --gn-text: var(--shroffin-ink-soft, #3a3a3d);
+      --gn-text-hover: var(--shroffin-ink, #1d1d1f);
+      --gn-ink: var(--shroffin-ink, #1d1d1f);
       --gn-max: 1068px;
       --font-brand: 'Google Sans Flex', sans-serif;
     }
@@ -162,25 +232,33 @@
     }
 
     .home-hero-cta-secondary:hover {
-      background: var(--shroffin-btn-primary-hover, #0058b0);
+      background: var(--shroffin-btn-primary-hover);
       color: #fff;
       border-color: transparent;
     }
 
     .home-hero-cta-secondary:active {
-      background: var(--shroffin-btn-primary-active, #004a96);
+      background: var(--shroffin-btn-primary-active);
       color: #fff;
       border-color: transparent;
     }
 
     /* ——— Dark story band — one window, side panel (copy | picture) ——— */
     .home-story-dark {
+      /* Theme-follow: band vs card contrast (card reads as a window); inside card = one fill. */
+      --home-story-bg: #F5F5F7;
+      --home-story-ink: #1d1d1f;
+      --home-device-stage: #E8E8ED;
       --home-feature-card-w: min(1240px, calc(100% - 28px));
       --home-feature-card-h: min(560px, calc(100svh - 120px));
       --home-feature-copy-w: min(100%, 22rem);
+      /* Type scale: title always one step above in-card body (bright). */
+      --home-feature-body-size: clamp(1.05rem, 1.9vw, 1.1875rem);
+      --home-feature-body-bright-size: clamp(1.4rem, 2.7vw, 1.75rem);
+      --home-feature-title-size: clamp(1.48rem, 4.96vw, 2.6rem);
       width: 100%;
-      background: #1a1a1a;
-      color: #f5f5f7;
+      background: var(--home-story-bg);
+      color: var(--home-story-ink);
       padding: clamp(32px, 5vw, 64px) 0;
     }
 
@@ -199,16 +277,16 @@
       color: inherit;
     }
 
-    /* Title sits above the window — large, outside the card, one line */
+    /* Title sits above the window — larger than in-card body, outside the card */
     .home-feature-title {
       box-sizing: border-box;
       width: var(--home-feature-card-w);
       max-width: none;
       margin: 0 auto clamp(18px, 2.8vw, 28px);
       padding: 0;
-      color: #f5f5f7;
-      font-size: clamp(1.48rem, 4.96vw, 2.6rem);
-      font-weight: 500;
+      color: var(--home-story-ink);
+      font-size: var(--home-feature-title-size);
+      font-weight: 600;
       letter-spacing: -0.035em;
       line-height: 1.12;
       text-align: left;
@@ -235,9 +313,9 @@
       grid-template-rows: minmax(0, 1fr);
       gap: 0;
       overflow: hidden;
-      border-radius: 16px;
+      border-radius: var(--shroffin-card-radius, 16px);
       border: 0;
-      background: #0a0a0a;
+      background: var(--home-device-stage);
       box-shadow: none;
     }
 
@@ -266,7 +344,7 @@
       min-height: 0;
       width: 100%;
       height: 100%;
-      background-color: #0a0a0a;
+      background-color: var(--home-device-stage);
       background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
@@ -276,15 +354,15 @@
       max-width: var(--home-feature-copy-w);
       margin: 0;
       color: rgba(255, 255, 255, 0.55);
-      font-size: clamp(1.05rem, 1.9vw, 1.1875rem);
+      font-size: var(--home-feature-body-size);
       font-weight: 400;
       line-height: 1.4;
     }
 
-    /* Best of all support line only — color/size; does not touch the demo grid */
+    /* Bright body — solid story ink (was #f5f5f7 on dark island) */
     .home-feature-body--bright {
-      color: #f5f5f7;
-      font-size: clamp(1.4rem, 2.7vw, 1.75rem);
+      color: var(--home-story-ink);
+      font-size: var(--home-feature-body-bright-size);
       font-weight: 500;
       line-height: 1.35;
     }
@@ -298,6 +376,9 @@
         --home-feature-card-w: min(1240px, calc(100% - 48px));
         --home-feature-card-h: min(620px, calc(100svh - 100px));
         --home-feature-copy-w: min(100%, 26rem);
+        --home-feature-body-size: clamp(1.1rem, 1.35vw, 1.25rem);
+        --home-feature-body-bright-size: clamp(1.4rem, 2.7vw, 1.75rem);
+        --home-feature-title-size: clamp(2rem, 3.36vw, 3rem);
         padding: clamp(36px, 5vw, 72px) 0;
       }
 
@@ -306,30 +387,21 @@
       }
 
       .home-feature-card {
-        border-radius: 16px;
+        border-radius: var(--shroffin-card-radius, 16px);
         grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
       }
 
       .home-feature-title {
         margin-bottom: clamp(24px, 3vw, 40px);
-        font-size: clamp(2rem, 3.36vw, 3rem);
       }
 
       .home-feature-card {
-        border-radius: 16px;
+        border-radius: var(--shroffin-card-radius, 16px);
         grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
       }
 
       .home-feature-copy {
         padding: clamp(36px, 4vw, 56px) clamp(28px, 3.5vw, 52px);
-      }
-
-      .home-feature-body {
-        font-size: clamp(1.1rem, 1.35vw, 1.25rem);
-      }
-
-      .home-feature-body--bright {
-        font-size: clamp(1.4rem, 2.7vw, 1.75rem);
       }
     }
 
@@ -337,15 +409,26 @@
       .home-story-dark {
         --home-feature-card-h: min(560px, calc(100svh - 100px));
         --home-feature-copy-w: min(100%, 40ch);
+        /* Phone: title a clear step above bright body (was crushed below it). */
+        --home-feature-title-size: clamp(1.55rem, 5.6vw, 1.9rem);
       }
 
       .home-feature-title {
         padding: 0;
-        font-size: clamp(0.84rem, 3.52vw, 1.32rem);
+        /* Exact two-line breaks via .home-feature-title-line — not free wrap. */
+        white-space: normal;
+      }
+
+      .home-feature-title-line {
+        display: block;
+      }
+
+      .home-feature-title-line + .home-feature-title-line::before {
+        content: none;
       }
 
       .home-feature-card {
-        border-radius: 16px;
+        border-radius: var(--shroffin-card-radius, 16px);
         grid-template-columns: 1fr;
         grid-template-rows: auto minmax(0, 1fr);
       }
@@ -357,8 +440,10 @@
       }
 
       .home-feature-body {
-        margin-left: auto;
+        margin-left: 0;
         margin-right: auto;
+        text-align: left;
+        align-self: flex-start;
       }
 
       .home-feature-visual {
@@ -409,7 +494,7 @@
       display: block;
       padding: 0;
       overflow: hidden;
-      background: #0a0a0a;
+      background: var(--home-device-stage);
     }
 
     /*
@@ -430,18 +515,43 @@
     }
 
     @media (max-width: 833px) {
+      /*
+       * Compare demo — Cursor mobile peek architecture:
+       * Stage clips a desktop-sized window. Iframe stays at design width
+       * (860×460) so Explore media queries never flip to phone layout.
+       * Desktop hang-off (≥834px) is unchanged above.
+       */
+      .home-feature-card--compare {
+        height: min(680px, calc(100svh - 72px));
+      }
+
       .home-feature-card--compare .home-feature-copy {
-        padding: 22px 16px 2px 22px;
+        padding: 18px 16px 8px 18px;
       }
 
       .home-feature-card--compare .home-feature-body--bright {
-        /* Keep the two body lines readable without eating the demo */
+        /* Keep the body readable without eating the demo */
         font-size: clamp(1.12rem, 4.1vw, 1.35rem);
       }
 
+      /* Phone: one flowing sentence — no forced mid-copy line break */
+      .home-feature-card--compare .home-feature-body-line {
+        display: inline;
+      }
+
+      .home-feature-visual--compare {
+        min-height: min(460px, 58svh);
+        padding: 0;
+      }
+
       .home-lead-compare-frame {
-        width: calc(100% + 10px);
-        height: calc(100% + 12px);
+        /* Design canvas — not 100% of the narrow slot */
+        top: 8px;
+        left: 10px;
+        width: 860px;
+        height: 460px;
+        min-height: 460px;
+        max-width: none; /* defeat any iframe max-width:100% that would shrink the canvas */
       }
     }
 
@@ -476,10 +586,10 @@
 
     @media (max-width: 833px) {
       .home-hero-copy {
+        /* Keep phone rail width only — gap above the title and under Explore banks
+           must match the desktop hero recipe (base .home-hero-copy), not the old
+           full-viewport centering that sat too close to the nav. */
         width: min(1068px, calc(100% - 32px));
-        --hero-copy-gap: calc((40px + 3.5rem) / 2);
-        padding-top: calc(var(--hero-copy-gap) - var(--gn-height) / 2);
-        padding-bottom: calc(var(--hero-copy-gap) + var(--gn-height) / 2);
       }
 
       .home-hero-ctas {
@@ -582,11 +692,69 @@
     @keyframes home-hero-rise {
       to { transform: translateY(0); }
     }
+  
+    /* Phase I — theme twins (single owner; paint only; copy frozen) */
+    html[data-theme="dark"] .home-story-dark {
+      --home-story-bg: #121212;
+      --home-story-ink: #F5F5F7;
+      --home-device-stage: #1E1E1E;
+    }
+    /* Body bright must stay #F5F5F7 in dark — do not let soft-body rules win. */
+    html[data-theme="dark"] .home-feature-body--bright {
+      color: #F5F5F7;
+    }
+    html[data-theme="light"] .home-feature-body--bright {
+      color: #1d1d1f;
+    }
+    html[data-theme="light"] .home-feature-body:not(.home-feature-body--bright) {
+      color: rgba(29, 29, 31, 0.55);
+    }
+    html[data-theme="dark"] .home-feature-body:not(.home-feature-body--bright) {
+      color: rgba(255, 255, 255, 0.55);
+    }
+    html[data-theme="dark"] {
+      --gn-bg: color-mix(in srgb, #0A84FF 0.75%, #121212);
+      --gn-text: rgba(245, 245, 247, 0.72);
+      --gn-text-hover: #F5F5F7;
+      --gn-ink: #F5F5F7;
+    }
+    html[data-theme="dark"] body { color: #F5F5F7; }
+    html[data-theme="dark"] .home-hero { background: #121212; }
+    html[data-theme="dark"] .home-hero-title { color: #F5F5F7; }
+    html[data-theme="dark"] .home-hero-cta-secondary {
+      color: #0A84FF;
+      border-color: #0A84FF;
+    }
+    html[data-theme="dark"] .site-footer {
+      background: #1E1E1E;
+      color: rgba(255, 255, 255, 0.45);
+    }
+    html[data-theme="dark"] .site-footer-disclaimer-title,
+    html[data-theme="dark"] .site-footer-disclaimer,
+    html[data-theme="dark"] .site-footer-copy a:hover {
+      color: #F5F5F7;
+    }
+
   </style>
-  <link rel="stylesheet" href="css/shroffin-shell.css?v=home-wash-6">
-  <link rel="stylesheet" href="css/shroffin-product-demo.css?v=107">
-  <link rel="stylesheet" href="css/shroffin-home-calm-phone.css?v=25">
-  <link rel="stylesheet" href="css/shroffin-home-level-field.css?v=16">
+  <link rel="stylesheet" href="css/shroffin-shell.min.css?v=home-wash-8">
+  <link rel="stylesheet" href="css/shroffin-product-demo.min.css?v=110">
+  <!-- Below-fold home sections: non-blocking so they do not delay LCP wallpaper. -->
+  <link
+    rel="stylesheet"
+    href="css/shroffin-home-calm-phone.css?v=25"
+    media="print"
+    onload="this.media='all'"
+  >
+  <link
+    rel="stylesheet"
+    href="css/shroffin-home-level-field.css?v=17"
+    media="print"
+    onload="this.media='all'"
+  >
+  <noscript>
+    <link rel="stylesheet" href="css/shroffin-home-calm-phone.css?v=25">
+    <link rel="stylesheet" href="css/shroffin-home-level-field.css?v=17">
+  </noscript>
   <!-- shroffin-home.css: stance styles moved to about; file kept for now -->
   <!-- <link rel="stylesheet" href="css/shroffin-home.css?v=stance-34"> -->
 </head>
@@ -598,13 +766,23 @@
       <ul class="globalnav-list">
         <li class="globalnav-item globalnav-item-brand">
           <a class="globalnav-link globalnav-link-brand" href="/" aria-label="Shroffin Home">
-            <img
-              class="globalnav-logo"
-              src="/images/logos/logo-h-light-clear-781x173.png"
-              alt="Shroffin"
-              width="99"
-              height="22"
-            >
+            <!-- Phase G logo swap: light mark is default until html[data-theme="dark"] (Phase I boot). CSS owner: css/shroffin-shell.css -->
+              <img
+                class="globalnav-logo globalnav-logo--light"
+                src="/images/logos/logo-h-light-clear-781x173.png"
+                alt="Shroffin"
+                width="99"
+                height="22"
+              >
+              <img
+                class="globalnav-logo globalnav-logo--dark"
+                src="/images/logos/logo-h-dark-clear-781x173.png"
+                alt=""
+                width="99"
+                height="22"
+                aria-hidden="true"
+                decoding="async"
+              >
           </a>
         </li>
         <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled
@@ -792,6 +970,23 @@
           Product demonstration of Explore banks. Open Explore banks for the live tool.
         </div>
         <div class="spd-stage" data-spd-stage data-spd-playback-root>
+          <picture>
+            <source
+              type="image/webp"
+              srcset="media/demos/product-demo-desktop-900.webp?v=20260821a 900w, media/demos/product-demo-desktop-1200.webp?v=20260821a 1200w"
+              sizes="(max-width: 833px) 100vw, min(1400px, 100vw)"
+            >
+            <img
+              class="spd-wallpaper"
+              src="media/demos/product-demo-desktop-900.jpg?v=20260821a"
+              alt=""
+              width="1600"
+              height="900"
+              decoding="async"
+              fetchpriority="high"
+              aria-hidden="true"
+            >
+          </picture>
           <div class="spd-stage-scaler">
             <div class="spd-window-slot" data-spd-slot>
               <div class="spd-window" data-spd-window>
@@ -824,14 +1019,14 @@
                     </div>
                   </div>
                 </div>
+                <!-- src set by chrome JS after paint for the visible viewport only -->
                 <iframe
                   class="spd-frame"
                   data-spd-frame
+                  data-spd-src="pages/_product-demo-frame.html?v=80"
                   title="Explore banks product demo"
-                  src="pages/_product-demo-frame.html?v=78"
                   width="1640"
                   height="1025"
-                  loading="eager"
                   tabindex="-1"
                 ></iframe>
               </div>
@@ -864,6 +1059,23 @@
           Animated demonstration of Explore banks on a phone-sized layout. Open Explore banks for the live tool.
         </div>
         <div class="spd-stage spd-stage--phone" data-spd-stage data-spd-device="phone" data-spd-playback-root>
+          <picture>
+            <source
+              type="image/webp"
+              srcset="media/demos/product-demo-desktop-900.webp?v=20260821a 900w, media/demos/product-demo-desktop-1200.webp?v=20260821a 1200w"
+              sizes="(max-width: 833px) 100vw, min(1400px, 100vw)"
+            >
+            <img
+              class="spd-wallpaper"
+              src="media/demos/product-demo-desktop-900.jpg?v=20260821a"
+              alt=""
+              width="1600"
+              height="900"
+              decoding="async"
+              fetchpriority="high"
+              aria-hidden="true"
+            >
+          </picture>
           <div class="spd-stage-scaler">
             <div class="spd-window-slot" data-spd-slot>
               <div class="spd-window" data-spd-window>
@@ -877,14 +1089,14 @@
                     </span>
                   </div>
                 </div>
+                <!-- src set by chrome JS after paint for the visible viewport only -->
                 <iframe
                   class="spd-frame"
                   data-spd-frame
+                  data-spd-src="pages/_product-demo-frame-mobile.html?v=43"
                   title="Explore banks mobile demo"
-                  src="pages/_product-demo-frame-mobile.html?v=41"
                   width="402"
                   height="874"
-                  loading="eager"
                   tabindex="-1"
                 ></iframe>
                 <div class="spd-ios-bottom" aria-hidden="true">
@@ -925,11 +1137,14 @@
     <div class="home-story-dark">
     <!-- Feature cards: title above, then one window (copy left, picture right) -->
     <section class="home-feature home-feature--compare" aria-labelledby="home-lead-title">
-      <h2 class="home-feature-title" id="home-lead-title">Your home loan journey, now <span class="home-title-wash home-title-wash--siri">completely re-engineered</span>.</h2>
+      <h2 class="home-feature-title" id="home-lead-title">
+        <span class="home-feature-title-line">Your home loan journey,</span>
+        <span class="home-feature-title-line">now <span class="home-title-wash home-title-wash--siri">completely re-engineered</span>.</span>
+      </h2>
       <div class="home-feature-card home-feature-card--compare">
         <div class="home-feature-copy">
           <p class="home-feature-body home-feature-body--bright">
-            <span class="home-feature-body-line">Lender details that were scattered are now in one place</span>
+            <span class="home-feature-body-line">Lender details that were scattered are now in one place,</span>
             <span class="home-feature-body-line">so you can compare them side by side.</span>
           </p>
         </div>
@@ -937,15 +1152,17 @@
           <iframe
             class="home-lead-compare-frame"
             title="Compare lenders demo — select banks and switch Overview, Charges, and Other charges"
-            src="pages/_home-lead-compare-frame.html?v=24"
-            loading="lazy"
+            data-home-embed-src="pages/_home-lead-compare-frame.html?v=31"
           ></iframe>
         </div>
       </div>
     </section>
 
     <section class="home-feature" aria-labelledby="home-browse-title">
-      <h2 class="home-feature-title" id="home-browse-title">Explore everything, <span class="home-title-wash home-title-wash--privacy">reveal nothing</span>.</h2>
+      <h2 class="home-feature-title" id="home-browse-title">
+        <span class="home-feature-title-line">Explore everything,</span>
+        <span class="home-feature-title-line"><span class="home-title-wash home-title-wash--privacy">reveal nothing</span>.</span>
+      </h2>
       <div class="home-feature-card">
         <div class="home-feature-copy">
           <p class="home-feature-body home-feature-body--bright">You can look through all of it without surrendering your phone number or email.</p>
@@ -953,9 +1170,8 @@
         <div class="home-feature-visual home-feature-visual--browse">
           <iframe
             class="home-browse-privacy-frame"
-            title="Browse lenders demo — open any bank’s details without sharing phone or email"
-            src="pages/_home-browse-privacy-mock.html?embed=1&v=7"
-            loading="lazy"
+            title="Browse lenders demo — flip banks and see EMI without sharing contact details"
+            data-home-embed-src="pages/_home-browse-privacy-mock.html?embed=1&v=11"
           ></iframe>
         </div>
       </div>
@@ -1002,11 +1218,12 @@
                       <span class="hcp-icon-wrap" aria-hidden="true">
                         <img
                           class="hcp-icon"
-                          src="images/logos/logo-mark-blue-clear-300x300.png"
+                          src="images/logos/logo-mark-blue-clear-80x80.png"
                           alt=""
-                          width="300"
-                          height="300"
+                          width="40"
+                          height="40"
                           decoding="async"
+                          loading="lazy"
                         >
                       </span>
                       <div class="hcp-text">
@@ -1044,103 +1261,103 @@
             <div class="hlf-panel">
               <ul class="hlf-grid">
                 <li class="hlf-tile" style="--i: 0">
-                  <img class="hlf-logo" src="images/banks/state-bank-of-india.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/state-bank-of-india.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 1">
-                  <img class="hlf-logo" src="images/banks/hdfc-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/hdfc-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 2">
-                  <img class="hlf-logo" src="images/banks/icici-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/icici-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 3">
-                  <img class="hlf-logo" src="images/banks/axis-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/axis-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 4">
-                  <img class="hlf-logo" src="images/banks/kotak-mahindra-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/kotak-mahindra-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 5">
-                  <img class="hlf-logo" src="images/banks/bank-of-baroda.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/bank-of-baroda.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 6">
-                  <img class="hlf-logo" src="images/banks/canara-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/canara-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 7">
-                  <img class="hlf-logo" src="images/banks/punjab-national-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/punjab-national-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 8">
-                  <img class="hlf-logo" src="images/banks/bank-of-maharashtra.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/bank-of-maharashtra.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 9">
-                  <img class="hlf-logo" src="images/banks/union-bank-of-india.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/union-bank-of-india.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 10">
-                  <img class="hlf-logo" src="images/banks/bank-of-india.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/bank-of-india.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 11">
-                  <img class="hlf-logo" src="images/banks/indian-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/indian-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 12">
-                  <img class="hlf-logo" src="images/banks/idfc-first-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/idfc-first-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 13">
-                  <img class="hlf-logo" src="images/banks/yes-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/yes-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 14">
-                  <img class="hlf-logo" src="images/banks/indusind-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/indusind-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 15">
-                  <img class="hlf-logo" src="images/banks/federal-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/federal-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 16">
-                  <img class="hlf-logo" src="images/banks/bandhan-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/bandhan-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 17">
-                  <img class="hlf-logo" src="images/banks/central-bank-of-india.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/central-bank-of-india.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 18">
-                  <img class="hlf-logo" src="images/banks/city-union-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/city-union-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 19">
-                  <img class="hlf-logo" src="images/banks/csb-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/csb-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 20">
-                  <img class="hlf-logo" src="images/banks/dcb-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/dcb-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 21">
-                  <img class="hlf-logo" src="images/banks/dhanlaxmi-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/dhanlaxmi-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 22">
-                  <img class="hlf-logo" src="images/banks/idbi-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/idbi-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 23">
-                  <img class="hlf-logo" src="images/banks/indian-overseas-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/indian-overseas-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 24">
-                  <img class="hlf-logo" src="images/banks/jammu-kashmir-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/jammu-kashmir-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 25">
-                  <img class="hlf-logo" src="images/banks/karnataka-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/karnataka-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 26">
-                  <img class="hlf-logo" src="images/banks/karur-vysya-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/karur-vysya-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 27">
-                  <img class="hlf-logo" src="images/banks/nainital-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/nainital-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 28">
-                  <img class="hlf-logo" src="images/banks/punjab-sind-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/punjab-sind-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 29">
-                  <img class="hlf-logo" src="images/banks/rbl-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/rbl-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 30">
-                  <img class="hlf-logo" src="images/banks/south-indian-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/south-indian-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 31">
-                  <img class="hlf-logo" src="images/banks/tamilnad-mercantile-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/tamilnad-mercantile-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
                 <li class="hlf-tile" style="--i: 32">
-                  <img class="hlf-logo" src="images/banks/uco-bank.png" alt="" width="40" height="40">
+                  <img class="hlf-logo" src="images/banks/uco-bank.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </li>
               </ul>
             </div>
@@ -1150,7 +1367,10 @@
     </section>
 
     <section class="home-feature" aria-labelledby="home-clear-title">
-      <h2 class="home-feature-title" id="home-clear-title"><span class="home-clear-word">Transparent</span>, like never before.</h2>
+      <h2 class="home-feature-title" id="home-clear-title">
+        <span class="home-feature-title-line"><span class="home-clear-word">Transparent</span>,</span>
+        <span class="home-feature-title-line">like never before.</span>
+      </h2>
       <div class="home-feature-card">
         <div class="home-feature-copy">
           <p class="home-feature-body home-feature-body--bright">Know everything about your choice before you make it.</p>
@@ -1159,8 +1379,7 @@
           <iframe
             class="home-transparent-frame"
             title="Transparent demo — State Bank of India More details with expandable sections you can open"
-            src="pages/_home-transparent-mock.html?embed=1&v=7"
-            loading="lazy"
+            data-home-embed-src="pages/_home-transparent-mock.html?embed=1&v=10"
           ></iframe>
         </div>
       </div>
@@ -1176,8 +1395,7 @@
           <iframe
             class="home-apply-once-frame"
             title="Apply once demo — one application sent to every bank you chose"
-            src="pages/_home-apply-once-mock.html?embed=1&v=10"
-            loading="lazy"
+            data-home-embed-src="pages/_home-apply-once-mock.html?embed=1&v=14"
           ></iframe>
         </div>
       </div>
@@ -1207,10 +1425,12 @@
           <a class="site-footer-brand-link" href="/" aria-label="Shroffin Home">
             <img
               class="site-footer-logo"
-              src="/images/logos/logo.png"
+              src="/images/logos/logo-mark-40.png"
               alt=""
               width="40"
               height="40"
+              loading="lazy"
+              decoding="async"
             >
           </a>
         </section>
@@ -1293,6 +1513,17 @@
           <div class="site-footer-bottom">
             <div class="site-footer-bottom-row">
               <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
+              <div class="site-footer-theme" role="group" aria-label="Color theme">
+                <button type="button" class="site-footer-theme-btn" data-theme-pref="system" aria-label="Default" aria-pressed="false">
+                  <svg class="site-footer-theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-6v2h2v1H8v-1h2v-2H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 2v8h14V7H5z"/></svg>
+                </button>
+                <button type="button" class="site-footer-theme-btn" data-theme-pref="light" aria-label="Light" aria-pressed="false">
+                  <svg class="site-footer-theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0-5h1v3h-1V2zm0 17h1v3h-1v-3zM2 11h3v1H2v-1zm17 0h3v1h-3v-1zM4.2 4.2l2.1 2.1-.7.7-2.1-2.1.7-.7zm14.1 14.1 2.1 2.1-.7.7-2.1-2.1.7-.7zM4.2 19.8l.7.7-2.1 2.1-.7-.7 2.1-2.1zm14.1-14.1.7.7-2.1 2.1-.7-.7 2.1-2.1z"/></svg>
+                </button>
+                <button type="button" class="site-footer-theme-btn" data-theme-pref="dark" aria-label="Dark" aria-pressed="false">
+                  <svg class="site-footer-theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.1 2a9.9 9.9 0 0 0 0 19.8A10 10 0 0 1 12.1 2z"/></svg>
+                </button>
+              </div>
               <nav class="site-footer-legal-nav" aria-label="Official resources">
                 <ul class="site-footer-official-links">
                   <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
@@ -1308,12 +1539,47 @@
       </div>
     </div>
   </footer>
+  <script>
+  (function () {
+    var KEY = 'shroffin-color-preference';
+    var root = document.querySelector('.site-footer-theme');
+    if (!root) return;
+    var buttons = root.querySelectorAll('[data-theme-pref]');
+    function currentPref() {
+      var p = null;
+      try { p = localStorage.getItem(KEY); } catch (e) {}
+      if (p === 'dark' || p === 'light' || p === 'system') return p;
+      return 'dark';
+    }
+    function syncPressed() {
+      var pref = currentPref();
+      buttons.forEach(function (btn) {
+        var on = btn.getAttribute('data-theme-pref') === pref;
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        btn.classList.toggle('is-active', on);
+      });
+    }
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var next = btn.getAttribute('data-theme-pref');
+        if (typeof window.__shroffinApplyColorPreference === 'function') {
+          window.__shroffinApplyColorPreference(next);
+        } else {
+          try { localStorage.setItem(KEY, next); } catch (e) {}
+          location.reload();
+        }
+        syncPressed();
+      });
+    });
+    syncPressed();
+    document.addEventListener('shroffin-theme-change', syncPressed);
+  })();
+  </script>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="js/shroffin-home-boot.js?v=1"></script>
+  <script src="js/shroffin-home-boot.js?v=3"></script>
   <script src="js/shroffin-nav.js?v=guide-top-1"></script>
-  <script src="js/shroffin-guide.js?v=flip-grow-1"></script>
-  <script src="js/shroffin-product-demo-chrome.js?v=97"></script>
+  <script src="js/shroffin-product-demo-chrome.js?v=100"></script>
   <script src="js/shroffin-home-stance.js?v=home-story-8"></script>
   <script src="js/shroffin-scrub.js?v=home-story-8"></script>
   <script src="js/shroffin-home-calm-phone.js?v=17"></script>

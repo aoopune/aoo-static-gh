@@ -6,6 +6,13 @@
  * Home: iframe product demo + calm play/pause.
  * First full demo view: plays through once without interruption, then stops.
  * Only the Pause control stops it early. No auto-repeat.
+ *
+ * Performance:
+ * - Stage box size is CSS-owned (aspect-ratio + cqw). JS only syncs
+ *   --spd-scale / radius — never writes width/height (avoids CLS).
+ * - Demo iframe src is deferred (data-spd-src) until the stage is near
+ *   the viewport AND the browser is idle — so Explore CSS/fonts do not
+ *   race the LCP wallpaper.
  */
 (function () {
   var DESKTOP_W = 1640;
@@ -14,6 +21,9 @@
   /* iPhone 17 Pro CSS viewport (402×874). Safari chrome overlays inside. */
   var PHONE_W = 402;
   var PHONE_H = 874;
+  var FRAME_IDLE_TIMEOUT_MS = 2200;
+  var lcpGateReady = false;
+  var lcpGateWaiters = [];
 
   function reducedMotion() {
     try {
@@ -21,6 +31,100 @@
     } catch (e) {
       return false;
     }
+  }
+
+  function sectionIsVisible(stage) {
+    var section = stage && stage.closest ? stage.closest(".spd-section") : null;
+    if (!section) return true;
+    try {
+      return window.getComputedStyle(section).display !== "none";
+    } catch (e) {
+      return true;
+    }
+  }
+
+  function openLcpGate() {
+    if (lcpGateReady) return;
+    lcpGateReady = true;
+    var waiters = lcpGateWaiters;
+    lcpGateWaiters = [];
+    waiters.forEach(function (fn) {
+      try {
+        fn();
+      } catch (e) {
+        /* ignore */
+      }
+    });
+  }
+
+  function afterLcp(fn) {
+    if (lcpGateReady) {
+      fn();
+      return;
+    }
+    lcpGateWaiters.push(fn);
+  }
+
+  function armLcpGate() {
+    try {
+      if (typeof PerformanceObserver === "function") {
+        var po = new PerformanceObserver(function (list) {
+          if (!list.getEntries().length) return;
+          po.disconnect();
+          openLcpGate();
+        });
+        po.observe({ type: "largest-contentful-paint", buffered: true });
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    /* Fallback: never block the demo forever if LCP never fires. */
+    window.setTimeout(openLcpGate, 3500);
+    window.addEventListener("load", function () {
+      window.setTimeout(openLcpGate, 500);
+    });
+  }
+
+  function whenIdle(fn) {
+    if (typeof window.requestIdleCallback === "function") {
+      window.requestIdleCallback(fn, { timeout: FRAME_IDLE_TIMEOUT_MS });
+      return;
+    }
+    window.setTimeout(fn, 400);
+  }
+
+  /**
+   * Assign iframe src from data-spd-src once. Frames that already have src
+   * (preview pages) are left alone. Hidden viewport stages stay unloaded.
+   */
+  function activateFrame(frame) {
+    if (!frame || frame.getAttribute("data-spd-src-bound") === "true") return;
+    if (frame.getAttribute("src")) {
+      frame.setAttribute("data-spd-src-bound", "true");
+      return;
+    }
+    var src = frame.getAttribute("data-spd-src");
+    if (!src) return;
+    frame.setAttribute("data-spd-src-bound", "true");
+    frame.setAttribute("src", src);
+  }
+
+  function scheduleFrameActivation(stage) {
+    if (!stage || !sectionIsVisible(stage)) return;
+    var frame = stage.querySelector("[data-spd-frame]");
+    if (!frame || frame.getAttribute("data-spd-src-bound") === "true") return;
+    if (frame.getAttribute("data-spd-src-scheduled") === "true") return;
+    frame.setAttribute("data-spd-src-scheduled", "true");
+    afterLcp(function () {
+      whenIdle(function () {
+        if (sectionIsVisible(stage)) activateFrame(frame);
+        else frame.removeAttribute("data-spd-src-scheduled");
+      });
+    });
+  }
+
+  function activateVisibleDemoFrames() {
+    document.querySelectorAll("[data-spd-stage]").forEach(scheduleFrameActivation);
   }
 
   function fitPlain(stage, slot, win, canvasW, canvasH, marginX, marginY, parentW, isPhone) {
@@ -53,12 +157,14 @@
     /* iPhone 17 Pro display corner radius is 62pt (continuous curve on device). */
     var windowRadius = isPhone ? 62 : 16;
     var outerRadius = windowRadius * scale;
-    stage.style.width = Math.min(scale * canvasW + marginX * 2, parentW) + "px";
-    stage.style.height = scale * canvasH + marginY * 2 + "px";
-    stage.style.borderRadius = Math.max(12, outerRadius) + "px";
+    /*
+     * Do not set stage width/height — CSS aspect-ratio + cqw owns the box.
+     * Only publish the fitted scale and radii for the inner window chrome.
+     */
     stage.style.setProperty("--spd-scale", String(scale));
     stage.style.setProperty("--spd-outer-radius", outerRadius + "px");
     stage.style.setProperty("--spd-window-radius", windowRadius + "px");
+    stage.style.borderRadius = Math.max(12, outerRadius) + "px";
     slot.style.setProperty("--spd-scale", String(scale));
     win.style.setProperty("--spd-scale", String(scale));
     /*
@@ -186,7 +292,7 @@
 
     frame.addEventListener("load", markFrameReady);
     try {
-      if (frame.contentDocument && frame.contentDocument.readyState === "complete") {
+      if (frame.getAttribute("src") && frame.contentDocument && frame.contentDocument.readyState === "complete") {
         markFrameReady();
       }
     } catch (e) {
@@ -255,6 +361,11 @@
     requestAnimationFrame(function () {
       if (readyEl) readyEl.classList.add("is-ready");
       run();
+      /*
+       * Poster paints first. Load the demo iframe only when near viewport
+       * and the main thread is idle — keeps Explore CSS off the LCP path.
+       */
+      observeStageForFrame(stage);
       requestAnimationFrame(function () {
         run();
         if (window.ShroffinHomeBoot) window.ShroffinHomeBoot.tryRelease();
@@ -266,8 +377,46 @@
     }
   }
 
+  function observeStageForFrame(stage) {
+    if (!stage || stage.getAttribute("data-spd-frame-io") === "true") return;
+    stage.setAttribute("data-spd-frame-io", "true");
+
+    if (!("IntersectionObserver" in window)) {
+      scheduleFrameActivation(stage);
+      return;
+    }
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          scheduleFrameActivation(stage);
+          io.disconnect();
+        });
+      },
+      { rootMargin: "200px 0px", threshold: 0.01 }
+    );
+    io.observe(stage);
+  }
+
   function boot() {
+    armLcpGate();
     document.querySelectorAll("[data-spd-stage]").forEach(mount);
+
+    /* Crossing 834px: activate the newly shown stage without loading both up front. */
+    try {
+      var mq = window.matchMedia("(max-width: 833px)");
+      var onViewportChange = function () {
+        activateVisibleDemoFrames();
+      };
+      if (typeof mq.addEventListener === "function") {
+        mq.addEventListener("change", onViewportChange);
+      } else if (typeof mq.addListener === "function") {
+        mq.addListener(onViewportChange);
+      }
+    } catch (e) {
+      /* ignore */
+    }
   }
 
   if (document.readyState === "loading") {

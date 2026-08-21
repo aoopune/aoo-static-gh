@@ -1,16 +1,17 @@
 /**
  * Home landing boot — keeps story sections hidden until hero + product demo
- * have stable layout and the visible demo frame is ready to reveal.
+ * have stable layout, then reveals. Also activates below-fold feature iframes
+ * (data-home-embed-src) only when near the viewport so Explore CSS/fonts stay
+ * off the critical path.
  */
 (function () {
   "use strict";
 
   var root = document.documentElement;
-  if (!root.classList.contains("home-boot")) return;
-
   var released = false;
   var fallbackMs = 2800;
   var fallbackId = 0;
+  var embedsBound = false;
 
   function release() {
     if (released) return;
@@ -64,7 +65,87 @@
     fallbackId = window.setTimeout(release, fallbackMs);
   }
 
+  function activateEmbed(frame) {
+    if (!frame || frame.getAttribute("data-home-embed-bound") === "true") return;
+    var src = frame.getAttribute("data-home-embed-src");
+    if (!src) return;
+    frame.setAttribute("data-home-embed-bound", "true");
+    frame.setAttribute("src", src);
+  }
+
+  function afterLcp(fn) {
+    var done = false;
+    function run() {
+      if (done) return;
+      done = true;
+      fn();
+    }
+    try {
+      if (typeof PerformanceObserver === "function") {
+        var po = new PerformanceObserver(function (list) {
+          if (!list.getEntries().length) return;
+          po.disconnect();
+          run();
+        });
+        po.observe({ type: "largest-contentful-paint", buffered: true });
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    window.setTimeout(run, 3500);
+    window.addEventListener("load", function () {
+      window.setTimeout(run, 600);
+    });
+  }
+
+  function bindHomeEmbeds() {
+    if (embedsBound) return;
+    embedsBound = true;
+
+    var frames = document.querySelectorAll("iframe[data-home-embed-src]");
+    if (!frames.length) return;
+
+    function whenIdle(fn) {
+      if (typeof window.requestIdleCallback === "function") {
+        window.requestIdleCallback(fn, { timeout: 2500 });
+        return;
+      }
+      window.setTimeout(fn, 500);
+    }
+
+    afterLcp(function () {
+      if (!("IntersectionObserver" in window)) {
+        whenIdle(function () {
+          frames.forEach(activateEmbed);
+        });
+        return;
+      }
+
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var frame = entry.target;
+            io.unobserve(frame);
+            whenIdle(function () {
+              activateEmbed(frame);
+            });
+          });
+        },
+        { rootMargin: "240px 0px", threshold: 0.01 }
+      );
+
+      frames.forEach(function (frame) {
+        io.observe(frame);
+      });
+    });
+  }
+
   function boot() {
+    bindHomeEmbeds();
+
+    if (!root.classList.contains("home-boot")) return;
+
     try {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         release();

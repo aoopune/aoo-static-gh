@@ -1,0 +1,812 @@
+{
+  "auditedAt": "2026-08-21T11:56:58.757Z",
+  "method": "Deterministic static contract audit over all 24 redesigned pages + shared chrome + CSS stack dark-twin/alias analysis. Dark/Light/Default share one resolved look (html[data-theme]). Playwright runtime paint checks blocked here (libnspr4 missing).",
+  "scope": "Only paths in data/redesigned-pages.json. Education / legacy style.css out of v1 by product lock.",
+  "contracts": {
+    "themeBootSynced24": true,
+    "footerSynced24": true,
+    "navSynced": true,
+    "noForbiddenJsInjectors": true
+  },
+  "bootLogic": {
+    "storesThreePrefs": true,
+    "firstVisitResolvesDark": true,
+    "defaultFollowsOS": true,
+    "setsDataTheme": true,
+    "liveFingerprint": true,
+    "footerHasThreeIcons": true,
+    "footerCallsApply": true
+  },
+  "sharedIndex": [
+    {
+      "id": "S01",
+      "item": "Theme starter on every redesigned page",
+      "ok": true,
+      "note": "Same live boot script on all 24 pages."
+    },
+    {
+      "id": "S02",
+      "item": "When Dark is chosen, whole site resolves dark",
+      "ok": true,
+      "note": "dark preference → html data-theme=dark."
+    },
+    {
+      "id": "S03",
+      "item": "When Light is chosen, whole site resolves light",
+      "ok": true,
+      "note": "light preference → html data-theme=light."
+    },
+    {
+      "id": "S04",
+      "item": "When Default is chosen, site follows phone/computer",
+      "ok": true,
+      "note": "system preference listens to OS, then paints dark or light."
+    },
+    {
+      "id": "S05",
+      "item": "First visit starts dark (separate from Default)",
+      "ok": true,
+      "note": "No saved choice → dark until the person picks."
+    },
+    {
+      "id": "S06",
+      "item": "Footer theme switch (monitor / sun / moon)",
+      "ok": true,
+      "note": "Same three-icon control on all 24 footers."
+    },
+    {
+      "id": "S07",
+      "item": "Top nav bar follows the mode",
+      "ok": true,
+      "note": "Nav background tokens twinned for dark."
+    },
+    {
+      "id": "S08",
+      "item": "Nav dropdown menus follow the mode",
+      "ok": true,
+      "note": "Dark nav / flyout paint rules in shell."
+    },
+    {
+      "id": "S09",
+      "item": "Nav logo matches the mode",
+      "ok": true,
+      "note": "Dark mark only under data-theme=dark."
+    },
+    {
+      "id": "S10",
+      "item": "Page background and main text follow the mode",
+      "ok": true,
+      "note": "Surface + ink shell twins cover canvas and body text."
+    },
+    {
+      "id": "S11",
+      "item": "Primary buttons readable in both modes",
+      "ok": true,
+      "note": "Primary blue fill kept; surrounding chrome follows theme."
+    },
+    {
+      "id": "S12",
+      "item": "Text links follow the mode",
+      "ok": true,
+      "note": "Link colors twinned for dark."
+    },
+    {
+      "id": "S13",
+      "item": "Form fields / underlines follow the mode",
+      "ok": true,
+      "note": "Field line tokens twinned; autofill dark rules present."
+    },
+    {
+      "id": "S14",
+      "item": "Footer band follows the mode",
+      "ok": true,
+      "note": "Footer tokens twinned."
+    },
+    {
+      "id": "S15",
+      "item": "No section stuck in one mode forever",
+      "ok": true,
+      "note": "No fixed-dark islands on redesigned pages."
+    },
+    {
+      "id": "S16",
+      "item": "No old scripts forcing light look",
+      "ok": true,
+      "note": "Phase H injector check passed on all 24."
+    }
+  ],
+  "stackIndex": [
+    {
+      "id": "K01",
+      "item": "Site-wide background, text, nav, footer, buttons, links, fields",
+      "ok": true,
+      "note": "All core shell color roles have a dark twin; light values stay on :root.",
+      "file": "css/shroffin-shell.css"
+    },
+    {
+      "id": "K02",
+      "item": "Explore banks filters, side drawer, chips, results table, apply bar",
+      "ok": true,
+      "note": "Explore dark token block has 51 redefs; remaining color roles inherit shell via aliases/mixes.",
+      "file": "css/shroffin-explore-banks.css"
+    },
+    {
+      "id": "K03",
+      "item": "Apply once form fields, review panels, status colors",
+      "ok": true,
+      "note": "Apply color tokens covered; 42 dark rules.",
+      "file": "css/shroffin-apply.css"
+    },
+    {
+      "id": "K04",
+      "item": "Calculators hub tiles and tool pages",
+      "ok": true,
+      "note": "Calc ink/wash alias shell; hub surface + soft line twinned.",
+      "file": "css/shroffin-calculators.css"
+    },
+    {
+      "id": "K05",
+      "item": "Guide chapters, TOC strip, flip cards, title color washes",
+      "ok": true,
+      "note": "Magazine aliases shell; guide cards/washes/TOC dark overrides (45 rules).",
+      "file": "css/shroffin-editorial.css"
+    },
+    {
+      "id": "K06",
+      "item": "About page story sections",
+      "ok": true,
+      "note": "About colors are shell aliases (13); inherits data-theme automatically.",
+      "file": "css/shroffin-about.css"
+    },
+    {
+      "id": "K07",
+      "item": "Privacy, Terms, Site Map layout panels",
+      "ok": true,
+      "note": "31 dark rules; 4 leftover light fallbacks (tokens still win when set).",
+      "file": "css/shroffin-utility-pages.css"
+    },
+    {
+      "id": "K08",
+      "item": "Project Bank Finder search + suggestion panel",
+      "ok": true,
+      "note": "APF aliases shell (7); dark covers soft line + suggestions (3).",
+      "file": "css/project-approvals.css"
+    },
+    {
+      "id": "K09",
+      "item": "Home hero, story bands, phone stage",
+      "ok": true,
+      "note": "Home theme twins for story/hero; no fixed-dark island.",
+      "file": "templates/layouts/home.html"
+    },
+    {
+      "id": "K10",
+      "item": "Home product demo window",
+      "ok": true,
+      "note": "15 dark rules for product-demo.",
+      "file": "css/shroffin-product-demo.css"
+    }
+  ],
+  "pageIndex": [
+    {
+      "id": "P01",
+      "path": "index.html",
+      "title": "Home",
+      "group": "Shroffin",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        },
+        {
+          "label": "Cards / content panels",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P02",
+      "path": "pages/explore-banks.html",
+      "title": "Explore banks",
+      "group": "Shroffin",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Side panel / drawer / chapter strip",
+          "ok": "YES"
+        },
+        {
+          "label": "Form fields",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        },
+        {
+          "label": "Cards / content panels",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P03",
+      "path": "pages/apply.html",
+      "title": "Apply once",
+      "group": "Shroffin",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P04",
+      "path": "pages/calculators.html",
+      "title": "Calculators",
+      "group": "Tools",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        },
+        {
+          "label": "Cards / content panels",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P05",
+      "path": "pages/calculators/emi.html",
+      "title": "Equated Monthly Instalment (EMI) calculator",
+      "group": "Calculators",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Form fields",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P06",
+      "path": "pages/calculators/how-much-loan.html",
+      "title": "Eligibility calculator",
+      "group": "Calculators",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Form fields",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P07",
+      "path": "pages/calculators/loan-amount.html",
+      "title": "Loan from EMI calculator",
+      "group": "Calculators",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Form fields",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P08",
+      "path": "pages/calculators/prepayment.html",
+      "title": "Prepayment calculator",
+      "group": "Calculators",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Form fields",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P09",
+      "path": "pages/calculators/balance-transfer.html",
+      "title": "Balance transfer calculator",
+      "group": "Calculators",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Form fields",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P10",
+      "path": "pages/calculators/tenure.html",
+      "title": "Tenure calculator",
+      "group": "Calculators",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Form fields",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P11",
+      "path": "pages/calculators/tax-savings.html",
+      "title": "Tax claims calculator",
+      "group": "Calculators",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Form fields",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P12",
+      "path": "pages/project-approvals.html",
+      "title": "Project Bank Finder",
+      "group": "Tools",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Side panel / drawer / chapter strip",
+          "ok": "YES"
+        },
+        {
+          "label": "Form fields",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P13",
+      "path": "pages/guide.html",
+      "title": "Home loan overview",
+      "group": "Guide",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Side panel / drawer / chapter strip",
+          "ok": "YES"
+        },
+        {
+          "label": "Form fields",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        },
+        {
+          "label": "Cards / content panels",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P14",
+      "path": "pages/guide-documents.html",
+      "title": "Documents",
+      "group": "Guide",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Side panel / drawer / chapter strip",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        },
+        {
+          "label": "Cards / content panels",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P15",
+      "path": "pages/tax-benefits.html",
+      "title": "Tax benefits",
+      "group": "Guide",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Side panel / drawer / chapter strip",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        },
+        {
+          "label": "Cards / content panels",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P16",
+      "path": "pages/concessions.html",
+      "title": "Concessions",
+      "group": "Guide",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Side panel / drawer / chapter strip",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        },
+        {
+          "label": "Cards / content panels",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P17",
+      "path": "pages/home-loan-insurance.html",
+      "title": "Home loan insurance",
+      "group": "Guide",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Side panel / drawer / chapter strip",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        },
+        {
+          "label": "Cards / content panels",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P18",
+      "path": "pages/property-home-insurance.html",
+      "title": "Property cover",
+      "group": "Guide",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Side panel / drawer / chapter strip",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        },
+        {
+          "label": "Cards / content panels",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P19",
+      "path": "pages/credit-life-insurance.html",
+      "title": "Loan cover",
+      "group": "Guide",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Side panel / drawer / chapter strip",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        },
+        {
+          "label": "Cards / content panels",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P20",
+      "path": "pages/home-loan-complaints.html",
+      "title": "If something goes wrong",
+      "group": "Guide",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        },
+        {
+          "label": "Side panel / drawer / chapter strip",
+          "ok": "YES"
+        },
+        {
+          "label": "Buttons / primary actions",
+          "ok": "YES"
+        },
+        {
+          "label": "Cards / content panels",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P21",
+      "path": "pages/about.html",
+      "title": "About",
+      "group": "Company",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P22",
+      "path": "privacy-policy.html",
+      "title": "Privacy Policy",
+      "group": "Company",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P23",
+      "path": "terms-of-use.html",
+      "title": "Terms of Use",
+      "group": "Company",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        }
+      ]
+    },
+    {
+      "id": "P24",
+      "path": "sitemap.html",
+      "title": "Site Map",
+      "group": "Site Map",
+      "dark": "YES",
+      "light": "YES",
+      "default": "YES",
+      "ok": true,
+      "note": "Boot, footer switch, and themed CSS stacks align; all three modes use the same paint path.",
+      "componentChecks": [
+        {
+          "label": "Nav menus / dropdowns",
+          "ok": "YES"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "sharedPass": 16,
+    "sharedTotal": 16,
+    "stackPass": 10,
+    "stackTotal": 10,
+    "pagesPass": 24,
+    "pagesTotal": 24,
+    "allPagesDarkYes": true,
+    "allPagesLightYes": true,
+    "allPagesDefaultYes": true,
+    "verdict": "PASS"
+  }
+}

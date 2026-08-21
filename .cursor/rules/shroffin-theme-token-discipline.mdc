@@ -1,0 +1,70 @@
+---
+description: Fail-closed theme token discipline for redesigned Shroffin pages — freeze light spine; ban new light hardcodes
+alwaysApply: true
+---
+
+# Theme token discipline (Phase B freeze)
+
+Light chrome ownership remains frozen in `super-review-1/themes/_dark-mode-phase-b-shell-freeze.md`. Dark / Light / Default **shipped** (Phase I): paint via `html[data-theme]` + same token names; do not invent parallel `--dark-*` or a second theme sheet.
+
+Honor permanent engineering: one source of truth, no temporary dual paint systems, no `TODO` as done.
+
+## Scope (fail closed)
+
+**In scope — redesigned surfaces only:**
+
+- Paths listed in `data/redesigned-pages.json` (24 pages)
+- Their layouts under `templates/layouts/`
+- Their CSS: `css/shroffin-shell.css`, `css/shroffin-editorial.css`, `css/shroffin-explore-banks.css`, `css/shroffin-apply.css`, `css/shroffin-calculators.css`, `css/shroffin-guide.css`, `css/shroffin-about.css`, `css/shroffin-utility-pages.css`, `css/shroffin-home.css`, `css/shroffin-home-calm-phone.css`, `css/shroffin-home-level-field.css`, `css/shroffin-product-demo.css`, `css/project-approvals.css`
+- JS that paints chrome on those redesigned pages
+
+**Exempt (out of v1 — leave light; do not delete education):**
+
+- `css/style.css` and education / legacy pages that load it
+- `pages/_*.html` prototypes
+- Education-loan product code kept for later (`EDUCATION_LOAN_PRODUCT` / `LEGACY_EDUCATION_PAGES`)
+
+## Always
+
+1. **New UI chrome colors** on redesigned work must use frozen `--shroffin-*` roles or an **already owned** stack token listed in the Phase B freeze (`--mag-*`, `--hlc-*`, `--calc-*`, `--about-*`, `--apf-*`, `--apply-*`, `--guide-card-surface`, `--utility-sitemap-hover`, reserved `--home-story-*` / `--home-device-stage`, reserved `--hlc-logo-plate`).
+2. **Same token names, later two value sets.** Do not invent `--dark-ink` beside `--shroffin-ink`.
+3. **Explore stays a second system** (`--hlc-*`). Do not pretend flipping shell alone themes Explore. Rank colors (`--hlc-rank-*`) stay Explore-owned.
+4. **Home story / phone / product-demo follow theme** (Phase A). Do not mark them `data-theme-island="fixed-dark"`.
+5. **Theme control UI** (Phase I): footer only, Cursor-style icon pill in `partials/site-footer.html` — monitor=Default, sun=Light, moon=Dark. No Appearance title, no helper text. Do not invent other placements.
+6. **Theme-boot** (Phase I live): edit only `partials/theme-boot.html`; propagate with `npm run build:theme-boot` (+ `build:layout-chrome` / content stitch). Fingerprint must be `data-shroffin-theme-boot="live"`. Do not add one-off head theme scripts outside markers.
+7. **Nav wordmark swap** (Phase G locked): edit only `partials/global-nav.html` (+ shell CSS `.globalnav-logo--*`); propagate with `npm run build:nav`. Dual-img CSS show/hide keyed off `html[data-theme]`; without the attribute the light mark stays visible. Dark asset: `images/logos/logo-h-dark-clear-781x173.png`. Do not `filter: invert` the light mark. PWA splash / dark `theme-color` ship `#121212`; light meta `#fcfcfd`.
+8. **JS light injectors** (Phase H locked): redesigned 24 paths must **not** load `js/aoo-loan-table-standalone.js`, `js/apply-flow.js`, or `js/apply-button-iframe.js`. Prove with `npm run check:theme-js-injectors`. Education / `table-embed.html` / `css/style.css` / `pages/_*.html` stay light islands — do not delete education code; do not theme them in v1. Teal `#0d9488` is legacy ≠ shell blue. Prefer removing accidental v1 loads over rewriting `SCOPE_CSS`.
+9. **Update the freeze file** before inventing any new chrome color custom property on redesigned surfaces.
+10. Existing light debt is tracked by prep phases (E/F/H) — **remediate on schedule; do not expand it.**
+
+## Forbidden on redesigned surfaces (new code)
+
+- New raw light page-chrome hex for canvases, ink, borders, washes, buttons, or links (including `#fff`, `#ffffff`, `#1d1d1f`, `#fcfcfd`, `#f5f7f9`, `#f5f5f7`, `#f7f7f7`, `#eef1f4`, and near duplicates) when a frozen token already owns that job
+- New black-alpha hairlines (`rgba(0,0,0,…)` borders/dividers) inventing private opacity recipes instead of `--shroffin-rule`, `--shroffin-hair`, `--shroffin-hair-soft`, `--shroffin-gn-border`, or `--shroffin-field-line`
+- New `color-mix(... #fff)`, `color-mix(... #ffffff)`, or `color-mix(... #f4f6f8)` — use `--shroffin-canvas-mix-base` / `--shroffin-footer-mix-base` (or stack tokens that already mix toward themed bases)
+- New `var(--token, #lighthex)` color fallbacks on redesigned CSS/JS paths
+- CSS `filter: invert()` (or hue-rotate) as a theme architecture
+- Parallel dark vocabulary (`--dark-*` next to `--shroffin-*`)
+- Bypassing `partials/theme-boot.html` with one-off head theme scripts, or inventing a second theme stylesheet / `--dark-*` vocabulary
+- Mass retarget of editorial / Explore / Apply under the name of a small fix outside owned theme phases
+- Changing existing customer-facing wording while theming (paint/UI only)
+
+## Product locks (Phase A — do not reopen in code)
+
+- Preference: `localStorage['shroffin-color-preference']` ∈ `{dark, light, system}`
+- Resolved look: `html[data-theme="dark"|"light"]`
+- First visit unset → resolve **dark** (not Default/system)
+- Default = system follow; first visit ≠ Default
+
+## Before finishing redesigned UI work
+
+Confirm: colors use frozen shell or owned stack tokens; no new light hardcode / black-alpha / white mix / light fallback debt; freeze updated if a new role was truly required; home not marked fixed-dark; theme-boot changes go through `partials/theme-boot.html` with `live` fingerprint; existing wording unchanged. If any answer is no, the change is not finished.
+
+## Source of truth
+
+- Freeze: `super-review-1/themes/_dark-mode-phase-b-shell-freeze.md`
+- Ledger: `super-review-1/themes/_dark-mode-phase-b-shell-freeze-ledger.json`
+- Product lock: `super-review-1/themes/_dark-mode-phase-a-product-brief.md`
+- Boot injection: `super-review-1/themes/_dark-mode-phase-c-boot-injection.md`
+- Phase G assets / PWA plan: `super-review-1/themes/_dark-mode-phase-g-assets.md`
+- Phase H JS inject / legacy policy: `super-review-1/themes/_dark-mode-phase-h-js-legacy-policy.md`

@@ -1,0 +1,112 @@
+{
+  "generated": "2026-08-21",
+  "updated": "2026-08-21",
+  "repo": "aoo-static-gh",
+  "brief_md": "super-review-1/themes/_dark-mode-phase-a-product-brief.md",
+  "source_audit_md": "super-review-1/themes/_dark-mode-prep-audit.md",
+  "source_audit_ledger": "super-review-1/themes/_dark-mode-prep-audit-ledger.json",
+  "website_untouched": true,
+  "theme_implementation_forbidden": true,
+  "phase": "A",
+  "one_line_status": "Phase A product lock — founder approved (locked)",
+  "founder_approved": true,
+  "founder_approved_date": "2026-08-21",
+  "architecture_spine_kept": [
+    "tokens + resolved theme",
+    "no page invert",
+    "early boot later",
+    "chrome sync owns injection later"
+  ],
+  "customer_control_ui_locked": {
+    "placement": "footer_utility",
+    "pattern": "cursor_style_icon_pill",
+    "reference": "https://cursor.com/",
+    "visible_title": null,
+    "visible_helper": null,
+    "icons_left_to_right": [
+      { "icon": "monitor", "meaning": "Default", "store": "system", "aria_label": "Default" },
+      { "icon": "sun", "meaning": "Light", "store": "light", "aria_label": "Light" },
+      { "icon": "moon", "meaning": "Dark", "store": "dark", "aria_label": "Dark" }
+    ]
+  },
+  "items": [
+    {
+      "id": "PREP-01",
+      "status": "confirmed",
+      "decision": "Confirm audit §1 mode model as written: Dark=always dark (store dark), Light=always light (store light), Default=follow OS (store system), first visit with unset preference resolves dark and is not Default. Storage key shroffin-color-preference; resolved look html[data-theme=dark|light]; do not write system until user chooses Default.",
+      "customer_labels": {
+        "Dark": "dark",
+        "Light": "light",
+        "Default": "system",
+        "first_visit": "unset → resolve dark (not system)"
+      },
+      "rejected_alternatives": [
+        "Conflating Default/system with first-visit dark",
+        "Renaming storage key or data-theme without strong product reason"
+      ],
+      "audit_aligned": true,
+      "notes": "Founder approved. Technical contract unchanged from prep audit PREP-01."
+    },
+    {
+      "id": "PREP-08",
+      "status": "changed_from_audit",
+      "decision": "No fixed-dark home islands in v1. Home story band, phone/device chrome demos, and product-demo section all follow resolved data-theme (light under Light, dark under Dark). Current dark paint is acceptable until theme ships; do not apply data-theme-island=\"fixed-dark\" on these surfaces.",
+      "customer_labels": {},
+      "rejected_alternatives": [
+        "Audit policy: .home-story-dark fixed-dark both themes",
+        "Audit policy: phone/level-field/demo device chrome fixed-dark",
+        "Keeping intentional dark storytelling bands when user chooses Light"
+      ],
+      "audit_aligned": false,
+      "notes": "CHANGED FROM AUDIT per founder 2026-08-21: bands will go light with Light theme once theme is built; currently dark is OK. Product-demo grey band also follows theme (unchanged from audit on that point alone)."
+    },
+    {
+      "id": "PREP-13",
+      "status": "confirmed",
+      "decision": "v1 = 24 paths in data/redesigned-pages.json. Out of v1 (stay light if opened by URL): education/legacy style.css pages, pages/_*.html prototypes. Do not delete education code; EDUCATION_LOAN_PRODUCT / LEGACY_EDUCATION_PAGES markers unchanged.",
+      "customer_labels": {},
+      "rejected_alternatives": [
+        "Theming education/legacy in v1",
+        "Theming pages/_*.html prototypes in v1",
+        "Deleting education loan code to clean up"
+      ],
+      "audit_aligned": true,
+      "notes": "Founder approved. Documented white-island risk accepted for direct legacy URLs."
+    },
+    {
+      "id": "PREP-16",
+      "status": "confirmed",
+      "decision": "Footer utility only: Cursor-style three-icon pill (monitor=Default/system, sun=Light, moon=Dark). No Appearance group title, no visible Dark/Light/Default text, no helper line. Same place mobile and desktop; ≥44px touch; survives build:footer via partials/site-footer.html.",
+      "customer_labels": {
+        "control_title": null,
+        "visible_options": null,
+        "helper": null,
+        "aria_default": "Default",
+        "aria_light": "Light",
+        "aria_dark": "Dark",
+        "icon_default": "monitor",
+        "icon_light": "sun",
+        "icon_dark": "moon"
+      },
+      "rejected_alternatives": [
+        "Hero / first viewport",
+        "Competing with Apply once / Explore banks primary CTAs",
+        "Nav Support flyout (contact-only; wrong job)",
+        "Floating widget over content",
+        "Education-loan surfaces",
+        "Text Appearance group with Dark/Light/Default labels + helper sentence"
+      ],
+      "audit_aligned": true,
+      "notes": "Founder approved 2026-08-21 with UI change: icon pill like cursor.com footer control, not text labels. Placement still footer (audit-aligned). Owner later: partials/site-footer.html. Do not implement in Phase A."
+    }
+  ],
+  "founder_checklist": {
+    "modes_and_first_visit_dark": "approved",
+    "control_placement_footer": "approved",
+    "control_labels_icon_pill": "approved",
+    "home_bands_follow_theme": "approved_changed_from_audit",
+    "v1_scope": "approved"
+  },
+  "after_approval_next_phase_only": "Phase B from prep audit — shell role freeze + stop new light hardcodes; no dark CSS, no toggle UI, no boot script yet",
+  "later_asset_note_not_this_job": "PREP-10 — dark-bar nav wordmark (logo-h-dark-*) will be needed before theme ship; do not commission in Phase A"
+}

@@ -1,14 +1,14 @@
 /* About — scroll story on shell / editorial tokens. Page-only. */
 
 .about-page {
-  --about-paper: var(--shroffin-surface, #fcfcfd);
-  --about-paper-deep: var(--shroffin-footer, #f5f7f9);
-  --about-paper-note: #eef1f4;
-  --about-ink: var(--shroffin-ink, #1d1d1f);
-  --about-ink-soft: #3a3a3d;
-  --about-muted: var(--shroffin-muted, #6e6e73);
-  --about-ghost: #c5c9cf;
-  --about-blue: var(--shroffin-blue, #0071e3);
+  --about-paper: var(--shroffin-surface);
+  --about-paper-deep: var(--shroffin-footer);
+  --about-paper-note: var(--shroffin-paper-note);
+  --about-ink: var(--shroffin-ink);
+  --about-ink-soft: var(--shroffin-ink-soft);
+  --about-muted: var(--shroffin-muted);
+  --about-ghost: var(--shroffin-ghost);
+  --about-blue: var(--shroffin-blue);
   --about-ease: var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
   --about-gutter: var(--shroffin-gutter, clamp(1rem, 4vw, 2.5rem));
   --about-max: var(--shroffin-content-max, 1068px);
@@ -71,7 +71,7 @@
 
 .about-page-title {
   margin: 0 0 24px;
-  color: #1d1d1f;
+  color: var(--about-ink);
   font-size: 22px;
   font-weight: 600;
   letter-spacing: normal;
@@ -212,7 +212,7 @@
   padding-bottom: calc(
     var(--shroffin-space-masthead-end) + var(--shroffin-space-section)
   );
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: 1px solid var(--shroffin-hair-soft);
 }
 
 .about-founder-section-title {
@@ -361,11 +361,11 @@
   grid-template-columns: 2.5rem 1fr;
   gap: 12px 16px;
   padding: 20px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: 1px solid var(--shroffin-hair-soft);
 }
 
 .about-step:last-child {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid var(--shroffin-hair-soft);
 }
 
 .about-step-num {
@@ -401,14 +401,14 @@
 .about-glance li {
   margin: 0;
   padding: 14px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: 1px solid var(--shroffin-hair-soft);
   color: var(--about-ink);
   font-size: var(--shroffin-type-lead);
   line-height: 1.45;
 }
 
 .about-glance li:last-child {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid var(--shroffin-hair-soft);
 }
 
 /* ——— Tablet / desktop ——— */

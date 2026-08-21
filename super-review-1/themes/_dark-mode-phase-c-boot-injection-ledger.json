@@ -1,0 +1,126 @@
+{
+  "generated": "2026-08-21",
+  "updated": "2026-08-21",
+  "repo": "aoo-static-gh",
+  "phase": "C",
+  "prep_id": "PREP-12",
+  "brief_md": "super-review-1/themes/_dark-mode-phase-c-boot-injection.md",
+  "phase_a_brief": "super-review-1/themes/_dark-mode-phase-a-product-brief.md",
+  "phase_b_freeze": "super-review-1/themes/_dark-mode-phase-b-shell-freeze.md",
+  "source_audit_md": "super-review-1/themes/_dark-mode-prep-audit.md",
+  "phase_d_islands": "void_per_phase_a",
+  "theme_implementation_forbidden": true,
+  "dark_css_shipped": false,
+  "footer_pill_shipped": false,
+  "theme_boot_live_resolve_shipped": false,
+  "theme_boot_injection_slot_locked": true,
+  "one_line_status": "Phase C complete — single theme-boot injection owner locked; live stub inert",
+  "injection_owner": {
+    "partial": "partials/theme-boot.html",
+    "markers": [
+      "<!-- SHROFFIN_THEME_BOOT_START -->",
+      "<!-- SHROFFIN_THEME_BOOT_END -->"
+    ],
+    "fill_library": "scripts/lib/site-chrome.js",
+    "functions": [
+      "renderThemeBoot",
+      "applyThemeBoot",
+      "applySiteChrome"
+    ],
+    "sync_script": "scripts/sync-theme-boot.js",
+    "npm_build": "build:theme-boot",
+    "npm_check": "check:theme-boot",
+    "content_stitch": "scripts/build-content.js",
+    "layout_fill": "scripts/lib/fill-layout-chrome.js",
+    "slot_position": "head_after_viewport_before_js_class_boot_and_css"
+  },
+  "logo_swap_hook": {
+    "owner_partial": "partials/global-nav.html",
+    "css_owner": "css/shroffin-shell.css",
+    "named_in_phase_c": true,
+    "implemented_in_phase_c": false,
+    "implemented_in_phase_g": true,
+    "pattern": "dual_img_css_show_hide",
+    "brief": "super-review-1/themes/_dark-mode-phase-g-assets.md"
+  },
+  "footer_control_hook_named_only": {
+    "owner_partial": "partials/site-footer.html",
+    "implemented_in_phase_c": false
+  },
+  "v1_page_set": "data/redesigned-pages.json",
+  "v1_page_count": 24,
+  "layouts_with_markers": 25,
+  "layouts_note": "All content-pages.json layouts including apply-contact for chrome uniformity; product theme scope remains 24 redesigned paths",
+  "live_stub": {
+    "fingerprint": "data-shroffin-theme-boot=\"inert\"",
+    "sets_data_theme": false,
+    "sets_color_scheme": false,
+    "reads_localStorage": false
+  },
+  "boot_algorithm_spec_only": {
+    "preference_key": "shroffin-color-preference",
+    "preference_values": ["dark", "light", "system"],
+    "resolved_attribute": "html[data-theme=dark|light]",
+    "first_visit_unset": "resolve dark; do not write system",
+    "system_mode": "matchMedia('(prefers-color-scheme: dark)') → dark|light",
+    "activated_on_live_pages": false
+  },
+  "proof": {
+    "date": "2026-08-21",
+    "method": "Temporary proof attribute on partial → npm run build:theme-boot → counted 24/24 redesigned pages → removed proof → resync",
+    "result": "24/24 carried one-edit token; final inert=24/24; customer data-theme=0"
+  },
+  "drift_checks": [
+    {
+      "id": "check:theme-boot",
+      "command": "npm run check:theme-boot",
+      "guards": "Live 24 pages match partials/theme-boot.html"
+    },
+    {
+      "id": "check-responsive-contracts",
+      "command": "node scripts/check-responsive-contracts.js",
+      "guards": "Marker pair, inert fingerprint, position before js class boot, no customer data-theme"
+    },
+    {
+      "id": "lint:responsive",
+      "command": "npm run lint:responsive",
+      "guards": "Includes check:theme-boot"
+    },
+    {
+      "id": "build:site",
+      "command": "npm run build:site",
+      "guards": "Runs build:theme-boot after nav/footer"
+    },
+    {
+      "id": "assertChrome",
+      "file": "scripts/lib/site-chrome.js",
+      "guards": "Theme-boot markers without partial body refuse write"
+    }
+  ],
+  "items": [
+    {
+      "id": "PREP-12",
+      "title": "Early boot injection via layouts / chrome sync (single source of truth)",
+      "status": "done",
+      "done_when_met": true,
+      "done_when": "Written injection owner (exact file + build step); proof that editing once updates all 24 redesigned outputs after build; check script plan listed; live resolve not activated.",
+      "evidence": [
+        "partials/theme-boot.html",
+        "scripts/lib/site-chrome.js",
+        "scripts/sync-theme-boot.js",
+        "templates/layouts/* theme-boot markers",
+        "super-review-1/themes/_dark-mode-phase-c-boot-injection.md"
+      ]
+    }
+  ],
+  "explicit_non_goals_this_phase": [
+    "dark_css_values",
+    "footer_theme_pill_ui",
+    "live_data_theme_resolution",
+    "mass_stack_retarget",
+    "logo_swap_implementation",
+    "fixed_dark_island_markers",
+    "education_style_css_theming",
+    "css_filter_invert"
+  ]
+}

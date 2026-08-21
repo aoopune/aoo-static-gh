@@ -1,0 +1,66 @@
+<!-- SHROFFIN_THEME_BOOT_START -->
+<!--
+  Phase I live theme boot. Spec: _dark-mode-phase-c-boot-injection.md §5
+  Preference: localStorage['shroffin-color-preference'] ∈ {dark, light, system}
+  Resolved: html[data-theme="dark"|"light"]; first visit unset → dark (do NOT write until user taps).
+  Default (system) ≠ first visit. OS listener only when preference === system.
+  theme-color: dark #121212 / light #fcfcfd
+  FOUC: set data-theme + color-scheme + canvas background before stylesheets.
+-->
+<script data-shroffin-theme-boot="live">
+(function () {
+  var KEY = 'shroffin-color-preference';
+  var root = document.documentElement;
+  function resolve(pref) {
+    if (pref === 'light') return 'light';
+    if (pref === 'dark') return 'dark';
+    if (pref === 'system') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    return 'dark';
+  }
+  function applyThemeColor(resolved) {
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'theme-color');
+      if (document.head.firstChild) document.head.insertBefore(meta, document.head.firstChild);
+      else document.head.appendChild(meta);
+    }
+    meta.setAttribute('content', resolved === 'dark' ? '#121212' : '#fcfcfd');
+  }
+  function apply(resolved) {
+    root.setAttribute('data-theme', resolved);
+    root.style.colorScheme = resolved;
+    /* Critical canvas before CSS / home inline light hardcodes */
+    root.style.backgroundColor = resolved === 'dark' ? '#121212' : '#fcfcfd';
+    applyThemeColor(resolved);
+  }
+  var pref = null;
+  try { pref = localStorage.getItem(KEY); } catch (e) {}
+  if (pref !== 'dark' && pref !== 'light' && pref !== 'system') pref = null;
+  apply(resolve(pref));
+  window.__shroffinApplyColorPreference = function (next) {
+    if (next !== 'dark' && next !== 'light' && next !== 'system') return;
+    try { localStorage.setItem(KEY, next); } catch (e) {}
+    apply(resolve(next));
+    document.dispatchEvent(new CustomEvent('shroffin-theme-change', {
+      detail: { preference: next, theme: resolve(next) }
+    }));
+  };
+  try {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+      var p = null;
+      try { p = localStorage.getItem(KEY); } catch (e) {}
+      if (p === 'system') {
+        apply(resolve('system'));
+        document.dispatchEvent(new CustomEvent('shroffin-theme-change', {
+          detail: { preference: 'system', theme: resolve('system') }
+        }));
+      }
+      /* If pref unset or dark/light: ignore OS changes */
+    });
+  } catch (e) {}
+})();
+</script>
+<!-- SHROFFIN_THEME_BOOT_END -->

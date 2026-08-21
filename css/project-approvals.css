@@ -1,14 +1,14 @@
 /* Project Bank Finder — open tools layout (matches calculators) */
 
 :root {
-  --apf-ink: var(--shroffin-ink, #1d1d1f);
-  --apf-muted: var(--shroffin-muted, #6e6e73);
-  --apf-blue: var(--shroffin-blue, #0071e3);
-  --apf-surface: var(--shroffin-surface, #fcfcfd);
-  --apf-line: rgba(29, 29, 31, 0.12);
+  --apf-ink: var(--shroffin-ink);
+  --apf-muted: var(--shroffin-muted);
+  --apf-blue: var(--shroffin-blue);
+  --apf-surface: var(--shroffin-surface);
+  --apf-line: var(--shroffin-hair);
   --apf-line-soft: rgba(29, 29, 31, 0.06);
-  --apf-wash: var(--shroffin-footer, #f5f7f9);
-  --apf-ease: var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  --apf-wash: var(--shroffin-footer);
+  --apf-ease: var(--shroffin-ease);
 }
 
 html,
@@ -189,7 +189,7 @@ body {
   padding: var(--shroffin-btn-elevated-pad-block, 11px) var(--shroffin-btn-elevated-pad-inline, 21px);
   border: 1px solid transparent;
   border-radius: var(--shroffin-btn-radius, 980px);
-  background: var(--apf-blue);
+  background: var(--shroffin-btn-primary);
   color: #fff;
   font: inherit;
   font-size: var(--shroffin-btn-elevated-font, 17px);
@@ -201,7 +201,7 @@ body {
     background-color var(--shroffin-micro-duration, 0.5s) var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
     box-shadow var(--shroffin-micro-duration, 0.5s) var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
     opacity var(--shroffin-micro-duration, 0.5s) var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1));
-  box-shadow: var(--shroffin-btn-primary-shadow, 0 2px 8px rgba(0, 113, 227, 0.2));
+  box-shadow: var(--shroffin-btn-primary-shadow, none);
 }
 
 @media (max-width: 833px) {
@@ -222,14 +222,14 @@ body {
 
 .apf-submit:hover,
 .apf-more:hover {
-  background: var(--shroffin-btn-primary-hover, #0058b0);
-  box-shadow: var(--shroffin-btn-primary-shadow-hover, 0 6px 22px rgba(0, 88, 176, 0.42));
+  background: var(--shroffin-btn-primary-hover);
+  box-shadow: var(--shroffin-btn-primary-shadow-hover, none);
 }
 
 .apf-submit:active,
 .apf-more:active {
-  background: var(--shroffin-btn-primary-active, #004a96);
-  box-shadow: var(--shroffin-btn-primary-shadow-active, 0 1px 4px rgba(0, 74, 150, 0.32));
+  background: var(--shroffin-btn-primary-active);
+  box-shadow: var(--shroffin-btn-primary-shadow-active, none);
 }
 
 .apf-submit:disabled {
@@ -295,7 +295,7 @@ body {
 }
 
 .apf-table-scroll:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
@@ -447,4 +447,17 @@ body {
   to {
     transform: translateY(0);
   }
+}
+
+html[data-theme="dark"] {
+  --apf-line-soft: rgba(255, 255, 255, 0.06);
+}
+
+
+html[data-theme="dark"] .apf-options {
+  background: rgba(30, 30, 30, 0.96);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+html[data-theme="dark"] .apf-activity-ring {
+  border-color: rgba(10, 132, 255, 0.2);
 }

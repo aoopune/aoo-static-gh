@@ -4,11 +4,12 @@
  */
 
 .stance {
-  --stance-paper: var(--shroffin-surface, #fcfcfd);
-  --stance-ink: var(--shroffin-ink, #1d1d1f);
-  --stance-ink-soft: #3a3a3d;
+  --stance-paper: var(--shroffin-surface);
+  --stance-ink: var(--shroffin-ink);
+  --stance-ink-soft: var(--shroffin-ink-soft);
+  /* Near hair-soft (0.08); keep 0.1 exact for light sameness — stack_local. */
   --stance-line: rgba(0, 0, 0, 0.1);
-  --stance-ease: var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  --stance-ease: var(--shroffin-ease);
   --stance-max: 980px;
   --stance-inline: max(1.25rem, env(safe-area-inset-left));
   --stance-inline-end: max(1.25rem, env(safe-area-inset-right));
@@ -104,7 +105,7 @@
 
   .stance-item:focus-visible {
     background-color: rgba(255, 255, 255, 0.92);
-    outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+    outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
     outline-offset: var(--shroffin-focus-offset, 3px);
   }
 
@@ -180,5 +181,20 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+html[data-theme="dark"] .stance {
+  --stance-line: rgba(255, 255, 255, 0.10);
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+  html[data-theme="dark"] .stance-item:hover {
+    background-color: rgba(30, 30, 30, 0.92);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+  html[data-theme="dark"] .stance-item:focus-visible {
+    background-color: rgba(30, 30, 30, 0.92);
   }
 }

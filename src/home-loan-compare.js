@@ -8675,14 +8675,54 @@ function initPage() {
     return width;
   }
 
-  function phoneBankColCapPx() {
+  function phoneCompareScrollPortPx() {
+    const viewport = Math.min(
+      window.innerWidth || Infinity,
+      (document.documentElement && document.documentElement.clientWidth) ||
+        Infinity
+    );
+    const fallback = Number.isFinite(viewport) && viewport > 0 ? viewport : 320;
     /*
-     * Sticky bank must leave room for a full Rate value beside it. Loan amount
-     * may peek or scroll. Hard ceiling keeps Rate from sliding under Bank.
+     * Use the phone viewport minus shell side padding — not scroll/wrap
+     * clientWidth. Those can stay inflated after a prior max-content pass and
+     * made the two-metric fit think Loan already fit when it was clipped.
      */
-    const rateReserve = Math.ceil(5.25 * 16);
-    const fromViewport = window.innerWidth - rateReserve;
-    return Math.max(148, Math.min(200, fromViewport));
+    const shell = document.querySelector(".hlc-shell");
+    if (shell) {
+      const cs = window.getComputedStyle(shell);
+      const pad =
+        (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+      return Math.max(200, Math.floor(fallback - pad));
+    }
+    return Math.max(200, Math.floor(fallback - 32));
+  }
+
+  /** Phone CSS default for sticky Bank (`--hlc-phone-bank-col: 9rem`). */
+  const PHONE_BANK_COL_DEFAULT_PX = Math.round(9 * 16);
+  /* Never shrink Bank below the restored phone width — names stay readable. */
+  const PHONE_BANK_COL_FLOOR_PX = PHONE_BANK_COL_DEFAULT_PX;
+  /* Leave a hair so borders / subpixel rounding do not force a useless x-scroll. */
+  const PHONE_COMPARE_PORT_GUTTER_PX = 2;
+  const PHONE_METRIC_COL_MIN_PX = Math.ceil(3.25 * 16);
+
+  /**
+   * Cap sticky Bank so metric columns can still fit beside it on phone.
+   * Floor is the CSS phone Bank width (9rem) — do not squeeze names smaller.
+   */
+  function phoneBankColCapPx(portPx, twoMetricReservePx) {
+    const port = Math.max(0, portPx || 0);
+    const reserve = Math.max(0, twoMetricReservePx || 0);
+    return Math.max(PHONE_BANK_COL_FLOOR_PX, port - reserve);
+  }
+
+  function setPhoneBankColCssVar(px) {
+    const page = document.querySelector(".explore-banks-page");
+    if (!page) return;
+    if (px == null || !Number.isFinite(px) || px <= 0) {
+      page.style.removeProperty("--hlc-phone-bank-col");
+      return;
+    }
+    page.style.setProperty("--hlc-phone-bank-col", Math.round(px) + "px");
   }
 
   /**
@@ -8715,9 +8755,12 @@ function initPage() {
     const isHead = cell.tagName === "TH";
     const content = isHead
       ? cell
-      : cell.querySelector(
+      : cell.querySelector(".hlc-rank-figure") ||
+        cell.querySelector(".hlc-rank-wrap") ||
+        cell.querySelector(
           ".hlc-charge-amount, .hlc-cell-value, .hlc-charge-rule"
-        ) || cell;
+        ) ||
+        cell;
     if (isHead) {
       return measureProbeWidth(content, cell);
     }
@@ -8739,6 +8782,10 @@ function initPage() {
     probe.style.letterSpacing = cs.letterSpacing;
     probe.style.fontVariantNumeric = cs.fontVariantNumeric;
     probe.style.fontFeatureSettings = cs.fontFeatureSettings;
+    /*
+     * Size from the figure only. Rank pills (Lowest / Highest) sit under the
+     * number and wrap; counting them made Rate steal Loan amount’s space.
+     */
     probe.textContent = (content.textContent || "").replace(/\s+/g, " ").trim();
     document.body.appendChild(probe);
     const width = Math.ceil(probe.getBoundingClientRect().width + pad);
@@ -8779,6 +8826,7 @@ function initPage() {
     });
 
     if (!phoneHugCols) {
+      setPhoneBankColCssVar(null);
       el.headTable.style.width = "100%";
       el.table.style.width = "100%";
       el.headTable.style.tableLayout = "";
@@ -8789,6 +8837,21 @@ function initPage() {
       return;
     }
 
+    /*
+     * Measure the scrollport while tables are width:100%. A prior hug pass may
+     * have left max-content; reset first so a flex ancestor cannot grow with
+     * the table (clientWidth ≈ scrollWidth) and skip the two-metric fit.
+     */
+    el.headTable.style.width = "100%";
+    el.table.style.width = "100%";
+    el.headTable.style.tableLayout = "fixed";
+    el.table.style.tableLayout = "fixed";
+    void (el.scroll && el.scroll.offsetWidth);
+    const port = Math.max(
+      0,
+      phoneCompareScrollPortPx() - PHONE_COMPARE_PORT_GUTTER_PX
+    );
+
     el.headTable.style.width = "max-content";
     el.table.style.width = "max-content";
     el.headTable.style.tableLayout = "fixed";
@@ -8797,8 +8860,104 @@ function initPage() {
     const skipIndices = phoneCompareColSkipIndices(state.group, headCells);
     const zeroPx = "0px";
     const headerOnly = shouldSizePhoneColsFromHeaderOnly(state.group);
+    const measured = new Array(headCells.length);
 
-    /* Skip later-charges fill; size bank + metric cols to content or header. */
+    /* Pass 1 — measure metric cols; defer sticky Bank. */
+    for (let i = 0; i < headCells.length; i++) {
+      if (skipIndices.has(i)) {
+        measured[i] = 0;
+        continue;
+      }
+      if (headCells[i].classList.contains("hlc-sticky-col")) {
+        measured[i] = null;
+        continue;
+      }
+      let maxW = 0;
+      if (headerOnly) {
+        maxW = measurePhoneCompareColHeaderWidth(headCells[i]);
+      } else {
+        /*
+         * Overview heads: size from the title row only (label + help), not the
+         * full th with sort arrows — those were inflating Rate/Loan and
+         * pushing the second metric column off-screen.
+         */
+        maxW = measurePhoneCompareColHeaderWidth(headCells[i]);
+        for (let r = 0; r < bodyRows.length; r++) {
+          maxW = Math.max(
+            maxW,
+            measureOverviewColContentWidth(bodyRows[r].children[i])
+          );
+        }
+      }
+      measured[i] = maxW > 0 ? maxW : 0;
+    }
+
+    /* Cap Bank so the first two metric columns stay fully on-screen. */
+    let metricReserve = 0;
+    let metricsSeen = 0;
+    const metricIndices = [];
+    for (let i = 0; i < headCells.length; i++) {
+      if (skipIndices.has(i)) continue;
+      if (headCells[i].classList.contains("hlc-sticky-col")) continue;
+      if (metricsSeen >= 2) break;
+      metricReserve += measured[i] || 0;
+      metricIndices.push(i);
+      metricsSeen += 1;
+    }
+
+    /*
+     * Overview on phone: Bank stays at the CSS phone width (9rem). Rate + Loan
+     * share leftover viewport when both fit; Tenure/EMI keep natural widths
+     * and scroll sideways. Do not shrink Bank to make metrics fit.
+     */
+    const PHONE_RATE_COL_PX = Math.round(4.25 * 16);
+    let bankW = PHONE_BANK_COL_DEFAULT_PX;
+    if (state.group === "essentials" && metricIndices.length === 2 && port > 0) {
+      const rateW = Math.min(
+        PHONE_RATE_COL_PX,
+        Math.max(PHONE_METRIC_COL_MIN_PX, Math.floor((port - bankW) * 0.32))
+      );
+      const loanW = Math.max(PHONE_METRIC_COL_MIN_PX, port - bankW - rateW);
+      measured[metricIndices[0]] = rateW;
+      measured[metricIndices[1]] = loanW;
+    } else if (metricIndices.length === 2 && port > 0) {
+      bankW = Math.max(
+        PHONE_BANK_COL_FLOOR_PX,
+        Math.min(
+          PHONE_BANK_COL_DEFAULT_PX,
+          phoneBankColCapPx(port, metricReserve)
+        )
+      );
+      if (metricReserve + bankW > port) {
+        const rest = Math.max(0, port - bankW);
+        const i0 = metricIndices[0];
+        const i1 = metricIndices[1];
+        const m0 = measured[i0] || 0;
+        const m1 = measured[i1] || 0;
+        const sum = m0 + m1 || 1;
+        let w0 = Math.max(
+          PHONE_METRIC_COL_MIN_PX,
+          Math.floor((rest * m0) / sum)
+        );
+        let w1 = rest - w0;
+        if (w1 < PHONE_METRIC_COL_MIN_PX) {
+          w1 = PHONE_METRIC_COL_MIN_PX;
+          w0 = Math.max(PHONE_METRIC_COL_MIN_PX, rest - w1);
+        }
+        measured[i0] = w0;
+        measured[i1] = w1;
+      }
+    }
+
+    setPhoneBankColCssVar(bankW);
+
+    for (let i = 0; i < headCells.length; i++) {
+      if (headCells[i].classList.contains("hlc-sticky-col")) {
+        measured[i] = bankW;
+      }
+    }
+
+    /* Pass 2 — apply widths (fill cols stay zero). */
     for (let i = 0; i < headCells.length; i++) {
       if (skipIndices.has(i)) {
         if (headCells[i].classList.contains("hlc-col-fill")) {
@@ -8822,31 +8981,8 @@ function initPage() {
         continue;
       }
 
-      let maxW = 0;
-      if (headCells[i].classList.contains("hlc-sticky-col")) {
-        /*
-         * Bank column width is declared in CSS (9rem on phone). Read it from
-         * the col element so CSS remains the single source of truth. Names
-         * wrap to a second line rather than being measured nowrap and capped.
-         */
-        const colEl =
-          (el.cols && el.cols.children[i]) ||
-          (el.headCols && el.headCols.children[i]);
-        maxW = colEl
-          ? Math.round(parseFloat(window.getComputedStyle(colEl).width) || 0)
-          : Math.round(9 * 16);
-      } else if (headerOnly) {
-        maxW = measurePhoneCompareColHeaderWidth(headCells[i]);
-      } else {
-        maxW = measureOverviewColContentWidth(headCells[i]);
-        for (let r = 0; r < bodyRows.length; r++) {
-          maxW = Math.max(
-            maxW,
-            measureOverviewColContentWidth(bodyRows[r].children[i])
-          );
-        }
-      }
-      if (maxW <= 0) continue;
+      const maxW = measured[i];
+      if (!maxW || maxW <= 0) continue;
       const px = maxW + "px";
       headCells[i].style.width = px;
       headCells[i].style.minWidth = px;
@@ -8867,7 +9003,13 @@ function initPage() {
     }
 
     if (el.headScroll && el.scroll) {
-      el.headScroll.scrollLeft = el.scroll.scrollLeft;
+      /* Overview fit: pin to the start so Rate + Loan stay in view. */
+      if (state.group === "essentials") {
+        el.scroll.scrollLeft = 0;
+        el.headScroll.scrollLeft = 0;
+      } else {
+        el.headScroll.scrollLeft = el.scroll.scrollLeft;
+      }
     }
   }
 

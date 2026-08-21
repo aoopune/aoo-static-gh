@@ -122,6 +122,31 @@ for (const entry of pageRegistry) {
   if (!/document\.documentElement\.classList\.add\(['"]js['"]/.test(activeSource)) {
     fail(file, 'missing early progressive-enhancement marker');
   }
+  if ((source.match(/SHROFFIN_THEME_BOOT_START/g) || []).length !== 1) {
+    fail(file, 'missing canonical theme-boot start marker');
+  }
+  if ((source.match(/SHROFFIN_THEME_BOOT_END/g) || []).length !== 1) {
+    fail(file, 'missing canonical theme-boot end marker');
+  }
+  if (!/data-shroffin-theme-boot="live"/.test(source)) {
+    fail(file, 'theme-boot markers must contain the shared live partial');
+  }
+  if (
+    !/SHROFFIN_THEME_BOOT_START[\s\S]*?data-shroffin-theme-boot="live"[\s\S]*?SHROFFIN_THEME_BOOT_END[\s\S]*?document\.documentElement\.classList\.add\(['"]js['"]/.test(
+      source
+    )
+  ) {
+    fail(
+      file,
+      'theme-boot must sit in <head> before the early js class script (and before CSS)'
+    );
+  }
+  if (/<html\b[^>]*\bdata-theme=/.test(source)) {
+    fail(
+      file,
+      'customer pages must not ship static data-theme on <html> (boot sets it at runtime)'
+    );
+  }
   if (!/shroffin-shell\.css/.test(activeSource)) {
     fail(file, 'missing shared shell stylesheet');
   }
@@ -388,11 +413,22 @@ if (
     'help strip must stay flush on Explore banks and Apply (no page-specific top margin).'
   );
 }
-if (!/\.site-prefooter-cta:has\(\+ \.site-help-strip\)\s*\{[\s\S]*?padding-block-end:\s*clamp\(/.test(shellCss)) {
-  fail(
-    'css/shroffin-shell.css',
-    'prefooter CTA must tighten bottom pad when help strip follows'
-  );
+{
+  const prefooterHelpFollow =
+    shellCss.match(/\.site-prefooter-cta:has\(\+ \.site-help-strip\)\s*\{([^}]*)\}/) || [];
+  const prefooterHelpBody = prefooterHelpFollow[1] || '';
+  if (!/margin-block-end:\s*0/.test(prefooterHelpBody)) {
+    fail(
+      'css/shroffin-shell.css',
+      'prefooter CTA must drop bottom margin when help strip follows'
+    );
+  }
+  if (/padding-block-end:/.test(prefooterHelpBody)) {
+    fail(
+      'css/shroffin-shell.css',
+      'prefooter CTA must keep equal vertical padding when help strip follows (content centered)'
+    );
+  }
 }
 if (!/\.site-help-strip\s*\{[\s\S]*?margin-block-end:\s*0/.test(shellCss)) {
   fail('css/shroffin-shell.css', 'help strip must stick to the footer (no bottom air gap)');
@@ -596,6 +632,7 @@ const legacyAllow = new Set([
   'pages/pro-tips.html',
   'pages/questions.html',
   'pages/results.html',
+  'pages/apply-contact.html',
   'table-embed.html',
   '404.html',
   'google5420f4c52d551b3e.html'
@@ -616,6 +653,8 @@ function walkHtml(dir, acc) {
         ent.name === 'content' ||
         ent.name === 'prototypes' ||
         ent.name === 'templates' ||
+        ent.name === 'partials' ||
+        ent.name === 'super-review-1' ||
         ent.name === '.git'
       ) {
         return;

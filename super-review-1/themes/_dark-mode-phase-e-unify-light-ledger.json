@@ -1,0 +1,264 @@
+{
+  "phase": "E",
+  "title": "unify-light stack retarget",
+  "date": "2026-08-21",
+  "status": "complete",
+  "inputs": [
+    "super-review-1/themes/_dark-mode-phase-a-product-brief.md",
+    "super-review-1/themes/_dark-mode-phase-b-shell-freeze.md",
+    "super-review-1/themes/_dark-mode-phase-c-boot-injection.md",
+    ".cursor/rules/shroffin-theme-token-discipline.mdc",
+    "PREP-04",
+    "PREP-06",
+    "PREP-07",
+    "PREP-14"
+  ],
+  "verify": {
+    "check_theme_boot": "pass",
+    "boot_inert": true,
+    "customer_data_theme": false,
+    "fallbacks_redesigned_owners": 0,
+    "color_mix_raw_fff_redesigned": 0,
+    "visual_same_intent": true
+  },
+  "metrics_sum_touched_stacks": {
+    "hex_before": 290,
+    "hex_after": 66,
+    "fallbacks_before": 161,
+    "fallbacks_after": 0
+  },
+  "items": [
+    {
+      "id": "PREP-04",
+      "status": "done",
+      "files": ["css/shroffin-editorial.css"],
+      "hex_before": 92,
+      "hex_after": 41,
+      "fallbacks_notes": "37→0; mag-* aliases shell; guide-card-surface kept stack_local; color-mix uses canvas-mix-base",
+      "visual_same": true,
+      "notes": "Remaining hex are decorative gradients/story accents + guide-card-surface def"
+    },
+    {
+      "id": "PREP-06",
+      "status": "done",
+      "files": ["css/shroffin-apply.css"],
+      "hex_before": 89,
+      "hex_after": 10,
+      "fallbacks_notes": "60→0; chrome via shell; leftovers named --apply-*",
+      "visual_same": true,
+      "notes": "10 remaining hex are --apply-* definition values only"
+    },
+    {
+      "id": "PREP-07",
+      "status": "done",
+      "files": [
+        "css/shroffin-calculators.css",
+        "css/shroffin-guide.css",
+        "css/shroffin-about.css",
+        "css/shroffin-utility-pages.css",
+        "css/project-approvals.css",
+        "css/shroffin-home.css"
+      ],
+      "hex_before": 83,
+      "hex_after": 4,
+      "fallbacks_notes": "calc 28→0; guide 4→0; about 5→0; utility 12→0; apf 8→0; home 3→0",
+      "visual_same": true,
+      "notes": "calc-hub-surface + utility-sitemap-hover defs remain; calc/apf line-soft 0.06 stack_local"
+    },
+    {
+      "id": "PREP-14",
+      "status": "done",
+      "files": [
+        "css/shroffin-editorial.css",
+        "css/shroffin-apply.css",
+        "css/shroffin-calculators.css",
+        "css/shroffin-guide.css",
+        "css/shroffin-about.css",
+        "css/shroffin-utility-pages.css",
+        "css/project-approvals.css",
+        "css/shroffin-home.css",
+        "css/shroffin-product-demo.css",
+        "css/shroffin-shell.css"
+      ],
+      "hex_before": null,
+      "hex_after": null,
+      "fallbacks_notes": "Redesigned owner color fallbacks → 0; raw #fff color-mix → 0 on redesigned shroffin-* (excl Explore debt for F)",
+      "visual_same": true,
+      "notes": "Utility meta rgba(0,0,0,0.56+) deferred (would change look if forced to muted); Explore black-alpha/washes → F; JS → H"
+    },
+    {
+      "id": "FILE-editorial",
+      "status": "done",
+      "files": ["css/shroffin-editorial.css"],
+      "hex_before": 92,
+      "hex_after": 41,
+      "fallbacks_notes": "37→0",
+      "visual_same": true,
+      "notes": "mag paper/ink/muted/ghost/hair/accent → shell; localnav gn-bg"
+    },
+    {
+      "id": "FILE-apply",
+      "status": "done",
+      "files": ["css/shroffin-apply.css"],
+      "hex_before": 89,
+      "hex_after": 10,
+      "fallbacks_notes": "60→0",
+      "visual_same": true,
+      "notes": "--apply-ink-secondary, field/verify washes, status, blue-press"
+    },
+    {
+      "id": "FILE-calculators",
+      "status": "done",
+      "files": ["css/shroffin-calculators.css"],
+      "hex_before": 31,
+      "hex_after": 2,
+      "fallbacks_notes": "28→0",
+      "visual_same": true,
+      "notes": "calc-line→hair; calc-paper via mix-base; hub-surface named"
+    },
+    {
+      "id": "FILE-guide",
+      "status": "done",
+      "files": ["css/shroffin-guide.css"],
+      "hex_before": 14,
+      "hex_after": 0,
+      "fallbacks_notes": "4→0",
+      "visual_same": true,
+      "notes": "localnav frost/border → gn-bg / hair-soft; micro alpha 0.82→0.8"
+    },
+    {
+      "id": "FILE-about",
+      "status": "done",
+      "files": ["css/shroffin-about.css"],
+      "hex_before": 9,
+      "hex_after": 0,
+      "fallbacks_notes": "5→0",
+      "visual_same": true,
+      "notes": "about soft/note/ghost → shell; hair-soft borders"
+    },
+    {
+      "id": "FILE-utility",
+      "status": "done",
+      "files": ["css/shroffin-utility-pages.css"],
+      "hex_before": 16,
+      "hex_after": 2,
+      "fallbacks_notes": "12→0",
+      "visual_same": true,
+      "notes": "--utility-sitemap-hover keeps #005bb5; meta rgba deferred"
+    },
+    {
+      "id": "FILE-apf",
+      "status": "done",
+      "files": ["css/project-approvals.css"],
+      "hex_before": 9,
+      "hex_after": 0,
+      "fallbacks_notes": "8→0",
+      "visual_same": true,
+      "notes": "apf-line→hair; wash→footer"
+    },
+    {
+      "id": "FILE-home-stance",
+      "status": "done",
+      "files": ["css/shroffin-home.css"],
+      "hex_before": 4,
+      "hex_after": 0,
+      "fallbacks_notes": "3→0",
+      "visual_same": true,
+      "notes": "stance-ink-soft→shell; stance-line left rgba(0,0,0,0.1) exact"
+    },
+    {
+      "id": "FILE-product-demo",
+      "status": "done",
+      "files": ["css/shroffin-product-demo.css"],
+      "hex_before": 26,
+      "hex_after": 11,
+      "fallbacks_notes": "4→0",
+      "visual_same": true,
+      "notes": "home/phone bands→footer; device chrome deferred themeable_home_follow"
+    },
+    {
+      "id": "FILE-home-layout-story",
+      "status": "done",
+      "files": ["templates/layouts/home.html", "index.html"],
+      "hex_before": null,
+      "hex_after": null,
+      "fallbacks_notes": "shell light hex fallbacks stripped in layout inline CSS",
+      "visual_same": true,
+      "notes": "Reserved --home-story-bg/ink and --home-device-stage with current values; no light variants yet"
+    },
+    {
+      "id": "FILE-shell-cleanup",
+      "status": "done",
+      "files": ["css/shroffin-shell.css"],
+      "hex_before": 68,
+      "hex_after": 66,
+      "fallbacks_notes": "2→0 on field-line-focus etc.",
+      "visual_same": true,
+      "notes": "No dark values; no new private roles beyond Phase B promotions"
+    },
+    {
+      "id": "DEFER-explore",
+      "status": "deferred",
+      "files": ["css/shroffin-explore-banks.css"],
+      "hex_before": null,
+      "hex_after": null,
+      "fallbacks_notes": "Explore fallbacks untouched (Phase F)",
+      "visual_same": true,
+      "notes": "Intentionally not finished for theme"
+    },
+    {
+      "id": "DEFER-js-injectors",
+      "status": "deferred",
+      "files": [
+        "js/aoo-loan-table-standalone.js",
+        "js/apply-flow.js",
+        "js/apply-button-iframe.js"
+      ],
+      "hex_before": null,
+      "hex_after": null,
+      "fallbacks_notes": "out_of_v1 / Phase H",
+      "visual_same": true,
+      "notes": "Phase B ownership"
+    },
+    {
+      "id": "DEFER-utility-meta-rgba",
+      "status": "deferred",
+      "files": ["css/shroffin-utility-pages.css"],
+      "hex_before": null,
+      "hex_after": null,
+      "fallbacks_notes": "rgba(0,0,0,0.56+) near muted left exact",
+      "visual_same": true,
+      "notes": "Mapping to --shroffin-muted would alter light look"
+    },
+    {
+      "id": "DEFER-product-demo-device",
+      "status": "deferred",
+      "files": ["css/shroffin-product-demo.css"],
+      "hex_before": null,
+      "hex_after": null,
+      "fallbacks_notes": "titanium/device greys remain",
+      "visual_same": true,
+      "notes": "themeable_home_follow — theme build"
+    },
+    {
+      "id": "BLOCKED-none-visual",
+      "status": "done",
+      "files": [],
+      "hex_before": null,
+      "hex_after": null,
+      "fallbacks_notes": "",
+      "visual_same": true,
+      "notes": "No hunks reverted; unsure lines deferred instead of redesigned"
+    }
+  ],
+  "next_phase": "F",
+  "gates": {
+    "editorial_mag_to_shell": true,
+    "apply_hard_paints_mapped": true,
+    "calc_guide_about_utility_apf_cleaned": true,
+    "fallbacks_and_fff_mix_reduced": true,
+    "explore_not_falsely_finished": true,
+    "boot_inert_check_green": true,
+    "no_dark_css_no_footer_pill": true
+  }
+}

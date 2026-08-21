@@ -1,14 +1,23 @@
   :root {
     --shroffin-font: "Google Sans Flex", Arial, sans-serif;
     --shroffin-ink: #1d1d1f;
+    /* Soft body ink — shared by editorial/about/home stance (alias later in Phase E). */
+    --shroffin-ink-soft: #3a3a3d;
     --shroffin-muted: #6e6e73;
+    /* Decorative large numerals / ghost type (editorial + about). */
+    --shroffin-ghost: #c5c9cf;
     --shroffin-blue: #0071e3;
+    /*
+     * Filled primary pill — Apple SK `.button` (Buy on shop + product pages).
+     * Same fill on light and dark; hover is slightly lighter, not darker; flat (no glow).
+     * https://www.apple.com/in/shop/buy-ipad · https://www.apple.com/in/iphone-17-pro/
+     */
     --shroffin-btn-primary: #0071e3;
-    --shroffin-btn-primary-hover: #0058b0;
-    --shroffin-btn-primary-active: #004a96;
-    --shroffin-btn-primary-shadow: 0 2px 8px rgba(0, 113, 227, 0.2);
-    --shroffin-btn-primary-shadow-hover: 0 6px 22px rgba(0, 88, 176, 0.42);
-    --shroffin-btn-primary-shadow-active: 0 1px 4px rgba(0, 74, 150, 0.32);
+    --shroffin-btn-primary-hover: #0076df;
+    --shroffin-btn-primary-active: #006edb;
+    --shroffin-btn-primary-shadow: none;
+    --shroffin-btn-primary-shadow-hover: none;
+    --shroffin-btn-primary-shadow-active: none;
     /* Text links (on-site + off-site) — one colour, gap, and state system. */
     --shroffin-link: #3f62c8;
     --shroffin-link-active: #2f4ba0;
@@ -17,11 +26,23 @@
     --shroffin-link-external: var(--shroffin-link);
     --shroffin-link-external-active: var(--shroffin-link-active);
     --shroffin-link-external-visited: var(--shroffin-link-visited);
+    /*
+     * Mix destinations for surface/footer washes — never raw #fff / #f4f6f8 in shell.
+     * Light values match today’s mix targets so perceived canvas stays identical.
+     * Dark twins later: same names, new values under html[data-theme=dark].
+     */
+    --shroffin-canvas-mix-base: #ffffff;
+    --shroffin-footer-mix-base: #f4f6f8;
     /* Cool soft blue canvas — same family as Explore banks; no warm paper. */
     --shroffin-surface: #fcfcfd;
-    --shroffin-surface: color-mix(in srgb, var(--shroffin-blue) 0.75%, #ffffff);
+    --shroffin-surface: color-mix(in srgb, var(--shroffin-blue) 0.75%, var(--shroffin-canvas-mix-base));
     --shroffin-footer: #f5f7f9;
-    --shroffin-footer: color-mix(in srgb, var(--shroffin-blue) 1.5%, #f4f6f8);
+    --shroffin-footer: color-mix(in srgb, var(--shroffin-blue) 1.5%, var(--shroffin-footer-mix-base));
+    /* Note / glance panel wash — shared editorial + about hex; stacks alias in Phase E. */
+    --shroffin-paper-note: #eef1f4;
+    /* Content hairlines (softer than --shroffin-rule chrome). */
+    --shroffin-hair: rgba(0, 0, 0, 0.12);
+    --shroffin-hair-soft: rgba(0, 0, 0, 0.08);
     --shroffin-rule: rgba(0, 0, 0, 0.16);
     --shroffin-focus: #0071e3;
     --shroffin-focus-width: 2px;
@@ -61,6 +82,13 @@
      */
     --shroffin-btn-radius: 980px;
     /*
+     * Content cards (home feature slabs, guide chapter + flip faces,
+     * calc hub tiles, utility panels, Explore inputs/intel cards).
+     * One fixed radius on every viewport — same as home .home-feature-card.
+     * Not for pills (btn), segments, fields, or device chrome.
+     */
+    --shroffin-card-radius: 16px;
+    /*
      * Segmented pill switches (Term loan / Regular / Overdraft standard).
      * Track = outer shell; option = each choice + sliding thumb.
      * Same on phone and desktop — do not soften per viewport.
@@ -89,7 +117,7 @@
      * Transparent fill, bottom hairline, focus paints the line solid blue.
      */
     --shroffin-field-line: rgba(0, 0, 0, 0.16);
-    --shroffin-field-line-focus: var(--shroffin-btn-primary, #0071e3);
+    --shroffin-field-line-focus: var(--shroffin-btn-primary);
     --shroffin-field-line-invalid: rgba(176, 76, 76, 0.65);
     --shroffin-field-line-valid: rgba(29, 122, 58, 0.45);
     --shroffin-field-min-height: 48px;
@@ -136,6 +164,53 @@
     --shroffin-space-masthead-end: clamp(2.75rem, 9vw, 4rem);
     --shroffin-space-hero-pad: clamp(2.5rem, 8vh, 4rem);
   }
+
+/* Phase I — shell dark twins (palette lock). Same names; light :root untouched. */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --shroffin-ink: #F5F5F7;
+  --shroffin-ink-soft: #C7C7CC;
+  --shroffin-muted: #A1A1A6;
+  --shroffin-ghost: #636366;
+  --shroffin-blue: #0A84FF;
+  /* Filled CTAs stay Apple Buy blue; accents/links use brighter --shroffin-blue. */
+  --shroffin-btn-primary: #0071e3;
+  --shroffin-btn-primary-hover: #0076df;
+  --shroffin-btn-primary-active: #006edb;
+  --shroffin-btn-primary-shadow: none;
+  --shroffin-btn-primary-shadow-hover: none;
+  --shroffin-btn-primary-shadow-active: none;
+  --shroffin-link: #8FA3F0;
+  --shroffin-link-active: #7389E0;
+  --shroffin-link-visited: #A89BE8;
+  --shroffin-link-external: var(--shroffin-link);
+  --shroffin-link-external-active: var(--shroffin-link-active);
+  --shroffin-link-external-visited: var(--shroffin-link-visited);
+  --shroffin-canvas-mix-base: #121212;
+  --shroffin-footer-mix-base: #1E1E1E;
+  --shroffin-surface: #121212;
+  --shroffin-footer: #1E1E1E;
+  --shroffin-paper-note: #2C2C2C;
+  --shroffin-hair: rgba(255, 255, 255, 0.12);
+  --shroffin-hair-soft: rgba(255, 255, 255, 0.08);
+  --shroffin-rule: rgba(255, 255, 255, 0.16);
+  --shroffin-focus: #0A84FF;
+  --shroffin-gn-frost: #1E1E1E;
+  --shroffin-gn-bg: rgba(30, 30, 30, 0.80);
+  --shroffin-gn-bg-fallback: rgba(30, 30, 30, 0.96);
+  --shroffin-gn-bg-open: rgba(30, 30, 30, 0.92);
+  --shroffin-gn-veil: rgba(0, 0, 0, 0.45);
+  --shroffin-gn-border: rgba(255, 255, 255, 0.10);
+  --shroffin-field-line: rgba(255, 255, 255, 0.16);
+  --shroffin-field-line-focus: var(--shroffin-btn-primary);
+  --shroffin-field-line-invalid: rgba(255, 105, 97, 0.70);
+  --shroffin-field-line-valid: rgba(48, 209, 88, 0.50);
+  --shroffin-field-placeholder: rgba(161, 161, 166, 0.55);
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+}
 
   /* Guard against rare full-bleed math (e.g. 100vw bands) widening the page. */
   html {
@@ -221,7 +296,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Thin.ttf") format("truetype");
     font-style: normal;
     font-weight: 100;
-    font-display: block;
+    font-display: swap;
   }
 
   @font-face {
@@ -229,7 +304,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraLight.ttf") format("truetype");
     font-style: normal;
     font-weight: 200;
-    font-display: block;
+    font-display: swap;
   }
 
   @font-face {
@@ -237,7 +312,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Light.ttf") format("truetype");
     font-style: normal;
     font-weight: 300;
-    font-display: block;
+    font-display: swap;
   }
 
   @font-face {
@@ -245,7 +320,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf") format("truetype");
     font-style: normal;
     font-weight: 400;
-    font-display: block;
+    font-display: swap;
   }
 
   @font-face {
@@ -253,7 +328,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf") format("truetype");
     font-style: normal;
     font-weight: 500;
-    font-display: block;
+    font-display: swap;
   }
 
   @font-face {
@@ -261,7 +336,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf") format("truetype");
     font-style: normal;
     font-weight: 600;
-    font-display: block;
+    font-display: swap;
   }
 
   @font-face {
@@ -269,7 +344,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Bold.ttf") format("truetype");
     font-style: normal;
     font-weight: 700;
-    font-display: block;
+    font-display: swap;
   }
 
   @font-face {
@@ -277,7 +352,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-ExtraBold.ttf") format("truetype");
     font-style: normal;
     font-weight: 800;
-    font-display: block;
+    font-display: swap;
   }
 
   @font-face {
@@ -285,7 +360,7 @@
     src: url("../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Black.ttf") format("truetype");
     font-style: normal;
     font-weight: 900;
-    font-display: block;
+    font-display: swap;
   }
 
   html {
@@ -670,6 +745,25 @@
     inline-size: auto;
     block-size: 1.375rem;
     max-inline-size: 100%;
+  }
+
+  /*
+   * Phase G — nav wordmark swap (PREP-10).
+   * Owner: partials/global-nav.html + this rule.
+   * Without html[data-theme], light mark stays visible (inert boot).
+   * Dark mark activates only under html[data-theme="dark"] (Phase I).
+   * Do not filter:invert the light mark.
+   */
+  .globalnav-logo--dark {
+    display: none;
+  }
+
+  html[data-theme="dark"] .globalnav-logo--light {
+    display: none;
+  }
+
+  html[data-theme="dark"] .globalnav-logo--dark {
+    display: block;
   }
 
   .globalnav-flyout {
@@ -1236,6 +1330,15 @@
     background-color: #f4f2ef;
   }
 
+  /* Dark: charcoal base so ink (#F5F5F7) stays readable; pastel blooms stay soft. */
+  html[data-theme="dark"] .site-prefooter-cta {
+    background-color: #1E1E1E;
+  }
+  html[data-theme="dark"] .site-prefooter-cta::before {
+    opacity: 0.28;
+    filter: blur(64px) saturate(0.85);
+  }
+
   /* Soft mesh bloom behind the copy — calm product-page get-started feel. */
   .site-prefooter-cta::before {
     content: "";
@@ -1351,13 +1454,12 @@
   }
 
   /*
-   * When help follows the get-started band, drop the tall empty pad under the
-   * button so help sits on the footer unit — keep the top air for the headline.
-   * Placed after the width ladders so padding-block shorthand does not win.
+   * When help follows the get-started band, drop only the outer bottom margin
+   * so help sits on the footer unit. Keep equal padding-block so title, lead,
+   * and Explore banks stay vertically centered in the wash section.
    */
   .site-prefooter-cta:has(+ .site-help-strip) {
     margin-block-end: 0;
-    padding-block-end: clamp(2.25rem, 4vw, 3rem);
   }
 
   /* Help strip: footer chrome. Flush to content above and footer below. Same on every page. */
@@ -2561,7 +2663,7 @@
 
 .shroffin-sel-thumb--line {
   border-radius: 1px 1px 0 0;
-  background: var(--shroffin-ink, #1d1d1f);
+  background: var(--shroffin-ink);
 }
 
 .has-sel-thumb {
@@ -2630,16 +2732,38 @@
 }
 
 /*
- * Hollow “Transparent” outline — same treatment as the former home-clear display:
- * empty fill + light stroke so the word itself reads as see-through.
+ * Hollow “Transparent” outline.
+ * -webkit-text-stroke paints half inside the glyph; a transparent fill leaves
+ * that inward half visible as muddy grey (worse on phone). Fill with the story
+ * band (--home-story-bg) and paint fill over stroke so only the outer outline
+ * remains — same hollow read on solid band, crisp on every viewport.
  */
 .home-clear-word {
-  color: transparent;
-  -webkit-text-fill-color: transparent;
+  color: var(--home-story-bg, var(--shroffin-surface));
+  -webkit-text-fill-color: var(--home-story-bg, var(--shroffin-surface));
   font-weight: 600;
-  letter-spacing: normal;
-  -webkit-text-stroke: clamp(1.25px, 0.028em, 2.25px) rgba(245, 245, 247, 0.62);
+  /* Parent titles use tight tracking; outlined glyphs need a little air. */
+  letter-spacing: 0.012em;
+  -webkit-text-stroke: clamp(1.1px, 0.022em, 1.85px)
+    var(--home-story-ink, var(--shroffin-ink));
   paint-order: stroke fill;
+}
+
+html[data-theme="light"] .home-clear-word {
+  /* Dark stroke on light paper — slightly wider so the outline holds. */
+  -webkit-text-stroke-width: clamp(1.25px, 0.026em, 2.1px);
+}
+
+/* Phone: same crisp hollow; a touch more stroke + tracking for title size. */
+@media (max-width: 833px) {
+  .home-clear-word {
+    letter-spacing: 0.02em;
+    -webkit-text-stroke-width: clamp(1.25px, 0.028em, 2px);
+  }
+
+  html[data-theme="light"] .home-clear-word {
+    -webkit-text-stroke-width: clamp(1.4px, 0.032em, 2.25px);
+  }
 }
 
 @media (forced-colors: active) {
@@ -2675,4 +2799,190 @@
   .guide-seg-panel {
     transition: none;
   }
+}
+
+html[data-theme="dark"] .hl-apply-field input:-webkit-autofill,
+html[data-theme="dark"] .hl-apply-field input:-webkit-autofill:hover,
+html[data-theme="dark"] .hl-apply-field input:-webkit-autofill:focus,
+html[data-theme="dark"] .hl-apply-field input:-webkit-autofill:active,
+html[data-theme="dark"] .guide-calc-input:-webkit-autofill,
+html[data-theme="dark"] .guide-calc-input:-webkit-autofill:hover,
+html[data-theme="dark"] .guide-calc-input:-webkit-autofill:focus,
+html[data-theme="dark"] .guide-calc-input:-webkit-autofill:active,
+html[data-theme="dark"] .hlc-field input:-webkit-autofill,
+html[data-theme="dark"] .hlc-field input:-webkit-autofill:hover,
+html[data-theme="dark"] .hlc-field input:-webkit-autofill:focus,
+html[data-theme="dark"] .hlc-field input:-webkit-autofill:active,
+html[data-theme="dark"] .calc-input:-webkit-autofill,
+html[data-theme="dark"] .calc-input:-webkit-autofill:hover,
+html[data-theme="dark"] .calc-input:-webkit-autofill:focus,
+html[data-theme="dark"] .calc-input:-webkit-autofill:active,
+html[data-theme="dark"] .apf-input:-webkit-autofill,
+html[data-theme="dark"] .apf-input:-webkit-autofill:hover,
+html[data-theme="dark"] .apf-input:-webkit-autofill:focus,
+html[data-theme="dark"] .apf-input:-webkit-autofill:active {
+  box-shadow: 0 0 0 1000px #1E1E1E inset;
+  -webkit-text-fill-color: var(--shroffin-ink);
+}
+
+html[data-theme="dark"] .globalnav-link,
+html[data-theme="dark"] .globalnav-flyout-trigger,
+html[data-theme="dark"] .globalnav-compact-toggle {
+  color: rgba(245, 245, 247, 0.72);
+}
+
+html[data-theme="dark"] .globalnav-submenu-link:hover,
+html[data-theme="dark"] .globalnav-submenu-link:hover :where(.globalnav-submenu-label, .globalnav-submenu-value) {
+  color: #8FA3F0;
+}
+
+html[data-theme="dark"] #nav-support-flyout .globalnav-whatsapp-icon,
+html[data-theme="dark"] #nav-support-flyout .globalnav-submenu-link:hover .globalnav-whatsapp-icon {
+  color: #F5F5F7;
+}
+
+html[data-theme="dark"] .home-hero-cta-secondary,
+html[data-theme="dark"] .about-cta-secondary,
+html[data-theme="dark"] .home-hero-cta-secondary:link,
+html[data-theme="dark"] .home-hero-cta-secondary:visited,
+html[data-theme="dark"] .about-cta-secondary:link,
+html[data-theme="dark"] .about-cta-secondary:visited {
+  color: #0A84FF;
+  border-color: #0A84FF;
+}
+
+@media (max-width: 833px) {
+  html[data-theme="dark"] .home-hero-cta-secondary::before,
+  html[data-theme="dark"] .about-cta-secondary::before {
+    border-color: #0A84FF;
+  }
+}
+
+html[data-theme="dark"] .shroffin-sel-thumb--pill {
+  background: #2C2C2C;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .site-footer {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Phase I — footer theme pill (Cursor-like: compact track, clear active chip) */
+.site-footer-theme {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 1px;
+  padding: 3px;
+  border: 1px solid var(--shroffin-hair);
+  border-radius: 980px;
+  background: var(--shroffin-paper-note);
+}
+.site-footer-theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Visual chip ~28px; phone keeps ≥44px hit via padding. */
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 980px;
+  background: transparent;
+  color: var(--shroffin-muted);
+  cursor: pointer;
+  transition: color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+    background-color var(--shroffin-micro-duration) var(--shroffin-color-ease),
+    box-shadow var(--shroffin-micro-duration) var(--shroffin-color-ease);
+}
+@media (max-width: 833px) {
+  .site-footer-theme-btn {
+    width: 44px;
+    height: 44px;
+  }
+}
+.site-footer-theme-btn.is-active,
+.site-footer-theme-btn[aria-pressed="true"] {
+  color: var(--shroffin-ink);
+  background: var(--shroffin-surface);
+  box-shadow:
+    0 0 0 1px var(--shroffin-hair),
+    0 1px 2px rgba(0, 0, 0, 0.14);
+}
+html[data-theme="dark"] .site-footer-theme-btn.is-active,
+html[data-theme="dark"] .site-footer-theme-btn[aria-pressed="true"] {
+  color: #F5F5F7;
+  background: #383838;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 1px 3px rgba(0, 0, 0, 0.45);
+}
+.site-footer-theme-icon {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+@media (max-width: 833px) {
+  .site-footer-theme-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Phone: stack copy → pill → legal (existing column row) */
+.site-footer-bottom-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  inline-size: 100%;
+}
+
+/* Desktop: copyright | pill on first band; legal still next band */
+@media (min-width: 834px) {
+  .site-footer-bottom-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "copy theme"
+      "legal legal";
+    column-gap: 1rem;
+    row-gap: 0.55rem;
+    align-items: center;
+  }
+  .site-footer-copy { grid-area: copy; }
+  .site-footer-theme { grid-area: theme; justify-self: end; }
+  .site-footer-legal-nav { grid-area: legal; }
+}
+
+/* Force white labels on primary blue fills in dark (never canvas-mix). */
+html[data-theme="dark"] .home-hero-cta-primary,
+html[data-theme="dark"] .home-hero-cta-primary:link,
+html[data-theme="dark"] .home-hero-cta-primary:visited,
+html[data-theme="dark"] .home-hero-cta-primary:hover,
+html[data-theme="dark"] .home-hero-cta-primary:focus-visible,
+html[data-theme="dark"] .home-hero-cta-primary:active,
+html[data-theme="dark"] .lm-cta,
+html[data-theme="dark"] .lm-cta:link,
+html[data-theme="dark"] .lm-cta:visited,
+html[data-theme="dark"] .lm-cta:hover,
+html[data-theme="dark"] .lm-cta-light,
+html[data-theme="dark"] .hl-apply-cta,
+html[data-theme="dark"] .about-cta-primary,
+html[data-theme="dark"] .hlc-btn-primary,
+html[data-theme="dark"] .site-prefooter-cta-action,
+html[data-theme="dark"] .guide-calc-submit,
+html[data-theme="dark"] .apf-submit,
+html[data-theme="dark"] .apf-more,
+html[data-theme="dark"] .localnav-cta,
+html[data-theme="dark"] .localnav-cta:link,
+html[data-theme="dark"] .localnav-cta:visited {
+  color: #fff;
+}
+html[data-theme="dark"] .home-hero-cta-secondary:hover,
+html[data-theme="dark"] .home-hero-cta-secondary:active,
+html[data-theme="dark"] .about-cta-secondary:hover,
+html[data-theme="dark"] .about-cta-secondary:active {
+  color: #fff;
 }

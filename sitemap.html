@@ -3,6 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- SHROFFIN_THEME_BOOT_START -->
+  <!--
+    Phase I live theme boot. Spec: _dark-mode-phase-c-boot-injection.md §5
+    Preference: localStorage['shroffin-color-preference'] ∈ {dark, light, system}
+    Resolved: html[data-theme="dark"|"light"]; first visit unset → dark (do NOT write until user taps).
+    Default (system) ≠ first visit. OS listener only when preference === system.
+    theme-color: dark #121212 / light #fcfcfd
+    FOUC: set data-theme + color-scheme + canvas background before stylesheets.
+  -->
+  <script data-shroffin-theme-boot="live">
+  (function () {
+    var KEY = 'shroffin-color-preference';
+    var root = document.documentElement;
+    function resolve(pref) {
+      if (pref === 'light') return 'light';
+      if (pref === 'dark') return 'dark';
+      if (pref === 'system') {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      return 'dark';
+    }
+    function applyThemeColor(resolved) {
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute('name', 'theme-color');
+        if (document.head.firstChild) document.head.insertBefore(meta, document.head.firstChild);
+        else document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', resolved === 'dark' ? '#121212' : '#fcfcfd');
+    }
+    function apply(resolved) {
+      root.setAttribute('data-theme', resolved);
+      root.style.colorScheme = resolved;
+      /* Critical canvas before CSS / home inline light hardcodes */
+      root.style.backgroundColor = resolved === 'dark' ? '#121212' : '#fcfcfd';
+      applyThemeColor(resolved);
+    }
+    var pref = null;
+    try { pref = localStorage.getItem(KEY); } catch (e) {}
+    if (pref !== 'dark' && pref !== 'light' && pref !== 'system') pref = null;
+    apply(resolve(pref));
+    window.__shroffinApplyColorPreference = function (next) {
+      if (next !== 'dark' && next !== 'light' && next !== 'system') return;
+      try { localStorage.setItem(KEY, next); } catch (e) {}
+      apply(resolve(next));
+      document.dispatchEvent(new CustomEvent('shroffin-theme-change', {
+        detail: { preference: next, theme: resolve(next) }
+      }));
+    };
+    try {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+        var p = null;
+        try { p = localStorage.getItem(KEY); } catch (e) {}
+        if (p === 'system') {
+          apply(resolve('system'));
+          document.dispatchEvent(new CustomEvent('shroffin-theme-change', {
+            detail: { preference: 'system', theme: resolve('system') }
+          }));
+        }
+        /* If pref unset or dark/light: ignore OS changes */
+      });
+    } catch (e) {}
+  })();
+  </script>
+  <!-- SHROFFIN_THEME_BOOT_END -->
   <script>document.documentElement.classList.add('js');</script>
   <title>Site Map — Shroffin</title>
   <meta name="description" content="Browse every current Shroffin home loan guide, tool, and company page.">
@@ -25,13 +91,23 @@
       <ul class="globalnav-list">
         <li class="globalnav-item globalnav-item-brand">
           <a class="globalnav-link globalnav-link-brand" href="/" aria-label="Shroffin Home">
-            <img
-              class="globalnav-logo"
-              src="/images/logos/logo-h-light-clear-781x173.png"
-              alt="Shroffin"
-              width="99"
-              height="22"
-            >
+            <!-- Phase G logo swap: light mark is default until html[data-theme="dark"] (Phase I boot). CSS owner: css/shroffin-shell.css -->
+              <img
+                class="globalnav-logo globalnav-logo--light"
+                src="/images/logos/logo-h-light-clear-781x173.png"
+                alt="Shroffin"
+                width="99"
+                height="22"
+              >
+              <img
+                class="globalnav-logo globalnav-logo--dark"
+                src="/images/logos/logo-h-dark-clear-781x173.png"
+                alt=""
+                width="99"
+                height="22"
+                aria-hidden="true"
+                decoding="async"
+              >
           </a>
         </li>
         <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled
@@ -306,10 +382,12 @@
           <a class="site-footer-brand-link" href="/" aria-label="Shroffin Home">
             <img
               class="site-footer-logo"
-              src="/images/logos/logo.png"
+              src="/images/logos/logo-mark-40.png"
               alt=""
               width="40"
               height="40"
+              loading="lazy"
+              decoding="async"
             >
           </a>
         </section>
@@ -392,6 +470,17 @@
           <div class="site-footer-bottom">
             <div class="site-footer-bottom-row">
               <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
+              <div class="site-footer-theme" role="group" aria-label="Color theme">
+                <button type="button" class="site-footer-theme-btn" data-theme-pref="system" aria-label="Default" aria-pressed="false">
+                  <svg class="site-footer-theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-6v2h2v1H8v-1h2v-2H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 2v8h14V7H5z"/></svg>
+                </button>
+                <button type="button" class="site-footer-theme-btn" data-theme-pref="light" aria-label="Light" aria-pressed="false">
+                  <svg class="site-footer-theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0-5h1v3h-1V2zm0 17h1v3h-1v-3zM2 11h3v1H2v-1zm17 0h3v1h-3v-1zM4.2 4.2l2.1 2.1-.7.7-2.1-2.1.7-.7zm14.1 14.1 2.1 2.1-.7.7-2.1-2.1.7-.7zM4.2 19.8l.7.7-2.1 2.1-.7-.7 2.1-2.1zm14.1-14.1.7.7-2.1 2.1-.7-.7 2.1-2.1z"/></svg>
+                </button>
+                <button type="button" class="site-footer-theme-btn" data-theme-pref="dark" aria-label="Dark" aria-pressed="false">
+                  <svg class="site-footer-theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.1 2a9.9 9.9 0 0 0 0 19.8A10 10 0 0 1 12.1 2z"/></svg>
+                </button>
+              </div>
               <nav class="site-footer-legal-nav" aria-label="Official resources">
                 <ul class="site-footer-official-links">
                   <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
@@ -407,6 +496,42 @@
       </div>
     </div>
   </footer>
+  <script>
+  (function () {
+    var KEY = 'shroffin-color-preference';
+    var root = document.querySelector('.site-footer-theme');
+    if (!root) return;
+    var buttons = root.querySelectorAll('[data-theme-pref]');
+    function currentPref() {
+      var p = null;
+      try { p = localStorage.getItem(KEY); } catch (e) {}
+      if (p === 'dark' || p === 'light' || p === 'system') return p;
+      return 'dark';
+    }
+    function syncPressed() {
+      var pref = currentPref();
+      buttons.forEach(function (btn) {
+        var on = btn.getAttribute('data-theme-pref') === pref;
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        btn.classList.toggle('is-active', on);
+      });
+    }
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var next = btn.getAttribute('data-theme-pref');
+        if (typeof window.__shroffinApplyColorPreference === 'function') {
+          window.__shroffinApplyColorPreference(next);
+        } else {
+          try { localStorage.setItem(KEY, next); } catch (e) {}
+          location.reload();
+        }
+        syncPressed();
+      });
+    });
+    syncPressed();
+    document.addEventListener('shroffin-theme-change', syncPressed);
+  })();
+  </script>
   <!-- SHROFFIN_FOOTER_END -->
 
   <script src="/js/shroffin-nav.js?v=guide-top-1"></script>

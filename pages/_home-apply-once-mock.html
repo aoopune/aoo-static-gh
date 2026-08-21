@@ -9,13 +9,41 @@
     Section copy already says the words.
     Shows a real-looking home loan application, then banks, then competing rates.
   -->
-  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
+
+
+  <link rel="stylesheet" href="../css/shroffin-shell.min.css?v=home-wash-8">
   <style>
+    /*
+      Dark story: light rates on dark stage.
+      Light story: dark rates (white rates were invisible on #F5F5F7).
+      Font: shell @font-face → Google Sans Flex everywhere in this demo.
+    */
     :root {
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
-      --ink: #1d1d1f;
-      --muted: #6e6e73;
+      --ink: var(--shroffin-ink);
+      --muted: var(--shroffin-muted);
+      --offer: rgba(245, 245, 247, 0.72);
+      --offer-lead: #f5f5f7;
+      /* Dark: soft glass behind marks (match home Zero field). Explore solid plates stay Explore-only. */
+      --hlc-logo-plate: rgba(255, 255, 255, 0.045);
+      --hlc-logo-plate-line: rgba(255, 255, 255, 0.07);
+      --app-shadow:
+        0 0 0 0.5px rgba(255, 255, 255, 0.06),
+        0 24px 48px rgba(0, 0, 0, 0.42);
+    }
+
+    html[data-theme="light"] {
+      --offer: var(--shroffin-muted);
+      --offer-lead: var(--shroffin-ink);
+      --hlc-logo-plate: #ffffff;
+      --hlc-logo-plate-line: rgba(0, 0, 0, 0.08);
+      --app-shadow:
+        inset 0 0 0 0.5px var(--shroffin-hair-soft),
+        0 18px 40px color-mix(in srgb, var(--shroffin-ink) 12%, transparent);
+    }
+
+    html[data-theme="dark"] {
+      --app-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.08);
     }
 
     * { box-sizing: border-box; }
@@ -24,9 +52,9 @@
       margin: 0;
       width: 100%;
       height: 100%;
-      background: #0a0a0a;
-      color: #f5f5f7;
-      font-family: "Google Sans Flex", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+      background: transparent;
+      color: var(--shroffin-ink);
+      font-family: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
       -webkit-font-smoothing: antialiased;
       overflow: hidden;
     }
@@ -46,6 +74,7 @@
       justify-content: center;
       gap: 2.25rem;
       padding: 1.75rem 1.15rem;
+      font-family: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
     }
 
     body:not(.is-embed) .stage {
@@ -56,11 +85,10 @@
       width: min(268px, 78vw);
       padding: 1.35rem 1.3rem 1.25rem;
       border-radius: 16px;
-      background: #f5f5f7;
+      background: var(--shroffin-surface);
       color: var(--ink);
-      box-shadow:
-        0 0 0 0.5px rgba(255, 255, 255, 0.06),
-        0 24px 48px rgba(0, 0, 0, 0.42);
+      font-family: inherit;
+      box-shadow: var(--app-shadow);
       opacity: 0;
       transform: translateY(14px);
       transition:
@@ -127,6 +155,7 @@
       align-items: flex-start;
       justify-content: center;
       gap: clamp(1.1rem, 3vw, 1.75rem);
+      font-family: inherit;
     }
 
     .bank {
@@ -154,21 +183,34 @@
       transition-duration: 0.9s, 1.15s;
     }
 
+    /* Soft glass / light plate behind marks — do not recolor bank assets. */
     .bank img {
       display: block;
+      box-sizing: border-box;
       width: 40px;
       height: 40px;
+      padding: 5px;
       border-radius: 9px;
       object-fit: contain;
+      object-position: center;
+      background-color: var(--hlc-logo-plate);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        inset 0 0 0 1px var(--hlc-logo-plate-line);
+    }
+
+    html[data-theme="light"] .bank img {
+      box-shadow: inset 0 0 0 1px var(--hlc-logo-plate-line);
     }
 
     .offer {
       margin: 0;
+      font-family: inherit;
       font-size: 0.8125rem;
       font-weight: 500;
       letter-spacing: -0.02em;
       font-variant-numeric: tabular-nums;
-      color: rgba(245, 245, 247, 0.72);
+      color: var(--offer);
       opacity: 0;
       transform: translateY(8px);
       transition:
@@ -183,7 +225,8 @@
     }
 
     .bank.is-lead .offer {
-      color: #f5f5f7;
+      color: var(--offer-lead);
+      font-weight: 600;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -195,6 +238,22 @@
       }
     }
   </style>
+
+<script>
+(function () {
+  function syncTheme() {
+    try {
+      var t = parent.document.documentElement.getAttribute("data-theme");
+      if (t === "dark" || t === "light") {
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      }
+    } catch (e) {}
+  }
+  syncTheme();
+  try { parent.document.addEventListener("shroffin-theme-change", syncTheme); } catch (e) {}
+})();
+</script>
 </head>
 <body>
   <div class="stage" aria-hidden="true">

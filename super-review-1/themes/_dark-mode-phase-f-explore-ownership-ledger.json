@@ -1,0 +1,120 @@
+{
+  "phase": "F",
+  "title": "Explore --hlc-* ownership, light unify, logo plate, contrast gate, dark-map plan",
+  "date": "2026-08-21",
+  "status": "complete",
+  "inputs": [
+    "super-review-1/themes/_dark-mode-phase-a-product-brief.md",
+    "super-review-1/themes/_dark-mode-phase-b-shell-freeze.md",
+    "super-review-1/themes/_dark-mode-phase-c-boot-injection.md",
+    "super-review-1/themes/_dark-mode-phase-e-unify-light.md",
+    "super-review-1/themes/_dark-mode-founder-visual-inputs.md",
+    "super-review-1/themes/_dark-mode-founder-visual-inputs-ledger.json",
+    ".cursor/rules/shroffin-theme-token-discipline.mdc",
+    "super-review-1/themes/_dark-mode-prep-audit.md",
+    "PREP-05",
+    "PREP-11",
+    "PREP-15"
+  ],
+  "founder_visual_inputs": {
+    "path": "super-review-1/themes/_dark-mode-founder-visual-inputs.md",
+    "ledger": "super-review-1/themes/_dark-mode-founder-visual-inputs-ledger.json",
+    "present": true,
+    "status": "locked",
+    "obeyed": [
+      "bank_logos_dark: light plate via --hlc-logo-plate; do not recolor assets; exact plate hex later",
+      "rank_chips: keep helpful/costly/grace meaning; PREP-15 AA gate; no soft/desaturated redesign",
+      "dark_mood_DRAFT_only: Material #121212 ladder (#1E1E1E → #2C2C2C → #383838); not cool-blue canvas",
+      "no_wordmark_copy_or_PWA_values_in_phase_f (Phase G)",
+      "no_full_dark_hex_table beyond founder surface ladder + rules"
+    ]
+  },
+  "architecture": {
+    "second_system": true,
+    "token_prefix": "--hlc-*",
+    "dark_selector": "html[data-theme=\"dark\"] .explore-banks-page",
+    "parallel_dark_vocabulary_forbidden": true,
+    "owner_css": "css/shroffin-explore-banks.css"
+  },
+  "verify": {
+    "check_theme_boot": "pass",
+    "boot_inert": true,
+    "customer_data_theme": false,
+    "visual_same_intent": true,
+    "dark_palette_shipped": false,
+    "footer_pill_shipped": false
+  },
+  "metrics": {
+    "file": "css/shroffin-explore-banks.css",
+    "hex_before": 272,
+    "hex_after": 28,
+    "fallbacks_before": 203,
+    "fallbacks_after": 0,
+    "hex_after_note": "token definition values on .explore-banks-page only"
+  },
+  "items": [
+    {
+      "id": "PREP-05",
+      "status": "done",
+      "deliverable": "super-review-1/themes/_dark-mode-phase-f-explore-ownership.md §4 freeze + §7 dark-map",
+      "notes": "Explore remains stack_local second system; role list frozen; no invert plan"
+    },
+    {
+      "id": "PREP-11",
+      "status": "done",
+      "token": "--hlc-logo-plate",
+      "companions": [
+        "--hlc-logo-plate-pad",
+        "--hlc-logo-plate-radius",
+        "--hlc-logo-plate-line"
+      ],
+      "light_value": "transparent / 0px / transparent line",
+      "hook": ".hlc-bank-logo background-color + padding + radius + inset box-shadow hair",
+      "dark_intent": "founder lock: light plate behind marks; optional 1px hair; never recolor bank art; exact hex at Explore dark-map",
+      "notes": "Light appearance unchanged (invisible plate). Wordmark/PWA are Phase G — not copied here."
+    },
+    {
+      "id": "PREP-15",
+      "status": "done",
+      "gate": "non_negotiable",
+      "rule": "Dark --hlc-rank-* values require documented contrast for text-on-chip and chip-on-surface; WCAG AA text >= 4.5:1; dark-map/theme PR cannot merge Explore dark ranks without that note",
+      "founder_lock": "keep helpful/costly/grace meaning colors; no soft/desaturated redesign on dark",
+      "final_dark_rank_hex_required_in_phase_f": false
+    },
+    {
+      "id": "F2-unify-light",
+      "status": "done",
+      "files": ["css/shroffin-explore-banks.css"],
+      "actions": [
+        "expand .explore-banks-page token spine",
+        "strip var(--token, #hex) fallbacks",
+        "replace hard #fff / ink / label paints with tokens",
+        "promote section/intel/text/logo-plate roles"
+      ],
+      "visual_same": true
+    },
+    {
+      "id": "F5-dark-map-plan",
+      "status": "done",
+      "full_dark_hex_palette": false,
+      "selector": "html[data-theme=\"dark\"] .explore-banks-page",
+      "draft_mood_only": "Material surface ladder #121212 / #1E1E1E / #2C2C2C / #383838 (founder locked); not cool-blue near-black",
+      "non_goal": "site shell / editorial / apply dark values; wordmark copy; PWA values; invented full Explore dark hex table"
+    }
+  ],
+  "leftover_hex_classes": {
+    "A_moved_to_token": "scattered chrome paints + title wash + field lines + intel surface",
+    "B_intentional_one_off": "none remaining in usage rules",
+    "C_defer": "repeated rgba(29,29,31)/black-alpha drawer scrim borders and unscoped lift shadows — promote when dark-mapping drawers"
+  },
+  "forbidden_not_done": [
+    "live theme boot activation",
+    "site-wide dark token sets",
+    "footer icon pill",
+    "education / style.css / pages/_*.html theming",
+    "fixed-dark home islands",
+    "CSS filter invert",
+    "delete education code",
+    "Phase G nav wordmark / PWA"
+  ]
+}

@@ -3,12 +3,13 @@
 .calc-page {
   --calc-ink: var(--shroffin-ink);
   --calc-muted: var(--shroffin-muted);
-  --calc-line: rgba(29, 29, 31, 0.12);
+  /* Line family ≈ shell hair; soft stays stack-local (no 0.06 shell twin). */
+  --calc-line: var(--shroffin-hair);
   --calc-line-soft: rgba(29, 29, 31, 0.06);
-  --calc-wash: var(--shroffin-footer, #f5f7f9);
-  --calc-paper: rgba(255, 255, 255, 0.55);
-  /* Hub tiles — guide surface + spacing ladder. */
-  --calc-hub-radius: 10px;
+  --calc-wash: var(--shroffin-footer);
+  --calc-paper: color-mix(in srgb, var(--shroffin-canvas-mix-base) 55%, transparent);
+  /* Hub tiles — stack_local surface (near footer/#f5f5f7 family; not paper-note). */
+  --calc-hub-radius: var(--shroffin-card-radius, 16px);
   --calc-hub-surface: #f5f5f7;
   --calc-hub-elev:
     0 3px 10px rgba(0, 0, 0, 0.03),
@@ -29,14 +30,12 @@
 
 @media (min-width: 735px) {
   .calc-page {
-    --calc-hub-radius: 28px;
     --calc-hub-pad: 28px;
   }
 }
 
 @media (min-width: 1069px) {
   .calc-page {
-    --calc-hub-radius: 36px;
     --calc-hub-pad: 32px;
   }
 }
@@ -175,7 +174,7 @@
 }
 
 .calc-hub-card:focus-visible {
-  outline: 2px solid var(--shroffin-blue, #0071e3);
+  outline: 2px solid var(--shroffin-blue);
   outline-offset: 3px;
 }
 
@@ -408,7 +407,7 @@
   }
 
   .calc-live-dock:focus-visible .calc-live-dock-inner {
-    outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+    outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
     outline-offset: var(--shroffin-focus-offset, 3px);
   }
 
@@ -549,7 +548,7 @@
   height: 22px;
   margin-top: -10px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--shroffin-canvas-mix-base);
   border: 2px solid var(--shroffin-blue);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   transition: transform var(--shroffin-micro-duration) var(--shroffin-ease);
@@ -570,7 +569,7 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--shroffin-canvas-mix-base);
   border: 2px solid var(--shroffin-blue);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
@@ -750,7 +749,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   font: inherit;
   font-size: 1.0625rem;
   font-weight: 500;
@@ -768,19 +767,19 @@
 
 .calc-amort-toggle:hover,
 .calc-amort-toggle:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: var(--shroffin-link);
 }
 
 .calc-amort-toggle:active {
-  color: var(--shroffin-link-active, #2f4ba0);
+  color: var(--shroffin-link-active);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: var(--shroffin-link-active);
 }
 
 .calc-amort-toggle:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
   border-radius: 4px;
 }
@@ -1100,7 +1099,7 @@
 }
 
 .calc-choice-option input:focus-visible + .calc-choice-face {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
@@ -1203,7 +1202,7 @@
 }
 
 .calc-guide-links-list a {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration: none;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
@@ -1219,30 +1218,30 @@
 }
 
 .calc-guide-links-list a:visited {
-  color: var(--shroffin-link-visited, #5a4fcf);
+  color: var(--shroffin-link-visited);
 }
 
 .calc-guide-links-list a:hover,
 .calc-guide-links-list a:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: var(--shroffin-link);
 }
 
 .calc-guide-links-list a:visited:hover,
 .calc-guide-links-list a:visited:focus-visible {
-  color: var(--shroffin-link-visited, #5a4fcf);
-  text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
+  color: var(--shroffin-link-visited);
+  text-decoration-color: var(--shroffin-link-visited);
 }
 
 .calc-guide-links-list a:active {
-  color: var(--shroffin-link-active, #2f4ba0);
+  color: var(--shroffin-link-active);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: var(--shroffin-link-active);
 }
 
 .calc-assumptions-list a {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration: none;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
@@ -1254,18 +1253,18 @@
 
 .calc-assumptions-list a:hover,
 .calc-assumptions-list a:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: var(--shroffin-link);
 }
 
 .calc-assumptions-list a:active {
-  color: var(--shroffin-link-active, #2f4ba0);
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+  color: var(--shroffin-link-active);
+  text-decoration-color: var(--shroffin-link-active);
 }
 
 .calc-hint a {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration: none;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
@@ -1277,14 +1276,14 @@
 
 .calc-hint a:hover,
 .calc-hint a:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: var(--shroffin-link);
 }
 
 .calc-hint a:active {
-  color: var(--shroffin-link-active, #2f4ba0);
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+  color: var(--shroffin-link-active);
+  text-decoration-color: var(--shroffin-link-active);
 }
 
 .calc-readout .calc-hint {
@@ -1445,4 +1444,29 @@
   .calc-page--cast-1 .calc-stats--compare > li:last-child:nth-child(odd) {
     grid-column: 1 / -1;
   }
+}
+
+html[data-theme="dark"] .calc-page {
+  --calc-line-soft: rgba(255, 255, 255, 0.06);
+  --calc-hub-surface: #2C2C2C;
+  --calc-hub-elev:
+    0 3px 10px rgba(0, 0, 0, 0.35),
+    0 10px 28px rgba(0, 0, 0, 0.40);
+}
+
+
+html[data-theme="dark"] .calc-live-dock-inner {
+  background:
+    linear-gradient(180deg, rgba(30, 30, 30, 0.92), rgba(30, 30, 30, 0.82)),
+    var(--calc-wash);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+}
+
+html[data-theme="dark"] .calc-choice-option:hover .calc-choice-face {
+  border-color: rgba(10, 132, 255, 0.35);
+}
+html[data-theme="dark"] .calc-choice-option input:checked + .calc-choice-face {
+  background: rgba(10, 132, 255, 0.06);
 }

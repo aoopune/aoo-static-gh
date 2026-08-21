@@ -1,0 +1,180 @@
+{
+  "phase": "H",
+  "title": "JS inject matrix + legacy / education light-island policy (PREP-09 + PREP-13)",
+  "date": "2026-08-21",
+  "status": "complete",
+  "brief_md": "super-review-1/themes/_dark-mode-phase-h-js-legacy-policy.md",
+  "inputs": [
+    "super-review-1/themes/_dark-mode-founder-visual-inputs.md",
+    "super-review-1/themes/_dark-mode-founder-visual-inputs-ledger.json",
+    "super-review-1/themes/_dark-mode-phase-a-product-brief.md",
+    "super-review-1/themes/_dark-mode-phase-b-shell-freeze.md",
+    "super-review-1/themes/_dark-mode-phase-c-boot-injection.md",
+    "super-review-1/themes/_dark-mode-phase-e-unify-light.md",
+    "super-review-1/themes/_dark-mode-phase-f-explore-ownership.md",
+    "super-review-1/themes/_dark-mode-phase-g-assets.md",
+    ".cursor/rules/shroffin-theme-token-discipline.mdc",
+    "super-review-1/themes/_dark-mode-prep-audit.md",
+    "data/redesigned-pages.json",
+    "PREP-09",
+    "PREP-13"
+  ],
+  "founder_visual_inputs": {
+    "path": "super-review-1/themes/_dark-mode-founder-visual-inputs.md",
+    "status": "locked",
+    "obeyed": [
+      "v1 = 24 redesigned; education/legacy out",
+      "no cool-blue canvas; no full dark hex invent",
+      "no live theme boot / dark CSS / footer pill / PWA dark splash",
+      "home follows theme (not reopened)"
+    ]
+  },
+  "architecture": {
+    "prefer_policy_over_rewriting_legacy_js": true,
+    "v1_must_be_free_of_post_paint_white_injectors": true,
+    "legacy_light_islands_allowed_if_documented": true,
+    "teal_0d9488_not_shell_blue": true,
+    "scope_css_rewrite_last_resort": true,
+    "check_script": "scripts/check-theme-js-injectors.js",
+    "npm_check": "npm run check:theme-js-injectors"
+  },
+  "injectors": [
+    {
+      "script": "js/aoo-loan-table-standalone.js",
+      "mechanism": "SCOPE_CSS createElement style",
+      "loads_on": ["table-embed.html"],
+      "reached_via": ["education-loan.html iframe src=table-embed.html"],
+      "in_redesigned_24": false,
+      "risk_under_dark_first": "high_white_flash",
+      "v1_action": "leave_light_island_do_not_load"
+    },
+    {
+      "script": "js/apply-flow.js",
+      "mechanism": "ensureApplyFlowStyles",
+      "loads_on": ["education-loan.html"],
+      "in_redesigned_24": false,
+      "risk_under_dark_first": "modal_toast_white_plus_teal",
+      "v1_action": "leave_light_island",
+      "legacy_accent": "#0d9488"
+    },
+    {
+      "script": "js/apply-button-iframe.js",
+      "mechanism": "ensureApplyFlowStyles floating chrome",
+      "loads_on": ["table-embed.html"],
+      "in_redesigned_24": false,
+      "risk_under_dark_first": "floating_teal_slate_chrome",
+      "v1_action": "leave_light_island",
+      "legacy_accent": "#0d9488"
+    }
+  ],
+  "other_style_injectors_searched": true,
+  "other_dangerous_light_style_injectors_found": [],
+  "redesigned_apply": {
+    "path": "pages/apply.html",
+    "css": ["css/shroffin-shell.css", "css/shroffin-apply.css"],
+    "js": ["js/home-loan-apply.js", "js/shroffin-nav.js"],
+    "loads_apply_flow": false,
+    "loads_apply_button_iframe": false,
+    "loads_aoo_loan_table_standalone": false,
+    "home_loan_apply_creates_style_element": false,
+    "paint_owner": "css"
+  },
+  "v1_proof": {
+    "redesigned_pages_count": 24,
+    "contaminated_count": 0,
+    "contaminated_paths": [],
+    "pipeline_refs_in_templates_partials_content_scripts_data": "none",
+    "html_rg_hits_outside_review_golden": [
+      "education-loan.html:apply-flow.js",
+      "table-embed.html:aoo-loan-table-standalone+apply-button-iframe"
+    ]
+  },
+  "legacy_policy": {
+    "prep_13": "confirmed",
+    "leave_light": true,
+    "do_not_delete_education": true,
+    "do_not_theme_style_css_in_v1": true,
+    "do_not_theme_prototypes": true,
+    "prototype_glob": "pages/_*.html",
+    "prototype_count": 23,
+    "keep_markers_unchanged": [
+      "EDUCATION_LOAN_PRODUCT",
+      "LEGACY_EDUCATION_PAGES"
+    ],
+    "style_css_consumers": [
+      "education-loan.html",
+      "404.html",
+      "pages/government-schemes.html",
+      "pages/quick-overview.html",
+      "pages/pro-tips.html",
+      "pages/faq.html",
+      "pages/compare.html",
+      "pages/results.html",
+      "pages/document-checklist.html",
+      "pages/questions.html",
+      "pages/schemes.html"
+    ],
+    "accepted_risk": "direct_url_light_islands_under_future_dark_first_shell",
+    "prep_09b": "defer_with_risk_documented"
+  },
+  "v1_code_fix_required": false,
+  "verify": {
+    "check_theme_js_injectors": "pass",
+    "check_theme_boot": "pass",
+    "check_nav": "pass",
+    "boot_inert": true,
+    "customer_data_theme": false,
+    "dark_css_shipped": false,
+    "footer_pill_shipped": false,
+    "manifest_live_dark": false,
+    "education_code_deleted": false
+  },
+  "items": [
+    {
+      "id": "H1",
+      "status": "done",
+      "deliverable": "script_x_page_matrix",
+      "notes": "Three injectors + home-loan-apply CSS path + style.css consumers + 23 prototypes"
+    },
+    {
+      "id": "H2",
+      "status": "done",
+      "deliverable": "24_path_clear_proof",
+      "notes": "contaminated_count=0; check:theme-js-injectors locked"
+    },
+    {
+      "id": "H3",
+      "status": "done",
+      "deliverable": "redesigned_apply_css_paint_path",
+      "notes": "pages/apply.html uses shroffin-apply.css + home-loan-apply.js"
+    },
+    {
+      "id": "H4",
+      "status": "done",
+      "deliverable": "legacy_education_light_island_policy",
+      "notes": "PREP-13 confirmed; keep markers unchanged; risk accepted"
+    },
+    {
+      "id": "H5",
+      "status": "done",
+      "deliverable": "scripts/check-theme-js-injectors.js",
+      "notes": "Wired into package.json check:theme-js-injectors and lint:responsive"
+    }
+  ],
+  "prep_status": {
+    "PREP-09": "done",
+    "PREP-13": "confirmed",
+    "PREP-09b": "defer_with_risk_documented"
+  },
+  "next_phase": "I",
+  "explicit_non_goals_honored": [
+    "no_live_theme_boot",
+    "no_dark_css_value_sets",
+    "no_footer_pill",
+    "no_pwa_dark_splash_ship",
+    "no_education_delete",
+    "no_style_css_dark_rewrite",
+    "no_bank_logo_recolor",
+    "no_cool_blue_canvas_invent"
+  ]
+}

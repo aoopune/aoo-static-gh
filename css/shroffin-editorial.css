@@ -9,24 +9,24 @@
   --gn-height: 48px;
   --ln-height: 52px;
 
-  /* Cool canvas shades — section separation without a grid of lines */
-  --mag-paper: var(--shroffin-surface, #fcfcfd);       /* default page canvas */
-  --mag-paper-deep: var(--shroffin-footer, #f5f7f9);   /* alternating band / flip back */
-  --mag-paper-note: #eef1f4;                           /* glance / note panels */
+  /* Cool canvas shades — aliases Phase B shell roles (light values live in shell). */
+  --mag-paper: var(--shroffin-surface);       /* default page canvas */
+  --mag-paper-deep: var(--shroffin-footer);   /* alternating band / flip back */
+  --mag-paper-note: var(--shroffin-paper-note); /* glance / note panels */
 
-  /* Ink */
-  --mag-ink: #1d1d1f;         /* headlines, body facts */
-  --mag-ink-soft: #3a3a3d;    /* leads, captions on deep panels */
-  --mag-muted: #6e6e73;       /* kickers, terms, fine print (on light paper) */
-  --mag-ghost: #c5c9cf;       /* large decorative section numbers */
+  /* Ink — shell names; mag-* kept as stack aliases for existing selectors */
+  --mag-ink: var(--shroffin-ink);
+  --mag-ink-soft: var(--shroffin-ink-soft);
+  --mag-muted: var(--shroffin-muted);
+  --mag-ghost: var(--shroffin-ghost);
 
   /* Blue */
-  --mag-accent: var(--shroffin-link, #3f62c8);         /* text links on paper */
-  --mag-accent-hover: var(--shroffin-link, #3f62c8);   /* hover keeps colour; underline gives feedback */
-  --mag-accent-button: #0071e3;  /* solid pill fill */
+  --mag-accent: var(--shroffin-link);         /* text links on paper */
+  --mag-accent-hover: var(--shroffin-link);   /* hover keeps colour; underline gives feedback */
+  --mag-accent-button: var(--shroffin-btn-primary);  /* solid pill fill */
 
-  --mag-hair: rgba(0, 0, 0, 0.12);
-  --mag-hair-soft: rgba(0, 0, 0, 0.08);
+  --mag-hair: var(--shroffin-hair);
+  --mag-hair-soft: var(--shroffin-hair-soft);
   /* Same invisible rail as globalnav / footer (logo → right chrome). */
   --mag-wrap: var(--shroffin-content-max, 1068px);
   --mag-inline: max(1rem, env(safe-area-inset-left));
@@ -70,7 +70,7 @@ body {
 /* ---- Localnav (cool canvas; base structure lives in shroffin-guide.css) - */
 
 .localnav {
-  background: rgba(245, 247, 249, 0.78);
+  background: var(--shroffin-gn-bg);
 }
 
 .localnav-title {
@@ -135,7 +135,7 @@ a.localnav-title:hover {
   }
 
   .localnav-list .shroffin-sel-thumb--line {
-    background: var(--mag-ink, var(--shroffin-ink, #1d1d1f));
+    background: var(--mag-ink);
   }
 
   .localnav-list .shroffin-sel-thumb.is-ready {
@@ -162,7 +162,7 @@ a.localnav-title:hover {
 .mag-p a,
 .mag-def-desc a,
 .mag-lede a {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration: none;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
@@ -178,7 +178,7 @@ a.localnav-title:hover {
 .mag-p a:visited,
 .mag-def-desc a:visited,
 .mag-lede a:visited {
-  color: var(--shroffin-link-visited, #5a4fcf);
+  color: var(--shroffin-link-visited);
 }
 
 .mag-link:hover,
@@ -193,9 +193,9 @@ a.localnav-title:hover {
 .mag-def-desc a:focus-visible,
 .mag-lede a:hover,
 .mag-lede a:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: var(--shroffin-link);
 }
 
 .mag-link:visited:hover,
@@ -204,8 +204,8 @@ a.localnav-title:hover {
 .mag-p a:visited:hover,
 .mag-def-desc a:visited:hover,
 .mag-lede a:visited:hover {
-  color: var(--shroffin-link-visited, #5a4fcf);
-  text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
+  color: var(--shroffin-link-visited);
+  text-decoration-color: var(--shroffin-link-visited);
 }
 
 .mag-link:active,
@@ -214,9 +214,9 @@ a.localnav-title:hover {
 .mag-p a:active,
 .mag-def-desc a:active,
 .mag-lede a:active {
-  color: var(--shroffin-link-active, #2f4ba0);
+  color: var(--shroffin-link-active);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: var(--shroffin-link-active);
 }
 
 /* Arrow motion for guide-section-link lives in shroffin-shell.css */
@@ -705,7 +705,11 @@ body.guide-reading .guide-hero-bg {
   margin: 0;
   object-fit: cover;
   object-position: center bottom;
-  transform: translateY(clamp(0.75rem, 2vh, 1.5rem));
+  /*
+   * Do not translateY down — that opened a dark-canvas strip under the Guide
+   * bar. Extra height + bottom position still bias the subject downward.
+   */
+  transform: none;
   pointer-events: none;
   user-select: none;
 }
@@ -1427,22 +1431,8 @@ body.guide-reading .guide-story > .mag-section.guide-moment:first-child[id]:targ
 /* ---- Guide chapter card (Built around you: title/subtitle outside) ---- */
 
 body.guide-reading {
-  --guide-radius: 10px;
-}
-
-@media (min-width: 735px) {
-  body.guide-reading {
-    --guide-radius: 30px;
-  }
-}
-
-@media (min-width: 1069px) {
-  body.guide-reading {
-    --guide-radius: 40px;
-  }
-}
-
-body.guide-reading {
+  /* Alias shell card radius — chapter cards + flip faces share one corner. */
+  --guide-radius: var(--shroffin-card-radius, 16px);
   /* One surface + elevation language for every grey card / flip scene. */
   --guide-card-surface: #f7f7f7;
   --guide-card-elev:
@@ -1466,7 +1456,7 @@ body.guide-reading {
   padding: clamp(40px, 5.5vw, 64px);
   box-sizing: border-box;
   border-radius: var(--guide-radius);
-  background: var(--guide-card-surface, #f7f7f7);
+  background: var(--guide-card-surface);
   /* Soft downward float — no perimeter ring (that made corners read as a hard box). */
   box-shadow: var(--guide-card-elev);
 }
@@ -1592,7 +1582,7 @@ body.guide-reading .mag-p {
 .guide-factor-list {
   margin: 0.75rem 0 0;
   padding-left: 1.25rem;
-  color: var(--mag-ink, #1d1d1f);
+  color: var(--mag-ink);
   font-size: var(--shroffin-type-lead);
   line-height: 1.45;
 }
@@ -1667,7 +1657,7 @@ body.guide-reading .mag-p {
 }
 
 .guide-title-wash--glow-chip {
-  --guide-title-g: linear-gradient(90deg, #0071e3 0%, #5e5ce6 50%, #bf5af2 100%);
+  --guide-title-g: linear-gradient(90deg, var(--shroffin-blue) 0%, #5e5ce6 50%, #bf5af2 100%);
 }
 
 @media (forced-colors: active) {
@@ -1709,7 +1699,7 @@ body.guide-reading .mag-p {
   margin-top: 0.45rem;
   max-width: none;
   text-wrap: pretty;
-  color: var(--mag-ink, #1d1d1f);
+  color: var(--mag-ink);
   font-size: var(--shroffin-type-lead);
   font-weight: 500;
   letter-spacing: normal;
@@ -2423,8 +2413,8 @@ body.guide-reading .mag-p {
    * This is the card: grey slab + elevation rotate together.
    * Nothing card-shaped sits behind it.
    */
-  border-radius: var(--guide-radius, 10px);
-  background: var(--guide-card-surface, #f7f7f7);
+  border-radius: var(--guide-radius, var(--shroffin-card-radius, 16px));
+  background: var(--guide-card-surface);
   box-shadow: var(--guide-card-elev);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -2445,7 +2435,7 @@ body.guide-reading .mag-p {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  background: var(--guide-card-surface, #f7f7f7);
+  background: var(--guide-card-surface);
   box-shadow: none;
 }
 
@@ -2627,7 +2617,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   font-family: var(--font-brand);
   font-size: var(--shroffin-type-lead);
   font-weight: 500;
@@ -2644,30 +2634,30 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 }
 
 .guide-flip-link:visited {
-  color: var(--shroffin-link-visited, #5a4fcf);
+  color: var(--shroffin-link-visited);
 }
 
 .guide-flip-link:hover,
 .guide-flip-link:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: var(--shroffin-link);
 }
 
 .guide-flip-link:visited:hover,
 .guide-flip-link:visited:focus-visible {
-  color: var(--shroffin-link-visited, #5a4fcf);
-  text-decoration-color: var(--shroffin-link-visited, #5a4fcf);
+  color: var(--shroffin-link-visited);
+  text-decoration-color: var(--shroffin-link-visited);
 }
 
 .guide-flip-link:active {
-  color: var(--shroffin-link-active, #2f4ba0);
+  color: var(--shroffin-link-active);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: var(--shroffin-link-active);
 }
 
 .guide-flip-link:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
   border-radius: 4px;
 }
@@ -2766,7 +2756,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
     border: 0;
     border-radius: 8px;
     background: transparent;
-    color: var(--mag-ink-soft, #6e6e73);
+    color: var(--mag-ink-soft);
     cursor: pointer;
     /* Keep the mark upright while the face is mid-rotate. */
     transform: translateZ(1px);
@@ -2779,11 +2769,11 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 
   .guide-flip-close:hover,
   .guide-flip-close:focus-visible {
-    color: var(--mag-ink, #1d1d1f);
+    color: var(--mag-ink);
   }
 
   .guide-flip-close:focus-visible {
-    outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+    outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
     outline-offset: var(--shroffin-focus-offset, 3px);
   }
 
@@ -2962,7 +2952,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
   border: 0;
   border-radius: var(--shroffin-btn-radius, 980px);
   background: var(--mag-accent-button);
-  box-shadow: var(--shroffin-btn-primary-shadow, 0 2px 8px rgba(0, 113, 227, 0.2));
+  box-shadow: var(--shroffin-btn-primary-shadow, none);
   color: #fff;
   font-family: var(--font-brand);
   font-size: var(--shroffin-btn-standard-font, 14px);
@@ -2983,17 +2973,17 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 }
 
 .guide-calc-submit:hover {
-  background: var(--shroffin-btn-primary-hover, #0058b0);
-  box-shadow: var(--shroffin-btn-primary-shadow-hover, 0 6px 22px rgba(0, 88, 176, 0.42));
+  background: var(--shroffin-btn-primary-hover);
+  box-shadow: var(--shroffin-btn-primary-shadow-hover, none);
 }
 
 .guide-calc-submit:active {
-  background: var(--shroffin-btn-primary-active, #004a96);
-  box-shadow: var(--shroffin-btn-primary-shadow-active, 0 1px 4px rgba(0, 74, 150, 0.32));
+  background: var(--shroffin-btn-primary-active);
+  box-shadow: var(--shroffin-btn-primary-shadow-active, none);
 }
 
 .guide-calc-submit:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
@@ -3189,7 +3179,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
   border: 0;
   border-bottom: 0;
   border-radius: var(--shroffin-seg-radius, 12px);
-  background: color-mix(in srgb, var(--mag-ink, #1d1d1f) 6%, #fff);
+  background: color-mix(in srgb, var(--mag-ink) 6%, var(--shroffin-canvas-mix-base));
   max-width: 100%;
   position: relative;
   /* overflow-x:auto alone computes overflow-y to auto and steals page wheel. */
@@ -3217,7 +3207,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
   border: 0;
   border-radius: var(--shroffin-seg-option-radius, 9px);
   background: transparent;
-  color: color-mix(in srgb, var(--mag-ink, #1d1d1f) 55%, transparent);
+  color: color-mix(in srgb, var(--mag-ink) 55%, transparent);
   font-family: var(--font-brand);
   font-size: var(--shroffin-type-body);
   font-weight: 500;
@@ -3236,7 +3226,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
   color: var(--mag-ink);
   font-weight: 600;
   /* Static fill until the sliding thumb is ready. */
-  background: #fff;
+  background: var(--shroffin-canvas-mix-base);
   box-shadow: 0 1px 2px rgba(29, 29, 31, 0.06);
 }
 
@@ -3254,13 +3244,13 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 }
 
 .guide-seg .shroffin-sel-thumb--pill {
-  background: #fff;
+  background: var(--shroffin-canvas-mix-base);
   box-shadow: 0 1px 2px rgba(29, 29, 31, 0.06);
   border-radius: var(--shroffin-seg-option-radius, 9px);
 }
 
 .guide-seg-btn:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus, #0071e3);
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
   outline-offset: var(--shroffin-focus-offset, 3px);
 }
 
@@ -4552,8 +4542,8 @@ a.guide-note-ref:hover {
     padding: 0;
     border: 0;
     /* Keep card surface + elevation — do not clear to a white portal. */
-    border-radius: var(--guide-radius, 10px);
-    background: var(--guide-card-surface, #f7f7f7);
+    border-radius: var(--guide-radius, var(--shroffin-card-radius, 16px));
+    background: var(--guide-card-surface);
     box-shadow: var(--guide-card-elev);
   }
 
@@ -6254,7 +6244,7 @@ a.guide-note-ref:hover {
 .guide-story--complaints .guide-perk .guide-share-then,
 .guide-story--complaints #talk-flip .guide-flip-face--front .guide-share-when,
 .guide-story--complaints #talk-flip .guide-flip-face--front .guide-share-then {
-  color: #1d1d1f;
+  color: var(--mag-ink);
 }
 
 /* Skim lines stay the same ink; weight alone marks the skim. */
@@ -6266,5 +6256,122 @@ a.guide-note-ref:hover {
 #bank-rates .guide-perk .guide-share-then .guide-skim,
 .guide-story--insurance-hub .guide-status .guide-share-then .guide-skim,
 .guide-story--property-cover #pay .guide-share-then .guide-skim {
-  color: #1d1d1f;
+  color: var(--mag-ink);
+}
+
+html[data-theme="dark"] body.guide-reading {
+  --guide-card-surface: #2C2C2C;
+  --guide-card-elev:
+    0 3px 10px rgba(0, 0, 0, 0.35),
+    0 10px 28px rgba(0, 0, 0, 0.40);
+}
+
+/* Dark: each ink wash maps to its glow cousin — keep per-section variety (incl. flip). */
+html[data-theme="dark"] .guide-title-wash--ink-siri {
+  --guide-title-g: linear-gradient(90deg, #5e5ce6 0%, #bf5af2 42%, #2997ff 100%);
+}
+html[data-theme="dark"] .guide-title-wash--ink-sea {
+  --guide-title-g: linear-gradient(90deg, #00c7be 0%, #30d158 52%, #64d96a 100%);
+}
+html[data-theme="dark"] .guide-title-wash--ink-sky {
+  --guide-title-g: linear-gradient(90deg, #64d2ff 0%, #0a84ff 42%, #5e5ce6 100%);
+}
+html[data-theme="dark"] .guide-title-wash--ink-dusk {
+  --guide-title-g: linear-gradient(90deg, #5e5ce6 0%, #bf5af2 48%, #ff375f 100%);
+}
+html[data-theme="dark"] .guide-title-wash--ink-ember {
+  --guide-title-g: linear-gradient(90deg, #ff9f0a 0%, #ff6937 45%, #ff375f 100%);
+}
+html[data-theme="dark"] .guide-title-wash--ink-gold {
+  --guide-title-g: linear-gradient(90deg, #ac8e68 0%, #ff9f0a 45%, #ff6937 100%);
+}
+
+html[data-theme="dark"] .mag-toc-compact {
+  background: rgba(30, 30, 30, 0.92);
+}
+
+html[data-theme="dark"] .guide-flip-focus-scrim {
+  background: rgba(18, 18, 18, 0.42);
+}
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  html[data-theme="dark"] .guide-flip-focus-scrim {
+    background: rgba(18, 18, 18, 0.72);
+  }
+}
+
+@media (max-width: 1199px) {
+  html[data-theme="dark"] body.guide-reading .mag-index {
+    background: rgba(30, 30, 30, 0.92);
+  }
+  html[data-theme="dark"] body.guide-reading .mag-index.has-more-left::before {
+    background: linear-gradient(to left, rgba(18, 18, 18, 0), rgba(18, 18, 18, 0.88) 55%, rgba(18, 18, 18, 0.96));
+  }
+  html[data-theme="dark"] body.guide-reading .mag-index.has-more-right::after {
+    background: linear-gradient(to right, rgba(18, 18, 18, 0), rgba(18, 18, 18, 0.88) 55%, rgba(18, 18, 18, 0.96));
+  }
+}
+
+@media (min-width: 834px) {
+  html[data-theme="dark"] body.guide-reading .mag-index.has-more-left::before {
+    background: linear-gradient(to left, rgba(18, 18, 18, 0), rgba(18, 18, 18, 0.88) 55%, rgba(18, 18, 18, 0.96));
+  }
+  html[data-theme="dark"] body.guide-reading .mag-index.has-more-right::after {
+    background: linear-gradient(to right, rgba(18, 18, 18, 0), rgba(18, 18, 18, 0.88) 55%, rgba(18, 18, 18, 0.96));
+  }
+
+  html[data-theme="dark"] body.guide-reading .mag-index-link.is-active,
+  html[data-theme="dark"] body.guide-reading .mag-index-link[aria-current="true"],
+  html[data-theme="dark"] body.guide-reading .mag-toc-shell .mag-index-link.is-active,
+  html[data-theme="dark"] body.guide-reading .mag-toc-shell .mag-index-link[aria-current="true"] {
+    background: rgba(255, 255, 255, 0.10);
+  }
+  html[data-theme="dark"] body.guide-reading .mag-index-link:hover,
+  html[data-theme="dark"] body.guide-reading .mag-index-link:focus-visible {
+    background: rgba(255, 255, 255, 0.06);
+  }
+  html[data-theme="dark"] body.guide-reading .mag-index-link.is-active:hover,
+  html[data-theme="dark"] body.guide-reading .mag-index-link.is-active:focus-visible,
+  html[data-theme="dark"] body.guide-reading .mag-index-link[aria-current="true"]:hover,
+  html[data-theme="dark"] body.guide-reading .mag-index-link[aria-current="true"]:focus-visible {
+    background: rgba(255, 255, 255, 0.14);
+  }
+}
+
+@media (max-width: 833px) {
+  html[data-theme="dark"] body.guide-reading .mag-index-link.is-active,
+  html[data-theme="dark"] body.guide-reading .mag-index-link[aria-current="true"],
+  html[data-theme="dark"] body.guide-reading .mag-index-link.is-active:link,
+  html[data-theme="dark"] body.guide-reading .mag-index-link[aria-current="true"]:link,
+  html[data-theme="dark"] body.guide-reading .mag-index-link.is-active:visited,
+  html[data-theme="dark"] body.guide-reading .mag-index-link[aria-current="true"]:visited {
+    background: rgba(255, 255, 255, 0.10);
+  }
+  html[data-theme="dark"] body.guide-reading .mag-index-link:hover,
+  html[data-theme="dark"] body.guide-reading .mag-index-link:focus-visible {
+    background: rgba(255, 255, 255, 0.06);
+  }
+  html[data-theme="dark"] body.guide-reading .mag-index-link.is-active:hover,
+  html[data-theme="dark"] body.guide-reading .mag-index-link.is-active:focus-visible,
+  html[data-theme="dark"] body.guide-reading .mag-index-link[aria-current="true"]:hover,
+  html[data-theme="dark"] body.guide-reading .mag-index-link[aria-current="true"]:focus-visible,
+  html[data-theme="dark"] body.guide-reading .mag-index-link.is-active:hover:link,
+  html[data-theme="dark"] body.guide-reading .mag-index-link[aria-current="true"]:hover:link,
+  html[data-theme="dark"] body.guide-reading .mag-index-link.is-active:focus-visible:link,
+  html[data-theme="dark"] body.guide-reading .mag-index-link[aria-current="true"]:focus-visible:link {
+    background: rgba(255, 255, 255, 0.14);
+  }
+}
+
+/* Live guides use bare .mag-index (no mag-toc-shell on pages). Cover ≥834 frost L4760/5045. */
+html[data-theme="dark"] body.guide-reading .mag-index,
+html[data-theme="dark"] body.guide-reading .guide-hero + .mag-index,
+html[data-theme="dark"] body.guide-reading .mag-toc-shell .mag-index {
+  background: rgba(30, 30, 30, 0.82);
+  border-block-end-color: rgba(255, 255, 255, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="dark"] .guide-flip-focus-scrim {
+    background: rgba(18, 18, 18, 0.88);
+  }
 }

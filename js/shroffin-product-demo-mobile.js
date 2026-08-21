@@ -285,6 +285,10 @@
       row.classList.toggle("is-selected", on);
       row.setAttribute("aria-selected", on ? "true" : "false");
     });
+    var count = Object.keys(selected).filter(function (id) {
+      return selected[id];
+    }).length;
+    setApplyCount(root, count);
   }
 
   function rowMatchesFilters(bankId, filters) {
@@ -316,6 +320,23 @@
     wrap.hidden = false;
     label.textContent =
       "Show " + remaining + " more bank" + (remaining === 1 ? "" : "s");
+  }
+
+  function setApplyCount(root, count) {
+    root.querySelectorAll("[data-spd-apply-count]").forEach(function (node) {
+      if (count <= 0) {
+        node.hidden = true;
+        node.textContent = "";
+        return;
+      }
+      node.hidden = false;
+      node.replaceChildren();
+      var num = document.createElement("span");
+      num.className = "hlc-apply-count-n";
+      num.textContent = String(count);
+      node.appendChild(num);
+      node.appendChild(document.createTextNode(" selected"));
+    });
   }
 
   function visibleEssentialRows(root) {
@@ -421,6 +442,15 @@
       el.hidden = true;
       setSeeOptionsBusy(root, false);
     }
+  }
+
+  function setIntelligence(root, on) {
+    var el = root.querySelector("[data-spd-intelligence]");
+    if (!el) return;
+    el.hidden = !on;
+    el.classList.toggle("is-visible", !!on);
+    var plus = root.querySelector("[data-spd-intel-plus]");
+    if (plus) plus.hidden = !on;
   }
 
   function setResults(root, on) {
@@ -639,6 +669,7 @@
     setTab(root, "essentials");
     applyFilters(root, { bankType: "All" });
     setApplyEnabled(root, false);
+    setApplyCount(root, 0);
     root.querySelectorAll(".hlc-table-scroll").forEach(function (el) {
       el.scrollLeft = 0;
     });
@@ -646,6 +677,7 @@
 
   function reset(root) {
     setSearching(root, false);
+    setIntelligence(root, false);
     setResults(root, false);
     setApplyDock(root, false);
     clearForm(root);
@@ -655,6 +687,7 @@
 
   function still(root) {
     fillFormInstant(root);
+    setIntelligence(root, true);
     setResults(root, true);
     setApplyDock(root, true);
     setSearching(root, false);
@@ -698,7 +731,8 @@
     await sleep(WAIT.searching, signal);
     await hideSearching(root, signal);
 
-    /* 4 — Banks appear; show dock; calm scroll so the input card leaves */
+    /* 4 — Tips then banks; show dock; calm scroll so the input card leaves */
+    setIntelligence(root, true);
     setResults(root, true);
     resetResultsState(root);
     setApplyDock(root, true);

@@ -9,11 +9,23 @@
     Embeddable compare demo for home-feature visual.
     Interactive: select lenders + Overview / Charges / Other charges.
   -->
-  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css">
-  <link rel="stylesheet" href="../css/shroffin-product-demo.css">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css">
+  <link rel="stylesheet" href="../css/shroffin-shell.min.css?v=home-wash-8">
+  <link rel="stylesheet" href="../css/shroffin-product-demo.min.css?v=110">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.min.css?v=ac3e183e59">
+<script>
+(function () {
+  /* Early peek class so Explore’s 16rem bank col never paints first. */
+  try {
+    if (window.parent && window.parent !== window && window.parent.matchMedia) {
+      if (window.parent.matchMedia("(max-width: 833px)").matches) {
+        document.documentElement.classList.add("is-mobile-peek");
+      }
+    }
+  } catch (e) {
+    /* ignore */
+  }
+})();
+</script>
   <style>
     :root {
       --win: 860px;
@@ -31,8 +43,8 @@
       margin: 0;
       width: 100%;
       height: 100%;
-      background: #0a0a0a;
-      color: #1d1d1f;
+      background: transparent;
+      color: var(--shroffin-ink, #1d1d1f);
       font-family: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
       -webkit-font-smoothing: antialiased;
       overflow: hidden;
@@ -56,7 +68,7 @@
       height: 460px;
       border-radius: 12px;
       overflow: hidden;
-      background: #fcfcfd;
+      background: var(--shroffin-surface);
       box-shadow:
         0 0 0 0.5px rgba(255, 255, 255, 0.08),
         0 12px 28px rgba(0, 0, 0, 0.35);
@@ -64,8 +76,8 @@
 
     .pane {
       padding: 10px 12px 8px;
-      background: #fcfcfd;
-      color: #1d1d1f;
+      background: var(--shroffin-surface);
+      color: var(--shroffin-ink, #1d1d1f);
       height: calc(460px - 52px);
       overflow: auto;
     }
@@ -87,8 +99,8 @@
     .win .spd-safari-btn--shield { display: none !important; }
 
     .pane.explore-banks-page {
-      --hlc-page-bg: #fcfcfd;
-      --hlc-header-bg: color-mix(in srgb, rgb(108 128 155) 5.5%, #fcfcfd);
+      --hlc-page-bg: var(--shroffin-surface);
+      --hlc-header-bg: color-mix(in srgb, rgb(108 128 155) 5.5%, var(--shroffin-surface));
       --hlc-bank-col-width: var(--bank);
       --hlc-filter-width: 0px;
       --hlc-filter-gap: 0px;
@@ -258,7 +270,123 @@
       cursor: inherit;
       pointer-events: none;
     }
+
+    /*
+     * Mobile peek (html.is-mobile-peek): compose the LEFT of the desktop
+     * canvas so a phone clip shows switches + bank + Rate (2+ cols).
+     * Desktop (≥834 host) never gets this class — layout stays as above.
+     *
+     * Explore’s .hlc-sticky-col is 16rem — that alone ate the phone crop
+     * and left only a sliver of Rate. Override hard here.
+     */
+    html.is-mobile-peek {
+      --bank: 136px;
+      --rate: 108px;
+      --loan: 120px;
+      --tenure: 88px;
+      --emi: 100px;
+      --hlc-bank-col-width: 136px;
+    }
+
+    html.is-mobile-peek .pane {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+
+    /* Switches (Overview / Charges / Other) lead — not Apply */
+    html.is-mobile-peek .pane .hlc-results-tools-lead {
+      order: 0 !important;
+      flex: 0 0 auto !important;
+      min-width: 0 !important;
+    }
+
+    html.is-mobile-peek .pane .hlc-results-actions .hlc-apply-bar {
+      order: 1 !important;
+      flex: 0 0 auto !important;
+      width: auto !important;
+      max-width: none !important;
+      padding: 0 0 6px 10px !important;
+    }
+
+    html.is-mobile-peek .pane .hlc-column-tabs {
+      flex-wrap: nowrap !important;
+    }
+
+    html.is-mobile-peek .pane .hlc-column-tab {
+      padding: 6px 12px 8px !important;
+      white-space: nowrap !important;
+    }
+
+    /* Intrinsic table width so Rate (and further cols) are real pixels */
+    html.is-mobile-peek .pane .hlc-compare {
+      width: max-content !important;
+      min-width: 720px !important;
+      table-layout: fixed !important;
+    }
+
+    /* Beat Explore’s .hlc-sticky-col { width: 16rem } */
+    html.is-mobile-peek .hlc-sticky-col,
+    html.is-mobile-peek .explore-banks-page .hlc-sticky-col,
+    html.is-mobile-peek .pane .hlc-compare th.hlc-sticky-col,
+    html.is-mobile-peek .pane .hlc-compare td.hlc-sticky-col,
+    html.is-mobile-peek .explore-banks-page .hlc-compare th.hlc-sticky-col,
+    html.is-mobile-peek .explore-banks-page .hlc-compare td.hlc-sticky-col,
+    html.is-mobile-peek .pane .hlc-compare col.c-bank {
+      width: 136px !important;
+      min-width: 136px !important;
+      max-width: 136px !important;
+    }
+
+    html.is-mobile-peek .pane .hlc-compare col.c-rate,
+    html.is-mobile-peek .pane .hlc-compare th.hlc-col-num:nth-child(2),
+    html.is-mobile-peek .pane .hlc-compare td.hlc-col-num:nth-child(2) {
+      width: 108px !important;
+      min-width: 108px !important;
+      max-width: 108px !important;
+    }
+
+    html.is-mobile-peek .pane .hlc-compare th.hlc-col-num,
+    html.is-mobile-peek .pane .hlc-compare td.hlc-col-num,
+    html.is-mobile-peek .pane .hlc-compare th.hlc-col-text,
+    html.is-mobile-peek .pane .hlc-compare td.hlc-col-text {
+      display: table-cell !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    html.is-mobile-peek .pane .hlc-bank-cell,
+    html.is-mobile-peek .pane .hlc-bank-cell-text,
+    html.is-mobile-peek .pane .hlc-bank-name {
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    html.is-mobile-peek .pane .hlc-bank-name-text {
+      font-size: 12.5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 100%;
+      display: block;
+    }
   </style>
+
+<script>
+(function () {
+  function syncTheme() {
+    try {
+      var t = parent.document.documentElement.getAttribute("data-theme");
+      if (t === "dark" || t === "light") {
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      }
+    } catch (e) {}
+  }
+  syncTheme();
+  try { parent.document.addEventListener("shroffin-theme-change", syncTheme); } catch (e) {}
+})();
+</script>
 </head>
 <body>
   <div class="fit" id="fit">
@@ -615,12 +743,60 @@
       var RIGHT_CUT = 32;
       var NUDGE_DOWN = 54; /* small shift down inside the card */
 
+      /**
+       * Phone host page (not iframe width alone). Same-origin parent
+       * matchMedia matches the site breakpoint; fallback for previews.
+       */
+      function isPhoneHost() {
+        try {
+          if (window.parent && window.parent !== window && window.parent.matchMedia) {
+            return window.parent.matchMedia("(max-width: 833px)").matches;
+          }
+        } catch (e) {
+          /* ignore */
+        }
+        return Math.max(window.innerWidth, 1) < 640;
+      }
+
       function fitFrame() {
         var el = document.getElementById("fit");
         if (!el) return;
         var vw = Math.max(window.innerWidth, 1);
         var vh = Math.max(window.innerHeight, 1);
-        /* Slightly larger than the slot → light lower-right crop, more UI in view */
+        var phone = isPhoneHost();
+
+        document.documentElement.classList.toggle("is-mobile-peek", phone);
+
+        /*
+         * Mobile = Cursor peek: host clips a desktop-sized iframe (860×460).
+         * Pin the design canvas; is-mobile-peek composes switches + bank + Rate
+         * into the left crop. Do not scale-to-fit the narrow stage.
+         */
+        if (phone) {
+          /*
+           * Scale to the host clip width (iframe innerWidth is the full
+           * 860px canvas — useless for fitting the peek).
+           */
+          var stageW = 360;
+          try {
+            if (window.frameElement && window.frameElement.parentElement) {
+              stageW = window.frameElement.parentElement.getBoundingClientRect().width || stageW;
+            }
+          } catch (e) {
+            /* ignore */
+          }
+          /* Always fit ~320 design px (switches + bank + full Rate) into the clip */
+          var need = 320;
+          var s = Math.min(1, stageW / need);
+          if (!isFinite(s) || s <= 0) s = 0.9;
+          if (s < 0.82) s = 0.82;
+          el.style.left = "0px";
+          el.style.top = "0px";
+          el.style.transform = "scale(" + s + ")";
+          return;
+        }
+
+        /* Desktop: slightly larger than the slot → light lower-right crop */
         var s = Math.min((vw + RIGHT_CUT) / DESIGN_W, (vh + BOTTOM_CUT) / DESIGN_H);
         var scaledW = DESIGN_W * s;
         var scaledH = DESIGN_H * s;
@@ -633,6 +809,15 @@
       window.addEventListener("resize", fitFrame);
       if (typeof ResizeObserver !== "undefined") {
         new ResizeObserver(fitFrame).observe(document.documentElement);
+      }
+      try {
+        if (window.parent && window.parent !== window && window.parent.matchMedia) {
+          var phoneMq = window.parent.matchMedia("(max-width: 833px)");
+          if (phoneMq.addEventListener) phoneMq.addEventListener("change", fitFrame);
+          else if (phoneMq.addListener) phoneMq.addListener(fitFrame);
+        }
+      } catch (e) {
+        /* ignore */
       }
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(fitFrame);

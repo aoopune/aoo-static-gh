@@ -612,14 +612,14 @@
           .map(function (t) {
             return (
               '<li class="hlc-intel-tip">' +
+              '<span class="hlc-intel-horizon">' +
+              esc(t.horizon) +
+              "</span>" +
               '<strong class="hlc-intel-heading">' +
               esc(t.heading) +
               "</strong>" +
               '<div class="hlc-intel-tip-detail" aria-hidden="true">' +
               '<div class="hlc-intel-tip-detail-clip">' +
-              '<span class="hlc-intel-horizon">' +
-              esc(t.horizon) +
-              "</span>" +
               '<p class="hlc-intel-body">' +
               esc(t.body) +
               "</p>" +
