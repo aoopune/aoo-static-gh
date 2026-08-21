@@ -1,6 +1,6 @@
 {
   "generated": "2026-08-21",
-  "updated": "2026-08-21",
+  "updated": "2026-08-22",
   "repo": "aoo-static-gh",
   "brief_md": "super-review-1/themes/_dark-mode-palette-lock.md",
   "ask_question_available": false,
@@ -206,42 +206,42 @@
     },
     {
       "token": "--shroffin-link",
-      "dark_hex": "#8FA3F0",
+      "dark_hex": "#2997FF",
       "status": "locked",
       "ask_cluster": "Q3",
       "notes": "Not button blue"
     },
     {
       "token": "--shroffin-link-active",
-      "dark_hex": "#7389E0",
+      "dark_hex": "#2997FF",
       "status": "derived",
       "ask_cluster": "Q3",
       "notes": "One step deeper than link"
     },
     {
       "token": "--shroffin-link-visited",
-      "dark_hex": "#A89BE8",
+      "dark_hex": "#2997FF",
       "status": "derived",
       "ask_cluster": "Q3",
       "notes": "Purple-tint brighter"
     },
     {
       "token": "--shroffin-link-external",
-      "dark_hex": "#8FA3F0",
+      "dark_hex": "#2997FF",
       "status": "derived",
       "ask_cluster": "Q3",
       "notes": "Aliases link"
     },
     {
       "token": "--shroffin-link-external-active",
-      "dark_hex": "#7389E0",
+      "dark_hex": "#2997FF",
       "status": "derived",
       "ask_cluster": "Q3",
       "notes": ""
     },
     {
       "token": "--shroffin-link-external-visited",
-      "dark_hex": "#A89BE8",
+      "dark_hex": "#2997FF",
       "status": "derived",
       "ask_cluster": "Q3",
       "notes": ""
@@ -258,7 +258,7 @@
       "dark_hex": "#0071e3",
       "status": "locked",
       "ask_cluster": "Q4",
-      "notes": "Apple filled Buy — same as light; accents use --shroffin-blue #0A84FF"
+      "notes": "Apple filled Buy \u2014 same as light; accents use --shroffin-blue #0A84FF"
     },
     {
       "token": "--shroffin-btn-primary-hover",
@@ -293,21 +293,21 @@
       "dark_hex": "none",
       "status": "locked",
       "ask_cluster": "Q19",
-      "notes": "Flat Apple Buy — no glow"
+      "notes": "Flat Apple Buy \u2014 no glow"
     },
     {
       "token": "--shroffin-btn-primary-shadow-hover",
       "dark_hex": "none",
       "status": "locked",
       "ask_cluster": "Q19",
-      "notes": "Flat Apple Buy — no glow"
+      "notes": "Flat Apple Buy \u2014 no glow"
     },
     {
       "token": "--shroffin-btn-primary-shadow-active",
       "dark_hex": "none",
       "status": "locked",
       "ask_cluster": "Q19",
-      "notes": "Flat Apple Buy — no glow"
+      "notes": "Flat Apple Buy \u2014 no glow"
     },
     {
       "token": "--shroffin-gn-frost",
@@ -475,7 +475,7 @@
       "dark_hex": "0 1px 3px rgba(0,0,0,0.28), 0 4px 14px rgba(0,0,0,0.22)",
       "status": "derived",
       "ask_cluster": "Q19",
-      "notes": "Softened — no hard second-box on dark"
+      "notes": "Softened \u2014 no hard second-box on dark"
     },
     {
       "token": "--hlc-card-surface",
@@ -489,7 +489,7 @@
       "dark_hex": "0 8px 28px rgba(0,0,0,0.28), 0 24px 56px rgba(0,0,0,0.20)",
       "status": "derived",
       "ask_cluster": "Q19",
-      "notes": "Soft ambient only — not a crisp offset box"
+      "notes": "Soft ambient only \u2014 not a crisp offset box"
     },
     {
       "token": "--hlc-rank-helpful-ink",
@@ -549,24 +549,24 @@
     },
     {
       "token": "--hlc-logo-plate",
-      "dark_hex": "#FFFFFF",
+      "dark_hex": "transparent",
       "status": "locked",
       "ask_cluster": "Q9",
-      "notes": "Light plate on dark only"
+      "notes": "Founder override 2026-08-21: no artificial plate; white only if in bank PNG"
     },
     {
       "token": "--hlc-logo-plate-pad",
-      "dark_hex": "3px",
+      "dark_hex": "0px",
       "status": "derived",
       "ask_cluster": "Q19",
-      "notes": ""
+      "notes": "No pad with plate off"
     },
     {
       "token": "--hlc-logo-plate-line",
-      "dark_hex": "rgba(0,0,0,0.08)",
+      "dark_hex": "transparent",
       "status": "derived",
       "ask_cluster": "Q19",
-      "notes": ""
+      "notes": "No hair with plate off"
     },
     {
       "token": "--apply-field-wash",
@@ -1060,7 +1060,7 @@
     "--shroffin-btn-primary-shadow none (flat Apple Buy)",
     "light link family #3f62c8 / #2f4ba0 / #5a4fcf",
     "Phase B light surface/ink/hair/gn/field freeze",
-    "--hlc-logo-plate transparent under light",
+    "--hlc-logo-plate transparent under light and dark (no added plate)",
     "live site.webmanifest until Phase I"
   ],
   "open_deferred": [],

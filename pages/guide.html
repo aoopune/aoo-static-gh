@@ -83,9 +83,9 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=seg-radius-1">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=nav-ink-1">
   <link rel="stylesheet" href="../css/shroffin-guide.css?v=seg-radius-1">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=flip-card-opacity-1">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=guide-reveal-2">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -385,7 +385,7 @@
         <div class="guide-flip" id="borrow-flip">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-ember guide-tile-question">How much can you borrow?</span></h2>
           <p class="guide-tile-copy guide-tile-copy--rule">
-            Depends on Property value and income, whichever is lower.
+            The bank takes the lower of your property value and your income.
           </p>
 
           <div class="guide-flip-scene" data-flip-scene>
@@ -444,13 +444,13 @@
                     </span>
                     <span class="guide-tip-body">
                       <span class="guide-tip-label">Tip</span>
-                      An earning co-applicant can help to increase the loan amount.
+                      An earning co-applicant can raise the loan amount.
                     </span>
                   </p>
                 </div>
                 </div>
               <button type="button" class="guide-flip-link guide-flip-dock" data-flip="borrow-flip" aria-controls="borrow-calc" aria-expanded="false">
-                Estimate your range
+                Estimate your loan amount
                 <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                   <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -461,9 +461,9 @@
             <div class="guide-flip-face guide-flip-face--back" id="borrow-calc" aria-hidden="true">
               <div class="guide-chapter-card">
               <div class="guide-flip-back-scroll">
-                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky">Estimate</span></h2>
+                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky">Estimate your loan amount</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
-                  Indicative only.
+                  This figure is indicative only.
                 </p>
 <div class="guide-calc-body guide-calc-body--split">
                   <form class="guide-calc" id="borrow-calc-form" novalidate>
@@ -556,9 +556,9 @@
                 <div class="guide-seg-panels">
                 <div class="guide-seg-panel" role="tabpanel" id="emi-panel-how" aria-labelledby="emi-tab-how">
                   <ul class="guide-share-list guide-share-list--plain">
-                    <li>Early years: you’re mostly paying interest.</li>
-                    <li>Later years: you’re mostly paying off the loan.</li>
-                    <li>If the rate stays the same, the EMI stays the same. If the rate changes, the EMI or the years may change.</li>
+                    <li>In the early years, you are mostly paying interest.</li>
+                    <li>In the later years, you are mostly paying off the principal.</li>
+                    <li>Fixed interest rates keep the Equated Monthly Installment (EMI) stable; floating rates adjust either the monthly repayment amount or the total loan tenure.</li>
                   </ul>
                 </div>
 
@@ -603,7 +603,7 @@
                     </span>
                     <span class="guide-tip-body">
                       <span class="guide-tip-label">Tip</span>
-                      Some lenders let you pay more than interest during construction — ask if that option exists.
+                      Some lenders let you pay more than interest during construction. Ask if that option exists.
                     </span>
                   </p>
                 </div>
@@ -621,9 +621,9 @@
             <div class="guide-flip-face guide-flip-face--back" id="emi-calc" aria-hidden="true">
               <div class="guide-chapter-card">
               <div class="guide-flip-back-scroll">
-                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea">Estimate</span></h2>
+                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea">Estimate your EMI</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
-                  Indicative only.
+                  This figure is indicative only.
                 </p>
 <div class="guide-calc-body guide-calc-body--split">
                   <form class="guide-calc" id="emi-calc-form" novalidate>
@@ -682,7 +682,7 @@
           </span>
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">Up to what period can you repay?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Up to 30 years. Age and bank rules often shorten that period. A longer period lowers the EMI and raises the total interest.
+                Maximum tenure is typically 30 years, subject to age limits and lender guidelines. Extending the tenure reduces the EMI but drives up overall interest costs.
               </p>
           <a class="guide-flip-link guide-open-link" href="calculators/tenure.html">
             Estimate your tenure
@@ -713,37 +713,38 @@
                 <div class="guide-seg-panels">
                   <div class="guide-seg-panel" role="tabpanel" id="rate-panel-floating" aria-labelledby="rate-tab-floating">
                     <p class="guide-limit-copy">
-                      Moves with the benchmark over the loan tenure.
+                      The interest rate fluctuates in line with the benchmark throughout the loan duration.
                     </p>
                     <ul class="guide-share-list guide-share-list--plain">
-                      <li>External benchmark (often the repo rate) + the bank’s spread</li>
-                      <li>Repo rate resets at least once every 3 months</li>
-                      <li>When the rate goes up, your lender asks how you want to take the extra cost. You can pay a lump sum, raise EMI, extend tenure, or mix these.</li>
+                      <li>The total interest rate equals an external benchmark—typically the repo rate—plus the bank’s added margin or spread.</li>
+                      <li>The repo rate is re-evaluated and reset at least once every quarter.</li>
+                      <li>If interest rates rise, your lender gives you options to manage the increased cost: make a lump-sum payment, increase your monthly EMI, extend your loan tenure, or combine these approaches.</li>
                       <li>
-                        Prepayment / foreclosure charges: none on floating home loans under
+                        Under
                         <a
                           class="guide-section-link"
                           href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13140&amp;Mode=0"
                           target="_blank"
                           rel="noopener noreferrer"
-                        >RBI rules<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a>
+                        >RBI guidelines<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a>,
+                        banks cannot charge any penalty for prepaying or closing a floating-rate home loan early.
                       </li>
                     </ul>
                   </div>
                   <div class="guide-seg-panel" role="tabpanel" id="rate-panel-fixed" aria-labelledby="rate-tab-fixed" hidden>
                     <p class="guide-limit-copy">
-                      Fixed for a set period, then the rate resets.
+                      The interest rate remains fixed for an initial period before transitioning to a variable rate.
                     </p>
                     <ul class="guide-share-list guide-share-list--plain">
-                      <li>External benchmark (often the repo rate) + the bank’s spread + a fixed rate premium</li>
-                      <li>Usually fixed for 3 or 5 years, as per the lender</li>
-                      <li>Usually about 1% to 2% higher than floating during the fixed period</li>
-                      <li>Prepayment / foreclosure charges: 2% to 4%</li>
+                      <li>The interest rate is calculated using an external benchmark—typically the repo rate—plus the bank's margin and an additional fixed-rate premium.</li>
+                      <li>The fixed-rate duration is typically set for 3 or 5 years, depending on the lender's policy.</li>
+                      <li>During the fixed period, the interest rate is generally 1% to 2% higher than prevailing floating rates.</li>
+                      <li>Prepaying or foreclosing the loan during the fixed-rate tenure incurs a penalty of 2% to 4%.</li>
                     </ul>
                   </div>
                 </div>
               <button type="button" class="guide-flip-link guide-flip-dock" data-flip="rate-flip" aria-controls="rate-ask" aria-expanded="false">
-                Choices that stay after you take the loan
+                See rate options after sanction
                 <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                   <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -754,14 +755,14 @@
             <div class="guide-flip-face guide-flip-face--back" id="rate-ask" aria-hidden="true">
               <div class="guide-chapter-card">
               <div class="guide-flip-back-scroll">
-                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-gold">After you take the loan</span></h2>
+                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-gold">Rate options after sanction</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
                   These still matter later, so weigh them while you choose the rate type.
                 </p>
 <div class="guide-rate-notes">
-                  <p>You can switch between fixed and floating rates as per the bank’s policy, at the applicable cost.</p>
-                  <p>You can switch between benchmark rates as per the bank’s policy, at the applicable cost.</p>
-                  <p>If your credit score improves, you can ask to lower your rate as per the bank’s policy, at the applicable cost.</p>
+                  <p>You can switch between fixed and floating later, if the bank allows it and you pay their switch fee.</p>
+                  <p>You can also switch the benchmark the loan follows, under the bank’s rules and fees.</p>
+                  <p>If your credit score improves, you can ask the bank to cut your rate — they decide, and a fee may apply.</p>
                   <p>When the repo rate changes, a floating rate must reset within 3 months. Your bank’s reset date sets the exact wait.</p>
                   <p>A newly sanctioned loan can take about 90 days for the first change.</p>
                 </div>
@@ -799,25 +800,25 @@
                 <div class="guide-seg-panels">
                   <div class="guide-seg-panel" role="tabpanel" id="structure-panel-term" aria-labelledby="structure-tab-term">
                     <p class="guide-limit-copy">
-                      This is the normal home loan. You pay a fixed EMI every month, and interest is charged on the unpaid loan balance. Money in your savings account does not change that.
+                      Under a standard home loan, you pay a fixed EMI each month while interest accumulates on the remaining principal balance, regardless of the funds sitting in your savings account.
                     </p>
                     <ul class="guide-share-list guide-share-list--plain">
-                      <li>To cut interest early, you have to prepay</li>
-                      <li>Fits if you will not keep large surplus parked for months</li>
+                      <li>To reduce your overall interest burden early on, you must make partial prepayments toward the loan principal.</li>
+                      <li>This structure is ideal if you do not plan on holding large idle cash balances in your bank account over extended periods.</li>
                     </ul>
                   </div>
                   <div class="guide-seg-panel" role="tabpanel" id="structure-panel-od" aria-labelledby="structure-tab-od" hidden>
                     <p class="guide-limit-copy">
-                      This home loan is linked to an account. When spare cash sits in that account, interest is charged on a lower balance. You can still withdraw that money when you need it.
+                      Under a home loan overdraft facility, idle funds parked in your linked account offset your outstanding balance to reduce interest, while remaining fully accessible for withdrawal whenever needed.
                     </p>
                     <ul class="guide-share-list guide-share-list--plain">
-                      <li>Rate is usually 0.15% to 1% higher than the same bank’s term loan</li>
-                      <li>You benefit only if parked surplus saves more interest than the higher rate costs</li>
+                      <li>Overdraft home loans typically carry an interest rate that is 0.15% to 1% higher than a standard term loan from the same bank.</li>
+                      <li>The overdraft option is only cost-effective if the interest saved by parking your extra cash outweighs the higher base interest rate of the loan.</li>
                     </ul>
                   </div>
                 </div>
               <button type="button" class="guide-flip-link guide-flip-dock" data-flip="structure-flip" aria-controls="structure-ask" aria-expanded="false">
-                What still matters once the structure is set
+                See rules after you choose a structure
                 <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                   <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -828,12 +829,12 @@
             <div class="guide-flip-face guide-flip-face--back" id="structure-ask" aria-hidden="true">
               <div class="guide-chapter-card">
               <div class="guide-flip-back-scroll">
-                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky">Once the structure is set</span></h2>
+                <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky">Rules after you choose a structure</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
                   These rules matter when you choose.
                 </p>
 <div class="guide-rate-notes">
-                  <p>You can switch between term loan and overdraft later as per the bank’s policy, at the applicable cost.</p>
+                  <p>You can switch between term loan and overdraft later, if the bank allows it and you pay their switch fee.</p>
                   <p>On overdraft, withdrawing parked money follows the bank’s limit and rules.</p>
                   <p>On overdraft, the usable limit may fall over the years (dropline), as per the lender.</p>
                 </div>
@@ -857,7 +858,7 @@
         <div class="guide-flip" id="charges-flip">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">What are the charges to get the loan?</span></h2>
           <p class="guide-tile-copy guide-tile-copy--rule">
-            Bank fees, property checks, and government charges.
+            You pay bank fees, property checks, and government charges.
           </p>
 
           <div class="guide-flip-scene" data-flip-scene>
@@ -924,7 +925,7 @@
               <div class="guide-flip-back-scroll">
                 <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea">Fee breakdown</span></h2>
                 <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">
-                  Usual one-time costs at sanction and disbursement. Banks may use different names or bundle them.
+                  Usual one-time costs at sanction and disbursement. Banks may rename or bundle them.
                 </p>
 <div class="guide-fee-schedule">
                   <div class="guide-fee-col">
@@ -1072,15 +1073,15 @@
 
           <div class="guide-seg-panels">
           <div class="guide-seg-panel" role="tabpanel" id="apf-panel-new" aria-labelledby="apf-tab-new">
-            <p class="guide-limit-copy">If a bank has already approved the project, phase, tower or wing, your home loan may move faster and reduce repeated legal, technical and search-report charges.</p>
+            <p class="guide-limit-copy">For new or under-construction properties, choosing a project with pre-approved financing (APF) speeds up loan processing and reduces redundant legal, technical, and title search fees.</p>
           </div>
 
           <div class="guide-seg-panel" role="tabpanel" id="apf-panel-resale" aria-labelledby="apf-tab-resale" hidden>
-            <p class="guide-limit-copy">The individual property is usually checked instead of the whole project. This may take additional time and include legal, technical and search-report charges.</p>
+            <p class="guide-limit-copy">For resale properties, the lender evaluates your specific unit individually, which can prolong approval times and add separate legal, technical, and title search charges.</p>
           </div>
           </div>
           <a class="guide-flip-link guide-project-link" href="project-approvals.html">
-            Find banks for your project
+            Find banks that already approve your project
             <svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
               <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -1093,7 +1094,7 @@
 
     <div class="guide-fine-wrap">
       <p class="guide-fine">
-        This guide is for education and comparison. Figures and summaries here are indicative. Final rates, charges, eligibility, insurance, and approval depend on your profile, the property, and the lender. Your sanction letter, loan agreement, and policy papers prevail.
+        This guide is for educational and comparison purposes only; all figures and summaries are indicative. Final interest rates, charges, loan eligibility, insurance requirements, and approvals depend on your individual profile, property evaluation, and lender policies—with the terms in your official sanction letter, loan agreement, and policy documents taking precedence.
       </p>
     </div>
       </div>
@@ -1280,8 +1281,8 @@
 
   <script src="../js/guide-page-overview.js?v=flip-close-top-4"></script>
   <script src="../js/shroffin-nav.js?v=guide-top-1"></script>
-  <script src="../js/shroffin-guide.js?v=flip-close-top-4"></script>
-  <script src="../js/shroffin-scrub.js?v=heading-latch-1"></script>
+  <script src="../js/shroffin-guide.js?v=guide-reveal-2"></script>
+  <script src="../js/shroffin-scrub.js?v=guide-reveal-2"></script>
   <script src="../js/shroffin-guide-soft-nav.js?v=guide-top-1"></script>
 </body>
 </html>

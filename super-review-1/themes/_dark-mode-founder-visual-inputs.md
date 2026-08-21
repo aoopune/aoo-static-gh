@@ -97,11 +97,7 @@ Briefs: `_dark-mode-phase-a-product-brief.md`, `_dark-mode-phase-b-shell-freeze.
 
 ### 5. Bank logo plate
 
-**Chosen:** **Light plate** behind each bank mark on dark Explore (PREP-11).
-
-- Do not recolor bank assets.
-- Plate role already reserved in Phase B / Explore ownership (`--hlc-logo-plate` or equivalent).
-- Exact plate hex later with Explore dark-map.
+**Chosen (updated 2026-08-21):** **No artificial plate** on dark Explore. White stays only when it is already part of the bank PNG. Do not recolor bank assets. Plate tokens remain as a hook (`transparent` / `0px`) for both themes.
 
 ---
 
@@ -167,7 +163,7 @@ BLUE_DARK_ACCENT:     #0A84FF (links/icons/accents)
 BLUE_CTA:             #0071e3 / hover #0076df / active #006edb — flat, light+dark (Apple Buy)
 WORDMARK_SRC:         etc/.../logo-h-on-black.svg | png/logo-h-on-black-781x173.png
 WORDMARK_DST:         images/logos/logo-h-dark-clear-781x173.png (Phase G landed + nav CSS swap hook)
-BANK_LOGOS_DARK:      light plate behind marks; do not recolor assets; --hlc-logo-plate
+BANK_LOGOS_DARK:      no artificial plate; white only if in PNG; do not recolor; --hlc-logo-plate transparent
 PWA_SPLASH:           dark-first #121212 at Phase I ship; live manifest white until then (Phase G plan)
 THEME_COLOR_SHIP:     dark #121212 / light #fcfcfd meta; manifest fallback #121212 (Phase I)
 RANK_CHIPS:           keep green/red/amber meaning; retune for dark; PREP-15 AA gate

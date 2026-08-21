@@ -908,6 +908,16 @@
         jumping = true;
         /* Settle reveal before measuring — translated sections skew the landing. */
         destination.classList.add("is-in");
+        destination
+          .querySelectorAll(
+            ".guide-tile-title, .mag-h, .guide-tile-copy--rule, .guide-chapter-card, .guide-flip-scene"
+          )
+          .forEach(function (el) {
+            if (el.closest(".guide-flip-face--back")) return;
+            el.classList.add("guide-reveal--snap", "is-in");
+            void el.offsetWidth;
+            el.classList.remove("guide-reveal--snap");
+          });
         setActive(id);
         setCompactOpen(false);
         var landOn = chapterJumpTarget(destination);
@@ -1687,39 +1697,120 @@
       if (riseTargets.indexOf(scene) === -1) riseTargets.push(scene);
     });
 
+    function isChapterTextRise(el) {
+      if (!el || !el.closest(".guide-moment")) return false;
+      if (el.closest(".guide-flip-face--back")) return false;
+      if (el.closest(".guide-chapter-card")) return false;
+      if (el.closest(".guide-flip-scene")) return false;
+      if (el.closest("[hidden]")) return false;
+      return true;
+    }
+
+    document
+      .querySelectorAll(
+        ".guide-moment .guide-tile-title, .guide-moment .mag-h, .guide-moment .guide-tile-copy--rule"
+      )
+      .forEach(function (el) {
+        if (!isChapterTextRise(el)) return;
+        if (riseTargets.indexOf(el) === -1) riseTargets.push(el);
+      });
+
     var nodes = moments.concat(riseTargets);
     if (!nodes.length) return;
+
+    var firstSection = document.querySelector(
+      ".guide-story > .mag-section.guide-moment:first-child"
+    );
+
+    function inFirstSection(el) {
+      return !!(firstSection && firstSection.contains(el));
+    }
 
     function settle(el) {
       el.classList.add("is-in");
     }
 
+    function withoutTransition(el, fn) {
+      el.classList.add("guide-reveal--snap");
+      fn();
+      void el.offsetWidth;
+      el.classList.remove("guide-reveal--snap");
+    }
+
+    function settleAnimated(el) {
+      el.classList.remove("guide-reveal--snap");
+      el.classList.add("is-in");
+    }
+
+    function settleSnap(el) {
+      withoutTransition(el, function () {
+        el.classList.add("is-in");
+      });
+    }
+
+    function resetOffscreen(el) {
+      withoutTransition(el, function () {
+        el.classList.remove("is-in");
+      });
+    }
+
+    /* First chapter stays put — no scroll rise, no replay. */
+    var frozenRise = riseTargets.filter(inFirstSection);
+    var replayRise = riseTargets.filter(function (el) {
+      return !inFirstSection(el);
+    });
+
+    frozenRise.forEach(settleSnap);
+    moments.forEach(settle);
+
     if (prefersReducedMotion() || !("IntersectionObserver" in window)) {
-      nodes.forEach(settle);
+      replayRise.forEach(settle);
       return;
     }
+
+    var lastY = window.scrollY || 0;
+    var scrollingDown = true;
+
+    function trackScrollDirection() {
+      var y = window.scrollY || 0;
+      if (y !== lastY) scrollingDown = y > lastY;
+      lastY = y;
+    }
+
+    window.addEventListener("scroll", trackScrollDirection, { passive: true });
+    trackScrollDirection();
 
     var phone =
       window.matchMedia && window.matchMedia("(max-width: 833px)").matches;
 
-    var observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          settle(entry.target);
-          observer.unobserve(entry.target);
-        });
-      },
-      phone
-        ? { rootMargin: "0px 0px -2% 0px", threshold: 0.04 }
-        : { rootMargin: "0px 0px -6% 0px", threshold: 0.08 }
-    );
+    var options = phone
+      ? { rootMargin: "0px 0px -2% 0px", threshold: 0.04 }
+      : { rootMargin: "0px 0px -6% 0px", threshold: 0.08 };
 
-    nodes.forEach(function (el) {
+    /*
+     * Down-only replay (same as home): rise when scrolling down; snap when
+     * scrolling up; reset off-screen so the next down-scroll can rise again.
+     * Cards, chapter titles, and rule subheads share this path.
+     */
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var el = entry.target;
+        if (entry.isIntersecting) {
+          if (scrollingDown) settleAnimated(el);
+          else settleSnap(el);
+          return;
+        }
+        resetOffscreen(el);
+      });
+    }, options);
+
+    replayRise.forEach(function (el) {
       observer.observe(el);
     });
+
     addContentCleanup(function () {
       observer.disconnect();
+      window.removeEventListener("scroll", trackScrollDirection);
     });
   }
 

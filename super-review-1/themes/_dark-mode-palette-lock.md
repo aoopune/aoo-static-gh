@@ -54,7 +54,7 @@ Machine record: `_dark-mode-palette-lock-ledger.json`
 | Light brand blue exact **`#0071e3`** (and light hover/active) | Founder extras |
 | Link blue ≠ button blue (intentional split) | Phase B |
 | Ranks: helpful green / costly red / grace amber meaning; PREP-15 AA text ≥ 4.5:1 | Founder + Phase F |
-| Bank logos: **light plate** on dark; never recolor bank art | Founder + Phase F |
+| Bank logos: **no added plate** on dark (white only if in the PNG); never recolor bank art | Founder override 2026-08-21 |
 | PWA splash / dark `theme-color` ship **`#121212`**; light meta **`#fcfcfd`** | Phase G |
 | Explore remains `--hlc-*` second system | Phase F |
 
@@ -83,6 +83,7 @@ Columns: `token` · `light_today` · `dark_locked` · `contrast_notes` · `owner
 |---|---|---|---|---|
 | `--shroffin-ink` | `#1d1d1f` | `#F5F5F7` | Main text on `#121212` / `#1E1E1E` — AA | shell |
 | `--shroffin-ink-soft` | `#3a3a3d` | `#C7C7CC` | Soft body / leads | shell |
+| `--shroffin-ink-strong` | `#000000` | `#ffffff` | Chrome hover when rest is already ink | shell |
 | `--shroffin-muted` | `#6e6e73` | `#A1A1A6` | Fine print / secondary | shell |
 | `--shroffin-ghost` | `#c5c9cf` | `#636366` | Decorative large numerals only | shell |
 
@@ -90,12 +91,12 @@ Columns: `token` · `light_today` · `dark_locked` · `contrast_notes` · `owner
 
 | token | light_today | dark_locked | contrast_notes | owner |
 |---|---|---|---|---|
-| `--shroffin-link` | `#3f62c8` | `#8FA3F0` | Brighter `#3f62c8` family | shell |
-| `--shroffin-link-active` | `#2f4ba0` | `#7389E0` | One step deeper than link | shell |
-| `--shroffin-link-visited` | `#5a4fcf` | `#A89BE8` | Purple-tint family, brighter | shell |
-| `--shroffin-link-external` | `var(--shroffin-link)` | `var(--shroffin-link)` → `#8FA3F0` | Same | shell |
-| `--shroffin-link-external-active` | `var(--shroffin-link-active)` | `#7389E0` | Same | shell |
-| `--shroffin-link-external-visited` | `var(--shroffin-link-visited)` | `#A89BE8` | Same | shell |
+| `--shroffin-link` | `#0066cc` | `#2997FF` | Apple web link pair (one blue) | shell |
+| `--shroffin-link-active` | `var(--shroffin-link)` | `var(--shroffin-link)` | Same as rest | shell |
+| `--shroffin-link-visited` | `var(--shroffin-link)` | `var(--shroffin-link)` | Same as rest | shell |
+| `--shroffin-link-external` | `var(--shroffin-link)` | `var(--shroffin-link)` → `#2997FF` | Same | shell |
+| `--shroffin-link-external-active` | `var(--shroffin-link)` | `var(--shroffin-link)` | Same | shell |
+| `--shroffin-link-external-visited` | `var(--shroffin-link)` | `var(--shroffin-link)` | Same | shell |
 
 #### 2.4 Shell — brand / buttons / focus (**dark only**; light unchanged)
 
@@ -176,10 +177,10 @@ Columns: `token` · `light_today` · `dark_locked` · `contrast_notes` · `owner
 
 | token | light_today | dark_locked | contrast_notes | owner |
 |---|---|---|---|---|
-| `--hlc-logo-plate` | `transparent` | `#FFFFFF` | Light plate; do not recolor bank art | explore |
-| `--hlc-logo-plate-pad` | `0px` | `3px` | Show plate | explore |
-| `--hlc-logo-plate-radius` | `0.2rem` | `0.2rem` | Keep | explore |
-| `--hlc-logo-plate-line` | `transparent` | `rgba(0,0,0,0.08)` | Soft edge on white | explore |
+| `--hlc-logo-plate` | `transparent` | `transparent` | No artificial plate; white only if baked into bank PNG | explore |
+| `--hlc-logo-plate-pad` | `0px` | `0px` | No pad | explore |
+| `--hlc-logo-plate-radius` | `0.2rem` | `0.2rem` | Keep hook | explore |
+| `--hlc-logo-plate-line` | `transparent` | `transparent` | No hair | explore |
 
 #### 2.11 Explore — forms / chrome leftovers (Q11–Q16)
 
@@ -207,7 +208,7 @@ Columns: `token` · `light_today` · `dark_locked` · `contrast_notes` · `owner
 | `--hlc-delta-wash` | `rgba(176,142,70,0.16)` | `rgba(245,215,142,0.22)` | Amber family | explore |
 | `--hlc-limit-house` | `#7a3410` | `#E0A070` | Brown meaning | explore |
 | `--hlc-limit-income` | `#234a82` | `#7EB6FF` | Blue accent ≠ btn fill | explore |
-| `--hlc-link-hover` | `#0077ed` | `#2997FF` | Brighter than btn rest | explore |
+| `--hlc-link-hover` | `var(--shroffin-link)` | `var(--shroffin-link)` → `#2997FF` | Alias shell link | explore |
 | `--hlc-icon-rest` | muted | `#A1A1A6` | via shell | explore |
 | `--hlc-icon-hover` | ink | `#F5F5F7` | via shell | explore |
 | `--hlc-icon-active` | blue | `#0A84FF` | via shell | explore |
@@ -247,7 +248,7 @@ Columns: `token` · `light_today` · `dark_locked` · `contrast_notes` · `owner
 | `--guide-title-g` | purple→pink→blue | `#5E5CE6` → `#BF5AF2` → `#147CE5` | Brand gradient | guide |
 | `--apf-surface` / wash / ink / blue / line | shell aliases | inherit shell dark | | apf |
 | `--apf-line-soft` | `rgba(29,29,31,0.06)` | `rgba(255,255,255,0.06)` | | apf |
-| `--utility-sitemap-hover` | `#005bb5` | `#2997FF` | Button-family hover | utility |
+| `--utility-sitemap-hover` | `var(--shroffin-ink)` | `var(--shroffin-ink)` | Chrome hover (not link blue) | utility |
 | `--mag-*` / `--about-*` / `--stance-*` | shell aliases | inherit shell dark twins | | editorial/about/home |
 | `--stance-line` | `rgba(0,0,0,0.1)` | `rgba(255,255,255,0.10)` | | home |
 | `--home-title-g` | `#5E5CE6`→`#BF5AF2`→`#2997FF` | **keep** same (dark-friendly) | | home |
@@ -270,8 +271,8 @@ Columns: `token` · `light_today` · `dark_locked` · `contrast_notes` · `owner
 
 | State | Formula | Locked result |
 |---|---|---|
-| Link active | one step deeper than link | `#8FA3F0` → `#7389E0` |
-| Link visited | purple-tint family, brighter on dark | `#A89BE8` |
+| Link active | same as rest (underline for press) | `#2997FF` |
+| Link visited | same as rest | `#2997FF` |
 | Button hover | Apple `#0076DF` (slightly lighter than rest) | `#0076df` |
 | Button active | Apple `#006EDB` | `#006edb` |
 | Focus | accent twin on dark | `#0A84FF` |
@@ -307,9 +308,9 @@ Do **not** edit these light values when shipping dark twins:
 | `--shroffin-btn-primary-hover` | `#0076df` |
 | `--shroffin-btn-primary-active` | `#006edb` |
 | Button shadows (light) | `none` (flat Apple Buy) |
-| `--shroffin-link` / active / visited | `#3f62c8` / `#2f4ba0` / `#5a4fcf` |
+| `--shroffin-link` / active / visited | `#0066cc` (active/visited alias same) |
 | All light surface / ink / hair / gn / field tokens | Phase B light freeze as today |
-| `--hlc-logo-plate` under light | `transparent` (invisible) |
+| `--hlc-logo-plate` under light and dark | `transparent` (no added plate; PNG white stays) |
 | Explore light ranks / washes / rows | Phase F light spine |
 | Live `site.webmanifest` | stays white until Phase I activation |
 | Education / `css/style.css` / `pages/_*.html` | out of v1 — leave light |
@@ -360,7 +361,7 @@ Still **not** done in this job: live boot, footer pill, dark CSS in `css/`, PWA 
 ```
 SURFACE:     #121212 | #1E1E1E | #2C2C2C | #383838
 INK:         #F5F5F7 | soft #C7C7CC | muted #A1A1A6 | ghost #636366
-LINK:        #8FA3F0 | active #7389E0 | visited #A89BE8
+LINK:        #2997FF | active/visited alias same
 BLUE_DARK: #0A84FF (accents/links/icons) | filled CTAs #0071e3 / hover #0076df / active #006edb (Apple Buy flat)
 BLUE_LIGHT:  #0071e3 EXACT (do not change)
 LINES:       white-alpha 0.16/0.12/0.08; gn-border 0.10; veil rgba(0,0,0,0.45)
@@ -398,7 +399,7 @@ HARDCODE:    see Appendix C — mandatory
 | `#fff` as **seg/switch thumb fill** (`.shroffin-sel-thumb--pill`) | `#2C2C2C` + shadow `0 1px 2px rgba(0,0,0,0.35)` | Q12 selected |
 | `#fff` autofill inset (`box-shadow: 0 0 0 1000px #fff inset`) | `0 0 0 1000px #1E1E1E inset` + ink fill `#F5F5F7` | Input inside |
 | `#0066cc` secondary CTA border/text | `#0A84FF` | Align dark button family |
-| `#06c` submenu hover | `#8FA3F0` (link) **or** `#0A84FF` if treated as action — **lock: `#8FA3F0`** (nav text link hover) | Not button fill |
+| `#06c` submenu hover | `--shroffin-ink-strong` (`#000` / `#fff`) | Not link blue |
 | `#000` WhatsApp icon in support flyout | `#F5F5F7` (main ink) | Visible on dark frost |
 | `rgba(60,64,67,α)` / `rgba(15,23,42,α)` soft shadows | `rgba(0,0,0,α′)` with α′ ≈ 0.28–0.40 per Q19 | |
 | `color-mix(… ink N% , transparent)` muted text | Keep mix but ink is `#F5F5F7` under dark — OK | |
@@ -410,7 +411,7 @@ HARDCODE:    see Appendix C — mandatory
 
 | Component | Light hardcode (examples) | Dark locked behavior |
 |---|---|---|
-| **Navbar / flyout** | gn tokens; submenu `#06c`; WhatsApp `#000` | Tokens + `#8FA3F0` hover label; icon `#F5F5F7` |
+| **Navbar / flyout** | gn tokens; submenu → `--shroffin-ink-strong`; WhatsApp `#000` | Tokens + ink/white hover label; icon `#F5F5F7` |
 | **Focus outline** | `var(--shroffin-focus)` | `#0A84FF` (already) |
 | **Input underline fields** | field-line tokens | Q6 |
 | **Apply phone/email row** | white inset highlight; `rgba(0,113,227,…)` hover/focus ring | Inset → `rgba(255,255,255,0.06)`; glow → `rgba(10,132,255,0.18–0.34)` + `0 0 0 4px rgba(10,132,255,0.12)` |

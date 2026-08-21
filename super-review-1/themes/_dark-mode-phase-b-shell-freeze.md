@@ -78,6 +78,7 @@ All color-ish roles in `css/shroffin-shell.css` `:root` after Phase B. **Dark tw
 |---|---|---|---|---|---|---|
 | `--shroffin-ink` | `#1d1d1f` | Main text | body, nav, forms, most stacks | yes | Unreadable / wrong contrast | Canonical primary ink |
 | `--shroffin-ink-soft` | `#3a3a3d` | Softer body / lead ink | **Promoted** (editorial/about/stance still hardcode same hex until Phase E) | yes | Soft ink stays private forever | New in Phase B; do not invent competing softs |
+| `--shroffin-ink-strong` | `#000000` | Full-strength chrome hover when rest is already ink | nav flyout / compact / disclaimer | yes — dark `#ffffff` | Hover stays blue forever | Darker (light) / brighter (dark); not link blue |
 | `--shroffin-muted` | `#6e6e73` | Secondary / fine print | shell + stacks | yes | Fine print wrong on dark | |
 | `--shroffin-ghost` | `#c5c9cf` | Large decorative numerals | **Promoted** (mag/about still local until E) | yes | Ghost type disappears or chalks | |
 | `--shroffin-blue` | `#0071e3` | Brand / button blue | buttons, focus, accents | yes (may stay close) | Brand chrome wrong | ≠ link blue (intentional) |
@@ -87,12 +88,12 @@ All color-ish roles in `css/shroffin-shell.css` `:root` after Phase B. **Dark tw
 | `--shroffin-btn-primary-shadow` | `none` | Rest elevation | buttons | yes | | Flat pill — no glow (Apple Buy) |
 | `--shroffin-btn-primary-shadow-hover` | `none` | Hover elevation | buttons | yes | | |
 | `--shroffin-btn-primary-shadow-active` | `none` | Active elevation | buttons | yes | | |
-| `--shroffin-link` | `#3f62c8` | On-paper text links | guide links, utility, apply | yes | Links collide with buttons or vanish | Intentional ≠ `#0071e3` |
-| `--shroffin-link-active` | `#2f4ba0` | Link active | links | yes | | |
-| `--shroffin-link-visited` | `#5a4fcf` | Visited | links | yes | | |
+| `--shroffin-link` | `#0066cc` | On-paper text links (Apple web link) | guide, utility, apply, nav/footer hover text | yes — dark `#2997FF` | Links collide with buttons or vanish | Intentional ≠ button `#0071e3`; one blue for rest/hover/active/visited |
+| `--shroffin-link-active` | `var(--shroffin-link)` | Link active — same as rest | links | yes | | Hover/press via underline + same blue |
+| `--shroffin-link-visited` | `var(--shroffin-link)` | Visited — same as rest | links | yes | | One main link blue |
 | `--shroffin-link-external` | `var(--shroffin-link)` | Off-site link color | guide-section-link | yes | | Same family |
-| `--shroffin-link-external-active` | `var(--shroffin-link-active)` | Off-site active | | yes | | |
-| `--shroffin-link-external-visited` | `var(--shroffin-link-visited)` | Off-site visited | | yes | | |
+| `--shroffin-link-external-active` | `var(--shroffin-link)` | Off-site active | | yes | | |
+| `--shroffin-link-external-visited` | `var(--shroffin-link)` | Off-site visited | | yes | | |
 | `--shroffin-canvas-mix-base` | `#ffffff` | Mix destination for page surface wash | surface `color-mix` | yes | Silent dark-fail if raw `#fff` remains | **Phase B mix-base** |
 | `--shroffin-footer-mix-base` | `#f4f6f8` | Mix destination for footer/band wash | footer `color-mix` | yes | Footer stays chalk under dark | Companion mix-base |
 | `--shroffin-surface` | `#fcfcfd` then `color-mix(blue 0.75%, canvas-mix-base)` | Page canvas | body/pages | yes | White islands | Fallback hex `#fcfcfd` is light lock-in debt |
@@ -108,6 +109,13 @@ All color-ish roles in `css/shroffin-shell.css` `:root` after Phase B. **Dark tw
 | `--shroffin-gn-bg-open` | `rgba(245,247,249,0.92)` | Nav open / denser | globalnav, Explore nav alias | yes | | |
 | `--shroffin-gn-veil` | `rgba(29,29,31,0.28)` | Dim behind open menus | globalnav | retune | Veil too light/dark | Ink-based alpha |
 | `--shroffin-gn-border` | `rgba(0,0,0,0.05)` | Nav hair border | globalnav | yes | Border vanishes | Black-alpha |
+| `--shroffin-gn-label` | ink @ 72% | Top-bar label rest | globalnav | yes | — | Never link blue |
+| `--shroffin-gn-label-open` | `var(--shroffin-ink)` | Open flyout / current page | globalnav | yes | — | Selected / in use |
+| `--shroffin-gn-label-hover` | `var(--shroffin-ink-strong)` | Top-bar hover | globalnav | yes | — | Darker light / brighter dark |
+| `--shroffin-gn-option` | ink @ 72% | Flyout / compact option rest | globalnav | yes | — | Faded in open menu |
+| `--shroffin-gn-option-hover` | `var(--shroffin-ink-strong)` | Flyout option hover | globalnav | yes | — | Darker light / brighter dark |
+| `--shroffin-gn-option-value` | muted @ 88% | Flyout secondary line rest | globalnav | yes | — | |
+| `--shroffin-gn-option-value-hover` | `var(--shroffin-ink-soft)` | Flyout secondary line hover | globalnav | yes | — | |
 | `--shroffin-field-line` | `rgba(0,0,0,0.16)` | Underline field rest | Apply fields site-wide | yes | Fields disappear | |
 | `--shroffin-field-line-focus` | `var(--shroffin-btn-primary)` | Field focus line | fields | yes | | Has light fallback in places |
 | `--shroffin-field-line-invalid` | `rgba(176,76,76,0.65)` | Invalid field | fields | yes | Status unreadable | Keep semantic red family |
@@ -154,7 +162,7 @@ Exactly one owner per candidate: `shell_promote` | `stack_local` | `themeable_ho
 | `--hlc-rank-*` (helpful/costly/grace) | **stack_local** | Explore-owned; site-wide reuse **not** proven | F (+ PREP-15 contrast) |
 | logo-plate for bank marks | **stack_local** | **Reserved name** `--hlc-logo-plate` (values later) | F / PREP-11 |
 | apply hard `#fff` / `#1d1d1f` / status greens-reds | **stack_local** → prefer shell for ink/surface/fields; apply-local for leftover | Map in PREP-06 / Phase E: `--apply-ink-secondary`, `--apply-field-wash*`, `--apply-verify-wash*`, `--apply-blue-press`, `--apply-status-*`, `--apply-error-wash` (defs on `.hl-apply-page`) | E done |
-| utility light fallbacks | **shell** consumers with fallback debt | Remove fallbacks after shell always loads; `--utility-sitemap-hover: #005bb5` stack_local (≠ link) | E done |
+| utility light fallbacks | **shell** consumers with fallback debt | Remove fallbacks after shell always loads; `--utility-sitemap-hover` → `var(--shroffin-ink)` (chrome, not link) | E done |
 | legacy teal in apply-flow / apply-button-iframe | **out_of_v1** | `#0d9488` ≠ shell blue; education/legacy injectors | H |
 | `aoo-loan-table-standalone` SCOPE_CSS | **out_of_v1** | Documented white-island risk | H |
 | `css/style.css` education | **out_of_v1** | Leave light | — |
@@ -172,8 +180,8 @@ Not a redesign. Freeze quality gate: one role = one meaning; near-duplicates doc
 | Primary ink | `--shroffin-ink` | `#1d1d1f` | shell; many `var(--shroffin-ink)` | Apply ~23× hard `#1d1d1f`; about title hard; editorial `--mag-ink` hard same hex | Home story on-dark ink `#f5f5f7` (different role) | should_unify_later | E |
 | Soft ink | `--shroffin-ink-soft` | `#3a3a3d` | shell (new); none aliased yet | `--mag-ink-soft`, `--about-ink-soft`, `--stance-ink-soft` all hard `#3a3a3d` | — | should_unify_later | E |
 | Muted | `--shroffin-muted` | `#6e6e73` | shell + aliases | Apply ~13× hard; editorial `--mag-muted` hard same | Utility meta `rgba(0,0,0,0.56)` near-muted without token | should_unify_later | E |
-| Link blue | `--shroffin-link` | `#3f62c8` | shell; utility; apply links; mag-accent | Some apply hard `#3f62c8` | Button blue `#0071e3` intentional | ok (intentional split) | — |
-| Button / brand blue | `--shroffin-blue` / btn-primary | `#0071e3` | shell buttons; mag-accent-button hard same | Apply hard `#0071e3` / `#0076df` / `#0077ed` near-drifts | Link `#3f62c8` intentional | should_unify_later (near `#0076df`) | E |
+| Link blue | `--shroffin-link` | `#0066cc` (dark `#2997FF`) | shell; utility; apply; nav/footer hover; mag-accent | — | Button blue `#0071e3` intentional | ok (Apple web link pair) | — |
+| Button / brand blue | `--shroffin-blue` / btn-primary | `#0071e3` | shell buttons; mag-accent-button hard same | Apply hard `#0071e3` / `#0076df` near-drifts | Link `#0066cc` / `#2997FF` intentional | should_unify_later (near `#0076df`) | E |
 | Hairline (content) | `--shroffin-hair` | `rgba(0,0,0,0.12)` | shell (new) | `--mag-hair` same; `--calc-line` / `--apf-line` `rgba(29,29,31,0.12)` near-same | `--shroffin-rule` / field-line at 0.16 stronger chrome | should_unify_later | E |
 | Hairline soft | `--shroffin-hair-soft` | `rgba(0,0,0,0.08)` | shell (new) | `--mag-hair-soft`; guide localnav border `rgba(0,0,0,0.08)` | Explore steel lines `rgba(108,128,155,…)` intentional Explore language | should_unify_later (guide→gn) | E |
 | Nav frost | `--shroffin-gn-*` | `#f5f7f9` / rgba family | shell globalnav; Explore nav aliases | Guide `.localnav` hard `rgba(245,247,249,0.82)` / editorial `0.78` | — | should_unify_later | E |
@@ -199,7 +207,7 @@ Canonical ink `#1d1d1f` (~123 css matches) vs home voids `#0a0a0a` / `#1a1a1a` v
 `#fff`/`#ffffff` (~64 combined), `#fcfcfd` (18), `#f5f7f9` (11), `#f5f5f7` (4 — **also** on-dark copy), `#f7f7f7` (6), `#eef1f4` (2), `#f4f6f8` (1 mix-base), `#f7f8fa` / `#f9fafc` (apply). One calm product should collapse chrome paper to surface/footer/paper-note/card roles in Phase E — not leave a hex salad.
 
 **Blue vs link vs teal:**  
-`#0071e3` (button) vs `#3f62c8` (link) = **intentional**. Legacy `#0d9488` in JS injectors = **known non-uniformity / out_of_v1**, not “fine forever” and not shell.
+`#0071e3` (button) vs `#0066cc` / dark `#2997FF` (text link, Apple web pair) = **intentional**. Legacy `#0d9488` in JS injectors = **known non-uniformity / out_of_v1**, not “fine forever” and not shell.
 
 **Black-alpha hairlines:**  
 Assume light paper. Shell rule/field/gn-border + mag/calc/apf/guide/product-demo. Under dark they fail silently — remediate with token twins (Phase E + theme), not invert.
@@ -279,6 +287,8 @@ Under Light after theme ships: these bands go light. Under Dark: dark. Current d
 Redesigned work **may not** invent new chrome color custom properties without updating this freeze file (`_dark-mode-phase-b-shell-freeze.md`) and ledger. New UI chrome must use frozen `--shroffin-*` or an already-owned stack token (`--mag-*`, `--hlc-*`, `--calc-*`, `--about-*`, `--apf-*`, `--apply-*`, `--guide-card-surface`, `--utility-sitemap-hover`, reserved `--home-*`, `--hlc-logo-plate`).
 
 **Phase E additive note (2026-08-21):** Named apply-local leftovers (`--apply-*`) and `--utility-sitemap-hover` so hard paints are not scattered; values are today’s light hex only. No dark twins.
+
+**Chrome hover note (2026-08-22):** Nav / footer / sitemap chrome uses ink emphasis on hover (`--shroffin-ink` from muted/translucent rest; `--shroffin-ink-strong` when rest is already ink). Body text links stay `--shroffin-link` (`#0066cc` / `#2997FF`).
 
 **Phase F additive note (2026-08-21):** Explore `--hlc-*` color role freeze, light unify, `--hlc-logo-plate` (+ pad/radius/line), PREP-15 contrast gate, and dark-map plan live in `super-review-1/themes/_dark-mode-phase-f-explore-ownership.md` (+ ledger). Explore remains `stack_local` second system. No dark Explore values shipped.
 

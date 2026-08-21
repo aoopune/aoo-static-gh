@@ -127,7 +127,7 @@ Dark twins later: same names under `html[data-theme="dark"] .explore-banks-page`
 | `--hlc-seg-track` | `#f2f3f5` | Segmented control track | chips | yes | no | |
 | `--hlc-drawer-strip` | `#f7f7f8` | Drawer strip wash | | yes | no | |
 | `--hlc-drawer-rule` | `#e8e8ed` | Drawer rule / wash | borders + bg | yes | no | Replaces bogus `--shroffin-line` |
-| `--hlc-link-hover` | `#0077ed` | Explore link hover | | yes | yes | Not a shell role today |
+| `--hlc-link-hover` | `var(--shroffin-link)` | Explore link hover (= shell link) | | yes | yes | Alias — Apple web `#0066cc` / `#2997FF` |
 | `--hlc-limit-house` | `#7a3410` | House-limit accent | math bars | yes | yes | Semantic brown |
 | `--hlc-limit-income` | `#234a82` | Income-limit accent | math bars | yes | yes | Semantic blue |
 | `--hlc-title-wash-from` | `#202027` | Hero title gradient start | `.hlc-title-wash` | optional | no | Decorative |

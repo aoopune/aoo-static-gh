@@ -69,6 +69,9 @@
   --hlc-input-field-line: #8b96a8;
   /* Explore form label ink — intentional ≠ --shroffin-muted. */
   --hlc-field-label: #636373;
+  /* Select chevrons — same stroke as label ink; dark twin remaps below. */
+  --hlc-select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23636373' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --hlc-inline-pct-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23636373' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   --hlc-field-hint: #6e6e6f;
   --hlc-meta-ink: #5c5c5c;
   /* Soft drawer nest ink — exact hex; not shell --shroffin-ink-soft. */
@@ -83,16 +86,15 @@
   --hlc-seg-track: #f2f3f5;
   --hlc-drawer-strip: #f7f7f8;
   --hlc-drawer-rule: #e8e8ed;
-  --hlc-link-hover: #0077ed;
+  --hlc-link-hover: var(--shroffin-link);
   --hlc-limit-house: #7a3410;
   --hlc-limit-income: #234a82;
   /* Hero title steel wash (decorative gradient — Explore-owned). */
   --hlc-title-wash-from: #202027;
   --hlc-title-wash-to: #485879;
   /*
-   * Bank mark plate (PREP-11 / founder lock). Light theme = invisible.
-   * Dark twin later: light plate behind marks + optional 1px hair; never recolor bank art.
-   * Exact plate hex at Explore dark-map — not invented here.
+   * Bank mark plate hook (PREP-11). No added plate on light or dark —
+   * white only if it is already in the bank PNG; never recolor bank art.
    */
   --hlc-logo-plate: transparent;
   --hlc-logo-plate-pad: 0px;
@@ -1298,10 +1300,10 @@
   letter-spacing: normal;
   color: var(--shroffin-ink);
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23636373' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: var(--hlc-select-chevron);
   background-repeat: no-repeat;
-  background-position: right 0.35rem center;
-  padding-right: 1.35rem;
+  background-position: right 0.15rem center;
+  padding-right: 1rem;
 }
 
 .hlc-input-shell--select select:focus {
@@ -1321,20 +1323,20 @@
   width: max-content;
   max-width: 100%;
   min-width: max-content;
-  padding-inline: 0 1.15rem;
+  padding-inline: 0 0.85rem;
 }
 
 .hlc-input-shell--has-face::after {
   content: "";
   position: absolute;
-  right: 0.1rem;
+  right: 0.05rem;
   top: 50%;
   z-index: 2;
   width: 12px;
   height: 8px;
   transform: translateY(-50%);
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23636373' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: var(--hlc-select-chevron);
   background-repeat: no-repeat;
   background-size: 12px 8px;
 }
@@ -1515,7 +1517,7 @@
   font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.2;
-  color: rgba(29, 29, 31, 0.72);
+  color: var(--shroffin-muted);
   text-align: right;
   white-space: nowrap;
 }
@@ -1523,11 +1525,13 @@
 .explore-banks-page .hlc-inputs-card .hlc-field-note.hlc-field-note--card-load .hlc-inline-pct-select {
   appearance: none;
   -webkit-appearance: none;
+  -moz-appearance: none;
   display: inline-block;
   flex: 0 0 auto;
   box-sizing: content-box;
+  field-sizing: content;
   width: auto;
-  min-width: 2.6em;
+  min-width: 0;
   height: auto;
   min-height: 0;
   margin: 0;
@@ -1536,10 +1540,10 @@
   border-bottom: 1px solid currentColor;
   border-radius: 0;
   background-color: transparent;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%231d1d1f' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: var(--hlc-inline-pct-chevron);
   background-repeat: no-repeat;
-  background-position: right 0.02em center;
-  background-size: 0.62em 0.38em;
+  background-position: right center;
+  background-size: 0.55em 0.34em;
   color: inherit;
   font: inherit;
   font-size: inherit;
@@ -1547,6 +1551,12 @@
   letter-spacing: normal;
   line-height: inherit;
   text-align: left;
+  cursor: pointer;
+}
+
+.explore-banks-page .hlc-inputs-card .hlc-field-note.hlc-field-note--card-load .hlc-inline-pct-select option {
+  background-color: var(--hlc-surface-strong);
+  color: var(--shroffin-ink);
 }
 
 /*
@@ -1739,7 +1749,7 @@
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) > .hlc-input-shell.hlc-input-shell--has-face:focus-within,
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) > .hlc-input-shell.hlc-input-shell--has-face.is-invalid {
   min-width: max-content;
-  padding-inline: 0 1.15rem;
+  padding-inline: 0 0.85rem;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-input-shell--has-face select,
@@ -1906,14 +1916,14 @@
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-input-shell--select.hlc-input-shell--has-face {
-  padding-inline: 0 1.15rem;
+  padding-inline: 0 0.85rem;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-input-shell--select:not(.hlc-input-shell--has-face) select {
   width: max-content;
   min-width: 0;
-  background-position: right 0.1rem center;
-  padding-right: 1.15rem;
+  background-position: right 0.05rem center;
+  padding-right: 1rem;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-select-face {
@@ -2188,8 +2198,9 @@
     --hlc-note-size: clamp(0.6875rem, 3.2vw, 0.75rem);
     --hlc-note-line: calc(var(--hlc-note-size) * 1.3);
     --hlc-note-gap: 0.3rem;
-    /* Room the group keeps under its boxes for the card-load sentence. */
-    --hlc-note-reserve: calc(var(--hlc-note-line) * 2 + var(--hlc-note-gap));
+    /* Room under the boxes for the card-load line — one line on phone;
+       leftover reserve was opening a wider gap than other section pairs. */
+    --hlc-note-reserve: calc(var(--hlc-note-line) * 1 + var(--hlc-note-gap));
     /*
      * Phone type tokens: labels are 17px, regular values go back to their
      * earlier 18px size, and money fields keep a tighter 16px size so long
@@ -2406,9 +2417,9 @@
   }
 
   /*
-   * The card-load sentence belongs to one box but is taller than the box's
-   * own last line, so the group carries it below its boxes — kept inside
-   * that box's own column, two lines tall, never over its neighbour.
+   * The card-load sentence belongs to one box but sits below the boxes —
+   * kept inside that box's own column, never over its neighbour. Reserve
+   * matches the real line count so the next section gap stays even.
    */
   .explore-banks-page .hlc-inputs-card .hlc-form-row .hlc-form-row-fields:has(> .hlc-field > .hlc-field-note--card-load) {
     position: relative;
@@ -2416,28 +2427,29 @@
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-field-note--card-load) {
-    position: static;
+    position: relative;
     margin-bottom: 0;
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) > .hlc-field-note.hlc-field-note--card-load:not(:empty) {
     position: absolute;
-    /* Start of the second column: two equal columns with one gap. */
-    left: calc(50% + var(--hlc-box-gap) / 2);
-    right: 0;
-    top: calc(100% - var(--hlc-note-reserve) + var(--hlc-note-gap));
+    left: 0;
+    right: auto;
+    top: calc(100% + var(--hlc-note-gap));
     bottom: auto;
     transform: none;
-    width: auto;
-    max-width: none;
+    width: max-content;
+    max-width: 100%;
     margin: 0;
     padding: 0;
     background: transparent;
     font-size: var(--hlc-note-size);
     line-height: 1.3;
-    /* Plain text, not a flex row: the words fill each line, so the
-       sentence needs two lines instead of three in a half-width column. */
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: flex-start;
+    column-gap: 0.28em;
     text-align: left;
     white-space: normal;
   }
@@ -2472,7 +2484,8 @@
     --shroffin-field-font-size: 0.9375rem;
     --shroffin-money-font-size: 0.9375rem;
     --shroffin-field-unit-size: 0.75rem;
-    --hlc-note-reserve: calc(var(--hlc-note-line) * 3 + var(--hlc-note-gap));
+    /* Half-box is tighter: the card-load line wraps once. */
+    --hlc-note-reserve: calc(var(--hlc-note-line) * 2 + var(--hlc-note-gap));
   }
 }
 
@@ -2483,11 +2496,13 @@
 .hlc-field .hlc-inline-pct-select {
   appearance: none;
   -webkit-appearance: none;
+  -moz-appearance: none;
   display: inline-block;
   flex: 0 0 auto;
   box-sizing: content-box;
+  field-sizing: content;
   width: auto;
-  min-width: 2.6em;
+  min-width: 0;
   min-height: 0;
   margin: 0;
   padding: 0 0.95em 0 0;
@@ -2495,10 +2510,10 @@
   border-bottom: 1px solid currentColor;
   border-radius: 0;
   background-color: transparent;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%231d1d1f' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: var(--hlc-inline-pct-chevron);
   background-repeat: no-repeat;
-  background-position: right 0.02em center;
-  background-size: 0.62em 0.38em;
+  background-position: right center;
+  background-size: 0.55em 0.34em;
   color: inherit;
   font: inherit;
   font-size: inherit;
@@ -2508,6 +2523,11 @@
   text-align: left;
   vertical-align: baseline;
   cursor: pointer;
+}
+
+.hlc-field .hlc-inline-pct-select option {
+  background-color: var(--hlc-surface-strong);
+  color: var(--shroffin-ink);
 }
 
 .hlc-field .hlc-inline-pct-select:focus {
@@ -3794,11 +3814,32 @@
   white-space: nowrap;
 }
 
+.hlc-column-title-stack {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
 .hlc-column-title-text {
   min-width: 0;
 }
 
-/* Header i sits on the title row with footnote marks + sort — never under. */
+/* Desktop: stacked-word titles still read as one line. */
+.hlc-column-title-text--stack .hlc-title-word {
+  display: inline;
+}
+
+.hlc-column-title-text--stack .hlc-title-word + .hlc-title-word::before {
+  content: " ";
+}
+
+.hlc-column-title-meta {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+/* Desktop: footnote + i sit on the title row with sort — never under. */
 .hlc-compare thead th .hlc-column-title .hlc-field-help-anchor {
   flex: 0 0 auto;
   margin-left: 0.2em;
@@ -4741,7 +4782,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link, #0066cc);
   font: inherit;
   text-align: center;
   cursor: pointer;
@@ -4757,15 +4798,15 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 
 .hlc-charge-detail-button:hover,
 .hlc-charge-detail-button:focus-visible {
-  color: var(--shroffin-link, #3f62c8);
+  color: var(--shroffin-link, #0066cc);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: var(--shroffin-link, #0066cc);
 }
 
 .hlc-charge-detail-button:active {
-  color: var(--shroffin-link-active, #2f4ba0);
+  color: var(--shroffin-link-active, #0066cc);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link-active, #2f4ba0);
+  text-decoration-color: var(--shroffin-link-active, #0066cc);
 }
 
 .hlc-charge-detail-button:focus-visible {
@@ -4824,7 +4865,7 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 .hlc-charge-amount:hover,
 .hlc-charge-amount:focus-visible {
   color: var(--shroffin-ink, #1d1d1f);
-  text-decoration-color: var(--shroffin-link, #3f62c8);
+  text-decoration-color: var(--shroffin-link, #0066cc);
 }
 
 .hlc-charge-amount:focus-visible {
@@ -5180,7 +5221,8 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-bank-logo {
   flex: 0 0 auto;
-  box-sizing: border-box;
+  /* content-box: plate pad sits outside the mark so art stays 26×26 / 20×20. */
+  box-sizing: content-box;
   width: 1.625rem;
   height: 1.625rem;
   padding: var(--hlc-logo-plate-pad);
@@ -6857,6 +6899,110 @@ button.hlc-bank-name-text:focus-visible {
     font-size: calc(0.875rem * 14 / 15);
   }
 
+  /*
+   * Phone metric headers: title centred in the column (horizontal + vertical);
+   * footnote + i under the words; sort on the right; floating selects pin to
+   * the bottom of the th so equal padding can vertically centre the wording.
+   * Titles are at most two lines — keep the header row compact.
+   * Cache-bust note: phone header stack v3.
+   */
+  .hlc-compare thead th:not(.hlc-col-fill) {
+    padding-top: 0.45rem;
+    padding-bottom: 0.55rem;
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  .hlc-compare thead th:not(.hlc-col-fill):has(.hlc-header-select),
+  .hlc-compare thead th:not(.hlc-col-fill):has(.hlc-prepay-header-select),
+  .hlc-compare thead th:not(.hlc-col-fill):has(.hlc-rate-change-header-select) {
+    padding-bottom: 1rem;
+  }
+
+  .hlc-compare th:not(.hlc-sticky-col):not(.hlc-col-fill) .hlc-column-label {
+    position: static;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hlc-compare th:not(.hlc-sticky-col):not(.hlc-col-fill) .hlc-column-title {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    white-space: normal;
+    line-height: 1.1;
+  }
+
+  .hlc-compare th:not(.hlc-sticky-col):not(.hlc-col-fill) .hlc-column-title-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+    gap: 0;
+  }
+
+  .hlc-compare th:not(.hlc-sticky-col):not(.hlc-col-fill) .hlc-column-title-text {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: break-word;
+    text-align: center;
+  }
+
+  /* Loan / amount and other compact titles: one word per line, always. */
+  .hlc-compare th:not(.hlc-sticky-col):not(.hlc-col-fill) .hlc-column-title-text--stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hlc-compare th:not(.hlc-sticky-col):not(.hlc-col-fill) .hlc-column-title-text--stack .hlc-title-word {
+    display: block;
+  }
+
+  .hlc-compare
+    th:not(.hlc-sticky-col):not(.hlc-col-fill)
+    .hlc-column-title-text--stack
+    .hlc-title-word
+    + .hlc-title-word::before {
+    content: none;
+  }
+
+  .hlc-compare th:not(.hlc-sticky-col):not(.hlc-col-fill) .hlc-column-title-meta {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15em;
+    margin-top: 0.05rem;
+  }
+
+  .hlc-compare th:not(.hlc-sticky-col):not(.hlc-col-fill) .hlc-column-title .hlc-field-help-anchor {
+    margin-left: 0;
+  }
+
+  .hlc-compare th:not(.hlc-sticky-col):not(.hlc-col-fill) .hlc-sort-ind {
+    position: absolute;
+    right: 0.05rem;
+    top: 50%;
+    margin-left: 0;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  .hlc-compare thead th .hlc-header-select,
+  .hlc-compare thead th .hlc-prepay-header-select,
+  .hlc-compare thead th .hlc-rate-change-header-select {
+    top: auto;
+    bottom: 0.2rem;
+  }
+
   .hlc-charge-rule-main {
     font-size: calc(0.875rem * 14 / 15);
   }
@@ -6870,8 +7016,10 @@ button.hlc-bank-name-text:focus-visible {
   }
 
   .hlc-header-select,
-  .hlc-prepay-header-select {
+  .hlc-prepay-header-select,
+  .hlc-rate-change-header-select {
     font-size: calc(0.625rem * 14 / 15); /* ~9.3px */
+    white-space: nowrap;
   }
 
   /*
@@ -6929,11 +7077,6 @@ button.hlc-bank-name-text:focus-visible {
   .hlc-compare[data-group="essentials"] td:not(.hlc-sticky-col) {
     padding-left: 0.35rem;
     padding-right: 0.35rem;
-  }
-
-  /* Let long Overview titles (Loan amount) wrap inside the fitted width. */
-  .hlc-compare[data-group="essentials"] th:not(.hlc-sticky-col) .hlc-column-title {
-    white-space: normal;
   }
 
   /* Keep Rate / Loan figures readable inside the fitted column widths. */
@@ -7363,17 +7506,27 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-field-help-list {
-  margin: 0.45rem 0 0;
-  padding: 0 0 0 1.2rem;
+  margin: 0;
+  padding: 0 0 0 1.25rem;
   color: var(--shroffin-ink);
   font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.45;
   letter-spacing: normal;
+  list-style: decimal;
+  list-style-position: outside;
+}
+
+.hlc-field-help-text + .hlc-field-help-list {
+  margin-top: 0.45rem;
+}
+
+.hlc-field-help-list li {
+  padding-left: 0.15rem;
 }
 
 .hlc-field-help-list li + li {
-  margin-top: 0.28rem;
+  margin-top: 0.32rem;
 }
 
 .hlc-field-help-list + .hlc-field-help-text {
@@ -7882,6 +8035,9 @@ html[data-theme="dark"] .explore-banks-page {
   --hlc-rank-grace-ink: #F5D78E;
   --hlc-rank-grace-bg: #3A2E14;
   --hlc-field-label: #A1A1A6;
+  /* Same Material muted ink as labels — light arrow on charcoal. */
+  --hlc-select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23A1A1A6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --hlc-inline-pct-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23A1A1A6' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   --hlc-field-hint: #A1A1A6;
   /* Charcoal edges on #2C2C2C fills — not cool steel (that reads chalky/whitish). */
   --hlc-field-box-line: #484848;
@@ -7897,15 +8053,16 @@ html[data-theme="dark"] .explore-banks-page {
   --hlc-meta-ink: #A1A1A6;
   --hlc-ink-soft: #C7C7CC;
   --hlc-text-tertiary: #8E8E93;
-  --hlc-link-hover: #2997FF;
+  --hlc-link-hover: var(--shroffin-link);
   --hlc-limit-house: #E0A070;
   --hlc-limit-income: #7EB6FF;
   --hlc-title-wash-from: #E8EAED;
   --hlc-title-wash-to: #A1A1A6;
-  --hlc-logo-plate: #FFFFFF;
-  --hlc-logo-plate-pad: 3px;
+  /* Same as light: no artificial plate; keep any white that is in the mark file. */
+  --hlc-logo-plate: transparent;
+  --hlc-logo-plate-pad: 0px;
   --hlc-logo-plate-radius: 0.2rem;
-  --hlc-logo-plate-line: rgba(0, 0, 0, 0.08);
+  --hlc-logo-plate-line: transparent;
   --hlc-rule-06: rgba(255, 255, 255, 0.06);
   --hlc-rule-08: rgba(255, 255, 255, 0.08);
   --hlc-rule-10: rgba(255, 255, 255, 0.10);
@@ -7945,10 +8102,7 @@ html[data-theme="dark"] .hlc-form-row-support {
   color: rgba(255, 255, 255, 0.45);
 }
 html[data-theme="dark"] .hlc-field-note {
-  color: rgba(255, 255, 255, 0.45);
-}
-html[data-theme="dark"] .explore-banks-page .hlc-inputs-card .hlc-field-note.hlc-field-note--card-load {
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--shroffin-muted);
 }
 html[data-theme="dark"] .hlc-searching-dots span {
   background: rgba(255, 255, 255, 0.18);
@@ -7972,3 +8126,4 @@ html[data-theme="dark"] .hlc-story-track:not(.hlc-story-track--active) .hlc-math
 html[data-theme="dark"] .hlc-story-divider {
   background: rgba(255, 255, 255, 0.10);
 }
+

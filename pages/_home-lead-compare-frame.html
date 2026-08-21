@@ -272,59 +272,49 @@
     }
 
     /*
-     * Mobile peek (html.is-mobile-peek): compose the LEFT of the desktop
-     * canvas so a phone clip shows switches + bank + Rate (2+ cols).
-     * Desktop (≥834 host) never gets this class — layout stays as above.
-     *
-     * Explore’s .hlc-sticky-col is 16rem — that alone ate the phone crop
-     * and left only a sliver of Rate. Override hard here.
+     * Mobile peek only: show Apply once + Bank + Rate + Loan amount.
+     * Narrow bank so those cols fit in the phone clip. Desktop unchanged.
      */
     html.is-mobile-peek {
-      --bank: 136px;
-      --rate: 108px;
-      --loan: 120px;
+      --bank: 148px;
+      --rate: 64px;
+      --loan: 108px;
       --tenure: 88px;
       --emi: 100px;
-      --hlc-bank-col-width: 136px;
+      --hlc-bank-col-width: 148px;
     }
 
     html.is-mobile-peek .pane {
-      padding-left: 8px;
-      padding-right: 8px;
+      padding-left: 6px;
+      padding-right: 6px;
     }
 
-    /* Switches (Overview / Charges / Other) lead — not Apply */
-    html.is-mobile-peek .pane .hlc-results-tools-lead {
-      order: 0 !important;
-      flex: 0 0 auto !important;
-      min-width: 0 !important;
-    }
-
+    /* Apply once first in the peek */
     html.is-mobile-peek .pane .hlc-results-actions .hlc-apply-bar {
-      order: 1 !important;
+      order: -1 !important;
       flex: 0 0 auto !important;
       width: auto !important;
       max-width: none !important;
-      padding: 0 0 6px 10px !important;
+      padding: 0 8px 6px 0 !important;
     }
 
-    html.is-mobile-peek .pane .hlc-column-tabs {
-      flex-wrap: nowrap !important;
+    html.is-mobile-peek .pane .hlc-results-tools-lead {
+      order: 0 !important;
+      flex: 0 0 auto !important;
     }
 
     html.is-mobile-peek .pane .hlc-column-tab {
-      padding: 6px 12px 8px !important;
+      padding: 6px 10px 8px !important;
       white-space: nowrap !important;
     }
 
-    /* Intrinsic table width so Rate (and further cols) are real pixels */
     html.is-mobile-peek .pane .hlc-compare {
       width: max-content !important;
-      min-width: 720px !important;
+      min-width: 560px !important;
       table-layout: fixed !important;
     }
 
-    /* Beat Explore’s .hlc-sticky-col { width: 16rem } */
+    /* Beat Explore 16rem bank col — wide enough for wrapped names */
     html.is-mobile-peek .hlc-sticky-col,
     html.is-mobile-peek .explore-banks-page .hlc-sticky-col,
     html.is-mobile-peek .pane .hlc-compare th.hlc-sticky-col,
@@ -332,17 +322,19 @@
     html.is-mobile-peek .explore-banks-page .hlc-compare th.hlc-sticky-col,
     html.is-mobile-peek .explore-banks-page .hlc-compare td.hlc-sticky-col,
     html.is-mobile-peek .pane .hlc-compare col.c-bank {
-      width: 136px !important;
-      min-width: 136px !important;
-      max-width: 136px !important;
+      width: 148px !important;
+      min-width: 148px !important;
+      max-width: 148px !important;
     }
 
-    html.is-mobile-peek .pane .hlc-compare col.c-rate,
-    html.is-mobile-peek .pane .hlc-compare th.hlc-col-num:nth-child(2),
-    html.is-mobile-peek .pane .hlc-compare td.hlc-col-num:nth-child(2) {
+    html.is-mobile-peek .pane .hlc-compare col.c-rate {
+      width: 64px !important;
+      min-width: 64px !important;
+    }
+
+    html.is-mobile-peek .pane .hlc-compare col.c-loan {
       width: 108px !important;
       min-width: 108px !important;
-      max-width: 108px !important;
     }
 
     html.is-mobile-peek .pane .hlc-compare th.hlc-col-num,
@@ -359,16 +351,31 @@
     html.is-mobile-peek .pane .hlc-bank-name {
       max-width: 100%;
       min-width: 0;
-      overflow: hidden;
     }
 
+    html.is-mobile-peek .pane .hlc-bank-name {
+      align-items: flex-start !important;
+    }
+
+    /* Wrap the full name — override Explore’s width: max-content */
     html.is-mobile-peek .pane .hlc-bank-name-text {
-      font-size: 12.5px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      max-width: 100%;
+      flex: 1 1 auto !important;
+      width: auto !important;
+      max-width: 100% !important;
+      font-size: 11.5px;
+      line-height: 1.25;
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: clip !important;
+      word-break: normal;
+      overflow-wrap: break-word;
       display: block;
+    }
+
+    html.is-mobile-peek .pane .hlc-bank-logo {
+      width: 18px !important;
+      height: 18px !important;
+      flex-shrink: 0;
     }
   </style>
 
@@ -785,11 +792,11 @@
           } catch (e) {
             /* ignore */
           }
-          /* Always fit ~320 design px (switches + bank + full Rate) into the clip */
-          var need = 320;
+          /* Fit Apply once + wrapped bank + Rate + Loan amount */
+          var need = 430;
           var s = Math.min(1, stageW / need);
-          if (!isFinite(s) || s <= 0) s = 0.9;
-          if (s < 0.82) s = 0.82;
+          if (!isFinite(s) || s <= 0) s = 0.85;
+          if (s < 0.78) s = 0.78;
           el.style.left = "0px";
           el.style.top = "0px";
           el.style.transform = "scale(" + s + ")";

@@ -9,8 +9,8 @@
   color: var(--shroffin-ink);
   font-family: var(--shroffin-font, "Google Sans Flex", Arial, sans-serif);
   -webkit-font-smoothing: antialiased;
-  /* Sitemap hover blue — intentional ≠ --shroffin-link (#3f62c8); keep exact light. */
-  --utility-sitemap-hover: #005bb5;
+  /* Sitemap hover — same ink emphasis as footer chrome (not link blue). */
+  --utility-sitemap-hover: var(--shroffin-ink);
 }
 
 .utility-page main :where(td, th, p, li, a) {
@@ -325,7 +325,7 @@
 }
 
 html[data-theme="dark"] .utility-page {
-  --utility-sitemap-hover: #2997FF;
+  --utility-sitemap-hover: var(--shroffin-ink);
 }
 
 html[data-theme="dark"] .utility-page .legal-meta,
@@ -339,7 +339,7 @@ html[data-theme="dark"] .utility-page .sitemap-intro {
 html[data-theme="dark"] .utility-page .sitemap-group a {
   color: rgba(255, 255, 255, 0.50);
 }
-/* hover already uses var(--utility-sitemap-hover) → Phase 2 dark #2997FF */
+/* hover already uses var(--utility-sitemap-hover) → --shroffin-ink */
 html[data-theme="dark"] .utility-page main th {
   background: rgba(255, 255, 255, 0.04);
 }

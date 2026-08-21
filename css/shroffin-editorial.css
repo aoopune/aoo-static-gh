@@ -22,7 +22,7 @@
 
   /* Blue */
   --mag-accent: var(--shroffin-link);         /* text links on paper */
-  --mag-accent-hover: var(--shroffin-link);   /* hover keeps colour; underline gives feedback */
+  --mag-accent-hover: var(--shroffin-link-hover); /* darker step + underline */
   --mag-accent-button: var(--shroffin-btn-primary);  /* solid pill fill */
 
   --mag-hair: var(--shroffin-hair);
@@ -84,7 +84,7 @@ a.localnav-title {
 }
 
 a.localnav-title:hover {
-  color: var(--mag-accent);
+  color: var(--shroffin-ink-strong, #000000);
 }
 
 /* Filled blue pill in the Guide bar — label stays white (never link purple). */
@@ -193,9 +193,9 @@ a.localnav-title:hover {
 .mag-def-desc a:focus-visible,
 .mag-lede a:hover,
 .mag-lede a:focus-visible {
-  color: var(--shroffin-link);
+  color: var(--shroffin-link-hover);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link);
+  text-decoration-color: var(--shroffin-link-hover);
 }
 
 .mag-link:visited:hover,
@@ -204,8 +204,8 @@ a.localnav-title:hover {
 .mag-p a:visited:hover,
 .mag-def-desc a:visited:hover,
 .mag-lede a:visited:hover {
-  color: var(--shroffin-link-visited);
-  text-decoration-color: var(--shroffin-link-visited);
+  color: var(--shroffin-link-hover);
+  text-decoration-color: var(--shroffin-link-hover);
 }
 
 .mag-link:active,
@@ -1319,44 +1319,63 @@ body.guide-reading .mag-index-more:focus-visible {
 }
 
 /*
- * Guide chapter headings — scroll-scrubbed, one-way latch (see shroffin-scrub.js).
- * Opacity finishes slightly ahead of the move.
+ * Chapter title + rule subhead — same quiet fade-then-rise as cards
+ * (down-only IO in shroffin-guide.js). Modest text travel (Reveal band).
+ * Not inside the grey card / flip scene / back face.
  */
-body.guide-reading .guide-heading-scrub {
-  opacity: calc(0.14 + 0.86 * var(--guide-heading-scrub, 0));
-  transform: translate3d(
-    0,
-    calc((1 - var(--guide-heading-scrub, 0)) * 20px),
-    0
-  );
+body.guide-reading .guide-moment .guide-tile-title,
+body.guide-reading .guide-moment .mag-h {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 1.1s var(--ease),
+    transform 1.45s var(--ease);
 }
 
-body.guide-reading .guide-heading-scrub.is-heading-settled {
+body.guide-reading .guide-moment .guide-tile-title.is-in,
+body.guide-reading .guide-moment .mag-h.is-in {
   opacity: 1;
   transform: none;
 }
 
-/* Rule line under the question — follows the heading, a touch later. */
-body.guide-reading
-  .guide-moment--has-heading-scrub:not(.is-heading-settled)
-  .guide-tile-copy--rule {
-  opacity: calc(
-    0.14 +
-      0.86 *
-      clamp(0, (var(--guide-heading-scrub, 0) - 0.1) / 0.9, 1)
-  );
-  transform: translate3d(
-    0,
-    calc(
-      (1 - clamp(0, (var(--guide-heading-scrub, 0) - 0.1) / 0.9, 1)) * 14px
-    ),
-    0
-  );
+body.guide-reading .guide-moment > .mag-content > .guide-tile-copy--rule,
+body.guide-reading .guide-moment .guide-flip > .guide-tile-copy--rule {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 1.1s var(--ease) 0.12s,
+    transform 1.45s var(--ease) 0.12s;
 }
 
-body.guide-reading .guide-moment.is-heading-settled .guide-tile-copy--rule {
+body.guide-reading .guide-moment > .mag-content > .guide-tile-copy--rule.is-in,
+body.guide-reading .guide-moment .guide-flip > .guide-tile-copy--rule.is-in {
   opacity: 1;
   transform: none;
+}
+
+body.guide-reading .guide-moment .guide-tile-title.guide-reveal--snap,
+body.guide-reading .guide-moment .mag-h.guide-reveal--snap,
+body.guide-reading .guide-moment > .mag-content > .guide-tile-copy--rule.guide-reveal--snap,
+body.guide-reading .guide-moment .guide-flip > .guide-tile-copy--rule.guide-reveal--snap {
+  transition: none;
+}
+
+/* Titles inside the card / back face stay put — card or scene owns rise. */
+body.guide-reading .guide-chapter-card .guide-tile-title,
+body.guide-reading .guide-chapter-card .mag-h,
+body.guide-reading .guide-chapter-card .guide-tile-title.is-in,
+body.guide-reading .guide-chapter-card .mag-h.is-in,
+body.guide-reading .guide-flip-face--back .guide-tile-title,
+body.guide-reading .guide-flip-face--back .mag-h,
+body.guide-reading .guide-flip-face--back .guide-tile-title.is-in,
+body.guide-reading .guide-flip-face--back .mag-h.is-in,
+body.guide-reading .guide-flip-scene .guide-tile-title,
+body.guide-reading .guide-flip-scene .mag-h,
+body.guide-reading .guide-flip-scene .guide-tile-title.is-in,
+body.guide-reading .guide-flip-scene .mag-h.is-in {
+  opacity: 1;
+  transform: none;
+  transition: none;
 }
 
 /* In-chapter blocks — scroll-scrubbed; latch at full reveal. */
@@ -1376,11 +1395,79 @@ body.guide-reading .guide-scrub.is-scrub-done {
 
 /*
  * First chapter only: already on the page — no scroll-in rise.
- * Frozen: no heading scrub, no section fade.
+ * Frozen: no heading scrub, no section fade, no card rise / replay.
  */
 body.guide-reading .guide-story > .mag-section.guide-moment:first-child,
 body.guide-reading .guide-story > .mag-section.guide-moment:first-child.is-in,
 body.guide-reading .guide-story > .mag-section.guide-moment:first-child[id]:target {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+body.guide-reading
+  .guide-story
+  > .mag-section.guide-moment:first-child
+  .guide-chapter-card,
+body.guide-reading
+  .guide-story
+  > .mag-section.guide-moment:first-child
+  .guide-chapter-card.is-in {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+body.guide-reading
+  .guide-story
+  > .mag-section.guide-moment:first-child
+  .guide-flip-scene,
+body.guide-reading
+  .guide-story
+  > .mag-section.guide-moment:first-child
+  .guide-flip-scene.is-in {
+  opacity: 1;
+  transform: none;
+  /* Keep flip open/close height motion; kill only the scroll rise. */
+  transition: height var(--guide-flip-duration) var(--ease);
+}
+
+body.guide-reading
+  .guide-story
+  > .mag-section.guide-moment:first-child
+  .guide-tile-title,
+body.guide-reading
+  .guide-story
+  > .mag-section.guide-moment:first-child
+  .mag-h,
+body.guide-reading
+  .guide-story
+  > .mag-section.guide-moment:first-child
+  .guide-tile-title.is-in,
+body.guide-reading
+  .guide-story
+  > .mag-section.guide-moment:first-child
+  .mag-h.is-in,
+body.guide-reading
+  .guide-story
+  > .mag-section.guide-moment:first-child
+  > .mag-content
+  > .guide-tile-copy--rule,
+body.guide-reading
+  .guide-story
+  > .mag-section.guide-moment:first-child
+  .guide-flip
+  > .guide-tile-copy--rule,
+body.guide-reading
+  .guide-story
+  > .mag-section.guide-moment:first-child
+  > .mag-content
+  > .guide-tile-copy--rule.is-in,
+body.guide-reading
+  .guide-story
+  > .mag-section.guide-moment:first-child
+  .guide-flip
+  > .guide-tile-copy--rule.is-in {
   opacity: 1;
   transform: none;
   transition: none;
@@ -1481,6 +1568,11 @@ body.guide-reading .guide-chapter-card.is-in {
   transform: translateY(0);
 }
 
+/* Instant settle / reset — scrolling up or off-screen (no fade glitch). */
+body.guide-reading .guide-chapter-card.guide-reveal--snap {
+  transition: none;
+}
+
 body.guide-reading .guide-flip-scene {
   opacity: 0;
   transform: translateY(48px);
@@ -1493,6 +1585,10 @@ body.guide-reading .guide-flip-scene {
 body.guide-reading .guide-flip-scene.is-in {
   opacity: 1;
   transform: translateY(0);
+}
+
+body.guide-reading .guide-flip-scene.guide-reveal--snap {
+  transition: height var(--guide-flip-duration) var(--ease);
 }
 
 body.guide-reading .guide-flip-scene .guide-chapter-card,
@@ -1785,6 +1881,11 @@ body.guide-reading .mag-p {
   vertical-align: middle;
 }
 
+.guide-limit-note {
+  font-size: calc(var(--shroffin-type-body) * 0.9);
+  font-weight: 400;
+}
+
 /* Keep “Section 22↗ ITA 2025” / “Schedule XV↗ ITA 2025” as one unit. */
 .guide-limit-note:has(> .guide-section-link) {
   white-space: nowrap;
@@ -1792,14 +1893,14 @@ body.guide-reading .mag-p {
 
 /* Official refs in chapter titles (Section 22↗) — readable, under title weight. */
 .guide-tile-title .guide-limit-note {
-  font-size: var(--shroffin-type-body);
-  font-weight: 500;
+  font-size: calc(var(--shroffin-type-body) * 0.9);
+  font-weight: 400;
   line-height: 1.2;
   vertical-align: 0.2em;
 }
 
 .guide-tile-title .guide-limit-note .guide-section-link {
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .mag-tag {
@@ -2639,15 +2740,15 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 
 .guide-flip-link:hover,
 .guide-flip-link:focus-visible {
-  color: var(--shroffin-link);
+  color: var(--shroffin-link-hover);
   text-decoration: underline;
-  text-decoration-color: var(--shroffin-link);
+  text-decoration-color: var(--shroffin-link-hover);
 }
 
 .guide-flip-link:visited:hover,
 .guide-flip-link:visited:focus-visible {
-  color: var(--shroffin-link-visited);
-  text-decoration-color: var(--shroffin-link-visited);
+  color: var(--shroffin-link-hover);
+  text-decoration-color: var(--shroffin-link-hover);
 }
 
 .guide-flip-link:active {
@@ -3150,8 +3251,8 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 
 .guide-fee-name .guide-limit-note {
   margin-left: 0.4em;
-  font-size: var(--shroffin-type-body);
-  font-weight: 500;
+  font-size: calc(var(--shroffin-type-body) * 0.9);
+  font-weight: 400;
   vertical-align: baseline;
 }
 
@@ -3705,14 +3806,25 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
     margin-top: 0;
   }
 
-  /* Phone: heading scrub starts slightly visible (same latch rules). */
-  body.guide-reading .guide-heading-scrub:not(.is-heading-settled) {
-    opacity: calc(0.28 + 0.72 * var(--guide-heading-scrub, 0));
-    transform: translate3d(
-      0,
-      calc((1 - var(--guide-heading-scrub, 0)) * 14px),
-      0
-    );
+  /* Phone: slightly shorter title travel. */
+  body.guide-reading .guide-moment .guide-tile-title,
+  body.guide-reading .guide-moment .mag-h {
+    transform: translateY(16px);
+  }
+
+  body.guide-reading .guide-moment .guide-tile-title.is-in,
+  body.guide-reading .guide-moment .mag-h.is-in {
+    transform: none;
+  }
+
+  body.guide-reading .guide-moment > .mag-content > .guide-tile-copy--rule,
+  body.guide-reading .guide-moment .guide-flip > .guide-tile-copy--rule {
+    transform: translateY(12px);
+  }
+
+  body.guide-reading .guide-moment > .mag-content > .guide-tile-copy--rule.is-in,
+  body.guide-reading .guide-moment .guide-flip > .guide-tile-copy--rule.is-in {
+    transform: none;
   }
 }
 
@@ -4621,15 +4733,19 @@ a.guide-note-ref:hover {
     transition: none;
   }
 
-  body.guide-reading .guide-heading-scrub,
   body.guide-reading .guide-scrub,
-  body.guide-reading .guide-moment--has-heading-scrub .guide-tile-copy--rule {
+  body.guide-reading .guide-moment .guide-tile-title,
+  body.guide-reading .guide-moment .mag-h,
+  body.guide-reading .guide-moment > .mag-content > .guide-tile-copy--rule,
+  body.guide-reading .guide-moment .guide-flip > .guide-tile-copy--rule {
     opacity: 1;
     transform: none;
+    transition: none;
   }
 
   body.guide-reading .guide-chapter-card,
   body.guide-reading .guide-flip-scene {
+    opacity: 1;
     transform: none;
     transition: none;
   }

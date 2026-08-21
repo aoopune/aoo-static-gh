@@ -739,11 +739,47 @@
     }
   }
 
+  function initSelectMenus() {
+    function start() {
+      if (window.ShroffinSelectMenu && typeof window.ShroffinSelectMenu.refresh === "function") {
+        window.ShroffinSelectMenu.refresh(document);
+      }
+    }
+
+    if (window.ShroffinSelectMenu) {
+      start();
+      return;
+    }
+
+    var src = "/js/shroffin-select-menu.js?v=select-menu-1";
+
+    if (navScriptEl && navScriptEl.src) {
+      src = navScriptEl.src.replace(
+        /shroffin-nav\.js(\?[^#]*)?(#.*)?$/,
+        "shroffin-select-menu.js?v=select-menu-1"
+      );
+      if (src.indexOf("shroffin-select-menu.js") === -1) {
+        src = "/js/shroffin-select-menu.js?v=select-menu-1";
+      }
+    }
+
+    var script = document.createElement("script");
+    script.src = src;
+    script.onload = start;
+    var parent = (navScriptEl && navScriptEl.parentNode) || document.head;
+    if (navScriptEl && navScriptEl.nextSibling) {
+      parent.insertBefore(script, navScriptEl.nextSibling);
+    } else {
+      parent.appendChild(script);
+    }
+  }
+
   function init() {
     initGlobalNav();
     initFooterAccordion();
     initFooterDisclaimer();
     initSelectionIndicators();
+    initSelectMenus();
   }
 
   if (document.readyState === "loading") {

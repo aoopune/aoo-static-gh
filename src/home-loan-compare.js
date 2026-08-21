@@ -258,7 +258,7 @@ const GROUPS = {
     },
     {
       key: "governmentCharges",
-      label: "Government charges",
+      label: "Govt. charges",
       type: "inr",
       sort: "num",
       footnote: GOVERNMENT_CHARGES_MARKER
@@ -267,33 +267,98 @@ const GROUPS = {
   laterCharges: [
     {
       key: "prepaymentChargeDisplay",
-      label: "Prepayment charge",
+      label: "Prepayment fees",
       type: "charge",
       sort: "text"
     },
     {
       key: "rateChangeChargeDisplay",
-      label: "Rate change charge",
+      label: "Rate change charges",
       type: "charge",
       sort: "text",
       footnote: "°"
     },
     {
       key: "overdueChargeDisplay",
-      label: "Overdue charge",
+      label: "Overdue charges",
       type: "charge",
       sort: "text",
       footnote: "‡"
     },
     {
       key: "emiBounceChargeDisplay",
-      label: "EMI bounce charge",
+      label: "EMI bounce charges",
       type: "charge",
       sort: "text",
       footnote: "^"
     }
   ]
 };
+
+/*
+ * Phone: these titles always stack (Loan / amount) even when the value column
+ * is wide enough for a single line. Optional line groups keep phrases together
+ * (Rate change / charges).
+ */
+const PHONE_COMPACT_HEADER_WRAP_KEYS = {
+  loanAmount: true,
+  governmentCharges: true,
+  prepaymentChargeDisplay: true,
+  rateChangeChargeDisplay: true,
+  overdueChargeDisplay: true,
+  emiBounceChargeDisplay: true
+};
+
+const PHONE_COMPACT_HEADER_LINES = {
+  rateChangeChargeDisplay: ["Rate change", "charges"],
+  emiBounceChargeDisplay: ["EMI bounce", "charges"]
+};
+
+/* Phone only: slight extra width for fee/charge cols (not Loan amount). */
+const PHONE_FEE_COL_NUDGE_KEYS = {
+  overdueChargeDisplay: true,
+  emiBounceChargeDisplay: true,
+  rateChangeChargeDisplay: true,
+  processingFee: true,
+  prepaymentChargeDisplay: true,
+  propertyCheckCharges: true,
+  governmentCharges: true
+};
+const PHONE_FEE_COL_NUDGE_PX = 42;
+
+function columnTitleStackLines(label, columnKey) {
+  const custom = PHONE_COMPACT_HEADER_LINES[columnKey];
+  if (custom && custom.length) return custom.slice();
+  return String(label || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+function columnTitleTextHtml(label, columnKey) {
+  if (!PHONE_COMPACT_HEADER_WRAP_KEYS[columnKey]) {
+    return (
+      '<span class="hlc-column-title-text">' + escapeHtml(label) + "</span>"
+    );
+  }
+  const lines = columnTitleStackLines(label, columnKey);
+  if (lines.length < 2) {
+    return (
+      '<span class="hlc-column-title-text">' + escapeHtml(label) + "</span>"
+    );
+  }
+  return (
+    '<span class="hlc-column-title-text hlc-column-title-text--stack" aria-label="' +
+    escapeHtml(label) +
+    '">' +
+    lines
+      .map(function (line) {
+        return '<span class="hlc-title-word">' + escapeHtml(line) + "</span>";
+      })
+      .join("") +
+    "</span>"
+  );
+}
 
 const PREPAYMENT_METHOD_OWN = "ownFunds";
 const PREPAYMENT_METHOD_BT = "balanceTransfer";
@@ -7099,37 +7164,79 @@ const FIELD_HELP_MARK_SVG =
 
 /**
  * Exact column-help copy for Overview / Charges headers. Teaching numbers are
- * fixed examples — never live calculated values.
+ * fixed examples — never live calculated values. Each entry is a numbered list.
  */
 const COLUMN_HELP_TEXT = {
-  effectiveRoiPct:
-    "The annual interest on your outstanding loan. Concessions you ticked are already in this number. On ₹50 lakh over 20 years, 8.50% versus 9.00% is ₹1,600 more every month (0.50% rate gap). Click More on the row to see how that bank builds the rate.",
-  loanAmount:
-    "How much this bank will give you on what you've entered. Changes every time you change a form field. Built from income, minus running EMIs and card load, capped by property and age. Bank verifies from documents. What you see here is an estimate.",
-  tenureLabel:
-    "How many years this bank gives you to repay, capped by your age. Shorter tenure means higher EMI, which means less loan on the same income. On a floating loan you can prepay any time without a charge and cut this down yourself.",
-  emi:
-    "Estimated monthly payment on this loan amount, rate, and tenure. After this EMI, check if what's left is enough to live on. Doesn't include insurance premiums or pre EMI interest during construction.",
-  processingFee:
-    "The bank's charge to process your file. Mandatory. Not returned if you back out after they've started. Part of it, sometimes called a login fee, is taken upfront. The rest when you accept the sanction. Compare this column with the rate column — a cheap rate with ₹1.44 lakh in fees can cost more in year one.",
-  propertyCheckCharges:
-    "What you pay for the bank to verify the property: legal search, title check, valuer's visit. Click the amount to see how the four items add up for your loan size. This is not stamp duty. Stamp duty is in the government charges column.",
-  governmentCharges:
-    "Stamp duty, registration, CERSAI filing, and notice of intimation. All set by the government, not the bank. Same number on almost every bank row for your state — that's normal, not a mistake. Budget this on top of your down payment. Click the amount to see the four item breakdown.",
-  prepaymentChargeDisplay:
-    "What the bank charges if you pay the loan off early or move it to another bank. Floating home loan to an individual: zero almost every time. RBI doesn't allow prepayment charges on these. Fixed rate loans can charge 1 to 2%. Check this cell before you pick fixed. Matters a lot if you expect a lump sum in a few years.",
-  rateChangeChargeDisplay:
-    "What the bank charges if you ask to switch how your rate works later — floating to fixed, fixed to floating, or a benchmark change. Charged per switch, not once for the whole loan. Most people on a floating repo linked loan never pay this. Know the cost before you lock into fixed.",
-  overdueChargeDisplay:
-    "Extra interest when your EMI comes in late. A percentage per year on the overdue amount, for the days it stays that way. 2% per annum on a ₹40,000 EMI for 30 late days is about ₹790 extra (2% × EMI × days/365). Some banks give a few days before the charge kicks in. A cheap rate bank with a high overdue charge hurts badly on one bad month.",
-  emiBounceChargeDisplay:
-    "Flat fee every time your EMI auto debit fails — not enough balance, wrong account, mandate expired. Even if you transfer the EMI the same day, the bounce fee still comes. Ranges ₹200 to ₹750 depending on the bank. One missed auto debit with overdue interest can add ₹1,000 or more that month."
+  effectiveRoiPct: [
+    "The annual interest on your outstanding loan. Concessions you ticked are already in this number.",
+    "On ₹50 lakh over 20 years, 8.50% versus 9.00% is ₹1,600 more every month (0.50% rate gap).",
+    "Click More on the row to see how that bank builds the rate."
+  ],
+  loanAmount: [
+    "How much this bank will give you on what you've entered. Changes every time you change a form field.",
+    "Built from income, minus running EMIs and card load, capped by property and age.",
+    "Bank verifies from documents. What you see here is an estimate."
+  ],
+  tenureLabel: [
+    "How many years this bank gives you to repay, capped by your age.",
+    "Shorter tenure means higher EMI, which means less loan on the same income.",
+    "On a floating loan you can prepay any time without a charge and cut this down yourself."
+  ],
+  emi: [
+    "Estimated monthly payment on this loan amount, rate, and tenure.",
+    "After this EMI, check if what's left is enough to live on.",
+    "Doesn't include insurance premiums or pre EMI interest during construction."
+  ],
+  processingFee: [
+    "The bank's charge to process your file. Mandatory. Not returned if you back out after they've started.",
+    "Part of it, sometimes called a login fee, is taken upfront. The rest when you accept the sanction.",
+    "Compare this column with the rate column — a cheap rate with ₹1.44 lakh in fees can cost more in year one."
+  ],
+  propertyCheckCharges: [
+    "What you pay for the bank to verify the property: legal search, title check, valuer's visit.",
+    "Click the amount to see how the four items add up for your loan size.",
+    "This is not stamp duty. Stamp duty is in the government charges column."
+  ],
+  governmentCharges: [
+    "Stamp duty, registration, CERSAI filing, and notice of intimation. All set by the government, not the bank.",
+    "Same number on almost every bank row for your state — that's normal, not a mistake.",
+    "Budget this on top of your down payment. Click the amount to see the four item breakdown."
+  ],
+  prepaymentChargeDisplay: [
+    "What the bank charges if you pay the loan off early or move it to another bank.",
+    "Floating home loan to an individual: zero almost every time. RBI doesn't allow prepayment charges on these.",
+    "Fixed rate loans can charge 1 to 2%. Check this cell before you pick fixed.",
+    "Matters a lot if you expect a lump sum in a few years."
+  ],
+  rateChangeChargeDisplay: [
+    "What the bank charges if you ask to switch how your rate works later — floating to fixed, fixed to floating, or a benchmark change.",
+    "Charged per switch, not once for the whole loan.",
+    "Most people on a floating repo linked loan never pay this. Know the cost before you lock into fixed."
+  ],
+  overdueChargeDisplay: [
+    "Extra interest when your EMI comes in late. A percentage per year on the overdue amount, for the days it stays that way.",
+    "2% per annum on a ₹40,000 EMI for 30 late days is about ₹790 extra (2% × EMI × days/365).",
+    "Some banks give a few days before the charge kicks in.",
+    "A cheap rate bank with a high overdue charge hurts badly on one bad month."
+  ],
+  emiBounceChargeDisplay: [
+    "Flat fee every time your EMI auto debit fails — not enough balance, wrong account, mandate expired.",
+    "Even if you transfer the EMI the same day, the bounce fee still comes.",
+    "Ranges ₹200 to ₹750 depending on the bank.",
+    "One missed auto debit with overdue interest can add ₹1,000 or more that month."
+  ]
 };
 
 function columnHelpHtml(column) {
-  const text = COLUMN_HELP_TEXT[column.key];
-  if (!text) return "";
+  const items = COLUMN_HELP_TEXT[column.key];
+  if (!items || !items.length) return "";
   const id = "hlc-help-col-" + column.key;
+  const list =
+    '<ol class="hlc-field-help-list">' +
+    items.map(function (item) {
+      return "<li>" + escapeHtml(item) + "</li>";
+    }).join("") +
+    "</ol>";
   return (
     '<span class="hlc-field-help-anchor">' +
     '<button type="button" class="hlc-field-help" aria-expanded="false" aria-controls="' +
@@ -7143,9 +7250,8 @@ function columnHelpHtml(column) {
     '<div class="hlc-field-help-popover" id="' +
     escapeHtml(id) +
     '" role="tooltip" hidden>' +
-    '<p class="hlc-field-help-text">' +
-    escapeHtml(text) +
-    "</p></div></span>"
+    list +
+    "</div></span>"
   );
 }
 
@@ -7791,6 +7897,13 @@ function initPage() {
       .querySelectorAll("input[data-hlc-format]")
       .forEach(bindFormattedInput);
     syncCoApplicantChrome(rows.length);
+    if (
+      typeof window !== "undefined" &&
+      window.ShroffinSelectMenu &&
+      typeof window.ShroffinSelectMenu.refresh === "function"
+    ) {
+      window.ShroffinSelectMenu.refresh(el.coApplicantList);
+    }
   }
 
   /** The page's disclosure script owns opening and closing this panel. */
@@ -8394,13 +8507,19 @@ function initPage() {
           : "";
       const useChargeHeader = state.group === "laterCharges";
       const helpHtml = columnHelpHtml(column);
+      const titleMeta =
+        footnoteHtml || helpHtml
+          ? '<span class="hlc-column-title-meta">' +
+            footnoteHtml +
+            helpHtml +
+            "</span>"
+          : "";
       const titleRow =
         '<span class="hlc-column-title">' +
-        '<span class="hlc-column-title-text">' +
-        escapeHtml(column.label) +
+        '<span class="hlc-column-title-stack">' +
+        columnTitleTextHtml(column.label, column.key) +
+        titleMeta +
         "</span>" +
-        footnoteHtml +
-        helpHtml +
         sortInd +
         "</span>";
       const headerLabel = useChargeHeader
@@ -8704,6 +8823,9 @@ function initPage() {
   /* Leave a hair so borders / subpixel rounding do not force a useless x-scroll. */
   const PHONE_COMPARE_PORT_GUTTER_PX = 2;
   const PHONE_METRIC_COL_MIN_PX = Math.ceil(3.25 * 16);
+  /* Extra room for non-compact metric cols on phone (numbers + short titles). */
+  const PHONE_WIDE_METRIC_FLOOR_PX = Math.ceil(5.5 * 16);
+  const PHONE_WIDE_METRIC_BOOST_PX = Math.ceil(0.75 * 16);
 
   /**
    * Cap sticky Bank so metric columns can still fit beside it on phone.
@@ -8729,11 +8851,26 @@ function initPage() {
    * Phone Charges / Other charges: column width = header title row (label,
    * footnote marker, sort arrows) + th padding. Dropdowns under a title may
    * widen the column when they need more room.
+   * Compact wrap keys size to the longest word so two-line titles stay narrow.
    */
   function measurePhoneCompareColHeaderWidth(cell) {
     if (!cell || cell.tagName !== "TH") return 0;
     const title = cell.querySelector(".hlc-column-title");
-    let width = measureProbeWidth(title || cell, cell);
+    const titleText = cell.querySelector(".hlc-column-title-text");
+    const colKey = cell.getAttribute("data-col") || "";
+    const compact = Boolean(PHONE_COMPACT_HEADER_WRAP_KEYS[colKey]);
+    let width = 0;
+    if (compact && title && titleText) {
+      width = measurePhoneCompactWrappedHeaderWidth(cell, title, titleText);
+    } else {
+      width = measureProbeWidth(title || cell, cell);
+      if (!cell.classList.contains("hlc-sticky-col")) {
+        width = Math.max(
+          width + PHONE_WIDE_METRIC_BOOST_PX,
+          PHONE_WIDE_METRIC_FLOOR_PX
+        );
+      }
+    }
     const headerSelect = cell.querySelector(
       ".hlc-header-select, .hlc-prepay-header-select, .hlc-rate-change-header-select"
     );
@@ -8747,7 +8884,67 @@ function initPage() {
         Math.ceil(headerSelect.getBoundingClientRect().width + pad)
       );
     }
+    if (PHONE_FEE_COL_NUDGE_KEYS[colKey]) {
+      width += PHONE_FEE_COL_NUDGE_PX;
+    }
     return width;
+  }
+
+  /**
+   * Width for a two-line phone header: longest word + icon/footnote chrome.
+   * Keeps Loan amount / Govt. charges / fee titles narrow without per-label CSS.
+   */
+  function measurePhoneCompactWrappedHeaderWidth(cell, title, titleText) {
+    const padCs = window.getComputedStyle(cell);
+    const pad =
+      (parseFloat(padCs.paddingLeft) || 0) +
+      (parseFloat(padCs.paddingRight) || 0);
+    const wordEls = titleText.querySelectorAll(".hlc-title-word");
+    const words = [];
+    if (wordEls.length) {
+      Array.prototype.forEach.call(wordEls, function (el) {
+        const w = String(el.textContent || "").trim();
+        if (w) words.push(w);
+      });
+    } else {
+      const text = String(titleText.textContent || "")
+        .replace(/\s+/g, " ")
+        .trim();
+      text.split(" ").forEach(function (w) {
+        if (w) words.push(w);
+      });
+    }
+    const fullLabel =
+      titleText.getAttribute("aria-label") ||
+      words.join(" ") ||
+      String(titleText.textContent || "")
+        .replace(/\s+/g, " ")
+        .trim();
+    const textCs = window.getComputedStyle(titleText);
+    const wordProbe = document.createElement("span");
+    wordProbe.setAttribute("aria-hidden", "true");
+    wordProbe.style.cssText =
+      "position:absolute;left:-10000px;top:0;visibility:hidden;pointer-events:none;" +
+      "display:inline-block;width:max-content;max-width:none;white-space:nowrap;" +
+      "box-sizing:border-box;";
+    wordProbe.style.font = textCs.font;
+    wordProbe.style.fontSize = textCs.fontSize;
+    wordProbe.style.fontFamily = textCs.fontFamily;
+    wordProbe.style.fontWeight = textCs.fontWeight;
+    wordProbe.style.letterSpacing = textCs.letterSpacing;
+    document.body.appendChild(wordProbe);
+    let maxWord = 0;
+    for (let i = 0; i < words.length; i++) {
+      wordProbe.textContent = words[i];
+      maxWord = Math.max(maxWord, wordProbe.getBoundingClientRect().width);
+    }
+    wordProbe.textContent = fullLabel;
+    const fullText = wordProbe.getBoundingClientRect().width;
+    document.body.removeChild(wordProbe);
+
+    const titleNowrap = measureProbeWidth(title, cell) - pad;
+    const chrome = Math.max(0, titleNowrap - fullText);
+    return Math.ceil(maxWord + chrome + pad);
   }
 
   function measureOverviewColContentWidth(cell) {
@@ -8906,20 +9103,38 @@ function initPage() {
     }
 
     /*
-     * Overview on phone: Bank stays at the CSS phone width (9rem). Rate + Loan
-     * share leftover viewport when both fit; Tenure/EMI keep natural widths
-     * and scroll sideways. Do not shrink Bank to make metrics fit.
+     * Overview on phone: Bank stays at the CSS phone width (9rem). Rate keeps a
+     * readable floor; Loan amount hugs its wrapped header (not stretched to
+     * fill leftover). Tenure / EMI keep natural (boosted) widths and scroll.
      */
-    const PHONE_RATE_COL_PX = Math.round(4.25 * 16);
+    const PHONE_RATE_COL_PX = Math.round(5.5 * 16);
     let bankW = PHONE_BANK_COL_DEFAULT_PX;
     if (state.group === "essentials" && metricIndices.length === 2 && port > 0) {
-      const rateW = Math.min(
+      const rateIdx = metricIndices[0];
+      const loanIdx = metricIndices[1];
+      measured[rateIdx] = Math.max(
         PHONE_RATE_COL_PX,
-        Math.max(PHONE_METRIC_COL_MIN_PX, Math.floor((port - bankW) * 0.32))
+        measured[rateIdx] || 0
       );
-      const loanW = Math.max(PHONE_METRIC_COL_MIN_PX, port - bankW - rateW);
-      measured[metricIndices[0]] = rateW;
-      measured[metricIndices[1]] = loanW;
+      measured[loanIdx] = Math.max(
+        PHONE_METRIC_COL_MIN_PX,
+        measured[loanIdx] || 0
+      );
+      const pair = (measured[rateIdx] || 0) + (measured[loanIdx] || 0);
+      if (pair + bankW > port) {
+        const rest = Math.max(0, port - bankW);
+        let rateW = Math.min(
+          measured[rateIdx],
+          Math.max(PHONE_METRIC_COL_MIN_PX, Math.floor(rest * 0.45))
+        );
+        let loanW = Math.max(PHONE_METRIC_COL_MIN_PX, rest - rateW);
+        if (loanW > (measured[loanIdx] || 0) && measured[loanIdx] > 0) {
+          loanW = measured[loanIdx];
+          rateW = Math.max(PHONE_METRIC_COL_MIN_PX, rest - loanW);
+        }
+        measured[rateIdx] = rateW;
+        measured[loanIdx] = loanW;
+      }
     } else if (metricIndices.length === 2 && port > 0) {
       bankW = Math.max(
         PHONE_BANK_COL_FLOOR_PX,

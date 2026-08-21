@@ -141,7 +141,7 @@ Only [`_dark-mode-palette-lock.md`](super-review-1/themes/_dark-mode-palette-loc
 ```
 SURFACE: #121212 | #1E1E1E | #2C2C2C | #383838
 INK: #F5F5F7 | soft #C7C7CC | muted #A1A1A6 | ghost #636366
-LINK: #8FA3F0 | active #7389E0 | visited #A89BE8
+LINK: #2997FF | active/visited alias same
 BLUE_DARK: #0A84FF (accents) | filled CTAs #0071e3 / #0076df / #006edb flat
 BLUE_LIGHT: #0071e3 EXACT
 LINES: white-alpha 0.16/0.12/0.08; gn-border 0.10; veil rgba(0,0,0,0.45)
@@ -215,12 +215,12 @@ html[data-theme="dark"] {
   --shroffin-btn-primary-shadow: none;
   --shroffin-btn-primary-shadow-hover: none;
   --shroffin-btn-primary-shadow-active: none;
-  --shroffin-link: #8FA3F0;
-  --shroffin-link-active: #7389E0;
-  --shroffin-link-visited: #A89BE8;
+  --shroffin-link: #2997FF;
+  --shroffin-link-active: var(--shroffin-link);
+  --shroffin-link-visited: var(--shroffin-link);
   --shroffin-link-external: var(--shroffin-link);
-  --shroffin-link-external-active: var(--shroffin-link-active);
-  --shroffin-link-external-visited: var(--shroffin-link-visited);
+  --shroffin-link-external-active: var(--shroffin-link);
+  --shroffin-link-external-visited: var(--shroffin-link);
   --shroffin-canvas-mix-base: #121212;
   --shroffin-footer-mix-base: #1E1E1E;
   --shroffin-surface: #121212;
@@ -320,7 +320,7 @@ html[data-theme="dark"] {
 
 ```css
 html[data-theme="dark"] .utility-page {
-  --utility-sitemap-hover: #2997FF;
+  --utility-sitemap-hover: var(--shroffin-link);
 }
 ```
 
@@ -435,15 +435,16 @@ html[data-theme="dark"] .explore-banks-page {
   --hlc-meta-ink: #A1A1A6;
   --hlc-ink-soft: #C7C7CC;
   --hlc-text-tertiary: #8E8E93;
-  --hlc-link-hover: #2997FF;
+  --hlc-link-hover: var(--shroffin-link);
   --hlc-limit-house: #E0A070;
   --hlc-limit-income: #7EB6FF;
   --hlc-title-wash-from: #E8EAED;
   --hlc-title-wash-to: #A1A1A6;
-  --hlc-logo-plate: #FFFFFF;
-  --hlc-logo-plate-pad: 3px;
+  /* Same as light: no artificial plate; keep any white that is in the mark file. */
+  --hlc-logo-plate: transparent;
+  --hlc-logo-plate-pad: 0px;
   --hlc-logo-plate-radius: 0.2rem;
-  --hlc-logo-plate-line: rgba(0, 0, 0, 0.08);
+  --hlc-logo-plate-line: transparent;
   --hlc-rule-06: rgba(255, 255, 255, 0.06);
   --hlc-rule-08: rgba(255, 255, 255, 0.08);
   --hlc-rule-10: rgba(255, 255, 255, 0.10);
@@ -567,7 +568,7 @@ html[data-theme="dark"] .globalnav-compact-toggle {
 
 html[data-theme="dark"] .globalnav-submenu-link:hover,
 html[data-theme="dark"] .globalnav-submenu-link:hover :where(.globalnav-submenu-label, .globalnav-submenu-value) {
-  color: #8FA3F0;
+  color: var(--shroffin-link);
 }
 
 html[data-theme="dark"] #nav-support-flyout .globalnav-whatsapp-icon,
@@ -825,7 +826,7 @@ html[data-theme="dark"] .utility-page .sitemap-intro {
 html[data-theme="dark"] .utility-page .sitemap-group a {
   color: rgba(255, 255, 255, 0.50);
 }
-/* hover already uses var(--utility-sitemap-hover) → Phase 2 dark #2997FF */
+/* hover already uses var(--utility-sitemap-hover) → --shroffin-link */
 html[data-theme="dark"] .utility-page main th {
   background: rgba(255, 255, 255, 0.04);
 }
