@@ -1,19 +1,15 @@
 {
-  "generatedAt": "2026-08-21T14:47:22.783Z",
-  "eachControlAt": "2026-08-21T15:22:10.818Z",
-  "finishedAt": "2026-08-21T15:22:10.818Z",
+  "generatedAt": "2026-08-22T04:35:29.740Z",
+  "finishedAt": "2026-08-22T04:36:41.147Z",
   "baseURL": "http://127.0.0.1:8765",
   "totals": {
-    "FAIL": 28,
-    "PASS": 89,
+    "FAIL": 0,
+    "PASS": 38,
     "BLOCKED": 0,
     "INFO": 1,
-    "P0_FAIL": 18,
-    "P1_FAIL": 8,
-    "P2_FAIL": 2,
-    "CTL_PASS": 47,
-    "CTL_FAIL": 7,
-    "CTL_INFO": 0
+    "P0_FAIL": 0,
+    "P1_FAIL": 0,
+    "P2_FAIL": 0
   },
   "findings": [
     {
@@ -115,11 +111,11 @@
     {
       "id": "SEL-01",
       "severity": "P0",
-      "status": "FAIL",
+      "status": "PASS",
       "title": "Selected bank stays visible after opposite bank-type filter",
       "flowStep": "Explore / selection + filter",
       "expected": "Selected \"Bank of Maharashtra\" remains visible (pinned) when filter is Private-only",
-      "actual": "Not visible. Visible selected=[]; draftIds=[\"OFF-1003\"]; apply=\"Apply once to 1 bank\"",
+      "actual": "Still visible among selected: Bank of Maharashtra",
       "evidence": {
         "publicPick": "Bank of Maharashtra",
         "selectedIdsAfterPublic": [
@@ -127,9 +123,18 @@
         ],
         "afterPrivateFilter": {
           "visibleRowCount": 10,
-          "selectedVisible": [],
-          "selectedVisibleIds": [],
+          "selectedVisible": [
+            "Bank of Maharashtra"
+          ],
+          "selectedVisibleIds": [
+            "OFF-1003"
+          ],
           "firstRows": [
+            {
+              "id": "OFF-1003",
+              "name": "Bank of Maharashtra",
+              "selected": true
+            },
             {
               "id": "OFF-1142",
               "name": "Axis Bank",
@@ -164,11 +169,6 @@
               "id": "OFF-1166",
               "name": "ICICI Bank",
               "selected": false
-            },
-            {
-              "id": "OFF-1202",
-              "name": "Federal Bank",
-              "selected": false
             }
           ],
           "applyDisabled": false,
@@ -195,7 +195,7 @@
           "showMore": {
             "exists": true,
             "hidden": false,
-            "label": "Show 11 more banks"
+            "label": "Show 12 more banks"
           }
         }
       },
@@ -204,12 +204,17 @@
     {
       "id": "SEL-02",
       "severity": "P0",
-      "status": "FAIL",
+      "status": "PASS",
       "title": "Selected out-of-filter banks are pinned to the top",
       "flowStep": "Explore / selection + filter",
       "expected": "Selected banks that fail the current filter still appear at top for compare",
-      "actual": "Top row selected=false; publicStillVisible=false",
+      "actual": "Selected bank is at top",
       "evidence": [
+        {
+          "id": "OFF-1003",
+          "name": "Bank of Maharashtra",
+          "selected": true
+        },
         {
           "id": "OFF-1142",
           "name": "Axis Bank",
@@ -244,11 +249,6 @@
           "id": "OFF-1166",
           "name": "ICICI Bank",
           "selected": false
-        },
-        {
-          "id": "OFF-1202",
-          "name": "Federal Bank",
-          "selected": false
         }
       ],
       "userImpact": "Cannot compare earlier pick vs new private banks side by side."
@@ -260,7 +260,7 @@
       "title": "Apply once navigates with a non-empty packet",
       "flowStep": "Explore → Apply",
       "expected": "Land on apply.html with banks in session packet",
-      "actual": "URL ok; banks=1; names=[Axis Bank]",
+      "actual": "URL ok; banks=2; names=[Bank of Maharashtra; Axis Bank]",
       "evidence": {
         "applyAriaBeforeClick": "Apply once to 2 banks",
         "draftSelectedIds": [
@@ -268,6 +268,7 @@
           "OFF-1142"
         ],
         "packetBankNames": [
+          "Bank of Maharashtra",
           "Axis Bank"
         ],
         "selectedCountField": 2
@@ -277,11 +278,11 @@
     {
       "id": "APPLY-02",
       "severity": "P0",
-      "status": "FAIL",
+      "status": "PASS",
       "title": "Apply packet includes earlier public selection after Private filter",
       "flowStep": "Explore → Apply packet",
       "expected": "Packet includes \"Bank of Maharashtra\" plus later private pick",
-      "actual": "Missing public. Banks: Axis Bank; selectedCount=2",
+      "actual": "Includes public. Banks: Bank of Maharashtra; Axis Bank",
       "evidence": {
         "publicPick": "Bank of Maharashtra",
         "privatePick": "Axis Bank",
@@ -291,21 +292,22 @@
           "OFF-1142"
         ],
         "packetBankNames": [
+          "Bank of Maharashtra",
           "Axis Bank"
         ],
         "selectedCount": 2,
-        "banksLength": 1
+        "banksLength": 2
       },
       "userImpact": "Customer applies only to the last filtered set; earlier choice is silently dropped before Firebase."
     },
     {
       "id": "APPLY-03",
       "severity": "P0",
-      "status": "FAIL",
+      "status": "PASS",
       "title": "Apply button count matches banks that actually apply",
       "flowStep": "Explore Apply bar → packet",
       "expected": "Button N === packet.banks.length === meaningful selected set",
-      "actual": "ariaCount=2; draftIds=2; packetBanks=1",
+      "actual": "ariaCount=2; draftIds=2; packetBanks=2",
       "evidence": {
         "applyAria": "Apply once to 2 banks",
         "draftSelectedIds": [
@@ -313,6 +315,7 @@
           "OFF-1142"
         ],
         "packetBankNames": [
+          "Bank of Maharashtra",
           "Axis Bank"
         ]
       },
@@ -325,56 +328,70 @@
       "title": "Apply review lists same banks as packet",
       "flowStep": "Apply review",
       "expected": "UI bank list matches packet",
-      "actual": "UI=[Axis Bank] packet=[Axis Bank]",
+      "actual": "UI=[Bank of Maharashtra; Axis Bank] packet=[Bank of Maharashtra; Axis Bank]",
       "evidence": {
         "bankNames": [
+          "Bank of Maharashtra",
           "Axis Bank"
         ],
-        "nText": "1",
+        "bankKinds": [
+          "Public bank",
+          "Private bank"
+        ],
+        "nText": "2",
         "primaryText": "Net monthly income\n₹1,00,000\nProperty agreement value\n₹62,50,000\nYour age\n35\nCIBIL score\n780\nYour occupation\nSalaried\nLoan purpose\nRegular Home Loan\nRate type\nFloating\nFacility\nTerm loan\nTenure (years)\n20",
-        "detailsText": "Existing EMIs\n₹0\nCredit card limits\n₹0\nCredit card monthly load\n10%\nEMI limit / FOIR\n55%",
-        "filtersText": "",
-        "filtersHidden": true
+        "detailsText": "Existing EMIs\n₹0\nCredit card limits\n₹0\nCredit card monthly load\n10%\nEMI limit / FOIR\n55%\nBank type\nPrivate",
+        "filtersHeading": ""
       },
       "userImpact": "Mismatch confuses confirmation before contact/submit."
     },
     {
       "id": "REVIEW-02",
       "severity": "P1",
-      "status": "FAIL",
-      "title": "Apply review shows Public/Private filter context",
-      "flowStep": "Apply review",
-      "expected": "User can see bank-type filter state used for the shortlist",
-      "actual": "filters=\"\"; primary has no Public/Private",
+      "status": "PASS",
+      "title": "Each chosen bank shows Public bank or Private bank",
+      "flowStep": "Apply review / banks you chose",
+      "expected": "No Filters heading; each bank name has a quiet Public bank or Private bank line",
+      "actual": "kinds=[Public bank; Private bank]; heading=\"\"",
       "evidence": {
-        "filtersText": "",
-        "primaryText": "Net monthly income\n₹1,00,000\nProperty agreement value\n₹62,50,000\nYour age\n35\nCIBIL score\n780\nYour occupation\nSalaried\nLoan purpose\nRegular Home Loan\nRate type\nFloating\nFacility\nTerm loan\nTenure (years)\n20"
+        "bankNames": [
+          "Bank of Maharashtra",
+          "Axis Bank"
+        ],
+        "bankKinds": [
+          "Public bank",
+          "Private bank"
+        ],
+        "nText": "2",
+        "primaryText": "Net monthly income\n₹1,00,000\nProperty agreement value\n₹62,50,000\nYour age\n35\nCIBIL score\n780\nYour occupation\nSalaried\nLoan purpose\nRegular Home Loan\nRate type\nFloating\nFacility\nTerm loan\nTenure (years)\n20",
+        "detailsText": "Existing EMIs\n₹0\nCredit card limits\n₹0\nCredit card monthly load\n10%\nEMI limit / FOIR\n55%\nBank type\nPrivate",
+        "filtersHeading": ""
       },
-      "userImpact": "User cannot confirm which bank-type scope they applied under."
+      "userImpact": "User cannot tell which selected lenders are public vs private before they continue."
     },
     {
       "id": "REVIEW-03",
       "severity": "P1",
-      "status": "FAIL",
+      "status": "PASS",
       "title": "Apply bank details include scheme / rate type / facility",
       "flowStep": "Apply review / bank details",
       "expected": "Details show what was compared (scheme, floating/fixed, facility)",
-      "actual": "Opened details: Existing EMIs ₹0 Credit card limits ₹0 Credit card monthly load 10% EMI limit / FOIR 55%",
+      "actual": "Opened details: Scheme Maha Super Housing Loan Rate type Floating Facility Term loan Rate 7.25% Loan amount ₹50,00,000 Tenure (yrs) 20 EMI ₹39,519",
       "evidence": {
-        "detailProbe": "Existing EMIs\n₹0\nCredit card limits\n₹0\nCredit card monthly load\n10%\nEMI limit / FOIR\n55%"
+        "detailProbe": "Scheme\nMaha Super Housing Loan\nRate type\nFloating\nFacility\nTerm loan\nRate\n7.25%\nLoan amount\n₹50,00,000\nTenure (yrs)\n20\nEMI\n₹39,519"
       },
       "userImpact": "Weak confirmation of which offer was selected for each bank."
     },
     {
       "id": "REVIEW-04",
       "severity": "P1",
-      "status": "FAIL",
+      "status": "PASS",
       "title": "Apply review shows co-applicant income from Explore",
       "flowStep": "Explore co-applicant → Apply review",
       "expected": "Co-applicant income/EMIs shown from coApplicants[]",
-      "actual": "Packet has coApplicants[1]; UI income line=\"—\"",
+      "actual": "Packet has coApplicants[1]; UI income line=\"₹0\"",
       "evidence": {
-        "detailsText": "Existing EMIs\n₹0\nCredit card limits\n₹0\nCredit card monthly load\n10%\nEMI limit / FOIR\n55%\nCo-applicant\nYes\nCo-applicant income\n—\nCo-applicant EMIs\n—\nCo-applicant card limits\n—",
+        "detailsText": "Existing EMIs\n₹0\nCredit card limits\n₹0\nCredit card monthly load\n10%\nEMI limit / FOIR\n55%\nCo-applicant\nYes\nCo-applicant income\n₹0\nCo-applicant EMIs\n₹0\nCo-applicant card limits\n₹0",
         "formCoApplicants": [
           {
             "relationship": "Spouse",
@@ -393,23 +410,33 @@
     {
       "id": "FB-01",
       "severity": "P1",
-      "status": "FAIL",
-      "title": "Firestore bank payload strips comparison fields present in packet",
+      "status": "PASS",
+      "title": "Firestore bank payload keeps comparison fields from the packet",
       "flowStep": "Apply packet → Firebase shape",
       "expected": "Ops receive scheme/rate type/facility/bank key needed to work the file",
-      "actual": "Saved fields: id,bankName,rate,loan,tenure,emi. Stripped-but-available: {\"bankKey\":true,\"rateType\":true,\"facilityLabel\":true,\"scheme\":true,\"processingFee\":true,\"offer\":true}",
+      "actual": "Saved keys: id, bankName, bankKey, scheme, rateType, facilityLabel, effectiveRoiPct, loanAmount, tenureLabel, emi; honesty={\"bankKey\":true,\"scheme\":true,\"rateType\":true,\"facilityLabel\":true}",
       "evidence": {
         "banks": [
           {
             "id": "OFF-1003",
             "bankName": "Bank of Maharashtra",
-            "strippedPresent": {
+            "savedKeys": [
+              "id",
+              "bankName",
+              "bankKey",
+              "scheme",
+              "rateType",
+              "facilityLabel",
+              "effectiveRoiPct",
+              "loanAmount",
+              "tenureLabel",
+              "emi"
+            ],
+            "honesty": {
               "bankKey": true,
-              "rateType": true,
-              "facilityLabel": true,
               "scheme": true,
-              "processingFee": true,
-              "offer": true
+              "rateType": true,
+              "facilityLabel": true
             }
           }
         ]
@@ -891,30 +918,122 @@
     {
       "id": "SEL-05",
       "severity": "P2",
-      "status": "FAIL",
+      "status": "PASS",
       "title": "Show-more expansion resets on filter rematch",
       "flowStep": "Explore / show more + filter",
       "expected": "Expand state preserved or user warned when list collapses",
-      "actual": "expandedWas=33; afterFilterVisible=2; showMore={\"exists\":true,\"hidden\":true,\"label\":\"Show 23 more banks\"}",
+      "actual": "expandedWas=33; afterFilterVisible=33; showMore={\"exists\":true,\"hidden\":true,\"label\":\"Show 23 more banks\"}",
       "evidence": {
-        "visibleRowCount": 2,
+        "visibleRowCount": 33,
         "selectedVisible": [
+          "Bank of Maharashtra",
+          "Indian Overseas Bank",
+          "Punjab National Bank",
+          "Central Bank of India",
+          "Axis Bank",
+          "Union Bank of India",
+          "Bank of Baroda",
+          "Bank of India",
+          "Indian Bank",
+          "South Indian Bank",
+          "Jammu and Kashmir Bank",
+          "Nainital Bank",
+          "Punjab & Sind Bank",
+          "HDFC Bank",
+          "State Bank of India",
+          "Bandhan Bank",
+          "ICICI Bank",
+          "Federal Bank",
+          "IndusInd Bank",
+          "Kotak Mahindra Bank",
+          "IDBI Bank",
+          "IDFC FIRST Bank",
+          "Tamilnad Mercantile Bank",
+          "Karnataka Bank",
+          "Dhanlaxmi Bank",
+          "CSB Bank",
+          "City Union Bank",
+          "Karur Vysya Bank",
+          "Yes Bank",
+          "RBL Bank",
+          "DCB Bank",
           "Canara Bank",
           "UCO Bank"
         ],
         "selectedVisibleIds": [
+          "OFF-1003",
+          "OFF-771",
+          "OFF-8",
+          "OFF-64",
+          "OFF-1142",
+          "OFF-349",
+          "OFF-382",
+          "OFF-98",
+          "OFF-1081",
+          "OFF-1357",
+          "OFF-1069",
+          "OFF-1366",
+          "OFF-818",
+          "OFF-1189",
+          "OFF-860",
+          "OFF-1117",
+          "OFF-1166",
+          "OFF-1202",
+          "OFF-1495",
+          "OFF-1328",
+          "OFF-1211",
+          "OFF-1292",
+          "OFF-1487",
+          "OFF-1339",
+          "OFF-1196",
+          "OFF-1481",
+          "OFF-1126",
+          "OFF-1297",
+          "OFF-1475",
+          "OFF-1346",
+          "OFF-1075",
           "OFF-623",
           "OFF-1058"
         ],
         "firstRows": [
           {
-            "id": "OFF-623",
-            "name": "Canara Bank",
+            "id": "OFF-1003",
+            "name": "Bank of Maharashtra",
             "selected": true
           },
           {
-            "id": "OFF-1058",
-            "name": "UCO Bank",
+            "id": "OFF-771",
+            "name": "Indian Overseas Bank",
+            "selected": true
+          },
+          {
+            "id": "OFF-8",
+            "name": "Punjab National Bank",
+            "selected": true
+          },
+          {
+            "id": "OFF-64",
+            "name": "Central Bank of India",
+            "selected": true
+          },
+          {
+            "id": "OFF-1142",
+            "name": "Axis Bank",
+            "selected": true
+          },
+          {
+            "id": "OFF-349",
+            "name": "Union Bank of India",
+            "selected": true
+          },
+          {
+            "id": "OFF-382",
+            "name": "Bank of Baroda",
+            "selected": true
+          },
+          {
+            "id": "OFF-98",
+            "name": "Bank of India",
             "selected": true
           }
         ],
@@ -989,20 +1108,20 @@
       "actual": "url=http://127.0.0.1:8765/pages/explore-banks.html; snippet=\"Guide\\nTools\\nSupport\\nAbout\\nExplore banks.\\nLoan inputs\\n\\nSets how much you can borrow\\n\\nNet monthly income\\n*\\n₹\\nProperty value\\nas per agreement\\n*\\n₹\\n\\nCuts how much you can borrow\\n\\nTotal \"",
       "evidence": {
         "url": "http://127.0.0.1:8765/pages/explore-banks.html",
-        "bodyText": "Guide\nTools\nSupport\nAbout\nExplore banks.\nLoan inputs\n\nSets how much you can borrow\n\nNet monthly income\n*\n₹\nProperty value\nas per agreement\n*\n₹\n\nCuts how much you can borrow\n\nTotal existing EMIs\n₹\nTotal credit card limits\n₹\n\nAbout\n0%\n5%\n10%\nof this limit counts as monthly EMI\n\nSets loan amount and monthly EMI\n\nEMI limit / FOIR\n50%\n55% (default)\n60%\n65%\n70%\n55% (default)\nLoan tenure\n*\nyears\n\nChanges"
+        "bodyText": "Guide\nTools\nSupport\nAbout\nExplore banks.\nLoan inputs\n\nSets how much you can borrow\n\nNet monthly income\n*\n₹\nProperty value\nas per agreement\n*\n₹\n\nCuts how much you can borrow\n\nTotal existing EMIs\n₹\nTotal credit card limits\n₹\n\nEMI equals\n0%\n5%\n10%\nof limit.\n\nSets loan amount and monthly EMI\n\nEMI limit / FOIR\n50%\n55% (default)\n60%\n65%\n70%\n55% (default)\nLoan tenure\n*\nyears\n\nChanges your rate, tenure, a"
       },
       "userImpact": "Stale/empty Apply tab should not look like a successful application."
     },
     {
       "id": "REVIEW-05",
       "severity": "P1",
-      "status": "FAIL",
+      "status": "PASS",
       "title": "Apply review reflects multi rate-type filter honestly",
       "flowStep": "Explore filters → Apply review",
       "expected": "When Floating and Fixed both checked, review does not imply only one",
-      "actual": "bothOn=true; query.rateType=Floating; primary snippet=\"Rate type\\nFloating\\nFacility\\nTerm loan\\nTenure (yea\"",
+      "actual": "bothOn=true; query.rateType=Floating; primary snippet=\"Rate type\\nFloating and Fixed\\nFacility\\nTerm loan\\nT\"",
       "evidence": {
-        "text": "Net monthly income\n₹1,00,000\nProperty agreement value\n₹62,50,000\nYour age\n35\nCIBIL score\n780\nYour occupation\nSalaried\nLoan purpose\nRegular Home Loan\nRate type\nFloating\nFacility\nTerm loan\nTenure (years)\n20",
+        "text": "Net monthly income\n₹1,00,000\nProperty agreement value\n₹62,50,000\nYour age\n35\nCIBIL score\n780\nYour occupation\nSalaried\nLoan purpose\nRegular Home Loan\nRate type\nFloating and Fixed\nFacility\nTerm loan\nTenure (years)\n20",
         "filters": {
           "govtPsu": false,
           "greenHome": false,
@@ -1022,11 +1141,11 @@
     {
       "id": "SEL-06",
       "severity": "P0",
-      "status": "FAIL",
+      "status": "PASS",
       "title": "Selected bank survives Floating → Fixed-only filter flip",
       "flowStep": "Explore / rate filter + selection",
       "expected": "Selected \"Bank of Maharashtra\" remains visible when switching to Fixed-only",
-      "actual": "beforeSelected=[\"Bank of Maharashtra\"]; afterSelected=[]; draftIds=[\"OFF-1003\"]; apply=\"Apply once to 1 bank\"",
+      "actual": "beforeSelected=[\"Bank of Maharashtra\"]; afterSelected=[\"Bank of Maharashtra\"]; draftIds=[\"OFF-1003\"]; apply=\"Apply once to 1 bank\"",
       "evidence": {
         "pick": "Bank of Maharashtra",
         "before": {
@@ -1107,10 +1226,19 @@
           }
         },
         "after": {
-          "visibleRowCount": 8,
-          "selectedVisible": [],
-          "selectedVisibleIds": [],
+          "visibleRowCount": 9,
+          "selectedVisible": [
+            "Bank of Maharashtra"
+          ],
+          "selectedVisibleIds": [
+            "OFF-1003"
+          ],
           "firstRows": [
+            {
+              "id": "OFF-1003",
+              "name": "Bank of Maharashtra",
+              "selected": true
+            },
             {
               "id": "OFF-26",
               "name": "Punjab National Bank",
@@ -1144,11 +1272,6 @@
             {
               "id": "OFF-378",
               "name": "Union Bank of India",
-              "selected": false
-            },
-            {
-              "id": "OFF-1053",
-              "name": "Bank of Maharashtra",
               "selected": false
             }
           ],
@@ -1429,7 +1552,7 @@
         "recap": "Applying to 1 bank.",
         "packet": {
           "v": 1,
-          "ts": 1787323693160,
+          "ts": 1787373380120,
           "data_version": "hlc-20260814-dd5825a5",
           "input_data": {
             "form": {
@@ -1547,31 +1670,31 @@
             },
             {
               "key": "governmentCharges",
-              "label": "Government charges",
+              "label": "Govt. charges",
               "group": "charges",
               "type": "inr"
             },
             {
               "key": "prepaymentChargeDisplay",
-              "label": "Prepayment charge",
+              "label": "Prepayment fees",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "rateChangeChargeDisplay",
-              "label": "Rate change charge",
+              "label": "Rate change charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "overdueChargeDisplay",
-              "label": "Overdue charge",
+              "label": "Overdue charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "emiBounceChargeDisplay",
-              "label": "EMI bounce charge",
+              "label": "EMI bounce charges",
               "group": "laterCharges",
               "type": "charge"
             }
@@ -3925,7 +4048,7 @@
         "authCalls": [],
         "packet": {
           "v": 1,
-          "ts": 1787323693160,
+          "ts": 1787373380120,
           "data_version": "hlc-20260814-dd5825a5",
           "input_data": {
             "form": {
@@ -4043,31 +4166,31 @@
             },
             {
               "key": "governmentCharges",
-              "label": "Government charges",
+              "label": "Govt. charges",
               "group": "charges",
               "type": "inr"
             },
             {
               "key": "prepaymentChargeDisplay",
-              "label": "Prepayment charge",
+              "label": "Prepayment fees",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "rateChangeChargeDisplay",
-              "label": "Rate change charge",
+              "label": "Rate change charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "overdueChargeDisplay",
-              "label": "Overdue charge",
+              "label": "Overdue charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "emiBounceChargeDisplay",
-              "label": "EMI bounce charge",
+              "label": "EMI bounce charges",
               "group": "laterCharges",
               "type": "charge"
             }
@@ -6422,7 +6545,7 @@
         "authCalls": [],
         "packet": {
           "v": 1,
-          "ts": 1787323693160,
+          "ts": 1787373380539,
           "data_version": "hlc-20260814-dd5825a5",
           "input_data": {
             "form": {
@@ -6540,31 +6663,31 @@
             },
             {
               "key": "governmentCharges",
-              "label": "Government charges",
+              "label": "Govt. charges",
               "group": "charges",
               "type": "inr"
             },
             {
               "key": "prepaymentChargeDisplay",
-              "label": "Prepayment charge",
+              "label": "Prepayment fees",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "rateChangeChargeDisplay",
-              "label": "Rate change charge",
+              "label": "Rate change charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "overdueChargeDisplay",
-              "label": "Overdue charge",
+              "label": "Overdue charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "emiBounceChargeDisplay",
-              "label": "EMI bounce charge",
+              "label": "EMI bounce charges",
               "group": "laterCharges",
               "type": "charge"
             }
@@ -8890,7 +9013,7 @@
         },
         "contactDraft": {
           "v": 1,
-          "ts": 1787323693710,
+          "ts": 1787373380538,
           "name": "QA Apply Tester",
           "phone": "12345",
           "contact_email": "qa.apply.test@shroffin.example",
@@ -8926,7 +9049,7 @@
         "authCalls": [],
         "packet": {
           "v": 1,
-          "ts": 1787323693160,
+          "ts": 1787373380899,
           "data_version": "hlc-20260814-dd5825a5",
           "input_data": {
             "form": {
@@ -9044,31 +9167,31 @@
             },
             {
               "key": "governmentCharges",
-              "label": "Government charges",
+              "label": "Govt. charges",
               "group": "charges",
               "type": "inr"
             },
             {
               "key": "prepaymentChargeDisplay",
-              "label": "Prepayment charge",
+              "label": "Prepayment fees",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "rateChangeChargeDisplay",
-              "label": "Rate change charge",
+              "label": "Rate change charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "overdueChargeDisplay",
-              "label": "Overdue charge",
+              "label": "Overdue charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "emiBounceChargeDisplay",
-              "label": "EMI bounce charge",
+              "label": "EMI bounce charges",
               "group": "laterCharges",
               "type": "charge"
             }
@@ -11394,7 +11517,7 @@
         },
         "contactDraft": {
           "v": 1,
-          "ts": 1787323694062,
+          "ts": 1787373380898,
           "name": "QA Apply Tester",
           "phone": "9876543210",
           "contact_email": "qa.apply.test@shroffin.example",
@@ -11413,7 +11536,7 @@
       "actual": "name=QA Apply Tester; phone=9876543210; email=qa.apply.test@shroffin.example; consent=true",
       "evidence": {
         "v": 1,
-        "ts": 1787323694555,
+        "ts": 1787373381372,
         "name": "QA Apply Tester",
         "phone": "9876543210",
         "contact_email": "qa.apply.test@shroffin.example",
@@ -11466,7 +11589,7 @@
         ],
         "packet": {
           "v": 1,
-          "ts": 1787323695061,
+          "ts": 1787373382695,
           "data_version": "hlc-20260814-dd5825a5",
           "input_data": {
             "form": {
@@ -11584,31 +11707,31 @@
             },
             {
               "key": "governmentCharges",
-              "label": "Government charges",
+              "label": "Govt. charges",
               "group": "charges",
               "type": "inr"
             },
             {
               "key": "prepaymentChargeDisplay",
-              "label": "Prepayment charge",
+              "label": "Prepayment fees",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "rateChangeChargeDisplay",
-              "label": "Rate change charge",
+              "label": "Rate change charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "overdueChargeDisplay",
-              "label": "Overdue charge",
+              "label": "Overdue charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "emiBounceChargeDisplay",
-              "label": "EMI bounce charge",
+              "label": "EMI bounce charges",
               "group": "laterCharges",
               "type": "charge"
             }
@@ -13934,7 +14057,7 @@
         },
         "contactDraft": {
           "v": 1,
-          "ts": 1787323695896,
+          "ts": 1787373382695,
           "name": "QA Apply Tester",
           "phone": "9876543210",
           "contact_email": "other.person@example.com",
@@ -13974,7 +14097,7 @@
         ],
         "packet": {
           "v": 1,
-          "ts": 1787323695061,
+          "ts": 1787373384305,
           "data_version": "hlc-20260814-dd5825a5",
           "input_data": {
             "form": {
@@ -14092,31 +14215,31 @@
             },
             {
               "key": "governmentCharges",
-              "label": "Government charges",
+              "label": "Govt. charges",
               "group": "charges",
               "type": "inr"
             },
             {
               "key": "prepaymentChargeDisplay",
-              "label": "Prepayment charge",
+              "label": "Prepayment fees",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "rateChangeChargeDisplay",
-              "label": "Rate change charge",
+              "label": "Rate change charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "overdueChargeDisplay",
-              "label": "Overdue charge",
+              "label": "Overdue charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "emiBounceChargeDisplay",
-              "label": "EMI bounce charge",
+              "label": "EMI bounce charges",
               "group": "laterCharges",
               "type": "charge"
             }
@@ -16442,7 +16565,7 @@
         },
         "contactDraft": {
           "v": 1,
-          "ts": 1787323697176,
+          "ts": 1787373383972,
           "name": "QA Apply Tester",
           "phone": "9876543210",
           "contact_email": "qa.apply.test@shroffin.example",
@@ -16494,6 +16617,10 @@
           "bankFields": [
             "id",
             "bankName",
+            "bankKey",
+            "scheme",
+            "rateType",
+            "facilityLabel",
             "effectiveRoiPct",
             "loanAmount",
             "tenureLabel",
@@ -16537,15 +16664,19 @@
     {
       "id": "E2E-06",
       "severity": "P1",
-      "status": "FAIL",
+      "status": "PASS",
       "title": "Written bank records keep comparison fields (scheme/rate/facility)",
       "flowStep": "Firestore bank payload richness",
       "expected": "scheme / rateType / facility (or offer) present on written banks",
-      "actual": "bank keys=[id, bankName, effectiveRoiPct, loanAmount, tenureLabel, emi]",
+      "actual": "bank keys=[id, bankName, bankKey, scheme, rateType, facilityLabel, effectiveRoiPct, loanAmount, tenureLabel, emi]",
       "evidence": {
         "bank": {
           "id": "OFF-1002",
           "bankName": "Bank of Maharashtra",
+          "bankKey": "bank of maharashtra",
+          "scheme": "Maha Super Housing Loan",
+          "rateType": "Floating",
+          "facilityLabel": "Term loan",
           "effectiveRoiPct": 7.1,
           "loanAmount": 6000000,
           "tenureLabel": "15",
@@ -16601,17 +16732,17 @@
     {
       "id": "FB-03",
       "severity": "P2",
-      "status": "FAIL",
-      "title": "Apply packet expires after 60 minutes (live)",
+      "status": "PASS",
+      "title": "Idle Apply packet clears after 60 minutes (live)",
       "flowStep": "Apply session lifetime",
-      "expected": "Either longer TTL for verify friction, or clear restore — today: hard clear at 60m",
+      "expected": "Idle packets clear after 60m; active contact/verify refreshes ts via touchApplyPacket",
       "actual": "url=http://127.0.0.1:8765/pages/explore-banks.html; packet=cleared; snippet=\"Guide\\nTools\\nSupport\\nAbout\\nExplore banks.\\nLoan inputs\\n\\nSets how much you can borrow\\n\\nNet monthly income\\n*\\n₹\\nProperty value\\nas per agreement\\n*\"",
       "evidence": {
         "url": "http://127.0.0.1:8765/pages/explore-banks.html",
         "packet": null,
-        "body": "Guide\nTools\nSupport\nAbout\nExplore banks.\nLoan inputs\n\nSets how much you can borrow\n\nNet monthly income\n*\n₹\nProperty value\nas per agreement\n*\n₹\n\nCuts how much you can borrow\n\nTotal existing EMIs\n₹\nTotal credit card limits\n₹\n\nAbout\n0%\n5%\n10%\nof this limit counts as monthly EMI\n\nSets loan amount and mo"
+        "body": "Guide\nTools\nSupport\nAbout\nExplore banks.\nLoan inputs\n\nSets how much you can borrow\n\nNet monthly income\n*\n₹\nProperty value\nas per agreement\n*\n₹\n\nCuts how much you can borrow\n\nTotal existing EMIs\n₹\nTotal credit card limits\n₹\n\nEMI equals\n0%\n5%\n10%\nof limit.\n\nSets loan amount and monthly EMI\n\nEMI limit "
       },
-      "userImpact": "Slow Google verify / tab left open can wipe the shortlist before submit."
+      "userImpact": "Stale abandoned shortlists do not silently submit; active sessions keep their packet."
     },
     {
       "id": "CONTACT-07",
@@ -16644,7 +16775,7 @@
         ],
         "packet": {
           "v": 1,
-          "ts": 1787323707650,
+          "ts": 1787373394837,
           "data_version": "hlc-20260814-dd5825a5",
           "input_data": {
             "form": {
@@ -16762,31 +16893,31 @@
             },
             {
               "key": "governmentCharges",
-              "label": "Government charges",
+              "label": "Govt. charges",
               "group": "charges",
               "type": "inr"
             },
             {
               "key": "prepaymentChargeDisplay",
-              "label": "Prepayment charge",
+              "label": "Prepayment fees",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "rateChangeChargeDisplay",
-              "label": "Rate change charge",
+              "label": "Rate change charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "overdueChargeDisplay",
-              "label": "Overdue charge",
+              "label": "Overdue charges",
               "group": "laterCharges",
               "type": "charge"
             },
             {
               "key": "emiBounceChargeDisplay",
-              "label": "EMI bounce charge",
+              "label": "EMI bounce charges",
               "group": "laterCharges",
               "type": "charge"
             }
@@ -19112,7 +19243,7 @@
         },
         "contactDraft": {
           "v": 1,
-          "ts": 1787323707976,
+          "ts": 1787373394834,
           "name": "QA Apply Tester",
           "phone": "9876543210",
           "contact_email": "qa.apply.test@shroffin.example",
@@ -19153,2150 +19284,6 @@
       "actual": "E2E-00…E2E-07 exercise real UI + home-loan-apply.js with mocked Auth/Firestore write capture. Live Google popup still needs a test account on a headed browser.",
       "evidence": null,
       "userImpact": "Production-only failures (OAuth domain, Firestore rules) still need a manual Google smoke once."
-    },
-    {
-      "id": "PX-IN-01",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input combo Salaried × Regular Home Loan → Application received",
-      "flowStep": "Permutation / occupation×purpose",
-      "expected": "Matches (or honest zero) and if matches, full submit success with same occupation/purpose",
-      "actual": "banks=10; packetBanks=1; received=true; writtenOcc=Salaried; writtenPurpose=Regular Home Loan; filled={\"monthlyIncome\":\"1,50,000\",\"propertyValue\":\"62,50,000\",\"existingEmis\":\"0\",\"cardLimits\":\"0\",\"tenureYears\":\"20\",\"age\":\"35\",\"cibilScore\":\"760\",\"occupation\":\"Salaried\",\"purpose\":\"Regular Home Loan\"}",
-      "evidence": {
-        "n": 10,
-        "writtenOcc": "Salaried",
-        "writtenPurpose": "Regular Home Loan",
-        "received": true
-      },
-      "userImpact": "This customer type must be able to finish Apply.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-IN-02",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input combo Self-Employed × Regular Home Loan → Application received",
-      "flowStep": "Permutation / occupation×purpose",
-      "expected": "Matches (or honest zero) and if matches, full submit success with same occupation/purpose",
-      "actual": "banks=10; packetBanks=1; received=true; writtenOcc=Self-Employed; writtenPurpose=Regular Home Loan; filled={\"monthlyIncome\":\"1,50,000\",\"propertyValue\":\"62,50,000\",\"existingEmis\":\"0\",\"cardLimits\":\"0\",\"tenureYears\":\"20\",\"age\":\"35\",\"cibilScore\":\"760\",\"occupation\":\"Self-Employed\",\"purpose\":\"Regular Home Loan\"}",
-      "evidence": {
-        "n": 10,
-        "writtenOcc": "Self-Employed",
-        "writtenPurpose": "Regular Home Loan",
-        "received": true
-      },
-      "userImpact": "This customer type must be able to finish Apply.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-IN-03",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input combo Salaried × Top-up Loan → Application received",
-      "flowStep": "Permutation / occupation×purpose",
-      "expected": "Matches (or honest zero) and if matches, full submit success with same occupation/purpose",
-      "actual": "banks=10; packetBanks=1; received=true; writtenOcc=Salaried; writtenPurpose=Top-up Loan; filled={\"monthlyIncome\":\"1,50,000\",\"propertyValue\":\"62,50,000\",\"existingEmis\":\"0\",\"cardLimits\":\"0\",\"tenureYears\":\"20\",\"age\":\"35\",\"cibilScore\":\"760\",\"occupation\":\"Salaried\",\"purpose\":\"Top-up Loan\"}",
-      "evidence": {
-        "n": 10,
-        "writtenOcc": "Salaried",
-        "writtenPurpose": "Top-up Loan",
-        "received": true
-      },
-      "userImpact": "This customer type must be able to finish Apply.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-IN-04",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input combo Self-Employed × Top-up Loan → Application received",
-      "flowStep": "Permutation / occupation×purpose",
-      "expected": "Matches (or honest zero) and if matches, full submit success with same occupation/purpose",
-      "actual": "banks=10; packetBanks=1; received=true; writtenOcc=Self-Employed; writtenPurpose=Top-up Loan; filled={\"monthlyIncome\":\"1,50,000\",\"propertyValue\":\"62,50,000\",\"existingEmis\":\"0\",\"cardLimits\":\"0\",\"tenureYears\":\"20\",\"age\":\"35\",\"cibilScore\":\"760\",\"occupation\":\"Self-Employed\",\"purpose\":\"Top-up Loan\"}",
-      "evidence": {
-        "n": 10,
-        "writtenOcc": "Self-Employed",
-        "writtenPurpose": "Top-up Loan",
-        "received": true
-      },
-      "userImpact": "This customer type must be able to finish Apply.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-IN-05",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Low income band reaches Application received (or honest empty match)",
-      "flowStep": "Permutation / input extremes",
-      "expected": "If banks match, full funnel succeeds; if zero banks, report INFO not crash",
-      "actual": "banks=10; received=true; incomeWritten=40000; age=30; cibil=720",
-      "evidence": {
-        "monthlyIncome": "40,000",
-        "propertyValue": "25,00,000",
-        "cibilScore": "720",
-        "age": "30"
-      },
-      "userImpact": "Extreme but valid profiles must not crash Apply.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-IN-06",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "High income band reaches Application received (or honest empty match)",
-      "flowStep": "Permutation / input extremes",
-      "expected": "If banks match, full funnel succeeds; if zero banks, report INFO not crash",
-      "actual": "banks=10; received=true; incomeWritten=500000; age=40; cibil=850",
-      "evidence": {
-        "monthlyIncome": "5,00,000",
-        "propertyValue": "2,50,00,000",
-        "cibilScore": "850",
-        "age": "40"
-      },
-      "userImpact": "Extreme but valid profiles must not crash Apply.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-IN-07",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Young applicant reaches Application received (or honest empty match)",
-      "flowStep": "Permutation / input extremes",
-      "expected": "If banks match, full funnel succeeds; if zero banks, report INFO not crash",
-      "actual": "banks=10; received=true; incomeWritten=80000; age=25; cibil=750",
-      "evidence": {
-        "age": "25",
-        "monthlyIncome": "80,000",
-        "cibilScore": "750"
-      },
-      "userImpact": "Extreme but valid profiles must not crash Apply.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-IN-08",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Older applicant reaches Application received (or honest empty match)",
-      "flowStep": "Permutation / input extremes",
-      "expected": "If banks match, full funnel succeeds; if zero banks, report INFO not crash",
-      "actual": "banks=10; received=true; incomeWritten=120000; age=55; cibil=780",
-      "evidence": {
-        "age": "55",
-        "monthlyIncome": "1,20,000",
-        "cibilScore": "780",
-        "tenureYears": "10"
-      },
-      "userImpact": "Extreme but valid profiles must not crash Apply.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-IN-09",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Borderline CIBIL reaches Application received (or honest empty match)",
-      "flowStep": "Permutation / input extremes",
-      "expected": "If banks match, full funnel succeeds; if zero banks, report INFO not crash",
-      "actual": "banks=10; received=true; incomeWritten=100000; age=35; cibil=650",
-      "evidence": {
-        "cibilScore": "650",
-        "monthlyIncome": "1,00,000"
-      },
-      "userImpact": "Extreme but valid profiles must not crash Apply.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-SEL-01",
-      "severity": "P0",
-      "status": "FAIL",
-      "title": "Term loan → Overdraft-only drops selection visibility",
-      "flowStep": "Permutation / filter orphans",
-      "expected": "Selected bank stays visible (pinned) or is clearly deselected; count must not lie",
-      "actual": "beforeSelected=[\"Bank of Maharashtra\"]; afterSelected=[]; draftIds=[\"OFF-1003\"]; apply=\"Apply once to 1 bank\"; ghost=true",
-      "evidence": {
-        "before": {
-          "visible": 10,
-          "selectedVisible": [
-            "Bank of Maharashtra"
-          ],
-          "draftIds": [
-            "OFF-1003"
-          ],
-          "applyLabel": "Apply once to 1 bank",
-          "applyDisabled": false
-        },
-        "after": {
-          "visible": 10,
-          "selectedVisible": [],
-          "draftIds": [
-            "OFF-1003"
-          ],
-          "applyLabel": "Apply once to 1 bank",
-          "applyDisabled": false
-        }
-      },
-      "userImpact": "Filter flips that hide selected banks while keeping a count break Apply trust.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-SEL-02",
-      "severity": "P0",
-      "status": "FAIL",
-      "title": "Women filter rematch after select",
-      "flowStep": "Permutation / filter orphans",
-      "expected": "Selected bank stays visible (pinned) or is clearly deselected; count must not lie",
-      "actual": "beforeSelected=[\"Bank of Maharashtra\"]; afterSelected=[]; draftIds=[\"OFF-1003\"]; apply=\"Apply once to 1 bank\"; ghost=true",
-      "evidence": {
-        "before": {
-          "visible": 10,
-          "selectedVisible": [
-            "Bank of Maharashtra"
-          ],
-          "draftIds": [
-            "OFF-1003"
-          ],
-          "applyLabel": "Apply once to 1 bank",
-          "applyDisabled": false
-        },
-        "after": {
-          "visible": 2,
-          "selectedVisible": [],
-          "draftIds": [
-            "OFF-1003"
-          ],
-          "applyLabel": "Apply once to 1 bank",
-          "applyDisabled": false
-        }
-      },
-      "userImpact": "Filter flips that hide selected banks while keeping a count break Apply trust.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-SEL-03",
-      "severity": "P0",
-      "status": "FAIL",
-      "title": "Green home filter rematch after select",
-      "flowStep": "Permutation / filter orphans",
-      "expected": "Selected bank stays visible (pinned) or is clearly deselected; count must not lie",
-      "actual": "beforeSelected=[\"Bank of Maharashtra\"]; afterSelected=[]; draftIds=[\"OFF-1003\"]; apply=\"Apply once to 1 bank\"; ghost=true",
-      "evidence": {
-        "before": {
-          "visible": 10,
-          "selectedVisible": [
-            "Bank of Maharashtra"
-          ],
-          "draftIds": [
-            "OFF-1003"
-          ],
-          "applyLabel": "Apply once to 1 bank",
-          "applyDisabled": false
-        },
-        "after": {
-          "visible": 3,
-          "selectedVisible": [],
-          "draftIds": [
-            "OFF-1003"
-          ],
-          "applyLabel": "Apply once to 1 bank",
-          "applyDisabled": false
-        }
-      },
-      "userImpact": "Filter flips that hide selected banks while keeping a count break Apply trust.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-SEL-04",
-      "severity": "P0",
-      "status": "FAIL",
-      "title": "Insurance filter rematch after select",
-      "flowStep": "Permutation / filter orphans",
-      "expected": "Selected bank stays visible (pinned) or is clearly deselected; count must not lie",
-      "actual": "beforeSelected=[\"Bank of Maharashtra\"]; afterSelected=[]; draftIds=[\"OFF-1003\"]; apply=\"Apply once to 1 bank\"; ghost=true",
-      "evidence": {
-        "before": {
-          "visible": 10,
-          "selectedVisible": [
-            "Bank of Maharashtra"
-          ],
-          "draftIds": [
-            "OFF-1003"
-          ],
-          "applyLabel": "Apply once to 1 bank",
-          "applyDisabled": false
-        },
-        "after": {
-          "visible": 3,
-          "selectedVisible": [],
-          "draftIds": [
-            "OFF-1003"
-          ],
-          "applyLabel": "Apply once to 1 bank",
-          "applyDisabled": false
-        }
-      },
-      "userImpact": "Filter flips that hide selected banks while keeping a count break Apply trust.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-SEL-05",
-      "severity": "P0",
-      "status": "FAIL",
-      "title": "Govt PSU filter rematch after select",
-      "flowStep": "Permutation / filter orphans",
-      "expected": "Selected bank stays visible (pinned) or is clearly deselected; count must not lie",
-      "actual": "beforeSelected=[\"Bank of Maharashtra\"]; afterSelected=[]; draftIds=[\"OFF-1003\"]; apply=\"Apply once to 1 bank\"; ghost=true",
-      "evidence": {
-        "before": {
-          "visible": 10,
-          "selectedVisible": [
-            "Bank of Maharashtra"
-          ],
-          "draftIds": [
-            "OFF-1003"
-          ],
-          "applyLabel": "Apply once to 1 bank",
-          "applyDisabled": false
-        },
-        "after": {
-          "visible": 3,
-          "selectedVisible": [],
-          "draftIds": [
-            "OFF-1003"
-          ],
-          "applyLabel": "Apply once to 1 bank",
-          "applyDisabled": false
-        }
-      },
-      "userImpact": "Filter flips that hide selected banks while keeping a count break Apply trust.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-SEL-06",
-      "severity": "P0",
-      "status": "FAIL",
-      "title": "Both bank types off then Private on (selection survival)",
-      "flowStep": "Permutation / filter orphans",
-      "expected": "Selected bank stays visible (pinned) or is clearly deselected; count must not lie",
-      "actual": "beforeSelected=[\"Bank of Maharashtra\"]; afterSelected=[]; draftIds=[\"OFF-1003\"]; apply=\"Apply once to 1 bank\"; ghost=true",
-      "evidence": {
-        "before": {
-          "visible": 10,
-          "selectedVisible": [
-            "Bank of Maharashtra"
-          ],
-          "draftIds": [
-            "OFF-1003"
-          ],
-          "applyLabel": "Apply once to 1 bank",
-          "applyDisabled": false
-        },
-        "after": {
-          "visible": 10,
-          "selectedVisible": [],
-          "draftIds": [
-            "OFF-1003"
-          ],
-          "applyLabel": "Apply once to 1 bank",
-          "applyDisabled": false
-        }
-      },
-      "userImpact": "Filter flips that hide selected banks while keeping a count break Apply trust.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-MULTI-01",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Select 3 banks → Application received writes all 3",
-      "flowStep": "Permutation / multi-bank",
-      "expected": "Packet and Firestore write include 3 banks",
-      "actual": "selectedVisible=3; draftIds=3; packetBanks=3; written=3; received=true",
-      "evidence": {
-        "before": {
-          "visible": 10,
-          "selectedVisible": [
-            "Bank of Maharashtra",
-            "Indian Overseas Bank",
-            "Punjab National Bank"
-          ],
-          "draftIds": [
-            "OFF-1003",
-            "OFF-771",
-            "OFF-8"
-          ],
-          "applyLabel": "Apply once to 3 banks",
-          "applyDisabled": false
-        },
-        "result": {
-          "received": true,
-          "text": "Application received We've got your application for 3 banks. REFERENCE ID 200101 We'll contact you within 48 hours at qa.permute@shroffin.example and may call 9123456780. Documents are not needed from you yet. Review the Documents (opens in",
-          "writeCount": 1,
-          "banksWritten": 3,
-          "status": "received",
-          "income": 100000,
-          "occupation": "Salaried",
-          "purpose": "Regular Home Loan",
-          "okBanks": true
-        },
-        "names": [
-          "Punjab National Bank",
-          "Indian Overseas Bank",
-          "Bank of Maharashtra"
-        ]
-      },
-      "userImpact": "Multi-bank apply is the core product promise.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-CO-01",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Co-applicant on → Application received",
-      "flowStep": "Permutation / co-applicant",
-      "expected": "Packet includes co-applicant; submit succeeds",
-      "actual": "hasCo=true; received=true; incomeBlankOnReview=true",
-      "evidence": {
-        "form": {
-          "age": "35",
-          "cibilScore": "780",
-          "monthlyIncome": "1,00,000",
-          "existingEmis": "0",
-          "cardLimits": "0",
-          "cardLoadPct": "10",
-          "tenureYears": "20",
-          "foirPct": "55",
-          "includeCoApplicant": "yes",
-          "coApplicants": [
-            {
-              "relationship": "Spouse",
-              "occupation": "Salaried",
-              "age": "",
-              "cibilScore": "",
-              "monthlyIncome": "0",
-              "existingEmis": "0",
-              "cardLimits": "0"
-            }
-          ],
-          "occupation": "Salaried",
-          "purpose": "Regular Home Loan",
-          "propertyValue": "62,50,000"
-        },
-        "incomeBlank": true,
-        "result": {
-          "received": true,
-          "text": "Application received We've got your application for 1 bank. REFERENCE ID 200101 We'll contact you within 48 hours at qa.permute@shroffin.example and may call 9123456780. Documents are not needed from you yet. Review the Documents (opens in ",
-          "writeCount": 1,
-          "banksWritten": 1,
-          "status": "received",
-          "income": 100000,
-          "occupation": "Salaried",
-          "purpose": "Regular Home Loan",
-          "okBanks": true
-        }
-      },
-      "userImpact": "Co-applicant cases are common; submit must keep their data.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-CO-02",
-      "severity": "P1",
-      "status": "FAIL",
-      "title": "Co-applicant income visible on Apply review",
-      "flowStep": "Permutation / co-applicant review",
-      "expected": "Review shows co-applicant income, not a dash",
-      "actual": "incomeBlank=true; snippet=\"Co-applicant\\nYes\\nCo-applicant income\\n—\\nCo-applicant EMIs\\n—\\nCo-applicant card limits\\n—\"",
-      "evidence": {
-        "applyUi": "Existing EMIs\n₹0\nCredit card limits\n₹0\nCredit card monthly load\n10%\nEMI limit / FOIR\n55%\nCo-applicant\nYes\nCo-applicant income\n—\nCo-applicant EMIs\n—\nCo-applicant card limits\n—"
-      },
-      "userImpact": "User cannot confirm co-applicant numbers before submit.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-CT-01",
-      "severity": "P1",
-      "status": "FAIL",
-      "title": "+91 formatted phone accepted on contact",
-      "flowStep": "Permutation / phone formats",
-      "expected": "Phone with +91 / spaces validates",
-      "actual": "{\"phoneOkVisible\":false,\"verifyDisabled\":false}",
-      "evidence": null,
-      "userImpact": "People often paste +91 numbers.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-CT-02",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Invalid email keeps Verify and Submit locked",
-      "flowStep": "Permutation / email validation",
-      "expected": "Verify/Submit disabled for malformed email",
-      "actual": "{\"verifyDisabled\":true,\"submitDisabled\":true}",
-      "evidence": null,
-      "userImpact": "Bad emails break follow-up.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-CT-03",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Contact draft restores after reload",
-      "flowStep": "Permutation / contact draft",
-      "expected": "Name/email restored from session draft",
-      "actual": "{\"name\":\"Draft Survivor\",\"phone\":\"91234 56780\",\"email\":\"qa.permute@shroffin.example\"}",
-      "evidence": null,
-      "userImpact": "Accidental refresh should not wipe contact fields.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-CT-04",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Double-click Submit writes once",
-      "flowStep": "Permutation / double submit",
-      "expected": "Exactly one Firestore write + one success UI",
-      "actual": "received=true; writes=1",
-      "evidence": null,
-      "userImpact": "Duplicate applications confuse ops and the customer.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-CT-05",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Removing last bank on review recovers safely",
-      "flowStep": "Permutation / remove last bank",
-      "expected": "Bounce to Explore or clear empty packet — no fake Apply",
-      "actual": "url=http://127.0.0.1:8765/pages/apply.html; banks=0",
-      "evidence": {
-        "url": "http://127.0.0.1:8765/pages/apply.html",
-        "packet": null
-      },
-      "userImpact": "Empty shortlist must not look submittable.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-MOB-01",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Mobile (390×844) full funnel → Application received",
-      "flowStep": "Permutation / mobile",
-      "expected": "Phone viewport completes Apply once to success",
-      "actual": "{\"received\":true,\"writes\":1,\"text\":\"Application received We've got your application for 1 bank. REFERENCE ID 200101 We'll contact you within 48 hours at qa.permute@shroffin.example and may call 9123456780. Documents \"}",
-      "evidence": {
-        "packetBanks": 1
-      },
-      "userImpact": "Most customers apply on phone.",
-      "suite": "permutation"
-    },
-    {
-      "id": "PX-NAV-01",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Back from Contact keeps Apply packet banks",
-      "flowStep": "Permutation / back navigation",
-      "expected": "Same bank count after Contact → Apply",
-      "actual": "before=2; after=2; url=http://127.0.0.1:8765/pages/apply.html",
-      "evidence": null,
-      "userImpact": "Back must not wipe the shortlist.",
-      "suite": "permutation"
-    },
-    {
-      "id": "CTL-INV-01",
-      "severity": "INFO",
-      "status": "PASS",
-      "title": "Live inventory of inputs / filters / table controls",
-      "flowStep": "Inventory",
-      "expected": "Enumerate every control on Explore",
-      "actual": "inputs=12; filters=10; tableRows=10; headCols=10",
-      "evidence": {
-        "inputs": [
-          {
-            "id": "hlc-monthly-income",
-            "name": "monthlyIncome",
-            "tag": "input",
-            "type": "text",
-            "label": "Net monthly income * ₹",
-            "options": null
-          },
-          {
-            "id": "hlc-property-value",
-            "name": "propertyValue",
-            "tag": "input",
-            "type": "text",
-            "label": "Property value as per agreement * ₹",
-            "options": null
-          },
-          {
-            "id": "hlc-existing-emis",
-            "name": "existingEmis",
-            "tag": "input",
-            "type": "text",
-            "label": "Total existing EMIs ₹",
-            "options": null
-          },
-          {
-            "id": "hlc-card-limits",
-            "name": "cardLimits",
-            "tag": "input",
-            "type": "text",
-            "label": "Total credit card limits",
-            "options": null
-          },
-          {
-            "id": "hlc-card-load-pct",
-            "name": "cardLoadPct",
-            "tag": "select",
-            "type": "select-one",
-            "label": "Share of this credit card limit counted as monthly EMI",
-            "options": [
-              {
-                "value": "0",
-                "text": "0%"
-              },
-              {
-                "value": "5",
-                "text": "5%"
-              },
-              {
-                "value": "10",
-                "text": "10%"
-              }
-            ]
-          },
-          {
-            "id": "hlc-foir",
-            "name": "foirPct",
-            "tag": "select",
-            "type": "select-one",
-            "label": "EMI limit / FOIR 50% 55% (default) 60% 65% 70% 55% (default)",
-            "options": [
-              {
-                "value": "50",
-                "text": "50%"
-              },
-              {
-                "value": "55",
-                "text": "55% (default)"
-              },
-              {
-                "value": "60",
-                "text": "60%"
-              },
-              {
-                "value": "65",
-                "text": "65%"
-              },
-              {
-                "value": "70",
-                "text": "70%"
-              }
-            ]
-          },
-          {
-            "id": "hlc-tenure",
-            "name": "tenureYears",
-            "tag": "input",
-            "type": "text",
-            "label": "Loan tenure * years",
-            "options": null
-          },
-          {
-            "id": "hlc-age",
-            "name": "age",
-            "tag": "input",
-            "type": "text",
-            "label": "Age * years",
-            "options": null
-          },
-          {
-            "id": "hlc-cibil",
-            "name": "cibilScore",
-            "tag": "input",
-            "type": "text",
-            "label": "CIBIL score *",
-            "options": null
-          },
-          {
-            "id": "hlc-occupation",
-            "name": "occupation",
-            "tag": "select",
-            "type": "select-one",
-            "label": "Occupation * Salaried Self-employed Salaried",
-            "options": [
-              {
-                "value": "Salaried",
-                "text": "Salaried"
-              },
-              {
-                "value": "Self-Employed",
-                "text": "Self-employed"
-              }
-            ]
-          },
-          {
-            "id": "hlc-purpose",
-            "name": "purpose",
-            "tag": "select",
-            "type": "select-one",
-            "label": "Purpose * New Top-up New",
-            "options": [
-              {
-                "value": "Regular Home Loan",
-                "text": "New"
-              },
-              {
-                "value": "Top-up Loan",
-                "text": "Top-up"
-              }
-            ]
-          },
-          {
-            "id": "hlc-coapplicant",
-            "name": "includeCoApplicant",
-            "tag": "input",
-            "type": "hidden-coapplicant",
-            "label": "Co-applicant toggle (hidden+button)"
-          }
-        ],
-        "filters": [
-          {
-            "key": "govtPsu",
-            "checked": false,
-            "label": "Govt / PSU employee and pensioner"
-          },
-          {
-            "key": "womenApplicant",
-            "checked": false,
-            "label": "Women applicant"
-          },
-          {
-            "key": "greenHome",
-            "checked": false,
-            "label": "Green home"
-          },
-          {
-            "key": "insurance",
-            "checked": false,
-            "label": "Insurance"
-          },
-          {
-            "key": "bankPublic",
-            "checked": true,
-            "label": "Public Slower process, usually a better rate."
-          },
-          {
-            "key": "bankPrivate",
-            "checked": true,
-            "label": "Private Smoother process, usually a higher rate and fee."
-          },
-          {
-            "key": "rateFloating",
-            "checked": true,
-            "label": "Floating Can move with the benchmark."
-          },
-          {
-            "key": "fixedRate",
-            "checked": false,
-            "label": "Fixed Does not change for a few years (generally 5 years). A"
-          },
-          {
-            "key": "facilityTermLoan",
-            "checked": true,
-            "label": "Term loan A general home loan product."
-          },
-          {
-            "key": "overdraft",
-            "checked": false,
-            "label": "Overdraft Your loan sits in a linked savings account. Money "
-          }
-        ],
-        "table": {
-          "rows": 10,
-          "headButtons": [
-            {
-              "tag": "TH",
-              "text": "Lenders",
-              "sort": null
-            },
-            {
-              "tag": "BUTTON",
-              "text": "",
-              "sort": null
-            },
-            {
-              "tag": "TH",
-              "text": "RateThe annual interest on your outstand",
-              "sort": "effectiveRoiPct"
-            },
-            {
-              "tag": "BUTTON",
-              "text": "",
-              "sort": null
-            },
-            {
-              "tag": "TH",
-              "text": "Loan amountHow much this bank will give ",
-              "sort": "loanAmount"
-            },
-            {
-              "tag": "BUTTON",
-              "text": "",
-              "sort": null
-            },
-            {
-              "tag": "TH",
-              "text": "Tenure (yrs)How many years this bank giv",
-              "sort": "tenureLabel"
-            },
-            {
-              "tag": "BUTTON",
-              "text": "",
-              "sort": null
-            },
-            {
-              "tag": "TH",
-              "text": "EMIEstimated monthly payment on this loa",
-              "sort": "emi"
-            },
-            {
-              "tag": "BUTTON",
-              "text": "",
-              "sort": null
-            }
-          ],
-          "showMore": true,
-          "paddleLeft": true,
-          "paddleRight": true,
-          "applyBtn": true,
-          "drawer": true,
-          "selectAll": true
-        }
-      },
-      "userImpact": "Defines what “each and every” means for this page.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-monthlyIncome",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input “hlc-monthly-income” change survives rematch + Apply packet",
-      "flowStep": "Each input",
-      "expected": "Changing only hlc-monthly-income to 1,75,000 is kept in query/form and Apply packet (or honest 0 banks)",
-      "actual": "beforeRows=10; afterRows=10; valueOk=true; packetOk=true; query.monthlyIncome=undefined; form=\"1,75,000\"; packet=175000",
-      "evidence": {
-        "q": {},
-        "form": {
-          "monthlyIncome": "1,75,000",
-          "propertyValue": "62,50,000",
-          "existingEmis": "0",
-          "cardLimits": "0",
-          "cardLoadPct": "10",
-          "foirPct": "55",
-          "tenureYears": "20",
-          "age": "35",
-          "cibilScore": "780",
-          "occupation": "Salaried",
-          "purpose": "Regular Home Loan",
-          "includeCoApplicant": "no"
-        },
-        "packetVal": 175000
-      },
-      "userImpact": "If hlc-monthly-income is dropped, banks see the wrong monthlyIncome.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-propertyValue",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input “hlc-property-value” change survives rematch + Apply packet",
-      "flowStep": "Each input",
-      "expected": "Changing only hlc-property-value to 90,00,000 is kept in query/form and Apply packet (or honest 0 banks)",
-      "actual": "beforeRows=10; afterRows=10; valueOk=true; packetOk=true; query.propertyValue=undefined; form=\"90,00,000\"; packet=9000000",
-      "evidence": {
-        "q": {},
-        "form": {
-          "monthlyIncome": "1,00,000",
-          "propertyValue": "90,00,000",
-          "existingEmis": "0",
-          "cardLimits": "0",
-          "cardLoadPct": "10",
-          "foirPct": "55",
-          "tenureYears": "20",
-          "age": "35",
-          "cibilScore": "780",
-          "occupation": "Salaried",
-          "purpose": "Regular Home Loan",
-          "includeCoApplicant": "no"
-        },
-        "packetVal": 9000000
-      },
-      "userImpact": "If hlc-property-value is dropped, banks see the wrong propertyValue.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-existingEmis",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input “hlc-existing-emis” change survives rematch + Apply packet",
-      "flowStep": "Each input",
-      "expected": "Changing only hlc-existing-emis to 12,500 is kept in query/form and Apply packet (or honest 0 banks)",
-      "actual": "beforeRows=10; afterRows=10; valueOk=true; packetOk=true; query.existingEmis=undefined; form=\"12,500\"; packet=12500",
-      "evidence": {
-        "q": {},
-        "form": {
-          "monthlyIncome": "1,00,000",
-          "propertyValue": "62,50,000",
-          "existingEmis": "12,500",
-          "cardLimits": "0",
-          "cardLoadPct": "10",
-          "foirPct": "55",
-          "tenureYears": "20",
-          "age": "35",
-          "cibilScore": "780",
-          "occupation": "Salaried",
-          "purpose": "Regular Home Loan",
-          "includeCoApplicant": "no"
-        },
-        "packetVal": 12500
-      },
-      "userImpact": "If hlc-existing-emis is dropped, banks see the wrong existingEmis.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-cardLimits",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input “hlc-card-limits” change survives rematch + Apply packet",
-      "flowStep": "Each input",
-      "expected": "Changing only hlc-card-limits to 75,000 is kept in query/form and Apply packet (or honest 0 banks)",
-      "actual": "beforeRows=10; afterRows=10; valueOk=true; packetOk=true; query.cardLimits=undefined; form=\"75,000\"; packet=75000",
-      "evidence": {
-        "q": {},
-        "form": {
-          "monthlyIncome": "1,00,000",
-          "propertyValue": "62,50,000",
-          "existingEmis": "0",
-          "cardLimits": "75,000",
-          "cardLoadPct": "10",
-          "foirPct": "55",
-          "tenureYears": "20",
-          "age": "35",
-          "cibilScore": "780",
-          "occupation": "Salaried",
-          "purpose": "Regular Home Loan",
-          "includeCoApplicant": "no"
-        },
-        "packetVal": 75000
-      },
-      "userImpact": "If hlc-card-limits is dropped, banks see the wrong cardLimits.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-cardLoadPct",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input “hlc-card-load-pct” change survives rematch + Apply packet",
-      "flowStep": "Each input",
-      "expected": "Changing only hlc-card-load-pct to 5 is kept in query/form and Apply packet (or honest 0 banks)",
-      "actual": "beforeRows=10; afterRows=10; valueOk=true; packetOk=true; query.cardLoadPct=undefined; form=\"5\"; packet=5",
-      "evidence": {
-        "q": {},
-        "form": {
-          "monthlyIncome": "1,00,000",
-          "propertyValue": "62,50,000",
-          "existingEmis": "0",
-          "cardLimits": "0",
-          "cardLoadPct": "5",
-          "foirPct": "55",
-          "tenureYears": "20",
-          "age": "35",
-          "cibilScore": "780",
-          "occupation": "Salaried",
-          "purpose": "Regular Home Loan",
-          "includeCoApplicant": "no"
-        },
-        "packetVal": 5
-      },
-      "userImpact": "If hlc-card-load-pct is dropped, banks see the wrong cardLoadPct.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-foir",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input “hlc-foir” change survives rematch + Apply packet",
-      "flowStep": "Each input",
-      "expected": "Changing only hlc-foir to 60 is kept in query/form and Apply packet (or honest 0 banks)",
-      "actual": "beforeRows=10; afterRows=10; valueOk=true; packetOk=true; query.foirPct=undefined; form=\"60\"; packet=60",
-      "evidence": {
-        "q": {},
-        "form": {
-          "monthlyIncome": "1,00,000",
-          "propertyValue": "62,50,000",
-          "existingEmis": "0",
-          "cardLimits": "0",
-          "cardLoadPct": "10",
-          "foirPct": "60",
-          "tenureYears": "20",
-          "age": "35",
-          "cibilScore": "780",
-          "occupation": "Salaried",
-          "purpose": "Regular Home Loan",
-          "includeCoApplicant": "no"
-        },
-        "packetVal": 60
-      },
-      "userImpact": "If hlc-foir is dropped, banks see the wrong foirPct.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-tenure",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input “hlc-tenure” change survives rematch + Apply packet",
-      "flowStep": "Each input",
-      "expected": "Changing only hlc-tenure to 18 is kept in query/form and Apply packet (or honest 0 banks)",
-      "actual": "beforeRows=10; afterRows=10; valueOk=true; packetOk=true; query.tenureYears=undefined; form=\"18\"; packet=18",
-      "evidence": {
-        "q": {},
-        "form": {
-          "monthlyIncome": "1,00,000",
-          "propertyValue": "62,50,000",
-          "existingEmis": "0",
-          "cardLimits": "0",
-          "cardLoadPct": "10",
-          "foirPct": "55",
-          "tenureYears": "18",
-          "age": "35",
-          "cibilScore": "780",
-          "occupation": "Salaried",
-          "purpose": "Regular Home Loan",
-          "includeCoApplicant": "no"
-        },
-        "packetVal": 18
-      },
-      "userImpact": "If hlc-tenure is dropped, banks see the wrong tenureYears.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-age",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input “hlc-age” change survives rematch + Apply packet",
-      "flowStep": "Each input",
-      "expected": "Changing only hlc-age to 38 is kept in query/form and Apply packet (or honest 0 banks)",
-      "actual": "beforeRows=10; afterRows=10; valueOk=true; packetOk=true; query.age=undefined; form=\"38\"; packet=38",
-      "evidence": {
-        "q": {},
-        "form": {
-          "monthlyIncome": "1,00,000",
-          "propertyValue": "62,50,000",
-          "existingEmis": "0",
-          "cardLimits": "0",
-          "cardLoadPct": "10",
-          "foirPct": "55",
-          "tenureYears": "20",
-          "age": "38",
-          "cibilScore": "780",
-          "occupation": "Salaried",
-          "purpose": "Regular Home Loan",
-          "includeCoApplicant": "no"
-        },
-        "packetVal": 38
-      },
-      "userImpact": "If hlc-age is dropped, banks see the wrong age.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-cibil",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input “hlc-cibil” change survives rematch + Apply packet",
-      "flowStep": "Each input",
-      "expected": "Changing only hlc-cibil to 805 is kept in query/form and Apply packet (or honest 0 banks)",
-      "actual": "beforeRows=10; afterRows=10; valueOk=true; packetOk=true; query.cibilScore=undefined; form=\"805\"; packet=805",
-      "evidence": {
-        "q": {},
-        "form": {
-          "monthlyIncome": "1,00,000",
-          "propertyValue": "62,50,000",
-          "existingEmis": "0",
-          "cardLimits": "0",
-          "cardLoadPct": "10",
-          "foirPct": "55",
-          "tenureYears": "20",
-          "age": "35",
-          "cibilScore": "805",
-          "occupation": "Salaried",
-          "purpose": "Regular Home Loan",
-          "includeCoApplicant": "no"
-        },
-        "packetVal": 805
-      },
-      "userImpact": "If hlc-cibil is dropped, banks see the wrong cibilScore.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-occupation",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input “hlc-occupation” change survives rematch + Apply packet",
-      "flowStep": "Each input",
-      "expected": "Changing only hlc-occupation to Self-Employed is kept in query/form and Apply packet (or honest 0 banks)",
-      "actual": "beforeRows=10; afterRows=10; valueOk=true; packetOk=true; query.occupation=undefined; form=\"Self-Employed\"; packet=\"Self-Employed\"",
-      "evidence": {
-        "q": {},
-        "form": {
-          "monthlyIncome": "1,00,000",
-          "propertyValue": "62,50,000",
-          "existingEmis": "0",
-          "cardLimits": "0",
-          "cardLoadPct": "10",
-          "foirPct": "55",
-          "tenureYears": "20",
-          "age": "35",
-          "cibilScore": "780",
-          "occupation": "Self-Employed",
-          "purpose": "Regular Home Loan",
-          "includeCoApplicant": "no"
-        },
-        "packetVal": "Self-Employed"
-      },
-      "userImpact": "If hlc-occupation is dropped, banks see the wrong occupation.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-purpose",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Input “hlc-purpose” change survives rematch + Apply packet",
-      "flowStep": "Each input",
-      "expected": "Changing only hlc-purpose to Top-up Loan is kept in query/form and Apply packet (or honest 0 banks)",
-      "actual": "beforeRows=10; afterRows=10; valueOk=true; packetOk=true; query.purpose=undefined; form=\"Top-up Loan\"; packet=\"Top-up Loan\"",
-      "evidence": {
-        "q": {},
-        "form": {
-          "monthlyIncome": "1,00,000",
-          "propertyValue": "62,50,000",
-          "existingEmis": "0",
-          "cardLimits": "0",
-          "cardLoadPct": "10",
-          "foirPct": "55",
-          "tenureYears": "20",
-          "age": "35",
-          "cibilScore": "780",
-          "occupation": "Salaried",
-          "purpose": "Top-up Loan",
-          "includeCoApplicant": "no"
-        },
-        "packetVal": "Top-up Loan"
-      },
-      "userImpact": "If hlc-purpose is dropped, banks see the wrong purpose.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-foir-50",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "FOIR option 50% applies",
-      "flowStep": "Each input / FOIR options",
-      "expected": "foirPct=50 in draft/form",
-      "actual": "query=null; form=\"50\"; rows=10",
-      "evidence": null,
-      "userImpact": "Wrong FOIR changes loan amount shown.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-foir-55",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "FOIR option 55% applies",
-      "flowStep": "Each input / FOIR options",
-      "expected": "foirPct=55 in draft/form",
-      "actual": "query=null; form=\"55\"; rows=10",
-      "evidence": null,
-      "userImpact": "Wrong FOIR changes loan amount shown.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-foir-60",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "FOIR option 60% applies",
-      "flowStep": "Each input / FOIR options",
-      "expected": "foirPct=60 in draft/form",
-      "actual": "query=null; form=\"60\"; rows=10",
-      "evidence": null,
-      "userImpact": "Wrong FOIR changes loan amount shown.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-foir-65",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "FOIR option 65% applies",
-      "flowStep": "Each input / FOIR options",
-      "expected": "foirPct=65 in draft/form",
-      "actual": "query=null; form=\"65\"; rows=10",
-      "evidence": null,
-      "userImpact": "Wrong FOIR changes loan amount shown.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-foir-70",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "FOIR option 70% applies",
-      "flowStep": "Each input / FOIR options",
-      "expected": "foirPct=70 in draft/form",
-      "actual": "query=null; form=\"70\"; rows=10",
-      "evidence": null,
-      "userImpact": "Wrong FOIR changes loan amount shown.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-cardLoad-0",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Card load option 0% applies",
-      "flowStep": "Each input / card load options",
-      "expected": "cardLoadPct=0",
-      "actual": "query=null; form=\"0\"; rows=10",
-      "evidence": null,
-      "userImpact": "Card load changes EMI room.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-cardLoad-5",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Card load option 5% applies",
-      "flowStep": "Each input / card load options",
-      "expected": "cardLoadPct=5",
-      "actual": "query=null; form=\"5\"; rows=10",
-      "evidence": null,
-      "userImpact": "Card load changes EMI room.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-cardLoad-10",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Card load option 10% applies",
-      "flowStep": "Each input / card load options",
-      "expected": "cardLoadPct=10",
-      "actual": "query=null; form=\"10\"; rows=10",
-      "evidence": null,
-      "userImpact": "Card load changes EMI room.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-co-toggle",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Co-applicant toggle reveals co-applicant fields",
-      "flowStep": "Each input / co-applicant",
-      "expected": "Fields panel visible after toggle",
-      "actual": "{\"visible\":true,\"fields\":[]}",
-      "evidence": null,
-      "userImpact": "Cannot add co-applicant without this.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-co-include",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Co-applicant include flag set after toggle+fill",
-      "flowStep": "Each input / co-applicant",
-      "expected": "includeCoApplicant yes/true in form or query",
-      "actual": "form.includeCoApplicant=yes; query.includeCoApplicant=null; rows=10",
-      "evidence": null,
-      "userImpact": "Ops must know a co-applicant was included.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-IN-co-packet",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Co-applicant fields land in Apply packet",
-      "flowStep": "Each input / co-applicant → packet",
-      "expected": "coApplicants[] present in packet.form",
-      "actual": "coApplicants[0]={\"relationship\":\"Spouse\",\"occupation\":\"Salaried\",\"age\":\"\",\"cibilScore\":\"\",\"monthlyIncome\":\"0\",\"existingEmis\":\"0\",\"cardLimits\":\"0\"}",
-      "evidence": {
-        "age": "35",
-        "cibilScore": "780",
-        "monthlyIncome": "1,00,000",
-        "existingEmis": "0",
-        "cardLimits": "0",
-        "cardLoadPct": "10",
-        "tenureYears": "20",
-        "foirPct": "55",
-        "includeCoApplicant": "yes",
-        "coApplicants": [
-          {
-            "relationship": "Spouse",
-            "occupation": "Salaried",
-            "age": "",
-            "cibilScore": "",
-            "monthlyIncome": "0",
-            "existingEmis": "0",
-            "cardLimits": "0"
-          }
-        ],
-        "occupation": "Salaried",
-        "purpose": "Regular Home Loan",
-        "propertyValue": "62,50,000"
-      },
-      "userImpact": "Co-applicant numbers must travel to Apply.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-govtPsu",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Filter “govtPsu” can be set without breaking the table",
-      "flowStep": "Each filter",
-      "expected": "Setting govtPsu rematches; table still usable",
-      "actual": "beforeRows=10; afterRows=3; draftFilters.govtPsu=true; recorded=true",
-      "evidence": {
-        "beforeRows": 10,
-        "afterRows": 3,
-        "filters": {
-          "govtPsu": true,
-          "greenHome": false,
-          "womenApplicant": false,
-          "insurance": false,
-          "bankPublic": true,
-          "bankPrivate": true,
-          "rateFloating": true,
-          "fixedRate": false,
-          "facilityTermLoan": true,
-          "overdraft": false
-        }
-      },
-      "userImpact": "Broken govtPsu filter means customers cannot narrow banks.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-GHOST-govtPsu",
-      "severity": "P0",
-      "status": "FAIL",
-      "title": "Filter “govtPsu” flip after select — no ghost selection",
-      "flowStep": "Each filter / selection durability",
-      "expected": "Selected stays visible OR is fully cleared from draft+count",
-      "actual": "{\"selectedVisible\":0,\"draftIds\":1,\"apply\":\"Apply once to 1 bank\"}; ghost=true",
-      "evidence": null,
-      "userImpact": "Ghost selections lie about what Apply will send.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-womenApplicant",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Filter “womenApplicant” can be set without breaking the table",
-      "flowStep": "Each filter",
-      "expected": "Setting womenApplicant rematches; table still usable",
-      "actual": "beforeRows=10; afterRows=2; draftFilters.womenApplicant=true; recorded=true",
-      "evidence": {
-        "beforeRows": 10,
-        "afterRows": 2,
-        "filters": {
-          "govtPsu": false,
-          "greenHome": false,
-          "womenApplicant": true,
-          "insurance": false,
-          "bankPublic": true,
-          "bankPrivate": true,
-          "rateFloating": true,
-          "fixedRate": false,
-          "facilityTermLoan": true,
-          "overdraft": false
-        }
-      },
-      "userImpact": "Broken womenApplicant filter means customers cannot narrow banks.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-GHOST-womenApplicant",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Filter “womenApplicant” flip after select — no ghost selection",
-      "flowStep": "Each filter / selection durability",
-      "expected": "Selected stays visible OR is fully cleared from draft+count",
-      "actual": "{\"selectedVisible\":1,\"draftIds\":1,\"apply\":\"Apply once to 1 bank\"}; ghost=false",
-      "evidence": null,
-      "userImpact": "Ghost selections lie about what Apply will send.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-greenHome",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Filter “greenHome” can be set without breaking the table",
-      "flowStep": "Each filter",
-      "expected": "Setting greenHome rematches; table still usable",
-      "actual": "beforeRows=10; afterRows=3; draftFilters.greenHome=true; recorded=true",
-      "evidence": {
-        "beforeRows": 10,
-        "afterRows": 3,
-        "filters": {
-          "govtPsu": false,
-          "greenHome": true,
-          "womenApplicant": false,
-          "insurance": false,
-          "bankPublic": true,
-          "bankPrivate": true,
-          "rateFloating": true,
-          "fixedRate": false,
-          "facilityTermLoan": true,
-          "overdraft": false
-        }
-      },
-      "userImpact": "Broken greenHome filter means customers cannot narrow banks.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-GHOST-greenHome",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Filter “greenHome” flip after select — no ghost selection",
-      "flowStep": "Each filter / selection durability",
-      "expected": "Selected stays visible OR is fully cleared from draft+count",
-      "actual": "{\"selectedVisible\":1,\"draftIds\":1,\"apply\":\"Apply once to 1 bank\"}; ghost=false",
-      "evidence": null,
-      "userImpact": "Ghost selections lie about what Apply will send.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-insurance",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Filter “insurance” can be set without breaking the table",
-      "flowStep": "Each filter",
-      "expected": "Setting insurance rematches; table still usable",
-      "actual": "beforeRows=10; afterRows=3; draftFilters.insurance=true; recorded=true",
-      "evidence": {
-        "beforeRows": 10,
-        "afterRows": 3,
-        "filters": {
-          "govtPsu": false,
-          "greenHome": false,
-          "womenApplicant": false,
-          "insurance": true,
-          "bankPublic": true,
-          "bankPrivate": true,
-          "rateFloating": true,
-          "fixedRate": false,
-          "facilityTermLoan": true,
-          "overdraft": false
-        }
-      },
-      "userImpact": "Broken insurance filter means customers cannot narrow banks.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-GHOST-insurance",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Filter “insurance” flip after select — no ghost selection",
-      "flowStep": "Each filter / selection durability",
-      "expected": "Selected stays visible OR is fully cleared from draft+count",
-      "actual": "{\"selectedVisible\":1,\"draftIds\":1,\"apply\":\"Apply once to 1 bank\"}; ghost=false",
-      "evidence": null,
-      "userImpact": "Ghost selections lie about what Apply will send.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-bankPublic",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Filter “bankPublic” can be set without breaking the table",
-      "flowStep": "Each filter",
-      "expected": "Setting bankPublic rematches; table still usable",
-      "actual": "beforeRows=10; afterRows=10; draftFilters.bankPublic=true; recorded=true",
-      "evidence": {
-        "beforeRows": 10,
-        "afterRows": 10,
-        "filters": {
-          "govtPsu": false,
-          "greenHome": false,
-          "womenApplicant": false,
-          "insurance": false,
-          "bankPublic": true,
-          "bankPrivate": false,
-          "rateFloating": true,
-          "fixedRate": false,
-          "facilityTermLoan": true,
-          "overdraft": false
-        }
-      },
-      "userImpact": "Broken bankPublic filter means customers cannot narrow banks.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-GHOST-bankPublic",
-      "severity": "P0",
-      "status": "FAIL",
-      "title": "Filter “bankPublic” flip after select — no ghost selection",
-      "flowStep": "Each filter / selection durability",
-      "expected": "Selected stays visible OR is fully cleared from draft+count",
-      "actual": "{\"selectedVisible\":0,\"draftIds\":1,\"apply\":\"Apply once to 1 bank\"}; ghost=true",
-      "evidence": null,
-      "userImpact": "Ghost selections lie about what Apply will send.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-bankPrivate",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Filter “bankPrivate” can be set without breaking the table",
-      "flowStep": "Each filter",
-      "expected": "Setting bankPrivate rematches; table still usable",
-      "actual": "beforeRows=10; afterRows=10; draftFilters.bankPrivate=true; recorded=true",
-      "evidence": {
-        "beforeRows": 10,
-        "afterRows": 10,
-        "filters": {
-          "govtPsu": false,
-          "greenHome": false,
-          "womenApplicant": false,
-          "insurance": false,
-          "bankPublic": false,
-          "bankPrivate": true,
-          "rateFloating": true,
-          "fixedRate": false,
-          "facilityTermLoan": true,
-          "overdraft": false
-        }
-      },
-      "userImpact": "Broken bankPrivate filter means customers cannot narrow banks.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-GHOST-bankPrivate",
-      "severity": "P0",
-      "status": "FAIL",
-      "title": "Filter “bankPrivate” flip after select — no ghost selection",
-      "flowStep": "Each filter / selection durability",
-      "expected": "Selected stays visible OR is fully cleared from draft+count",
-      "actual": "{\"selectedVisible\":0,\"draftIds\":1,\"apply\":\"Apply once to 1 bank\"}; ghost=true",
-      "evidence": null,
-      "userImpact": "Ghost selections lie about what Apply will send.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-rateFloating",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Filter “rateFloating” can be set without breaking the table",
-      "flowStep": "Each filter",
-      "expected": "Setting rateFloating rematches; table still usable",
-      "actual": "beforeRows=10; afterRows=10; draftFilters.rateFloating=null; recorded=null",
-      "evidence": {
-        "beforeRows": 10,
-        "afterRows": 10,
-        "filters": null
-      },
-      "userImpact": "Broken rateFloating filter means customers cannot narrow banks.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-GHOST-rateFloating",
-      "severity": "P0",
-      "status": "FAIL",
-      "title": "Filter “rateFloating” flip after select — no ghost selection",
-      "flowStep": "Each filter / selection durability",
-      "expected": "Selected stays visible OR is fully cleared from draft+count",
-      "actual": "{\"selectedVisible\":0,\"draftIds\":1,\"apply\":\"Apply once to 1 bank\"}; ghost=true",
-      "evidence": null,
-      "userImpact": "Ghost selections lie about what Apply will send.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-fixedRate",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Filter “fixedRate” can be set without breaking the table",
-      "flowStep": "Each filter",
-      "expected": "Setting fixedRate rematches; table still usable",
-      "actual": "beforeRows=10; afterRows=8; draftFilters.fixedRate=true; recorded=true",
-      "evidence": {
-        "beforeRows": 10,
-        "afterRows": 8,
-        "filters": {
-          "govtPsu": false,
-          "greenHome": false,
-          "womenApplicant": false,
-          "insurance": false,
-          "bankPublic": true,
-          "bankPrivate": true,
-          "rateFloating": false,
-          "fixedRate": true,
-          "facilityTermLoan": true,
-          "overdraft": false
-        }
-      },
-      "userImpact": "Broken fixedRate filter means customers cannot narrow banks.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-GHOST-fixedRate",
-      "severity": "P0",
-      "status": "FAIL",
-      "title": "Filter “fixedRate” flip after select — no ghost selection",
-      "flowStep": "Each filter / selection durability",
-      "expected": "Selected stays visible OR is fully cleared from draft+count",
-      "actual": "{\"selectedVisible\":0,\"draftIds\":1,\"apply\":\"Apply once to 1 bank\"}; ghost=true",
-      "evidence": null,
-      "userImpact": "Ghost selections lie about what Apply will send.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-facilityTermLoan",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Filter “facilityTermLoan” can be set without breaking the table",
-      "flowStep": "Each filter",
-      "expected": "Setting facilityTermLoan rematches; table still usable",
-      "actual": "beforeRows=10; afterRows=10; draftFilters.facilityTermLoan=null; recorded=null",
-      "evidence": {
-        "beforeRows": 10,
-        "afterRows": 10,
-        "filters": null
-      },
-      "userImpact": "Broken facilityTermLoan filter means customers cannot narrow banks.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-GHOST-facilityTermLoan",
-      "severity": "P0",
-      "status": "FAIL",
-      "title": "Filter “facilityTermLoan” flip after select — no ghost selection",
-      "flowStep": "Each filter / selection durability",
-      "expected": "Selected stays visible OR is fully cleared from draft+count",
-      "actual": "{\"selectedVisible\":0,\"draftIds\":1,\"apply\":\"Apply once to 1 bank\"}; ghost=true",
-      "evidence": null,
-      "userImpact": "Ghost selections lie about what Apply will send.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-overdraft",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Filter “overdraft” can be set without breaking the table",
-      "flowStep": "Each filter",
-      "expected": "Setting overdraft rematches; table still usable",
-      "actual": "beforeRows=10; afterRows=10; draftFilters.overdraft=true; recorded=true",
-      "evidence": {
-        "beforeRows": 10,
-        "afterRows": 10,
-        "filters": {
-          "govtPsu": false,
-          "greenHome": false,
-          "womenApplicant": false,
-          "insurance": false,
-          "bankPublic": true,
-          "bankPrivate": true,
-          "rateFloating": true,
-          "fixedRate": false,
-          "facilityTermLoan": false,
-          "overdraft": true
-        }
-      },
-      "userImpact": "Broken overdraft filter means customers cannot narrow banks.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-GHOST-overdraft",
-      "severity": "P0",
-      "status": "FAIL",
-      "title": "Filter “overdraft” flip after select — no ghost selection",
-      "flowStep": "Each filter / selection durability",
-      "expected": "Selected stays visible OR is fully cleared from draft+count",
-      "actual": "{\"selectedVisible\":0,\"draftIds\":1,\"apply\":\"Apply once to 1 bank\"}; ghost=true",
-      "evidence": null,
-      "userImpact": "Ghost selections lie about what Apply will send.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-FL-clear",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Clear filters restores a usable bank list",
-      "flowStep": "Each filter / clear",
-      "expected": "Clear works; banks still show",
-      "actual": "rows=10; filters={\"govtPsu\":false,\"greenHome\":false,\"womenApplicant\":false,\"insurance\":false,\"bankPublic\":true,\"bankPrivate\":true,\"rateFloating\":true,\"fixedRate\":false,\"facilityTermLoan\":true,\"overdraft\":false}",
-      "evidence": null,
-      "userImpact": "Stuck filters block compare.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-TB-rows",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Table shows bank rows after Compare",
-      "flowStep": "Table",
-      "expected": "≥1 selectable row",
-      "actual": "rows=10",
-      "evidence": null,
-      "userImpact": "No table = no apply.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-TB-select-row",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Clicking a bank row selects it and enables Apply",
-      "flowStep": "Table / select",
-      "expected": "Selected ≥1; Apply enabled",
-      "actual": "{\"n\":1,\"disabled\":false,\"label\":\"Apply once to 1 bank\"}",
-      "evidence": null,
-      "userImpact": "Cannot apply without row select.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-TB-deselect-row",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Clicking selected row deselects (or Apply locks)",
-      "flowStep": "Table / deselect",
-      "expected": "Toggle off selection",
-      "actual": "{\"n\":0,\"disabled\":true}",
-      "evidence": null,
-      "userImpact": "Users need to uncheck banks.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-TB-show-more",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Show more banks expands the table",
-      "flowStep": "Table / show more",
-      "expected": "More rows after click",
-      "actual": "available=true; before=10; after=33",
-      "evidence": null,
-      "userImpact": "Hidden banks never get selected.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-TB-select-all",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Select-all header selects every visible bank",
-      "flowStep": "Table / select all",
-      "expected": "draftIds ≥ visible rows",
-      "actual": "{\"visible\":33,\"selected\":33,\"draftIds\":33}",
-      "evidence": null,
-      "userImpact": "Select-all must not under-select.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-TB-sort-headers",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Table sort headers clickable (9 found)",
-      "flowStep": "Table / sort",
-      "expected": "Sort controls exist and respond to click without crash",
-      "actual": "{\"count\":9,\"clicks\":[{\"label\":\"\",\"before\":\"Bank of Maharashtra\",\"after\":\"Bank of Maharashtra\",\"changed\":false},{\"label\":\"RateThe annual interest on your outstand\",\"before\":\"Bank of Maharashtra\",\"after\":\"Bank of Maharashtra\",\"changed\":false},{\"label\":\"\",\"before\":\"Bank of Maharashtra\",\"after\":\"Bank of Maharashtra\",\"changed\":false},{\"label\":\"Loan amountHow much this bank will give \",\"before\":\"Bank of Maharashtra\",\"after\":\"Bank of Maharashtra\",\"changed\":false},{\"label\":\"\",\"before\":\"Bank of Maharashtra\",\"after\":\"Bank of Maharashtra\",\"changed\":false},{\"label\":\"Tenure (yrs)How many years this bank giv\",\"before\":\"Bank of Maharashtra\",\"after\":\"Bank of Maharashtra\",\"changed\":false},{\"label\":\"\",\"before\":\"Bank of Maharashtra\",\"after\":\"Bank of Maharashtra\",\"changed\":false},{\"label\":\"EMIEstimated monthl",
-      "evidence": {
-        "count": 9,
-        "clicks": [
-          {
-            "label": "",
-            "before": "Bank of Maharashtra",
-            "after": "Bank of Maharashtra",
-            "changed": false
-          },
-          {
-            "label": "RateThe annual interest on your outstand",
-            "before": "Bank of Maharashtra",
-            "after": "Bank of Maharashtra",
-            "changed": false
-          },
-          {
-            "label": "",
-            "before": "Bank of Maharashtra",
-            "after": "Bank of Maharashtra",
-            "changed": false
-          },
-          {
-            "label": "Loan amountHow much this bank will give ",
-            "before": "Bank of Maharashtra",
-            "after": "Bank of Maharashtra",
-            "changed": false
-          },
-          {
-            "label": "",
-            "before": "Bank of Maharashtra",
-            "after": "Bank of Maharashtra",
-            "changed": false
-          },
-          {
-            "label": "Tenure (yrs)How many years this bank giv",
-            "before": "Bank of Maharashtra",
-            "after": "Bank of Maharashtra",
-            "changed": false
-          },
-          {
-            "label": "",
-            "before": "Bank of Maharashtra",
-            "after": "Bank of Maharashtra",
-            "changed": false
-          },
-          {
-            "label": "EMIEstimated monthly payment on this loa",
-            "before": "Bank of Maharashtra",
-            "after": "Bank of Maharashtra",
-            "changed": false
-          },
-          {
-            "label": "",
-            "before": "Bank of Maharashtra",
-            "after": "Bank of Maharashtra",
-            "changed": false
-          }
-        ]
-      },
-      "userImpact": "Sorting is how people compare rates/EMI.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-TB-drawer",
-      "severity": "P1",
-      "status": "PASS",
-      "title": "Bank details drawer opens from table",
-      "flowStep": "Table / drawer",
-      "expected": "Drawer shows bank detail content",
-      "actual": "{\"drawer\":{\"clicked\":true,\"open\":false,\"title\":\"More details\",\"bodyLen\":393},\"drawer2\":{\"ariaHidden\":\"false\",\"title\":\"More details\",\"bodyLen\":393}}",
-      "evidence": null,
-      "userImpact": "Details drawer is how people verify scheme rules.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-TB-paddles",
-      "severity": "P2",
-      "status": "PASS",
-      "title": "Table column paddles exist (scroll assist)",
-      "flowStep": "Table / paddles",
-      "expected": "Left/right paddles present",
-      "actual": "{\"hasLeft\":true,\"hasRight\":true,\"before\":0,\"mid\":0,\"after\":0,\"moved\":false}",
-      "evidence": null,
-      "userImpact": "Wide tables need horizontal scroll help.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-TB-apply-once",
-      "severity": "P0",
-      "status": "PASS",
-      "title": "Apply once from table opens Apply with banks",
-      "flowStep": "Table / Apply once",
-      "expected": "apply.html + packet banks ≥ 1",
-      "actual": "url=http://127.0.0.1:8765/pages/apply.html; banks=1",
-      "evidence": null,
-      "userImpact": "Core handoff from table to Apply.",
-      "suite": "each-control"
-    },
-    {
-      "id": "CTL-COV-01",
-      "severity": "INFO",
-      "status": "PASS",
-      "title": "Coverage statement — each input / filter / table family",
-      "flowStep": "Coverage",
-      "expected": "Every listed input, every filter key, core table actions probed",
-      "actual": "inputsExpected=12; inputProbes=22; filtersExpected=10; filterProbes=21; tableProbes=9; inventoryInputs=12; inventoryFilters=10",
-      "evidence": {
-        "inputIdsExpected": [
-          "hlc-monthly-income",
-          "hlc-property-value",
-          "hlc-existing-emis",
-          "hlc-card-limits",
-          "hlc-card-load-pct",
-          "hlc-foir",
-          "hlc-tenure",
-          "hlc-age",
-          "hlc-cibil",
-          "hlc-occupation",
-          "hlc-purpose",
-          "hlc-co-toggle"
-        ],
-        "filterKeysExpected": [
-          "govtPsu",
-          "womenApplicant",
-          "greenHome",
-          "insurance",
-          "bankPublic",
-          "bankPrivate",
-          "rateFloating",
-          "fixedRate",
-          "facilityTermLoan",
-          "overdraft"
-        ],
-        "inventory": {
-          "inputs": [
-            {
-              "id": "hlc-monthly-income",
-              "name": "monthlyIncome",
-              "tag": "input",
-              "type": "text",
-              "label": "Net monthly income * ₹",
-              "options": null
-            },
-            {
-              "id": "hlc-property-value",
-              "name": "propertyValue",
-              "tag": "input",
-              "type": "text",
-              "label": "Property value as per agreement * ₹",
-              "options": null
-            },
-            {
-              "id": "hlc-existing-emis",
-              "name": "existingEmis",
-              "tag": "input",
-              "type": "text",
-              "label": "Total existing EMIs ₹",
-              "options": null
-            },
-            {
-              "id": "hlc-card-limits",
-              "name": "cardLimits",
-              "tag": "input",
-              "type": "text",
-              "label": "Total credit card limits",
-              "options": null
-            },
-            {
-              "id": "hlc-card-load-pct",
-              "name": "cardLoadPct",
-              "tag": "select",
-              "type": "select-one",
-              "label": "Share of this credit card limit counted as monthly EMI",
-              "options": [
-                {
-                  "value": "0",
-                  "text": "0%"
-                },
-                {
-                  "value": "5",
-                  "text": "5%"
-                },
-                {
-                  "value": "10",
-                  "text": "10%"
-                }
-              ]
-            },
-            {
-              "id": "hlc-foir",
-              "name": "foirPct",
-              "tag": "select",
-              "type": "select-one",
-              "label": "EMI limit / FOIR 50% 55% (default) 60% 65% 70% 55% (default)",
-              "options": [
-                {
-                  "value": "50",
-                  "text": "50%"
-                },
-                {
-                  "value": "55",
-                  "text": "55% (default)"
-                },
-                {
-                  "value": "60",
-                  "text": "60%"
-                },
-                {
-                  "value": "65",
-                  "text": "65%"
-                },
-                {
-                  "value": "70",
-                  "text": "70%"
-                }
-              ]
-            },
-            {
-              "id": "hlc-tenure",
-              "name": "tenureYears",
-              "tag": "input",
-              "type": "text",
-              "label": "Loan tenure * years",
-              "options": null
-            },
-            {
-              "id": "hlc-age",
-              "name": "age",
-              "tag": "input",
-              "type": "text",
-              "label": "Age * years",
-              "options": null
-            },
-            {
-              "id": "hlc-cibil",
-              "name": "cibilScore",
-              "tag": "input",
-              "type": "text",
-              "label": "CIBIL score *",
-              "options": null
-            },
-            {
-              "id": "hlc-occupation",
-              "name": "occupation",
-              "tag": "select",
-              "type": "select-one",
-              "label": "Occupation * Salaried Self-employed Salaried",
-              "options": [
-                {
-                  "value": "Salaried",
-                  "text": "Salaried"
-                },
-                {
-                  "value": "Self-Employed",
-                  "text": "Self-employed"
-                }
-              ]
-            },
-            {
-              "id": "hlc-purpose",
-              "name": "purpose",
-              "tag": "select",
-              "type": "select-one",
-              "label": "Purpose * New Top-up New",
-              "options": [
-                {
-                  "value": "Regular Home Loan",
-                  "text": "New"
-                },
-                {
-                  "value": "Top-up Loan",
-                  "text": "Top-up"
-                }
-              ]
-            },
-            {
-              "id": "hlc-coapplicant",
-              "name": "includeCoApplicant",
-              "tag": "input",
-              "type": "hidden-coapplicant",
-              "label": "Co-applicant toggle (hidden+button)"
-            }
-          ],
-          "filters": [
-            {
-              "key": "govtPsu",
-              "checked": false,
-              "label": "Govt / PSU employee and pensioner"
-            },
-            {
-              "key": "womenApplicant",
-              "checked": false,
-              "label": "Women applicant"
-            },
-            {
-              "key": "greenHome",
-              "checked": false,
-              "label": "Green home"
-            },
-            {
-              "key": "insurance",
-              "checked": false,
-              "label": "Insurance"
-            },
-            {
-              "key": "bankPublic",
-              "checked": true,
-              "label": "Public Slower process, usually a better rate."
-            },
-            {
-              "key": "bankPrivate",
-              "checked": true,
-              "label": "Private Smoother process, usually a higher rate and fee."
-            },
-            {
-              "key": "rateFloating",
-              "checked": true,
-              "label": "Floating Can move with the benchmark."
-            },
-            {
-              "key": "fixedRate",
-              "checked": false,
-              "label": "Fixed Does not change for a few years (generally 5 years). A"
-            },
-            {
-              "key": "facilityTermLoan",
-              "checked": true,
-              "label": "Term loan A general home loan product."
-            },
-            {
-              "key": "overdraft",
-              "checked": false,
-              "label": "Overdraft Your loan sits in a linked savings account. Money "
-            }
-          ],
-          "table": {
-            "rows": 10,
-            "headButtons": [
-              {
-                "tag": "TH",
-                "text": "Lenders",
-                "sort": null
-              },
-              {
-                "tag": "BUTTON",
-                "text": "",
-                "sort": null
-              },
-              {
-                "tag": "TH",
-                "text": "RateThe annual interest on your outstand",
-                "sort": "effectiveRoiPct"
-              },
-              {
-                "tag": "BUTTON",
-                "text": "",
-                "sort": null
-              },
-              {
-                "tag": "TH",
-                "text": "Loan amountHow much this bank will give ",
-                "sort": "loanAmount"
-              },
-              {
-                "tag": "BUTTON",
-                "text": "",
-                "sort": null
-              },
-              {
-                "tag": "TH",
-                "text": "Tenure (yrs)How many years this bank giv",
-                "sort": "tenureLabel"
-              },
-              {
-                "tag": "BUTTON",
-                "text": "",
-                "sort": null
-              },
-              {
-                "tag": "TH",
-                "text": "EMIEstimated monthly payment on this loa",
-                "sort": "emi"
-              },
-              {
-                "tag": "BUTTON",
-                "text": "",
-                "sort": null
-              }
-            ],
-            "showMore": true,
-            "paddleLeft": true,
-            "paddleRight": true,
-            "applyBtn": true,
-            "drawer": true,
-            "selectAll": true
-          }
-        }
-      },
-      "userImpact": "Answers: did we try each control — yes for this finite inventory (not every numeric value).",
-      "suite": "each-control"
     }
   ]
 }

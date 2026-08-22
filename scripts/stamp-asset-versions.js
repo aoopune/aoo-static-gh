@@ -43,6 +43,7 @@ const LAYOUT_REFS = [
     refs: [
       "../css/shroffin-shell.css",
       "../css/shroffin-apply.css",
+      "../js/bank-logos.js",
       "../js/home-loan-apply.js",
       "../js/shroffin-nav.js",
     ],
@@ -53,6 +54,7 @@ const LAYOUT_REFS = [
       "../css/shroffin-shell.css",
       "../css/shroffin-apply.css",
       "../js/site-contacts.generated.js",
+      "../js/bank-logos.js",
       "../js/home-loan-apply.js",
       "../js/shroffin-nav.js",
     ],
@@ -170,26 +172,19 @@ function stampLayout(entry) {
 }
 
 function rebuildFlowPages() {
-  const result = spawnSync(
-    process.execPath,
-    [
-      path.join(root, "scripts", "build-content.js"),
-      "--write",
-      "--only=explore-banks",
-    ],
-    { cwd: root, stdio: "inherit" }
-  );
-  if (result.status !== 0) process.exit(result.status || 1);
-  const resultApply = spawnSync(
-    process.execPath,
-    [
-      path.join(root, "scripts", "build-content.js"),
-      "--write",
-      "--only=apply",
-    ],
-    { cwd: root, stdio: "inherit" }
-  );
-  if (resultApply.status !== 0) process.exit(resultApply.status || 1);
+  const pages = ["explore-banks", "apply", "apply/contact"];
+  for (const only of pages) {
+    const result = spawnSync(
+      process.execPath,
+      [
+        path.join(root, "scripts", "build-content.js"),
+        "--write",
+        "--only=" + only,
+      ],
+      { cwd: root, stdio: "inherit" }
+    );
+    if (result.status !== 0) process.exit(result.status || 1);
+  }
 }
 
 function main() {

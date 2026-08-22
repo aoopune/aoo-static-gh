@@ -9,9 +9,9 @@
     Embeddable compare demo for home-feature visual.
     Interactive: select lenders + Overview / Charges / Other charges.
   -->
-  <link rel="stylesheet" href="../css/shroffin-shell.min.css?v=home-wash-8">
+  <link rel="stylesheet" href="../css/shroffin-shell.min.css?v=0a3f94647f">
   <link rel="stylesheet" href="../css/shroffin-product-demo.min.css?v=110">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.min.css?v=ac3e183e59">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.min.css?v=852d8d21cb">
 <script>
 (function () {
   /* Early peek class so Explore’s 16rem bank col never paints first. */
@@ -54,8 +54,21 @@
       position: relative;
     }
 
-    .fit {
+    /*
+     * Radius + clip live on .win-slot (not on the scaled .fit tree) — same
+     * pattern as product-demo .spd-window-slot / .spd-window.
+     */
+    .win-slot {
       position: absolute;
+      overflow: hidden;
+      isolation: isolate;
+      box-shadow:
+        0 0 0 0.5px rgba(255, 255, 255, 0.08),
+        0 12px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    .fit {
+      position: relative;
       left: 0;
       top: 0;
       width: var(--win);
@@ -66,12 +79,9 @@
     .win {
       width: var(--win);
       height: 460px;
-      border-radius: 12px;
+      border-radius: 0;
       overflow: hidden;
       background: var(--shroffin-surface);
-      box-shadow:
-        0 0 0 0.5px rgba(255, 255, 255, 0.08),
-        0 12px 28px rgba(0, 0, 0, 0.35);
     }
 
     .pane {
@@ -396,6 +406,7 @@
 </script>
 </head>
 <body>
+  <div class="win-slot" id="win-slot">
   <div class="fit" id="fit">
     <div class="win" id="demo" role="region" aria-label="Compare lenders demo">
       <div class="spd-safari" aria-hidden="true">
@@ -649,6 +660,7 @@
       </div>
     </div>
   </div>
+  </div>
 
   <script>
     (function () {
@@ -745,6 +757,7 @@
       /* Fixed design size so tabs don't resize the demo. */
       var DESIGN_W = 860;
       var DESIGN_H = 460;
+      var WINDOW_RADIUS = 16;
       /* Soft hang-off only — fill the slot so the table stays readable */
       var BOTTOM_CUT = 24;
       var RIGHT_CUT = 32;
@@ -765,9 +778,19 @@
         return Math.max(window.innerWidth, 1) < 640;
       }
 
+      function paintSlot(slot, left, top, scaledW, scaledH, scale) {
+        if (!slot) return;
+        slot.style.left = left + "px";
+        slot.style.top = top + "px";
+        slot.style.width = scaledW + "px";
+        slot.style.height = scaledH + "px";
+        slot.style.borderRadius = Math.max(12, WINDOW_RADIUS * scale) + "px";
+      }
+
       function fitFrame() {
         var el = document.getElementById("fit");
-        if (!el) return;
+        var slot = document.getElementById("win-slot");
+        if (!el || !slot) return;
         var vw = Math.max(window.innerWidth, 1);
         var vh = Math.max(window.innerHeight, 1);
         var phone = isPhoneHost();
@@ -797,8 +820,7 @@
           var s = Math.min(1, stageW / need);
           if (!isFinite(s) || s <= 0) s = 0.85;
           if (s < 0.78) s = 0.78;
-          el.style.left = "0px";
-          el.style.top = "0px";
+          paintSlot(slot, 0, 0, DESIGN_W * s, DESIGN_H * s, s);
           el.style.transform = "scale(" + s + ")";
           return;
         }
@@ -809,8 +831,7 @@
         var scaledH = DESIGN_H * s;
         var left = vw - scaledW + RIGHT_CUT;
         var top = Math.max(4, vh - scaledH + BOTTOM_CUT) + NUDGE_DOWN;
-        el.style.left = left + "px";
-        el.style.top = top + "px";
+        paintSlot(slot, left, top, scaledW, scaledH, s);
         el.style.transform = "scale(" + s + ")";
       }
       window.addEventListener("resize", fitFrame);

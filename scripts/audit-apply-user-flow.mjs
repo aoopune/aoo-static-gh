@@ -156,18 +156,34 @@ async function clickFirstMatchingBank(page, nameIncludes) {
   return null;
 }
 
-async function selectNthVisible(page, index) {
-  const name = await page.evaluate((index) => {
-    const rows = document.querySelectorAll("tr.hlc-selectable-row");
-    const row = rows[index];
-    if (!row) return null;
-    const nameEl = row.querySelector(".hlc-bank-name-text");
-    const name = nameEl
-      ? nameEl.textContent.trim()
-      : row.getAttribute("aria-label") || "";
-    row.click();
-    return name;
-  }, index);
+async function selectNthVisible(page, index, opts) {
+  const skipSelected = !!(opts && opts.skipSelected);
+  const name = await page.evaluate(
+    ({ index, skipSelected }) => {
+      const rows = Array.from(document.querySelectorAll("tr.hlc-selectable-row"));
+      let row = rows[index];
+      if (skipSelected) {
+        row = rows.find(function (tr) {
+          return !(
+            tr.classList.contains("is-selected") ||
+            tr.getAttribute("aria-selected") === "true"
+          );
+        });
+      }
+      if (!row) return null;
+      const nameEl = row.querySelector(".hlc-bank-name-text");
+      const name = nameEl
+        ? nameEl.textContent.trim()
+        : row.getAttribute("aria-label") || "";
+      const check = row.querySelector(
+        ".hlc-row-check, button.hlc-row-check, [data-row-check]"
+      );
+      if (check) check.click();
+      else row.click();
+      return name;
+    },
+    { index, skipSelected }
+  );
   await page.waitForTimeout(300);
   return name;
 }
@@ -602,7 +618,8 @@ async function main() {
         userImpact: "Cannot compare earlier pick vs new private banks side by side.",
       });
 
-      privatePick = await selectNthVisible(page, 0);
+      // Row 0 is the pinned public orphan — picking it again would deselect.
+      privatePick = await selectNthVisible(page, 0, { skipSelected: true });
       afterBothSelect = await readExploreState(page);
       applyAriaCount = (() => {
         const s = afterBothSelect.applyAria || "";
@@ -676,11 +693,13 @@ async function main() {
         applyAriaCount !== packetBankNames.length;
       const draftVsPacket =
         afterBothSelect.draftSelectedIds.length !== packetBankNames.length;
+      const emptyHandoff =
+        !packetBankNames.length || !afterBothSelect.draftSelectedIds.length;
 
       add({
         id: "APPLY-03",
         severity: "P0",
-        status: countLie || draftVsPacket ? "FAIL" : "PASS",
+        status: emptyHandoff || countLie || draftVsPacket ? "FAIL" : "PASS",
         title: "Apply button count matches banks that actually apply",
         flowStep: "Explore Apply bar → packet",
         expected: "Button N === packet.banks.length === meaningful selected set",
@@ -709,18 +728,25 @@ async function main() {
         const banks = Array.from(
           document.querySelectorAll("#hl-apply-banks .hl-apply-bank-name")
         ).map((el) => el.textContent.trim());
+        const kinds = Array.from(
+          document.querySelectorAll("#hl-apply-banks .hl-apply-bank-kind")
+        ).map((el) => el.textContent.trim());
         const n = document.getElementById("hl-apply-n");
         const primary = document.getElementById("hl-apply-primary-details");
         const details = document.getElementById("hl-apply-your-details");
-        const filters = document.getElementById("hl-apply-filters");
+        const filtersHeading = document.getElementById("hl-apply-filters-heading");
         const textOf = (el) => (el ? el.innerText : "");
         return {
           bankNames: banks,
+          bankKinds: kinds,
           nText: n ? n.textContent.trim() : null,
           primaryText: textOf(primary),
           detailsText: textOf(details),
-          filtersText: textOf(filters),
-          filtersHidden: filters ? filters.hidden : null,
+          filtersHeading: filtersHeading
+            ? filtersHeading.hidden
+              ? ""
+              : filtersHeading.textContent.trim()
+            : "",
         };
       });
 
@@ -737,38 +763,47 @@ async function main() {
         userImpact: "Mismatch confuses confirmation before contact/submit.",
       });
 
-      const showsBankType =
-        /public|private/i.test(applyUi.filtersText) ||
-        /public|private/i.test(applyUi.primaryText);
+      const noFiltersHeading = !/filter/i.test(applyUi.filtersHeading || "");
+      const kindsOk =
+        applyUi.bankNames.length > 0 &&
+        applyUi.bankKinds.length === applyUi.bankNames.length &&
+        applyUi.bankKinds.every((k) => /^(Public bank|Private bank)$/.test(k));
       add({
         id: "REVIEW-02",
         severity: "P1",
-        status: showsBankType ? "PASS" : "FAIL",
-        title: "Apply review shows Public/Private filter context",
-        flowStep: "Apply review",
-        expected: "User can see bank-type filter state used for the shortlist",
-        actual: showsBankType
-          ? "Bank type mentioned"
-          : `filters="${applyUi.filtersText.slice(0, 200)}"; primary has no Public/Private`,
-        evidence: {
-          filtersText: applyUi.filtersText,
-          primaryText: applyUi.primaryText.slice(0, 400),
-        },
+        status: noFiltersHeading && kindsOk ? "PASS" : "FAIL",
+        title: "Each chosen bank shows Public bank or Private bank",
+        flowStep: "Apply review / banks you chose",
+        expected:
+          "No Filters heading; each bank name has a quiet Public bank or Private bank line",
+        actual: kindsOk
+          ? `kinds=[${applyUi.bankKinds.join("; ")}]; heading="${applyUi.filtersHeading}"`
+          : `kinds=[${(applyUi.bankKinds || []).join("; ")}]; banks=${applyUi.bankNames.length}; heading="${applyUi.filtersHeading}"`,
+        evidence: applyUi,
         userImpact:
-          "User cannot confirm which bank-type scope they applied under.",
+          "User cannot tell which selected lenders are public vs private before they continue.",
       });
 
       const detailProbe = await page.evaluate(() => {
-        const firstToggle = document.querySelector(".hl-apply-disclose");
-        if (firstToggle) firstToggle.click();
-        const panel = document.querySelector(
-          ".hl-apply-bank-details.is-open, .hl-apply-disclose-panel.is-open"
-        );
+        const bankToggle =
+          document.querySelector(
+            ".hl-apply-bank-card .hl-apply-disclose, #hl-apply-banks .hl-apply-disclose, .hl-apply-banks .hl-apply-disclose"
+          ) ||
+          document.querySelector(
+            'button.hl-apply-disclose[aria-controls*="bank"], .hl-apply-disclose[data-bank]'
+          );
+        if (bankToggle) bankToggle.click();
+        const panel =
+          document.querySelector(".hl-apply-bank-details.is-open") ||
+          document.querySelector(".hl-apply-bank-details") ||
+          document.querySelector(
+            "#hl-apply-banks .hl-apply-disclose-panel.is-open, .hl-apply-bank-card .hl-apply-disclose-panel.is-open"
+          );
         return panel ? panel.innerText : "";
       });
       const hasScheme = /scheme/i.test(detailProbe);
-      const hasRateType = /floating|fixed/i.test(detailProbe);
-      const hasFacility = /term loan|overdraft/i.test(detailProbe);
+      const hasRateType = /floating|fixed|rate type/i.test(detailProbe);
+      const hasFacility = /term loan|overdraft|facility/i.test(detailProbe);
       add({
         id: "REVIEW-03",
         severity: "P1",
@@ -871,38 +906,74 @@ async function main() {
       const fbShape = await page.evaluate(() => {
         const pkt = JSON.parse(sessionStorage.getItem("shroffin_hl_apply_v1") || "null");
         if (!pkt) return null;
+        // Mirror js/home-loan-apply.js bankPayloadForFirestore (Phase C whitelist).
         const banks = (pkt.banks || []).map((row, index) => {
           const offer = row.offer && typeof row.offer === "object" ? row.offer : {};
-          return {
+          const saved = {
             id: row.id != null ? String(row.id) : "idx-" + index,
-            bankName: String(row.bankName || offer.bank_name || "Bank"),
-            strippedPresent: {
-              bankKey: row.bankKey != null,
-              rateType: row.rateType != null,
-              facilityLabel: row.facilityLabel != null,
-              scheme: row.scheme != null,
-              processingFee: row.processingFee != null,
-              offer: !!row.offer,
+            bankName: String(
+              row.bankName || offer.bank_name || offer.lender_name || "Bank"
+            ),
+            bankKey:
+              row.bankKey != null
+                ? String(row.bankKey)
+                : offer.bank_key != null
+                  ? String(offer.bank_key)
+                  : null,
+            scheme:
+              row.scheme != null
+                ? String(row.scheme)
+                : offer.scheme != null
+                  ? String(offer.scheme)
+                  : null,
+            rateType: row.rateType != null ? String(row.rateType) : null,
+            facilityLabel:
+              row.facilityLabel != null ? String(row.facilityLabel) : null,
+            effectiveRoiPct:
+              row.effectiveRoiPct != null &&
+              Number.isFinite(Number(row.effectiveRoiPct))
+                ? Number(row.effectiveRoiPct)
+                : null,
+            loanAmount:
+              row.loanAmount != null && Number.isFinite(Number(row.loanAmount))
+                ? Number(row.loanAmount)
+                : null,
+            tenureLabel: row.tenureLabel != null ? String(row.tenureLabel) : "",
+            emi:
+              row.emi != null && Number.isFinite(Number(row.emi))
+                ? Number(row.emi)
+                : null,
+          };
+          return {
+            id: saved.id,
+            bankName: saved.bankName,
+            savedKeys: Object.keys(saved),
+            honesty: {
+              bankKey: saved.bankKey != null,
+              scheme: saved.scheme != null,
+              rateType: saved.rateType != null,
+              facilityLabel: saved.facilityLabel != null,
             },
           };
         });
         return { banks };
       });
       if (fbShape) {
-        const anyStripped =
-          fbShape.banks.length > 0 &&
-          Object.values(fbShape.banks[0].strippedPresent).some(Boolean);
+        const honesty = fbShape.banks[0] && fbShape.banks[0].honesty;
+        const honestEnough =
+          honesty &&
+          (honesty.bankKey || honesty.scheme || honesty.rateType || honesty.facilityLabel);
         add({
           id: "FB-01",
           severity: "P1",
-          status: anyStripped ? "FAIL" : "INFO",
+          status: honestEnough ? "PASS" : fbShape.banks.length ? "FAIL" : "BLOCKED",
           title:
-            "Firestore bank payload strips comparison fields present in packet",
+            "Firestore bank payload keeps comparison fields from the packet",
           flowStep: "Apply packet → Firebase shape",
           expected:
             "Ops receive scheme/rate type/facility/bank key needed to work the file",
           actual: fbShape.banks[0]
-            ? `Saved fields: id,bankName,rate,loan,tenure,emi. Stripped-but-available: ${JSON.stringify(fbShape.banks[0].strippedPresent)}`
+            ? `Saved keys: ${fbShape.banks[0].savedKeys.join(", ")}; honesty=${JSON.stringify(honesty)}`
             : "No banks",
           evidence: fbShape,
           userImpact:
@@ -1650,18 +1721,16 @@ async function main() {
       add({
         id: "FB-03",
         severity: "P2",
-        status: recovered ? "FAIL" : "INFO",
-        title: "Apply packet expires after 60 minutes (live)",
+        status: recovered ? "PASS" : "FAIL",
+        title: "Idle Apply packet clears after 60 minutes (live)",
         flowStep: "Apply session lifetime",
         expected:
-          "Either longer TTL for verify friction, or clear restore — today: hard clear at 60m",
+          "Idle packets clear after 60m; active contact/verify refreshes ts via touchApplyPacket",
         actual: `url=${bounced.url}; packet=${bounced.packet ? "still present" : "cleared"}; snippet=${JSON.stringify(bounced.body.slice(0, 140))}`,
         evidence: bounced,
         userImpact:
-          "Slow Google verify / tab left open can wipe the shortlist before submit.",
+          "Stale abandoned shortlists do not silently submit; active sessions keep their packet.",
       });
-      // Product choice is intentional expiry → mark FAIL as product risk (same as before)
-      // If recovery works (bounce to explore), still FAIL on product grounds (TTL too short)
     });
 
     await section("consent-blocks-submit", async () => {

@@ -381,9 +381,9 @@ html[data-theme="dark"] .apf-activity-ring {
 html[data-theme="dark"] .spd-stage--phone .spd-ios-top {
   background: linear-gradient(
     180deg,
-    rgba(18, 18, 18, 0.98) 0%,
-    rgba(18, 18, 18, 0.92) 70%,
-    rgba(18, 18, 18, 0) 100%
+    rgba(22, 22, 22, 0.98) 0%,
+    rgba(22, 22, 22, 0.92) 70%,
+    rgba(22, 22, 22, 0) 100%
   );
 }
 html[data-theme="dark"] .spd-stage--phone .spd-home-indicator {
@@ -407,7 +407,7 @@ html[data-theme="dark"] .spd-section--home {
   --home-device-stage: #E8E8ED;
 }
 html[data-theme="dark"] .home-story-dark {
-  --home-story-bg: #121212;
+  --home-story-bg: var(--shroffin-surface);
   --home-story-ink: #F5F5F7;
   --home-device-stage: #1E1E1E;
 }
@@ -425,7 +425,7 @@ html[data-theme="dark"] .home-feature-body:not(.home-feature-body--bright) {
   color: rgba(255, 255, 255, 0.55);
 }
 html[data-theme="dark"] {
-  --gn-bg: color-mix(in srgb, #0A84FF 0.75%, #121212);
+  --gn-bg: color-mix(in srgb, #0A84FF 0.75%, var(--shroffin-canvas-mix-base));
   --gn-text: rgba(245, 245, 247, 0.72);
   --gn-text-hover: #F5F5F7;
   --gn-ink: #F5F5F7;

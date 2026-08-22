@@ -636,13 +636,11 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  color: var(--shroffin-ink);
-  background: rgba(255, 255, 255, 0.62);
-  backdrop-filter: blur(22px) saturate(1.5);
-  -webkit-backdrop-filter: blur(22px) saturate(1.5);
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.06),
-    inset 0 0 0 0.5px rgba(255, 255, 255, 0.55);
+  color: var(--spd-ios-chrome-ink);
+  background: var(--spd-ios-glass-bg);
+  backdrop-filter: blur(var(--spd-ios-glass-blur)) saturate(var(--spd-ios-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--spd-ios-glass-blur)) saturate(var(--spd-ios-glass-saturate));
+  box-shadow: var(--spd-ios-glass-shadow);
 }
 
 .spd-ios-back::before {
@@ -676,12 +674,10 @@
   height: 2.55rem;
   padding: 0 0.9rem;
   border-radius: 980px;
-  background: rgba(255, 255, 255, 0.62);
-  backdrop-filter: blur(22px) saturate(1.5);
-  -webkit-backdrop-filter: blur(22px) saturate(1.5);
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.06),
-    inset 0 0 0 0.5px rgba(255, 255, 255, 0.55);
+  background: var(--spd-ios-glass-bg);
+  backdrop-filter: blur(var(--spd-ios-glass-blur)) saturate(var(--spd-ios-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--spd-ios-glass-blur)) saturate(var(--spd-ios-glass-saturate));
+  box-shadow: var(--spd-ios-glass-shadow);
 }
 
 .spd-stage--phone .spd-ios-pill .spd-url {
@@ -690,6 +686,12 @@
   font-size: 0.9375rem;
   font-weight: 510;
   letter-spacing: normal;
+  color: var(--spd-ios-chrome-ink);
+}
+
+.spd-stage--phone .spd-lock,
+.spd-stage--phone .spd-lock::before {
+  border-color: var(--spd-ios-lock-stroke);
 }
 
 .spd-stage--phone .spd-home-indicator {
@@ -859,6 +861,20 @@
   --spd-canvas-w: 402;
   --spd-canvas-h: 874;
   --spd-max-vh: 0.9;
+  /* iOS 26 Liquid Glass — compact Safari chrome (iframe overlay; blur is best-effort). */
+  --spd-ios-glass-bg: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.78) 0%,
+    rgba(255, 255, 255, 0.52) 100%
+  );
+  --spd-ios-glass-blur: 40px;
+  --spd-ios-glass-saturate: 180%;
+  --spd-ios-glass-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.06),
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.88),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.58);
+  --spd-ios-chrome-ink: var(--shroffin-ink);
+  --spd-ios-lock-stroke: #8e8e93;
 }
 
 .spd-section--home-phone .spd-stage--phone {
@@ -883,12 +899,26 @@
 }
 
 
+html[data-theme="dark"] .spd-stage--phone {
+  --spd-ios-glass-bg: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  --spd-ios-glass-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.24),
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.42),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.24);
+  --spd-ios-chrome-ink: rgba(255, 255, 255, 0.92);
+  --spd-ios-lock-stroke: rgba(255, 255, 255, 0.58);
+}
+
 html[data-theme="dark"] .spd-stage--phone .spd-ios-top {
   background: linear-gradient(
     180deg,
-    rgba(18, 18, 18, 0.98) 0%,
-    rgba(18, 18, 18, 0.92) 70%,
-    rgba(18, 18, 18, 0) 100%
+    rgba(22, 22, 22, 0.98) 0%,
+    rgba(22, 22, 22, 0.92) 70%,
+    rgba(22, 22, 22, 0) 100%
   );
 }
 html[data-theme="dark"] .spd-stage--phone .spd-home-indicator {
@@ -897,7 +927,7 @@ html[data-theme="dark"] .spd-stage--phone .spd-home-indicator {
 /* Product demo follows theme: dark chrome in dark, light chrome in light. */
 html[data-theme="dark"] .spd-section--home,
 html[data-theme="dark"] .spd-section--home-phone {
-  background: #121212;
+  background: var(--shroffin-surface);
 }
 /* Kill the cool blue desk glow on dark — it reads as a halo that never existed on light. */
 html[data-theme="dark"] .spd-section--home .spd-stage,

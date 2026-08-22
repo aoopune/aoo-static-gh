@@ -104,6 +104,7 @@
           consent: Boolean(consent && consent.checked)
         })
       );
+      touchApplyPacket();
       return true;
     } catch (err) {
       return false;
@@ -142,6 +143,12 @@
     }
   }
 
+  function touchApplyPacket() {
+    if (!packet) return false;
+    packet.ts = Date.now();
+    return persistApplyPacket(packet);
+  }
+
   function redirectToExplore(message) {
     try {
       if (message) window.sessionStorage.setItem(HL_APPLY_MSG_KEY, message);
@@ -169,6 +176,18 @@
       (row.offer && (row.offer.bank_name || row.offer.lender_name)) ||
       "Bank"
     );
+  }
+
+  /** Public vs private ownership of this lender — for the bank list, not a filter recap. */
+  function bankOwnershipLabel(row) {
+    var raw =
+      (row && row.bankKind) ||
+      (row && row.offer && row.offer.bank_type) ||
+      "";
+    var kind = String(raw).trim().toLowerCase();
+    if (kind === "public") return "Public bank";
+    if (kind === "private") return "Private bank";
+    return "";
   }
 
   function bankKey(row, index) {
@@ -230,13 +249,64 @@
     container.appendChild(item);
   }
 
+  function coApplicantTotals(form) {
+    var list = form && Array.isArray(form.coApplicants) ? form.coApplicants : [];
+    if (!list.length) {
+      return {
+        income: form && form.coMonthlyIncome,
+        emis: form && form.coExistingEmis,
+        cards: form && form.coCardLimits
+      };
+    }
+    function sum(key) {
+      var total = 0;
+      var any = false;
+      list.forEach(function (p) {
+        var n = Number(p && p[key]);
+        if (Number.isFinite(n)) {
+          total += n;
+          any = true;
+        }
+      });
+      return any ? total : null;
+    }
+    return {
+      income: sum("monthlyIncome"),
+      emis: sum("existingEmis"),
+      cards: sum("cardLimits")
+    };
+  }
+
+  function rateTypeReviewLabel(filters, query) {
+    var f = Boolean(filters && filters.rateFloating);
+    var x = Boolean(filters && filters.fixedRate);
+    if (f && x) return "Floating and Fixed";
+    if (x && !f) return "Fixed";
+    if (f && !x) return "Floating";
+    return query && query.rateType === "Fixed" ? "Fixed" : "Floating";
+  }
+
+  function facilityReviewLabel(filters, query) {
+    var t = Boolean(filters && filters.facilityTermLoan);
+    var o = Boolean(filters && filters.overdraft);
+    if (t && o) return "Term loan and Overdraft";
+    if (o && !t) return "Overdraft";
+    if (t && !o) return "Term loan";
+    return query && query.facilityType === "Overdraft" ? "Overdraft" : "Term loan";
+  }
+
   function renderContextSummary(data) {
     var primaryEl = $("hl-apply-primary-details");
     var detailsEl = $("hl-apply-your-details");
-    var filtersEl = $("hl-apply-filters");
+    var leftoverFiltersEl = $("hl-apply-filters");
+    var leftoverFiltersHeading = $("hl-apply-filters-heading");
     if (primaryEl) primaryEl.innerHTML = "";
     if (detailsEl) detailsEl.innerHTML = "";
-    if (filtersEl) filtersEl.innerHTML = "";
+    if (leftoverFiltersEl) {
+      leftoverFiltersEl.innerHTML = "";
+      leftoverFiltersEl.hidden = true;
+    }
+    if (leftoverFiltersHeading) leftoverFiltersHeading.hidden = true;
 
     var input = (data && data.input_data) || {};
     var form = input.form || {};
@@ -280,36 +350,15 @@
       formatPlain(form.purpose || query.purpose)
     );
 
-    var rateFixed;
-    if ("rateFloating" in filters || "facilityTermLoan" in filters) {
-      rateFixed =
-        Boolean(filters.fixedRate) && !Boolean(filters.rateFloating)
-          ? true
-          : Boolean(filters.rateFloating) && !Boolean(filters.fixedRate)
-            ? false
-            : query.rateType === "Fixed";
-    } else {
-      rateFixed = Boolean(filters.fixedRate) || query.rateType === "Fixed";
-    }
-
-    var facilityOd;
-    if ("facilityTermLoan" in filters) {
-      facilityOd =
-        Boolean(filters.overdraft) && !Boolean(filters.facilityTermLoan)
-          ? true
-          : Boolean(filters.facilityTermLoan) && !Boolean(filters.overdraft)
-            ? false
-            : query.facilityType === "Overdraft";
-    } else {
-      facilityOd =
-        Boolean(filters.overdraft) || query.facilityType === "Overdraft";
-    }
-
-    appendPrimaryFact(primaryEl, "Rate type", rateFixed ? "Fixed" : "Floating");
+    appendPrimaryFact(
+      primaryEl,
+      "Rate type",
+      rateTypeReviewLabel(filters, query)
+    );
     appendPrimaryFact(
       primaryEl,
       "Facility",
-      facilityOd ? "Overdraft" : "Term loan"
+      facilityReviewLabel(filters, query)
     );
     appendPrimaryFact(
       primaryEl,
@@ -347,45 +396,40 @@
         : "—"
     );
     if (coOn) {
+      var coTotals = coApplicantTotals(form);
       appendFact(detailsEl, "Co-applicant", "Yes");
-      appendFact(
-        detailsEl,
-        "Co-applicant income",
-        formatInr(form.coMonthlyIncome || query.coMonthlyIncome)
-      );
-      appendFact(
-        detailsEl,
-        "Co-applicant EMIs",
-        formatInr(form.coExistingEmis || query.coExistingEmis)
-      );
+      appendFact(detailsEl, "Co-applicant income", formatInr(coTotals.income));
+      appendFact(detailsEl, "Co-applicant EMIs", formatInr(coTotals.emis));
       appendFact(
         detailsEl,
         "Co-applicant card limits",
-        formatInr(form.coCardLimits || query.coCardLimits)
+        formatInr(coTotals.cards)
       );
     }
 
     if (filters.govtPsu) {
-      appendFact(filtersEl, "Govt / PSU employee and pensioner", "Yes");
+      appendFact(detailsEl, "Govt / PSU employee and pensioner", "Yes");
     }
     if (filters.womenApplicant) {
-      appendFact(filtersEl, "Women applicant", "Yes");
+      appendFact(detailsEl, "Women applicant", "Yes");
     }
-    if (filters.greenHome) appendFact(filtersEl, "Green home", "Yes");
-    if (filters.insurance) appendFact(filtersEl, "Insurance", "Yes");
+    if (filters.greenHome) appendFact(detailsEl, "Green home", "Yes");
+    if (filters.insurance) appendFact(detailsEl, "Insurance", "Yes");
 
-    var filtersHeading = $("hl-apply-filters-heading");
-    var hasFilters = filtersEl && filtersEl.children.length > 0;
-    if (filtersHeading) {
-      filtersHeading.hidden = !hasFilters;
-    }
-    if (filtersEl) {
-      filtersEl.hidden = !hasFilters;
+    var pub = Boolean(filters.bankPublic);
+    var priv = Boolean(filters.bankPrivate);
+    if (pub && !priv) {
+      appendFact(detailsEl, "Bank type", "Public");
+    } else if (priv && !pub) {
+      appendFact(detailsEl, "Bank type", "Private");
     }
   }
 
   function bankDetailPairs(row) {
     return [
+      { label: "Scheme", value: formatPlain(row && row.scheme) },
+      { label: "Rate type", value: formatPlain(row && row.rateType) },
+      { label: "Facility", value: formatPlain(row && row.facilityLabel) },
       { label: "Rate", value: formatPct(row && row.effectiveRoiPct) },
       { label: "Loan amount", value: formatInr(row && row.loanAmount) },
       { label: "Tenure (yrs)", value: formatPlain(row && row.tenureLabel) },
@@ -522,9 +566,31 @@
       var top = document.createElement("div");
       top.className = "hl-apply-bank-top";
 
-      var name = document.createElement("span");
+      var identity = document.createElement("div");
+      identity.className = "hl-apply-bank-identity";
+
+      var name = document.createElement("div");
       name.className = "hl-apply-bank-name";
-      name.textContent = nameText;
+
+      var logos = window.ShroffinBankLogos;
+      if (logos && typeof logos.createBankLogoImg === "function") {
+        var logo = logos.createBankLogoImg(nameText);
+        if (logo) name.appendChild(logo);
+      }
+
+      var nameTextEl = document.createElement("span");
+      nameTextEl.className = "hl-apply-bank-name-text";
+      nameTextEl.textContent = nameText;
+      name.appendChild(nameTextEl);
+      identity.appendChild(name);
+
+      var ownership = bankOwnershipLabel(row);
+      if (ownership) {
+        var kind = document.createElement("span");
+        kind.className = "hl-apply-bank-kind";
+        kind.textContent = ownership;
+        identity.appendChild(kind);
+      }
 
       var removeBtn = document.createElement("button");
       removeBtn.type = "button";
@@ -538,7 +604,7 @@
         removeBankAt(index);
       });
 
-      top.appendChild(name);
+      top.appendChild(identity);
       top.appendChild(removeBtn);
 
       var toggle = document.createElement("button");
@@ -711,9 +777,13 @@
   function bindPhoneField(input) {
     if (!input || input.getAttribute("data-bound") === "1") return;
     input.setAttribute("data-bound", "1");
+    // Allow paste of +91 / spaces; syncDisplay immediately collapses to national form.
+    if (Number(input.getAttribute("maxlength") || 0) < 18) {
+      input.setAttribute("maxlength", "18");
+    }
 
     function syncDisplay() {
-      var formatted = formatPhoneDisplay(input.value);
+      var formatted = formatPhoneDisplay(normalizePhone(input.value));
       if (input.value !== formatted) input.value = formatted;
       updatePhoneOk();
     }
@@ -889,6 +959,21 @@
           offer.lender_name ||
           "Bank"
       ),
+      bankKey:
+        row.bankKey != null
+          ? String(row.bankKey)
+          : offer.bank_key != null
+            ? String(offer.bank_key)
+            : null,
+      scheme:
+        row.scheme != null
+          ? String(row.scheme)
+          : offer.scheme != null
+            ? String(offer.scheme)
+            : null,
+      rateType: row.rateType != null ? String(row.rateType) : null,
+      facilityLabel:
+        row.facilityLabel != null ? String(row.facilityLabel) : null,
       effectiveRoiPct:
         row.effectiveRoiPct != null && Number.isFinite(Number(row.effectiveRoiPct))
           ? Number(row.effectiveRoiPct)
@@ -1256,6 +1341,12 @@
 
   function onFormFieldsChange() {
     onEmailInputChange();
+    var phoneInput = $("hl-phone");
+    if (phoneInput) {
+      var formatted = formatPhoneDisplay(normalizePhone(phoneInput.value));
+      if (phoneInput.value !== formatted) phoneInput.value = formatted;
+      updatePhoneOk();
+    }
     persistContactDraft();
     updateVerifyEnabled();
     updateSubmitEnabled();
@@ -1294,6 +1385,7 @@
         }
         verifiedUser = user;
         setVerifiedUi(true, user.email);
+        touchApplyPacket();
         verifying = false;
         updateVerifyEnabled();
         updateSubmitEnabled();

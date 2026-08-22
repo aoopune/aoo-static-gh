@@ -9,7 +9,7 @@
     Preference: localStorage['shroffin-color-preference'] ∈ {dark, light, system}
     Resolved: html[data-theme="dark"|"light"]; first visit unset → dark (do NOT write until user taps).
     Default (system) ≠ first visit. OS listener only when preference === system.
-    theme-color: dark #121212 / light #fcfcfd
+    theme-color: dark #161616 / light #fcfcfd
     FOUC: set data-theme + color-scheme + canvas background before stylesheets.
   -->
   <script data-shroffin-theme-boot="live">
@@ -32,13 +32,13 @@
         if (document.head.firstChild) document.head.insertBefore(meta, document.head.firstChild);
         else document.head.appendChild(meta);
       }
-      meta.setAttribute('content', resolved === 'dark' ? '#121212' : '#fcfcfd');
+      meta.setAttribute('content', resolved === 'dark' ? '#161616' : '#fcfcfd');
     }
     function apply(resolved) {
       root.setAttribute('data-theme', resolved);
       root.style.colorScheme = resolved;
       /* Critical canvas before CSS / home inline light hardcodes */
-      root.style.backgroundColor = resolved === 'dark' ? '#121212' : '#fcfcfd';
+      root.style.backgroundColor = resolved === 'dark' ? '#161616' : '#fcfcfd';
       applyThemeColor(resolved);
     }
     var pref = null;
@@ -83,8 +83,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=de31f648df">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=card-load-mobile-left-1">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=51f15f0cb3">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=d1955c6e72">
 </head>
 <body class="explore-banks-page">
   <!-- SHROFFIN_NAV_START -->
@@ -842,18 +842,27 @@
                   </div></span>
                     </span>
                   </legend>
-                  <div class="hlc-filter-checks hlc-concession-chips" role="group" aria-labelledby="hlc-concessions-label">
+                  <div class="hlc-filter-checks" role="group" aria-labelledby="hlc-concessions-label">
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="womenApplicant" />
-                      <span class="hlc-filter-option-label">Women applicant</span>
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">Women applicant</span>
+                        <span class="hlc-filter-option-note">Usually 0.05 to 0.10% off when a woman is the main applicant and first name on the property papers.</span>
+                      </span>
                     </label>
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="greenHome" />
-                      <span class="hlc-filter-option-label">Green home</span>
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">Green home</span>
+                        <span class="hlc-filter-option-note">Usually 0.05 to 0.10% off when the house has a green rating (IGBC, GRIHA, or LEED).</span>
+                      </span>
                     </label>
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="insurance" />
-                      <span class="hlc-filter-option-label">Insurance</span>
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">Insurance</span>
+                        <span class="hlc-filter-option-note">Up to 0.05% off if you take their cover; house cover is usually required, life cover you can refuse or buy elsewhere.</span>
+                      </span>
                     </label>
                   </div>
                   </fieldset>
@@ -1265,10 +1274,10 @@
   </script>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/shroffin-home-stance.js?v=2c89949b5f"></script>
-  <script src="../js/shroffin-nav.js?v=69b8861330"></script>
+  <script src="../js/shroffin-home-stance.js?v=ca168eb5f2"></script>
+  <script src="../js/shroffin-nav.js?v=8fe34c5f07"></script>
   <script src="../js/hlc-data-url.generated.js?v=2eb6ecb75c"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=aad4939012"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=26fd848b44"></script>
   <script src="../js/hlc-field-help.js?v=305f463f51"></script>
   <script>
     (function () {

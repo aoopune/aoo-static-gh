@@ -5,13 +5,6 @@ playwright/.cache/
 .env
 .DS_Store
 
-# Spoken review sessions (audio + transcripts). Never commit.
-review-sessions/
-
-# Local review-capture speech model and Python env
-scripts/review-capture/.venv/
-scripts/review-capture/.models/
-
 # Local Firebase/Auth write probes — never commit (keys + live DB writes).
 pages/_firestore-auth-probe.html
 pages/_*-probe.html

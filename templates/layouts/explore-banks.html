@@ -9,7 +9,7 @@
     Preference: localStorage['shroffin-color-preference'] ∈ {dark, light, system}
     Resolved: html[data-theme="dark"|"light"]; first visit unset → dark (do NOT write until user taps).
     Default (system) ≠ first visit. OS listener only when preference === system.
-    theme-color: dark #121212 / light #fcfcfd
+    theme-color: dark #161616 / light #fcfcfd
     FOUC: set data-theme + color-scheme + canvas background before stylesheets.
   -->
   <script data-shroffin-theme-boot="live">
@@ -32,13 +32,13 @@
         if (document.head.firstChild) document.head.insertBefore(meta, document.head.firstChild);
         else document.head.appendChild(meta);
       }
-      meta.setAttribute('content', resolved === 'dark' ? '#121212' : '#fcfcfd');
+      meta.setAttribute('content', resolved === 'dark' ? '#161616' : '#fcfcfd');
     }
     function apply(resolved) {
       root.setAttribute('data-theme', resolved);
       root.style.colorScheme = resolved;
       /* Critical canvas before CSS / home inline light hardcodes */
-      root.style.backgroundColor = resolved === 'dark' ? '#121212' : '#fcfcfd';
+      root.style.backgroundColor = resolved === 'dark' ? '#161616' : '#fcfcfd';
       applyThemeColor(resolved);
     }
     var pref = null;
@@ -83,8 +83,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=db6ac4c8ca">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=511c567b40">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=3fc6cc2b3e">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=d2603b6369">
 </head>
 <body class="explore-banks-page">
   <!-- SHROFFIN_NAV_START -->
@@ -95,22 +95,22 @@
         <li class="globalnav-item globalnav-item-brand">
           <a class="globalnav-link globalnav-link-brand" href="/" aria-label="Shroffin Home">
             <!-- Phase G logo swap: light mark is default until html[data-theme="dark"] (Phase I boot). CSS owner: css/shroffin-shell.css -->
-            <img
-              class="globalnav-logo globalnav-logo--light"
-              src="/images/logos/logo-h-light-clear-781x173.png"
-              alt="Shroffin"
-              width="99"
-              height="22"
-            >
-            <img
-              class="globalnav-logo globalnav-logo--dark"
-              src="/images/logos/logo-h-dark-clear-781x173.png"
-              alt=""
-              width="99"
-              height="22"
-              aria-hidden="true"
-              decoding="async"
-            >
+              <img
+                class="globalnav-logo globalnav-logo--light"
+                src="/images/logos/logo-h-light-clear-781x173.png"
+                alt="Shroffin"
+                width="99"
+                height="22"
+              >
+              <img
+                class="globalnav-logo globalnav-logo--dark"
+                src="/images/logos/logo-h-dark-clear-781x173.png"
+                alt=""
+                width="99"
+                height="22"
+                aria-hidden="true"
+                decoding="async"
+              >
           </a>
         </li>
         <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled
@@ -334,10 +334,12 @@
           <a class="site-footer-brand-link" href="/" aria-label="Shroffin Home">
             <img
               class="site-footer-logo"
-              src="/images/logos/logo.png"
+              src="/images/logos/logo-mark-40.png"
               alt=""
               width="40"
               height="40"
+              loading="lazy"
+              decoding="async"
             >
           </a>
         </section>
@@ -485,9 +487,9 @@
   <!-- SHROFFIN_FOOTER_END -->
 
   <script src="../js/shroffin-home-stance.js?v=ca168eb5f2"></script>
-  <script src="../js/shroffin-nav.js?v=8fe34c5f07"></script>
+  <script src="../js/shroffin-nav.js?v=69b8861330"></script>
   <script src="../js/hlc-data-url.generated.js?v=2eb6ecb75c"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=83a0c81992"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=dc346432ae"></script>
   <script src="../js/hlc-field-help.js?v=305f463f51"></script>
   <script>
     (function () {

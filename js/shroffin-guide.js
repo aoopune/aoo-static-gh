@@ -2014,12 +2014,21 @@
     initSegPanels();
     initScrollRegions();
     initGuideDisclosures();
+    if (window.ShroffinGuideIntelligenceInit) {
+      window.ShroffinGuideIntelligenceInit({
+        root: document.getElementById("guide-swap"),
+        signal: contentSignal()
+      });
+    }
     if (window.ShroffinScrub) window.ShroffinScrub.init();
     initGuideMoments();
     ensureLocalnavCurrentVisible();
   }
 
   function destroyContent() {
+    if (window.ShroffinGuideIntelligenceDestroy) {
+      window.ShroffinGuideIntelligenceDestroy();
+    }
     if (window.ShroffinScrub) window.ShroffinScrub.destroy();
     endContentLifecycle();
   }

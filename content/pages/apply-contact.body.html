@@ -12,13 +12,15 @@
 
       <form id="hl-apply-form" class="hl-apply-form" novalidate>
         <div class="hl-apply-fields">
-          <div class="hl-apply-field">
+          <div class="hl-apply-field hl-apply-field--name">
             <label for="hl-name">Full name</label>
-            <input id="hl-name" name="name" type="text" autocomplete="name" required placeholder="As on your ID">
+            <div class="hl-apply-field-row">
+              <input id="hl-name" name="name" type="text" autocomplete="name" required placeholder="As on your ID">
+            </div>
           </div>
           <div class="hl-apply-field hl-apply-field--phone">
             <label for="hl-phone">Phone</label>
-            <div class="hl-apply-phone-row">
+            <div class="hl-apply-field-row hl-apply-phone-row">
               <span class="hl-apply-phone-prefix" title="India">
                 <svg class="hl-apply-phone-flag" viewBox="0 0 24 16" focusable="false" aria-hidden="true">
                   <rect width="24" height="5.333" y="0" fill="#FF9933"/>
@@ -35,7 +37,7 @@
                 inputmode="numeric"
                 autocomplete="tel-national"
                 required
-                maxlength="11"
+                maxlength="18"
                 placeholder="XXXXX XXXXX"
                 aria-label="Indian mobile number, +91"
               >
@@ -49,9 +51,9 @@
           </div>
           <div class="hl-apply-field hl-apply-field--email">
             <label for="hl-email">Email</label>
-            <div class="hl-apply-email-row">
+            <div class="hl-apply-field-row hl-apply-email-row">
               <input id="hl-email" name="email" type="email" autocomplete="email" required placeholder="name@example.com">
-              <button type="button" class="hl-apply-verify" id="hl-verify-email" disabled>Verify</button>
+              <button type="button" class="hl-apply-text-action hl-apply-verify" id="hl-verify-email" disabled>Verify</button>
             </div>
             <p class="hl-apply-verify-status" id="hl-verify-status" hidden>Email verified</p>
             <p class="hl-apply-email-mismatch" id="hl-email-mismatch" hidden></p>

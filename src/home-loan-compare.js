@@ -2,6 +2,7 @@
 
 const { Engine } = require("json-rules-engine");
 const hlcIntelligence = require("./hlc-intelligence.js");
+const bankLogos = require("./bank-logos.js");
 
 /** Stamped by scripts/stamp-asset-versions.js → js/hlc-data-url.generated.js */
 function resolveCompareDataUrl() {
@@ -54,59 +55,9 @@ const CO_APPLICANT_OCCUPATIONS = [
 ];
 const DEFAULT_CO_APPLICANT_OCCUPATION = "Salaried";
 
-/** bank_name (compare JSON) → 128×128 watermark PNG under images/banks/ */
-const BANK_LOGO_FILES = {
-  "Axis Bank": "axis-bank.png",
-  "Bandhan Bank": "bandhan-bank.png",
-  "Bank of Baroda": "bank-of-baroda.png",
-  "Bank of India": "bank-of-india.png",
-  "Bank of Maharashtra": "bank-of-maharashtra.png",
-  "Canara Bank": "canara-bank.png",
-  "Central Bank of India": "central-bank-of-india.png",
-  "City Union Bank": "city-union-bank.png",
-  "CSB Bank": "csb-bank.png",
-  "DCB Bank": "dcb-bank.png",
-  "Dhanlaxmi Bank": "dhanlaxmi-bank.png",
-  "Federal Bank": "federal-bank.png",
-  "HDFC Bank": "hdfc-bank.png",
-  "ICICI Bank": "icici-bank.png",
-  "IDBI Bank": "idbi-bank.png",
-  "IDFC FIRST Bank": "idfc-first-bank.png",
-  "Indian Bank": "indian-bank.png",
-  "Indian Overseas Bank": "indian-overseas-bank.png",
-  "IndusInd Bank": "indusind-bank.png",
-  "Jammu and Kashmir Bank": "jammu-kashmir-bank.png",
-  "Karnataka Bank": "karnataka-bank.png",
-  "Karur Vysya Bank": "karur-vysya-bank.png",
-  "Kotak Mahindra Bank": "kotak-mahindra-bank.png",
-  "Nainital Bank": "nainital-bank.png",
-  "Punjab & Sind Bank": "punjab-sind-bank.png",
-  "Punjab National Bank": "punjab-national-bank.png",
-  "RBL Bank": "rbl-bank.png",
-  "South Indian Bank": "south-indian-bank.png",
-  "State Bank of India": "state-bank-of-india.png",
-  "Tamilnad Mercantile Bank": "tamilnad-mercantile-bank.png",
-  "UCO Bank": "uco-bank.png",
-  "Union Bank of India": "union-bank-of-india.png",
-  "Yes Bank": "yes-bank.png"
-};
-
-const BANK_LOGO_BASE = "../images/banks/";
-
-function bankLogoPath(bankName) {
-  const file = BANK_LOGO_FILES[String(bankName || "").trim()];
-  return file ? BANK_LOGO_BASE + file : "";
-}
-
-function bankLogoHtml(bankName) {
-  const src = bankLogoPath(bankName);
-  if (!src) return "";
-  return (
-    '<img class="hlc-bank-logo" src="' +
-    escapeHtml(src) +
-    '" alt="" width="26" height="26" decoding="async" loading="lazy">'
-  );
-}
+const BANK_LOGO_FILES = bankLogos.BANK_LOGO_FILES;
+const bankLogoPath = bankLogos.bankLogoPath;
+const bankLogoHtml = bankLogos.bankLogoHtml;
 
 function defaultProductFilters() {
   return {
@@ -6856,7 +6807,8 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function mathWorkLinesHtml(lines) {
+function mathWorkLinesHtml(lines, options) {
+  const opts = options || {};
   return (lines || [])
     .filter(Boolean)
     .map(function (line) {
@@ -6882,9 +6834,11 @@ function mathWorkLinesHtml(lines) {
       if (line.k === "op") {
         return '<div class="hlc-math-op">' + escapeHtml(line.t) + "</div>";
       }
+      const isResult = line.k === "result" || line.emphasis;
       return (
         '<div class="hlc-math-num' +
-        (line.k === "result" || line.emphasis ? " hlc-math-num--result" : "") +
+        (isResult ? " hlc-math-num--result" : "") +
+        (opts.isTotal && isResult ? " hlc-ledger-final-value" : "") +
         '">' +
         escapeHtml(line.t) +
         "</div>"
@@ -6893,43 +6847,180 @@ function mathWorkLinesHtml(lines) {
     .join("");
 }
 
-function mathWorkHtml(lines) {
+function mathWorkHtml(lines, options) {
   if (!lines || !lines.length) return "";
-  return '<div class="hlc-math-sheet">' + mathWorkLinesHtml(lines) + "</div>";
+  return (
+    '<div class="hlc-math-sheet">' +
+    mathWorkLinesHtml(lines, options || {}) +
+    "</div>"
+  );
+}
+
+function gutterOpFromLines(lines) {
+  if (!lines || !lines.length) return "";
+  for (var i = 0; i < lines.length; i++) {
+    if (lines[i].k !== "op") continue;
+    var t = String(lines[i].t || "").trim();
+    if (!t) continue;
+    if (t.charAt(0) === "×") return "×";
+    if (t.charAt(0) === "÷") return "÷";
+    if (t.charAt(0) === "@") return "@";
+    if (t.charAt(0) === "−" || t.charAt(0) === "-") return "−";
+    if (t.charAt(0) === "+") return "+";
+    if (/^or\b/i.test(t)) return "or";
+    if (/^min\b/i.test(t)) return "min";
+    if (/^max\b/i.test(t)) return "max";
+    if (/^up to\b/i.test(t)) return "≤";
+    return "";
+  }
+  return "";
 }
 
 function mathBarHtml(step, label, note, valueText, options) {
   const opts = options || {};
   const track = opts.track ? " hlc-math-bar--" + opts.track : "";
   const limiting = opts.limiting ? " hlc-math-bar--limiting" : "";
+  const joinOp = opts.joinOp || "";
+  const isTotal = opts.isTotal ? " hlc-math-bar--total" : "";
+  const slot = opts.slot ? " hlc-math-bar--slot-" + opts.slot : "";
+  const hasStep = step != null && step !== "" && step !== false;
+  var stepOp = "";
+  if (!joinOp) {
+    if (opts.stepOp != null && opts.stepOp !== "") {
+      stepOp = opts.stepOp;
+    } else if (opts.stepOp == null) {
+      stepOp = gutterOpFromLines(opts.lines);
+    }
+  }
+  const hasGutter = hasStep || joinOp || stepOp;
+  const noStep = hasGutter ? "" : " hlc-math-bar--no-step";
+  const joinClass =
+    joinOp === "+"
+      ? " hlc-math-bar--join-plus"
+      : joinOp === "="
+        ? " hlc-math-bar--join-equals"
+        : "";
+  const stepLabel =
+    hasStep && opts.stepWord
+      ? "Step " + String(step)
+      : hasStep
+        ? String(step)
+        : "";
   const work =
     opts.lines && opts.lines.length
-      ? mathWorkHtml(opts.lines)
-      : mathWorkHtml([{ k: "result", t: valueText, emphasis: true }]);
+      ? mathWorkHtml(opts.lines, { isTotal: !!opts.isTotal })
+      : mathWorkHtml([{ k: "result", t: valueText, emphasis: true }], {
+          isTotal: !!opts.isTotal
+        });
+  const joinHtml = joinOp
+    ? '<span class="hlc-math-bar-join" aria-hidden="true">' +
+      escapeHtml(joinOp) +
+      "</span>"
+    : "";
+  const stepOpHtml = stepOp
+    ? '<span class="hlc-math-bar-step-op" aria-hidden="true">' +
+      escapeHtml(stepOp) +
+      "</span>"
+    : "";
+  const stepHtml = stepLabel
+    ? opts.stepWord
+      ? '<span class="hlc-math-bar-step">' + escapeHtml(stepLabel) + "</span>"
+      : '<span class="hlc-math-bar-num">' + escapeHtml(stepLabel) + "</span>"
+    : "";
+  const railInner = stepHtml + stepOpHtml + joinHtml;
+  const railBlock = railInner
+    ? '<div class="hlc-math-bar-rail">' + railInner + "</div>"
+    : "";
+  const noteHtml = note
+    ? '<p class="hlc-math-bar-note">' + escapeHtml(note) + "</p>"
+    : "";
+  const copyHtml =
+    '<div class="hlc-math-bar-copy">' +
+    '<p class="hlc-math-bar-label">' +
+    escapeHtml(label) +
+    "</p>" +
+    noteHtml +
+    "</div>";
+  var mainClass = "hlc-math-bar-main";
+  if (opts.isTotal) mainClass += " hlc-math-bar-main--total";
+  if (!note && work) mainClass += " hlc-math-bar-main--work-only";
+  const mainHtml = '<div class="' + mainClass + '">' + copyHtml + work + "</div>";
   return (
     '<div class="hlc-math-bar' +
     track +
     limiting +
+    noStep +
+    joinClass +
+    isTotal +
+    slot +
     '">' +
-    '<span class="hlc-math-bar-num">' +
-    escapeHtml(String(step)) +
-    "</span>" +
-    '<div class="hlc-math-bar-body">' +
-    '<p class="hlc-math-bar-label">' +
-    escapeHtml(label) +
-    "</p>" +
-    (note ? '<p class="hlc-math-bar-note">' + escapeHtml(note) + "</p>" : "") +
-    "</div>" +
-    work +
+    railBlock +
+    mainHtml +
     "</div>"
   );
 }
 
-function mathBarStackHtml(bars) {
+/** Item bars plus a total row; + / = sit in the left gutter, not repeated in the sum. */
+function additiveStackBars(itemBars, totalLabel, totalValue, totalNote) {
+  if (!itemBars || !itemBars.length) return [];
+  const marked = itemBars.map(function (bar, index) {
+    const next = Object.assign({}, bar);
+    next.stepWord = true;
+    next.slot = index + 1;
+    if (index > 0) next.joinOp = "+";
+    return next;
+  });
+  marked.push({
+    step: marked.length + 1,
+    label: totalLabel || "Total",
+    note: totalNote || "",
+    value: totalValue,
+    isTotal: true,
+    joinOp: "=",
+    stepWord: true,
+    slot: "total",
+    lines: [{ k: "result", t: totalValue, emphasis: true }]
+  });
+  return marked;
+}
+
+/** Step 1 / Step 2 labels on every bar that carries a step number. */
+function markStepWordBars(bars) {
+  if (!bars || !bars.length) return [];
+  return bars.map(function (bar) {
+    if (bar.step == null || bar.step === "" || bar.step === false) return bar;
+    if (bar.stepWord) return bar;
+    return Object.assign({}, bar, { stepWord: true });
+  });
+}
+
+/** Slot ink for each row — gutter sign matches the derived result on that row. */
+function markSlotBars(bars) {
+  if (!bars || !bars.length) return [];
+  var slotIndex = 0;
+  return bars.map(function (bar) {
+    if (bar.isTotal) {
+      if (bar.slot != null && bar.slot !== "") return bar;
+      return Object.assign({}, bar, { slot: "total" });
+    }
+    if (bar.slot != null && bar.slot !== "") return bar;
+    slotIndex += 1;
+    return Object.assign({}, bar, { slot: Math.min(slotIndex, 5) });
+  });
+}
+
+function mathBarStackHtml(bars, options) {
   if (!bars || !bars.length) return "";
+  const opts = options || {};
+  const stepped =
+    opts.stepWord === false ? bars : markStepWordBars(bars);
+  const normalized = markSlotBars(stepped);
+  const stackClass = opts.stackClass ? " " + opts.stackClass : "";
   return (
-    '<div class="hlc-math-bars">' +
-    bars
+    '<div class="hlc-math-bars' +
+    stackClass +
+    '">' +
+    normalized
       .map(function (bar) {
         return mathBarHtml(bar.step, bar.label, bar.note, bar.value, bar);
       })
@@ -7000,6 +7091,9 @@ function calcStoryHtml(resultText, leadText, barsHtml, extraHtml, options) {
   const resultBlock = resultText
     ? '<p class="hlc-story-result">' + escapeHtml(resultText) + "</p>"
     : "";
+  const resultNoteBlock = opts.resultNote
+    ? '<p class="hlc-story-compare-title">' + escapeHtml(opts.resultNote) + "</p>"
+    : "";
   const leadBlock = leadText
     ? '<p class="hlc-story-lead">' + escapeHtml(leadText) + "</p>"
     : "";
@@ -7011,8 +7105,12 @@ function calcStoryHtml(resultText, leadText, barsHtml, extraHtml, options) {
     (extraHtml || "");
   return (
     '<div class="hlc-story">' +
-    (resultBlock || leadBlock
-      ? '<div class="hlc-story-head">' + leadBlock + resultBlock + "</div>"
+    (resultBlock || leadBlock || resultNoteBlock
+      ? '<div class="hlc-story-head">' +
+        leadBlock +
+        resultBlock +
+        resultNoteBlock +
+        "</div>"
       : "") +
     (workInner
       ? '<div class="hlc-drawer-card hlc-story-card">' + workInner + "</div>"
@@ -7355,6 +7453,7 @@ function initPage() {
     prepaymentMethod: PREPAYMENT_METHOD_OWN,
     rateChangeMethod: RATE_CHANGE_METHOD_TYPE,
     selected: new Set(),
+    selectedById: new Map(), // id -> last known enriched row snapshot
     sortKey: DEFAULT_SORT_KEY,
     sortDir: DEFAULT_SORT_DIR,
     rows: [],
@@ -7471,7 +7570,8 @@ function initPage() {
   }
 
   function visibleBankRows() {
-    const rows = sortRows(state.rows, state.sortKey, state.sortDir);
+    var matchedSorted = sortRows(state.rows, state.sortKey, state.sortDir);
+    var rows = buildDisplayRows(matchedSorted);
     if (state.showAllBanks || rows.length <= INITIAL_VISIBLE_BANKS) return rows;
     return rows.slice(0, INITIAL_VISIBLE_BANKS);
   }
@@ -8379,7 +8479,8 @@ function initPage() {
     const showPrepayment =
       state.group === "laterCharges" && state.productFilters.fixedRate;
     const columns = columnsForGroup(state.group, showPrepayment);
-    const rows = sortRows(state.rows, state.sortKey, state.sortDir);
+    const matchedSorted = sortRows(state.rows, state.sortKey, state.sortDir);
+    const rows = buildDisplayRows(matchedSorted);
     const nextSnapshot = buildCellSnapshot(rows, columns);
     const prevSnapshot = state.cellSnapshot;
     const visibleRows =
@@ -8387,12 +8488,15 @@ function initPage() {
         ? rows
         : rows.slice(0, INITIAL_VISIBLE_BANKS);
     const footnoteState = buildChargesFootnote(visibleRows);
+    var matchCount = state.rows.length;
+    var pinnedCount = rows.length - matchCount;
 
     el.meta.textContent =
       visibleRows.length === rows.length
         ? rows.length +
           " bank" +
-          (rows.length === 1 ? "" : "s")
+          (rows.length === 1 ? "" : "s") +
+          (pinnedCount > 0 ? " (" + pinnedCount + " outside filters)" : "")
         : "Showing " +
           visibleRows.length +
           " of " +
@@ -8570,6 +8674,9 @@ function initPage() {
       .map(function (row) {
         const isSelected = state.selected.has(row.id);
         const selectedClass = isSelected ? " is-selected" : "";
+        const outsideNote = row._outsideFilters
+          ? '<span class="hlc-outside-filters-note">Outside current filters</span>'
+          : "";
         const cells = columns
           .map(function (column) {
             const display = cellValue(row, column);
@@ -8645,13 +8752,16 @@ function initPage() {
           '<div class="hlc-bank-cell-text">' +
           '<div class="hlc-bank-name">' +
           bankLogoHtml(row.bankName) +
+          '<div class="hlc-bank-name-stack">' +
           '<button type="button" class="hlc-bank-name-text" data-detail="' +
           row.id +
           '" aria-label="Details for ' +
           escapeHtml(row.bankName) +
           '">' +
           escapeHtml(row.bankName) +
-          "</button></div>" +
+          "</button>" +
+          outsideNote +
+          "</div></div>" +
           "</div></div></td>" +
           (useFillCol ? '<td class="hlc-col-fill" aria-hidden="true"></td>' : "") +
           cells +
@@ -9850,16 +9960,14 @@ function initPage() {
     return mathWorksheet(lines);
   }
 
-  function storyTrack(title, bodyHtml, trackId, active, note) {
+  function storyTrack(title, bodyHtml, trackId) {
     return (
       '<section class="hlc-story-track hlc-story-track--' +
       trackId +
-      (active ? " hlc-story-track--active" : "") +
       '">' +
       '<h4 class="hlc-story-track-title">' +
       escapeHtml(title) +
       "</h4>" +
-      (note ? '<p class="hlc-story-track-note">' + escapeHtml(note) + "</p>" : "") +
       bodyHtml +
       "</section>"
     );
@@ -9878,30 +9986,6 @@ function initPage() {
       "</span>" +
       "</div>"
     );
-  }
-
-  function storyLimitsCompare(limits, limiter, finalValue) {
-    function isLimiting(key) {
-      if (limiter === "both") {
-        return key === "house" || key === "income";
-      }
-      return limiter === key;
-    }
-    var lines = limits.map(function (lim) {
-      return {
-        k: "caption",
-        t: lim.label,
-        v: lim.value,
-        track: lim.key,
-        limiting: isLimiting(lim.key)
-      };
-    });
-    if (limits.length >= 2) {
-      lines.push({ k: "op", t: "min" });
-      lines.push({ k: "rule" });
-      lines.push({ k: "result", t: finalValue, emphasis: true });
-    }
-    return '<div class="hlc-story-compare">' + mathWorksheet(lines) + "</div>";
   }
 
   function storyDivider() {
@@ -9956,138 +10040,160 @@ function initPage() {
 
   function loanAmountCalculationHtml(row) {
     var model = loanAmountWalkModel(row, readQuery());
-
     var houseActive = model.limiter === "house" || model.limiter === "both";
-    var houseBody = mathBarStackHtml([
-      {
-        step: 1,
-        label: "LTV — the bank funds " + formatPctPlain(model.fundedPct) + " of the property",
-        note: "The rest is your down payment: " + formatInr(model.downPayment) + ".",
-        value: formatInr(model.fromProperty),
-        track: "house",
-        limiting: houseActive,
-        lines: [
-          { k: "num", t: formatInr(model.propertyValue) },
-          { k: "op",  t: "× " + formatPctPlain(model.fundedPct) + " (LTV)" },
-          { k: "rule" },
-          { k: "result", t: formatInr(model.fromProperty), emphasis: true }
-        ]
-      }
-    ]);
+    var incomeActive = model.limiter === "income" || model.limiter === "both";
+    var stepStack = { stackClass: "hlc-math-bars--steps" };
+    var step = 1;
+
     var houseTrackHtml = storyTrack(
       "House cap",
-      houseBody,
-      "house",
-      houseActive,
-      houseActive ? "This is the limit that applies." : null
+      mathBarStackHtml(
+        [
+          {
+            step: step++,
+            label:
+              "Bank funds " +
+              formatPctPlain(model.fundedPct) +
+              " of the property",
+            note: "Down payment: " + formatInr(model.downPayment) + ".",
+            value: formatInr(model.fromProperty),
+            track: "house",
+            limiting: houseActive,
+            lines: [
+              { k: "num", t: formatInr(model.propertyValue) },
+              { k: "op", t: "× " + formatPctPlain(model.fundedPct) },
+              { k: "rule" },
+              {
+                k: "result",
+                t: formatInr(model.fromProperty),
+                emphasis: true
+              }
+            ]
+          }
+        ],
+        stepStack
+      ),
+      "house"
     );
 
-    var incomeActive = model.limiter === "income" || model.limiter === "both";
-    var incomeBody = mathBarStackHtml([
+    var incomeBars = [
       {
-        step: 1,
-        label: "FOIR — share of income for all EMIs",
-        note: "FOIR (" + formatPctPlain(model.foirPct) + ") is the maximum fraction of income banks allow for all EMI payments combined.",
+        step: step++,
+        label: "Share of income for all EMIs",
+        note:
+          "About " +
+          formatPctPlain(model.foirPct) +
+          " of take-home for all EMIs together.",
         value: formatInr(model.incomeAllowance),
         lines: [
           { k: "num", t: formatInr(model.totalIncome) },
-          { k: "op",  t: "× " + formatPctPlain(model.foirPct) + " FOIR" },
+          { k: "op", t: "× " + formatPctPlain(model.foirPct) },
           { k: "rule" },
-          { k: "result", t: formatInr(model.incomeAllowance), emphasis: true }
+          {
+            k: "result",
+            t: formatInr(model.incomeAllowance),
+            emphasis: true
+          }
         ]
-      },
-      {
-        step: 2,
-        label: "Minus other EMIs running",
-        note: "These EMIs are already committed each month.",
+      }
+    ];
+    if (model.existingEmis > 0) {
+      incomeBars.push({
+        step: step++,
+        label: "Minus other EMIs",
         value: formatInr(model.afterEmis),
         lines: [
           { k: "num", t: formatInr(model.incomeAllowance) },
-          { k: "op",  t: "− " + formatInr(model.existingEmis) + " other EMIs" },
+          { k: "op", t: "− " + formatInr(model.existingEmis) },
           { k: "rule" },
           { k: "result", t: formatInr(model.afterEmis), emphasis: true }
         ]
-      },
-      {
-        step: 3,
+      });
+    }
+    if (model.cardLoad > 0) {
+      incomeBars.push({
+        step: step++,
+        label: "Credit card load",
+        note:
+          formatPctPlain(model.cardLoadPct) +
+          " of total card limits — not your outstanding dues.",
+        value: formatInr(model.cardLoad),
+        lines: [
+          { k: "num", t: formatInr(model.cardLimits) },
+          { k: "op", t: "× " + formatPctPlain(model.cardLoadPct) },
+          { k: "rule" },
+          { k: "result", t: formatInr(model.cardLoad), emphasis: true }
+        ]
+      });
+      incomeBars.push({
+        step: step++,
         label: "Minus credit card load",
-        note: "Total card limits across all cards × " + formatPctPlain(model.cardLoadPct) + " counts as a monthly load. This is not your outstanding dues.",
         value: formatInr(model.emiRoom),
         lines: [
           { k: "num", t: formatInr(model.afterEmis) },
-          { k: "op",  t: "− " + formatInr(model.cardLoad) + " card load" },
+          { k: "op", t: "− " + formatInr(model.cardLoad) },
           { k: "rule" },
           { k: "result", t: formatInr(model.emiRoom), emphasis: true }
         ]
-      },
-      {
-        step: 4,
-        label: "Monthly EMI eligibility → loan",
-        note: "This EMI room, at this bank's rate (" + formatPctPlain(model.ratePct) + ") for " + model.tenureLabel + ".",
-        value: formatInr(model.fromIncome),
-        track: "income",
-        limiting: incomeActive,
-        lines: [
-          { k: "num", t: formatInr(model.emiRoom) + " / month" },
-          { k: "op",  t: "@ " + formatPctPlain(model.ratePct) + " (this bank's rate), " + model.tenureLabel },
-          { k: "rule" },
-          { k: "result", t: formatInr(model.fromIncome), emphasis: true }
-        ]
-      }
-    ]);
+      });
+    }
+    incomeBars.push({
+      step: step++,
+      label: "That monthly room as a loan",
+      note: "At this bank’s rate, for " + model.tenureLabel + ".",
+      value: formatInr(model.fromIncome),
+      track: "income",
+      limiting: incomeActive,
+      lines: [
+        { k: "num", t: formatInr(model.emiRoom) + "/mo" },
+        {
+          k: "op",
+          t: "@ " + formatPctPlain(model.ratePct) + ", " + model.tenureLabel
+        },
+        { k: "rule" },
+        { k: "result", t: formatInr(model.fromIncome), emphasis: true }
+      ]
+    });
+
     var incomeTrackHtml = storyTrack(
       "Income cap",
-      incomeBody,
-      "income",
-      incomeActive,
-      incomeActive ? "This is the limit that applies." : null
+      mathBarStackHtml(incomeBars, stepStack),
+      "income"
     );
 
     var bankTrackHtml = "";
     if (model.bankMaxApplies) {
-      var bankActive = model.limiter === "bank";
       bankTrackHtml = storyTrack(
         "This bank's maximum",
-        mathBarStackHtml([
-          {
-            step: 1,
-            label: "This bank will not go above this amount.",
-            note: "",
-            value: formatInr(model.bankMaximum),
-            track: "bank",
-            limiting: bankActive,
-            lines: [{ k: "num", t: formatInr(model.bankMaximum) }]
-          }
-        ]),
-        "bank",
-        bankActive,
-        bankActive ? "This is the limit that applies." : null
+        mathBarStackHtml(
+          [
+            {
+              step: step++,
+              label: "This bank will not lend above this amount",
+              value: formatInr(model.bankMaximum),
+              track: "bank",
+              limiting: model.limiter === "bank",
+              lines: [{ k: "num", t: formatInr(model.bankMaximum) }]
+            }
+          ],
+          stepStack
+        ),
+        "bank"
       );
     }
-
-    var limits = [
-      { key: "house",  label: "House cap",  value: formatInr(model.fromProperty) },
-      { key: "income", label: "Income cap", value: formatInr(model.fromIncome) }
-    ];
-    if (model.bankMaxApplies) {
-      limits.push({ key: "bank", label: "Bank maximum", value: formatInr(model.bankMaximum) });
-    }
-    var compareHtml = storyLimitsCompare(limits, model.limiter, formatInr(model.result));
 
     var inner =
       houseTrackHtml +
       storyDivider() +
       incomeTrackHtml +
-      (bankTrackHtml ? storyDivider() + bankTrackHtml : "") +
-      storyDivider() +
-      '<p class="hlc-story-compare-title">Lower of these is what this bank can give you</p>' +
-      compareHtml;
+      (bankTrackHtml ? storyDivider() + bankTrackHtml : "");
 
     return calcStoryHtml(
       formatInr(model.result),
       "This bank's loan on these inputs is",
       inner,
-      ""
+      "",
+      { resultNote: "Lower of property value and monthly income available for EMI." }
     );
   }
 
@@ -10099,35 +10205,38 @@ function initPage() {
       row.roiDecimal,
       row.tenureMonths
     );
-    const bars = mathBarStackHtml([
-      {
-        step: 1,
-        label: "Banks quote annual; you pay monthly",
-        note: "Divide the annual rate by 12 months to get the rate charged each month.",
-        value: monthlyPct.toFixed(4) + "%",
-        lines: [
-          { k: "num", t: formatPctPlain(annualPct) + " a year" },
-          { k: "op", t: "÷ 12 months" },
-          { k: "rule" },
-          { k: "result", t: monthlyPct.toFixed(4) + "%", emphasis: true }
-        ]
-      },
-      {
-        step: 2,
-        label: "Loan at that monthly rate",
-        note: "Monthly payment stays the same. Early months pay more interest.",
-        value: formatInr(row.emi) + " / month",
-        lines: [
-          { k: "num", t: formatInr(row.loanAmount) },
-          {
-            k: "op",
-            t: "@ " + monthlyPct.toFixed(4) + "%, " + tenureInWordsFromRow(row)
-          },
-          { k: "rule" },
-          { k: "result", t: formatInr(row.emi) + " / month", emphasis: true }
-        ]
-      }
-    ]);
+    const bars = mathBarStackHtml(
+      [
+        {
+          step: 1,
+          label: "Banks quote annual; you pay monthly",
+          note: "Yearly rate split into 12 monthly parts.",
+          value: monthlyPct.toFixed(4) + "%",
+          lines: [
+            { k: "num", t: formatPctPlain(annualPct) + " a year" },
+            { k: "op", t: "÷ 12 months" },
+            { k: "rule" },
+            { k: "result", t: monthlyPct.toFixed(4) + "%", emphasis: true }
+          ]
+        },
+        {
+          step: 2,
+          label: "Loan at that monthly rate",
+          note: "Same EMI every month. Early months pay more interest.",
+          value: formatInr(row.emi) + "/mo",
+          lines: [
+            { k: "num", t: formatInr(row.loanAmount) },
+            {
+              k: "op",
+              t: "@ " + monthlyPct.toFixed(4) + "%, " + tenureInWordsFromRow(row)
+            },
+            { k: "rule" },
+            { k: "result", t: formatInr(row.emi) + "/mo", emphasis: true }
+          ]
+        }
+      ],
+      { stackClass: "hlc-math-bars--steps" }
+    );
     return calcStoryHtml(
       formatInr(row.emi),
       "EMI every month is",
@@ -10159,7 +10268,7 @@ function initPage() {
       bars.push({
         step: 1,
         label: "Processing fee — this bank’s percentage",
-        note: "A one-time fee on your loan amount. You pay this when you accept the sanction letter.",
+        note: "One-time fee to process your loan, paid at the time of sanctioning.",
         value: formatInr(beforeLimits),
         lines: [
           { k: "num", t: formatInr(row.loanAmount) },
@@ -10179,7 +10288,7 @@ function initPage() {
         bars.push({
           step: 2,
           label: "Bank floor",
-          note: "This bank will not take less than this.",
+          note: "Bank minimum fee (shown in maths).",
           value: formatInr(row.processingFee),
           lines: [
             { k: "num", t: formatInr(beforeLimits) },
@@ -10192,7 +10301,7 @@ function initPage() {
         bars.push({
           step: 2,
           label: "Bank ceiling",
-          note: "This bank will not take more than this.",
+          note: "Bank maximum fee (shown in maths).",
           value: formatInr(row.processingFee),
           lines: [
             { k: "num", t: formatInr(beforeLimits) },
@@ -10217,7 +10326,7 @@ function initPage() {
       bars.push({
         step: 1,
         label: "Flat processing fee",
-        note: "This bank charges a fixed amount regardless of your loan size.",
+        note: "One-time fee to process your loan, paid at the time of sanctioning.",
         value: formatInr(fixed)
       });
     } else if (charge.percentage === 0) {
@@ -10243,7 +10352,7 @@ function initPage() {
     }
 
     const extraNotes = [
-      "This fee is mandatory. You pay it to go ahead on a sanction. Banks do not usually refund it.",
+      "Fees non-refundable.",
       note
     ].filter(Boolean);
 
@@ -10251,7 +10360,7 @@ function initPage() {
       calcStoryHtml(
         formatInr(row.processingFee),
         "Processing fee on this loan is",
-        mathBarStackHtml(bars),
+        mathBarStackHtml(bars, { stackClass: "hlc-math-bars--steps" }),
         "",
         { workTitle: CALC_CHARGES_TITLE }
       ) + (extraNotes.length ? storyNote(extraNotes.join(" ")) : "")
@@ -10261,72 +10370,104 @@ function initPage() {
 function propertyCheckChargeNote(name) {
   var notes = {
     "Legal and technical":
-      "The bank checks that the property title is clear, that there are no legal disputes, and that the construction meets local rules.",
+      "Fee to check the property is legally clear and built as approved.",
     "Title search report":
-      "A search of official records to confirm the seller genuinely owns the property and there are no other claims on it.",
+      "Fee to check property titles are correct.",
     "Valuation":
-      "An independent estimate of the property's market value. The bank uses this to decide how much it will lend."
+      "Fee to value the property — paid to the bank’s valuer."
   };
-  return notes[name] || "The bank runs this check on the property before sanctioning the loan.";
+  return notes[name] || "Bank check on the property before sanction.";
 }
 
   function propertyCheckChargeCalculationHtml(row) {
     const lines = row.propertyCheckChargeRows || [];
-    const bars = lines.map(function (line, index) {
+    const itemBars = lines.map(function (line, index) {
       return {
         step: index + 1,
         label: line.name || "Charge",
         note: propertyCheckChargeNote(line.name || ""),
         value: formatInr(line.amount),
-        lines:
-          index === 0
-            ? [{ k: "num", t: formatInr(line.amount) }]
-            : [{ k: "op", t: "+ " + formatInr(line.amount) }]
+        lines: [{ k: "result", t: formatInr(line.amount), emphasis: true }]
       };
     });
-    if (lines.length) {
-      const sumLines = [{ k: "num", t: formatInr(lines[0].amount) }];
-      lines.slice(1).forEach(function (line) {
-        sumLines.push({ k: "op", t: "+ " + formatInr(line.amount) });
-      });
-      sumLines.push({ k: "rule" }, { k: "result", t: formatInr(row.propertyCheckCharges), emphasis: true });
-      bars.push({
-        step: bars.length + 1,
-        label: "Total",
-        note: "GST extra. Typical industry amounts.",
-        value: formatInr(row.propertyCheckCharges),
-        lines: sumLines
-      });
-    }
+    const bars = additiveStackBars(
+      itemBars,
+      "Total",
+      formatInr(row.propertyCheckCharges),
+      "GST extra."
+    );
     return (
       calcStoryHtml(
         formatInr(row.propertyCheckCharges),
         "Property check charges on this loan are",
-        mathBarStackHtml(bars),
+        mathBarStackHtml(bars, { stackClass: "hlc-math-bars--additive" }),
         "",
         { workTitle: CALC_CHARGES_TITLE }
       ) +
       storyNote(
-        "The bank runs these checks. They will not take a report you bring. GST extra. Typical industry amounts."
+        "Bank runs these checks. Your own report is not accepted. GST extra."
       )
     );
   }
 
-  function governmentChargeExplanation(chargeName) {
-  var explanations = {
-    "MODT Stamp Duty":
-      "A stamp duty paid to the state government to officially register the bank's mortgage on your property. Mandatory for most home loans.",
-    "Notice of Intimation Registration Fee":
-      "A government fee to register the bank's claim on the property in the state's official records.",
-    "Notice of Intimation Filing Fee":
-      "A filing fee paid when the notice of the bank's mortgage is submitted to the state authority.",
-    "CERSAI Security Interest Creation":
-      "A central government registry fee. CERSAI records the bank's mortgage so no one can fraudulently take a second loan on the same property.",
-    "Further Charge Stamp Duty":
-      "A stamp duty for registering a further charge on the property — applies to top-up loans."
-  };
-  return explanations[chargeName] || "";
-}
+  function governmentChargeShortNote(charge, loanAmount) {
+    const parts = governmentChargeAmountParts(charge, loanAmount);
+    const method = normalizeText(charge.calculation_method);
+    const name = String(charge.charge_name || "");
+    const pct =
+      charge.percentage != null && Number.isFinite(Number(charge.percentage))
+        ? formatPctPlain(Number(charge.percentage) * 100)
+        : "";
+    const maxBracket =
+      charge.max_amount_inr != null &&
+      Number.isFinite(Number(charge.max_amount_inr))
+        ? " (max " + formatInr(Number(charge.max_amount_inr)) + ")"
+        : "";
+    const minBracket =
+      charge.min_amount_inr != null &&
+      Number.isFinite(Number(charge.min_amount_inr)) &&
+      !maxBracket
+        ? " (min " + formatInr(Number(charge.min_amount_inr)) + ")"
+        : "";
+
+    if (name === "CERSAI Security Interest Creation") {
+      return "Flat fee so no duplicate loan can be registered on this property.";
+    }
+    if (name === "MODT Stamp Duty") {
+      return pct
+        ? pct + " of loan to register the home loan with the state."
+        : "Stamp duty to register the home loan with the state.";
+    }
+    if (name === "Notice of Intimation Filing Fee") {
+      return "Flat fee to file the mortgage notice with the state.";
+    }
+    if (name === "Notice of Intimation Registration Fee") {
+      return pct
+        ? pct +
+            " of loan to register the home loan agreement" +
+            maxBracket +
+            minBracket +
+            "."
+        : "Fee to register the home loan agreement" + maxBracket + minBracket + ".";
+    }
+    if (name === "Further Charge Stamp Duty") {
+      return pct
+        ? "Stamp duty to register a top-up loan on the property (" +
+            pct +
+            " of loan)."
+        : "Stamp duty to register a top-up loan on the property.";
+    }
+    if (method === "percentage" && pct) {
+      return pct + " of this loan" + maxBracket + minBracket + ".";
+    }
+    if (method === "flat") {
+      return "Flat fee" + maxBracket + minBracket + ".";
+    }
+    if (parts.gstRate > 0) {
+      return "Government fee.";
+    }
+    return "";
+  }
 
 function governmentChargeName(chargeName) {
     const names = {
@@ -10405,51 +10546,25 @@ function governmentChargeName(chargeName) {
       row.loanAmount,
       DEFAULT_JURISDICTION_STATE
     );
-    const bars = charges.map(function (charge, index) {
+    const itemBars = charges.map(function (charge, index) {
       const parts = governmentChargeAmountParts(charge, row.loanAmount);
-      const method = normalizeText(charge.calculation_method);
-      let note = "";
-      if (method === "percentage") {
-        note =
-          formatPctPlain(Number(charge.percentage) * 100) +
-          " of this loan" +
-          (parts.gstRate > 0 ? ". GST included." : ".");
-      } else if (method === "flat") {
-        note = parts.gstRate > 0 ? "A flat fee. GST included." : "A flat fee.";
-      } else if (parts.gstRate > 0) {
-        note = "GST included.";
-      }
       return {
         step: index + 1,
         label: governmentChargeName(charge.charge_name),
-        note: [governmentChargeExplanation(charge.charge_name), note].filter(Boolean).join(" "),
+        note: governmentChargeShortNote(charge, row.loanAmount),
         value: formatInr(parts.total),
         lines: governmentChargeSheetLines(charge, row.loanAmount)
       };
     });
-    if (charges.length) {
-      const sumLines = charges.map(function (charge, index) {
-        const total = governmentChargeAmountParts(charge, row.loanAmount).total;
-        return index === 0
-          ? { k: "num", t: formatInr(total) }
-          : { k: "op", t: "+ " + formatInr(total) };
-      });
-      sumLines.push(
-        { k: "rule" },
-        { k: "result", t: formatInr(row.governmentCharges), emphasis: true }
-      );
-      bars.push({
-        step: bars.length + 1,
-        label: "Total",
-        note: "",
-        value: formatInr(row.governmentCharges),
-        lines: sumLines
-      });
-    }
+    const bars = additiveStackBars(
+      itemBars,
+      "Total",
+      formatInr(row.governmentCharges)
+    );
     return calcStoryHtml(
       formatInr(row.governmentCharges),
       "State charges on this loan are",
-      mathBarStackHtml(bars),
+      mathBarStackHtml(bars, { stackClass: "hlc-math-bars--additive" }),
       "",
       { workTitle: CALC_CHARGES_TITLE }
     );
@@ -10481,7 +10596,7 @@ function governmentChargeName(chargeName) {
             { k: "result", t: overdueRupee, emphasis: true }
           ]
         : [{ k: "result", t: overdueRupee, emphasis: true }];
-    let overdueNote = "An extra amount the bank charges every month the EMI stays unpaid.";
+    let overdueNote = "Late-payment charge on the missed EMI.";
     if (overdue.kind === "row_rate") {
       overdueNote =
         "The bank uses this loan’s yearly rate on the missed EMI, for this month.";
@@ -10496,11 +10611,11 @@ function governmentChargeName(chargeName) {
           ? overdue.ruleNote
           : overdueNote + " " + overdue.ruleNote;
     }
-    const bars = [
+    let bars = [
       {
         step: 1,
         label: "This EMI",
-        note: "The monthly payment that did not go through.",
+        note: "The EMI that did not get paid.",
         value: formatInr(overdue.overdueAmount),
         lines: [{ k: "num", t: formatInr(overdue.overdueAmount) }]
       },
@@ -10516,7 +10631,7 @@ function governmentChargeName(chargeName) {
       bars.push({
         step: bars.length + 1,
         label: "Bank minimum",
-        note: "The bank’s lowest overdue extra. Used if it is higher than the percent.",
+        note: "Bank minimum overdue charge (shown in maths).",
         value: formatInr(overdue.extra),
         lines: [
           { k: "num", t: overdueRupee },
@@ -10540,9 +10655,10 @@ function governmentChargeName(chargeName) {
       bars.push({
         step: bars.length + 1,
         label: "Bounce charge",
+        joinOp: "+",
         note:
           bounce.slabSentence ||
-          "This bank’s bounce charge is taken when EMI auto-debit fails.",
+          "When auto-debit of the EMI fails.",
         value:
           bounce.gst > 0
             ? formatInr(bounce.extra) + " + " + formatInr(bounce.gst) + " GST"
@@ -10555,21 +10671,20 @@ function governmentChargeName(chargeName) {
                 { k: "rule" },
                 { k: "result", t: formatInr(bounce.total), emphasis: true }
               ]
-            : [{ k: "num", t: formatInr(bounce.extra) }]
+            : [{ k: "result", t: formatInr(bounce.extra), emphasis: true }]
       });
       bars.push({
         step: bars.length + 1,
         label: "Total",
+        isTotal: true,
+        joinOp: "=",
         note: "",
         value: formatInr(walk.total),
-        lines: [
-          { k: "num", t: formatInr(overdue.extra || 0) },
-          { k: "op", t: "+ " + formatInr(bounce.total) },
-          { k: "rule" },
-          { k: "result", t: formatInr(walk.total), emphasis: true }
-        ]
+        lines: [{ k: "result", t: formatInr(walk.total), emphasis: true }]
       });
     }
+    const stackClass =
+      bounce.total > 0 ? "hlc-math-bars--additive" : "hlc-math-bars--steps";
     const aboutEmi =
       walk.total >= row.emi && row.emi > 0
         ? "One missed EMI here costs about another EMI in charges. A slightly cheaper rate does not cancel that."
@@ -10583,7 +10698,7 @@ function governmentChargeName(chargeName) {
       calcStoryHtml(
         formatInr(walk.total),
         missedLead,
-        mathBarStackHtml(bars),
+        mathBarStackHtml(bars, { stackClass: stackClass }),
         "",
         { workTitle: CALC_CHARGES_TITLE }
       ) + (notes ? '<p class="hlc-story-note">' + escapeHtml(notes) + "</p>" : "")
@@ -10600,12 +10715,12 @@ function governmentChargeName(chargeName) {
 
 function rateChangeMethodDescription(method) {
   if (method === RATE_CHANGE_METHOD_REPRICE) {
-    return "Repricing — renegotiating the interest rate with your bank.";
+    return "reprice the loan";
   }
   if (method === RATE_CHANGE_METHOD_BENCHMARK) {
-    return "Benchmark switch — moving from one rate index to another (e.g. MCLR to repo rate).";
+    return "switch rate benchmark";
   }
-  return "Rate type switch — converting between floating and fixed rate.";
+  return "switch between floating and fixed rate";
 }
 
   function rateChangeCalculationHtml(row) {
@@ -10626,7 +10741,7 @@ function rateChangeMethodDescription(method) {
       {
         step: 1,
         label: "Your outstanding loan",
-        note: "The charge is a percentage of this amount. " + rateChangeMethodDescription(state.rateChangeMethod),
+        note: "Fee is a % of what you still owe.",
         value: formatInr(row.loanAmount),
         lines: [{ k: "num", t: formatInr(row.loanAmount) }]
       },
@@ -10635,7 +10750,7 @@ function rateChangeMethodDescription(method) {
         label: "Charge to change the rate",
         note:
           applicableSlabSentence(charge, chargeCaseFromRow(row)) ||
-          "This bank's fee for this rate change. " + rateChangeMethodDescription(state.rateChangeMethod),
+          "Bank fee to " + rateChangeMethodDescription(state.rateChangeMethod) + ".",
         value: resultText,
         lines:
           amount != null &&
@@ -10661,7 +10776,7 @@ function rateChangeMethodDescription(method) {
     return calcStoryHtml(
       resultText,
       "Charge to change the rate is",
-      mathBarStackHtml(bars),
+      mathBarStackHtml(bars, { stackClass: "hlc-math-bars--steps" }),
       "",
       { workTitle: CALC_CHARGES_TITLE }
     );
@@ -10693,20 +10808,23 @@ function rateChangeMethodDescription(method) {
     var prepayBarsHtml = "";
     if (pct != null) {
       var exampleCharge = row.loanAmount * (pct / 100);
-      prepayBarsHtml = mathBarStackHtml([
-        {
-          step: 1,
-          label: "On your current loan amount",
-          note: "If you repaid the full outstanding amount today, this is the charge. The actual charge scales with how much you prepay.",
-          value: formatInr(exampleCharge),
-          lines: [
-            { k: "num", t: formatInr(row.loanAmount) },
-            { k: "op",  t: "× " + formatPctPlain(pct) },
-            { k: "rule" },
-            { k: "result", t: formatInr(exampleCharge), emphasis: true }
-          ]
-        }
-      ]);
+      prepayBarsHtml = mathBarStackHtml(
+        [
+          {
+            step: 1,
+            label: "On your current loan amount",
+            note: "Example if you prepaid the full loan today. Actual fee depends on amount prepaid.",
+            value: formatInr(exampleCharge),
+            lines: [
+              { k: "num", t: formatInr(row.loanAmount) },
+              { k: "op", t: "× " + formatPctPlain(pct) },
+              { k: "rule" },
+              { k: "result", t: formatInr(exampleCharge), emphasis: true }
+            ]
+          }
+        ],
+        { stackClass: "hlc-math-bars--steps" }
+      );
     }
 
     return (
@@ -11147,7 +11265,7 @@ function rateChangeMethodDescription(method) {
     }, 900);
   }
 
-  async function runMatch() {
+  async function runMatch(matchOpts) {
     if (!state.dataset) return;
     if (!primaryFieldsAreComplete()) {
       root.setAttribute("aria-busy", "false");
@@ -11162,7 +11280,10 @@ function rateChangeMethodDescription(method) {
     updateIntelligencePanel();
     applyPrepaymentMethodToRows(state.rows, state.prepaymentMethod);
     applyRateChangeMethodToRows(state.rows, state.rateChangeMethod);
-    state.showAllBanks = false;
+    syncSelectedSnapshotsFromRows(state.rows);
+    if (matchOpts && matchOpts.resetShowMore) {
+      state.showAllBanks = false;
+    }
     root.setAttribute("aria-busy", "false");
     renderTable({ highlightDeltas: true });
   }
@@ -11189,10 +11310,14 @@ function rateChangeMethodDescription(method) {
       updateLoanHint();
       return;
     }
-    const fade = !!(options && options.fade);
+    var isEvent = options && typeof options.preventDefault === "function";
+    var opts = isEvent
+      ? { fade: false, resetShowMore: true }
+      : Object.assign({ fade: false, resetShowMore: false }, options || {});
+    var fade = !!opts.fade;
     state.matchTimer = setTimeout(function () {
-      const run = function () {
-        return runMatch().catch(function (error) {
+      var run = function () {
+        return runMatch({ resetShowMore: !!opts.resetShowMore }).catch(function (error) {
           console.error(error);
           showToast("Could not match banks. Refresh and try again.");
           root.setAttribute("aria-busy", "false");
@@ -11203,23 +11328,103 @@ function rateChangeMethodDescription(method) {
     }, MATCH_DEBOUNCE_MS);
   }
 
+  function rememberSelectedRow(row) {
+    if (!row || row.id == null) return;
+    var cloned = cloneJson(row);
+    if (!cloned) return;
+    delete cloned._outsideFilters;
+    cloned.bankKind =
+      cloned.bankKind ||
+      (cloned.offer && cloned.offer.bank_type) ||
+      null;
+    state.selectedById.set(row.id, cloned);
+  }
+
+  function forgetSelectedId(id) {
+    state.selected.delete(id);
+    state.selectedById.delete(id);
+  }
+
+  function syncSelectedSnapshotsFromRows(rows) {
+    (rows || []).forEach(function (row) {
+      if (row && row.id != null && state.selected.has(row.id)) {
+        rememberSelectedRow(row);
+      }
+    });
+  }
+
+  function findRowForSelection(id) {
+    var i;
+    var rows = state.rows || [];
+    for (i = 0; i < rows.length; i++) {
+      if (rows[i] && rows[i].id === id) return rows[i];
+    }
+    return state.selectedById.get(id) || null;
+  }
+
+  /** Pinned orphans first, then sorted matches. Orphans carry `_outsideFilters`. */
+  function buildDisplayRows(matchedSorted) {
+    var matched = matchedSorted || [];
+    var matchedIds = new Set();
+    matched.forEach(function (r) {
+      if (r && r.id != null) matchedIds.add(r.id);
+    });
+    var orphans = [];
+    state.selected.forEach(function (id) {
+      if (matchedIds.has(id)) return;
+      var snap = state.selectedById.get(id);
+      if (!snap) return;
+      var pinned = cloneJson(snap);
+      if (!pinned) return;
+      pinned._outsideFilters = true;
+      orphans.push(pinned);
+    });
+    return orphans.concat(matched);
+  }
+
+  function compactSelectedSnapshot(row) {
+    if (!row || row.id == null) return null;
+    return {
+      id: row.id,
+      bankName: row.bankName,
+      bankKey: row.bankKey != null ? row.bankKey : null,
+      bankKind:
+        row.bankKind ||
+        (row.offer && row.offer.bank_type) ||
+        null,
+      scheme: row.scheme != null ? row.scheme : null,
+      rateType: row.rateType != null ? row.rateType : null,
+      facilityLabel: row.facilityLabel != null ? row.facilityLabel : null,
+      effectiveRoiPct: row.effectiveRoiPct,
+      loanAmount: row.loanAmount,
+      tenureLabel: row.tenureLabel != null ? row.tenureLabel : "",
+      emi: row.emi,
+      offer: row.offer && typeof row.offer === "object" ? row.offer : null
+    };
+  }
+
   function toggleSelect(id) {
-    if (state.selected.has(id)) state.selected.delete(id);
-    else state.selected.add(id);
+    if (state.selected.has(id)) {
+      forgetSelectedId(id);
+    } else {
+      state.selected.add(id);
+      rememberSelectedRow(findRowForSelection(id));
+    }
     persistExploreDraft();
     renderTable();
   }
 
   function toggleSelectAllVisible() {
-    const visibleRows = visibleBankRows();
+    var visibleRows = visibleBankRows();
     if (!visibleRows.length) return;
     if (selectAllCheckState(visibleRows) === "all") {
       visibleRows.forEach(function (row) {
-        state.selected.delete(row.id);
+        forgetSelectedId(row.id);
       });
     } else {
       visibleRows.forEach(function (row) {
         state.selected.add(row.id);
+        rememberSelectedRow(row);
       });
     }
     persistExploreDraft();
@@ -11751,10 +11956,16 @@ function rateChangeMethodDescription(method) {
 
   function persistExploreDraft() {
     try {
+      var snapshots = [];
+      state.selectedById.forEach(function (row) {
+        var compact = compactSelectedSnapshot(row);
+        if (compact) snapshots.push(compact);
+      });
       var draft = {
         v: 1,
         ts: Date.now(),
         selectedIds: Array.from(state.selected),
+        selectedSnapshots: snapshots,
         form: collectFormRaw(),
         filters: cloneJson(state.productFilters) || defaultProductFilters(),
         prepaymentMethod: state.prepaymentMethod,
@@ -11807,6 +12018,12 @@ function rateChangeMethodDescription(method) {
       state.selected = new Set();
       (draft.selectedIds || []).forEach(function (id) {
         if (id != null && id !== "") state.selected.add(id);
+      });
+      state.selectedById = new Map();
+      (draft.selectedSnapshots || []).forEach(function (snap) {
+        if (!snap || snap.id == null) return;
+        if (!state.selected.has(snap.id)) return;
+        state.selectedById.set(snap.id, snap);
       });
       updateApplyBar();
       return true;
@@ -11911,10 +12128,16 @@ function rateChangeMethodDescription(method) {
 
   function buildSelectedBankPackets() {
     var banks = [];
-    state.rows.forEach(function (row) {
-      if (!row || row.id == null || !state.selected.has(row.id)) return;
+    state.selected.forEach(function (id) {
+      var row = state.selectedById.get(id);
+      if (!row) {
+        row = findRowForSelection(id);
+      }
+      if (!row) return;
       var cloned = cloneJson(row);
-      if (cloned) banks.push(cloned);
+      if (!cloned) return;
+      delete cloned._outsideFilters;
+      banks.push(cloned);
     });
     return banks;
   }
@@ -12255,6 +12478,10 @@ module.exports = {
   compareRankPillsHtml,
   loanAmountWalkModel,
   mathBarHtml,
+  gutterOpFromLines,
+  markStepWordBars,
+  mathBarStackHtml,
+  additiveStackBars,
   amortizationTableHtml,
   tenureMonthsForOffer,
   loanFromEmi,

@@ -9,7 +9,7 @@
     Preference: localStorage['shroffin-color-preference'] ∈ {dark, light, system}
     Resolved: html[data-theme="dark"|"light"]; first visit unset → dark (do NOT write until user taps).
     Default (system) ≠ first visit. OS listener only when preference === system.
-    theme-color: dark #121212 / light #fcfcfd
+    theme-color: dark #161616 / light #fcfcfd
     FOUC: set data-theme + color-scheme + canvas background before stylesheets.
   -->
   <script data-shroffin-theme-boot="live">
@@ -32,13 +32,13 @@
         if (document.head.firstChild) document.head.insertBefore(meta, document.head.firstChild);
         else document.head.appendChild(meta);
       }
-      meta.setAttribute('content', resolved === 'dark' ? '#121212' : '#fcfcfd');
+      meta.setAttribute('content', resolved === 'dark' ? '#161616' : '#fcfcfd');
     }
     function apply(resolved) {
       root.setAttribute('data-theme', resolved);
       root.style.colorScheme = resolved;
       /* Critical canvas before CSS / home inline light hardcodes */
-      root.style.backgroundColor = resolved === 'dark' ? '#121212' : '#fcfcfd';
+      root.style.backgroundColor = resolved === 'dark' ? '#161616' : '#fcfcfd';
       applyThemeColor(resolved);
     }
     var pref = null;
@@ -84,8 +84,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="../css/shroffin-shell.css?v=seg-radius-1">
-  <link rel="stylesheet" href="../css/shroffin-guide.css?v=seg-radius-1">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=guide-reveal-2">
+  <link rel="stylesheet" href="../css/shroffin-guide.css?v=nav-center-1">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=guide-intel-ink-1">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -576,7 +576,7 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea guide-tile-question">What property papers do you need?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                The property documents for the home you are buying.
+                Majorly sale agreement or title deeds, payment receipts, occupancy if ready, and others.
               </p>
           <div class="guide-chapter-card">
             <div class="guide-seg" role="tablist" aria-label="Property type">
@@ -652,7 +652,7 @@
 <div class="mag-content">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-siri guide-tile-question">What else might they ask for?</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">
-                Other documents usually filed with the application.
+                Down payment proof, repayment statements for other loans, photos, and a fee cheque.
               </p>
           <div class="guide-chapter-card">
             <div class="guide-doc-rows guide-doc-rows--cols guide-doc-rows--compact">
@@ -865,6 +865,8 @@
   </script>
   <!-- SHROFFIN_FOOTER_END -->
 
+  <script src="../js/guide-intelligence.generated.js?v=guide-intel-9"></script>
+  <script src="../js/shroffin-guide-intelligence.js?v=guide-intel-9"></script>
   <script src="../js/guide-page-overview.js?v=card-only-flip-1"></script>
   <script src="../js/shroffin-nav.js?v=guide-top-1"></script>
   <script src="../js/shroffin-guide.js?v=guide-reveal-2"></script>

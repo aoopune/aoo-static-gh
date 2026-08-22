@@ -9,7 +9,7 @@
     Preference: localStorage['shroffin-color-preference'] ∈ {dark, light, system}
     Resolved: html[data-theme="dark"|"light"]; first visit unset → dark (do NOT write until user taps).
     Default (system) ≠ first visit. OS listener only when preference === system.
-    theme-color: dark #121212 / light #fcfcfd
+    theme-color: dark #161616 / light #fcfcfd
     FOUC: set data-theme + color-scheme + canvas background before stylesheets.
   -->
   <script data-shroffin-theme-boot="live">
@@ -32,13 +32,13 @@
         if (document.head.firstChild) document.head.insertBefore(meta, document.head.firstChild);
         else document.head.appendChild(meta);
       }
-      meta.setAttribute('content', resolved === 'dark' ? '#121212' : '#fcfcfd');
+      meta.setAttribute('content', resolved === 'dark' ? '#161616' : '#fcfcfd');
     }
     function apply(resolved) {
       root.setAttribute('data-theme', resolved);
       root.style.colorScheme = resolved;
       /* Critical canvas before CSS / home inline light hardcodes */
-      root.style.backgroundColor = resolved === 'dark' ? '#121212' : '#fcfcfd';
+      root.style.backgroundColor = resolved === 'dark' ? '#161616' : '#fcfcfd';
       applyThemeColor(resolved);
     }
     var pref = null;
@@ -83,8 +83,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=db6ac4c8ca">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=511c567b40">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=16e870ac34">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=def6055926">
 </head>
 <body class="explore-banks-page">
   <!-- SHROFFIN_NAV_START -->
@@ -675,6 +675,14 @@
               From your matched list
             </h2>
 
+            <span class="hlc-intel-sparkle-icon" aria-hidden="true">
+              <svg class="hlc-intel-sparkle" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
+                <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M9.8132 15.9038L9 18.75L8.1868 15.9038C7.75968 14.4089 6.59112 13.2403 5.09619 12.8132L2.25 12L5.09619 11.1868C6.59113 10.7597 7.75968 9.59112 8.1868 8.09619L9 5.25L9.8132 8.09619C10.2403 9.59113 11.4089 10.7597 12.9038 11.1868L15.75 12L12.9038 12.8132C11.4089 13.2403 10.2403 14.4089 9.8132 15.9038Z"/>
+                <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M18.2589 8.71454L18 9.75L17.7411 8.71454C17.4388 7.50533 16.4947 6.56117 15.2855 6.25887L14.25 6L15.2855 5.74113C16.4947 5.43883 17.4388 4.49467 17.7411 3.28546L18 2.25L18.2589 3.28546C18.5612 4.49467 19.5053 5.43883 20.7145 5.74113L21.75 6L20.7145 6.25887C19.5053 6.56117 18.5612 7.50533 18.2589 8.71454Z"/>
+                <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M16.8942 20.5673L16.5 21.75L16.1058 20.5673C15.8818 19.8954 15.3546 19.3682 14.6827 19.1442L13.5 18.75L14.6827 18.3558C15.3546 18.1318 15.8818 17.6046 16.1058 16.9327L16.5 15.75L16.8942 16.9327C17.1182 17.6046 17.6454 18.1318 18.3173 18.3558L19.5 18.75L18.3173 19.1442C17.6454 19.3682 17.1182 19.8954 16.8942 20.5673Z"/>
+              </svg>
+            </span>
+
             <div class="hlc-intel-head">
               <p class="hlc-intel-eyebrow">From your matched list</p>
             </div>
@@ -842,18 +850,27 @@
                   </div></span>
                     </span>
                   </legend>
-                  <div class="hlc-filter-checks hlc-concession-chips" role="group" aria-labelledby="hlc-concessions-label">
+                  <div class="hlc-filter-checks" role="group" aria-labelledby="hlc-concessions-label">
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="womenApplicant" />
-                      <span class="hlc-filter-option-label">Women applicant</span>
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">Women applicant</span>
+                        <span class="hlc-filter-option-note">Usually 0.05 to 0.10% off when a woman is the main applicant and first name on the property papers.</span>
+                      </span>
                     </label>
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="greenHome" />
-                      <span class="hlc-filter-option-label">Green home</span>
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">Green home</span>
+                        <span class="hlc-filter-option-note">Usually 0.05 to 0.10% off when the house has a green rating (IGBC, GRIHA, or LEED).</span>
+                      </span>
                     </label>
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="insurance" />
-                      <span class="hlc-filter-option-label">Insurance</span>
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">Insurance</span>
+                        <span class="hlc-filter-option-note">Up to 0.05% off if you take their cover; house cover is usually required, life cover you can refuse or buy elsewhere.</span>
+                      </span>
                     </label>
                   </div>
                   </fieldset>
@@ -1268,7 +1285,7 @@
   <script src="../js/shroffin-home-stance.js?v=ca168eb5f2"></script>
   <script src="../js/shroffin-nav.js?v=8fe34c5f07"></script>
   <script src="../js/hlc-data-url.generated.js?v=2eb6ecb75c"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=83a0c81992"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=22813300ef"></script>
   <script src="../js/hlc-field-help.js?v=305f463f51"></script>
   <script>
     (function () {

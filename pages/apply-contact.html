@@ -9,7 +9,7 @@
     Preference: localStorage['shroffin-color-preference'] ∈ {dark, light, system}
     Resolved: html[data-theme="dark"|"light"]; first visit unset → dark (do NOT write until user taps).
     Default (system) ≠ first visit. OS listener only when preference === system.
-    theme-color: dark #121212 / light #fcfcfd
+    theme-color: dark #161616 / light #fcfcfd
     FOUC: set data-theme + color-scheme + canvas background before stylesheets.
   -->
   <script data-shroffin-theme-boot="live">
@@ -32,13 +32,13 @@
         if (document.head.firstChild) document.head.insertBefore(meta, document.head.firstChild);
         else document.head.appendChild(meta);
       }
-      meta.setAttribute('content', resolved === 'dark' ? '#121212' : '#fcfcfd');
+      meta.setAttribute('content', resolved === 'dark' ? '#161616' : '#fcfcfd');
     }
     function apply(resolved) {
       root.setAttribute('data-theme', resolved);
       root.style.colorScheme = resolved;
       /* Critical canvas before CSS / home inline light hardcodes */
-      root.style.backgroundColor = resolved === 'dark' ? '#121212' : '#fcfcfd';
+      root.style.backgroundColor = resolved === 'dark' ? '#161616' : '#fcfcfd';
       applyThemeColor(resolved);
     }
     var pref = null;
@@ -83,8 +83,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=de31f648df">
-  <link rel="stylesheet" href="../css/shroffin-apply.css?v=6471809d20">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=16e870ac34">
+  <link rel="stylesheet" href="../css/shroffin-apply.css?v=735bf323a8">
 </head>
 <body class="hl-apply-page" data-hl-apply-page="contact">
   <!-- SHROFFIN_NAV_START -->
@@ -295,13 +295,15 @@
 
       <form id="hl-apply-form" class="hl-apply-form" novalidate>
         <div class="hl-apply-fields">
-          <div class="hl-apply-field">
+          <div class="hl-apply-field hl-apply-field--name">
             <label for="hl-name">Full name</label>
-            <input id="hl-name" name="name" type="text" autocomplete="name" required placeholder="As on your ID">
+            <div class="hl-apply-field-row">
+              <input id="hl-name" name="name" type="text" autocomplete="name" required placeholder="As on your ID">
+            </div>
           </div>
           <div class="hl-apply-field hl-apply-field--phone">
             <label for="hl-phone">Phone</label>
-            <div class="hl-apply-phone-row">
+            <div class="hl-apply-field-row hl-apply-phone-row">
               <span class="hl-apply-phone-prefix" title="India">
                 <svg class="hl-apply-phone-flag" viewBox="0 0 24 16" focusable="false" aria-hidden="true">
                   <rect width="24" height="5.333" y="0" fill="#FF9933"/>
@@ -318,7 +320,7 @@
                 inputmode="numeric"
                 autocomplete="tel-national"
                 required
-                maxlength="11"
+                maxlength="18"
                 placeholder="XXXXX XXXXX"
                 aria-label="Indian mobile number, +91"
               >
@@ -332,9 +334,9 @@
           </div>
           <div class="hl-apply-field hl-apply-field--email">
             <label for="hl-email">Email</label>
-            <div class="hl-apply-email-row">
+            <div class="hl-apply-field-row hl-apply-email-row">
               <input id="hl-email" name="email" type="email" autocomplete="email" required placeholder="name@example.com">
-              <button type="button" class="hl-apply-verify" id="hl-verify-email" disabled>Verify</button>
+              <button type="button" class="hl-apply-text-action hl-apply-verify" id="hl-verify-email" disabled>Verify</button>
             </div>
             <p class="hl-apply-verify-status" id="hl-verify-status" hidden>Email verified</p>
             <p class="hl-apply-email-mismatch" id="hl-email-mismatch" hidden></p>
@@ -559,7 +561,8 @@
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
   <script src="../js/site-contacts.generated.js?v=96bf60e983"></script>
-  <script src="../js/home-loan-apply.js?v=1aed6da14e"></script>
-  <script src="../js/shroffin-nav.js?v=69b8861330"></script>
+  <script src="../js/bank-logos.js?v=22d2c72d0a"></script>
+  <script src="../js/home-loan-apply.js?v=010a9ddf5d"></script>
+  <script src="../js/shroffin-nav.js?v=8fe34c5f07"></script>
 </body>
 </html>

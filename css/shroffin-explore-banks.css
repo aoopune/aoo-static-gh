@@ -23,6 +23,12 @@
   --hlc-card-lift:
     0 1px 2px rgba(60, 64, 67, 0.08),
     0 8px 20px rgba(60, 64, 67, 0.1);
+  /*
+   * Field-help popovers — border-owned edge only.
+   * Never use --hlc-rule-* for box-shadow: those tokens flip to white in dark
+   * and a large blur reads as a glowing halo, not depth.
+   */
+  --hlc-popover-lift: none;
   --hlc-check-size: 1.125rem;
   --hlc-check-gap: 0.65rem;
   /* Shell aliases — Explore always loads shroffin-shell.css; no light hex fallbacks. */
@@ -89,6 +95,13 @@
   --hlc-link-hover: var(--shroffin-link);
   --hlc-limit-house: #7a3410;
   --hlc-limit-income: #234a82;
+  /* Additive charge-walk slot ink — sign matches derived result on each row. */
+  --hlc-add-slot-1: #234a82;
+  --hlc-add-slot-2: #7a3410;
+  --hlc-add-slot-3: #2d6a4f;
+  --hlc-add-slot-4: #6b4c9a;
+  --hlc-add-slot-5: #9a5c16;
+  --hlc-add-total: #1d1d1f;
   /* Hero title steel wash (decorative gradient — Explore-owned). */
   --hlc-title-wash-from: #202027;
   --hlc-title-wash-to: #485879;
@@ -3859,13 +3872,17 @@
   vertical-align: -0.08em;
 }
 
-/* Sit under the title inside existing th padding — out of flow so row height stays put. */
+/*
+ * Pin to the bottom of the th (not below the title row). The head strip uses
+ * overflow-y: hidden, so a select hung under the label gets clipped on desktop.
+ */
 .hlc-header-select,
 .hlc-prepay-header-select {
   position: absolute;
-  top: calc(100% + 0.12rem);
+  top: auto;
+  bottom: 0.25rem;
   left: 50%;
-  z-index: 1;
+  z-index: 2;
   display: block;
   width: 3.55rem;
   max-width: calc(100% - 0.25rem);
@@ -3888,6 +3905,19 @@
   line-height: 1.2;
   transform: translateX(-50%);
   cursor: pointer;
+}
+
+.hlc-compare thead th:not(.hlc-col-fill):has(.hlc-header-select),
+.hlc-compare thead th:not(.hlc-col-fill):has(.hlc-prepay-header-select),
+.hlc-compare thead th:not(.hlc-col-fill):has(.hlc-rate-change-header-select) {
+  padding-bottom: 1.35rem;
+  overflow: visible;
+}
+
+.hlc-compare thead th:not(.hlc-col-fill):has(.hlc-header-select) .hlc-column-label,
+.hlc-compare thead th:not(.hlc-col-fill):has(.hlc-prepay-header-select) .hlc-column-label,
+.hlc-compare thead th:not(.hlc-col-fill):has(.hlc-rate-change-header-select) .hlc-column-label {
+  position: static;
 }
 
 .hlc-prepay-header-select[data-prepay-method="balanceTransfer"] {
@@ -5179,6 +5209,23 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   min-width: 0;
 }
 
+.hlc-bank-name-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.hlc-outside-filters-note {
+  display: block;
+  margin-top: 0.12em;
+  font-size: 0.72em;
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--hlc-text-tertiary);
+  opacity: 0.85;
+}
+
 .hlc-bank-name-text {
   appearance: none;
   /* Size to the name only. Growing with the cell made empty space next to
@@ -5497,8 +5544,8 @@ button.hlc-bank-name-text:focus-visible {
   border-radius: 1.15rem 1.15rem 0 0;
   padding: 0;
   overflow: hidden;
-  --hlc-drawer-pad-x: 1.5rem;
-  --hlc-drawer-card-pad-x: 1.05rem;
+  --hlc-drawer-pad-x: 1rem;
+  --hlc-drawer-card-pad-x: 0.85rem;
 }
 
 @media (min-width: 834px) {
@@ -6014,15 +6061,78 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-math-bar {
-  display: grid;
-  grid-template-columns: 1.75rem minmax(0, 1fr);
-  grid-template-areas:
-    "num body"
-    ". work";
-  gap: 0.5rem 0.75rem;
-  align-items: start;
-  padding: 1.05rem 0;
+  padding: 0.85rem 0;
   border-bottom: 1px solid var(--hlc-drawer-rule);
+}
+
+.hlc-math-bar--no-step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: stretch;
+}
+
+/* Phone: rail alone on top; copy (title + note) and maths share the row below. */
+.hlc-math-bar:not(.hlc-math-bar--no-step) {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.hlc-math-bar-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(5.25rem, 42%);
+  gap: 0.35rem 0.55rem;
+  align-items: start;
+  min-width: 0;
+}
+
+.hlc-math-bar-main--work-only {
+  grid-template-columns: minmax(0, 1fr) minmax(5.25rem, 42%);
+}
+
+.hlc-math-bar-copy {
+  grid-column: 1;
+  min-width: 0;
+}
+
+.hlc-math-bar-main > .hlc-math-sheet {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.hlc-math-bar-rail {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.hlc-math-bar--total .hlc-math-bar-step,
+.hlc-math-bar--total .hlc-math-bar-num {
+  display: none;
+}
+
+.hlc-math-bar-rail .hlc-math-bar-num,
+.hlc-math-bar-step {
+  padding-top: 0;
+  justify-content: flex-start;
+  width: auto;
+  text-align: left;
+  color: var(--shroffin-muted);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
 .hlc-math-bar:last-child {
@@ -6030,25 +6140,170 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-math-bar-num {
-  grid-area: num;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  padding-top: 0.15rem;
   color: var(--shroffin-muted);
   font-size: 0.8125rem;
   font-weight: 400;
   font-variant-numeric: tabular-nums;
 }
 
-.hlc-math-bar-body {
-  grid-area: body;
-  min-width: 0;
+.hlc-math-bar-step-op {
+  color: var(--shroffin-muted);
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: normal;
+  text-align: left;
+  width: auto;
 }
 
-.hlc-math-bar > .hlc-math-sheet {
-  grid-area: work;
+.hlc-math-bar-rail .hlc-math-bar-join {
+  width: auto;
+  text-align: left;
+  font-size: 1.375rem;
+  line-height: 1;
+}
+
+.hlc-math-bar-join {
+  color: var(--shroffin-muted);
+  font-size: 1.875rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: normal;
+}
+
+.hlc-math-bars--additive .hlc-math-bar,
+.hlc-math-bars--steps .hlc-math-bar {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.hlc-math-bars--additive .hlc-math-bar:has(+ .hlc-math-bar--total),
+.hlc-math-bars--steps .hlc-math-bar:has(+ .hlc-math-bar--total) {
+  border-bottom: 0;
+  padding-bottom: 0.55rem;
+}
+
+.hlc-math-bars--additive .hlc-math-bar--total,
+.hlc-math-bars--steps .hlc-math-bar--total {
+  margin-top: 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--hlc-drawer-rule);
+  border-bottom: 0;
+}
+
+.hlc-math-bars--additive .hlc-math-bar--total .hlc-math-bar-label,
+.hlc-math-bars--steps .hlc-math-bar--total .hlc-math-bar-label {
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.hlc-math-bars .hlc-math-bar--total .hlc-math-num--result {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Ledger convention: twin rules under the final total row only. */
+.hlc-ledger-final-value {
+  display: inline-block;
+  max-width: 100%;
+  padding-bottom: 0.14em;
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor);
+  background-size: 100% 1px;
+  background-position: 0 100%, 0 calc(100% + 0.26em);
+  background-repeat: no-repeat;
+}
+
+.hlc-math-bars .hlc-math-bar--slot-1 .hlc-math-bar-rail .hlc-math-bar-join,
+.hlc-math-bars .hlc-math-bar--slot-1 .hlc-math-bar-step-op {
+  color: var(--hlc-add-slot-1);
+}
+
+.hlc-math-bars .hlc-math-bar--slot-1:has(.hlc-math-bar-step-op) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--slot-1:has(.hlc-math-bar-rail .hlc-math-bar-join) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--slot-1:has(.hlc-math-sheet > .hlc-math-num--result) .hlc-math-sheet > .hlc-math-num:last-of-type {
+  color: var(--hlc-add-slot-1);
+}
+
+.hlc-math-bars .hlc-math-bar--slot-2 .hlc-math-bar-rail .hlc-math-bar-join,
+.hlc-math-bars .hlc-math-bar--slot-2 .hlc-math-bar-step-op {
+  color: var(--hlc-add-slot-2);
+}
+
+.hlc-math-bars .hlc-math-bar--slot-2:has(.hlc-math-bar-step-op) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--slot-2:has(.hlc-math-bar-rail .hlc-math-bar-join) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--slot-2:has(.hlc-math-sheet > .hlc-math-num--result) .hlc-math-sheet > .hlc-math-num:last-of-type {
+  color: var(--hlc-add-slot-2);
+}
+
+.hlc-math-bars .hlc-math-bar--slot-3 .hlc-math-bar-rail .hlc-math-bar-join,
+.hlc-math-bars .hlc-math-bar--slot-3 .hlc-math-bar-step-op {
+  color: var(--hlc-add-slot-3);
+}
+
+.hlc-math-bars .hlc-math-bar--slot-3:has(.hlc-math-bar-step-op) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--slot-3:has(.hlc-math-bar-rail .hlc-math-bar-join) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--slot-3:has(.hlc-math-sheet > .hlc-math-num--result) .hlc-math-sheet > .hlc-math-num:last-of-type {
+  color: var(--hlc-add-slot-3);
+}
+
+.hlc-math-bars .hlc-math-bar--slot-4 .hlc-math-bar-rail .hlc-math-bar-join,
+.hlc-math-bars .hlc-math-bar--slot-4 .hlc-math-bar-step-op {
+  color: var(--hlc-add-slot-4);
+}
+
+.hlc-math-bars .hlc-math-bar--slot-4:has(.hlc-math-bar-step-op) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--slot-4:has(.hlc-math-bar-rail .hlc-math-bar-join) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--slot-4:has(.hlc-math-sheet > .hlc-math-num--result) .hlc-math-sheet > .hlc-math-num:last-of-type {
+  color: var(--hlc-add-slot-4);
+}
+
+.hlc-math-bars .hlc-math-bar--slot-5 .hlc-math-bar-rail .hlc-math-bar-join,
+.hlc-math-bars .hlc-math-bar--slot-5 .hlc-math-bar-step-op {
+  color: var(--hlc-add-slot-5);
+}
+
+.hlc-math-bars .hlc-math-bar--slot-5:has(.hlc-math-bar-step-op) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--slot-5:has(.hlc-math-bar-rail .hlc-math-bar-join) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--slot-5:has(.hlc-math-sheet > .hlc-math-num--result) .hlc-math-sheet > .hlc-math-num:last-of-type {
+  color: var(--hlc-add-slot-5);
+}
+
+.hlc-math-bars .hlc-math-bar--slot-total .hlc-math-bar-rail .hlc-math-bar-join,
+.hlc-math-bars .hlc-math-bar--slot-total .hlc-math-num--result {
+  color: var(--hlc-add-total);
+}
+
+.hlc-math-bars .hlc-math-bar--slot-total .hlc-math-bar-rail .hlc-math-bar-join {
+  font-size: 1.625rem;
+}
+
+.hlc-math-bar-copy .hlc-math-bar-note {
+  margin: 0.15rem 0 0;
+  min-width: 0;
+  color: var(--shroffin-muted);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.hlc-math-bar-main .hlc-math-num,
+.hlc-math-bar-main .hlc-math-op {
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.hlc-math-bar-main .hlc-math-num--result {
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.hlc-math-bar-main .hlc-math-rule {
   width: 100%;
+  max-width: 9rem;
 }
 
 .hlc-math-bar-label,
@@ -6064,7 +6319,8 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-math-bar-note {
-  margin-top: 0.4rem;
+  margin-top: 0;
+  align-self: start;
   color: var(--shroffin-muted);
   font-size: 0.875rem;
   line-height: 1.5;
@@ -6075,11 +6331,20 @@ button.hlc-bank-name-text:focus-visible {
   font-weight: 700;
 }
 
-.hlc-math-bar--house.hlc-math-bar--limiting .hlc-math-num--result {
+/* Cap ink overrides slot ink — gutter sign and derived value stay matched. */
+.hlc-math-bars .hlc-math-bar--house.hlc-math-bar--limiting .hlc-math-bar-rail .hlc-math-bar-join,
+.hlc-math-bars .hlc-math-bar--house.hlc-math-bar--limiting .hlc-math-bar-step-op,
+.hlc-math-bars .hlc-math-bar--house.hlc-math-bar--limiting:has(.hlc-math-bar-step-op) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--house.hlc-math-bar--limiting:has(.hlc-math-bar-rail .hlc-math-bar-join) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--house.hlc-math-bar--limiting:has(.hlc-math-sheet > .hlc-math-num--result) .hlc-math-sheet > .hlc-math-num:last-of-type {
   color: var(--hlc-limit-house);
 }
 
-.hlc-math-bar--income.hlc-math-bar--limiting .hlc-math-num--result {
+.hlc-math-bars .hlc-math-bar--income.hlc-math-bar--limiting .hlc-math-bar-rail .hlc-math-bar-join,
+.hlc-math-bars .hlc-math-bar--income.hlc-math-bar--limiting .hlc-math-bar-step-op,
+.hlc-math-bars .hlc-math-bar--income.hlc-math-bar--limiting:has(.hlc-math-bar-step-op) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--income.hlc-math-bar--limiting:has(.hlc-math-bar-rail .hlc-math-bar-join) .hlc-math-sheet > .hlc-math-num:last-of-type,
+.hlc-math-bars .hlc-math-bar--income.hlc-math-bar--limiting:has(.hlc-math-sheet > .hlc-math-num--result) .hlc-math-sheet > .hlc-math-num:last-of-type {
   color: var(--hlc-limit-income);
 }
 
@@ -6143,23 +6408,71 @@ button.hlc-bank-name-text:focus-visible {
   border-bottom: 0;
 }
 
-@media (max-width: 833px) {
-  .hlc-math-bar > .hlc-math-sheet {
-    margin-top: 0.45rem;
-  }
-}
-
 @media (min-width: 834px) {
-  .hlc-math-bar {
-    grid-template-columns: 1.75rem minmax(0, 1fr) minmax(8.75rem, max-content);
-    grid-template-areas: "num body work";
+  .hlc-math-bar:not(.hlc-math-bar--no-step) {
+    display: grid;
+    grid-template-columns: 3.35rem minmax(0, 1fr) minmax(8.75rem, max-content);
+    grid-template-areas: "rail main main";
+    gap: 0.85rem 1.5rem;
+    padding: 1.05rem 0;
+    align-items: start;
+  }
+
+  .hlc-math-bar-rail {
+    grid-area: rail;
+    align-self: start;
+    min-width: 3.35rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.28rem;
+  }
+
+  .hlc-math-bar-main {
+    grid-area: main;
+    grid-template-columns: minmax(0, 1fr) minmax(8.75rem, max-content);
     gap: 0.85rem 1.5rem;
   }
 
-  .hlc-math-bar > .hlc-math-sheet {
-    width: auto;
+  .hlc-math-bar--total .hlc-math-bar-main--total,
+  .hlc-math-bar--total .hlc-math-bar-rail {
+    align-self: baseline;
+  }
+
+  .hlc-math-bar-rail .hlc-math-bar-num,
+  .hlc-math-bar-step,
+  .hlc-math-bar-step-op,
+  .hlc-math-bar-rail .hlc-math-bar-join {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .hlc-math-bar-copy .hlc-math-bar-note {
+    margin-top: 0.4rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .hlc-math-bar--no-step {
+    padding: 1.05rem 0;
+  }
+
+  .hlc-math-bar-main > .hlc-math-sheet {
     min-width: 8.75rem;
-    justify-self: end;
+    max-width: none;
+    white-space: normal;
+  }
+
+  .hlc-math-bar-main .hlc-math-num,
+  .hlc-math-bar-main .hlc-math-op {
+    font-size: 0.9375rem;
+    line-height: 1.45;
+  }
+
+  .hlc-math-bar-main .hlc-math-num--result {
+    font-size: 1.0625rem;
+    white-space: normal;
   }
 }
 
@@ -6378,24 +6691,13 @@ button.hlc-bank-name-text:focus-visible {
   margin-top: 0.125rem;
 }
 
-.hlc-story-track:not(.hlc-story-track--active) .hlc-math-num,
-.hlc-story-track:not(.hlc-story-track--active) .hlc-math-op {
-  color: rgba(29, 29, 31, 0.72);
-}
-
 .hlc-story-card {
   padding-top: 0.35rem;
   padding-bottom: 0.85rem;
 }
 
 .hlc-story-track {
-  padding: 1rem 0 1rem 1.25rem;
-  border-left: 1px solid var(--hlc-rule-14);
-  opacity: 0.4;
-}
-
-.hlc-story-track.hlc-story-track--active {
-  border-left-color: var(--shroffin-ink);
+  padding: 0.85rem 0;
   opacity: 1;
 }
 
@@ -6405,16 +6707,11 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-story-track-title {
-  font-size: 0.75rem;
-  font-weight: 500;
-  line-height: 1.35;
-  margin-bottom: 0.5rem;
-  color: var(--shroffin-muted);
-}
-
-.hlc-story-track--active .hlc-story-track-title {
-  color: var(--shroffin-ink);
+  font-size: 0.8125rem;
   font-weight: 600;
+  line-height: 1.35;
+  margin-bottom: 0.35rem;
+  color: var(--shroffin-ink);
 }
 
 .hlc-story-track-note {
@@ -6426,17 +6723,20 @@ button.hlc-bank-name-text:focus-visible {
   font-weight: 400;
 }
 
-/* Compare section title above the min-of-two row */
+/* Closing line after the caps — no second worksheet of the same figures */
 .hlc-story-compare-title {
-  margin: 0.75rem 0 0.35rem;
+  margin: 0.85rem 0 0;
   color: var(--shroffin-muted);
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.4;
 }
 
-/* The active track's limiting step label is slightly stronger */
-.hlc-story-track--active .hlc-math-bar--limiting .hlc-math-bar-label {
+.hlc-story-head .hlc-story-compare-title {
+  margin-top: 0;
+}
+
+.hlc-story-track .hlc-math-bar--limiting .hlc-math-bar-label {
   color: var(--shroffin-ink);
 }
 
@@ -6447,7 +6747,7 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-story-divider {
   height: 1px;
-  margin: 0.875rem 0;
+  margin: 0.5rem 0;
   background: var(--hlc-rule-10);
 }
 
@@ -6519,6 +6819,11 @@ button.hlc-bank-name-text:focus-visible {
   .hlc-math-block .hlc-math-sheet {
     justify-self: stretch;
     min-width: 0;
+  }
+
+  .hlc-math-bar:not(.hlc-math-bar--no-step) .hlc-math-bar-note {
+    font-size: 0.8125rem;
+    line-height: 1.45;
   }
 }
 
@@ -7043,6 +7348,14 @@ button.hlc-bank-name-text:focus-visible {
     padding-right: 0.3rem;
   }
 
+  /*
+   * .hlc-compare td { white-space: nowrap } beats .hlc-sticky-col alone — names
+   * clipped instead of wrapping. Bank cells must allow multi-line lender text.
+   */
+  .hlc-compare td.hlc-sticky-col {
+    white-space: normal;
+  }
+
   .hlc-bank-logo {
     width: 1.25rem;
     height: 1.25rem;
@@ -7050,10 +7363,23 @@ button.hlc-bank-name-text:focus-visible {
 
   .hlc-bank-name {
     gap: 0.3rem;
+    align-items: flex-start;
+  }
+
+  .hlc-bank-name-stack {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
   }
 
   .hlc-bank-name-text {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
     word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   /*
@@ -7460,9 +7786,7 @@ button.hlc-bank-name-text:focus-visible {
   border: 1px solid var(--hlc-rule-10);
   border-radius: 12px;
   background: var(--hlc-surface-strong);
-  box-shadow:
-    0 1px 2px rgba(29, 29, 31, 0.04),
-    0 12px 28px var(--hlc-rule-10);
+  box-shadow: var(--hlc-popover-lift);
   white-space: normal;
   overflow: visible;
   opacity: 0;
@@ -7625,9 +7949,29 @@ button.hlc-bank-name-text:focus-visible {
   display: none !important;
 }
 
+/* Decorative sparkle — same icon as guide Insights (icon-only, top-right). */
+.hlc-intel-sparkle-icon {
+  position: absolute;
+  top: clamp(1.35rem, 2.8vw, 1.85rem);
+  inset-inline-end: clamp(1.45rem, 3.1vw, 2.15rem);
+  z-index: 1;
+  width: 1.15rem;
+  height: 1.15rem;
+  pointer-events: none;
+}
+
+.hlc-intel-sparkle {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: var(--shroffin-blue);
+}
+
 .hlc-intel-head {
   margin: 0 0 0.55rem;
   min-width: 0;
+  padding-inline-end: 1.65rem;
 }
 
 .hlc-intel-eyebrow {
@@ -8020,7 +8364,9 @@ html[data-theme="dark"] .explore-banks-page {
   --hlc-card-lift:
     0 8px 28px rgba(0, 0, 0, 0.28),
     0 24px 56px rgba(0, 0, 0, 0.20);
-  /* Page #121212 → card #1E1E1E → fields --hlc-surface-strong #2C2C2C. */
+  /* Same as light — border only; no white rule-token halo. */
+  --hlc-popover-lift: none;
+  /* Page #161616 → card #1E1E1E → fields --hlc-surface-strong #2C2C2C. */
   --hlc-card-surface: #1E1E1E;
   --hlc-line: rgba(154, 163, 181, 0.32);
   --hlc-line-soft: rgba(154, 163, 181, 0.18);
@@ -8056,6 +8402,12 @@ html[data-theme="dark"] .explore-banks-page {
   --hlc-link-hover: var(--shroffin-link);
   --hlc-limit-house: #E0A070;
   --hlc-limit-income: #7EB6FF;
+  --hlc-add-slot-1: #7EB6FF;
+  --hlc-add-slot-2: #E0A070;
+  --hlc-add-slot-3: #6BCB94;
+  --hlc-add-slot-4: #C4A8FF;
+  --hlc-add-slot-5: #F0B060;
+  --hlc-add-total: #F5F5F7;
   --hlc-title-wash-from: #E8EAED;
   --hlc-title-wash-to: #A1A1A6;
   /* Same as light: no artificial plate; keep any white that is in the mark file. */
@@ -8118,10 +8470,6 @@ html[data-theme="dark"] .hlc-drawer-scroll::-webkit-scrollbar-thumb {
 }
 html[data-theme="dark"] .hlc-math-rule {
   background: rgba(255, 255, 255, 0.12);
-}
-html[data-theme="dark"] .hlc-story-track:not(.hlc-story-track--active) .hlc-math-num,
-html[data-theme="dark"] .hlc-story-track:not(.hlc-story-track--active) .hlc-math-op {
-  color: rgba(255, 255, 255, 0.55);
 }
 html[data-theme="dark"] .hlc-story-divider {
   background: rgba(255, 255, 255, 0.10);

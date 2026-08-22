@@ -969,7 +969,8 @@ body.guide-reading .mag-index-label {
     background: rgba(255, 255, 255, 0.92);
     -webkit-backdrop-filter: saturate(140%) blur(16px);
     backdrop-filter: saturate(140%) blur(16px);
-    padding-block-start: 0.35rem;
+    /* Equal block padding — vertical center is owned by flex align-items, not top-only air. */
+    padding-block: 0;
     padding-inline: var(--mag-inline) var(--mag-inline-end);
     max-width: none;
     overflow: visible;
@@ -2419,8 +2420,13 @@ body.guide-reading .mag-p {
 .guide-answer--hero + .guide-share-list > li:first-child,
 .guide-answer-stage > .guide-doc-sub + .guide-share-list > li:first-child,
 .guide-answer-stage > .guide-doc-sub + .guide-doc-rows > .guide-doc-row:first-child,
-.guide-answer-stage > .guide-doc-sub + .guide-doc-rows > .mag-doc:first-child {
+.guide-answer-stage > .guide-doc-sub + .guide-doc-rows > .mag-doc:first-child,
+.guide-chapter-card > .guide-doc-sub + .guide-doc-rows > .guide-doc-row:first-child,
+.guide-chapter-card > .guide-doc-sub + .guide-doc-rows > .mag-doc:first-child,
+.guide-seg-panel > .guide-doc-sub + .guide-doc-rows > .guide-doc-row:first-child,
+.guide-seg-panel > .guide-doc-sub + .guide-doc-rows > .mag-doc:first-child {
   border-top: 0;
+  padding-top: 0;
 }
 
 @media (min-width: 834px) {
@@ -2428,6 +2434,9 @@ body.guide-reading .mag-p {
   .guide-chapter-card > .guide-perk-grid > :nth-child(-n+2),
   .guide-chapter-card > .guide-status-grid > :nth-child(-n+2),
   .guide-chapter-card > .guide-doc-rows--cols > :nth-child(-n+2),
+  .guide-chapter-card > .guide-doc-sub + .guide-doc-rows--cols > :nth-child(-n+2),
+  .guide-seg-panel > .guide-doc-rows--cols > :nth-child(-n+2),
+  .guide-seg-panel > .guide-doc-sub + .guide-doc-rows--cols > :nth-child(-n+2),
   #bank-rates .guide-perk-grid > .guide-perk:nth-child(-n+2),
   .guide-story--insurance-hub .guide-status-grid > .guide-status:nth-child(-n+2),
   .guide-story--complaints .guide-status-grid > :nth-child(-n+2),
@@ -4859,6 +4868,9 @@ a.guide-note-ref:hover {
     align-items: center;
     width: 100%;
     max-width: none;
+    /* Fixed band height (border-box) — do not let child min-heights grow the strip. */
+    box-sizing: border-box;
+    height: var(--guide-chapter-strip-band);
     min-height: var(--guide-chapter-strip-band);
     margin: 0;
     padding-block: 0;
@@ -4870,7 +4882,6 @@ a.guide-note-ref:hover {
     overflow-x: auto;
     overscroll-behavior-inline: contain;
     scrollbar-width: none;
-    box-sizing: border-box;
     transition: top 0.85s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -4896,7 +4907,10 @@ a.guide-note-ref:hover {
 
   body.guide-reading .mag-index-scroller {
     display: flex;
+    align-items: center;
+    align-self: stretch;
     justify-content: center;
+    height: 100%;
     width: max-content;
     max-width: 100%;
     margin-inline: auto;
@@ -4911,7 +4925,8 @@ a.guide-note-ref:hover {
     gap: 0.35rem;
     width: max-content;
     max-width: 100%;
-    min-height: var(--guide-chapter-strip-band);
+    height: 100%;
+    min-height: 0;
     margin: 0 auto;
     padding: 0;
     list-style: none;
@@ -4981,6 +4996,8 @@ a.guide-note-ref:hover {
     letter-spacing: normal;
     line-height: inherit;
     white-space: nowrap;
+    /* Same optical nudge as Guide localnav labels. */
+    translate: 0 0.06em;
   }
 
   body.guide-reading .mag-index-link.is-active,
@@ -5010,6 +5027,11 @@ a.guide-note-ref:hover {
     body.guide-reading .mag-index-link,
     body.guide-reading .mag-toc-shell .mag-index-link {
       transition: none;
+    }
+
+    body.guide-reading .mag-index-label,
+    body.guide-reading .mag-toc-shell .mag-index-label {
+      translate: none;
     }
   }
 
@@ -5176,10 +5198,18 @@ a.guide-note-ref:hover {
    * above/below so the filled active state never kisses the strip edges.
    * Width still uses the touch floor for short labels.
    */
+  body.guide-reading .mag-index-scroller {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    height: 100%;
+  }
+
   body.guide-reading .mag-index-list {
     align-items: center;
     gap: 0.35rem;
-    min-height: var(--guide-chapter-strip-band);
+    height: 100%;
+    min-height: 0;
   }
 
   body.guide-reading .mag-index-list > li {
@@ -5232,6 +5262,7 @@ a.guide-note-ref:hover {
     letter-spacing: normal;
     line-height: inherit;
     white-space: nowrap;
+    translate: 0 0.06em;
   }
 
   /*
@@ -6407,11 +6438,11 @@ html[data-theme="dark"] .mag-toc-compact {
 }
 
 html[data-theme="dark"] .guide-flip-focus-scrim {
-  background: rgba(18, 18, 18, 0.42);
+  background: rgba(22, 22, 22, 0.42);
 }
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   html[data-theme="dark"] .guide-flip-focus-scrim {
-    background: rgba(18, 18, 18, 0.72);
+    background: rgba(22, 22, 22, 0.72);
   }
 }
 
@@ -6420,19 +6451,19 @@ html[data-theme="dark"] .guide-flip-focus-scrim {
     background: rgba(30, 30, 30, 0.92);
   }
   html[data-theme="dark"] body.guide-reading .mag-index.has-more-left::before {
-    background: linear-gradient(to left, rgba(18, 18, 18, 0), rgba(18, 18, 18, 0.88) 55%, rgba(18, 18, 18, 0.96));
+    background: linear-gradient(to left, rgba(22, 22, 22, 0), rgba(22, 22, 22, 0.88) 55%, rgba(22, 22, 22, 0.96));
   }
   html[data-theme="dark"] body.guide-reading .mag-index.has-more-right::after {
-    background: linear-gradient(to right, rgba(18, 18, 18, 0), rgba(18, 18, 18, 0.88) 55%, rgba(18, 18, 18, 0.96));
+    background: linear-gradient(to right, rgba(22, 22, 22, 0), rgba(22, 22, 22, 0.88) 55%, rgba(22, 22, 22, 0.96));
   }
 }
 
 @media (min-width: 834px) {
   html[data-theme="dark"] body.guide-reading .mag-index.has-more-left::before {
-    background: linear-gradient(to left, rgba(18, 18, 18, 0), rgba(18, 18, 18, 0.88) 55%, rgba(18, 18, 18, 0.96));
+    background: linear-gradient(to left, rgba(22, 22, 22, 0), rgba(22, 22, 22, 0.88) 55%, rgba(22, 22, 22, 0.96));
   }
   html[data-theme="dark"] body.guide-reading .mag-index.has-more-right::after {
-    background: linear-gradient(to right, rgba(18, 18, 18, 0), rgba(18, 18, 18, 0.88) 55%, rgba(18, 18, 18, 0.96));
+    background: linear-gradient(to right, rgba(22, 22, 22, 0), rgba(22, 22, 22, 0.88) 55%, rgba(22, 22, 22, 0.96));
   }
 
   html[data-theme="dark"] body.guide-reading .mag-index-link.is-active,
@@ -6454,6 +6485,34 @@ html[data-theme="dark"] .guide-flip-focus-scrim {
 }
 
 @media (max-width: 833px) {
+  /*
+   * Phone dark: edge fades must match the chapter-strip frost (#1E1E1E /
+   * rgba(30,30,30)), not the page canvas (#161616). Canvas-dark fades read as
+   * a muddy blotch around the scroll chevron. Same paint family as the strip
+   * background above — one source for “what hides overflow.”
+   */
+  html[data-theme="dark"] body.guide-reading .mag-index {
+    --guide-index-edge: 30, 30, 30;
+  }
+
+  html[data-theme="dark"] body.guide-reading .mag-index.has-more-left::before {
+    background: linear-gradient(
+      to left,
+      rgba(var(--guide-index-edge), 0),
+      rgba(var(--guide-index-edge), 0.88) 55%,
+      rgba(var(--guide-index-edge), 0.96)
+    );
+  }
+
+  html[data-theme="dark"] body.guide-reading .mag-index.has-more-right::after {
+    background: linear-gradient(
+      to right,
+      rgba(var(--guide-index-edge), 0),
+      rgba(var(--guide-index-edge), 0.88) 55%,
+      rgba(var(--guide-index-edge), 0.96)
+    );
+  }
+
   html[data-theme="dark"] body.guide-reading .mag-index-link.is-active,
   html[data-theme="dark"] body.guide-reading .mag-index-link[aria-current="true"],
   html[data-theme="dark"] body.guide-reading .mag-index-link.is-active:link,
@@ -6488,6 +6547,278 @@ html[data-theme="dark"] body.guide-reading .mag-toc-shell .mag-index {
 
 @media (prefers-reduced-motion: reduce) {
   html[data-theme="dark"] .guide-flip-focus-scrim {
-    background: rgba(18, 18, 18, 0.88);
+    background: rgba(22, 22, 22, 0.88);
+  }
+}
+
+/* ---- Guide intelligence sheet (Insights button + dialog) ---------------- */
+
+.guide-card-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: clamp(12px, 2vw, 20px);
+  width: auto;
+}
+
+/* Unified Insights slot — top-right inside each section's grey card */
+.guide-intel-host {
+  position: relative;
+  --guide-intel-corner: clamp(40px, 5.5vw, 64px);
+  --guide-intel-top: clamp(22px, 3.5vw, 46px);
+}
+
+@media (min-width: 834px) {
+  .guide-chapter-card > .guide-card-actions--intel,
+  .mag-pair > .guide-card-actions--intel,
+  .guide-tile--stage > .guide-card-actions--intel {
+    position: absolute;
+    top: var(--guide-intel-top);
+    inset-inline-end: var(--guide-intel-corner);
+    z-index: 2;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 833px) {
+  .guide-chapter-card > .guide-card-actions--intel,
+  .mag-pair > .guide-card-actions--intel,
+  .guide-tile--stage > .guide-card-actions--intel {
+    position: static;
+    inset: auto;
+    z-index: auto;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin: 0 0 10px;
+    padding: 0;
+    border: 0;
+  }
+}
+
+.guide-intel-trigger,
+.guide-intel-trigger.guide-flip-link,
+.guide-intel-trigger.guide-flip-link:visited {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--mag-ink);
+  font: inherit;
+  font-size: var(--shroffin-type-body);
+  font-weight: 500;
+  letter-spacing: normal;
+  line-height: 1.25;
+  padding: 0;
+  text-decoration: none;
+}
+
+.guide-intel-icon {
+  position: relative;
+  flex: 0 0 auto;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.guide-intel-sparkle {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: var(--mag-accent);
+}
+
+.guide-intel-label {
+  flex: 0 1 auto;
+  color: inherit;
+}
+
+.guide-intel-trigger:hover,
+.guide-intel-trigger:focus-visible,
+.guide-intel-trigger.guide-flip-link:hover,
+.guide-intel-trigger.guide-flip-link:focus-visible,
+.guide-intel-trigger.guide-flip-link:visited:hover,
+.guide-intel-trigger.guide-flip-link:visited:focus-visible {
+  color: var(--mag-accent-hover);
+  text-decoration: none;
+}
+
+.guide-intel-trigger:focus-visible,
+.guide-intel-trigger.guide-flip-link:focus-visible {
+  outline: 2px solid var(--mag-accent);
+  outline-offset: 3px;
+}
+
+.guide-intel-dialog:not([hidden]) {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  margin: 0;
+  border: 0;
+  background: color-mix(in srgb, var(--mag-ink) 28%, transparent);
+  color: var(--mag-ink);
+  opacity: 0;
+  transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.guide-intel-dialog--open:not([hidden]) {
+  opacity: 1;
+}
+
+.guide-intel-dialog--closing:not([hidden]) {
+  opacity: 0;
+  transition-duration: 0.85s;
+}
+
+.guide-intel-sheet {
+  box-sizing: border-box;
+  width: min(36rem, 100%);
+  max-height: min(80dvh, 36rem);
+  overflow: auto;
+  background: var(--guide-card-surface);
+  border: 1px solid var(--mag-hair-soft);
+  border-radius: var(--guide-radius, var(--shroffin-card-radius, 16px));
+  padding: clamp(20px, 4vw, 28px);
+  box-shadow: 0 16px 48px color-mix(in srgb, var(--mag-ink) 14%, transparent);
+  opacity: 0;
+  transform: translateY(48px);
+  transition:
+    opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.guide-intel-dialog--open:not([hidden]) .guide-intel-sheet {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.guide-intel-dialog--closing:not([hidden]) .guide-intel-sheet {
+  opacity: 0;
+  transform: translateY(48px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.guide-intel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: clamp(16px, 3vw, 22px);
+}
+
+.guide-intel-title {
+  margin: 0;
+  flex: 1 1 auto;
+  font-size: var(--shroffin-type-head-sm, calc(var(--shroffin-type-lead) + 0.25rem));
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: normal;
+  color: var(--mag-ink);
+}
+
+.guide-intel-close {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  margin: -6px -6px 0 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--mag-muted);
+  cursor: pointer;
+}
+
+.guide-intel-close svg {
+  width: 14px;
+  height: 14px;
+}
+
+.guide-intel-close:hover,
+.guide-intel-close:focus-visible {
+  color: var(--mag-ink);
+  background: color-mix(in srgb, var(--mag-hair-soft) 65%, transparent);
+}
+
+.guide-intel-list {
+  margin: 0;
+  padding-left: 1.25em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  font-size: var(--shroffin-type-lead);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: var(--mag-ink);
+}
+
+.guide-intel-list li::marker {
+  color: var(--mag-muted);
+  font-weight: 600;
+}
+
+@media (max-width: 833px) {
+  .guide-intel-dialog:not([hidden]) {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .guide-intel-sheet {
+    width: 100%;
+    max-height: min(85dvh, 32rem);
+    border-radius: var(--guide-radius, var(--shroffin-card-radius, 16px))
+      var(--guide-radius, var(--shroffin-card-radius, 16px)) 0 0;
+    box-shadow: 0 -8px 40px color-mix(in srgb, var(--mag-ink) 12%, transparent);
+    transform: translateY(100%);
+  }
+
+  .guide-intel-dialog--open:not([hidden]) .guide-intel-sheet {
+    transform: translateY(0);
+  }
+
+  .guide-intel-dialog--closing:not([hidden]) .guide-intel-sheet {
+    transform: translateY(100%);
+  }
+}
+
+html[data-theme="dark"] .guide-intel-dialog:not([hidden]) {
+  background: var(--shroffin-gn-veil);
+}
+
+html[data-theme="dark"] .guide-intel-sheet {
+  background: var(--mag-paper-deep);
+  border-color: var(--shroffin-gn-border);
+  box-shadow: var(--guide-card-elev);
+}
+
+@media (max-width: 833px) {
+  html[data-theme="dark"] .guide-intel-sheet {
+    box-shadow:
+      0 -8px 40px rgba(0, 0, 0, 0.45),
+      var(--guide-card-elev);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-intel-dialog,
+  .guide-intel-sheet {
+    transition: none;
   }
 }

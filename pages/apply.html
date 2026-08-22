@@ -9,7 +9,7 @@
     Preference: localStorage['shroffin-color-preference'] ∈ {dark, light, system}
     Resolved: html[data-theme="dark"|"light"]; first visit unset → dark (do NOT write until user taps).
     Default (system) ≠ first visit. OS listener only when preference === system.
-    theme-color: dark #121212 / light #fcfcfd
+    theme-color: dark #161616 / light #fcfcfd
     FOUC: set data-theme + color-scheme + canvas background before stylesheets.
   -->
   <script data-shroffin-theme-boot="live">
@@ -32,13 +32,13 @@
         if (document.head.firstChild) document.head.insertBefore(meta, document.head.firstChild);
         else document.head.appendChild(meta);
       }
-      meta.setAttribute('content', resolved === 'dark' ? '#121212' : '#fcfcfd');
+      meta.setAttribute('content', resolved === 'dark' ? '#161616' : '#fcfcfd');
     }
     function apply(resolved) {
       root.setAttribute('data-theme', resolved);
       root.style.colorScheme = resolved;
       /* Critical canvas before CSS / home inline light hardcodes */
-      root.style.backgroundColor = resolved === 'dark' ? '#121212' : '#fcfcfd';
+      root.style.backgroundColor = resolved === 'dark' ? '#161616' : '#fcfcfd';
       applyThemeColor(resolved);
     }
     var pref = null;
@@ -83,8 +83,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=db6ac4c8ca">
-  <link rel="stylesheet" href="../css/shroffin-apply.css?v=c7e133dac2">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=16e870ac34">
+  <link rel="stylesheet" href="../css/shroffin-apply.css?v=735bf323a8">
 </head>
 <body class="hl-apply-page" data-hl-apply-page="review">
   <!-- SHROFFIN_NAV_START -->
@@ -321,9 +321,6 @@
             >
               <div class="hl-apply-disclose-panel-inner">
                 <dl id="hl-apply-your-details" class="hl-apply-facts"></dl>
-
-                <h3 id="hl-apply-filters-heading" class="hl-apply-context-heading hl-apply-context-heading--sub">Filters</h3>
-                <dl id="hl-apply-filters" class="hl-apply-facts"></dl>
               </div>
             </div>
           </section>
@@ -516,7 +513,8 @@
   </script>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/home-loan-apply.js?v=1aed6da14e"></script>
+  <script src="../js/bank-logos.js?v=22d2c72d0a"></script>
+  <script src="../js/home-loan-apply.js?v=010a9ddf5d"></script>
   <script src="../js/shroffin-nav.js?v=8fe34c5f07"></script>
 </body>
 </html>

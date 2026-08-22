@@ -95,7 +95,7 @@ testApfSearch()
     console.error(error);
   })
   .finally(function () {
-    testReviewCapture();
+    testGuideIntelligence();
   })
   .finally(function () {
     testIntelligence();
@@ -154,6 +154,16 @@ async function testHomeLoanCompare() {
     'compare bank logo html includes img'
   );
   ok(compare.bankLogoPath('Unknown Bank') === '', 'compare unknown bank has no logo');
+
+  var bankLogos = require('../src/bank-logos.js');
+  ok(
+    bankLogos.bankLogoPath('HDFC Bank') === '../images/banks/hdfc-bank.png',
+    'shared bank logo path for HDFC'
+  );
+  ok(
+    typeof bankLogos.createBankLogoImg === 'function',
+    'shared bank logos expose createBankLogoImg'
+  );
 
   ok(compare.formatInrDigits(100000) === '1,00,000', 'compare formats Indian commas');
   ok(
@@ -2942,6 +2952,12 @@ async function testHomeLoanCompare() {
   );
   ok(
     compare.mathBarHtml(1, 'Test', 'Note', '₹1', {
+      lines: [{ k: 'result', t: '₹1', emphasis: true }]
+    }).indexOf('hlc-math-bar-main') !== -1,
+    'stepped bars wrap note and maths in a shared main row'
+  );
+  ok(
+    compare.mathBarHtml(1, 'Test', 'Note', '₹1', {
       lines: [
         { k: 'num', t: '₹100' },
         { k: 'op', t: '× 80%' },
@@ -2951,39 +2967,196 @@ async function testHomeLoanCompare() {
     }).indexOf('hlc-math-op') !== -1,
     'numbered bar can show a times-and-line working'
   );
-}
-
-function testReviewCapture() {
-  var reviewLib = require('../scripts/review-capture/lib');
-  ok(reviewLib.isValidSessionId('2026-08-14T20-23-01Z-abc123'), 'review session id accepts stamped ids');
-  ok(!reviewLib.isValidSessionId('../etc'), 'review session id rejects path traversal');
-  ok(reviewLib.msToClock(125000) === '2:05', 'review clock formats minutes');
-  ok(reviewLib.pageLabel('/pages/home-loan-compare.html') === '/pages/home-loan-compare.html', 'review page label keeps path');
-
-  var md = reviewLib.buildSessionMarkdown(
-    {
-      id: '2026-08-14T20-23-01Z-abc123',
-      startedAt: '2026-08-14T20:23:01.000Z',
-      initialPage: '/',
-      viewport: { w: 1280, h: 800 }
-    },
+  var steppedOpBar = compare.mathBarHtml(1, 'Test', 'Note', '₹80', {
+    stepWord: true,
+    lines: [
+      { k: 'num', t: '₹100' },
+      { k: 'op', t: '× 80%' },
+      { k: 'rule' },
+      { k: 'result', t: '₹80' }
+    ]
+  });
+  ok(
+    steppedOpBar.indexOf('hlc-math-bar-step-op') !== -1 &&
+      steppedOpBar.indexOf('>×<') !== -1,
+    'stepped bars show the operation sign below the step label'
+  );
+  var joinInkBar = compare.mathBarHtml(3, 'Bounce charge', '', '₹590', {
+    stepWord: true,
+    slot: 3,
+    joinOp: '+',
+    lines: [{ k: 'result', t: '₹590', emphasis: true }]
+  });
+  ok(
+    joinInkBar.indexOf('hlc-math-bar--slot-3') !== -1 &&
+      joinInkBar.indexOf('hlc-math-bar-join') !== -1 &&
+      joinInkBar.indexOf('hlc-math-num--result') !== -1,
+    'join rows carry the same slot class on sign and derived result'
+  );
+  var loanAmountStack = compare.mathBarStackHtml(
     [
-      { t: 0, type: 'start', url: '/' },
-      { t: 4000, type: 'click', url: '/', label: 'Apply once', selector: 'a.apply' },
-      { t: 8000, type: 'page', url: '/pages/home-loan-compare.html' },
       {
-        t: 12000,
-        type: 'mark',
-        url: '/pages/home-loan-compare.html',
-        lastClick: { label: 'Filters', selector: 'button.filters' }
+        step: 1,
+        label: 'House share',
+        value: '₹80',
+        lines: [
+          { k: 'num', t: '₹100' },
+          { k: 'op', t: '× 80%' },
+          { k: 'rule' },
+          { k: 'result', t: '₹80' }
+        ]
+      },
+      {
+        step: 2,
+        label: 'Income share',
+        value: '₹55',
+        lines: [
+          { k: 'num', t: '₹100' },
+          { k: 'op', t: '× 55%' },
+          { k: 'rule' },
+          { k: 'result', t: '₹55' }
+        ]
       }
     ],
-    [{ start: 11.2, end: 14.0, text: 'हे फिल्टर लहान आहे' }]
+    { stackClass: 'hlc-math-bars--steps' }
   );
-  ok(md.indexOf('MARK') !== -1, 'review markdown includes marks');
-  ok(md.indexOf('हे फिल्टर लहान आहे') !== -1, 'review markdown keeps Marathi speech');
-  ok(md.indexOf('/pages/home-loan-compare.html') !== -1, 'review markdown includes page path');
-  ok(md.indexOf('Apply once') !== -1, 'review markdown includes click labels');
+  ok(
+    loanAmountStack.indexOf('Step 1') !== -1 &&
+      loanAmountStack.indexOf('Step 2') !== -1 &&
+      loanAmountStack.indexOf('hlc-math-bars--steps') !== -1 &&
+      loanAmountStack.indexOf('hlc-math-op') !== -1,
+    'loan amount stacks label every step and show operation signs'
+  );
+  var joinBar = compare.mathBarHtml(2, 'MODT stamp duty', '', '₹15,000', {
+    joinOp: '+',
+    lines: [{ k: 'result', t: '₹15,000', emphasis: true }]
+  });
+  ok(
+    joinBar.indexOf('hlc-math-bar-rail') !== -1 &&
+      joinBar.indexOf('hlc-math-bar-join') !== -1 &&
+      joinBar.indexOf('hlc-math-bar--join-plus') !== -1 &&
+      joinBar.indexOf('hlc-math-bar-main--join') === -1,
+    'additive stack rows show a join sign in the left gutter'
+  );
+  var additive = compare.additiveStackBars(
+    [
+      { step: 1, label: 'CERSAI', value: '₹118', lines: [{ k: 'result', t: '₹118' }] },
+      { step: 2, label: 'MODT', value: '₹15,000', lines: [{ k: 'result', t: '₹15,000' }] }
+    ],
+    'Total',
+    '₹15,118'
+  );
+  ok(
+    additive.length === 3 &&
+      additive[0].stepWord === true &&
+      additive[1].joinOp === '+' &&
+      additive[2].isTotal === true &&
+      additive[2].joinOp === '=' &&
+      additive[2].slot === 'total' &&
+      additive[2].lines.length === 1 &&
+      additive[2].lines[0].t === '₹15,118',
+    'additive stack helper marks joins and a single total line'
+  );
+  var stepWordBar = compare.mathBarHtml(1, 'CERSAI', '', '₹118', {
+    stepWord: true,
+    slot: 1,
+    lines: [{ k: 'result', t: '₹118', emphasis: true }]
+  });
+  ok(
+    stepWordBar.indexOf('hlc-math-bar-step') !== -1 &&
+      stepWordBar.indexOf('Step 1') !== -1,
+    'additive charge rows label steps as Step 1, Step 2, …'
+  );
+  var steppedStack = compare.mathBarStackHtml([
+    { step: 1, label: 'Annual rate', note: 'Split monthly.', value: '₹1' },
+    { step: 2, label: 'EMI', note: 'Fixed each month.', value: '₹2' }
+  ], { stackClass: 'hlc-math-bars--steps' });
+  ok(
+    steppedStack.indexOf('Step 1') !== -1 &&
+      steppedStack.indexOf('Step 2') !== -1 &&
+      steppedStack.indexOf('hlc-math-bars--steps') !== -1 &&
+      steppedStack.indexOf('hlc-math-bar--slot-1') !== -1 &&
+      steppedStack.indexOf('hlc-math-bar--slot-2') !== -1,
+    'stepped calculators label every step, share the steps stack class, and slot each row'
+  );
+  var totalBar = compare.mathBarHtml(5, 'Total', '', '₹31,118', {
+    isTotal: true,
+    joinOp: '=',
+    stepWord: true,
+    slot: 'total',
+    lines: [{ k: 'result', t: '₹31,118', emphasis: true }]
+  });
+  ok(
+    totalBar.indexOf('hlc-math-bar-main--total') !== -1 &&
+      totalBar.indexOf('hlc-math-bar--total') !== -1 &&
+      totalBar.indexOf('hlc-math-bar-rail') !== -1 &&
+      totalBar.indexOf('>Total<') !== -1 &&
+      totalBar.indexOf('₹31,118') !== -1 &&
+      totalBar.indexOf('hlc-ledger-final-value') !== -1 &&
+      totalBar.indexOf('hlc-math-bar-copy') !== -1,
+    'total rows keep = in the rail, Total as the label, and the sum in the work column'
+  );
+}
+
+// ─── Guide intelligence tests (GI-01–GI-11) ──────────────────────────────────
+function testGuideIntelligence() {
+  var fs = require('fs');
+  var path = require('path');
+  var root = path.join(__dirname, '..');
+  var genPath = path.join(root, 'js/guide-intelligence.generated.js');
+  var ledgerPath = path.join(
+    root,
+    'super-review-1/guide-intelligence-drafts/_guide-intelligence-founder-choices-ledger.json'
+  );
+
+  ok(fs.existsSync(genPath), 'GI-01 guide-intelligence.generated.js exists');
+
+  var genSrc = fs.readFileSync(genPath, 'utf8');
+  var dataMatch = genSrc.match(/window\.ShroffinGuideIntelligence = (\{[\s\S]*\});/);
+  ok(dataMatch, 'GI-02 generated file exports ShroffinGuideIntelligence object');
+  var data = dataMatch ? JSON.parse(dataMatch[1]) : {};
+
+  var pageKeys = Object.keys(data);
+  ok(pageKeys.length === 8, 'GI-03 eight page keys in generated data');
+
+  var total = 0;
+  pageKeys.forEach(function (pk) {
+    total += Object.keys(data[pk]).length;
+  });
+  ok(total === 38, 'GI-04 thirty-eight section entries total');
+
+  ok(
+    data.documents &&
+      data.documents.other &&
+      Array.isArray(data.documents.other.bulletsHtml) &&
+      data.documents.other.bulletsHtml.length === 2,
+    'GI-05 documents#other has bulletsHtml with RBI link'
+  );
+  ok(
+    data.documents.other.bulletsHtml[1].indexOf('guide-section-link') !== -1,
+    'GI-06 RBI bullet uses guide-section-link'
+  );
+
+  ok(
+    data.overview &&
+      data.overview.emi &&
+      data.overview.emi.bullets.length === 2,
+    'GI-07 EMI card has two grouped bullets'
+  );
+
+  ok(
+    data['tax-benefits'] &&
+      data['tax-benefits'].interest &&
+      data['tax-benefits'].interest.bullets.length === 3,
+    'GI-08 tax interest card has three bullets'
+  );
+
+  var intelUi = require('../js/shroffin-guide-intelligence.js');
+  ok(intelUi.escapeText('<b>') === '&lt;b&gt;', 'GI-09 escapeText escapes angle brackets');
+  ok(intelUi.escapeSectionId('loan-amount') === 'loan-amount', 'GI-09b escapeSectionId passes simple ids');
+
+  var ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
+  ok(ledger.choices.length === 38, 'GI-11 ledger still has 38 choices');
 }
 
 // ─── Intelligence layer tests (T01–T20) ───────────────────────────────────────

@@ -16,6 +16,11 @@
   --apply-status-ok-bright: #22c55e;
   --apply-status-bad: #b42318;
   --apply-error-wash: #fef7f7;
+  /* Bank logo plate — same tokens as Explore comparison table. */
+  --hlc-logo-plate: transparent;
+  --hlc-logo-plate-pad: 0px;
+  --hlc-logo-plate-radius: 0.2rem;
+  --hlc-logo-plate-line: transparent;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -349,38 +354,6 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: clamp(2rem, 4vw, 3rem);
     row-gap: 2.25rem;
-  }
-
-  .hl-apply--contact .hl-apply-field--email {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: inherit;
-    column-gap: inherit;
-  }
-
-  .hl-apply--contact .hl-apply-field--email > label,
-  .hl-apply--contact .hl-apply-verify-status,
-  .hl-apply--contact .hl-apply-email-mismatch {
-    grid-column: 1;
-  }
-
-  .hl-apply--contact .hl-apply-email-row {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: inherit;
-    column-gap: inherit;
-    align-items: end;
-    row-gap: 0;
-  }
-
-  .hl-apply--contact .hl-apply-email-row input {
-    grid-column: 1;
-    width: 100%;
-  }
-
-  .hl-apply--contact .hl-apply-verify {
-    grid-column: 2;
-    justify-self: start;
   }
 }
 
@@ -1069,15 +1042,32 @@
 
 .hl-apply--review .hl-apply-bank-top {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 1.25rem;
   min-height: 0;
 }
 
-.hl-apply--review .hl-apply-bank-name {
+.hl-apply--review .hl-apply-bank-identity {
   flex: 1;
   min-width: 0;
+}
+
+.hl-apply--review .hl-apply-bank-name {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.hl-apply--review .hl-apply-bank-name-text {
+  display: block;
+  min-width: 0;
+}
+
+.hl-apply--review .hl-apply-bank-kind {
+  display: block;
+  margin-top: 0.18em;
 }
 
 .hl-apply--review .hl-apply-bank .hl-apply-disclose {
@@ -1095,7 +1085,7 @@
   .hl-apply--review .hl-apply-bank-remove {
     min-height: 0;
     padding: 0;
-    align-self: baseline;
+    align-self: flex-start;
   }
 
   .hl-apply--review .hl-apply-bank .hl-apply-disclose {
@@ -1151,14 +1141,51 @@
   min-height: 2.75rem;
 }
 
-.hl-apply-bank-name {
+.hl-apply-bank-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   flex: 1;
+  min-width: 0;
+}
+
+.hl-apply-bank-name {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.hl-apply-bank-name-text {
   min-width: 0;
   font-size: var(--hl-apply-bank-name-size, clamp(1.03125rem, 2.25vw, 1.125rem));
   font-weight: 600;
   letter-spacing: normal;
   line-height: 1.3;
   color: var(--shroffin-ink);
+}
+
+.hl-apply-bank-kind {
+  margin-top: 0.15em;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.3;
+  color: var(--shroffin-muted);
+}
+
+/* Same mark + plate as Explore comparison table (.hlc-bank-logo). */
+.hl-apply-page .hlc-bank-logo {
+  flex: 0 0 auto;
+  box-sizing: content-box;
+  width: 1.625rem;
+  height: 1.625rem;
+  padding: var(--hlc-logo-plate-pad);
+  object-fit: contain;
+  object-position: center;
+  background-color: var(--hlc-logo-plate);
+  border-radius: var(--hlc-logo-plate-radius);
+  box-shadow: inset 0 0 0 1px var(--hlc-logo-plate-line);
 }
 
 .hl-apply-bank-remove {
@@ -1409,10 +1436,8 @@
   }
 }
 
-/* Contact fields: keep structure, add soft surface polish */
-.hl-apply--contact .hl-apply-field > input,
-.hl-apply--contact .hl-apply-phone-row,
-.hl-apply--contact .hl-apply-email-row {
+/* Contact fields: one bordered row surface for name, phone, and email */
+.hl-apply--contact .hl-apply-field-row {
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 16px;
   background: var(--apply-field-wash);
@@ -1426,53 +1451,53 @@
       var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
-.hl-apply--contact .hl-apply-field > input {
+.hl-apply--contact .hl-apply-field-row input {
   box-sizing: border-box;
   width: 100%;
   min-height: 56px;
+  margin: 0;
   padding: 0.95rem 1.1rem;
+  border: none;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
   color: var(--shroffin-ink);
   font-size: 1rem;
   line-height: 1.35;
 }
 
-.hl-apply--contact .hl-apply-field > input,
-.hl-apply--contact .hl-apply-field--phone input,
-.hl-apply--contact .hl-apply-email-row input {
-  border: none;
-  outline: none;
-  background: transparent;
-}
-
-.hl-apply--contact .hl-apply-field > input::placeholder,
-.hl-apply--contact .hl-apply-field--phone input::placeholder,
-.hl-apply--contact .hl-apply-email-row input::placeholder {
+.hl-apply--contact .hl-apply-field-row input::placeholder {
   color: rgba(110, 110, 115, 0.78);
 }
 
-.hl-apply--contact .hl-apply-field > input:hover,
-.hl-apply--contact .hl-apply-phone-row:hover,
-.hl-apply--contact .hl-apply-email-row:hover {
+.hl-apply--contact .hl-apply-field-row:hover {
   border-color: rgba(0, 113, 227, 0.18);
   background: var(--apply-field-wash-hover);
 }
 
-.hl-apply--contact .hl-apply-field:focus-within > input,
-.hl-apply--contact .hl-apply-field--phone:focus-within .hl-apply-phone-row,
-.hl-apply--contact .hl-apply-field--email:focus-within .hl-apply-email-row {
+.hl-apply--contact .hl-apply-field:focus-within .hl-apply-field-row {
   background: var(--shroffin-canvas-mix-base);
   border-color: rgba(0, 113, 227, 0.34);
-  box-shadow:
-    0 0 0 4px rgba(0, 113, 227, 0.08);
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.08);
 }
 
-/* Phone: India-only +91 — same structure, softened into the field surface */
+/* Phone: India-only +91 — prefix inside the shared field row */
 .hl-apply-phone-row {
   display: flex;
   align-items: stretch;
   gap: 0.5rem;
   min-height: 56px;
   padding: 0 1.05rem 0 1.15rem;
+}
+
+.hl-apply--contact .hl-apply-phone-row input {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+  min-height: 56px;
+  padding: 0.95rem 0;
+  font-weight: 400;
+  letter-spacing: normal;
 }
 
 .hl-apply-phone-prefix {
@@ -1506,21 +1531,14 @@
 }
 
 .hl-apply-field--phone input {
-  flex: 1;
-  min-width: 0;
-  width: auto;
   box-sizing: border-box;
-  min-height: 56px;
   margin: 0;
-  padding: 0.95rem 0;
   border: none;
   border-bottom: none;
   border-radius: 0;
   background: transparent;
   color: var(--shroffin-ink);
   font-size: 1rem;
-  font-weight: 400;
-  letter-spacing: normal;
   line-height: 1.35;
 }
 
@@ -1550,74 +1568,77 @@
   display: block;
 }
 
-/* Email + Verify: field leads, verify is secondary */
+/* Email + Verify: compact row; verify is a text action beside the field */
 .hl-apply-email-row {
   display: flex;
-  align-items: flex-end;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 0.85rem;
   min-height: 56px;
-  padding: 0.4rem 0.4rem 0.4rem 1.15rem;
+  max-width: 100%;
+  padding: 0 1.15rem 0 0;
 }
 
-.hl-apply-email-row input {
-  flex: 1;
+.hl-apply--contact .hl-apply-email-row input {
+  flex: 1 1 auto;
   min-width: 0;
-  min-height: 48px;
-  padding: 0.6rem 0;
-  color: var(--shroffin-ink);
-  font-size: 1rem;
-  line-height: 1.35;
+  min-height: 56px;
+  padding: 0.95rem 0 0.95rem 1.15rem;
 }
 
-.hl-apply-verify {
+.hl-apply-text-action {
   appearance: none;
   flex-shrink: 0;
   min-height: 44px;
-  min-width: 5.5rem;
-  margin-bottom: 0;
-  padding: 0 1rem;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 999px;
-  background: var(--shroffin-canvas-mix-base);
-  color: rgba(29, 29, 31, 0.74);
+  margin: 0;
+  padding: 0.35rem 0;
+  border: none;
+  background: transparent;
+  color: var(--shroffin-link);
   font: inherit;
   font-size: 0.9375rem;
   font-weight: 500;
+  letter-spacing: normal;
+  line-height: 1.3;
   cursor: pointer;
+  text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
   transition:
-    background-color var(--shroffin-ui-duration, 0.8s)
-      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
-    border-color var(--shroffin-ui-duration, 0.8s)
-      var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
     color var(--shroffin-micro-duration, 0.5s)
+      var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+    text-decoration-color var(--shroffin-micro-duration, 0.5s)
       var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1)),
     opacity var(--shroffin-micro-duration, 0.5s)
       var(--shroffin-color-ease, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.hl-apply-verify:hover:not(:disabled):not(.is-verified),
-.hl-apply-verify:focus-visible:not(:disabled):not(.is-verified) {
-  background: var(--apply-verify-wash);
-  border-color: rgba(0, 113, 227, 0.18);
-  color: var(--shroffin-blue);
+.hl-apply-text-action:hover:not(:disabled):not(.is-verified),
+.hl-apply-text-action:focus-visible:not(:disabled):not(.is-verified) {
+  color: var(--shroffin-link-hover);
+  text-decoration: underline;
+  text-decoration-color: var(--shroffin-link-hover);
 }
 
-.hl-apply-verify:active:not(:disabled):not(.is-verified) {
-  background: var(--apply-verify-wash-active);
-  border-color: rgba(0, 113, 227, 0.24);
-  color: var(--apply-blue-press);
+.hl-apply-text-action:active:not(:disabled):not(.is-verified) {
+  color: var(--shroffin-link-active);
+  text-decoration-color: var(--shroffin-link-active);
+}
+
+.hl-apply-text-action:focus-visible {
+  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
+  outline-offset: var(--shroffin-focus-offset, 3px);
+  border-radius: 0.25rem;
 }
 
 .hl-apply-verify:disabled {
-  opacity: 0.55;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
 .hl-apply-verify.is-verified {
   color: var(--apply-status-ok);
   cursor: default;
-  border-color: rgba(29, 122, 58, 0.14);
-  background: rgba(29, 122, 58, 0.06);
+  text-decoration: none;
 }
 
 .hl-apply-verify-status {
@@ -1644,17 +1665,21 @@
 
 @media (max-width: 480px) {
   .hl-apply-email-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
-    padding: 0.9rem 0.95rem;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.85rem;
+    padding: 0 1rem 0.75rem 0;
   }
 
-  .hl-apply-verify {
-    align-self: flex-start;
-    margin-bottom: 0;
-    min-height: 44px;
-    padding-inline: 1rem;
+  .hl-apply-email-row input {
+    flex: 1 1 100%;
+    min-width: 0;
+    padding: 0.95rem 0 0 1rem;
+  }
+
+  .hl-apply-email-row .hl-apply-verify {
+    margin-left: 1rem;
+    padding-bottom: 0;
   }
 }
 
@@ -2056,6 +2081,7 @@
 @media (prefers-reduced-motion: reduce) {
   .hl-apply-cta,
   .hl-apply-field input,
+  .hl-apply-text-action,
   .hl-apply-verify,
   .hl-apply-bank-remove,
   .hl-apply-disclose,
@@ -2114,7 +2140,10 @@ html[data-theme="dark"] .hl-apply-phone-prefix {
   color: rgba(255, 255, 255, 0.45);
 }
 html[data-theme="dark"] .hl-apply-verify {
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--shroffin-link);
+}
+html[data-theme="dark"] .hl-apply-verify.is-verified {
+  color: var(--apply-status-ok);
 }
 html[data-theme="dark"] .hl-apply-consent a:hover,
 html[data-theme="dark"] .hl-apply-consent a:focus-visible,
@@ -2129,25 +2158,15 @@ html[data-theme="dark"] .hl-apply-success {
   background: rgba(0, 0, 0, 0.45);
 }
 
-html[data-theme="dark"] .hl-apply--contact .hl-apply-phone-row,
-html[data-theme="dark"] .hl-apply--contact .hl-apply-email-row {
+html[data-theme="dark"] .hl-apply--contact .hl-apply-field-row {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
-html[data-theme="dark"] .hl-apply--contact .hl-apply-phone-row:hover,
-html[data-theme="dark"] .hl-apply--contact .hl-apply-email-row:hover {
+html[data-theme="dark"] .hl-apply--contact .hl-apply-field-row:hover {
   border-color: rgba(10, 132, 255, 0.18);
 }
-html[data-theme="dark"] .hl-apply--contact .hl-apply-field--phone:focus-within .hl-apply-phone-row,
-html[data-theme="dark"] .hl-apply--contact .hl-apply-field--email:focus-within .hl-apply-email-row {
+html[data-theme="dark"] .hl-apply--contact .hl-apply-field:focus-within .hl-apply-field-row {
   border-color: rgba(10, 132, 255, 0.34);
   box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.12);
-}
-html[data-theme="dark"] .hl-apply-verify:hover:not(:disabled):not(.is-verified),
-html[data-theme="dark"] .hl-apply-verify:focus-visible:not(:disabled):not(.is-verified) {
-  border-color: rgba(10, 132, 255, 0.18);
-}
-html[data-theme="dark"] .hl-apply-verify:active:not(:disabled):not(.is-verified) {
-  border-color: rgba(10, 132, 255, 0.24);
 }
 
 html[data-theme="dark"] .hl-apply--review .hl-apply-context,
@@ -2169,10 +2188,7 @@ html[data-theme="dark"] .hl-apply-phone-flag {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 /* Resting slate borders rgba(15,23,42,0.08) at apply L1416/1579 */
-html[data-theme="dark"] .hl-apply--contact .hl-apply-field > input,
-html[data-theme="dark"] .hl-apply--contact .hl-apply-phone-row,
-html[data-theme="dark"] .hl-apply--contact .hl-apply-email-row,
-html[data-theme="dark"] .hl-apply-verify {
+html[data-theme="dark"] .hl-apply--contact .hl-apply-field-row {
   border-color: rgba(255, 255, 255, 0.12);
 }
 html[data-theme="dark"] .hl-apply-toast {
@@ -2187,9 +2203,9 @@ html[data-theme="dark"] .hl-apply-success-panel .hl-apply-success-help {
 
 @media (max-width: 833px) {
   html[data-theme="dark"] .hl-apply--review .hl-apply-review-actions {
-    background: linear-gradient(to top, var(--shroffin-surface) 78%, rgba(18, 18, 18, 0));
+    background: linear-gradient(to top, var(--shroffin-surface) 78%, rgba(22, 22, 22, 0));
   }
   html[data-theme="dark"] .hl-apply--contact .hl-apply-actions {
-    background: linear-gradient(to top, var(--shroffin-surface) 85%, rgba(18, 18, 18, 0));
+    background: linear-gradient(to top, var(--shroffin-surface) 85%, rgba(22, 22, 22, 0));
   }
 }

@@ -173,7 +173,7 @@ If a working screen, sentence, button, form field, helper note, table column, dr
 - this prompt file and the other prompt files
 - `_theme-recurrence.md`, `_grouping-ledger.json`, `_recurrence-ledger.json`
 - any older `_theme-site-scan.md`, `_theme-site-scan-ledger.json`, `_site-scan-universe.json`, `_site-scan-log.jsonl`, `_site-scan-evidence-index.md` (overwrite them)
-- tests, golden snapshots, review-capture shells, `node_modules`
+- tests, golden snapshots, `node_modules`
 
 If index and live `theme-*.md` disagree, **live theme files win**. If fundamentals and theme file **count** disagree, **stop**. Reply only: Fundamentals and theme files do not match; run that job first.
 

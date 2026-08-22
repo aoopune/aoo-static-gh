@@ -1,11 +1,8 @@
 #!/usr/bin/env node
 // Minimal static file server for local dev / Playwright / Lighthouse.
-// Serves HTTP/1.1 with gzip for text assets so local perf matches production.
 var http = require("http");
 var fs = require("fs");
 var path = require("path");
-var zlib = require("zlib");
-var review = require("./review-capture/server");
 var PORT = parseInt(process.env.PORT || "8765", 10);
 var root = path.resolve(__dirname, "..");
 
@@ -30,28 +27,7 @@ function mime(name) {
   return map[ext] || "application/octet-stream";
 }
 
-function shouldGzip(file) {
-  var ext = path.extname(file).toLowerCase();
-  return (
-    ext === ".html" ||
-    ext === ".css" ||
-    ext === ".js" ||
-    ext === ".json" ||
-    ext === ".svg" ||
-    ext === ".md" ||
-    ext === ".csv"
-  );
-}
-
-function acceptsGzip(req) {
-  var ae = req.headers["accept-encoding"] || "";
-  return ae.split(",").some(function (part) {
-    return part.trim().toLowerCase().indexOf("gzip") === 0;
-  });
-}
-
 var server = http.createServer(function (req, res) {
-  if (review.handle(req, res, root)) return;
   var urlPath = (req.url || "/").split("?")[0];
   var filePath = path.join(root, urlPath === "/" ? "index.html" : urlPath);
   if (
@@ -94,18 +70,6 @@ var server = http.createServer(function (req, res) {
   function send(file, data) {
     res.setHeader("Content-Type", mime(file));
     applyCache(file);
-    if (shouldGzip(file) && acceptsGzip(req) && data.length > 512) {
-      zlib.gzip(data, function (err, compressed) {
-        if (err) {
-          res.end(data);
-          return;
-        }
-        res.setHeader("Content-Encoding", "gzip");
-        res.setHeader("Vary", "Accept-Encoding");
-        res.end(compressed);
-      });
-      return;
-    }
     res.end(data);
   }
 
@@ -132,6 +96,5 @@ var server = http.createServer(function (req, res) {
 });
 
 server.listen(PORT, function () {
-  console.log("Serving at http://localhost:" + PORT + " (gzip on)");
-  console.log("Review capture: http://localhost:" + PORT + "/__review/");
+  console.log("Serving at http://localhost:" + PORT);
 });

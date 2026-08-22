@@ -92,7 +92,7 @@ The website must be bitwise unchanged when you finish.
 - this prompt file and the other prompt files
 - `_theme-recurrence.md`, grouping ledgers
 - `_theme-site-scan-solvability-rank.md` (that is confidence-to-fix, not whether the bump still exists)
-- tests, `node_modules`, golden snapshots, review-capture shells
+- tests, `node_modules`, golden snapshots
 - older `_theme-fundamentals-recheck.md` / ledger (overwrite them)
 
 If fundamentals count and `theme-*.md` count disagree, **stop**. Reply only: Fundamentals and theme files do not match; run that job first.

@@ -9,7 +9,7 @@
     Preference: localStorage['shroffin-color-preference'] ∈ {dark, light, system}
     Resolved: html[data-theme="dark"|"light"]; first visit unset → dark (do NOT write until user taps).
     Default (system) ≠ first visit. OS listener only when preference === system.
-    theme-color: dark #121212 / light #fcfcfd
+    theme-color: dark #161616 / light #fcfcfd
     FOUC: set data-theme + color-scheme + canvas background before stylesheets.
   -->
   <script data-shroffin-theme-boot="live">
@@ -32,13 +32,13 @@
         if (document.head.firstChild) document.head.insertBefore(meta, document.head.firstChild);
         else document.head.appendChild(meta);
       }
-      meta.setAttribute('content', resolved === 'dark' ? '#121212' : '#fcfcfd');
+      meta.setAttribute('content', resolved === 'dark' ? '#161616' : '#fcfcfd');
     }
     function apply(resolved) {
       root.setAttribute('data-theme', resolved);
       root.style.colorScheme = resolved;
       /* Critical canvas before CSS / home inline light hardcodes */
-      root.style.backgroundColor = resolved === 'dark' ? '#121212' : '#fcfcfd';
+      root.style.backgroundColor = resolved === 'dark' ? '#161616' : '#fcfcfd';
       applyThemeColor(resolved);
     }
     var pref = null;
@@ -400,6 +400,26 @@
       line-height: 1.35;
     }
 
+    /* Halo around one word — same ink as the sentence, soft shadow glow. */
+    .home-feature-word-glow {
+      text-shadow:
+        0 0 0.18em color-mix(in srgb, var(--home-story-ink) 78%, transparent),
+        0 0 0.5em color-mix(in srgb, var(--home-story-ink) 42%, transparent),
+        0 0 1.05em color-mix(in srgb, var(--home-story-ink) 22%, transparent);
+    }
+
+    html[data-theme="light"] .home-feature-word-glow {
+      text-shadow:
+        0 0 0.2em color-mix(in srgb, var(--home-story-ink) 32%, transparent),
+        0 0 0.65em color-mix(in srgb, var(--home-story-ink) 16%, transparent);
+    }
+
+    @media (forced-colors: active) {
+      .home-feature-word-glow {
+        text-shadow: none;
+      }
+    }
+
     .home-feature-body-line {
       display: block;
     }
@@ -586,7 +606,7 @@
 
       .home-lead-compare-frame {
         /* Design canvas — not 100% of the narrow slot */
-        top: 8px;
+        top: 48px;
         left: 10px;
         width: 860px;
         height: 460px;
@@ -742,7 +762,7 @@
   
     /* Phase I — theme twins (single owner; paint only; copy frozen) */
     html[data-theme="dark"] .home-story-dark {
-      --home-story-bg: #121212;
+      --home-story-bg: var(--shroffin-surface);
       --home-story-ink: #F5F5F7;
       --home-device-stage: #1E1E1E;
     }
@@ -760,13 +780,13 @@
       color: rgba(255, 255, 255, 0.55);
     }
     html[data-theme="dark"] {
-      --gn-bg: color-mix(in srgb, #0A84FF 0.75%, #121212);
+      --gn-bg: color-mix(in srgb, #0A84FF 0.75%, var(--shroffin-canvas-mix-base));
       --gn-text: rgba(245, 245, 247, 0.72);
       --gn-text-hover: #F5F5F7;
       --gn-ink: #F5F5F7;
     }
     html[data-theme="dark"] body { color: #F5F5F7; }
-    html[data-theme="dark"] .home-hero { background: #121212; }
+    html[data-theme="dark"] .home-hero { background: var(--shroffin-surface); }
     html[data-theme="dark"] .home-hero-title { color: #F5F5F7; }
     html[data-theme="dark"] .home-hero-cta-secondary {
       color: #0A84FF;
@@ -783,8 +803,8 @@
     }
 
   </style>
-  <link rel="stylesheet" href="css/shroffin-shell.min.css?v=home-wash-10">
-  <link rel="stylesheet" href="css/shroffin-product-demo.min.css?v=110">
+  <link rel="stylesheet" href="css/shroffin-shell.min.css?v=0a3f94647f">
+  <link rel="stylesheet" href="css/shroffin-product-demo.min.css?v=111">
   <!-- Below-fold home sections: non-blocking so they do not delay LCP wallpaper. -->
   <link
     rel="stylesheet"
@@ -814,22 +834,22 @@
         <li class="globalnav-item globalnav-item-brand">
           <a class="globalnav-link globalnav-link-brand" href="/" aria-label="Shroffin Home">
             <!-- Phase G logo swap: light mark is default until html[data-theme="dark"] (Phase I boot). CSS owner: css/shroffin-shell.css -->
-            <img
-              class="globalnav-logo globalnav-logo--light"
-              src="/images/logos/logo-h-light-clear-781x173.png"
-              alt="Shroffin"
-              width="99"
-              height="22"
-            >
-            <img
-              class="globalnav-logo globalnav-logo--dark"
-              src="/images/logos/logo-h-dark-clear-781x173.png"
-              alt=""
-              width="99"
-              height="22"
-              aria-hidden="true"
-              decoding="async"
-            >
+              <img
+                class="globalnav-logo globalnav-logo--light"
+                src="/images/logos/logo-h-light-clear-781x173.png"
+                alt="Shroffin"
+                width="99"
+                height="22"
+              >
+              <img
+                class="globalnav-logo globalnav-logo--dark"
+                src="/images/logos/logo-h-dark-clear-781x173.png"
+                alt=""
+                width="99"
+                height="22"
+                aria-hidden="true"
+                decoding="async"
+              >
           </a>
         </li>
         <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled
@@ -1022,10 +1042,12 @@
           <a class="site-footer-brand-link" href="/" aria-label="Shroffin Home">
             <img
               class="site-footer-logo"
-              src="/images/logos/logo.png"
+              src="/images/logos/logo-mark-40.png"
               alt=""
               width="40"
               height="40"
+              loading="lazy"
+              decoding="async"
             >
           </a>
         </section>

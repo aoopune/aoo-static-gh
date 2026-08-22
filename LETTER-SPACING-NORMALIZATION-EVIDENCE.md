@@ -517,12 +517,6 @@ Every `letter-spacing` declaration on the live website that was **not** already 
 | 759 | `.spec-table th` | `0.05em` | `normal` |
 | 771 | `.tag` | `0.03em` | `normal` |
 
-### `scripts/review-capture/shell.css` — 1 change(s)
-
-| Line | Selector (approx) | Before | After |
-|-----:|-------------------|--------|-------|
-| 152 | `.rv-kicker` | `0.04em` | `normal` |
-
 ### `table-embed.html` — 1 change(s)
 
 | Line | Selector (approx) | Before | After |
