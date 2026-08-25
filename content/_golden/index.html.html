@@ -143,11 +143,9 @@
       z-index: 1;
       width: min(1068px, calc(100% - 48px));
       margin: 0 auto;
-      /* Nav blends into this pale band, so half the nav height is already
-         “above” the title. Keep that air; pull the demo in tighter so the
-         gap under the hero is clearly smaller than nav → hero. */
-      --hero-copy-gap: calc((52px + clamp(3.75rem, 7.5vw, 5.5rem)) / 2);
-      --hero-gap-above: calc(var(--hero-copy-gap) - var(--gn-height) / 2);
+      /* Fixed nav → headline air on phone and desktop. Under-hero padding
+         stays tighter so the demo sits closer than the nav gap. */
+      --hero-gap-above: 80px;
       padding-top: var(--hero-gap-above);
       padding-bottom: calc(var(--hero-gap-above) * 0.75);
       pointer-events: none;
@@ -170,21 +168,50 @@
       visibility: hidden;
     }
 
+    /* YC “formidable” treatment — Source Serif 4 italic for one accent word. */
+    @font-face {
+      font-family: "Source Serif 4";
+      font-style: italic;
+      font-weight: 400;
+      font-display: swap;
+      src: url("fonts/SourceSerif4/SourceSerif4-Italic-latin.woff2") format("woff2");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    @font-face {
+      font-family: "Source Serif 4";
+      font-style: italic;
+      font-weight: 400;
+      font-display: swap;
+      src: url("fonts/SourceSerif4/SourceSerif4-Italic-latin-ext.woff2") format("woff2");
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+
     .home-hero-title {
       margin: 0 auto;
       max-width: 18em;
       color: #1d1d1f;
-      font-weight: 600;
+      font-weight: 400;
       font-size: calc(var(--shroffin-type-display) - 3px);
-      line-height: 1.12;
+      /* Extra air for the italic “f” descender on fair. */
+      line-height: 1.22;
     }
 
     .home-hero-title-line {
       display: block;
     }
 
-    /* Phone: keep the intentional two-line break (after "and") — do not
-       rewrap mid-phrase because display type is wider than the copy rail. */
+    .home-hero-fair {
+      font-family: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      font-optical-sizing: auto;
+      /* Keep ink with the surrounding sans title (theme-aware via inherit). */
+      color: inherit;
+      font-synthesis: none;
+    }
+
+    /* Phone: intentional two-line break — do not rewrap mid-phrase. */
     @media (max-width: 833px) {
       .home-hero-copy {
         width: min(1068px, calc(100% - 28px));
@@ -194,9 +221,8 @@
 
       .home-hero-title {
         max-width: none;
-        /* Scale to the copy rail; longest line ≈ 18.5em of SemiBold. */
-        font-size: clamp(0.9375rem, calc(100cqi / 18.5), 1.5rem);
-        line-height: 1.2;
+        font-size: 27px;
+        line-height: 1.28;
       }
 
       .home-hero-title-line {
@@ -206,9 +232,9 @@
 
     @media (min-width: 834px) {
       .home-hero-title {
-        font-size: clamp(1.5rem, 2.1vw, 1.875rem);
+        font-size: 40.5px;
         max-width: 28em;
-        line-height: 1.2;
+        line-height: 1.25;
       }
     }
 
@@ -224,23 +250,23 @@
 
     /* Primary pill recipe lives in shroffin-shell.css (.home-hero-cta-primary). */
 
-    /* Elevated .button-secondary: outline at rest; fills blue + white text on hover */
+    /* Elevated secondary: outline at rest; theme tokens own fill/label on hover */
     .home-hero-cta-secondary {
-      background: transparent;
-      color: #0066cc;
-      border-color: #0066cc;
+      background: var(--shroffin-btn-secondary-bg);
+      color: var(--shroffin-btn-secondary-fg);
+      border-color: var(--shroffin-btn-secondary-border);
     }
 
     .home-hero-cta-secondary:hover {
-      background: var(--shroffin-btn-primary-hover);
-      color: #fff;
-      border-color: transparent;
+      background: var(--shroffin-btn-secondary-hover-bg);
+      color: var(--shroffin-btn-secondary-hover-fg);
+      border-color: var(--shroffin-btn-secondary-hover-border);
     }
 
     .home-hero-cta-secondary:active {
-      background: var(--shroffin-btn-primary-active);
-      color: #fff;
-      border-color: transparent;
+      background: var(--shroffin-btn-secondary-active-bg);
+      color: var(--shroffin-btn-secondary-active-fg);
+      border-color: var(--shroffin-btn-secondary-active-border);
     }
 
     /* ——— Dark story band — one window, side panel (copy | picture) ——— */
@@ -646,9 +672,7 @@
 
     @media (max-width: 833px) {
       .home-hero-copy {
-        /* Keep phone rail width only — gap above the title and under Explore banks
-           must match the desktop hero recipe (base .home-hero-copy), not the old
-           full-viewport centering that sat too close to the nav. */
+        /* Keep phone rail width only — nav → title gap is the shared 80px above. */
         width: min(1068px, calc(100% - 32px));
       }
 
@@ -788,10 +812,6 @@
     html[data-theme="dark"] body { color: #F5F5F7; }
     html[data-theme="dark"] .home-hero { background: var(--shroffin-surface); }
     html[data-theme="dark"] .home-hero-title { color: #F5F5F7; }
-    html[data-theme="dark"] .home-hero-cta-secondary {
-      color: #0A84FF;
-      border-color: #0A84FF;
-    }
     html[data-theme="dark"] .site-footer {
       background: #1E1E1E;
       color: rgba(255, 255, 255, 0.45);
@@ -803,7 +823,7 @@
     }
 
   </style>
-  <link rel="stylesheet" href="css/shroffin-shell.min.css?v=cc2d7aae0a">
+  <link rel="stylesheet" href="css/shroffin-shell.min.css?v=5cb84e0b09">
   <link rel="stylesheet" href="css/shroffin-product-demo.min.css?v=111">
   <!-- Below-fold home sections: non-blocking so they do not delay LCP wallpaper. -->
   <link
@@ -1023,7 +1043,7 @@
   <main class="home-content">
     <section class="home-hero" aria-labelledby="home-hero-title">
       <div class="home-hero-copy">
-        <h1 class="home-hero-title" id="home-hero-title"><span class="home-hero-title-line">Get a fair view of home loans and</span> <span class="home-hero-title-line">apply to your chosen banks in one go.</span></h1>
+        <h1 class="home-hero-title" id="home-hero-title"><span class="home-hero-title-line">A <em class="home-hero-fair">fair</em> way to choose</span> <span class="home-hero-title-line">your home loan bank.</span></h1>
         <div class="home-hero-ctas">
           <a class="home-hero-cta home-hero-cta-primary" href="pages/explore-banks.html">Explore banks</a>
         </div>

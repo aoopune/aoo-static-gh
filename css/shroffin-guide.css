@@ -106,7 +106,7 @@
     padding: 0 var(--shroffin-btn-compact-pad-inline, 0.75rem);
     border-color: transparent;
     background: transparent;
-    color: #fff;
+    color: var(--shroffin-btn-primary-fg);
     font-size: var(--shroffin-btn-compact-font, 12px);
     line-height: 1;
     text-decoration: none;
@@ -119,7 +119,7 @@
   .localnav-cta:hover,
   .localnav-cta:focus-visible,
   .localnav-cta:active {
-    color: #fff;
+    color: var(--shroffin-btn-primary-fg);
     text-decoration: none;
   }
 
@@ -221,7 +221,7 @@
   .guide-jump a[aria-current="true"] {
     border-color: transparent;
     background: var(--shroffin-btn-primary);
-    color: #fff;
+    color: var(--shroffin-btn-primary-fg);
   }
 
   /*

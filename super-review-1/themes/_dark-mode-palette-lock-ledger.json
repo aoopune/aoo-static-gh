@@ -255,38 +255,80 @@
     },
     {
       "token": "--shroffin-btn-primary",
-      "dark_hex": "#0071e3",
+      "dark_hex": "#edecec",
       "status": "locked",
       "ask_cluster": "Q4",
-      "notes": "Apple filled Buy \u2014 same as light; accents use --shroffin-blue #0A84FF"
+      "notes": "Cursor dark marketing pill (--color-theme-fg); accents stay --shroffin-blue #0A84FF"
     },
     {
       "token": "--shroffin-btn-primary-hover",
-      "dark_hex": "#0076df",
+      "dark_hex": "#d7d6d5",
       "status": "locked",
       "ask_cluster": "Q4",
-      "notes": "Apple SK #0076DF (slightly lighter)"
+      "notes": "Cursor --color-theme-fg-02"
     },
     {
       "token": "--shroffin-btn-primary-active",
-      "dark_hex": "#006edb",
+      "dark_hex": "#edecec",
       "status": "locked",
       "ask_cluster": "Q4",
-      "notes": "Apple SK #006EDB"
+      "notes": "Cursor .btn:active returns to rest fill"
+    },
+    {
+      "token": "--shroffin-btn-primary-fg",
+      "dark_hex": "#14120B",
+      "status": "locked",
+      "ask_cluster": "Q4",
+      "notes": "Cursor --color-theme-bg on pill; not page ink #1d1d1f; light twin #ffffff"
+    },
+    {
+      "token": "--shroffin-btn-primary-disabled-bg",
+      "dark_hex": "rgba(237,236,236,0.40)",
+      "status": "locked",
+      "ask_cluster": "Q4",
+      "notes": "Disabled primary fill (dock); light twin rgba(0,113,227,0.52)"
     },
     {
       "token": "--shroffin-focus",
       "dark_hex": "#0A84FF",
       "status": "derived",
       "ask_cluster": "Q4",
-      "notes": "Equals rest blue"
+      "notes": "Accent blue — not primary fill"
     },
     {
       "token": "--shroffin-field-line-focus",
       "dark_hex": "#0A84FF",
       "status": "derived",
       "ask_cluster": "Q4",
+      "notes": "var(--shroffin-focus); never follows soft-white fill"
+    },
+    {
+      "token": "--shroffin-btn-secondary-border",
+      "dark_hex": "#edecec",
+      "status": "locked",
+      "ask_cluster": "Q4",
+      "notes": "Same colour as primary pill — not Cursor card-secondary / gray"
+    },
+    {
+      "token": "--shroffin-btn-secondary-fg",
+      "dark_hex": "#edecec",
+      "status": "locked",
+      "ask_cluster": "Q4",
       "notes": ""
+    },
+    {
+      "token": "--shroffin-btn-secondary-hover-bg",
+      "dark_hex": "#edecec",
+      "status": "locked",
+      "ask_cluster": "Q4",
+      "notes": "Fills to primary pill colour"
+    },
+    {
+      "token": "--shroffin-btn-secondary-active-bg",
+      "dark_hex": "#d7d6d5",
+      "status": "locked",
+      "ask_cluster": "Q4",
+      "notes": "Matches primary hover luminance step"
     },
     {
       "token": "--shroffin-btn-primary-shadow",

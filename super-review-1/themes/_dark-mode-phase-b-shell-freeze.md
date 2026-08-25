@@ -81,14 +81,25 @@ All color-ish roles in `css/shroffin-shell.css` `:root` after Phase B. **Dark tw
 | `--shroffin-ink-strong` | `#000000` | Full-strength chrome hover when rest is already ink | nav flyout / compact / disclaimer | yes — dark `#ffffff` | Hover stays blue forever | Darker (light) / brighter (dark); not link blue |
 | `--shroffin-muted` | `#6e6e73` | Secondary / fine print | shell + stacks | yes | Fine print wrong on dark | |
 | `--shroffin-ghost` | `#c5c9cf` | Large decorative numerals | **Promoted** (mag/about still local until E) | yes | Ghost type disappears or chalks | |
-| `--shroffin-blue` | `#0071e3` | Brand / button blue | buttons, focus, accents | yes (may stay close) | Brand chrome wrong | ≠ link blue (intentional) |
-| `--shroffin-btn-primary` | `#0071e3` | Primary button fill | elevated buttons | yes | CTAs wrong | Apple SK filled Buy — same hex light/dark |
-| `--shroffin-btn-primary-hover` | `#0076df` | Button hover | buttons | yes | | Apple `#0076DF` (slightly lighter) |
-| `--shroffin-btn-primary-active` | `#006edb` | Button pressed | buttons | yes | | Apple `#006EDB` |
-| `--shroffin-btn-primary-shadow` | `none` | Rest elevation | buttons | yes | | Flat pill — no glow (Apple Buy) |
+| `--shroffin-blue` | `#0071e3` | Brand / accent blue | accents, icons, focus twin | yes — dark `#0A84FF` | Brand chrome wrong | ≠ link blue; ≠ filled CTA on dark |
+| `--shroffin-btn-primary` | `#0071e3` | Primary button **fill** | elevated CTAs | yes — dark `#edecec` | CTAs wrong | Light: Apple Buy blue. Dark: Cursor marketing pill (`--color-theme-fg`) |
+| `--shroffin-btn-primary-hover` | `#0076df` | Button hover fill | buttons | yes — dark `#d7d6d5` | | Dark: Cursor `--color-theme-fg-02` |
+| `--shroffin-btn-primary-active` | `#006edb` | Button pressed fill | buttons | yes — dark `#edecec` | | Dark: Cursor returns to rest fill on `:active` |
+| `--shroffin-btn-primary-fg` | `#ffffff` | Label **on** primary fill | elevated CTAs | yes — dark `#14120b` | White text on white pill | Dark: Cursor `--color-theme-bg` |
+| `--shroffin-btn-primary-disabled-bg` | `rgba(0,113,227,0.52)` | Disabled primary fill | apply dock etc. | yes — dark `rgba(237,236,236,0.40)` | | Soft fill; label stays `--shroffin-btn-primary-fg` |
+| `--shroffin-btn-primary-shadow` | `none` | Rest elevation | buttons | yes | | Flat pill — no glow |
 | `--shroffin-btn-primary-shadow-hover` | `none` | Hover elevation | buttons | yes | | |
 | `--shroffin-btn-primary-shadow-active` | `none` | Active elevation | buttons | yes | | |
-| `--shroffin-link` | `#0066cc` | On-paper text links (Apple web link) | guide, utility, apply, nav/footer hover text | yes — dark `#2997FF` | Links collide with buttons or vanish | Intentional ≠ button `#0071e3`; one blue for rest/hover/active/visited |
+| `--shroffin-btn-secondary-bg` | `transparent` | Secondary rest fill | outline CTAs | yes | | |
+| `--shroffin-btn-secondary-border` | `#0066cc` | Secondary rest border | outline CTAs | yes — dark `#edecec` | | Same colour as dark primary pill (not Cursor card-secondary) |
+| `--shroffin-btn-secondary-fg` | `#0066cc` | Secondary rest label | outline CTAs | yes — dark `#edecec` | | |
+| `--shroffin-btn-secondary-hover-bg` | `var(--shroffin-btn-primary-hover)` | Secondary hover fill | outline CTAs | yes — dark `#edecec` | | Fills to primary pill |
+| `--shroffin-btn-secondary-hover-border` | `transparent` | Secondary hover border | | yes | | |
+| `--shroffin-btn-secondary-hover-fg` | `var(--shroffin-btn-primary-fg)` | Secondary hover label | | yes — dark `#14120b` | | |
+| `--shroffin-btn-secondary-active-bg` | `var(--shroffin-btn-primary-active)` | Secondary pressed fill | | yes — dark `#d7d6d5` | | |
+| `--shroffin-btn-secondary-active-border` | `transparent` | Secondary pressed border | | yes | | |
+| `--shroffin-btn-secondary-active-fg` | `var(--shroffin-btn-primary-fg)` | Secondary pressed label | | yes — dark `#14120b` | | |
+| `--shroffin-link` | `#0066cc` | On-paper text links (Apple web link) | guide, utility, apply, nav/footer hover text | yes — dark `#2997FF` | Links collide with buttons or vanish | Intentional ≠ button fill; Back/text actions use link, not btn-primary |
 | `--shroffin-link-active` | `var(--shroffin-link)` | Link active — same as rest | links | yes | | Hover/press via underline + same blue |
 | `--shroffin-link-visited` | `var(--shroffin-link)` | Visited — same as rest | links | yes | | One main link blue |
 | `--shroffin-link-external` | `var(--shroffin-link)` | Off-site link color | guide-section-link | yes | | Same family |
@@ -117,7 +128,7 @@ All color-ish roles in `css/shroffin-shell.css` `:root` after Phase B. **Dark tw
 | `--shroffin-gn-option-value` | muted @ 88% | Flyout secondary line rest | globalnav | yes | — | |
 | `--shroffin-gn-option-value-hover` | `var(--shroffin-ink-soft)` | Flyout secondary line hover | globalnav | yes | — | |
 | `--shroffin-field-line` | `rgba(0,0,0,0.16)` | Underline field rest | Apply fields site-wide | yes | Fields disappear | |
-| `--shroffin-field-line-focus` | `var(--shroffin-btn-primary)` | Field focus line | fields | yes | | Has light fallback in places |
+| `--shroffin-field-line-focus` | `var(--shroffin-focus)` | Field focus line | fields | yes | | Follows accent, **never** primary fill (fill may be white on dark) |
 | `--shroffin-field-line-invalid` | `rgba(176,76,76,0.65)` | Invalid field | fields | yes | Status unreadable | Keep semantic red family |
 | `--shroffin-field-line-valid` | `rgba(29,122,58,0.45)` | Valid field | fields | yes | | Keep semantic green family |
 | `--shroffin-field-placeholder` | `rgba(110,110,115,0.5)` | Placeholder | fields | yes | Placeholder chalk or vanish | Muted-based |
@@ -181,7 +192,7 @@ Not a redesign. Freeze quality gate: one role = one meaning; near-duplicates doc
 | Soft ink | `--shroffin-ink-soft` | `#3a3a3d` | shell (new); none aliased yet | `--mag-ink-soft`, `--about-ink-soft`, `--stance-ink-soft` all hard `#3a3a3d` | — | should_unify_later | E |
 | Muted | `--shroffin-muted` | `#6e6e73` | shell + aliases | Apply ~13× hard; editorial `--mag-muted` hard same | Utility meta `rgba(0,0,0,0.56)` near-muted without token | should_unify_later | E |
 | Link blue | `--shroffin-link` | `#0066cc` (dark `#2997FF`) | shell; utility; apply; nav/footer hover; mag-accent | — | Button blue `#0071e3` intentional | ok (Apple web link pair) | — |
-| Button / brand blue | `--shroffin-blue` / btn-primary | `#0071e3` | shell buttons; mag-accent-button hard same | Apply hard `#0071e3` / `#0076df` near-drifts | Link `#0066cc` / `#2997FF` intentional | should_unify_later (near `#0076df`) | E |
+| Button / brand accent | `--shroffin-blue` / btn-primary fill | blue light / soft-white dark | shell buttons; mag-accent-button aliases fill | Apply press aliases hover | Link `#0066cc` / `#2997FF` intentional; label = `--shroffin-btn-primary-fg` | ok (fill ≠ accent on dark) | — |
 | Hairline (content) | `--shroffin-hair` | `rgba(0,0,0,0.12)` | shell (new) | `--mag-hair` same; `--calc-line` / `--apf-line` `rgba(29,29,31,0.12)` near-same | `--shroffin-rule` / field-line at 0.16 stronger chrome | should_unify_later | E |
 | Hairline soft | `--shroffin-hair-soft` | `rgba(0,0,0,0.08)` | shell (new) | `--mag-hair-soft`; guide localnav border `rgba(0,0,0,0.08)` | Explore steel lines `rgba(108,128,155,…)` intentional Explore language | should_unify_later (guide→gn) | E |
 | Nav frost | `--shroffin-gn-*` | `#f5f7f9` / rgba family | shell globalnav; Explore nav aliases | Guide `.localnav` hard `rgba(245,247,249,0.82)` / editorial `0.78` | — | should_unify_later | E |

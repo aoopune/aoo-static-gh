@@ -102,15 +102,26 @@ Columns: `token` · `light_today` · `dark_locked` · `contrast_notes` · `owner
 
 | token | light_today | dark_locked | contrast_notes | owner |
 |---|---|---|---|---|
-| `--shroffin-blue` | `#0071e3` | `#0A84FF` | Brighter twin for accents/links/icons | shell |
-| `--shroffin-btn-primary` | `#0071e3` | `#0071e3` | Apple filled Buy — same on dark | shell |
-| `--shroffin-btn-primary-hover` | `#0076df` | `#0076df` | Apple `#0076DF` (slightly lighter) | shell |
-| `--shroffin-btn-primary-active` | `#006edb` | `#006edb` | Apple `#006EDB` | shell |
+| `--shroffin-blue` | `#0071e3` | `#0A84FF` | Accents/icons/focus twin — not dark filled CTA | shell |
+| `--shroffin-btn-primary` | `#0071e3` | `#edecec` | Cursor dark marketing pill fill (`--color-theme-fg`) | shell |
+| `--shroffin-btn-primary-hover` | `#0076df` | `#d7d6d5` | Cursor `--color-theme-fg-02` | shell |
+| `--shroffin-btn-primary-active` | `#006edb` | `#edecec` | Cursor `:active` returns to rest fill | shell |
+| `--shroffin-btn-primary-fg` | `#ffffff` | `#14120b` | Cursor `--color-theme-bg` on pill | shell |
+| `--shroffin-btn-primary-disabled-bg` | `rgba(0,113,227,0.52)` | `rgba(237,236,236,0.40)` | Disabled primary fill | shell |
 | `--shroffin-focus` | `#0071e3` | `#0A84FF` | Focus follows accent blue on dark | shell |
-| `--shroffin-field-line-focus` | `var(--shroffin-btn-primary)` | `#0071e3` | = filled button rest | shell |
-| `--shroffin-btn-primary-shadow` | `none` | `none` | Flat Apple Buy (no glow) | shell |
+| `--shroffin-field-line-focus` | `var(--shroffin-focus)` | `var(--shroffin-focus)` → `#0A84FF` | Accent underline — never primary fill | shell |
+| `--shroffin-btn-primary-shadow` | `none` | `none` | Flat (no glow) | shell |
 | `--shroffin-btn-primary-shadow-hover` | `none` | `none` | | shell |
 | `--shroffin-btn-primary-shadow-active` | `none` | `none` | | shell |
+| `--shroffin-btn-secondary-bg` | `transparent` | `transparent` | Outline secondary rest | shell |
+| `--shroffin-btn-secondary-border` | `#0066cc` | `#edecec` | Same colour as primary pill (not Cursor card-secondary) | shell |
+| `--shroffin-btn-secondary-fg` | `#0066cc` | `#edecec` | | shell |
+| `--shroffin-btn-secondary-hover-bg` | `var(--shroffin-btn-primary-hover)` | `#edecec` | Fills to primary pill | shell |
+| `--shroffin-btn-secondary-hover-border` | `transparent` | `transparent` | | shell |
+| `--shroffin-btn-secondary-hover-fg` | `var(--shroffin-btn-primary-fg)` | `#14120b` | | shell |
+| `--shroffin-btn-secondary-active-bg` | `var(--shroffin-btn-primary-active)` | `#d7d6d5` | | shell |
+| `--shroffin-btn-secondary-active-border` | `transparent` | `transparent` | | shell |
+| `--shroffin-btn-secondary-active-fg` | `var(--shroffin-btn-primary-fg)` | `#14120b` | | shell |
 
 #### 2.5 Shell — nav frost / veil / borders
 
@@ -276,7 +287,7 @@ Columns: `token` · `light_today` · `dark_locked` · `contrast_notes` · `owner
 | Button hover | Apple `#0076DF` (slightly lighter than rest) | `#0076df` |
 | Button active | Apple `#006EDB` | `#006edb` |
 | Focus | accent twin on dark | `#0A84FF` |
-| Field focus line | = filled button rest | `#0071e3` |
+| Field focus line | = accent `--shroffin-focus` | `#0A84FF` |
 | Nav translucent | frost RGB @ 0.80 / 0.92 / 0.96 | `rgba(30,30,30,…)` |
 | Hairlines | white-alpha strength set A | 0.16 / 0.12 / 0.08 / 0.10 |
 | Placeholder | muted × ~0.55 alpha | `rgba(161,161,166,0.55)` |
@@ -340,7 +351,7 @@ Still **not** done in this job: live boot, footer pill, dark CSS in `css/`, PWA 
 | Page canvas every redesigned page | Q1 surface |
 | Nav / footer | Q5 + Q6 + App C (submenu `#06c`, WhatsApp `#000`) |
 | All text levels | Q2 |
-| Links / buttons / focus | Q3–Q4 + App C (secondary `#0066cc`, on-blue `#fff`) |
+| Links / buttons / focus | Q3–Q4 + App C (secondary quiet gray on dark; on-primary `--shroffin-btn-primary-fg`) |
 | Input boxes / underlines / washes / autofill | Q6 + Q11 + App C |
 | Dropdowns / segments / menus / chips pressed | Q12 + App C |
 | Checkboxes / radios / toggle chips | tokens + App C |
@@ -362,7 +373,7 @@ Still **not** done in this job: live boot, footer pill, dark CSS in `css/`, PWA 
 SURFACE:     #121212 | #1E1E1E | #2C2C2C | #383838
 INK:         #F5F5F7 | soft #C7C7CC | muted #A1A1A6 | ghost #636366
 LINK:        #2997FF | active/visited alias same
-BLUE_DARK: #0A84FF (accents/links/icons) | filled CTAs #0071e3 / hover #0076df / active #006edb (Apple Buy flat)
+BLUE_DARK: #0A84FF (accents/focus/icons) | filled CTAs #edecec / hover #d7d6d5 / active #edecec | label #14120b | secondary outline #edecec (Cursor pill colour, not card-secondary)
 BLUE_LIGHT:  #0071e3 EXACT (do not change)
 LINES:       white-alpha 0.16/0.12/0.08; gn-border 0.10; veil rgba(0,0,0,0.45)
 EXPLORE_ROW: selected #1A2F4A | hover #1A2330 | strong #2C2C2C
@@ -395,7 +406,7 @@ HARDCODE:    see Appendix C — mandatory
 | `rgba(0,113,227,α)` (light brand blue alpha) | `rgba(10,132,255,α)` (`#0A84FF`) — keep α unless noted | Chip pressed, focus glow |
 | `rgba(0,88,176,α)` / `rgba(0,74,150,α)` | Use dark hover/active `#0070E0` / `#005BB8` alphas | Button shadow leftovers |
 | `rgba(0,102,204,α)` | `rgba(10,132,255,α)` | Intel plus hover |
-| `#fff` / `#ffffff` as **on-primary button label** | Keep `#FFFFFF` | Readable on `#0A84FF` |
+| `#fff` / `#ffffff` as **on-primary button label** | Use `--shroffin-btn-primary-fg` → dark `#1d1d1f` | Soft-white fill needs dark label |
 | `#fff` as **seg/switch thumb fill** (`.shroffin-sel-thumb--pill`) | `#2C2C2C` + shadow `0 1px 2px rgba(0,0,0,0.35)` | Q12 selected |
 | `#fff` autofill inset (`box-shadow: 0 0 0 1000px #fff inset`) | `0 0 0 1000px #1E1E1E inset` + ink fill `#F5F5F7` | Input inside |
 | `#0066cc` secondary CTA border/text | `#0A84FF` | Align dark button family |

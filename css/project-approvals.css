@@ -190,10 +190,10 @@ body {
   border: 1px solid transparent;
   border-radius: var(--shroffin-btn-radius, 980px);
   background: var(--shroffin-btn-primary);
-  color: #fff;
+  color: var(--shroffin-btn-primary-fg);
   font: inherit;
   font-size: var(--shroffin-btn-elevated-font, 17px);
-  font-weight: 400;
+  font-weight: var(--shroffin-btn-elevated-weight, 500);
   line-height: var(--shroffin-btn-elevated-lh, 1.17647);
   cursor: pointer;
   box-sizing: content-box;

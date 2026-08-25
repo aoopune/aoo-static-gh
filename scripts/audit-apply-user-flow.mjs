@@ -823,8 +823,8 @@ async function main() {
 
     await section("co-applicant-firebase-shape", async () => {
       await ensureCompareReady(page);
-      const coToggle = page.locator("#hlc-co-toggle");
-      if (!(await coToggle.count())) {
+      const coSelect = page.locator("#hlc-coapplicant");
+      if (!(await coSelect.count())) {
         add({
           id: "REVIEW-04",
           severity: "P1",
@@ -832,12 +832,17 @@ async function main() {
           title: "Apply review shows co-applicant income from Explore",
           flowStep: "Explore co-applicant → Apply review",
           expected: "Co-applicant income shown",
-          actual: "Co-applicant toggle #hlc-co-toggle not found",
+          actual: "Co-applicant select #hlc-coapplicant not found",
           userImpact: "Could not run this probe.",
         });
         return;
       }
-      await coToggle.click({ force: true });
+      await page.evaluate(() => {
+        const sel = document.getElementById("hlc-coapplicant");
+        if (!sel) return;
+        sel.value = "yes";
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+      });
       await page.waitForTimeout(500);
       await page.evaluate(() => {
         const card = document.querySelector(".hlc-coapplicant-card");

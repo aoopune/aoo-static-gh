@@ -83,8 +83,8 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../css/shroffin-shell.css?v=96ac52430b">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=199ba0d604">
+  <link rel="stylesheet" href="../css/shroffin-shell.css?v=af1a8d7c99">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=6f1f4a6a80">
 </head>
 <body class="explore-banks-page">
   <!-- SHROFFIN_NAV_START -->
@@ -489,7 +489,8 @@
   <script src="../js/shroffin-home-stance.js?v=ca168eb5f2"></script>
   <script src="../js/shroffin-nav.js?v=69b8861330"></script>
   <script src="../js/hlc-data-url.generated.js?v=2eb6ecb75c"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=7b0acbca43"></script>
+  <script src="../js/hlc-icon-select.js?v=acab712481"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=93846f6d38"></script>
   <script src="../js/hlc-field-help.js?v=305f463f51"></script>
   <script>
     (function () {
@@ -558,30 +559,17 @@
 
         var y;
 
-        if (mobileMq.matches) {
-          /*
-           * Phone: park tabs flush under nav. Scroll to the results head — not
-           * the input card bottom — so the section gap does not show as dead air.
-           * Form stays in the page above results.
-           */
-          y = Math.max(
-            0,
-            head.getBoundingClientRect().top + window.pageYOffset - navOffset
-          );
-        } else {
-          /* Desktop: park Overview / tools flush under the nav. */
-          y = Math.max(
-            0,
-            head.getBoundingClientRect().top + window.pageYOffset - navOffset
-          );
+        y = Math.max(
+          0,
+          head.getBoundingClientRect().top + window.pageYOffset - navOffset
+        );
 
-          /* Guarantee the input card is fully clear of the content area. */
-          var inputs = document.querySelector(".hlc-inputs-card");
-          if (inputs) {
-            var inputsBottom =
-              inputs.getBoundingClientRect().bottom + window.pageYOffset;
-            y = Math.max(y, inputsBottom - navOffset + 8);
-          }
+        /* Guarantee the input card is fully clear of the content area. */
+        var inputs = document.querySelector(".hlc-inputs-card");
+        if (inputs) {
+          var inputsBottom =
+            inputs.getBoundingClientRect().bottom + window.pageYOffset;
+          y = Math.max(y, inputsBottom - navOffset + 8);
         }
 
         var maxY = Math.max(
@@ -681,23 +669,19 @@
   </script>
   <script>
     (function () {
-      var toggleBtn = document.getElementById("hlc-co-toggle");
+      var modeSelect = document.getElementById("hlc-coapplicant");
       var row = document.getElementById("hlc-coapplicant-row");
       var fields = document.getElementById("hlc-coapplicant-fields");
-      var hiddenInput = document.getElementById("hlc-coapplicant");
       var formMore = document.getElementById("hlc-form-more");
       var morePanel = document.getElementById("hlc-form-more-panel");
       var form = document.getElementById("hlc-inputs");
-      if (!toggleBtn || !row || !fields || !hiddenInput) return;
+      if (!modeSelect || !row || !fields) return;
 
       var reduceMotionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
       var busy = false;
+      var syncingFromPanel = false;
 
-      var toggleLabel = toggleBtn.querySelector(".hlc-coapplicant-action-label");
-
-      function prefersReducedMotion() {
-        return reduceMotionMq.matches;
-      }
+      function prefersReducedMotion() { return reduceMotionMq.matches; }
 
       function heightDurationMs() {
         if (prefersReducedMotion()) return 0;
@@ -709,11 +693,16 @@
         return 850;
       }
 
-      function setToggle(on) {
-        if (toggleLabel) toggleLabel.textContent = on ? "Close" : "Add";
-        toggleBtn.setAttribute("aria-pressed", on ? "true" : "false");
-        toggleBtn.setAttribute("aria-label", on ? "Close co-applicant" : "Add co-applicant");
-        hiddenInput.value = on ? "yes" : "no";
+      function setModeValue(on) {
+        var next = on ? "yes" : "no";
+        if (modeSelect.value === next) return;
+        syncingFromPanel = true;
+        modeSelect.value = next;
+        syncingFromPanel = false;
+        if (window.ShroffinSelectMenu) {
+          var root = modeSelect.closest("[data-hlc-icon-select]");
+          if (root) window.ShroffinSelectMenu.refresh(root.parentNode || document);
+        }
       }
 
       function releaseMorePanelHeight() {
@@ -725,8 +714,7 @@
         if (formMore) formMore.classList.remove("is-animating");
       }
 
-      function notifyFormChange() {
-        hiddenInput.dispatchEvent(new Event("change", { bubbles: true }));
+      function notifyFormInput() {
         if (form) form.dispatchEvent(new Event("input", { bubbles: true }));
       }
 
@@ -739,7 +727,6 @@
           if (done) done();
           return;
         }
-
         var settled = false;
         function finish() {
           if (settled) return;
@@ -786,7 +773,6 @@
           if (done) done();
           return;
         }
-
         busy = true;
         fields.classList.add("is-animating");
         row.classList.remove("is-coapplicant-open");
@@ -797,31 +783,26 @@
         });
       }
 
-      function applyCoApplicant(on) {
-        setToggle(on);
-
+      function applyCoApplicant(on, opts) {
+        opts = opts || {};
+        setModeValue(on);
         var isOpen = row.classList.contains("is-coapplicant-open");
         if (on === isOpen) return;
-
-        if (on) openFields(notifyFormChange);
-        else closeFields(notifyFormChange);
+        var after = opts.notifyInput ? notifyFormInput : null;
+        if (on) openFields(after);
+        else closeFields(after);
       }
 
-      /* This script owns the panel's open/close. The compare bundle owns the
-         co-applicant cards inside it, and drives the panel through here. */
       window.__hlcCoApplicantPanel = {
-        isOpen: function () {
-          return row.classList.contains("is-coapplicant-open");
-        },
+        isOpen: function () { return row.classList.contains("is-coapplicant-open"); },
         set: function (on) {
           if (busy) return;
-          applyCoApplicant(Boolean(on));
+          applyCoApplicant(Boolean(on), { notifyInput: true });
         }
       };
 
       (function syncInitialState() {
-        var on = hiddenInput.value === "yes";
-        setToggle(on);
+        var on = modeSelect.value === "yes";
         if (on) {
           fields.hidden = false;
           row.classList.add("is-coapplicant-open");
@@ -833,19 +814,11 @@
         }
       })();
 
-      toggleBtn.addEventListener(
-        "click",
-        function (event) {
-          var isOn = hiddenInput.value === "yes";
-
-          event.preventDefault();
-          event.stopImmediatePropagation();
-
-          if (busy) return;
-          applyCoApplicant(!isOn);
-        },
-        true
-      );
+      modeSelect.addEventListener("change", function () {
+        if (syncingFromPanel) return;
+        if (busy) return;
+        applyCoApplicant(modeSelect.value === "yes", { notifyInput: false });
+      });
     })();
   </script>
   <script>

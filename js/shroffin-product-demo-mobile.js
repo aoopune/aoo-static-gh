@@ -39,9 +39,10 @@
   });
 
   var FIELDS = [
-    { key: "income", text: "1,00,000" },
+    { key: "loan", text: "50,00,000" },
     { key: "property", text: "62,50,000" },
     { key: "age", text: "35" },
+    { key: "income", text: "1,00,000" },
     { key: "cibil", text: "780" }
   ];
 

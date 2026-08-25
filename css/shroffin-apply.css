@@ -414,20 +414,20 @@
   font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.35;
-  color: var(--shroffin-btn-primary);
+  color: var(--shroffin-link);
   text-decoration: none;
   transition: color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hl-apply-back-link:hover,
 .hl-apply-back-link:focus-visible {
-  color: var(--shroffin-btn-primary-hover);
+  color: var(--shroffin-link-hover);
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
 
 .hl-apply-back-link:active {
-  color: var(--shroffin-btn-primary-active);
+  color: var(--shroffin-link-active);
 }
 
 .hl-apply-contact-header {
@@ -446,14 +446,14 @@
 }
 
 .hl-apply-recap-link {
-  color: var(--shroffin-btn-primary);
+  color: var(--shroffin-link);
   text-decoration: none;
   transition: color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hl-apply-recap-link:hover,
 .hl-apply-recap-link:focus-visible {
-  color: var(--shroffin-btn-primary-hover);
+  color: var(--shroffin-link-hover);
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }

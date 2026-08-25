@@ -1383,8 +1383,16 @@ function loanAmountWalkModel(row, query) {
   const bankMaxApplies =
     bankMaximum != null &&
     bankMaximum <= Math.min(row.fromProperty, row.fromIncome);
+  const requested = Math.max(0, Number(query.loanAmountRequest) || 0);
   let limiter = "income";
-  if (bankMaxApplies && Math.round(bankMaximum) === Math.round(row.loanAmount)) {
+  if (
+    requested > 0 &&
+    Math.round(requested) === Math.round(row.loanAmount) &&
+    Math.round(row.loanAmount) <
+      Math.round(Math.min(row.fromProperty, row.fromIncome))
+  ) {
+    limiter = "request";
+  } else if (bankMaxApplies && Math.round(bankMaximum) === Math.round(row.loanAmount)) {
     limiter = "bank";
   } else if (
     Math.round(row.fromProperty) === Math.round(row.loanAmount) &&
@@ -1664,27 +1672,94 @@ function formatIndianAmountDigits(raw, maxDigits) {
   return Number(digits).toLocaleString("en-IN");
 }
 
+/**
+ * One display rule for every `data-hlc-format` field.
+ * Money always settles to Indian commas; digits stay plain capped numbers.
+ * Callers may pass raw digits or already-comma'd text — both normalize the same way.
+ */
+function readHlcFormatOptions(input) {
+  const format = input && input.getAttribute ? input.getAttribute("data-hlc-format") || "" : "";
+  const maxDigitsAttr =
+    input && input.getAttribute ? input.getAttribute("data-hlc-max-digits") : null;
+  const maxDigits = Number(maxDigitsAttr) || 10;
+  const maxAttr = input && input.getAttribute ? input.getAttribute("data-hlc-max") : null;
+  const maxValue =
+    maxAttr != null && maxAttr !== "" && Number.isFinite(Number(maxAttr))
+      ? Number(maxAttr)
+      : null;
+  return { format: format, maxDigits: maxDigits, maxValue: maxValue };
+}
+
+function formatHlcDisplayValue(raw, options) {
+  const format = options && options.format ? options.format : "";
+  const maxDigits = options && options.maxDigits != null ? options.maxDigits : 10;
+  const maxValue = options && options.maxValue != null ? options.maxValue : null;
+
+  if (format === "money") {
+    const n = parseMoney(raw);
+    if (Number.isFinite(n)) return formatInrDigits(n);
+    return formatIndianAmountDigits(raw, maxDigits);
+  }
+
+  if (format === "digits") {
+    const n = parseMoney(raw);
+    if (Number.isFinite(n)) {
+      const capped = maxValue != null && n > maxValue ? maxValue : n;
+      return String(Math.trunc(capped));
+    }
+    let next = truncateToMaxDigits(raw, maxDigits);
+    if (maxValue != null) {
+      const asNum = Number(next);
+      if (Number.isFinite(asNum) && asNum > maxValue) next = String(maxValue);
+    }
+    return next;
+  }
+
+  return raw == null ? "" : String(raw);
+}
+
+/** Digits before a caret index — used when reformatting must keep the caret. */
+function digitOffsetBefore(value, caretPos) {
+  if (typeof caretPos !== "number") return digitCount(value);
+  return (String(value || "").slice(0, caretPos).match(/\d/g) || []).length;
+}
+
+/** Map a digit-count offset back onto a (possibly comma-formatted) string. */
+function caretPosForDigitOffset(value, digitOffset) {
+  const text = String(value || "");
+  let newPos = 0;
+  let count = 0;
+  for (let i = 0; i < text.length && count < digitOffset; i++) {
+    if (/\d/.test(text.charAt(i))) count++;
+    newPos = i + 1;
+  }
+  return newPos;
+}
+
+function placeTextCaretAtEnd(input) {
+  if (!input || typeof input.setSelectionRange !== "function") return;
+  try {
+    const len = String(input.value || "").length;
+    input.setSelectionRange(len, len);
+  } catch (err) {
+    /* Some input modes reject a range; focus still landed. */
+  }
+}
+
 function applyIndianMoneyFormat(input, maxDigits) {
   const start = input.selectionStart;
   const oldValue = input.value;
-  const digitsBefore =
-    typeof start === "number"
-      ? (oldValue.slice(0, start).match(/\d/g) || []).length
-      : digitCount(oldValue);
+  const digitsBefore = digitOffsetBefore(oldValue, start);
   const formatted = formatIndianAmountDigits(oldValue, maxDigits);
   if (input.value !== formatted) input.value = formatted;
   if (typeof start !== "number" || typeof input.setSelectionRange !== "function") return;
-  let newPos = 0;
-  let count = 0;
-  for (let i = 0; i < formatted.length && count < digitsBefore; i++) {
-    if (/\d/.test(formatted.charAt(i))) count++;
-    newPos = i + 1;
-  }
+  const newPos = caretPosForDigitOffset(formatted, digitsBefore);
   input.setSelectionRange(newPos, newPos);
 }
 
 function queryFromInputs(values, productFilters) {
   const propertyValue = Math.max(0, parseMoney(values.propertyValue) || 0);
+  const loanAmountRequest = Math.max(0, parseMoney(values.loanAmountRequest) || 0);
   const monthlyIncome = Math.max(0, parseMoney(values.monthlyIncome) || 0);
   const existingEmis = Math.max(0, parseMoney(values.existingEmis) || 0);
   const cardLimits = Math.max(0, parseMoney(values.cardLimits) || 0);
@@ -1715,6 +1790,7 @@ function queryFromInputs(values, productFilters) {
     tenureYears: normalizeTenureYears(tenureRaw),
     foirPct: normalizeFoirPct(values.foirPct),
     propertyValue,
+    loanAmountRequest: loanAmountRequest,
     occupation: values.occupation || "Salaried",
     purpose: normalizePurpose(values.purpose),
     womenApplicant: Boolean(filters.womenApplicant),
@@ -1919,6 +1995,14 @@ function computeOfferTerms(query, offer, roiDecimal, options) {
   }
   if (!(tenureMonths > 0)) loanAmount = 0;
 
+  const eligibleBeforeRequest = loanAmount;
+  const requested = Number(query.loanAmountRequest);
+  let requestCapped = false;
+  if (Number.isFinite(requested) && requested > 0 && requested < loanAmount) {
+    loanAmount = requested;
+    requestCapped = true;
+  }
+
   const tenureYears = tenureMonths / 12;
   const emi = loanAmount > 0 ? emiFromLoan(loanAmount, roiDecimal, tenureYears) : 0;
   const propertyValue = Math.max(0, Number(query.propertyValue) || 0);
@@ -1931,7 +2015,13 @@ function computeOfferTerms(query, offer, roiDecimal, options) {
     downPayment,
     fromProperty,
     fromIncome,
-    limiting: fromProperty <= fromIncome ? "property" : "income",
+    requestCapped: requestCapped,
+    eligibleLoan: eligibleBeforeRequest,
+    limiting: requestCapped
+      ? "request"
+      : fromProperty <= fromIncome
+        ? "property"
+        : "income",
     emi,
     incomeBasis: chosen.basis
   };
@@ -7375,13 +7465,17 @@ function closeOpenFieldHelp() {
 }
 
 const FIELD_BOX_ACTIVATE_SKIP =
-  ".hlc-field-help, .hlc-field-help-popover, .hlc-inline-pct-select, a";
+  ".hlc-field-help, .hlc-field-help-popover, .hlc-icon-select, a";
 const FIELD_BOX_SELECT_DRAG_PX = 6;
 
 function fieldBoxPrimaryControl(field) {
   if (!field) return null;
-  return field.querySelector(
-    ":scope > .hlc-input-shell input, :scope > .hlc-input-shell select"
+  /* Card layout: shell is a direct child. M3 outlined: shell is nested. */
+  return (
+    field.querySelector(
+      ":scope > .hlc-input-shell input, :scope > .hlc-input-shell select"
+    ) ||
+    field.querySelector(".hlc-input-shell input, .hlc-input-shell select")
   );
 }
 
@@ -7391,9 +7485,9 @@ function fieldBoxHasCopySelection() {
 }
 
 /**
- * A tap on the name, ₹, or padding still enters the box. A drag or a live
- * highlight is copy — leave it. Do not cancel pointerdown; that blocked
- * selecting. The i, Learn more, and the card-% menu stay separate.
+ * Field-card activation: indirect taps (label, ₹, padding) focus the control.
+ * Direct taps on the input are native — the browser owns caret placement.
+ * Never select-all; never override a digit click. Drag / live highlight = copy.
  */
 function bindFieldBoxActivate(form) {
   if (!form) return;
@@ -7417,10 +7511,6 @@ function bindFieldBoxActivate(form) {
     if (!field || !form.contains(field)) return;
     const control = fieldBoxPrimaryControl(field);
     if (!control || control.disabled) return;
-    if (control === event.target || control.contains(event.target)) {
-      pointerStart = null;
-      return;
-    }
 
     let dragged = false;
     if (pointerStart) {
@@ -7432,17 +7522,23 @@ function bindFieldBoxActivate(form) {
     pointerStart = null;
 
     if (event.detail >= 2 || dragged || fieldBoxHasCopySelection()) {
-      event.preventDefault();
       return;
     }
 
+    const directOnControl =
+      control === event.target ||
+      (typeof control.contains === "function" && control.contains(event.target));
+
+    /* Browser already placed the caret — do not fight it. */
+    if (directOnControl) return;
+
     control.focus();
-    if (control.tagName === "INPUT" && typeof control.setSelectionRange === "function") {
-      try {
-        control.setSelectionRange(0, control.value.length);
-      } catch (err) {
-        /* Some input modes reject a range; focus still landed. */
-      }
+    if (control.tagName === "INPUT") {
+      placeTextCaretAtEnd(control);
+      /* Label/for focus can re-assert caret 0 after this click — win the race. */
+      window.requestAnimationFrame(function () {
+        placeTextCaretAtEnd(control);
+      });
     }
     if (control.tagName === "SELECT" && typeof control.showPicker === "function") {
       try {
@@ -7494,12 +7590,12 @@ function initPage() {
     coApplicantList: document.getElementById("hlc-coapplicant-list"),
     coApplicantAdd: document.getElementById("hlc-coapplicant-add"),
     coApplicantLimit: document.getElementById("hlc-coapplicant-limit"),
-    coApplicantToggle: document.getElementById("hlc-co-toggle"),
     occupation: document.getElementById("hlc-occupation"),
     occupationFace: document.getElementById("hlc-occupation-face"),
     purpose: document.getElementById("hlc-purpose"),
     purposeFace: document.getElementById("hlc-purpose-face"),
     propertyValue: document.getElementById("hlc-property-value"),
+    loanAmount: document.getElementById("hlc-loan-amount"),
     loanHint: document.getElementById("hlc-loan-hint"),
     incomeBasisNote: document.getElementById("hlc-income-basis-note"),
     intelligencePanel: document.getElementById("hlc-intelligence"),
@@ -7663,7 +7759,8 @@ function initPage() {
         coApplicants: readCoApplicants(),
         occupation: el.occupation.value,
         purpose: el.purpose ? el.purpose.value : DEFAULT_PURPOSE,
-        propertyValue: el.propertyValue.value
+        propertyValue: el.propertyValue.value,
+        loanAmountRequest: el.loanAmount ? el.loanAmount.value : "0"
       },
       state.productFilters
     );
@@ -7690,7 +7787,11 @@ function initPage() {
     let limiting = "";
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
-      if (row.limiting === "property" || row.limiting === "income") {
+      if (
+        row.limiting === "property" ||
+        row.limiting === "income" ||
+        row.limiting === "request"
+      ) {
         limiting = row.limiting;
         break;
       }
@@ -7700,7 +7801,9 @@ function initPage() {
         ? "Limited by property."
         : limiting === "income"
           ? "Limited by income."
-          : "";
+          : limiting === "request"
+            ? "Capped at the loan amount you asked for."
+            : "";
   }
 
   function updateIncomeBasisNote() {
@@ -7889,25 +7992,110 @@ function initPage() {
       .join("");
   }
 
-  function coApplicantMoneyFieldHtml(id, field, label, value) {
+  /** Same M3 outlined field shell as the main inputs card (icon + label line + input shell). */
+  function coApplicantM3FieldHtml(config) {
+    const id = config.id;
+    const field = config.field;
+    const label = config.label;
+    const icon = config.icon;
+    const value = config.value;
+    const format = config.format || "digits";
+    const maxAttr = config.max ? ' data-hlc-max="' + config.max + '"' : "";
+    const placeholderAttr = config.placeholder
+      ? ' placeholder="' + escapeHtml(config.placeholder) + '"'
+      : "";
+    let inputInner = "";
+
+    if (format === "money") {
+      inputInner =
+        '<span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>' +
+        '<input type="text" id="' +
+        id +
+        '" data-co-field="' +
+        field +
+        '" value="' +
+        escapeHtml(value) +
+        '" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">';
+    } else {
+      inputInner =
+        '<input type="text" id="' +
+        id +
+        '" data-co-field="' +
+        field +
+        '" value="' +
+        escapeHtml(value) +
+        '" inputmode="numeric" autocomplete="off" data-hlc-format="' +
+        format +
+        '" data-hlc-max-digits="' +
+        config.maxDigits +
+        '"' +
+        maxAttr +
+        placeholderAttr +
+        ">";
+      if (config.suffix) {
+        inputInner +=
+          '<span class="hlc-suffix" aria-hidden="true">' +
+          escapeHtml(config.suffix) +
+          "</span>";
+      }
+    }
+
+    const slotClass = config.slot
+      ? " hlc-co-slot--" + config.slot
+      : "";
+
     return (
-      '<label class="hlc-field" for="' +
+      '<label class="hlc-field hlc-field--m3-outlined' +
+      slotClass +
+      '" for="' +
       id +
       '">' +
-      '<span class="hlc-field-label-row"><span class="hlc-field-label">' +
+      '<span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="' +
+      icon +
+      '"></span>' +
+      '<span class="hlc-field-text-col">' +
+      '<span class="hlc-field-label-line"><span class="hlc-field-label">' +
       escapeHtml(label) +
       "</span></span>" +
       '<span class="hlc-input-shell">' +
-      '<span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>' +
-      '<input type="text" id="' +
-      id +
+      inputInner +
+      "</span></span></label>"
+    );
+  }
+
+  function coApplicantIconSelectHtml(
+    prefix,
+    field,
+    mapName,
+    ariaLabel,
+    hiddenLabel,
+    options,
+    selected
+  ) {
+    return (
+      '<div class="hlc-icon-select hlc-icon-select--bare" data-hlc-icon-select data-hlc-icon-map="' +
+      mapName +
+      '">' +
+      '<button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="' +
+      escapeHtml(ariaLabel) +
+      '">' +
+      '<span class="hlc-icon-select-leading" data-hlc-icon-face></span>' +
+      '<span class="hlc-icon-select-text" data-hlc-face-text></span>' +
+      '<span class="hlc-icon-select-chevron" aria-hidden="true"></span></button>' +
+      '<label class="visually-hidden" for="' +
+      prefix +
+      field +
+      '">' +
+      escapeHtml(hiddenLabel) +
+      "</label>" +
+      '<select id="' +
+      prefix +
+      field +
       '" data-co-field="' +
       field +
-      '" value="' +
-      escapeHtml(value) +
-      '" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">' +
-      "</span>" +
-      "</label>"
+      '">' +
+      selectOptionsHtml(options, selected) +
+      '</select><div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div></div>'
     );
   }
 
@@ -7928,61 +8116,92 @@ function initPage() {
       n +
       '"><span aria-hidden="true">Remove</span></button>' +
       "</div>" +
-      '<div class="hlc-coapplicant-card-fields hlc-form-fields--coapplicant">' +
-      '<label class="hlc-field" for="' +
-      prefix +
-      'relationship"><span class="hlc-field-label-row"><span class="hlc-field-label">Relation to you</span></span>' +
-      '<span class="hlc-input-shell hlc-input-shell--select">' +
-      '<select id="' +
-      prefix +
-      'relationship" data-co-field="relationship">' +
-      selectOptionsHtml(CO_APPLICANT_RELATIONSHIPS, values.relationship) +
-      "</select></span></label>" +
-      '<label class="hlc-field" for="' +
-      prefix +
-      'occupation"><span class="hlc-field-label-row"><span class="hlc-field-label">Work</span></span>' +
-      '<span class="hlc-input-shell hlc-input-shell--select">' +
-      '<select id="' +
-      prefix +
-      'occupation" data-co-field="occupation">' +
-      selectOptionsHtml(CO_APPLICANT_OCCUPATIONS, values.occupation) +
-      "</select></span></label>" +
-      '<label class="hlc-field" for="' +
-      prefix +
-      'age"><span class="hlc-field-label-row"><span class="hlc-field-label">Age</span></span>' +
-      '<span class="hlc-input-shell"><input type="text" id="' +
-      prefix +
-      'age" data-co-field="age" value="' +
-      escapeHtml(values.age) +
-      '" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2"><span class="hlc-suffix" aria-hidden="true">years</span></span></label>' +
-      '<label class="hlc-field" for="' +
-      prefix +
-      'cibil"><span class="hlc-field-label-row"><span class="hlc-field-label">CIBIL score</span></span>' +
-      '<span class="hlc-input-shell"><input type="text" id="' +
-      prefix +
-      'cibil" data-co-field="cibilScore" value="' +
-      escapeHtml(values.cibilScore) +
-      '" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="3" data-hlc-max="900"></span></label>' +
-      coApplicantMoneyFieldHtml(
-        prefix + "income",
-        "monthlyIncome",
-        "Monthly income",
-        values.monthlyIncome
+      '<div class="hlc-coapplicant-card-body">' +
+      '<div class="hlc-form-row hlc-form-row--mode" role="group" aria-label="Co-applicant ' +
+      n +
+      ' profile">' +
+      '<div class="hlc-row1-scroll"><div class="hlc-row1-track">' +
+      coApplicantIconSelectHtml(
+        prefix,
+        "relationship",
+        "relation",
+        "Relation to you",
+        "Relation to you",
+        CO_APPLICANT_RELATIONSHIPS,
+        values.relationship
       ) +
-      coApplicantMoneyFieldHtml(
-        prefix + "emis",
-        "existingEmis",
-        "Existing EMIs",
-        values.existingEmis
+      coApplicantIconSelectHtml(
+        prefix,
+        "occupation",
+        "coOccupation",
+        "Work",
+        "Work",
+        CO_APPLICANT_OCCUPATIONS,
+        values.occupation
       ) +
-      coApplicantMoneyFieldHtml(
-        prefix + "cards",
-        "cardLimits",
-        "Card limits",
-        values.cardLimits
-      ) +
+      "</div></div></div>" +
+      '<div class="hlc-form-row hlc-form-row--capacity-band hlc-form-row--coapplicant-money" role="group" aria-label="Co-applicant ' +
+      n +
+      ' repayment capacity">' +
+      '<div class="hlc-form-band-fields">' +
+      '<div class="hlc-form-band-strip">' +
+      coApplicantM3FieldHtml({
+        id: prefix + "income",
+        field: "monthlyIncome",
+        label: "Monthly income",
+        icon: "wallet",
+        value: values.monthlyIncome,
+        format: "money",
+        slot: "income"
+      }) +
+      coApplicantM3FieldHtml({
+        id: prefix + "emis",
+        field: "existingEmis",
+        label: "Total existing EMIs",
+        icon: "payments",
+        value: values.existingEmis,
+        format: "money",
+        slot: "emis"
+      }) +
       "</div>" +
-      "</div>"
+      '<div class="hlc-form-band-strip hlc-form-band-strip--cards-slot">' +
+      coApplicantM3FieldHtml({
+        id: prefix + "cards",
+        field: "cardLimits",
+        label: "Total credit card limits",
+        icon: "credit_card",
+        value: values.cardLimits,
+        format: "money",
+        slot: "cards"
+      }) +
+      '<div class="hlc-form-band-spacer" aria-hidden="true"></div>' +
+      "</div></div></div>" +
+      '<div class="hlc-form-row hlc-form-row--coapplicant-profile" role="group" aria-label="Co-applicant ' +
+      n +
+      ' personal details">' +
+      '<div class="hlc-form-band-fields">' +
+      '<div class="hlc-form-band-strip">' +
+      coApplicantM3FieldHtml({
+        id: prefix + "age",
+        field: "age",
+        label: "Age",
+        icon: "person",
+        value: values.age,
+        maxDigits: "2",
+        suffix: "years",
+        slot: "age"
+      }) +
+      coApplicantM3FieldHtml({
+        id: prefix + "cibil",
+        field: "cibilScore",
+        label: "CIBIL score",
+        icon: "speed",
+        value: values.cibilScore,
+        maxDigits: "3",
+        max: "900",
+        slot: "cibil"
+      }) +
+      "</div></div></div></div></div>"
     );
   }
 
@@ -8016,6 +8235,13 @@ function initPage() {
       typeof window.ShroffinSelectMenu.refresh === "function"
     ) {
       window.ShroffinSelectMenu.refresh(el.coApplicantList);
+    }
+    if (
+      typeof window !== "undefined" &&
+      window.HlcM3Fields &&
+      typeof window.HlcM3Fields.bind === "function"
+    ) {
+      window.HlcM3Fields.bind(el.coApplicantList);
     }
   }
 
@@ -8337,37 +8563,23 @@ function initPage() {
 
   function bindFormattedInput(input) {
     if (!input) return;
-    const format = input.getAttribute("data-hlc-format");
+    const opts = readHlcFormatOptions(input);
+    const format = opts.format;
     if (!format) return;
-    const maxDigits = Number(input.getAttribute("data-hlc-max-digits")) || 10;
-    const maxAttr = input.getAttribute("data-hlc-max");
-    const maxValue =
-      maxAttr != null && maxAttr !== "" && Number.isFinite(Number(maxAttr))
-        ? Number(maxAttr)
-        : null;
+    const maxDigits = opts.maxDigits;
+    const maxValue = opts.maxValue;
     const money = format === "money";
 
     function digitsOnly() {
-      let next = truncateToMaxDigits(input.value, maxDigits);
-      if (maxValue != null) {
-        const n = Number(next);
-        if (Number.isFinite(n) && n > maxValue) next = String(maxValue);
-      }
-      return next;
+      return formatHlcDisplayValue(input.value, {
+        format: "digits",
+        maxDigits: maxDigits,
+        maxValue: maxValue
+      });
     }
 
     function pretty() {
-      const n = parseMoney(input.value);
-      if (!Number.isFinite(n)) {
-        input.value = money ? formatIndianAmountDigits(input.value, maxDigits) : digitsOnly();
-        return;
-      }
-      if (money) {
-        input.value = formatInrDigits(n);
-        return;
-      }
-      const capped = maxValue != null && n > maxValue ? maxValue : n;
-      input.value = String(Math.trunc(capped));
+      input.value = formatHlcDisplayValue(input.value, opts);
     }
 
     input.addEventListener("beforeinput", function (event) {
@@ -8395,18 +8607,47 @@ function initPage() {
         applyIndianMoneyFormat(input, maxDigits);
         return;
       }
+      const start = input.selectionStart;
+      const oldValue = input.value;
       const next = digitsOnly();
-      if (input.value !== next) input.value = next;
+      if (oldValue === next) return;
+      const startDigits = digitOffsetBefore(oldValue, start);
+      input.value = next;
+      if (typeof start !== "number" || typeof input.setSelectionRange !== "function") return;
+      try {
+        const newPos = caretPosForDigitOffset(next, startDigits);
+        input.setSelectionRange(newPos, newPos);
+      } catch (err) {
+        /* Value still sanitized. */
+      }
     });
 
     input.addEventListener("blur", pretty);
     input.addEventListener("change", pretty);
     if (!money) {
+      /*
+       * Digits-only edit mode: strip non-digits on focus, but never assign
+       * `.value` when unchanged — that resets the caret to the end and wipes
+       * a mid-string click. When the string does change, remap by digit offset.
+       */
       input.addEventListener("focus", function () {
-        const n = parseMoney(input.value);
-        input.value = Number.isFinite(n)
-          ? digitsOnly()
-          : truncateToMaxDigits(input.value, maxDigits);
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const oldValue = input.value;
+        const next = digitsOnly();
+        if (oldValue === next) return;
+        const startDigits = digitOffsetBefore(oldValue, start);
+        const endDigits = digitOffsetBefore(oldValue, end);
+        input.value = next;
+        if (typeof input.setSelectionRange !== "function") return;
+        try {
+          input.setSelectionRange(
+            caretPosForDigitOffset(next, startDigits),
+            caretPosForDigitOffset(next, endDigits)
+          );
+        } catch (err) {
+          /* Focus still landed. */
+        }
       });
     }
 
@@ -8420,7 +8661,8 @@ function initPage() {
     el.existingEmis,
     el.cardLimits,
     el.tenure,
-    el.propertyValue
+    el.propertyValue,
+    el.loanAmount
   ].forEach(bindFormattedInput);
 
   function showToast(message) {
@@ -10195,18 +10437,46 @@ function initPage() {
       );
     }
 
+    var requestTrackHtml = "";
+    var requestedAmt = Math.max(0, Number(readQuery().loanAmountRequest) || 0);
+    if (model.limiter === "request" && requestedAmt > 0) {
+      requestTrackHtml = storyTrack(
+        "Loan amount you asked for",
+        mathBarStackHtml(
+          [
+            {
+              step: step++,
+              label: "Capped at the loan amount you asked for",
+              value: formatInr(requestedAmt),
+              track: "request",
+              limiting: true,
+              lines: [{ k: "num", t: formatInr(requestedAmt) }]
+            }
+          ],
+          stepStack
+        ),
+        "request"
+      );
+    }
+
     var inner =
       houseTrackHtml +
       storyDivider() +
       incomeTrackHtml +
-      (bankTrackHtml ? storyDivider() + bankTrackHtml : "");
+      (bankTrackHtml ? storyDivider() + bankTrackHtml : "") +
+      (requestTrackHtml ? storyDivider() + requestTrackHtml : "");
+
+    var resultNote =
+      model.limiter === "request"
+        ? "Capped at the loan amount you asked for."
+        : "Lower of property value and monthly income available for EMI.";
 
     return calcStoryHtml(
       formatInr(model.result),
       "This bank's loan on these inputs is",
       inner,
       "",
-      { resultNote: "Lower of property value and monthly income available for EMI." }
+      { resultNote: resultNote }
     );
   }
 
@@ -11940,13 +12210,28 @@ function rateChangeMethodDescription(method) {
       coApplicants: readCoApplicants(),
       occupation: el.occupation ? el.occupation.value : "",
       purpose: el.purpose ? el.purpose.value : DEFAULT_PURPOSE,
-      propertyValue: el.propertyValue ? el.propertyValue.value : ""
+      propertyValue: el.propertyValue ? el.propertyValue.value : "",
+      loanAmountRequest: el.loanAmount ? el.loanAmount.value : ""
     };
   }
 
+  /** Every write to a formatted field goes through the same display rule. */
   function setInputValue(input, value) {
     if (!input || value == null) return;
-    input.value = String(value);
+    const opts = readHlcFormatOptions(input);
+    if (!opts.format) {
+      input.value = String(value);
+    } else {
+      input.value = formatHlcDisplayValue(value, opts);
+    }
+    if (
+      typeof window !== "undefined" &&
+      window.HlcM3Fields &&
+      typeof window.HlcM3Fields.sync === "function"
+    ) {
+      var field = input.closest(".hlc-field--m3-outlined");
+      if (field) window.HlcM3Fields.sync(field);
+    }
   }
 
   function setProductFilterControl(el, on) {
@@ -12009,6 +12294,7 @@ function rateChangeMethodDescription(method) {
       setInputValue(el.tenure, form.tenureYears);
       setInputValue(el.foir, form.foirPct);
       setInputValue(el.propertyValue, form.propertyValue);
+      setInputValue(el.loanAmount, form.loanAmountRequest);
 
       if (form.occupation) setOccupation(form.occupation);
       if (form.purpose) setPurpose(form.purpose);
@@ -12048,6 +12334,7 @@ function rateChangeMethodDescription(method) {
   var SAMPLE_INPUTS = {
     monthlyIncome: "100000",
     propertyValue: "6250000",
+    loanAmountRequest: "5000000",
     age: "35",
     cibilScore: "780",
     occupation: "Salaried",
@@ -12065,6 +12352,9 @@ function rateChangeMethodDescription(method) {
     }
     if (!digitCount(el.propertyValue ? el.propertyValue.value : "")) {
       setInputValue(el.propertyValue, SAMPLE_INPUTS.propertyValue);
+    }
+    if (el.loanAmount && !digitCount(el.loanAmount.value)) {
+      setInputValue(el.loanAmount, SAMPLE_INPUTS.loanAmountRequest);
     }
     if (!digitCount(el.age ? el.age.value : "")) {
       setInputValue(el.age, SAMPLE_INPUTS.age);
@@ -12124,7 +12414,8 @@ function rateChangeMethodDescription(method) {
       coApplicants: readCoApplicants(),
       occupation: el.occupation ? el.occupation.value : "",
       purpose: el.purpose ? el.purpose.value : DEFAULT_PURPOSE,
-      propertyValue: el.propertyValue ? el.propertyValue.value : ""
+      propertyValue: el.propertyValue ? el.propertyValue.value : "",
+      loanAmountRequest: el.loanAmount ? el.loanAmount.value : ""
     };
     var query = readQuery();
     return {
@@ -12295,6 +12586,22 @@ function rateChangeMethodDescription(method) {
 
   var didRestoreDraft = restoreExploreDraft();
   ensureSampleDefaults();
+  if (
+    typeof window !== "undefined" &&
+    window.ShroffinSelectMenu &&
+    typeof window.ShroffinSelectMenu.refresh === "function" &&
+    el.form
+  ) {
+    window.ShroffinSelectMenu.refresh(el.form);
+  }
+  if (
+    typeof window !== "undefined" &&
+    window.HlcM3Fields &&
+    typeof window.HlcM3Fields.bind === "function" &&
+    el.form
+  ) {
+    window.HlcM3Fields.bind(el.form);
+  }
   syncFoirFace();
   syncOccupationFace();
   syncSelectFace(el.purpose, el.purposeFace);
@@ -12540,6 +12847,8 @@ module.exports = {
   formatInr,
   formatInrDigits,
   formatIndianAmountDigits,
+  formatHlcDisplayValue,
+  readHlcFormatOptions,
   applyIndianMoneyFormat,
   formatFacilityLabel,
   formatOccupationLabel,

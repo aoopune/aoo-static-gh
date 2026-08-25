@@ -34,6 +34,7 @@ const LAYOUT_REFS = [
       "../js/shroffin-home-stance.js",
       "../js/shroffin-nav.js",
       "../js/hlc-data-url.generated.js",
+      "../js/hlc-icon-select.js",
       "../js/home-loan-compare.bundle.js",
       "../js/hlc-field-help.js",
     ],

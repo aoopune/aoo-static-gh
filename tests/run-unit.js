@@ -167,6 +167,30 @@ async function testHomeLoanCompare() {
 
   ok(compare.formatInrDigits(100000) === '1,00,000', 'compare formats Indian commas');
   ok(
+    compare.formatHlcDisplayValue('100000', { format: 'money' }) === '1,00,000',
+    'money display rule commas raw digits'
+  );
+  ok(
+    compare.formatHlcDisplayValue('1,00,000', { format: 'money' }) === '1,00,000',
+    'money display rule is idempotent on comma text'
+  );
+  ok(
+    compare.formatHlcDisplayValue('5000000', { format: 'money' }) === '50,00,000',
+    'money display rule commas sample loan amount'
+  );
+  ok(
+    compare.formatHlcDisplayValue('0', { format: 'money' }) === '0',
+    'money display rule keeps zero without commas'
+  );
+  ok(
+    compare.formatHlcDisplayValue('35', { format: 'digits', maxDigits: 2 }) === '35',
+    'digits display rule stays plain'
+  );
+  ok(
+    compare.formatHlcDisplayValue('99', { format: 'digits', maxDigits: 2, maxValue: 30 }) === '30',
+    'digits display rule respects max'
+  );
+  ok(
     compare.formatFreshnessLabel('2026-07-14') === 'Last checked on 14 July 2026',
     'freshness line is Last checked on plus the date'
   );
@@ -195,6 +219,43 @@ async function testHomeLoanCompare() {
   ok(terms.limiting === 'property', 'compare property LTV limits at default sample');
   ok(Math.round(terms.tenureYears) === 20, 'compare uses default tenure years');
   ok(terms.emi > 0, 'compare EMI computed from loan tenure and rate');
+
+  var cappedTerms = compare.computeOfferTerms(
+    compare.queryFromInputs(Object.assign({}, {
+      age: 35,
+      cibilScore: 780,
+      monthlyIncome: 100000,
+      existingEmis: 0,
+      cardLimits: 0,
+      occupation: 'Salaried',
+      propertyValue: 6250000,
+      tenureYears: 20,
+      loanAmountRequest: '2000000'
+    })),
+    sampleOffer,
+    0.08
+  );
+  ok(cappedTerms.loanAmount === 2000000, 'compare loanAmountRequest caps table loan below eligibility');
+  ok(cappedTerms.limiting === 'request', 'compare limiting is request when request caps');
+  ok(cappedTerms.requestCapped === true, 'compare requestCapped flag when request wins');
+
+  var uncappedTerms = compare.computeOfferTerms(
+    compare.queryFromInputs(Object.assign({}, {
+      age: 35,
+      cibilScore: 780,
+      monthlyIncome: 100000,
+      existingEmis: 0,
+      cardLimits: 0,
+      occupation: 'Salaried',
+      propertyValue: 6250000,
+      tenureYears: 20,
+      loanAmountRequest: '0'
+    })),
+    sampleOffer,
+    0.08
+  );
+  ok(uncappedTerms.loanAmount === terms.loanAmount, 'empty loanAmountRequest does not cap loan');
+  ok(uncappedTerms.requestCapped === false, 'empty loanAmountRequest leaves requestCapped false');
 
   var incomeCase = {
     age: 35,

@@ -10,16 +10,33 @@
     --shroffin-ghost: #c5c9cf;
     --shroffin-blue: #0071e3;
     /*
-     * Filled primary pill — Apple SK `.button` (Buy on shop + product pages).
-     * Same fill on light and dark; hover is slightly lighter, not darker; flat (no glow).
-     * https://www.apple.com/in/shop/buy-ipad · https://www.apple.com/in/iphone-17-pro/
+     * Filled primary pill — light: Apple SK Buy blue; dark: soft white + dark label.
+     * --shroffin-btn-primary* = FILL only. Label = --shroffin-btn-primary-fg.
+     * Do not use fill tokens as text-link color (use --shroffin-link / --shroffin-blue).
+     * Flat (no glow). Hover is a small luminance step, not a hue jump.
      */
     --shroffin-btn-primary: #0071e3;
     --shroffin-btn-primary-hover: #0076df;
     --shroffin-btn-primary-active: #006edb;
+    --shroffin-btn-primary-fg: #ffffff;
+    --shroffin-btn-primary-disabled-bg: rgba(0, 113, 227, 0.52);
     --shroffin-btn-primary-shadow: none;
     --shroffin-btn-primary-shadow-hover: none;
     --shroffin-btn-primary-shadow-active: none;
+    /*
+     * Outline / secondary pill (Back, secondary CTA next to primary).
+     * Light: link-blue outline → fills primary on hover.
+     * Dark: quiet gray outline → quiet gray fill (never competes with white primary).
+     */
+    --shroffin-btn-secondary-bg: transparent;
+    --shroffin-btn-secondary-border: var(--shroffin-link);
+    --shroffin-btn-secondary-fg: var(--shroffin-link);
+    --shroffin-btn-secondary-hover-bg: var(--shroffin-btn-primary-hover);
+    --shroffin-btn-secondary-hover-border: transparent;
+    --shroffin-btn-secondary-hover-fg: var(--shroffin-btn-primary-fg);
+    --shroffin-btn-secondary-active-bg: var(--shroffin-btn-primary-active);
+    --shroffin-btn-secondary-active-border: transparent;
+    --shroffin-btn-secondary-active-fg: var(--shroffin-btn-primary-fg);
     /* Text links (on-site + off-site) — one Apple web link blue; hover = underline. */
     --shroffin-link: #0066cc;
     --shroffin-link-hover: var(--shroffin-link);
@@ -116,6 +133,8 @@
     --shroffin-btn-elevated-pad-inline: 21px;
     --shroffin-btn-elevated-font: 17px;
     --shroffin-btn-elevated-lh: 1.17647;
+    /* Elevated primary + secondary labels — one step above Regular (400 → 500). */
+    --shroffin-btn-elevated-weight: 500;
     --shroffin-btn-standard-min: 36px;
     --shroffin-btn-standard-pad-block: 8px;
     --shroffin-btn-standard-pad-inline: 15px;
@@ -127,10 +146,11 @@
 
     /*
      * Underline form fields — Apply page recipe, site-wide.
-     * Transparent fill, bottom hairline, focus paints the line solid blue.
+     * Transparent fill, bottom hairline, focus paints the accent line
+     * (--shroffin-focus), never the primary FILL (fill may be white on dark).
      */
     --shroffin-field-line: rgba(0, 0, 0, 0.16);
-    --shroffin-field-line-focus: var(--shroffin-btn-primary);
+    --shroffin-field-line-focus: var(--shroffin-focus);
     --shroffin-field-line-invalid: rgba(176, 76, 76, 0.65);
     --shroffin-field-line-valid: rgba(29, 122, 58, 0.45);
     --shroffin-field-min-height: 48px;
@@ -186,14 +206,29 @@ html[data-theme="dark"] {
   --shroffin-ink-strong: #ffffff;
   --shroffin-muted: #A1A1A6;
   --shroffin-ghost: #636366;
-  /* Brighter dark twin for accents/icons; filled CTAs stay --shroffin-btn-primary #0071e3. */
+  /* Accents/icons stay system blue; filled CTAs follow Cursor dark marketing pills
+   * (https://cursor.com/home): soft warm off-white fill, near-black label, dimmer hover.
+   * Secondary uses the SAME pill colour (outline → filled), not Cursor’s card-secondary scheme.
+   */
   --shroffin-blue: #0A84FF;
-  --shroffin-btn-primary: #0071e3;
-  --shroffin-btn-primary-hover: #0076df;
-  --shroffin-btn-primary-active: #006edb;
+  --shroffin-btn-primary: #edecec;
+  --shroffin-btn-primary-hover: #d7d6d5;
+  --shroffin-btn-primary-active: #edecec;
+  /* Pill label — Cursor near-black (#14120B), not page ink (#1d1d1f). */
+  --shroffin-btn-primary-fg: #14120B;
+  --shroffin-btn-primary-disabled-bg: rgba(237, 236, 236, 0.40);
   --shroffin-btn-primary-shadow: none;
   --shroffin-btn-primary-shadow-hover: none;
   --shroffin-btn-primary-shadow-active: none;
+  --shroffin-btn-secondary-bg: transparent;
+  --shroffin-btn-secondary-border: #edecec;
+  --shroffin-btn-secondary-fg: #edecec;
+  --shroffin-btn-secondary-hover-bg: #edecec;
+  --shroffin-btn-secondary-hover-border: transparent;
+  --shroffin-btn-secondary-hover-fg: var(--shroffin-btn-primary-fg);
+  --shroffin-btn-secondary-active-bg: #d7d6d5;
+  --shroffin-btn-secondary-active-border: transparent;
+  --shroffin-btn-secondary-active-fg: var(--shroffin-btn-primary-fg);
   --shroffin-link: #2997FF;
   --shroffin-link-hover: var(--shroffin-link);
   --shroffin-link-active: var(--shroffin-link);
@@ -225,7 +260,7 @@ html[data-theme="dark"] {
   --shroffin-gn-option-value: color-mix(in srgb, var(--shroffin-muted) 88%, transparent);
   --shroffin-gn-option-value-hover: var(--shroffin-ink-soft);
   --shroffin-field-line: rgba(255, 255, 255, 0.16);
-  --shroffin-field-line-focus: var(--shroffin-btn-primary);
+  --shroffin-field-line-focus: var(--shroffin-focus);
   --shroffin-field-line-invalid: rgba(255, 105, 97, 0.70);
   --shroffin-field-line-valid: rgba(48, 209, 88, 0.50);
   --shroffin-field-placeholder: rgba(161, 161, 166, 0.55);
@@ -2322,7 +2357,7 @@ html[data-theme="light"] {
     border-radius: var(--shroffin-btn-radius);
     font-family: inherit;
     font-size: var(--shroffin-btn-elevated-font);
-    font-weight: 400;
+    font-weight: var(--shroffin-btn-elevated-weight);
     line-height: var(--shroffin-btn-elevated-lh);
     letter-spacing: normal;
     text-align: center;
@@ -2357,7 +2392,7 @@ html[data-theme="light"] {
     background: var(--shroffin-btn-primary);
     background-clip: border-box;
     box-shadow: var(--shroffin-btn-primary-shadow);
-    color: #fff;
+    color: var(--shroffin-btn-primary-fg);
     text-decoration: none;
   }
 
@@ -2380,8 +2415,12 @@ html[data-theme="light"] {
   .about-cta-primary:visited,
   .about-cta-primary:hover,
   .about-cta-primary:focus-visible,
-  .about-cta-primary:active {
-    color: #fff;
+  .about-cta-primary:active,
+  .hl-apply-cta:link,
+  .hl-apply-cta:visited,
+  .hlc-btn-primary:link,
+  .hlc-btn-primary:visited {
+    color: var(--shroffin-btn-primary-fg);
     text-decoration: none;
   }
 
@@ -2400,7 +2439,7 @@ html[data-theme="light"] {
     background: var(--shroffin-btn-primary-hover);
     border-color: transparent;
     box-shadow: var(--shroffin-btn-primary-shadow-hover);
-    color: #fff;
+    color: var(--shroffin-btn-primary-fg);
   }
 
   .home-hero-cta-primary:active,
@@ -2412,7 +2451,7 @@ html[data-theme="light"] {
     background: var(--shroffin-btn-primary-active);
     border-color: transparent;
     box-shadow: var(--shroffin-btn-primary-shadow-active);
-    color: #fff;
+    color: var(--shroffin-btn-primary-fg);
   }
 
   .hl-apply-cta:disabled,
@@ -2423,16 +2462,16 @@ html[data-theme="light"] {
 
   .home-hero-cta-secondary,
   .about-cta-secondary {
-    background: transparent;
-    color: #0066cc;
-    border-color: #0066cc;
+    background: var(--shroffin-btn-secondary-bg);
+    color: var(--shroffin-btn-secondary-fg);
+    border-color: var(--shroffin-btn-secondary-border);
   }
 
   .home-hero-cta-secondary:link,
   .home-hero-cta-secondary:visited,
   .about-cta-secondary:link,
   .about-cta-secondary:visited {
-    color: #0066cc;
+    color: var(--shroffin-btn-secondary-fg);
     text-decoration: none;
   }
 
@@ -2453,16 +2492,16 @@ html[data-theme="light"] {
   @media (min-width: 834px) {
     .home-hero-cta-secondary:hover,
     .about-cta-secondary:hover {
-      background: var(--shroffin-btn-primary-hover);
-      color: #fff;
-      border-color: transparent;
+      background: var(--shroffin-btn-secondary-hover-bg);
+      color: var(--shroffin-btn-secondary-hover-fg);
+      border-color: var(--shroffin-btn-secondary-hover-border);
     }
 
     .home-hero-cta-secondary:active,
     .about-cta-secondary:active {
-      background: var(--shroffin-btn-primary-active);
-      color: #fff;
-      border-color: transparent;
+      background: var(--shroffin-btn-secondary-active-bg);
+      color: var(--shroffin-btn-secondary-active-fg);
+      border-color: var(--shroffin-btn-secondary-active-border);
     }
   }
 
@@ -2480,8 +2519,8 @@ html[data-theme="light"] {
 
     /*
      * Keep the 4px transparent tap band for hit size, but paint the solid
-     * blue through it (border-box). padding-box left a gap that showed the
-     * page surface as a white ring — unlike desktop’s edge-to-edge fill.
+     * primary fill through it (border-box). padding-box left a gap that showed the
+     * page surface as a ring — unlike desktop’s edge-to-edge fill.
      * Outline secondary CTAs still use padding-box + ::before below.
      */
     .home-hero-cta-primary,
@@ -2506,7 +2545,12 @@ html[data-theme="light"] {
     .about-cta-secondary:active {
       background: transparent;
       border-color: transparent;
-      color: #fff;
+      color: var(--shroffin-btn-secondary-hover-fg);
+    }
+
+    .home-hero-cta-secondary:active,
+    .about-cta-secondary:active {
+      color: var(--shroffin-btn-secondary-active-fg);
     }
 
     .home-hero-cta-secondary::before,
@@ -2516,9 +2560,9 @@ html[data-theme="light"] {
       /* Fill the padding box (already ~36px after the transparent tap band). */
       inset: 0;
       z-index: -1;
-      border: 1px solid #0066cc;
+      border: 1px solid var(--shroffin-btn-secondary-border);
       border-radius: var(--shroffin-btn-radius);
-      background: transparent;
+      background: var(--shroffin-btn-secondary-bg);
       pointer-events: none;
       transition:
         background-color var(--shroffin-micro-duration) var(--shroffin-color-ease),
@@ -2526,20 +2570,15 @@ html[data-theme="light"] {
     }
 
     .home-hero-cta-secondary:hover::before,
-    .home-hero-cta-secondary:active::before,
-    .about-cta-secondary:hover::before,
-    .about-cta-secondary:active::before {
-      border-color: transparent;
-    }
-
-    .home-hero-cta-secondary:hover::before,
     .about-cta-secondary:hover::before {
-      background: var(--shroffin-btn-primary-hover);
+      border-color: var(--shroffin-btn-secondary-hover-border);
+      background: var(--shroffin-btn-secondary-hover-bg);
     }
 
     .home-hero-cta-secondary:active::before,
     .about-cta-secondary:active::before {
-      background: var(--shroffin-btn-primary-active);
+      border-color: var(--shroffin-btn-secondary-active-border);
+      background: var(--shroffin-btn-secondary-active-bg);
     }
   }
 
@@ -2946,23 +2985,6 @@ html[data-theme="dark"] #nav-support-flyout .globalnav-submenu-link:hover .globa
   color: #F5F5F7;
 }
 
-html[data-theme="dark"] .home-hero-cta-secondary,
-html[data-theme="dark"] .about-cta-secondary,
-html[data-theme="dark"] .home-hero-cta-secondary:link,
-html[data-theme="dark"] .home-hero-cta-secondary:visited,
-html[data-theme="dark"] .about-cta-secondary:link,
-html[data-theme="dark"] .about-cta-secondary:visited {
-  color: #0A84FF;
-  border-color: #0A84FF;
-}
-
-@media (max-width: 833px) {
-  html[data-theme="dark"] .home-hero-cta-secondary::before,
-  html[data-theme="dark"] .about-cta-secondary::before {
-    border-color: #0A84FF;
-  }
-}
-
 html[data-theme="dark"] .shroffin-sel-thumb--pill {
   background: #2C2C2C;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
@@ -3071,35 +3093,4 @@ html[data-theme="dark"] .site-footer-theme-btn[aria-pressed="true"] {
   .site-footer-copy { grid-area: copy; }
   .site-footer-theme { grid-area: theme; justify-self: end; }
   .site-footer-legal-nav { grid-area: legal; }
-}
-
-/* Force white labels on primary blue fills in dark (never canvas-mix). */
-html[data-theme="dark"] .home-hero-cta-primary,
-html[data-theme="dark"] .home-hero-cta-primary:link,
-html[data-theme="dark"] .home-hero-cta-primary:visited,
-html[data-theme="dark"] .home-hero-cta-primary:hover,
-html[data-theme="dark"] .home-hero-cta-primary:focus-visible,
-html[data-theme="dark"] .home-hero-cta-primary:active,
-html[data-theme="dark"] .lm-cta,
-html[data-theme="dark"] .lm-cta:link,
-html[data-theme="dark"] .lm-cta:visited,
-html[data-theme="dark"] .lm-cta:hover,
-html[data-theme="dark"] .lm-cta-light,
-html[data-theme="dark"] .hl-apply-cta,
-html[data-theme="dark"] .about-cta-primary,
-html[data-theme="dark"] .hlc-btn-primary,
-html[data-theme="dark"] .site-prefooter-cta-action,
-html[data-theme="dark"] .guide-calc-submit,
-html[data-theme="dark"] .apf-submit,
-html[data-theme="dark"] .apf-more,
-html[data-theme="dark"] .localnav-cta,
-html[data-theme="dark"] .localnav-cta:link,
-html[data-theme="dark"] .localnav-cta:visited {
-  color: #fff;
-}
-html[data-theme="dark"] .home-hero-cta-secondary:hover,
-html[data-theme="dark"] .home-hero-cta-secondary:active,
-html[data-theme="dark"] .about-cta-secondary:hover,
-html[data-theme="dark"] .about-cta-secondary:active {
-  color: #fff;
 }

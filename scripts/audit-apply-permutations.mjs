@@ -665,21 +665,26 @@ async function main() {
   // ── CO-APPLICANT full funnel ──
   await section("coapplicant-funnel", async () => {
     await fillInputsAndCompare(page);
-    const coToggle = page.locator("#hlc-co-toggle");
-    if (!(await coToggle.count())) {
+    const coSelect = page.locator("#hlc-coapplicant");
+    if (!(await coSelect.count())) {
       add({
         id: "PX-CO-01",
         severity: "P1",
         status: "BLOCKED",
         title: "Co-applicant path to Application received",
         flowStep: "Permutation / co-applicant",
-        expected: "Co-applicant toggle present",
-        actual: "Missing #hlc-co-toggle",
+        expected: "Co-applicant select present",
+        actual: "Missing #hlc-coapplicant",
         userImpact: "Could not test co-applicant funnel.",
       });
       return;
     }
-    await coToggle.click({ force: true });
+    await page.evaluate(() => {
+        const sel = document.getElementById("hlc-coapplicant");
+        if (!sel) return;
+        sel.value = "yes";
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+      });
     await page.waitForTimeout(500);
     await page.evaluate(() => {
       const card = document.querySelector(".hlc-coapplicant-card");

@@ -87,14 +87,14 @@ a.localnav-title:hover {
   color: var(--shroffin-ink-strong, #000000);
 }
 
-/* Filled blue pill in the Guide bar — label stays white (never link purple). */
+/* Filled primary pill in the Guide bar — label from --shroffin-btn-primary-fg. */
 .localnav-cta,
 .localnav-cta:link,
 .localnav-cta:visited,
 .localnav-cta:hover,
 .localnav-cta:focus-visible,
 .localnav-cta:active {
-  color: #fff;
+  color: var(--shroffin-btn-primary-fg);
   text-decoration: none;
 }
 
@@ -3063,7 +3063,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
   border-radius: var(--shroffin-btn-radius, 980px);
   background: var(--mag-accent-button);
   box-shadow: var(--shroffin-btn-primary-shadow, none);
-  color: #fff;
+  color: var(--shroffin-btn-primary-fg);
   font-family: var(--font-brand);
   font-size: var(--shroffin-btn-standard-font, 14px);
   font-weight: 500;

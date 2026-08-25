@@ -495,9 +495,14 @@ async function main() {
 
     // Co-applicant toggle + fields
     await gotoFresh(page);
-    const co = page.locator("#hlc-co-toggle");
+    const co = page.locator("#hlc-coapplicant");
     if (await co.count()) {
-      await co.click({ force: true });
+      await page.evaluate(() => {
+        const sel = document.getElementById("hlc-coapplicant");
+        if (!sel) return;
+        sel.value = "yes";
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+      });
       await page.waitForTimeout(500);
       const coFields = await page.evaluate(() => {
         const wrap = document.getElementById("hlc-coapplicant-fields");
@@ -588,7 +593,7 @@ async function main() {
         status: "FAIL",
         title: "Co-applicant toggle present",
         flowStep: "Each input / co-applicant",
-        expected: "#hlc-co-toggle exists",
+        expected: "#hlc-coapplicant exists",
         actual: "missing",
         userImpact: "Co-applicant path unavailable.",
       });
@@ -1062,7 +1067,7 @@ async function main() {
     "hlc-cibil",
     "hlc-occupation",
     "hlc-purpose",
-    "hlc-co-toggle",
+    "hlc-coapplicant",
   ];
   const filterKeysExpected = [
     "govtPsu",
