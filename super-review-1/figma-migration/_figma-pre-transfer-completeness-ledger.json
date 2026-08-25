@@ -1,0 +1,291 @@
+{
+  "generated_at": "2026-08-24",
+  "auditor": "independent-completeness",
+  "verdict": "COMPLETE",
+  "ceo_one_liner": "Conflict audit is complete enough to start Figma capture. Residual items are UNVERIFIED-ALLOWED clicks with named recipes only. Prior eight gaps are closed in the first audit and CEO-excepted from remaining work.",
+  "figma_shift": "YES — capture from the closed bible; residual = UNVERIFIED-ALLOWED clicks only",
+  "ceo_carve_outs_not_remaining": [
+    "Overview #borrow-calc-form / #emi-calc-form",
+    "How-much-loan coApplicant Yes/No + #co-applicant-fields",
+    "Six Home iframe interiors (product-demo Explore clone)",
+    "APF 735 3-col + Guide 733 breakpoints",
+    "↗ exceptions footer/nav WhatsApp vs help-strip; About LinkedIn icon",
+    "Sitemap live href lists (Guide 13)",
+    "Guide inner layouts (doc rows, compare strips, flows)",
+    "APF contradiction vs tests/apf.spec.js — resolved; only #apf-more unclicked"
+  ],
+  "playwright": {
+    "figma_spec": "tests/figma-migration-pretransfer-automated.spec.js",
+    "figma_test_count_on_disk": 19,
+    "figma_claimed": "19/19 chromium-responsive",
+    "apf_spec": "tests/apf.spec.js",
+    "apf_test_count_on_disk": 8,
+    "apf_claimed": "8/8",
+    "re_run_final": "27 passed (37.9s) 2026-08-24 --project=chromium-responsive workers=2",
+    "re_run_notes": "Earlier parallel batch had 1 Replay flake; isolated Replay retry passed; final combined run 27/27 clean.",
+    "apf_cited_by_first_audit_now": true,
+    "contradiction": "Brief example 'Playwright failed vs ledger passed' NOT PRESENT. Prior APF never-clicked claim RESOLVED in updated first audit citing apf.spec.js. #apf-more still untested."
+  },
+  "scope": {
+    "required_urls": 25,
+    "redesigned_pages_json": 24,
+    "extra_required": ["/pages/apply-contact.html"],
+    "files_exist": 25,
+    "conflict_ids_md": 62,
+    "conflict_ids_ledger": 62,
+    "ids_only_in_md": [],
+    "ids_only_in_ledger": []
+  },
+  "pages": [
+    { "url": "/", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/explore-banks.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/apply.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/apply-contact.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/calculators.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/calculators/emi.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/calculators/how-much-loan.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/calculators/loan-amount.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/calculators/prepayment.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/calculators/balance-transfer.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/calculators/tenure.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/calculators/tax-savings.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/project-approvals.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/guide.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/guide-documents.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/tax-benefits.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/concessions.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/home-loan-insurance.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/property-home-insurance.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/credit-life-insurance.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/home-loan-complaints.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/pages/about.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/privacy-policy.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/terms-of-use.html", "status": "CHECKED-EVIDENCED", "missed": [] },
+    { "url": "/sitemap.html", "status": "CHECKED-EVIDENCED", "missed": [] }
+  ],
+  "contradictions": [
+    {
+      "id": "C1",
+      "what": "Brief example: markdown Playwright failed vs ledger VERIFIED",
+      "status": "NOT_PRESENT",
+      "evidence": "Current first-audit md + ledger both claim 19/19; this auditor final re-run 27/27."
+    },
+    {
+      "id": "C1b",
+      "what": "Replay flake on first parallel batch",
+      "status": "RESOLVED_FLAKE",
+      "evidence": "Isolated :443 passed; final combined run 27 passed"
+    },
+    {
+      "id": "C2",
+      "what": "APF click UNVERIFIED vs tests/apf.spec.js",
+      "status": "RESOLVED",
+      "evidence_path": "tests/apf.spec.js",
+      "first_audit": "Updated md cites apf.spec.js 8/8 for project listbox/loading/results/empty/edu-not-in-nav",
+      "residual": "#apf-more still UNVERIFIED-ALLOWED"
+    },
+    {
+      "id": "C3",
+      "what": "ledger.unverified [] vs leftover clicks",
+      "status": "CONSISTENT",
+      "evidence": "Leftovers live in unverified_allowed + UNVERIFIED-ALLOWED wording"
+    },
+    {
+      "id": "C4",
+      "what": "conflict_ids md vs ledger",
+      "status": "MATCH",
+      "count": 62
+    },
+    {
+      "id": "C5",
+      "what": "extract.json Home rel weaker vs extract-v2",
+      "status": "CONTRADICTED_EXTRACTS",
+      "evidence_path": "super-review-1/figma-migration/_figma-pre-transfer-conflict-audit-extract.json",
+      "note": "Does not reopen page inventory; use extract-v2 (25/25 counts align with live)"
+    },
+    {
+      "id": "C6",
+      "what": "education-loan.html href in raw HTML",
+      "status": "NOT_A_LIVE_LINK",
+      "evidence": "Only inside HTML comments; comment-stripped hrefs empty on nav/footer/home/sitemap"
+    },
+    {
+      "id": "C7",
+      "what": "palette-lock #121212 vs live #161616",
+      "status": "SOURCE_AGREES_WITH_FIRST_AUDIT",
+      "evidence": "theme-boot + shell dark surface use #161616; Figma must follow live"
+    }
+  ],
+  "missed_items": [],
+  "remaining_tasks": [],
+  "allowed_unverified": [
+    {
+      "what": "Nav Tools flyout + Support flyout click",
+      "ok_if": "frames Nav-Flyout-Tools-Open / Support-Open already in bible"
+    },
+    {
+      "what": "Compact nav open/drill click",
+      "ok_if": "Nav-Compact-* frames named"
+    },
+    {
+      "what": "Footer theme pill + disclaimer details click",
+      "ok_if": "Footer-ThemePill-* and Footer-Disclaimer-Open named"
+    },
+    {
+      "what": "Explore column tabs + phone filter drawer click",
+      "ok_if": "Explore-Tab-* and Explore-FilterDrawer-Open named"
+    },
+    {
+      "what": "Guide flips other than #borrow-flip",
+      "ok_if": "all 6 live flip ids named Front+Back"
+    },
+    {
+      "what": "Guide intel on a second page",
+      "ok_if": "Guide-Intel-Dialog-Open named"
+    },
+    {
+      "what": "Overview in-page calc submit / How-much co-applicant Yes click",
+      "ok_if": "SOURCE-VERIFIED markup + bible Empty/Computed and CoApplicant frames"
+    },
+    {
+      "what": "Computed stills on 6 non-EMI calculator tools",
+      "ok_if": "field lists named in instance inventory"
+    },
+    {
+      "what": "Home moments 2–6 as individual stills",
+      "ok_if": "six moment names + Home-Demo interiors in bible; at least one .is-in VERIFIED"
+    },
+    {
+      "what": "APF #apf-more click",
+      "ok_if": "APF-ShowMore named; autocomplete/loading/results VERIFIED via apf.spec.js"
+    },
+    {
+      "what": "APF developer/area listbox open",
+      "ok_if": "same widget as Project; three listbox ids named"
+    }
+  ],
+  "counts": {
+    "flips_by_guide_page": {
+      "/pages/guide.html": {
+        "flip_count": 5,
+        "flip_ids": ["borrow-flip", "emi-flip", "rate-flip", "structure-flip", "charges-flip"],
+        "tabs": 14,
+        "details": 1,
+        "guide_section_links_body": 8,
+        "note": "borrow-calc/emi-calc/rate-ask/etc are back faces, not extra flips; in-page calc forms live on backs"
+      },
+      "/pages/guide-documents.html": {
+        "flip_count": 0,
+        "tabs": 10,
+        "details": 1,
+        "doc_panels_named": 10
+      },
+      "/pages/tax-benefits.html": {
+        "flip_count": 0,
+        "tabs": 4,
+        "details": 7
+      },
+      "/pages/concessions.html": {
+        "flip_count": 0,
+        "tabs": 6,
+        "details": 5
+      },
+      "/pages/home-loan-insurance.html": {
+        "flip_count": 0,
+        "tabs": 0,
+        "details": 2,
+        "note": "guide-flip-link navigates to child pages"
+      },
+      "/pages/property-home-insurance.html": {
+        "flip_count": 0,
+        "tabs": 12,
+        "details": 4
+      },
+      "/pages/credit-life-insurance.html": {
+        "flip_count": 0,
+        "tabs": 13,
+        "details": 1
+      },
+      "/pages/home-loan-complaints.html": {
+        "flip_count": 1,
+        "flip_ids": ["talk-flip"],
+        "tabs": 12,
+        "details": 1
+      }
+    },
+    "images_banks": {
+      "png_on_disk": 33,
+      "js_BANK_LOGO_FILES": 33,
+      "dir_extra_non_png": ["normalize-report.json"]
+    },
+    "images_guide_heroes": 16,
+    "images_logos": 20,
+    "media_demos": 7,
+    "hex_debt_if_counted": {
+      "occurrences": 344,
+      "unique_global": 131,
+      "var_hex_fallbacks": 27,
+      "rgba_black": 102,
+      "hover_rules": 243
+    },
+    "home_iframes": 6,
+    "product_demo_desktop_buttons": 121,
+    "product_demo_mobile_buttons": 128,
+    "product_demo_desktop_inputs": 17,
+    "product_demo_desktop_selects": 1,
+    "sitemap_guide_group_hrefs": 13,
+    "education_live_hrefs_on_25_pages": 0,
+    "privacy_section_ids": 16,
+    "terms_section_ids": 25,
+    "calc_inputs": {
+      "emi": 6,
+      "how-much-loan": 14,
+      "loan-amount": 6,
+      "prepayment": 11,
+      "balance-transfer": 9,
+      "tenure": 6,
+      "tax-savings": 20
+    }
+  },
+  "states_named": {
+    "hover": "NAMED IN REPORT (subset of 243)",
+    "focus_invalid_valid": "NAMED IN REPORT (Apply + calc)",
+    "menu_open_3_flyouts": "NAMED IN REPORT (Guide VERIFIED; Tools/Support UNVERIFIED-ALLOWED)",
+    "dark_light": "NAMED IN REPORT",
+    "phone_834_1440_735_1069_900_and_733": "NAMED IN REPORT",
+    "hidden_open_closed": "NAMED IN REPORT (Overview calcs, co-applicant, drawers, flips)",
+    "filters_default_applied": "NAMED IN REPORT",
+    "flip_front_back": "NAMED IN REPORT (6 live)",
+    "dropdown_closed_open": "NAMED IN REPORT (APF; Project VERIFIED via apf.spec.js)",
+    "side_panel_closed_open": "NAMED IN REPORT (Explore drawer VERIFIED)",
+    "home_scroll_stills": "NAMED IN REPORT including iframe interiors"
+  },
+  "out_of_scope": {
+    "education_loan_v1_figma": "exclude; no live redesigned href",
+    "pages_underscore_html": "six Home embeds are user-facing; remaining pages/_*.html are prototypes out of v1"
+  },
+  "t01_t16": {
+    "T01": "complete",
+    "T02": "complete",
+    "T03": "complete",
+    "T04": "complete",
+    "T05": "complete",
+    "T06": "complete",
+    "T07": "complete",
+    "T08": "complete_inventory_with_allowed_unverified_clicks",
+    "T09": "complete",
+    "T10": "complete",
+    "T11": "complete",
+    "T12": "complete",
+    "T13": "complete",
+    "T14": "complete",
+    "T15": "complete_enough",
+    "T16": "complete"
+  },
+  "evidence_paths": {
+    "ceo_memo": "super-review-1/figma-migration/_figma-pre-transfer-completeness-ceo.md",
+    "census_raw": "super-review-1/figma-migration/_completeness-census-raw.json",
+    "first_audit": "super-review-1/figma-migration/_figma-pre-transfer-conflict-audit.md",
+    "first_ledger": "super-review-1/figma-migration/_figma-pre-transfer-conflict-audit-ledger.json"
+  }
+}

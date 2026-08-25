@@ -11,7 +11,7 @@ module.exports = {
   testDir: 'tests',
   testMatch: legacyTests
     ? 'ui.spec.js'
-    : ['shroffin-responsive.spec.js', 'apf.spec.js'],
+    : ['shroffin-responsive.spec.js', 'apf.spec.js', 'figma-migration-pretransfer-automated.spec.js'],
   timeout: 30000,
   expect: { timeout: 7000 },
   fullyParallel: true,

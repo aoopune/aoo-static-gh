@@ -56,21 +56,19 @@ Read each file **fully** with the Read tool. Listing a path without opening it i
 ### Brand and helper voice
 
 1. `/home/yash/Projects Etc & aoo/etc/docs/brand/startup-core.md`  
-   Especially: financial lawyer on the customer’s side; customer decides; no guarantees; no villain agents; plain language; approved / forbidden claims.
-2. `/home/yash/Projects Etc & aoo/etc/docs/brand/sentence-formation-bible.md`  
-   Registers, one job per block, plain formation. Guide intelligence is body/advice register, not hero hype.
+   Especially: financial lawyer on the customer’s side; customer decides; no guarantees; no villain agents; plain language; approved / forbidden claims. Guide intelligence is body/advice tone, not hero hype.
 
 ### Sentence framing (must shape every draft line)
 
-3. `/home/yash/Projects Etc & aoo/aoo-static-gh/docs/TECHCRUNCH_WRITING_PATTERN.md`  
+2. `/home/yash/Projects Etc & aoo/aoo-static-gh/docs/TECHCRUNCH_WRITING_PATTERN.md`  
    Use for **structure**, not tone cosplay:
    - Card intelligence opens like a **lede** (fact + why it matters).
    - Middle is the **“so what”** (choice, cost, risk, what to ask).
    - Close is **one practical line** or open thread — not a marketing CTA dump, not a recap of the lede.
    Prefer patterns that fit a helper guide: Direct reader instruction, Promise of mechanism (“here’s why”), How-to utility, Expert-explains clarity — never “India’s first” or scoop hype.
-4. `/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/low-cognitive-load-writing-principles-BY-THIS-CHAT.md`  
+3. `/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/low-cognitive-load-writing-principles-BY-THIS-CHAT.md`  
    One idea per sentence; ~15–20 words average; old→new; cut dead words; subject next to verb; no unfinished clause stacks.
-5. `/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/low-cognitive-load-writing-principles-BY-OTHER-AGENT.md`  
+4. `/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/low-cognitive-load-writing-principles-BY-OTHER-AGENT.md`  
    Same master rule: one clear actor doing one clear thing; known before new; close subject–verb gaps; stress the new claim at the end.
 
 ### What founder + co-founder said about intelligence and the lawyer-friend helper

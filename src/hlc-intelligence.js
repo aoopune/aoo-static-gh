@@ -9,8 +9,6 @@
 
 var CIBIL_UPGRADE_STEPS = [700, 725, 750, 800, 825]; // real band boundaries from data
 
-var HORIZON = { NOW: "Now", MONTHS: "Over months", BEFORE: "Before you apply" };
-
 function finiteOr(v, def) { return (Number.isFinite(v) && v === v) ? v : def; }
 function roundInr(n) { return Math.round(n); }
 function lakhStr(n) {
@@ -97,9 +95,8 @@ function tipCibilBand(ctx) {
   var totalSaving = emiDelta * tenureYears * 12;
   return {
     kind: "cibil",
-    horizon: HORIZON.BEFORE,
     heading: "At " + q.cibilScore + " CIBIL your best rate is " + pctStr(currentBestRate) + " \u2014 " + nextStep + " cuts it to " + pctStr(cfRate),
-    body: "That " + pctStr(rateDrop) + " gap is " + moStr(emiDelta) + " (\u20b9" + lakhStr(totalSaving) + " over " + tenureYears + " years) on your matched list at CIBIL " + nextStep + ". Banks still set final terms.",
+    body: "That " + pctStr(rateDrop) + " gap is " + moStr(emiDelta) + " (\u20b9" + lakhStr(totalSaving) + " over " + tenureYears + " years) at CIBIL " + nextStep + ". Banks still set final terms.",
     rupeeImpact: totalSaving
   };
 }
@@ -130,7 +127,6 @@ function tipOccupation(ctx) {
   body += ". Banks price self-employed income tighter; a salaried co-applicant widens the list.";
   return {
     kind: "occupation",
-    horizon: HORIZON.MONTHS,
     heading: heading,
     body: body,
     rupeeImpact: emiDelta * tenureYears * 12 || delta * 1000
@@ -156,7 +152,6 @@ function tipWomen(ctx) {
   var bankClause = cfBest && cfBest.bankName ? " at " + cfBest.bankName : "";
   return {
     kind: "women",
-    horizon: HORIZON.BEFORE,
     heading: "Women as primary: best rate on your list " + pctStr(currentBestRate) + " \u2192 " + pctStr(cfRate) + bankClause,
     body: "That " + pctStr(rateDrop) + " cut is " + moStr(emiDelta) + " (\u20b9" + lakhStr(total) + " over " + tenureYears + " years) on the women-applicant counterfactual. Standard KYC is enough; no special proof.",
     rupeeImpact: total
@@ -176,7 +171,6 @@ function tipExistingEmis(ctx) {
   if (loanDelta < 100000) return null;
   return {
     kind: "existingEmis",
-    horizon: HORIZON.NOW,
     heading: moStr(q.existingEmis) + " EMIs cap you at \u20b9" + lakhStr(currentLoan) + " \u2014 clear them for \u20b9" + lakhStr(cfLoan),
     body: "Banks count existing EMIs against income. That \u20b9" + lakhStr(loanDelta) + " gap is the eligibility difference on this profile between current EMIs and cleared EMIs.",
     rupeeImpact: loanDelta
@@ -219,7 +213,6 @@ function tipAgeTenure(ctx) {
   var trappedCount = trapped.length;
   return {
     kind: "ageTenure",
-    horizon: HORIZON.NOW,
     heading: "You asked for " + q.tenureYears + " years \u2014 " + trappedCount + " banks on your list cap you at " + maxActualTenure + ", EMI up " + moStr(emiDiff),
     body: "Age rules shorten tenure on those " + trappedCount + " matches, so monthly cost jumps on this list. Banks still set final terms.",
     rupeeImpact: emiDiff * maxActualTenure * 12
@@ -241,7 +234,6 @@ function tipMissPenalty(ctx) {
   if (spread < 500) return null;
   return {
     kind: "missPenalty",
-    horizon: HORIZON.NOW,
     heading: "One missed EMI: " + inrStr(low.total) + " at " + low.bank + ", " + inrStr(high.total) + " at " + high.bank,
     body: "Same miss, " + inrStr(spread) + " apart on your list. Penalty size is a day-one risk difference, not a rate story.",
     rupeeImpact: spread
@@ -266,7 +258,6 @@ function tipFixedVsFloating(ctx) {
   var total = emiDelta * tenureYears * 12;
   return {
     kind: "fixedVsFloating",
-    horizon: HORIZON.NOW,
     heading: "Your filter is fixed-only at " + pctStr(curRate) + " \u2014 floating starts at " + pctStr(cfRate),
     body: "That is " + moStr(emiDelta) + " less now (\u20b9" + lakhStr(total) + " over the term) on the floating counterfactual for this profile. Fixed locks the rate; floating tracks RBI\u2019s repo.",
     rupeeImpact: total
@@ -290,7 +281,6 @@ function tipGreen(ctx) {
   var bankClause = cfBest && cfBest.bankName ? " at " + cfBest.bankName : "";
   return {
     kind: "green",
-    horizon: HORIZON.BEFORE,
     heading: "Green-rated property: best rate on your list " + pctStr(curRate) + " \u2192 " + pctStr(cfRate) + bankClause,
     body: "That " + pctStr(rateDrop) + " cut is " + moStr(emiDelta) + " every month on the green-home counterfactual (IGBC / GRIHA). Banks still set final terms.",
     rupeeImpact: emiDelta * tenureYears * 12
@@ -312,7 +302,6 @@ function tipProcessingFee(ctx) {
   if (spread < 5000) return null;
   return {
     kind: "processingFee",
-    horizon: HORIZON.NOW,
     heading: "Processing fee: " + inrStr(low.fee) + " at " + low.bank + ", " + inrStr(high.fee) + " at " + high.bank,
     body: "Day-one gap of " + inrStr(spread) + " on your list before the first EMI. Fee size does not change the rate — it changes cash out at sanction.",
     rupeeImpact: spread
@@ -335,7 +324,6 @@ function tipGovernmentCharges(ctx) {
   if (spread < 1000) return null;
   return {
     kind: "governmentCharges",
-    horizon: HORIZON.NOW,
     heading: "Government charges at sanction: " + inrStr(low.total) + " at " + low.bank + ", " + inrStr(high.total) + " at " + high.bank,
     body: "Stamp duty, CERSAI, and other government fees on your list differ by " + inrStr(spread) + " for this loan amount and state. These sit outside the bank processing fee.",
     rupeeImpact: spread
@@ -377,7 +365,6 @@ function tipPrepayment(ctx) {
 
   return {
     kind: "prepayment",
-    horizon: HORIZON.MONTHS,
     heading: inrStr(scenario.prepayAmount) + " prepayment at year " + scenario.year + " cuts EMI from " + moStr(scenario.emiBefore) + " to " + moStr(scenario.emiAfter),
     body: body,
     rupeeImpact: scenario.netSaving
@@ -617,7 +604,7 @@ function buildIntelligence(ctx) {
 /**
  * Strip contract:
  * - Default after Compare: eyebrow + status only.
- * - More opens the tip row (first INTEL_TIPS_PREVIEW tips, side-by-side + body).
+ * - More opens the tip stack (first INTEL_TIPS_PREVIEW tips, one card each + body).
  * - + reveals every remaining tip (all tips stay in the DOM).
  * - Show less returns to the status strip and collapses extras.
  */
@@ -631,7 +618,6 @@ function tipItemHtml(t, isExtra) {
     + '"'
     + (isExtra ? ' aria-hidden="true"' : "")
     + ">"
-    + '<span class="hlc-intel-horizon hlc-intel-horizon--' + escHtml(t.kind) + '">' + escHtml(t.horizon) + "</span>"
     + '<strong class="hlc-intel-heading">' + escHtml(t.heading) + "</strong>"
     + '<div class="hlc-intel-tip-detail" aria-hidden="true">'
     + '<div class="hlc-intel-tip-detail-clip">'
@@ -886,6 +872,5 @@ module.exports = {
   buildRowFlags: buildRowFlags,
   bestRate: bestRate,
   bestRateRow: bestRateRow,
-  CIBIL_UPGRADE_STEPS: CIBIL_UPGRADE_STEPS,
-  HORIZON: HORIZON
+  CIBIL_UPGRADE_STEPS: CIBIL_UPGRADE_STEPS
 };

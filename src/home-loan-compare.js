@@ -7261,80 +7261,93 @@ const FIELD_HELP_MARK_SVG =
   '<svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>';
 
 /**
- * Exact column-help copy for Overview / Charges headers. Teaching numbers are
- * fixed examples — never live calculated values. Each entry is a numbered list.
+ * Column-header help. Prose only — never numbered lists or ₹ teaching maths.
+ * moreHref is same-site Guide, and only when the two lines leave a real leftover.
  */
-const COLUMN_HELP_TEXT = {
-  effectiveRoiPct: [
-    "The annual interest on your outstanding loan. Concessions you ticked are already in this number.",
-    "On ₹50 lakh over 20 years, 8.50% versus 9.00% is ₹1,600 more every month (0.50% rate gap).",
-    "Click More on the row to see how that bank builds the rate."
-  ],
-  loanAmount: [
-    "How much this bank will give you on what you've entered. Changes every time you change a form field.",
-    "Built from income, minus running EMIs and card load, capped by property and age.",
-    "Bank verifies from documents. What you see here is an estimate."
-  ],
-  tenureLabel: [
-    "How many years this bank gives you to repay, capped by your age.",
-    "Shorter tenure means higher EMI, which means less loan on the same income.",
-    "On a floating loan you can prepay any time without a charge and cut this down yourself."
-  ],
-  emi: [
-    "Estimated monthly payment on this loan amount, rate, and tenure.",
-    "After this EMI, check if what's left is enough to live on.",
-    "Doesn't include insurance premiums or pre EMI interest during construction."
-  ],
-  processingFee: [
-    "The bank's charge to process your file. Mandatory. Not returned if you back out after they've started.",
-    "Part of it, sometimes called a login fee, is taken upfront. The rest when you accept the sanction.",
-    "Compare this column with the rate column — a cheap rate with ₹1.44 lakh in fees can cost more in year one."
-  ],
-  propertyCheckCharges: [
-    "What you pay for the bank to verify the property: legal search, title check, valuer's visit.",
-    "Click the amount to see how the four items add up for your loan size.",
-    "This is not stamp duty. Stamp duty is in the government charges column."
-  ],
-  governmentCharges: [
-    "Stamp duty, registration, CERSAI filing, and notice of intimation. All set by the government, not the bank.",
-    "Same number on almost every bank row for your state — that's normal, not a mistake.",
-    "Budget this on top of your down payment. Click the amount to see the four item breakdown."
-  ],
-  prepaymentChargeDisplay: [
-    "What the bank charges if you pay the loan off early or move it to another bank.",
-    "Floating home loan to an individual: zero almost every time. RBI doesn't allow prepayment charges on these.",
-    "Fixed rate loans can charge 1 to 2%. Check this cell before you pick fixed.",
-    "Matters a lot if you expect a lump sum in a few years."
-  ],
-  rateChangeChargeDisplay: [
-    "What the bank charges if you ask to switch how your rate works later — floating to fixed, fixed to floating, or a benchmark change.",
-    "Charged per switch, not once for the whole loan.",
-    "Most people on a floating repo linked loan never pay this. Know the cost before you lock into fixed."
-  ],
-  overdueChargeDisplay: [
-    "Extra interest when your EMI comes in late. A percentage per year on the overdue amount, for the days it stays that way.",
-    "2% per annum on a ₹40,000 EMI for 30 late days is about ₹790 extra (2% × EMI × days/365).",
-    "Some banks give a few days before the charge kicks in.",
-    "A cheap rate bank with a high overdue charge hurts badly on one bad month."
-  ],
-  emiBounceChargeDisplay: [
-    "Flat fee every time your EMI auto debit fails — not enough balance, wrong account, mandate expired.",
-    "Even if you transfer the EMI the same day, the bounce fee still comes.",
-    "Ranges ₹200 to ₹750 depending on the bank.",
-    "One missed auto debit with overdue interest can add ₹1,000 or more that month."
-  ]
+const COLUMN_HELP = {
+  effectiveRoiPct: {
+    lines: [
+      "Estimate from this bank's published rates for your profile — not a locked quote.",
+      "Credit and property checks can still change it."
+    ]
+  },
+  loanAmount: {
+    lines: [
+      "Income and the bank's cap on property price set the loan, not the asking price.",
+      "A lower bank valuation can cut it versus the agreement."
+    ]
+  },
+  tenureLabel: {
+    lines: [
+      "Years on a row can be shorter than you asked.",
+      "Banks cap tenure so the loan ends by a set age."
+    ]
+  },
+  emi: {
+    lines: [
+      "A lower EMI is not always a cheaper loan — extra years usually add interest.",
+      "On floating rates, a rate rise can raise this EMI or add years."
+    ],
+    moreHref: "guide.html#emi"
+  },
+  processingFee: {
+    lines: [
+      "Includes the login fee; figures exclude taxes.",
+      "Due after a basic eligibility check, whether the loan is later disbursed or not."
+    ],
+    moreHref: "guide.html#charges"
+  },
+  propertyCheckCharges: {
+    lines: [
+      "Covers the bank's title and value checks, not stamp duty or registration.",
+      "Your own earlier lawyer or valuer report usually does not replace theirs."
+    ],
+    moreHref: "guide.html#charges"
+  },
+  governmentCharges: {
+    lines: [
+      "Stamp duty and registration go to the state for the deed and mortgage, not to the bank.",
+      "Cost differs by state and is usually paid in cash, outside the loan."
+    ],
+    moreHref: "guide.html#charges"
+  },
+  prepaymentChargeDisplay: {
+    lines: ["Only fixed-rate home loans may still charge for paying early."]
+  },
+  rateChangeChargeDisplay: {
+    lines: [
+      "Fee applies when you ask to switch floating to fixed, or the other way — not when the floating rate moves by itself."
+    ]
+  },
+  overdueChargeDisplay: {
+    lines: [
+      "Late payment attracts a separate extra charge, not a higher rate on the whole loan.",
+      "That extra charge should not then earn further interest."
+    ]
+  },
+  emiBounceChargeDisplay: {
+    lines: [
+      "Charged when your EMI debit or cheque does not go through — usually a flat fee each time, excluding taxes.",
+      "If that month's EMI stays unpaid, overdue charges can apply as well."
+    ]
+  }
 };
 
 function columnHelpHtml(column) {
-  const items = COLUMN_HELP_TEXT[column.key];
-  if (!items || !items.length) return "";
+  const help = COLUMN_HELP[column.key];
+  if (!help || !help.lines || !help.lines.length) return "";
   const id = "hlc-help-col-" + column.key;
-  const list =
-    '<ol class="hlc-field-help-list">' +
-    items.map(function (item) {
-      return "<li>" + escapeHtml(item) + "</li>";
-    }).join("") +
-    "</ol>";
+  const body =
+    help.lines
+      .map(function (line) {
+        return '<p class="hlc-field-help-text">' + escapeHtml(line) + "</p>";
+      })
+      .join("") +
+    (help.moreHref
+      ? '<a class="hlc-field-help-more" href="' +
+        escapeHtml(help.moreHref) +
+        '">Learn more</a>'
+      : "");
   return (
     '<span class="hlc-field-help-anchor">' +
     '<button type="button" class="hlc-field-help" aria-expanded="false" aria-controls="' +
@@ -7348,7 +7361,7 @@ function columnHelpHtml(column) {
     '<div class="hlc-field-help-popover" id="' +
     escapeHtml(id) +
     '" role="tooltip" hidden>' +
-    list +
+    body +
     "</div></span>"
   );
 }

@@ -30,17 +30,15 @@
     --shroffin-link-external-active: var(--shroffin-link);
     --shroffin-link-external-visited: var(--shroffin-link);
     /*
-     * Mix destinations for surface/footer washes — never raw #fff / #f4f6f8 in shell.
-     * Light values match today’s mix targets so perceived canvas stays identical.
-     * Dark twins later: same names, new values under html[data-theme=dark].
+     * Page / footer are direct product colors (Foundations lock B + #FCFCFD).
+     * canvas-mix-base / footer-mix-base stay for Explore washes & color-mix helpers —
+     * not shown as Foundations “page colors.” Do not paint page UI with mix-bases alone.
      */
     --shroffin-canvas-mix-base: #ffffff;
     --shroffin-footer-mix-base: #f4f6f8;
-    /* Cool soft blue canvas — same family as Explore banks; no warm paper. */
+    /* Cool soft page paper — direct hex; no blue color-mix recipe. */
     --shroffin-surface: #fcfcfd;
-    --shroffin-surface: color-mix(in srgb, var(--shroffin-blue) 0.75%, var(--shroffin-canvas-mix-base));
     --shroffin-footer: #f5f7f9;
-    --shroffin-footer: color-mix(in srgb, var(--shroffin-blue) 1.5%, var(--shroffin-footer-mix-base));
     /* Note / glance panel wash — shared editorial + about hex; stacks alias in Phase E. */
     --shroffin-paper-note: #eef1f4;
     /* Content hairlines (softer than --shroffin-rule chrome). */
@@ -188,8 +186,8 @@ html[data-theme="dark"] {
   --shroffin-ink-strong: #ffffff;
   --shroffin-muted: #A1A1A6;
   --shroffin-ghost: #636366;
+  /* Brighter dark twin for accents/icons; filled CTAs stay --shroffin-btn-primary #0071e3. */
   --shroffin-blue: #0A84FF;
-  /* Filled CTAs stay Apple Buy blue; accents/links use brighter --shroffin-blue. */
   --shroffin-btn-primary: #0071e3;
   --shroffin-btn-primary-hover: #0076df;
   --shroffin-btn-primary-active: #006edb;
@@ -212,10 +210,10 @@ html[data-theme="dark"] {
   --shroffin-hair-soft: rgba(255, 255, 255, 0.08);
   --shroffin-rule: rgba(255, 255, 255, 0.16);
   --shroffin-focus: #0A84FF;
-  --shroffin-gn-frost: #1E1E1E;
-  --shroffin-gn-bg: rgba(30, 30, 30, 0.80);
-  --shroffin-gn-bg-fallback: rgba(30, 30, 30, 0.96);
-  --shroffin-gn-bg-open: rgba(30, 30, 30, 0.92);
+  --shroffin-gn-frost: #161616;
+  --shroffin-gn-bg: rgba(22, 22, 22, 0.80);
+  --shroffin-gn-bg-fallback: rgba(22, 22, 22, 0.96);
+  --shroffin-gn-bg-open: rgba(22, 22, 22, 0.92);
   --shroffin-gn-veil: rgba(0, 0, 0, 0.45);
   --shroffin-gn-border: rgba(255, 255, 255, 0.10);
   /* Same step names as light — ink is already light, so “open” fades less than rest; hover = full ink / white option. */
@@ -613,13 +611,10 @@ html[data-theme="light"] {
     block-size: var(--shroffin-gn-height);
     background: var(--shroffin-gn-bg);
     border-block-end: none;
-    box-shadow: 0 0.5px 0 var(--shroffin-gn-border);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     backdrop-filter: saturate(180%) blur(20px);
     font-family: var(--shroffin-font);
-    transition:
-      background-color var(--shroffin-micro-duration) var(--shroffin-color-ease),
-      box-shadow var(--shroffin-micro-duration) var(--shroffin-color-ease);
+    transition: background-color var(--shroffin-micro-duration) var(--shroffin-color-ease);
   }
 
   /* Guide pages (any width): main bar scrolls away; Guide sub-bar stays pinned.

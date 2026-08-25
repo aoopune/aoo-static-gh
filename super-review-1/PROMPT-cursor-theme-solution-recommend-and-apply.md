@@ -107,10 +107,7 @@ A recommendation is sound only if:
 - it closes the **object_kind + failure_kind** of the open theme on that surface
 - it is a lasting change (no temporary patch, no `!important` stack, no TODO-as-finish)
 - it respects Shroffin repo rules already in force (responsive, motion, education-loan-hidden, external-link pattern, permanent engineering)
-- for any **new customer-facing copy**, you first Read:
-  1. `docs/brand/startup-core.md`
-  2. `docs/brand/sentence-formation-bible.md`
-  and write copy that fits both
+- for any **new customer-facing copy**, you first Read `docs/brand/startup-core.md` and write copy that fits it
 
 ### Law 6 — Build-ready recipes
 
@@ -133,7 +130,7 @@ No “details during implementation.” No “run the usual build.”
 4. `/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/themes/_theme-site-scan.md` and `_theme-site-scan-ledger.json` — **where the kind was found across the site** (place inventory).
 5. `/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/themes/theme-*.md` — **title + `pinpoint:` only**.
 6. Current site source under `/home/yash/Projects Etc & aoo/aoo-static-gh` needed to ground each recipe (pages, `content/**/*.body.html`, `partials/`, attached JS/CSS that become on-screen words).
-7. For copy recommendations only: `docs/brand/startup-core.md` then `docs/brand/sentence-formation-bible.md`.
+7. For copy recommendations only: `docs/brand/startup-core.md`.
 
 **Forbidden:**
 
@@ -264,7 +261,7 @@ Trigger phrases (exact start):
 
 1. Re-read the recommendation block and current source before editing.
 2. Implement the build recipe exactly; lasting engineering only.
-3. For customer-facing copy edits: Read `docs/brand/startup-core.md` then `docs/brand/sentence-formation-bible.md` again before writing final strings.
+3. For customer-facing copy edits: Read `docs/brand/startup-core.md` again before writing final strings.
 4. Keep education loan hidden from UI if you touch nav/home.
 5. Match existing motion / responsive / external-link rules when relevant.
 6. After edits, run the verify commands from the recipes.

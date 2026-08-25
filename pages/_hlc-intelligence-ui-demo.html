@@ -331,14 +331,6 @@
       margin-bottom: 0.45rem;
     }
 
-    .hlc-intel-horizon {
-      display: block;
-      margin: 0 0 0.4rem;
-      font-size: 12px;
-      line-height: 1.33337;
-      color: var(--text-3);
-    }
-
     .hlc-intel-body {
       margin: 0;
       font-size: 14px;
@@ -469,16 +461,12 @@
       aria-labelledby="hlc-intelligence-sr-heading"
     >
       <h2 id="hlc-intelligence-sr-heading" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">
-        From your matched list
+        Insights
       </h2>
-
-      <div class="hlc-intel-head">
-        <p class="hlc-intel-eyebrow">From your matched list</p>
-      </div>
 
       <p class="hlc-intel-status" id="hlc-intel-status" role="status"></p>
 
-      <ol class="hlc-intel-tips" id="hlc-intel-tips" aria-label="Facts from your matched list"></ol>
+      <ol class="hlc-intel-tips" id="hlc-intel-tips" aria-label="Additional insights"></ol>
 
       <button type="button" class="hlc-intel-more" id="hlc-intel-more" aria-expanded="false" aria-controls="hlc-intel-tips" hidden></button>
     </section>
@@ -525,19 +513,16 @@
       var SAMPLE_TIPS = [
         {
           kind: "cibil",
-          horizon: "Before you apply",
           heading: "At 720 CIBIL your best rate is 8.70% — 750 cuts it to 8.40%",
-          body: "That 0.30% gap is ₹1,200/mo (₹2.9 lakh over 20 years) on your matched list. Banks still set final terms."
+          body: "That 0.30% gap is ₹1,200/mo (₹2.9 lakh over 20 years) at CIBIL 750. Banks still set final terms."
         },
         {
           kind: "existingEmis",
-          horizon: "Now",
           heading: "₹25,000/mo EMIs cap you at ₹45 lakh — clear them for ₹62 lakh",
           body: "Banks count existing EMIs against income. That ₹17 lakh gap is the biggest eligibility difference on this profile."
         },
         {
           kind: "prepayment",
-          horizon: "Over months",
           heading: "₹2 lakh prepayment at year 3 cuts EMI from ₹38,640 to ₹36,910",
           body: "That EMI cut is ₹2.1 lakh over the remaining term on HDFC Bank at the current rate path."
         }
@@ -612,9 +597,6 @@
           .map(function (t) {
             return (
               '<li class="hlc-intel-tip">' +
-              '<span class="hlc-intel-horizon">' +
-              esc(t.horizon) +
-              "</span>" +
               '<strong class="hlc-intel-heading">' +
               esc(t.heading) +
               "</strong>" +

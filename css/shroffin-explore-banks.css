@@ -105,6 +105,8 @@
   /* Hero title steel wash (decorative gradient — Explore-owned). */
   --hlc-title-wash-from: #202027;
   --hlc-title-wash-to: #485879;
+  /* Outer hero breathing room — shell pad-top and hero margin-bottom share this. */
+  --hlc-hero-edge-gap: 0.25rem;
   /*
    * Bank mark plate hook (PREP-11). No added plate on light or dark —
    * white only if it is already in the bank PNG; never recolor bank art.
@@ -137,7 +139,7 @@
   width: 100%;
   max-width: min(100%, var(--hlc-main-max));
   margin-inline: auto;
-  --hlc-shell-pad-top: clamp(0.85rem, 2.6vw, 1.5rem);
+  --hlc-shell-pad-top: var(--hlc-hero-edge-gap);
   padding:
     var(--hlc-shell-pad-top)
     max(1rem, env(safe-area-inset-right))
@@ -151,14 +153,14 @@
 .hlc-hero {
   max-width: min(48rem, 100%);
   margin: 0 auto;
-  padding-block: clamp(0.8rem, 2.4vw, 1.4rem);
-  margin-bottom: 0.5rem;
+  padding-block: clamp(0.5rem, 1.7vw, 0.9rem);
+  margin-bottom: var(--hlc-hero-edge-gap);
   text-align: center;
 }
 
 .hlc-title {
   margin: 0;
-  font-size: clamp(1.75rem, 4.8vw, 2.75rem);
+  font-size: clamp(0.9426375rem, 2.58552vw, 1.4812875rem);
   font-weight: 600;
   letter-spacing: normal;
   line-height: 1.08;
@@ -311,7 +313,12 @@
 }
 
 .hlc-form-pairs {
-  --hlc-form-col-gap: 1.35rem;
+  --hlc-form-col-gap: 1.1rem;
+  --hlc-form-row-pad: 1.1rem;
+  --hlc-form-field-gap-y: 1.5rem;
+  --hlc-form-field-gap-x: 1.65rem;
+  --hlc-form-choices-gap-y: 0.38rem;
+  --hlc-form-choices-gap-x: 0.42rem;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -345,7 +352,7 @@
   position: relative;
   gap: 0.25rem;
   height: 100%;
-  padding: 0 0 1.35rem;
+  padding: 0 0 var(--hlc-form-row-pad, 1.1rem);
   border: none;
   border-radius: 0;
   background: transparent;
@@ -354,7 +361,7 @@
 }
 
 .hlc-form-row:not(.hlc-form-row--coapplicant) + .hlc-form-row {
-  padding-top: 1.35rem;
+  padding-top: var(--hlc-form-row-pad, 1.1rem);
   border-top: none;
 }
 
@@ -374,7 +381,7 @@
 .hlc-form-zone-fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.7rem 1.85rem;
+  gap: var(--hlc-form-field-gap-y, 1.5rem) var(--hlc-form-field-gap-x, 1.65rem);
   align-items: stretch;
   min-width: 0;
 }
@@ -387,7 +394,7 @@
 
 .hlc-form-row--hero .hlc-form-row-fields {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.7rem 1.85rem;
+  gap: var(--hlc-form-field-gap-y, 1.5rem) var(--hlc-form-field-gap-x, 1.65rem);
 }
 
 .hlc-form-row--choices .hlc-form-row-fields,
@@ -396,7 +403,7 @@
   flex-wrap: nowrap;
   align-items: stretch;
   justify-content: flex-start;
-  gap: 0.45rem 0.5rem;
+  gap: var(--hlc-form-choices-gap-y, 0.38rem) var(--hlc-form-choices-gap-x, 0.42rem);
 }
 
 .hlc-form-row-fields > .hlc-field,
@@ -698,21 +705,21 @@
   }
 
   .hlc-form-pairs > .hlc-form-row--hero {
-    padding-bottom: 1.35rem;
+    padding-bottom: var(--hlc-form-row-pad, 1.1rem);
     border-bottom: 1px solid var(--hlc-section-line);
   }
 
   .hlc-form-pairs > .hlc-form-row:nth-child(2),
   .hlc-form-pairs > .hlc-form-row:nth-child(3) {
-    padding-top: 1.35rem;
-    padding-bottom: 1.35rem;
+    padding-top: var(--hlc-form-row-pad, 1.1rem);
+    padding-bottom: var(--hlc-form-row-pad, 1.1rem);
     border-bottom: 1px solid var(--hlc-section-line);
   }
 
   .hlc-form-pairs > .hlc-form-row:nth-child(4),
   .hlc-form-pairs > .hlc-form-row:nth-child(5) {
-    padding-top: 1.35rem;
-    padding-bottom: 1.35rem;
+    padding-top: var(--hlc-form-row-pad, 1.1rem);
+    padding-bottom: var(--hlc-form-row-pad, 1.1rem);
     border-bottom: 1px solid var(--hlc-section-line);
   }
 
@@ -723,7 +730,7 @@
   }
 
   .hlc-form-pairs > .hlc-form-row--coapplicant {
-    padding-top: 1.35rem;
+    padding-top: var(--hlc-form-row-pad, 1.1rem);
     border-top: none;
   }
 
@@ -732,7 +739,7 @@
   }
 
   .hlc-form-row-fields {
-    gap: 1.7rem 1.85rem;
+    gap: var(--hlc-form-field-gap-y, 1.5rem) var(--hlc-form-field-gap-x, 1.65rem);
   }
 
   .hlc-form-row-fields:has(.hlc-field--foir),
@@ -744,63 +751,103 @@
   .hlc-form-zone--choices .hlc-form-zone-fields {
     display: flex;
     flex-wrap: nowrap;
-    gap: 0.45rem 0.5rem;
+    gap: var(--hlc-form-choices-gap-y, 0.38rem) var(--hlc-form-choices-gap-x, 0.42rem);
   }
 }
 
 /*
- * Explore banks desktop: groups stay groups.
- * Two equal columns with a 1.35rem gutter. The hero row spans both
- * columns and uses the same inner 2-col + 1.35rem gutter so income
- * lines up with the left column and property with the right.
- * Grey section lines stay off; only the input boxes keep a border.
+ * Explore banks desktop: first six fields share one 2×3 grid so each
+ * column gets the same vertical gutter (income→EMIs = EMIs→cards, etc.).
+ * Rate / choices / co-applicant stay grouped rows below.
  */
 @media (min-width: 834px) {
+  .explore-banks-page .hlc-inputs-card .hlc-form-pairs {
+    row-gap: var(--hlc-form-col-gap);
+  }
+
   .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row {
     border: none;
     padding-left: 0;
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--hero,
-  .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--coapplicant {
-    grid-column: 1 / -1;
+  .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--reduce,
+  .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--emi {
+    display: contents;
   }
 
-  .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--hero {
+  .explore-banks-page .hlc-inputs-card .hlc-form-row--hero .hlc-form-row-fields,
+  .explore-banks-page .hlc-inputs-card .hlc-form-row--reduce .hlc-form-row-fields,
+  .explore-banks-page .hlc-inputs-card .hlc-form-row--emi .hlc-form-row-fields {
+    display: contents;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-field--hero:not(.hlc-field--property) {
+    grid-column: 1;
     grid-row: 1;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-field--property {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .explore-banks-page .hlc-inputs-card label[for="hlc-existing-emis"] {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-form-row--reduce .hlc-field:has(#hlc-card-limits) {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .explore-banks-page .hlc-inputs-card label[for="hlc-foir"] {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .explore-banks-page .hlc-inputs-card label[for="hlc-tenure"] {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-form-pairs .hlc-field--hero:has(> .hlc-input-shell),
+  .explore-banks-page .hlc-inputs-card .hlc-form-pairs .hlc-form-row--reduce .hlc-field:has(> .hlc-input-shell),
+  .explore-banks-page .hlc-inputs-card .hlc-form-pairs .hlc-form-row--emi .hlc-field:has(> .hlc-input-shell) {
+    width: 100%;
+    max-width: 100%;
+    justify-self: stretch;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--rate {
+    grid-column: 1;
+    grid-row: 4;
     padding-top: 0;
     padding-bottom: 0;
   }
 
-  .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--reduce,
-  .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--rate {
-    grid-column: 1;
-  }
-
-  .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--emi,
   .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--choices {
     grid-column: 2;
-  }
-
-  .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--reduce,
-  .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--emi {
-    grid-row: 2;
-    padding-top: 1.35rem;
-    padding-bottom: 0;
-  }
-
-  .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--rate,
-  .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--choices {
-    grid-row: 3;
-    padding-top: 1.35rem;
+    grid-row: 4;
+    padding-top: 0;
     padding-bottom: 0;
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-form-pairs > .hlc-form-row--coapplicant {
-    grid-row: 4;
-    padding-top: 1.35rem;
+    grid-column: 1 / -1;
+    grid-row: 5;
+    padding-top: 0;
     padding-bottom: 0;
     border-top: none;
+  }
+
+  /*
+   * Card-load note is absolute — margin-bottom was opening a wider band
+   * before Age / Occupation than the shared row-gap gives elsewhere.
+   */
+  .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell):has(> .hlc-field-note--card-load:not(:empty)) {
+    margin-bottom: 0;
   }
 }
 
@@ -814,13 +861,13 @@
   }
 
   .hlc-form-zone--choices .hlc-form-zone-fields {
-    gap: 0.45rem 0.5rem;
+    gap: var(--hlc-form-choices-gap-y, 0.38rem) var(--hlc-form-choices-gap-x, 0.42rem);
   }
 }
 
 .hlc-form-row--coapplicant {
   gap: 0.35rem;
-  padding: 1.35rem 0 0;
+  padding: var(--hlc-form-row-pad, 1.1rem) 0 0;
   border: none;
   border-top: 1px solid var(--hlc-section-line);
   border-radius: 0;
@@ -1127,7 +1174,7 @@
 
 .hlc-field--hero input {
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: normal;
 }
 
@@ -1187,7 +1234,6 @@
 
 @media (max-width: 599px) {
   .hlc-shell {
-    --hlc-shell-pad-top: clamp(0.55rem, 2.2vw, 1rem);
     padding:
       var(--hlc-shell-pad-top)
       max(1rem, env(safe-area-inset-right))
@@ -1197,7 +1243,7 @@
 
   .hlc-hero {
     max-width: min(100%, 36rem);
-    padding-block: clamp(0.7rem, 2.4vw, 1.1rem);
+    padding-block: clamp(0.45rem, 1.7vw, 0.7rem);
   }
 
   .hlc-inputs-card {
@@ -1205,7 +1251,8 @@
     padding: 1.35rem 0.95rem 1.7rem;
   }
 
-  .hlc-intelligence {
+  .hlc-intel-strip,
+  .hlc-intel-tip {
     padding: 1.35rem 0.95rem 1.7rem;
   }
 
@@ -1284,7 +1331,7 @@
   width: 100%;
   min-width: 0;
   font: inherit;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: normal;
   text-transform: none;
   padding: 0;
@@ -1309,7 +1356,7 @@
   background: transparent;
   font: inherit;
   font-size: var(--shroffin-field-font-size, 1.125rem);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: normal;
   color: var(--shroffin-ink);
   appearance: none;
@@ -1385,7 +1432,7 @@
   flex: 0 0 auto;
   pointer-events: none;
   font-size: var(--shroffin-field-font-size, 1.125rem);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: normal;
   line-height: 1.25;
   color: var(--shroffin-ink);
@@ -1523,9 +1570,9 @@
   justify-content: flex-end;
   column-gap: 0.28em;
   margin: 0;
-  padding: 0 0.4em;
+  padding: 0.15em 0.4em;
   border: none;
-  border-radius: 0;
+  border-radius: var(--hlc-field-radius, 0.5rem);
   background: var(--hlc-surface-strong);
   font-size: 0.8125rem;
   font-weight: 400;
@@ -1572,6 +1619,11 @@
   color: var(--shroffin-ink);
 }
 
+.explore-banks-page .hlc-inputs-card .hlc-field-note.hlc-field-note--card-load .hlc-inline-pct-select:focus {
+  outline: none;
+  border-bottom-color: var(--shroffin-ink);
+}
+
 /*
  * Each typed field is a compact inner box: header + value together, no
  * underline. Phone stacks the name over the value; desktop keeps them
@@ -1594,12 +1646,11 @@
   min-height: 3.5rem;
   gap: 0.15rem 0.75rem;
   padding: 0.7rem 1rem;
-  border: 1px solid var(--hlc-field-box-line);
+  border: none;
   border-radius: var(--hlc-field-radius, 0.5rem);
   background: var(--hlc-surface-strong);
   overflow: visible;
   cursor: text;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell--select) {
@@ -1631,11 +1682,6 @@
   transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell):hover,
-.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell):focus-within {
-  border-color: var(--hlc-section-line-strong);
-}
-
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell):is(:hover, :focus-within) :is(
   .hlc-field-label,
   .hlc-field-label-qualifier,
@@ -1648,11 +1694,6 @@
 ) {
   color: var(--shroffin-ink);
   caret-color: var(--shroffin-ink);
-}
-
-.explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell.is-invalid),
-.explore-banks-page .hlc-inputs-card .hlc-field:has(.hlc-input-shell.is-invalid) {
-  border-color: var(--shroffin-field-line-invalid);
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) > .hlc-field-label-row,
@@ -1697,7 +1738,7 @@
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) select:not(.hlc-inline-pct-select),
 .explore-banks-page .hlc-inputs-card .hlc-field:has(> .hlc-input-shell) .hlc-select-face {
   font-size: var(--shroffin-field-font-size, 1.25rem);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.2;
   letter-spacing: normal;
   min-height: 0;
@@ -1818,7 +1859,7 @@
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field--hero input {
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-field--hero .hlc-prefix {
@@ -1876,7 +1917,7 @@
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-form-row--hero .hlc-field input {
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-form-row--hero .hlc-prefix {
@@ -1950,7 +1991,7 @@
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-form-row:not(.hlc-form-row--hero) .hlc-form-row-fields {
-  gap: 0.65rem 0.75rem;
+  gap: 0.55rem 0.65rem;
 }
 
 .explore-banks-page .hlc-inputs-card .hlc-form-row--reduce,
@@ -2031,7 +2072,7 @@
   flex-wrap: nowrap;
   align-items: stretch;
   justify-content: flex-start;
-  gap: 0.45rem 0.5rem;
+  gap: var(--hlc-form-choices-gap-y, 0.38rem) var(--hlc-form-choices-gap-x, 0.42rem);
   width: 100%;
   min-width: 0;
 }
@@ -3076,14 +3117,20 @@
 .hlc-filters-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 0.75rem;
-  margin-bottom: 1.25rem;
-  /* Match Clear all touch target so showing/hiding it does not shift filter groups. */
-  min-height: 44px;
+  margin-bottom: 0.5rem;
+  min-height: 0;
 }
 
 .hlc-filters-head .hlc-filters-title {
+  margin: 0;
+  margin-right: auto;
+}
+
+/* No empty header row when Clear all is hidden (title removed on Explore). */
+.hlc-filters-head:not(:has(.hlc-filters-clear:not([hidden]))):not(:has(.hlc-filters-title)) {
+  display: none;
   margin: 0;
 }
 
@@ -3145,12 +3192,12 @@
 
 /* Equal space above each section heading so it groups with its chips below */
 .hlc-filter-group + .hlc-filter-group {
-  margin-top: 1.25rem;
+  margin-top: 0.65rem;
 }
 
 .hlc-filter-legend {
   padding: 0;
-  margin: 0 0 0.45rem;
+  margin: 0 0 0.1rem;
   font-size: 1rem;
   line-height: 1.25;
   font-weight: 600;
@@ -3160,9 +3207,13 @@
 .hlc-filter-checks {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: 0;
   margin: 0;
   padding: 0;
+}
+
+.hlc-filter-checks > .hlc-filter-option:first-child {
+  padding-top: 0.1rem;
 }
 
 .hlc-filter-option {
@@ -3171,7 +3222,7 @@
   gap: 0.65rem;
   box-sizing: border-box;
   margin: 0;
-  padding: 0.5rem 0.35rem;
+  padding: 0.25rem 0.35rem;
   min-height: var(--shroffin-btn-touch, 44px);
   font-size: 0.875rem;
   line-height: 1.35;
@@ -3543,7 +3594,12 @@
   .hlc-filters-head {
     flex: 0 0 auto;
     margin: 0;
-    padding: 0 1.15rem 0.85rem;
+    padding: 0 1.15rem 0.5rem;
+  }
+
+  .hlc-filters-head:not(:has(.hlc-filters-clear:not([hidden]))):not(:has(.hlc-filters-title)) {
+    display: none;
+    padding: 0;
   }
 
   .hlc-filters .hlc-filter-group {
@@ -3551,12 +3607,17 @@
   }
 
   .hlc-filters .hlc-filter-group + .hlc-filter-group {
-    margin-top: 1rem;
+    margin-top: 0.55rem;
   }
 
   .hlc-filters .hlc-filter-legend {
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.05rem;
     font-size: 0.9375rem;
+  }
+
+  .hlc-filters .hlc-filter-option {
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
   }
 
   body.hlc-filters-sheet-open {
@@ -7560,7 +7621,6 @@ button.hlc-bank-name-text:focus-visible {
 .explore-banks-page .globalnav {
   background: var(--hlc-nav-bg);
   border-block-end: none;
-  box-shadow: 0 0.5px 0 var(--hlc-nav-border);
 }
 
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
@@ -7829,31 +7889,7 @@ button.hlc-bank-name-text:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.hlc-field-help-list {
-  margin: 0;
-  padding: 0 0 0 1.25rem;
-  color: var(--shroffin-ink);
-  font-size: 0.8125rem;
-  font-weight: 400;
-  line-height: 1.45;
-  letter-spacing: normal;
-  list-style: decimal;
-  list-style-position: outside;
-}
-
-.hlc-field-help-text + .hlc-field-help-list {
-  margin-top: 0.45rem;
-}
-
-.hlc-field-help-list li {
-  padding-left: 0.15rem;
-}
-
-.hlc-field-help-list li + li {
-  margin-top: 0.32rem;
-}
-
-.hlc-field-help-list + .hlc-field-help-text {
+.hlc-field-help-text + .hlc-field-help-text {
   margin-top: 0.45rem;
 }
 
@@ -7901,24 +7937,28 @@ button.hlc-bank-name-text:focus-visible {
 /* ─── HLC Intelligence Panel ─────────────────────────────────────────── */
 /*
  * Strip contract (progressive disclosure):
- * 1) Default after Compare: eyebrow + status only.
- * 2) More → tip headings side-by-side with body under each (is-tips-open + is-tips-expanded).
- * 3) Show less → back to status strip.
- * Same column + card chrome as .hlc-inputs-card.
+ * 1) Default after Compare: summary card (eyebrow + status) only.
+ * 2) More → tip cards stack below, one card per tip with full body.
+ * 3) Show less → back to summary card only.
+ * Summary + each tip share the same card chrome as .hlc-inputs-card.
  */
 .hlc-intelligence {
   --hlc-intel-radius: var(--shroffin-card-radius, 16px);
+  --hlc-intel-card-pad-x: clamp(1.45rem, 3.1vw, 2.15rem);
+  --hlc-intel-card-pad-y-top: clamp(1.35rem, 2.8vw, 1.85rem);
+  --hlc-intel-card-pad-y-bottom: clamp(1.25rem, 2.4vw, 1.65rem);
+  --hlc-intel-stack-gap: 0.75rem;
   box-sizing: border-box;
   position: relative;
-  isolation: isolate;
   width: 100%;
   max-width: 56rem;
   margin-inline: auto;
   margin-block: 0 1.25rem;
-  padding: clamp(1.35rem, 2.8vw, 1.85rem) clamp(1.45rem, 3.1vw, 2.15rem)
-    clamp(1.25rem, 2.4vw, 1.65rem);
+  padding: 0;
   background: transparent;
-  border-radius: var(--hlc-intel-radius);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hlc-intel-stack-gap);
   overflow: visible;
   opacity: 0;
   transform: translateY(12px);
@@ -7927,16 +7967,31 @@ button.hlc-bank-name-text:focus-visible {
     transform 1.2s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
-.hlc-intelligence::before {
+.hlc-intel-strip,
+.hlc-intel-tip {
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  width: 100%;
+  padding:
+    var(--hlc-intel-card-pad-y-top)
+    var(--hlc-intel-card-pad-x)
+    var(--hlc-intel-card-pad-y-bottom);
+  border-radius: var(--hlc-intel-radius);
+  overflow: visible;
+}
+
+.hlc-intel-strip::before,
+.hlc-intel-tip::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  /* Same surface as guide chapter cards */
   background: var(--hlc-intel-surface);
   border: none;
-  box-shadow: var(--hlc-card-lift);
+  box-shadow: none;
   transform: translateZ(0);
 }
 
@@ -7947,41 +8002,6 @@ button.hlc-bank-name-text:focus-visible {
 
 .hlc-intelligence[hidden] {
   display: none !important;
-}
-
-/* Decorative sparkle — same icon as guide Insights (icon-only, top-right). */
-.hlc-intel-sparkle-icon {
-  position: absolute;
-  top: clamp(1.35rem, 2.8vw, 1.85rem);
-  inset-inline-end: clamp(1.45rem, 3.1vw, 2.15rem);
-  z-index: 1;
-  width: 1.15rem;
-  height: 1.15rem;
-  pointer-events: none;
-}
-
-.hlc-intel-sparkle {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-  color: var(--shroffin-blue);
-}
-
-.hlc-intel-head {
-  margin: 0 0 0.55rem;
-  min-width: 0;
-  padding-inline-end: 1.65rem;
-}
-
-.hlc-intel-eyebrow {
-  margin: 0;
-  min-width: 0;
-  font-size: 1rem; /* 16px — strip label */
-  font-weight: 400;
-  letter-spacing: normal;
-  line-height: 1.33337;
-  color: var(--hlc-text-tertiary);
 }
 
 .hlc-intel-status {
@@ -8005,7 +8025,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 /*
- * Tip row: collapsed until is-tips-open.
+ * Tip stack: collapsed until is-tips-open.
  * Soft max-height fold — stays in the tree (no [hidden] flash).
  */
 .hlc-intelligence:not(.is-tips-open) .hlc-intel-tips {
@@ -8014,41 +8034,36 @@ button.hlc-bank-name-text:focus-visible {
   max-height: 0;
   margin: 0;
   padding: 0;
-  border-top-width: 0;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   transition:
     max-height 1.2s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
     opacity 1s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
     visibility 0s linear 1.2s,
-    margin 0.85s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
-    padding 0.85s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+    gap 0.85s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .hlc-intelligence.is-tips-open .hlc-intel-tips {
   list-style: none;
   overflow: visible;
   max-height: 200rem;
-  margin: 1rem 0 0;
-  padding: 0.95rem 0 0;
-  border-top: 1px solid var(--hlc-intel-line);
+  margin: 0;
+  padding: 0;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 0;
-  row-gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hlc-intel-stack-gap);
   transition:
     max-height 1.35s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
     opacity 1.05s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
     visibility 0s linear 0s,
-    margin 0.85s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
-    padding 0.85s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
+    gap 0.85s var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .hlc-intel-tips[hidden] {
@@ -8060,66 +8075,24 @@ button.hlc-bank-name-text:focus-visible {
   display: none;
 }
 
-@media (max-width: 733px) {
-  .hlc-intelligence:not(.is-tips-open) .hlc-intel-tips,
-  .hlc-intelligence.is-tips-open .hlc-intel-tips {
-    grid-template-columns: 1fr;
-  }
-
-  .hlc-intelligence.is-tips-open .hlc-intel-tips {
-    row-gap: 0;
-  }
-}
-
 .hlc-intel-tip {
-  min-width: 0;
-  padding: 0 1.25rem;
-  border-right: 1px solid var(--hlc-intel-line);
-}
-
-/* End of each row of 3 — no right border */
-.hlc-intel-tip:nth-child(3n) {
-  padding-right: 0;
-  border-right: 0;
-}
-
-.hlc-intel-tip:nth-child(3n + 1) {
-  padding-left: 0;
-}
-
-@media (max-width: 733px) {
-  .hlc-intel-tip,
-  .hlc-intel-tip:nth-child(3n),
-  .hlc-intel-tip:nth-child(3n + 1) {
-    padding: 0.65rem 0;
-    border-right: 0;
-    border-bottom: 1px solid var(--hlc-intel-line);
-  }
-
-  .hlc-intel-tip:first-child {
-    padding-top: 0;
-  }
-
-  .hlc-intel-tip:last-child {
-    padding-bottom: 0;
-    border-bottom: 0;
-  }
+  list-style: none;
 }
 
 .hlc-intel-heading {
   display: block;
   margin: 0;
-  font-size: 0.9375rem; /* 15px — fits three-up */
+  font-size: 1.0625rem; /* 17px — full-width card */
   font-weight: 600;
   letter-spacing: normal;
-  line-height: 1.33337;
+  line-height: 1.47059;
   color: var(--hlc-text-primary);
 }
 
 @media (min-width: 734px) {
   .hlc-intel-heading {
-    font-size: 1rem; /* 16px */
-    line-height: 1.375;
+    font-size: 1.1875rem; /* 19px */
+    line-height: 1.4211;
   }
 }
 
@@ -8159,21 +8132,6 @@ button.hlc-bank-name-text:focus-visible {
     visibility 0s linear 0s;
 }
 
-.hlc-intel-horizon {
-  display: block;
-  margin: 0 0 0.3rem;
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: normal;
-  line-height: 1.33337;
-  color: var(--hlc-text-tertiary);
-  text-transform: none;
-  background: none;
-  padding: 0;
-  border-radius: 0;
-  width: auto;
-}
-
 .hlc-intel-body {
   margin: 0;
   font-size: 0.875rem;
@@ -8181,13 +8139,7 @@ button.hlc-bank-name-text:focus-visible {
   letter-spacing: normal;
   line-height: 1.42859;
   color: var(--hlc-text-secondary);
-  max-width: 36em;
-}
-
-@media (max-width: 733px) {
-  .hlc-intel-body {
-    max-width: none;
-  }
+  max-width: none;
 }
 
 .hlc-intel-more {
@@ -8198,7 +8150,7 @@ button.hlc-bank-name-text:focus-visible {
   box-sizing: border-box;
   width: max-content;
   max-width: 100%;
-  margin: 0.85rem auto 0;
+  margin: 0 auto;
   padding: 0.55rem 0.35rem;
   min-height: 2.75rem;
   border: 0;
@@ -8233,7 +8185,7 @@ button.hlc-bank-name-text:focus-visible {
   height: 2.75rem;
   min-width: 2.75rem;
   min-height: 2.75rem;
-  margin: 1rem auto 0;
+  margin: 0 auto;
   padding: 0;
   border: 1px solid var(--hlc-intel-line);
   border-radius: 980px;
@@ -8275,10 +8227,7 @@ button.hlc-bank-name-text:focus-visible {
   outline-offset: 3px;
 }
 
-/* Keep More under the + when both show */
-.hlc-intelligence.is-tips-open .hlc-intel-more {
-  margin-top: 0.35rem;
-}
+/* + and Show less sit in the stack below tip cards when open. */
 
 .hlc-intel-more-chevron {
   display: inline-flex;

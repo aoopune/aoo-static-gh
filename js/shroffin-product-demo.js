@@ -1,7 +1,8 @@
 /**
  * Product demo choreography — preview frame only.
  * Story: empty form → type → chips → Compare → Comparing →
- * scroll to banks → tabs → Private filter rematch → select → Apply once.
+ * scroll to banks → tabs → Private filter rematch → drawer peek →
+ * select → Apply once.
  * Plays through once, then stops (parent Pause can stop early).
  * Visuals = explore-banks CSS + real hlc markup. Cursor is demo chrome.
  */
@@ -20,6 +21,10 @@
     scroll: 720,
     tab: 360,
     filter: 240,
+    drawer: 900,
+    drawerScroll: 720,
+    drawerHold: 800,
+    drawerDrop: 480,
     bank: 160,
     delta: 360,
     holdApply: 650,
@@ -384,6 +389,121 @@
     });
   }
 
+  function setDrawerOpen(root, open) {
+    var backdrop = root.querySelector("[data-spd-drawer-backdrop]");
+    var drawer = root.querySelector("[data-spd-drawer]");
+    if (!backdrop || !drawer) return;
+    if (open) {
+      backdrop.removeAttribute("hidden");
+      requestAnimationFrame(function () {
+        backdrop.classList.add("open");
+        drawer.classList.add("open");
+        drawer.setAttribute("aria-hidden", "false");
+      });
+      return;
+    }
+    drawer.classList.remove("open");
+    backdrop.classList.remove("open");
+    drawer.setAttribute("aria-hidden", "true");
+    window.setTimeout(function () {
+      if (!drawer.classList.contains("open")) backdrop.setAttribute("hidden", "");
+    }, reduced() ? 0 : WAIT.drawer);
+  }
+
+  function resetDrawerGroups(root) {
+    root.querySelectorAll("[data-spd-drawer-body] .hlc-drawer-group").forEach(function (group) {
+      if (group.getAttribute("data-spd-drawer-section") === "scheme") {
+        group.setAttribute("open", "");
+      } else {
+        group.removeAttribute("open");
+      }
+    });
+    var scroll = root.querySelector("[data-spd-drawer-scroll]");
+    if (scroll) scroll.scrollTop = 0;
+  }
+
+  function setDrawerGroupOpen(group, open) {
+    if (!group) return;
+    if (open) group.setAttribute("open", "");
+    else group.removeAttribute("open");
+  }
+
+  function drawerScrollTarget(el, ratio) {
+    if (!el) return 0;
+    var maxY = Math.max(0, el.scrollHeight - el.clientHeight);
+    return Math.min(maxY, Math.max(0, maxY * (ratio || 0.45)));
+  }
+
+  async function animateDrawerScroll(el, toY, signal) {
+    if (!el) return;
+    var fromY = el.scrollTop;
+    var dist = toY - fromY;
+    if (Math.abs(dist) < 1 || reduced()) {
+      el.scrollTop = toY;
+      return;
+    }
+    var duration = WAIT.drawerScroll;
+    var start = performance.now();
+    await new Promise(function (resolve) {
+      function frame(now) {
+        if (signal.aborted) {
+          resolve();
+          return;
+        }
+        var t = Math.min(1, (now - start) / duration);
+        var eased = 1 - Math.pow(1 - t, 3.2);
+        el.scrollTop = fromY + dist * eased;
+        if (t < 1) requestAnimationFrame(frame);
+        else resolve();
+      }
+      requestAnimationFrame(frame);
+    });
+  }
+
+  function bankNameEl(row) {
+    if (!row) return null;
+    return (
+      row.querySelector("[data-spd-drawer-name]") ||
+      row.querySelector(".hlc-bank-name-text") ||
+      row.querySelector(".hlc-bank-name")
+    );
+  }
+
+  async function peekDrawer(root, cursor, signal) {
+    var drawer = root.querySelector("[data-spd-drawer]");
+    if (!drawer) return;
+
+    var firstRow = visibleEssentialRows(root)[0];
+    var nameEl = bankNameEl(firstRow);
+    if (!nameEl) return;
+
+    await clickPress(cursor, nameEl, signal);
+    setDrawerOpen(root, true);
+    await sleep(WAIT.drawer, signal);
+
+    var drawerScroll = root.querySelector("[data-spd-drawer-scroll]");
+    var scrollY = drawerScrollTarget(drawerScroll, 0.42);
+    await animateDrawerScroll(drawerScroll, scrollY, signal);
+    await sleep(WAIT.drawerHold, signal);
+
+    var dropdown = root.querySelector(
+      '[data-spd-drawer-body] [data-spd-drawer-section="eligibility"]'
+    );
+    var dropdownToggle = dropdown && dropdown.querySelector(".hlc-drawer-toggle");
+    await clickPress(cursor, dropdownToggle, signal);
+    setDrawerGroupOpen(dropdown, true);
+    await sleep(WAIT.drawerDrop, signal);
+
+    await clickPress(cursor, dropdownToggle, signal);
+    setDrawerGroupOpen(dropdown, false);
+    await sleep(WAIT.drawerDrop, signal);
+
+    var closeBtn = root.querySelector("[data-spd-drawer-close]");
+    await clickPress(cursor, closeBtn, signal);
+    setDrawerOpen(root, false);
+    await sleep(WAIT.drawer, signal);
+  }
+
   function setSeeOptionsBusy(root, on) {
     var btn = root.querySelector("[data-spd-see-options]");
     if (!btn) return;
@@ -600,6 +720,8 @@
     root.querySelectorAll(".hlc-table-scroll").forEach(function (el) {
       el.scrollLeft = 0;
     });
+    resetDrawerGroups(root);
+    setDrawerOpen(root, false);
   }
 
   function reset(root, cursor) {
@@ -700,10 +822,13 @@
     await rematchFilters(root, { bankType: "Private" }, signal);
     await sleep(WAIT.filter, signal);
 
+    /* 6b — First filtered bank name → drawer scroll → dropdown peek → close */
+    await peekDrawer(root, cursor, signal);
+
     /* 7 — Select three visible private banks → Apply once */
     var rows = visibleEssentialRows(root).slice(0, 3);
     for (var i = 0; i < rows.length; i++) {
-      await clickPress(cursor, rows[i].querySelector(".hlc-bank-name") || rows[i], signal);
+      await clickPress(cursor, rows[i], signal);
       rows[i].classList.add("is-selected");
       syncSelection(root);
       await sleep(WAIT.bank, signal);

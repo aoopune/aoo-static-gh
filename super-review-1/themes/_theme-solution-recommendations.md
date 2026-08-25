@@ -9,7 +9,7 @@ Website files are untouched until a `CONFIRM APPLY…` reply.
 3. Each open theme mapped by **object_kind + failure_kind** to 1–3 entries in the fundamental solutions file (by kind, not shared keywords alone).
 4. Closed / `not_in_current_source` themes get **no** recommendations.
 5. Theme-02: only heavy / overlapping / empty / not-plain freshness chrome — not mass legal rewrite.
-6. Recipes grounded by reading current source under `aoo-static-gh`. New customer-facing copy drafts checked against `docs/brand/startup-core.md` then `docs/brand/sentence-formation-bible.md` (in `etc`).
+6. Recipes grounded by reading current source under `aoo-static-gh`. New customer-facing copy drafts checked against `docs/brand/startup-core.md` (in `etc`).
 
 ## Counts
 

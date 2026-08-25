@@ -3461,7 +3461,7 @@ function testIntelligence() {
     var curRateMatch = tip1.heading.match(/best rate is (\d+\.\d+)%/);
     var nextRateMatch = tip1.heading.match(/cuts it to (\d+\.\d+)%/);
     ok(!!curRateMatch && !!nextRateMatch, 'T19 CIBIL heading parses both rates');
-    ok(tip1.body.indexOf('matched list') !== -1, 'T19 CIBIL body scopes to matched list');
+    ok(tip1.body.indexOf('at CIBIL') !== -1, 'T19 CIBIL body names the upgrade band');
   }
 
   // T20: status + tip set never use banned vague title fillers when tips exist
@@ -3560,7 +3560,7 @@ function testIntelligence() {
 
   // T26: strip-only by default; More opens 3 tips; + reveals the rest
   var tipStub = function(kind) {
-    return { kind: kind, horizon: "Now", heading: "Fee is \u20b91,000", body: "Gap is \u20b9500 on list." };
+    return { kind: kind, heading: "Fee is \u20b91,000", body: "Gap is \u20b9500 on list." };
   };
   var fakePanel26 = {
     hidden: true,
