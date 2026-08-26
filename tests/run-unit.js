@@ -942,37 +942,34 @@ async function testHomeLoanCompare() {
   );
   ok(
     (function () {
-      const html = compare.calcDrawerBodyHtml('<div class="hlc-story">walk</div>', {
-        calcTitle: 'How this is worked out',
+      const html = compare.calcDrawerBodyHtml('<div class="hlc-calc-panel">walk</div>', {
         detailsHtml: '<div class="hlc-calc-details">slabs</div>',
         noteLines: ['First bank note', 'Second bank note'],
         footHtml: '<p class="hlc-drawer-foot">guide</p>'
       });
-      const groups = html.split('class="hlc-drawer-group"');
-      const firstOpen = html.indexOf('<details class="hlc-drawer-group" open>') !== -1;
       const closedCount = (html.match(/<details class="hlc-drawer-group">/g) || [])
         .length;
       return (
-        groups.length === 4 &&
-        firstOpen &&
-        closedCount === 2 &&
-        html.indexOf('How this is worked out') !== -1 &&
+        html.indexOf('hlc-calc-always') !== -1 &&
+        html.indexOf('How this is worked out') === -1 &&
+        html.indexOf('Calculation of the charges') === -1 &&
         html.indexOf('All amounts') !== -1 &&
         html.indexOf('Notes') !== -1 &&
+        closedCount === 2 &&
         html.indexOf('hlc-drawer-chevron') !== -1 &&
         html.indexOf('guide') !== -1 &&
         html.indexOf('guide') > html.lastIndexOf('hlc-drawer-group')
       );
     })(),
-    'calc drawers reuse dump dropdowns: first open, later closed, foot outside'
+    'calc drawers show walk always open; All amounts + Notes stay closed discloses; foot outside'
   );
   ok(
     (function () {
-      const html = compare.calcDrawerBodyHtml('<div class="hlc-story">walk</div>', {
-        calcTitle: 'Calculation of the charges',
+      const html = compare.calcDrawerBodyHtml('<div class="hlc-calc-panel">walk</div>', {
         noteLines: ['Allowed only if CIBIL is above 700.']
       });
       return (
+        html.indexOf('hlc-calc-always') !== -1 &&
         html.indexOf('<details class="hlc-drawer-group">') === -1 &&
         html.indexOf('>Notes<') === -1 &&
         html.indexOf('Allowed only if CIBIL is above 700.') !== -1 &&
@@ -2730,16 +2727,17 @@ async function testHomeLoanCompare() {
 
   var amortHtml = compare.amortizationTableHtml(amort);
   ok(
-    amortHtml.indexOf('Month by month') >= 0 &&
+    amortHtml.indexOf('Check amortisation schedule') >= 0 &&
       amortHtml.indexOf('hlc-drawer-group') >= 0 &&
       amortHtml.indexOf('hlc-drawer-chevron') >= 0 &&
-      amortHtml.indexOf('hlc-drawer-group--nested" open>') >= 0 &&
+      amortHtml.indexOf('hlc-drawer-group--nested" open>') === -1 &&
+      amortHtml.indexOf('<th>Month</th><th>EMI</th><th>Principal</th><th>Interest</th><th>Balance</th>') >= 0 &&
       amortHtml.indexOf('Year 2') >= 0 &&
       amortHtml.indexOf('Year 20') >= 0 &&
       amortHtml.indexOf('class="hlc-amort-year"') === -1 &&
       (amortHtml.match(/<details class="hlc-drawer-group hlc-drawer-group--nested">/g) || [])
-        .length === 19,
-    'month-by-month years reuse the drawer dropdowns; year 1 stays open'
+        .length === 20,
+    'amortisation schedule starts closed; years reuse drawer dropdowns'
   );
   ok(
     compare
@@ -3002,161 +3000,100 @@ async function testHomeLoanCompare() {
   ok(walkModel.cardLoad === 0, 'card load is present at ₹0');
   ok(walkModel.result === rows[0].loanAmount, 'walk result matches table loan amount');
 
-  var barHtml = compare.mathBarHtml(1, 'Test', 'Note', '₹1');
   ok(
-    barHtml.indexOf('hlc-math-bar-num') !== -1 && barHtml.indexOf('>1<') !== -1,
-    'numbered bar markup has a step number'
+    walkModel.loanFactor > 0 &&
+      Math.abs(
+        walkModel.loanFactor -
+          compare.loanFromEmi(1, rows[0].roiDecimal, rows[0].tenureMonths)
+      ) < 1e-9,
+    'walk model loan factor matches loanFromEmi(1,…)'
   );
-  ok(
-    barHtml.indexOf('hlc-math-sheet') !== -1 && barHtml.indexOf('₹1') !== -1,
-    'numbered bar amount sits in a maths column'
-  );
-  ok(
-    compare.mathBarHtml(1, 'Test', 'Note', '₹1', {
-      lines: [{ k: 'result', t: '₹1', emphasis: true }]
-    }).indexOf('hlc-math-bar-main') !== -1,
-    'stepped bars wrap note and maths in a shared main row'
-  );
-  ok(
-    compare.mathBarHtml(1, 'Test', 'Note', '₹1', {
-      lines: [
-        { k: 'num', t: '₹100' },
-        { k: 'op', t: '× 80%' },
-        { k: 'rule' },
-        { k: 'result', t: '₹80' }
-      ]
-    }).indexOf('hlc-math-op') !== -1,
-    'numbered bar can show a times-and-line working'
-  );
-  var steppedOpBar = compare.mathBarHtml(1, 'Test', 'Note', '₹80', {
-    stepWord: true,
-    lines: [
-      { k: 'num', t: '₹100' },
-      { k: 'op', t: '× 80%' },
-      { k: 'rule' },
-      { k: 'result', t: '₹80' }
-    ]
+
+  var row = compare.receiptRowHtml({
+    label: 'LTV ratio',
+    op: '×',
+    value: '80%',
+    ruleAfter: true
   });
   ok(
-    steppedOpBar.indexOf('hlc-math-bar-step-op') !== -1 &&
-      steppedOpBar.indexOf('>×<') !== -1,
-    'stepped bars show the operation sign below the step label'
+    row.indexOf('hlc-receipt-op') !== -1 &&
+      row.indexOf('>×<') !== -1 &&
+      row.indexOf('>80%<') !== -1,
+    'receipt row keeps op and value in separate slots'
   );
-  var joinInkBar = compare.mathBarHtml(3, 'Bounce charge', '', '₹590', {
-    stepWord: true,
-    slot: 3,
-    joinOp: '+',
-    lines: [{ k: 'result', t: '₹590', emphasis: true }]
+  ok(
+    row.indexOf('hlc-receipt-rule') !== -1,
+    'ruleAfter emits a maths line'
+  );
+
+  var finalRow = compare.receiptRowHtml({
+    label: 'Eligible amount',
+    value: '₹80',
+    final: true
   });
   ok(
-    joinInkBar.indexOf('hlc-math-bar--slot-3') !== -1 &&
-      joinInkBar.indexOf('hlc-math-bar-join') !== -1 &&
-      joinInkBar.indexOf('hlc-math-num--result') !== -1,
-    'join rows carry the same slot class on sign and derived result'
+    finalRow.indexOf('hlc-receipt-row--final') !== -1,
+    'final receipt rows carry the final class'
   );
-  var loanAmountStack = compare.mathBarStackHtml(
-    [
-      {
-        step: 1,
-        label: 'House share',
-        value: '₹80',
-        lines: [
-          { k: 'num', t: '₹100' },
-          { k: 'op', t: '× 80%' },
-          { k: 'rule' },
-          { k: 'result', t: '₹80' }
-        ]
-      },
-      {
-        step: 2,
-        label: 'Income share',
-        value: '₹55',
-        lines: [
-          { k: 'num', t: '₹100' },
-          { k: 'op', t: '× 55%' },
-          { k: 'rule' },
-          { k: 'result', t: '₹55' }
-        ]
-      }
-    ],
-    { stackClass: 'hlc-math-bars--steps' }
+
+  var block = compare.receiptBlockHtml([
+    { label: 'Property value', value: '₹100' },
+    { label: 'LTV ratio', op: '×', value: '80%', ruleAfter: true },
+    { label: 'Eligible amount', value: '₹80', final: true }
+  ]);
+  ok(
+    block.indexOf('hlc-receipt') !== -1 &&
+      block.indexOf('Eligible amount') !== -1 &&
+      block.indexOf('hlc-drawer-card') === -1,
+    'receipt block has no card wrapper'
+  );
+
+  var dual = compare.receiptDualHtml(
+    [{ label: 'Property value', value: '₹1' }],
+    [{ label: 'Net monthly income', value: '₹2' }],
+    [{ label: 'Loan amount', value: '₹3', final: true }]
   );
   ok(
-    loanAmountStack.indexOf('Step 1') !== -1 &&
-      loanAmountStack.indexOf('Step 2') !== -1 &&
-      loanAmountStack.indexOf('hlc-math-bars--steps') !== -1 &&
-      loanAmountStack.indexOf('hlc-math-op') !== -1,
-    'loan amount stacks label every step and show operation signs'
+    dual.indexOf('1. Property value') !== -1 &&
+      dual.indexOf('2. Monthly Income') !== -1 &&
+      dual.indexOf('3. Required loan amount') !== -1 &&
+      dual.indexOf('₹3') !== -1 &&
+      dual.indexOf('hlc-receipt-dual') !== -1,
+    'loan dual columns use 1. Property value | 2. Monthly Income | 3. Required loan amount'
   );
-  var joinBar = compare.mathBarHtml(2, 'MODT stamp duty', '', '₹15,000', {
-    joinOp: '+',
-    lines: [{ k: 'result', t: '₹15,000', emphasis: true }]
+
+  ok(
+    Math.abs(
+      compare.loanFactorFromRate(0.085, 240) - compare.loanFromEmi(1, 0.085, 240)
+    ) < 1e-9,
+    'loan factor matches loanFromEmi(1,…)'
+  );
+
+  var panel = compare.calcPanelHtml({
+    leadHtml: compare.calcLeadHtml('EMI every month is', '₹1'),
+    receiptHtml: compare.receiptBlockHtml([
+      { label: 'EMI', value: '₹1', final: true }
+    ])
   });
   ok(
-    joinBar.indexOf('hlc-math-bar-rail') !== -1 &&
-      joinBar.indexOf('hlc-math-bar-join') !== -1 &&
-      joinBar.indexOf('hlc-math-bar--join-plus') !== -1 &&
-      joinBar.indexOf('hlc-math-bar-main--join') === -1,
-    'additive stack rows show a join sign in the left gutter'
+    panel.indexOf('hlc-calc-lead-sentence') !== -1 &&
+      panel.indexOf('hlc-calc-lead-amount') !== -1 &&
+      panel.indexOf('EMI every month is') !== -1,
+    'calc panel lead keeps sentence and amount on separate lines'
   );
-  var additive = compare.additiveStackBars(
-    [
-      { step: 1, label: 'CERSAI', value: '₹118', lines: [{ k: 'result', t: '₹118' }] },
-      { step: 2, label: 'MODT', value: '₹15,000', lines: [{ k: 'result', t: '₹15,000' }] }
-    ],
-    'Total',
-    '₹15,118'
-  );
-  ok(
-    additive.length === 3 &&
-      additive[0].stepWord === true &&
-      additive[1].joinOp === '+' &&
-      additive[2].isTotal === true &&
-      additive[2].joinOp === '=' &&
-      additive[2].slot === 'total' &&
-      additive[2].lines.length === 1 &&
-      additive[2].lines[0].t === '₹15,118',
-    'additive stack helper marks joins and a single total line'
-  );
-  var stepWordBar = compare.mathBarHtml(1, 'CERSAI', '', '₹118', {
-    stepWord: true,
-    slot: 1,
-    lines: [{ k: 'result', t: '₹118', emphasis: true }]
+
+  var panelWithLogo = compare.calcPanelHtml({
+    bankName: 'HDFC Bank',
+    leadHtml: compare.calcLeadHtml('EMI every month is', '₹1')
   });
   ok(
-    stepWordBar.indexOf('hlc-math-bar-step') !== -1 &&
-      stepWordBar.indexOf('Step 1') !== -1,
-    'additive charge rows label steps as Step 1, Step 2, …'
+    panelWithLogo.indexOf('hlc-calc-panel--with-logo') !== -1 &&
+      panelWithLogo.indexOf('hlc-bank-logo--calc') !== -1 &&
+      panelWithLogo.indexOf('hdfc-bank.png') !== -1 &&
+      panelWithLogo.indexOf('alt="HDFC Bank"') !== -1,
+    'calc panel shows a larger bank logo when bankName is set'
   );
-  var steppedStack = compare.mathBarStackHtml([
-    { step: 1, label: 'Annual rate', note: 'Split monthly.', value: '₹1' },
-    { step: 2, label: 'EMI', note: 'Fixed each month.', value: '₹2' }
-  ], { stackClass: 'hlc-math-bars--steps' });
-  ok(
-    steppedStack.indexOf('Step 1') !== -1 &&
-      steppedStack.indexOf('Step 2') !== -1 &&
-      steppedStack.indexOf('hlc-math-bars--steps') !== -1 &&
-      steppedStack.indexOf('hlc-math-bar--slot-1') !== -1 &&
-      steppedStack.indexOf('hlc-math-bar--slot-2') !== -1,
-    'stepped calculators label every step, share the steps stack class, and slot each row'
-  );
-  var totalBar = compare.mathBarHtml(5, 'Total', '', '₹31,118', {
-    isTotal: true,
-    joinOp: '=',
-    stepWord: true,
-    slot: 'total',
-    lines: [{ k: 'result', t: '₹31,118', emphasis: true }]
-  });
-  ok(
-    totalBar.indexOf('hlc-math-bar-main--total') !== -1 &&
-      totalBar.indexOf('hlc-math-bar--total') !== -1 &&
-      totalBar.indexOf('hlc-math-bar-rail') !== -1 &&
-      totalBar.indexOf('>Total<') !== -1 &&
-      totalBar.indexOf('₹31,118') !== -1 &&
-      totalBar.indexOf('hlc-ledger-final-value') !== -1 &&
-      totalBar.indexOf('hlc-math-bar-copy') !== -1,
-    'total rows keep = in the rail, Total as the label, and the sum in the work column'
-  );
+
 }
 
 // ─── Guide intelligence tests (GI-01–GI-11) ──────────────────────────────────

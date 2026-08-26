@@ -307,7 +307,8 @@
                     </label>
                     </div>
                   </div>
-                  <p class="hlc-form-band-footnote hlc-field-note hlc-field-note--card-load">
+                  <!-- div not p: icon-select list is a div; a p would auto-close and orphan “of limit.” -->
+                  <div class="hlc-form-band-footnote hlc-field-note hlc-field-note--card-load">
                         EMI equals
                         <span
                           class="hlc-icon-select hlc-icon-select--bare hlc-icon-select--card-load"
@@ -334,7 +335,7 @@
                           <div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div>
                         </span>
                         of limit.
-                  </p>
+                  </div>
                   </div>
                 </div>
 
@@ -476,7 +477,6 @@
                   </button>
                 </div>
                 <div class="hlc-apply-bar" id="hlc-apply-bar">
-                  <span class="hlc-apply-count" id="hlc-apply-count" hidden aria-live="polite"></span>
                   <button type="button" class="hlc-btn-primary" id="hlc-apply-btn" disabled>Apply once</button>
                 </div>
               </div>

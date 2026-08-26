@@ -665,14 +665,10 @@ function calcNotesBlockHtml(lines) {
 
 function calcDrawerBodyHtml(calcHtml, extras) {
   const extra = extras || {};
-  const calcTitle = extra.calcTitle || "Calculation of the charges";
   const noteLines = extra.noteLines || [];
   const notesBlock = calcNotesBlockHtml(noteLines);
-  let html = drawerDiscloseHtml(
-    calcTitle,
-    calcHtml || "",
-    { open: true }
-  );
+  let html =
+    '<div class="hlc-calc-always">' + (calcHtml || "") + "</div>";
   if (extra.detailsHtml) {
     html += drawerDiscloseHtml("All amounts", extra.detailsHtml);
   }
@@ -1199,8 +1195,9 @@ function missedEmiMonthTotal(
 
 /**
  * Exact min/max on the live matching set (not the visible slice).
- * Pill words are always Lowest / Highest. Colour follows whether that
- * extreme helps or costs: cost columns (rate, fees) vs benefit (loan).
+ * Pill words are always Lowest / Highest (plain primary ink).
+ * Figure colour follows whether that extreme helps or costs: cost
+ * columns (rate, fees) vs benefit (loan).
  */
 const COLUMN_COMPARE_KIND = {
   effectiveRoiPct: "cost",
@@ -1415,6 +1412,9 @@ function loanAmountWalkModel(row, query) {
     cardLoadPct: cardLoadPct,
     cardLoad: cardLoad,
     emiRoom: emiRoom,
+    tenureMonths: Number(row.tenureMonths) || 0,
+    roiDecimal: Number(row.roiDecimal) || 0,
+    loanFactor: loanFactorFromRate(row.roiDecimal, row.tenureMonths),
     fromProperty: row.fromProperty,
     fromIncome: row.fromIncome,
     bankMaximum: bankMaximum,
@@ -6897,224 +6897,144 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function mathWorkLinesHtml(lines, options) {
-  const opts = options || {};
-  return (lines || [])
-    .filter(Boolean)
-    .map(function (line) {
-      if (line.k === "rule") {
-        return '<div class="hlc-math-rule" aria-hidden="true"></div>';
-      }
-      if (line.k === "caption") {
-        return (
-          '<div class="hlc-math-caption-row' +
-          (line.limiting
-            ? " hlc-math-caption-row--limiting hlc-math-caption-row--" +
-              line.track
-            : "") +
-          '">' +
-          '<span class="hlc-math-caption">' +
-          escapeHtml(line.t) +
-          "</span>" +
-          '<span class="hlc-math-num">' +
-          escapeHtml(line.v) +
-          "</span></div>"
-        );
-      }
-      if (line.k === "op") {
-        return '<div class="hlc-math-op">' + escapeHtml(line.t) + "</div>";
-      }
-      const isResult = line.k === "result" || line.emphasis;
-      return (
-        '<div class="hlc-math-num' +
-        (isResult ? " hlc-math-num--result" : "") +
-        (opts.isTotal && isResult ? " hlc-ledger-final-value" : "") +
-        '">' +
-        escapeHtml(line.t) +
-        "</div>"
-      );
-    })
-    .join("");
+/** Annuity factor: principal = EMI × factor (same as loanFromEmi(1, …)). */
+function loanFactorFromRate(roiDecimal, tenureMonths) {
+  return loanFromEmi(1, roiDecimal, tenureMonths);
 }
 
-function mathWorkHtml(lines, options) {
-  if (!lines || !lines.length) return "";
+/** How under Loan factor — live rate% and months from this profile (not placeholders). */
+function loanFactorHowText(roiDecimal, tenureMonths) {
+  var ratePct = Number(roiDecimal) * 100;
+  var months = Math.max(0, Math.round(Number(tenureMonths) || 0));
+  var rateStr = "—";
+  if (Number.isFinite(ratePct)) {
+    rateStr = (Math.round(ratePct * 100) / 100)
+      .toFixed(2)
+      .replace(/\.?0+$/, "");
+  }
   return (
-    '<div class="hlc-math-sheet">' +
-    mathWorkLinesHtml(lines, options || {}) +
+    "(1 − (1 + " +
+    rateStr +
+    " ÷ 1200)^(−" +
+    months +
+    ")) ÷ (" +
+    rateStr +
+    " ÷ 1200)"
+  );
+}
+
+/**
+ * One receipt row.
+ * @param {{label:string, op?:string, value:string, how?:string, final?:boolean, ruleAfter?:boolean}} row
+ */
+function receiptRowHtml(row) {
+  if (!row) return "";
+  var how = row.how
+    ? '<p class="hlc-receipt-how">' + escapeHtml(row.how) + "</p>"
+    : "";
+  var opHtml =
+    '<span class="hlc-receipt-op" aria-hidden="true">' +
+    escapeHtml(row.op || "") +
+    "</span>";
+  var rowClass =
+    "hlc-receipt-row" + (row.final ? " hlc-receipt-row--final" : "");
+  return (
+    '<div class="' +
+    rowClass +
+    '">' +
+    '<div class="hlc-receipt-label-col">' +
+    '<span class="hlc-receipt-label">' +
+    escapeHtml(row.label || "") +
+    "</span>" +
+    how +
+    "</div>" +
+    '<div class="hlc-receipt-value-col">' +
+    opHtml +
+    '<span class="hlc-receipt-value">' +
+    escapeHtml(row.value || "") +
+    "</span></div></div>" +
+    (row.ruleAfter
+      ? '<div class="hlc-receipt-rule" aria-hidden="true"></div>'
+      : "")
+  );
+}
+
+function receiptBlockHtml(rows) {
+  if (!rows || !rows.length) return "";
+  return (
+    '<div class="hlc-receipt">' +
+    rows.map(receiptRowHtml).join("") +
     "</div>"
   );
 }
 
-function gutterOpFromLines(lines) {
-  if (!lines || !lines.length) return "";
-  for (var i = 0; i < lines.length; i++) {
-    if (lines[i].k !== "op") continue;
-    var t = String(lines[i].t || "").trim();
-    if (!t) continue;
-    if (t.charAt(0) === "×") return "×";
-    if (t.charAt(0) === "÷") return "÷";
-    if (t.charAt(0) === "@") return "@";
-    if (t.charAt(0) === "−" || t.charAt(0) === "-") return "−";
-    if (t.charAt(0) === "+") return "+";
-    if (/^or\b/i.test(t)) return "or";
-    if (/^min\b/i.test(t)) return "min";
-    if (/^max\b/i.test(t)) return "max";
-    if (/^up to\b/i.test(t)) return "≤";
-    return "";
-  }
-  return "";
+function receiptColumnHtml(title, rows) {
+  return (
+    '<section class="hlc-receipt-col">' +
+    '<h4 class="hlc-receipt-col-title">' +
+    escapeHtml(String(title)) +
+    "</h4>" +
+    receiptBlockHtml(rows) +
+    "</section>"
+  );
 }
 
-function mathBarHtml(step, label, note, valueText, options) {
-  const opts = options || {};
-  const track = opts.track ? " hlc-math-bar--" + opts.track : "";
-  const limiting = opts.limiting ? " hlc-math-bar--limiting" : "";
-  const joinOp = opts.joinOp || "";
-  const isTotal = opts.isTotal ? " hlc-math-bar--total" : "";
-  const slot = opts.slot ? " hlc-math-bar--slot-" + opts.slot : "";
-  const hasStep = step != null && step !== "" && step !== false;
-  var stepOp = "";
-  if (!joinOp) {
-    if (opts.stepOp != null && opts.stepOp !== "") {
-      stepOp = opts.stepOp;
-    } else if (opts.stepOp == null) {
-      stepOp = gutterOpFromLines(opts.lines);
-    }
-  }
-  const hasGutter = hasStep || joinOp || stepOp;
-  const noStep = hasGutter ? "" : " hlc-math-bar--no-step";
-  const joinClass =
-    joinOp === "+"
-      ? " hlc-math-bar--join-plus"
-      : joinOp === "="
-        ? " hlc-math-bar--join-equals"
-        : "";
-  const stepLabel =
-    hasStep && opts.stepWord
-      ? "Step " + String(step)
-      : hasStep
-        ? String(step)
-        : "";
-  const work =
-    opts.lines && opts.lines.length
-      ? mathWorkHtml(opts.lines, { isTotal: !!opts.isTotal })
-      : mathWorkHtml([{ k: "result", t: valueText, emphasis: true }], {
-          isTotal: !!opts.isTotal
-        });
-  const joinHtml = joinOp
-    ? '<span class="hlc-math-bar-join" aria-hidden="true">' +
-      escapeHtml(joinOp) +
-      "</span>"
-    : "";
-  const stepOpHtml = stepOp
-    ? '<span class="hlc-math-bar-step-op" aria-hidden="true">' +
-      escapeHtml(stepOp) +
-      "</span>"
-    : "";
-  const stepHtml = stepLabel
-    ? opts.stepWord
-      ? '<span class="hlc-math-bar-step">' + escapeHtml(stepLabel) + "</span>"
-      : '<span class="hlc-math-bar-num">' + escapeHtml(stepLabel) + "</span>"
-    : "";
-  const railInner = stepHtml + stepOpHtml + joinHtml;
-  const railBlock = railInner
-    ? '<div class="hlc-math-bar-rail">' + railInner + "</div>"
-    : "";
-  const noteHtml = note
-    ? '<p class="hlc-math-bar-note">' + escapeHtml(note) + "</p>"
-    : "";
-  const copyHtml =
-    '<div class="hlc-math-bar-copy">' +
-    '<p class="hlc-math-bar-label">' +
-    escapeHtml(label) +
-    "</p>" +
-    noteHtml +
+function receiptDualHtml(col1Rows, col2Rows, col3Rows) {
+  var html =
+    '<div class="hlc-receipt-dual">' +
+    receiptColumnHtml("1. Property value", col1Rows) +
+    receiptColumnHtml("2. Monthly Income", col2Rows) +
     "</div>";
-  var mainClass = "hlc-math-bar-main";
-  if (opts.isTotal) mainClass += " hlc-math-bar-main--total";
-  if (!note && work) mainClass += " hlc-math-bar-main--work-only";
-  const mainHtml = '<div class="' + mainClass + '">' + copyHtml + work + "</div>";
+  if (col3Rows && col3Rows.length) {
+    html += receiptColumnHtml("3. Required loan amount", col3Rows);
+  }
+  return html;
+}
+
+function calcLeadHtml(sentence, amountText, subText) {
   return (
-    '<div class="hlc-math-bar' +
-    track +
-    limiting +
-    noStep +
-    joinClass +
-    isTotal +
-    slot +
-    '">' +
-    railBlock +
-    mainHtml +
-    "</div>"
+    '<p class="hlc-calc-lead-sentence">' +
+    escapeHtml(sentence || "") +
+    "</p>" +
+    (amountText
+      ? '<p class="hlc-calc-lead-amount">' +
+        escapeHtml(amountText) +
+        "</p>"
+      : "") +
+    (subText
+      ? '<p class="hlc-calc-lead-sub">' + escapeHtml(subText) + "</p>"
+      : "")
   );
 }
 
-/** Item bars plus a total row; + / = sit in the left gutter, not repeated in the sum. */
-function additiveStackBars(itemBars, totalLabel, totalValue, totalNote) {
-  if (!itemBars || !itemBars.length) return [];
-  const marked = itemBars.map(function (bar, index) {
-    const next = Object.assign({}, bar);
-    next.stepWord = true;
-    next.slot = index + 1;
-    if (index > 0) next.joinOp = "+";
-    return next;
-  });
-  marked.push({
-    step: marked.length + 1,
-    label: totalLabel || "Total",
-    note: totalNote || "",
-    value: totalValue,
-    isTotal: true,
-    joinOp: "=",
-    stepWord: true,
-    slot: "total",
-    lines: [{ k: "result", t: totalValue, emphasis: true }]
-  });
-  return marked;
-}
-
-/** Step 1 / Step 2 labels on every bar that carries a step number. */
-function markStepWordBars(bars) {
-  if (!bars || !bars.length) return [];
-  return bars.map(function (bar) {
-    if (bar.step == null || bar.step === "" || bar.step === false) return bar;
-    if (bar.stepWord) return bar;
-    return Object.assign({}, bar, { stepWord: true });
-  });
-}
-
-/** Slot ink for each row — gutter sign matches the derived result on that row. */
-function markSlotBars(bars) {
-  if (!bars || !bars.length) return [];
-  var slotIndex = 0;
-  return bars.map(function (bar) {
-    if (bar.isTotal) {
-      if (bar.slot != null && bar.slot !== "") return bar;
-      return Object.assign({}, bar, { slot: "total" });
-    }
-    if (bar.slot != null && bar.slot !== "") return bar;
-    slotIndex += 1;
-    return Object.assign({}, bar, { slot: Math.min(slotIndex, 5) });
-  });
-}
-
-function mathBarStackHtml(bars, options) {
-  if (!bars || !bars.length) return "";
-  const opts = options || {};
-  const stepped =
-    opts.stepWord === false ? bars : markStepWordBars(bars);
-  const normalized = markSlotBars(stepped);
-  const stackClass = opts.stackClass ? " " + opts.stackClass : "";
+/** Larger mark for the calc drawer — table cells stay on `.hlc-bank-logo` alone. */
+function calcPanelBankLogoHtml(bankName) {
+  var src = bankLogoPath(bankName);
+  if (!src) return "";
+  var name = String(bankName || "").trim();
   return (
-    '<div class="hlc-math-bars' +
-    stackClass +
+    '<img class="hlc-bank-logo hlc-bank-logo--calc" src="' +
+    escapeHtml(src) +
+    '" alt="' +
+    escapeHtml(name) +
+    '" width="40" height="40" decoding="async" loading="lazy">'
+  );
+}
+
+function calcPanelHtml(options) {
+  var opts = options || {};
+  var logo = opts.bankName ? calcPanelBankLogoHtml(opts.bankName) : "";
+  var lead = opts.leadHtml
+    ? '<div class="hlc-calc-lead">' + opts.leadHtml + "</div>"
+    : "";
+  var body = (opts.receiptHtml || "") + (opts.extraHtml || "");
+  return (
+    '<div class="hlc-calc-panel' +
+    (logo ? " hlc-calc-panel--with-logo" : "") +
     '">' +
-    normalized
-      .map(function (bar) {
-        return mathBarHtml(bar.step, bar.label, bar.note, bar.value, bar);
-      })
-      .join("") +
+    logo +
+    lead +
+    (body ? '<div class="hlc-calc-receipt-wrap">' + body + "</div>" : "") +
     "</div>"
   );
 }
@@ -7122,6 +7042,7 @@ function mathBarStackHtml(bars, options) {
 function amortizationTableHtml(schedule) {
   const rows = (schedule && schedule.rows) || [];
   if (!rows.length) return "";
+  const emi = schedule.emi;
   const byYear = [];
   rows.forEach(function (row) {
     const year = Math.ceil(row.month / 12);
@@ -7133,19 +7054,21 @@ function amortizationTableHtml(schedule) {
       '<div class="hlc-amort-shell"><table class="hlc-amort-table">' +
       '<caption class="visually-hidden">Year ' +
       yearNumber +
-      "</caption>" +
-      "<thead><tr><th>Month</th><th>Still owed</th><th>Principal</th><th>Interest</th></tr></thead><tbody>" +
+      " amortisation schedule</caption>" +
+      "<thead><tr><th>Month</th><th>EMI</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody>" +
       yearRows
         .map(function (row) {
           return (
             "<tr><td>" +
             row.month +
             "</td><td>" +
-            formatInr(row.outstanding) +
+            formatInr(emi) +
             "</td><td>" +
             formatInr(row.principal) +
             "</td><td>" +
             formatInr(row.interest) +
+            "</td><td>" +
+            formatInr(row.outstanding) +
             "</td></tr>"
           );
         })
@@ -7167,45 +7090,9 @@ function amortizationTableHtml(schedule) {
     laterHtml = '<div class="hlc-amort-years">' + laterHtml + "</div>";
   }
   return drawerDiscloseHtml(
-    "Month by month",
+    "Check amortisation schedule",
     yearTable(firstYear, 1) + laterHtml,
-    { nested: true, open: true }
-  );
-}
-
-const CALC_HOW_TITLE = "How this is worked out";
-const CALC_CHARGES_TITLE = "Calculation of the charges";
-
-function calcStoryHtml(resultText, leadText, barsHtml, extraHtml, options) {
-  const opts = options || {};
-  const resultBlock = resultText
-    ? '<p class="hlc-story-result">' + escapeHtml(resultText) + "</p>"
-    : "";
-  const resultNoteBlock = opts.resultNote
-    ? '<p class="hlc-story-compare-title">' + escapeHtml(opts.resultNote) + "</p>"
-    : "";
-  const leadBlock = leadText
-    ? '<p class="hlc-story-lead">' + escapeHtml(leadText) + "</p>"
-    : "";
-  const workInner =
-    (opts.workTitle && (barsHtml || extraHtml)
-      ? '<p class="hlc-story-work-title">' + escapeHtml(opts.workTitle) + "</p>"
-      : "") +
-    (barsHtml || "") +
-    (extraHtml || "");
-  return (
-    '<div class="hlc-story">' +
-    (resultBlock || leadBlock || resultNoteBlock
-      ? '<div class="hlc-story-head">' +
-        leadBlock +
-        resultBlock +
-        resultNoteBlock +
-        "</div>"
-      : "") +
-    (workInner
-      ? '<div class="hlc-drawer-card hlc-story-card">' + workInner + "</div>"
-      : "") +
-    "</div>"
+    { nested: true }
   );
 }
 
@@ -7612,10 +7499,8 @@ function initPage() {
     headScroll: document.getElementById("hlc-table-head-scroll"),
     scroll: document.getElementById("hlc-table-scroll"),
     applyBar: document.getElementById("hlc-apply-bar"),
-    applyCount: document.getElementById("hlc-apply-count"),
     applyBtn: document.getElementById("hlc-apply-btn"),
     applyDock: document.getElementById("hlc-apply-dock"),
-    applyDockCount: document.getElementById("hlc-apply-dock-count"),
     applyDockBtn: document.getElementById("hlc-apply-dock-btn"),
     drawer: document.getElementById("hlc-drawer"),
     drawerBackdrop: document.getElementById("hlc-drawer-backdrop"),
@@ -7724,24 +7609,22 @@ function initPage() {
     );
   }
 
-  function applyOnceLabel() {
+  /** Visible CTA label — count lives on the button, not a sibling "N selected". */
+  function applyOnceLabel(count) {
+    if (count > 0) return "Apply once (" + count + ")";
     return "Apply once";
   }
 
-  function setApplyCountLabel(node, count) {
-    if (!node) return;
-    if (count <= 0) {
-      node.hidden = true;
-      node.textContent = "";
-      return;
-    }
-    node.hidden = false;
-    node.replaceChildren();
-    var num = document.createElement("span");
-    num.className = "hlc-apply-count-n";
-    num.textContent = String(count);
-    node.appendChild(num);
-    node.appendChild(document.createTextNode(" selected"));
+  function applyOnceAriaLabel(count) {
+    if (count <= 0) return "Apply once";
+    return "Apply once to " + count + (count === 1 ? " bank" : " banks");
+  }
+
+  function paintApplyOnceButton(btn, count) {
+    if (!btn) return;
+    btn.disabled = count === 0;
+    btn.textContent = applyOnceLabel(count);
+    btn.setAttribute("aria-label", applyOnceAriaLabel(count));
   }
 
   function readQuery() {
@@ -8472,7 +8355,7 @@ function initPage() {
     el.filtersToggle.setAttribute("aria-expanded", "false");
     document.body.classList.remove("hlc-filters-sheet-open");
     setFiltersScrimOpen(false);
-    // Re-sync Apply once / N selected — do not rewrite updateApplyBar.
+    // Re-sync Apply once label / enabled state — do not rewrite updateApplyBar.
     updateApplyBar();
 
     if (reduceMotion || el.filtersPanel.hasAttribute("hidden")) {
@@ -9926,22 +9809,8 @@ function initPage() {
   function updateApplyBar() {
     const count = state.selected.size;
     const hasRows = !!(state.rows && state.rows.length);
-    const label = applyOnceLabel();
-    setApplyCountLabel(el.applyCount, count);
-    setApplyCountLabel(el.applyDockCount, count);
-    el.applyBtn.disabled = count === 0;
-    el.applyBtn.textContent = label;
-    el.applyBtn.setAttribute(
-      "aria-label",
-      count === 0
-        ? "Apply once"
-        : "Apply once to " + count + (count === 1 ? " bank" : " banks")
-    );
-    if (el.applyDockBtn) {
-      el.applyDockBtn.disabled = count === 0;
-      el.applyDockBtn.textContent = label;
-      el.applyDockBtn.setAttribute("aria-label", el.applyBtn.getAttribute("aria-label"));
-    }
+    paintApplyOnceButton(el.applyBtn, count);
+    paintApplyOnceButton(el.applyDockBtn, count);
     if (el.applyDock) {
       var resultsShell = document.getElementById("hlc-results-shell");
       // Floating Apply once is mobile-only. Desktop keeps the header button.
@@ -9962,6 +9831,15 @@ function initPage() {
       setFiltersOpen(false);
     }
     const opts = options || {};
+    if (opts.calcLead) {
+      el.drawer.classList.add("hlc-drawer--calc-lead");
+      el.drawer.setAttribute("aria-label", "Calculation");
+      el.drawer.removeAttribute("aria-labelledby");
+    } else {
+      el.drawer.classList.remove("hlc-drawer--calc-lead");
+      el.drawer.removeAttribute("aria-label");
+      el.drawer.setAttribute("aria-labelledby", "hlc-drawer-title");
+    }
     const hasGroups = String(bodyHtml || "").indexOf("hlc-drawer-group") >= 0;
     const dumpChrome = hasGroups && opts.keepHeading !== true;
     if (dumpChrome) {
@@ -9988,7 +9866,11 @@ function initPage() {
       el.drawerSub.hidden = !String(subtitle || "").trim();
       el.drawerBody.innerHTML = bodyHtml;
       const groupCount = hasGroups
-        ? el.drawerBody.querySelectorAll(".hlc-drawer-group").length
+        ? el.drawerBody.querySelectorAll(
+            opts.calcLead
+              ? ".hlc-drawer-group:not(.hlc-drawer-group--nested)"
+              : ".hlc-drawer-group"
+          ).length
         : 0;
       const showExpand = groupCount >= 2;
       if (el.drawerActionsBar) {
@@ -10110,649 +9992,7 @@ function initPage() {
     );
   }
 
-  function storyEm(text) {
-    return '<strong class="hlc-story-em">' + escapeHtml(String(text)) + "</strong>";
-  }
-
-  function storyLead(text) {
-    return '<p class="hlc-story-lead">' + escapeHtml(text) + "</p>";
-  }
-
-  function storyLabel(text) {
-    return '<p class="hlc-story-label">' + escapeHtml(text) + "</p>";
-  }
-
-  function storyLine(html) {
-    return '<p class="hlc-story-line">' + html + "</p>";
-  }
-
-  function storyNote(text) {
-    if (!text) return "";
-    return '<p class="hlc-story-note">' + escapeHtml(text) + "</p>";
-  }
-
-  function storyJoin(parts) {
-    if (!parts || !parts.length) return "";
-    if (parts.length === 1) return parts[0];
-    if (parts.length === 2) return parts[0] + " and " + parts[1];
-    return parts.slice(0, -1).join(", ") + ", and " + parts[parts.length - 1];
-  }
-
-  function storyFact(label, value) {
-    return storyRow(label, value, false);
-  }
-
-  function storyResult(value) {
-    return (
-      '<p class="hlc-story-result">' + escapeHtml(String(value)) + "</p>"
-    );
-  }
-
-  function storyHero(label, value) {
-    return storyResult(value);
-  }
-
-  function storyTotal(label, value) {
-    return storyResult(value);
-  }
-
-  function storyStage(options) {
-    return (
-      '<section class="hlc-story-block">' +
-      (options.title
-        ? '<h4 class="hlc-story-block-title">' +
-          escapeHtml(options.title) +
-          "</h4>"
-        : "") +
-      (options.body || "") +
-      (options.note ? storyNote(options.note) : "") +
-      "</section>"
-    );
-  }
-
-  function renderMathLines(lines) {
-    return mathWorkLinesHtml(lines);
-  }
-
-  function mathWorksheet(lines) {
-    return (
-      '<div class="hlc-math-sheet">' + renderMathLines(lines) + "</div>"
-    );
-  }
-
-  function mathBlock(label, lines, note) {
-    return (
-      '<div class="hlc-math-block">' +
-      '<div class="hlc-math-block-aside">' +
-      (label
-        ? '<p class="hlc-math-block-label">' + escapeHtml(label) + "</p>"
-        : "") +
-      (note
-        ? '<p class="hlc-math-block-note">' + escapeHtml(note) + "</p>"
-        : "") +
-      "</div>" +
-      mathWorksheet(lines) +
-      "</div>"
-    );
-  }
-
-  function mathSheet(blocks) {
-    return (
-      '<div class="hlc-math-sheet-wrap">' +
-      blocks
-        .filter(function (block) {
-          return block && block.lines && block.lines.length;
-        })
-        .map(function (block) {
-          return mathBlock(block.label, block.lines, block.note);
-        })
-        .join("") +
-      "</div>"
-    );
-  }
-
-  function storyMathStack(lines) {
-    return mathWorksheet(lines);
-  }
-
-  function storyTrack(title, bodyHtml, trackId) {
-    return (
-      '<section class="hlc-story-track hlc-story-track--' +
-      trackId +
-      '">' +
-      '<h4 class="hlc-story-track-title">' +
-      escapeHtml(title) +
-      "</h4>" +
-      bodyHtml +
-      "</section>"
-    );
-  }
-
-  function storyRow(label, value, emphasis) {
-    return (
-      '<div class="hlc-story-row' +
-      (emphasis ? " hlc-story-row--emphasis" : "") +
-      '">' +
-      '<span class="hlc-story-row-label">' +
-      escapeHtml(label) +
-      "</span>" +
-      '<span class="hlc-story-row-value">' +
-      escapeHtml(value) +
-      "</span>" +
-      "</div>"
-    );
-  }
-
-  function storyDivider() {
-    return '<div class="hlc-story-divider" aria-hidden="true"></div>';
-  }
-
-  function storyCard(innerHtml) {
-    return (
-      '<div class="hlc-drawer-card hlc-story-card">' + innerHtml + "</div>"
-    );
-  }
-
-  function storyBreakdown(rows) {
-    return (
-      '<div class="hlc-story-breakdown">' +
-      rows
-        .map(function (row) {
-          return (
-            '<div class="hlc-story-breakdown-row">' +
-            '<div class="hlc-story-breakdown-main">' +
-            '<span class="hlc-story-breakdown-name">' +
-            escapeHtml(row.name) +
-            "</span>" +
-            '<span class="hlc-story-breakdown-amt">' +
-            escapeHtml(row.amount) +
-            "</span>" +
-            "</div>" +
-            (row.how
-              ? '<p class="hlc-story-breakdown-how">' +
-                escapeHtml(row.how) +
-                "</p>"
-              : "") +
-            "</div>"
-          );
-        })
-        .join("") +
-      "</div>"
-    );
-  }
-
-  function storyReceipt(rows) {
-    return storyBreakdown(rows);
-  }
-
-  function storyCallout(html) {
-    return '<div class="hlc-story-callout">' + html + "</div>";
-  }
-
-  function amountsMatch(a, b) {
-    return Math.round(Number(a) || 0) === Math.round(Number(b) || 0);
-  }
-
-  function loanAmountCalculationHtml(row) {
-    var model = loanAmountWalkModel(row, readQuery());
-    var houseActive = model.limiter === "house" || model.limiter === "both";
-    var incomeActive = model.limiter === "income" || model.limiter === "both";
-    var stepStack = { stackClass: "hlc-math-bars--steps" };
-    var step = 1;
-
-    var houseTrackHtml = storyTrack(
-      "House cap",
-      mathBarStackHtml(
-        [
-          {
-            step: step++,
-            label:
-              "Bank funds " +
-              formatPctPlain(model.fundedPct) +
-              " of the property",
-            note: "Down payment: " + formatInr(model.downPayment) + ".",
-            value: formatInr(model.fromProperty),
-            track: "house",
-            limiting: houseActive,
-            lines: [
-              { k: "num", t: formatInr(model.propertyValue) },
-              { k: "op", t: "× " + formatPctPlain(model.fundedPct) },
-              { k: "rule" },
-              {
-                k: "result",
-                t: formatInr(model.fromProperty),
-                emphasis: true
-              }
-            ]
-          }
-        ],
-        stepStack
-      ),
-      "house"
-    );
-
-    var incomeBars = [
-      {
-        step: step++,
-        label: "Share of income for all EMIs",
-        note:
-          "About " +
-          formatPctPlain(model.foirPct) +
-          " of take-home for all EMIs together.",
-        value: formatInr(model.incomeAllowance),
-        lines: [
-          { k: "num", t: formatInr(model.totalIncome) },
-          { k: "op", t: "× " + formatPctPlain(model.foirPct) },
-          { k: "rule" },
-          {
-            k: "result",
-            t: formatInr(model.incomeAllowance),
-            emphasis: true
-          }
-        ]
-      }
-    ];
-    if (model.existingEmis > 0) {
-      incomeBars.push({
-        step: step++,
-        label: "Minus other EMIs",
-        value: formatInr(model.afterEmis),
-        lines: [
-          { k: "num", t: formatInr(model.incomeAllowance) },
-          { k: "op", t: "− " + formatInr(model.existingEmis) },
-          { k: "rule" },
-          { k: "result", t: formatInr(model.afterEmis), emphasis: true }
-        ]
-      });
-    }
-    if (model.cardLoad > 0) {
-      incomeBars.push({
-        step: step++,
-        label: "Credit card load",
-        note:
-          formatPctPlain(model.cardLoadPct) +
-          " of total card limits — not your outstanding dues.",
-        value: formatInr(model.cardLoad),
-        lines: [
-          { k: "num", t: formatInr(model.cardLimits) },
-          { k: "op", t: "× " + formatPctPlain(model.cardLoadPct) },
-          { k: "rule" },
-          { k: "result", t: formatInr(model.cardLoad), emphasis: true }
-        ]
-      });
-      incomeBars.push({
-        step: step++,
-        label: "Minus credit card load",
-        value: formatInr(model.emiRoom),
-        lines: [
-          { k: "num", t: formatInr(model.afterEmis) },
-          { k: "op", t: "− " + formatInr(model.cardLoad) },
-          { k: "rule" },
-          { k: "result", t: formatInr(model.emiRoom), emphasis: true }
-        ]
-      });
-    }
-    incomeBars.push({
-      step: step++,
-      label: "That monthly room as a loan",
-      note: "At this bank’s rate, for " + model.tenureLabel + ".",
-      value: formatInr(model.fromIncome),
-      track: "income",
-      limiting: incomeActive,
-      lines: [
-        { k: "num", t: formatInr(model.emiRoom) + "/mo" },
-        {
-          k: "op",
-          t: "@ " + formatPctPlain(model.ratePct) + ", " + model.tenureLabel
-        },
-        { k: "rule" },
-        { k: "result", t: formatInr(model.fromIncome), emphasis: true }
-      ]
-    });
-
-    var incomeTrackHtml = storyTrack(
-      "Income cap",
-      mathBarStackHtml(incomeBars, stepStack),
-      "income"
-    );
-
-    var bankTrackHtml = "";
-    if (model.bankMaxApplies) {
-      bankTrackHtml = storyTrack(
-        "This bank's maximum",
-        mathBarStackHtml(
-          [
-            {
-              step: step++,
-              label: "This bank will not lend above this amount",
-              value: formatInr(model.bankMaximum),
-              track: "bank",
-              limiting: model.limiter === "bank",
-              lines: [{ k: "num", t: formatInr(model.bankMaximum) }]
-            }
-          ],
-          stepStack
-        ),
-        "bank"
-      );
-    }
-
-    var requestTrackHtml = "";
-    var requestedAmt = Math.max(0, Number(readQuery().loanAmountRequest) || 0);
-    if (model.limiter === "request" && requestedAmt > 0) {
-      requestTrackHtml = storyTrack(
-        "Loan amount you asked for",
-        mathBarStackHtml(
-          [
-            {
-              step: step++,
-              label: "Capped at the loan amount you asked for",
-              value: formatInr(requestedAmt),
-              track: "request",
-              limiting: true,
-              lines: [{ k: "num", t: formatInr(requestedAmt) }]
-            }
-          ],
-          stepStack
-        ),
-        "request"
-      );
-    }
-
-    var inner =
-      houseTrackHtml +
-      storyDivider() +
-      incomeTrackHtml +
-      (bankTrackHtml ? storyDivider() + bankTrackHtml : "") +
-      (requestTrackHtml ? storyDivider() + requestTrackHtml : "");
-
-    var resultNote =
-      model.limiter === "request"
-        ? "Capped at the loan amount you asked for."
-        : "Lower of property value and monthly income available for EMI.";
-
-    return calcStoryHtml(
-      formatInr(model.result),
-      "This bank's loan on these inputs is",
-      inner,
-      "",
-      { resultNote: resultNote }
-    );
-  }
-
-  function emiCalculationHtml(row) {
-    const annualPct = Number(row.effectiveRoiPct);
-    const monthlyPct = annualPct / 12;
-    const schedule = amortizationSchedule(
-      row.loanAmount,
-      row.roiDecimal,
-      row.tenureMonths
-    );
-    const bars = mathBarStackHtml(
-      [
-        {
-          step: 1,
-          label: "Banks quote annual; you pay monthly",
-          note: "Yearly rate split into 12 monthly parts.",
-          value: monthlyPct.toFixed(4) + "%",
-          lines: [
-            { k: "num", t: formatPctPlain(annualPct) + " a year" },
-            { k: "op", t: "÷ 12 months" },
-            { k: "rule" },
-            { k: "result", t: monthlyPct.toFixed(4) + "%", emphasis: true }
-          ]
-        },
-        {
-          step: 2,
-          label: "Loan at that monthly rate",
-          note: "Same EMI every month. Early months pay more interest.",
-          value: formatInr(row.emi) + "/mo",
-          lines: [
-            { k: "num", t: formatInr(row.loanAmount) },
-            {
-              k: "op",
-              t: "@ " + monthlyPct.toFixed(4) + "%, " + tenureInWordsFromRow(row)
-            },
-            { k: "rule" },
-            { k: "result", t: formatInr(row.emi) + "/mo", emphasis: true }
-          ]
-        }
-      ],
-      { stackClass: "hlc-math-bars--steps" }
-    );
-    return calcStoryHtml(
-      formatInr(row.emi),
-      "EMI every month is",
-      bars,
-      amortizationTableHtml(schedule)
-    );
-  }
-
-  function processingFeeCalculationHtml(row) {
-    const charge = row.processingCharge;
-    if (!charge) {
-      return calcStoryHtml(
-        formatInr(0),
-        "Processing fee on this loan is",
-        "",
-        ""
-      );
-    }
-
-    const pct =
-      charge.percentage == null ? NaN : Number(charge.percentage);
-    const fixed =
-      charge.fixed_amount == null ? NaN : Number(charge.fixed_amount);
-    const bars = [];
-    let note = "";
-
-    if (Number.isFinite(pct) && pct > 0) {
-      const beforeLimits = row.loanAmount * pct;
-      bars.push({
-        step: 1,
-        label: "Processing fee — this bank’s percentage",
-        note: "One-time fee to process your loan, paid at the time of sanctioning.",
-        value: formatInr(beforeLimits),
-        lines: [
-          { k: "num", t: formatInr(row.loanAmount) },
-          { k: "op", t: "× " + formatPctPlain(pct * 100) },
-          { k: "rule" },
-          { k: "result", t: formatInr(beforeLimits), emphasis: true }
-        ]
-      });
-      const minHit =
-        charge.charge_min != null &&
-        beforeLimits < Number(charge.charge_min);
-      const maxHit =
-        charge.charge_max != null &&
-        beforeLimits > Number(charge.charge_max);
-
-      if (minHit) {
-        bars.push({
-          step: 2,
-          label: "Bank floor",
-          note: "Bank minimum fee (shown in maths).",
-          value: formatInr(row.processingFee),
-          lines: [
-            { k: "num", t: formatInr(beforeLimits) },
-            { k: "op", t: "or " + formatInr(Number(charge.charge_min)) },
-            { k: "rule" },
-            { k: "result", t: formatInr(row.processingFee), emphasis: true }
-          ]
-        });
-      } else if (maxHit) {
-        bars.push({
-          step: 2,
-          label: "Bank ceiling",
-          note: "Bank maximum fee (shown in maths).",
-          value: formatInr(row.processingFee),
-          lines: [
-            { k: "num", t: formatInr(beforeLimits) },
-            { k: "op", t: "up to " + formatInr(Number(charge.charge_max)) },
-            { k: "rule" },
-            { k: "result", t: formatInr(row.processingFee), emphasis: true }
-          ]
-        });
-      } else if (charge.charge_min != null && charge.charge_max != null) {
-        note =
-          "This bank keeps the fee between " +
-          formatInr(Number(charge.charge_min)) +
-          " and " +
-          formatInr(Number(charge.charge_max)) +
-          ".";
-      } else if (charge.charge_min != null) {
-        note = "Bank floor: " + formatInr(Number(charge.charge_min)) + ".";
-      } else if (charge.charge_max != null) {
-        note = "Bank ceiling: " + formatInr(Number(charge.charge_max)) + ".";
-      }
-    } else if (Number.isFinite(fixed)) {
-      bars.push({
-        step: 1,
-        label: "Flat processing fee",
-        note: "One-time fee to process your loan, paid at the time of sanctioning.",
-        value: formatInr(fixed)
-      });
-    } else if (charge.percentage === 0) {
-      bars.push({
-        step: 1,
-        label: "Processing fee",
-        note: "This bank’s share is 0%.",
-        value: formatInr(0),
-        lines: [
-          { k: "num", t: formatInr(row.loanAmount) },
-          { k: "op", t: "× 0%" },
-          { k: "rule" },
-          { k: "result", t: formatInr(0), emphasis: true }
-        ]
-      });
-    } else {
-      return calcStoryHtml(
-        formatInr(0),
-        "Processing fee on this loan is",
-        "",
-        ""
-      );
-    }
-
-    const extraNotes = [
-      "Fees non-refundable.",
-      note
-    ].filter(Boolean);
-
-    return (
-      calcStoryHtml(
-        formatInr(row.processingFee),
-        "Processing fee on this loan is",
-        mathBarStackHtml(bars, { stackClass: "hlc-math-bars--steps" }),
-        "",
-        { workTitle: CALC_CHARGES_TITLE }
-      ) + (extraNotes.length ? storyNote(extraNotes.join(" ")) : "")
-    );
-  }
-
-function propertyCheckChargeNote(name) {
-  var notes = {
-    "Legal and technical":
-      "Fee to check the property is legally clear and built as approved.",
-    "Title search report":
-      "Fee to check property titles are correct.",
-    "Valuation":
-      "Fee to value the property — paid to the bank’s valuer."
-  };
-  return notes[name] || "Bank check on the property before sanction.";
-}
-
-  function propertyCheckChargeCalculationHtml(row) {
-    const lines = row.propertyCheckChargeRows || [];
-    const itemBars = lines.map(function (line, index) {
-      return {
-        step: index + 1,
-        label: line.name || "Charge",
-        note: propertyCheckChargeNote(line.name || ""),
-        value: formatInr(line.amount),
-        lines: [{ k: "result", t: formatInr(line.amount), emphasis: true }]
-      };
-    });
-    const bars = additiveStackBars(
-      itemBars,
-      "Total",
-      formatInr(row.propertyCheckCharges),
-      "GST extra."
-    );
-    return (
-      calcStoryHtml(
-        formatInr(row.propertyCheckCharges),
-        "Property check charges on this loan are",
-        mathBarStackHtml(bars, { stackClass: "hlc-math-bars--additive" }),
-        "",
-        { workTitle: CALC_CHARGES_TITLE }
-      ) +
-      storyNote(
-        "Bank runs these checks. Your own report is not accepted. GST extra."
-      )
-    );
-  }
-
-  function governmentChargeShortNote(charge, loanAmount) {
-    const parts = governmentChargeAmountParts(charge, loanAmount);
-    const method = normalizeText(charge.calculation_method);
-    const name = String(charge.charge_name || "");
-    const pct =
-      charge.percentage != null && Number.isFinite(Number(charge.percentage))
-        ? formatPctPlain(Number(charge.percentage) * 100)
-        : "";
-    const maxBracket =
-      charge.max_amount_inr != null &&
-      Number.isFinite(Number(charge.max_amount_inr))
-        ? " (max " + formatInr(Number(charge.max_amount_inr)) + ")"
-        : "";
-    const minBracket =
-      charge.min_amount_inr != null &&
-      Number.isFinite(Number(charge.min_amount_inr)) &&
-      !maxBracket
-        ? " (min " + formatInr(Number(charge.min_amount_inr)) + ")"
-        : "";
-
-    if (name === "CERSAI Security Interest Creation") {
-      return "Flat fee so no duplicate loan can be registered on this property.";
-    }
-    if (name === "MODT Stamp Duty") {
-      return pct
-        ? pct + " of loan to register the home loan with the state."
-        : "Stamp duty to register the home loan with the state.";
-    }
-    if (name === "Notice of Intimation Filing Fee") {
-      return "Flat fee to file the mortgage notice with the state.";
-    }
-    if (name === "Notice of Intimation Registration Fee") {
-      return pct
-        ? pct +
-            " of loan to register the home loan agreement" +
-            maxBracket +
-            minBracket +
-            "."
-        : "Fee to register the home loan agreement" + maxBracket + minBracket + ".";
-    }
-    if (name === "Further Charge Stamp Duty") {
-      return pct
-        ? "Stamp duty to register a top-up loan on the property (" +
-            pct +
-            " of loan)."
-        : "Stamp duty to register a top-up loan on the property.";
-    }
-    if (method === "percentage" && pct) {
-      return pct + " of this loan" + maxBracket + minBracket + ".";
-    }
-    if (method === "flat") {
-      return "Flat fee" + maxBracket + minBracket + ".";
-    }
-    if (parts.gstRate > 0) {
-      return "Government fee.";
-    }
-    return "";
-  }
-
-function governmentChargeName(chargeName) {
+  function governmentChargeName(chargeName) {
     const names = {
       "MODT Stamp Duty": "MODT stamp duty",
       "Notice of Intimation Registration Fee": "Notice of Intimation registration",
@@ -10762,63 +10002,282 @@ function governmentChargeName(chargeName) {
     return names[chargeName] || chargeName;
   }
 
-  function governmentChargeSheetLines(charge, loanAmount) {
-    const parts = governmentChargeAmountParts(charge, loanAmount);
-    const method = normalizeText(charge.calculation_method);
-    const lines = [];
-    if (method === "percentage") {
-      const beforeLimits = loanAmount * Number(charge.percentage);
-      const minApplied =
-        charge.min_amount_inr != null &&
-        beforeLimits < Number(charge.min_amount_inr);
-      const maxApplied =
-        charge.max_amount_inr != null &&
-        beforeLimits > Number(charge.max_amount_inr);
-      lines.push(
-        { k: "num", t: formatInr(loanAmount) },
-        {
-          k: "op",
-          t: "× " + formatPctPlain(Number(charge.percentage) * 100)
-        },
-        { k: "rule" },
-        { k: "result", t: formatInr(beforeLimits) }
-      );
-      if (minApplied) {
-        lines.push(
-          { k: "op", t: "min " + formatInr(Number(charge.min_amount_inr)) },
-          { k: "rule" },
-          { k: "result", t: formatInr(Number(charge.min_amount_inr)) }
-        );
-      } else if (maxApplied) {
-        lines.push(
-          { k: "op", t: "max " + formatInr(Number(charge.max_amount_inr)) },
-          { k: "rule" },
-          { k: "result", t: formatInr(Number(charge.max_amount_inr)) }
-        );
+  function loanAmountCalculationHtml(row) {
+    var model = loanAmountWalkModel(row, readQuery());
+    var loanFactor =
+      model.loanFactor != null
+        ? model.loanFactor
+        : loanFactorFromRate(row.roiDecimal, row.tenureMonths);
+
+    var propRows = [
+      {
+        label: "Property value",
+        value: formatInr(model.propertyValue)
+      },
+      {
+        label: "LTV ratio",
+        op: "×",
+        value: formatPctPlain(model.fundedPct),
+        ruleAfter: true
+      },
+      {
+        label: "Eligible amount",
+        value: formatInr(model.fromProperty),
+        final: true
       }
-      if (parts.gstRate > 0) {
-        lines.push(
-          { k: "op", t: "+ " + formatPctPlain(parts.gstRate * 100) + " GST" },
-          { k: "rule" },
-          { k: "result", t: formatInr(parts.total), emphasis: true }
-        );
-      } else {
-        lines[lines.length - 1].emphasis = true;
-        lines[lines.length - 1].t = formatInr(parts.total);
+    ];
+
+    var incomeRows = [
+      {
+        label: "Net monthly income",
+        value: formatInr(model.totalIncome)
+      },
+      {
+        label: "FOIR",
+        op: "×",
+        value: formatPctPlain(model.foirPct),
+        ruleAfter: true
+      },
+      {
+        label: "Max EMI allowed",
+        value: formatInr(model.incomeAllowance)
       }
-    } else if (parts.base != null) {
-      lines.push({ k: "num", t: formatInr(parts.base) });
-      if (parts.gstRate > 0) {
-        lines.push(
-          { k: "op", t: "+ " + formatPctPlain(parts.gstRate * 100) + " GST" },
-          { k: "rule" },
-          { k: "result", t: formatInr(parts.total), emphasis: true }
-        );
-      } else {
-        lines[0].emphasis = true;
-      }
+    ];
+
+    if (model.existingEmis > 0) {
+      incomeRows.push({
+        label: "Existing EMIs",
+        op: "−",
+        value: formatInr(model.existingEmis)
+      });
     }
-    return lines;
+    if (model.cardLoad > 0) {
+      incomeRows.push({
+        label: "Credit cards",
+        op: "−",
+        value: formatInr(model.cardLoad),
+        how: formatPctPlain(model.cardLoadPct) + " of card limits"
+      });
+    }
+
+    if (model.existingEmis > 0 || model.cardLoad > 0) {
+      incomeRows[incomeRows.length - 1].ruleAfter = true;
+      incomeRows.push({
+        label: "Max EMI available",
+        value: formatInr(model.emiRoom)
+      });
+    }
+
+    incomeRows.push({
+      label: "Loan factor",
+      op: "×",
+      value: Number(loanFactor).toFixed(2),
+      how: loanFactorHowText(
+        model.roiDecimal != null ? model.roiDecimal : row.roiDecimal,
+        model.tenureMonths != null ? model.tenureMonths : row.tenureMonths
+      ),
+      ruleAfter: true
+    });
+    incomeRows.push({
+      label: "Eligible amount",
+      value: formatInr(model.fromIncome),
+      final: true
+    });
+
+    var requestedAmt = Math.max(0, Number(readQuery().loanAmountRequest) || 0);
+    var under = "";
+    if (model.bankMaxApplies) {
+      under += receiptBlockHtml([
+        {
+          label: "This bank's maximum",
+          value: formatInr(model.bankMaximum),
+          final: true
+        }
+      ]);
+    }
+
+    return calcPanelHtml({
+      bankName: row.bankName,
+      leadHtml: calcLeadHtml("Lower of"),
+      receiptHtml:
+        receiptDualHtml(propRows, incomeRows, [
+          {
+            label: "Loan amount",
+            value: formatInr(requestedAmt),
+            final: true
+          }
+        ]) + under
+    });
+  }
+
+  function emiCalculationHtml(row) {
+    const factor = loanFactorFromRate(row.roiDecimal, row.tenureMonths);
+    const schedule = amortizationSchedule(
+      row.loanAmount,
+      row.roiDecimal,
+      row.tenureMonths
+    );
+    return calcPanelHtml({
+      bankName: row.bankName,
+      leadHtml: calcLeadHtml("EMI every month is", formatInr(row.emi)),
+      receiptHtml: receiptBlockHtml([
+        {
+          label: "Loan amount",
+          value: formatInr(row.loanAmount)
+        },
+        {
+          label: "Loan factor",
+          op: "÷",
+          value: Number(factor).toFixed(2),
+          how: loanFactorHowText(row.roiDecimal, row.tenureMonths),
+          ruleAfter: true
+        },
+        {
+          label: "EMI",
+          value: formatInr(row.emi),
+          final: true
+        }
+      ]),
+      extraHtml: amortizationTableHtml(schedule)
+    });
+  }
+
+  function processingFeeCalculationHtml(row) {
+    const charge = row.processingCharge;
+    if (!charge) {
+      return calcPanelHtml({
+        bankName: row.bankName,
+        leadHtml: calcLeadHtml("Processing fee is", formatInr(0)),
+        receiptHtml: ""
+      });
+    }
+
+    const pct = charge.percentage == null ? NaN : Number(charge.percentage);
+    const fixed =
+      charge.fixed_amount == null ? NaN : Number(charge.fixed_amount);
+    const rows = [];
+
+    if (Number.isFinite(pct) && pct > 0) {
+      const beforeLimits = row.loanAmount * pct;
+      const minHit =
+        charge.charge_min != null && beforeLimits < Number(charge.charge_min);
+      const maxHit =
+        charge.charge_max != null && beforeLimits > Number(charge.charge_max);
+
+      rows.push({
+        label: "Loan amount",
+        value: formatInr(row.loanAmount)
+      });
+      rows.push({
+        label: "Fee %",
+        op: "×",
+        value: formatPctPlain(pct * 100),
+        ruleAfter: true
+      });
+
+      if (minHit) {
+        rows.push({
+          label: "",
+          value: formatInr(beforeLimits)
+        });
+        rows.push({
+          label: "Min",
+          op: "or",
+          value: formatInr(Number(charge.charge_min)),
+          ruleAfter: true
+        });
+      } else if (maxHit) {
+        rows.push({
+          label: "",
+          value: formatInr(beforeLimits)
+        });
+        rows.push({
+          label: "Max",
+          op: "up to",
+          value: formatInr(Number(charge.charge_max)),
+          ruleAfter: true
+        });
+      }
+
+      rows.push({
+        label: "Processing fee",
+        value: formatInr(row.processingFee),
+        final: true
+      });
+    } else if (Number.isFinite(fixed)) {
+      rows.push({
+        label: "Processing fee",
+        value: formatInr(fixed),
+        final: true
+      });
+    } else if (charge.percentage === 0) {
+      rows.push({
+        label: "Loan amount",
+        value: formatInr(row.loanAmount)
+      });
+      rows.push({
+        label: "Fee %",
+        op: "×",
+        value: formatPctPlain(0),
+        ruleAfter: true
+      });
+      rows.push({
+        label: "Processing fee",
+        value: formatInr(0),
+        final: true
+      });
+    } else {
+      return calcPanelHtml({
+        bankName: row.bankName,
+        leadHtml: calcLeadHtml("Processing fee is", formatInr(0)),
+        receiptHtml: ""
+      });
+    }
+
+    return calcPanelHtml({
+      bankName: row.bankName,
+      leadHtml: calcLeadHtml("Processing fee is", formatInr(row.processingFee)),
+      receiptHtml: receiptBlockHtml(rows)
+    });
+  }
+
+  function propertyCheckChargeCalculationHtml(row) {
+    const lines = row.propertyCheckChargeRows || [];
+    if (!lines.length) {
+      return calcPanelHtml({
+        bankName: row.bankName,
+        leadHtml: calcLeadHtml(
+          "Property check charges are",
+          formatInr(row.propertyCheckCharges || 0)
+        ),
+        receiptHtml: ""
+      });
+    }
+
+    const rows = lines.map(function (line) {
+      var label = line.name || "Charge";
+      if (label === "Valuation") label = "Valuation report";
+      return {
+        label: label,
+        value: formatInr(line.amount)
+      };
+    });
+
+    rows[rows.length - 1].ruleAfter = true;
+    rows.push({
+      label: "Total",
+      value: formatInr(row.propertyCheckCharges),
+      final: true
+    });
+
+    return calcPanelHtml({
+      bankName: row.bankName,
+      leadHtml: calcLeadHtml(
+        "Property check charges are",
+        formatInr(row.propertyCheckCharges)
+      ),
+      receiptHtml: receiptBlockHtml(rows)
+    });
   }
 
   function governmentChargeCalculationHtml(row) {
@@ -10829,31 +10288,132 @@ function governmentChargeName(chargeName) {
       row.loanAmount,
       DEFAULT_JURISDICTION_STATE
     );
-    const itemBars = charges.map(function (charge, index) {
-      const parts = governmentChargeAmountParts(charge, row.loanAmount);
-      return {
-        step: index + 1,
-        label: governmentChargeName(charge.charge_name),
-        note: governmentChargeShortNote(charge, row.loanAmount),
-        value: formatInr(parts.total),
-        lines: governmentChargeSheetLines(charge, row.loanAmount)
-      };
+    const rows = [];
+    var hasPercentage = false;
+    charges.forEach(function (charge) {
+      if (normalizeText(charge.calculation_method) === "percentage") {
+        hasPercentage = true;
+      }
     });
-    const bars = additiveStackBars(
-      itemBars,
-      "Total",
-      formatInr(row.governmentCharges)
-    );
-    return calcStoryHtml(
-      formatInr(row.governmentCharges),
-      "State charges on this loan are",
-      mathBarStackHtml(bars, { stackClass: "hlc-math-bars--additive" }),
-      "",
-      { workTitle: CALC_CHARGES_TITLE }
-    );
+
+    if (hasPercentage) {
+      rows.push({
+        label: "Loan amount",
+        value: formatInr(row.loanAmount)
+      });
+    }
+
+    charges.forEach(function (charge) {
+      const parts = governmentChargeAmountParts(charge, row.loanAmount);
+      const name = governmentChargeName(charge.charge_name);
+      const method = normalizeText(charge.calculation_method);
+
+      if (method === "percentage") {
+        const beforeLimits = row.loanAmount * Number(charge.percentage);
+        const minApplied =
+          charge.min_amount_inr != null &&
+          beforeLimits < Number(charge.min_amount_inr);
+        const maxApplied =
+          charge.max_amount_inr != null &&
+          beforeLimits > Number(charge.max_amount_inr);
+
+        rows.push({
+          label: name,
+          op: "×",
+          value: formatPctPlain(Number(charge.percentage) * 100),
+          ruleAfter: true
+        });
+
+        if (minApplied || maxApplied) {
+          rows.push({
+            label: "",
+            value: formatInr(beforeLimits)
+          });
+          if (minApplied) {
+            rows.push({
+              label: "Min",
+              op: "or",
+              value: formatInr(Number(charge.min_amount_inr)),
+              ruleAfter: true
+            });
+          } else {
+            rows.push({
+              label: "Max",
+              op: "up to",
+              value: formatInr(Number(charge.max_amount_inr)),
+              ruleAfter: true
+            });
+          }
+        }
+
+        if (parts.gstRate > 0) {
+          if (!(minApplied || maxApplied)) {
+            rows.push({
+              label: "",
+              value: formatInr(parts.base)
+            });
+          }
+          rows.push({
+            label: "GST",
+            op: "×",
+            value: formatPctPlain(parts.gstRate * 100),
+            ruleAfter: true
+          });
+          rows.push({
+            label: name,
+            value: formatInr(parts.total)
+          });
+        } else {
+          rows.push({
+            label: name,
+            value: formatInr(parts.total)
+          });
+        }
+      } else if (parts.base != null) {
+        if (parts.gstRate > 0) {
+          rows.push({
+            label: name,
+            value: formatInr(parts.base)
+          });
+          rows.push({
+            label: "GST",
+            op: "×",
+            value: formatPctPlain(parts.gstRate * 100),
+            ruleAfter: true
+          });
+          rows.push({
+            label: name,
+            value: formatInr(parts.total)
+          });
+        } else {
+          rows.push({
+            label: name,
+            value: formatInr(parts.total)
+          });
+        }
+      }
+    });
+
+    if (rows.length) {
+      rows[rows.length - 1].ruleAfter = true;
+    }
+    rows.push({
+      label: "Total",
+      value: formatInr(row.governmentCharges),
+      final: true
+    });
+
+    return calcPanelHtml({
+      bankName: row.bankName,
+      leadHtml: calcLeadHtml(
+        "State charges on this loan are",
+        formatInr(row.governmentCharges)
+      ),
+      receiptHtml: receiptBlockHtml(rows)
+    });
   }
 
-  function missedEmiWalkHtml(row) {
+  function overdueCalculationHtml(row) {
     const walk = missedEmiMonthTotal(
       row.overdueCharge,
       row.emiBounceCharge,
@@ -10863,151 +10423,223 @@ function governmentChargeName(chargeName) {
       row.tenureMonths
     );
     const overdue = walk.overdue;
-    const bounce = walk.bounce;
-    const overdueRupee = formatInr(
-      overdue.rawExtra != null ? overdue.rawExtra : overdue.extra
-    );
-    const extraWorking =
-      overdue.perAnnum || overdue.kind === "row_rate"
-        ? [
-            { k: "num", t: formatInr(overdue.overdueAmount) },
-            {
-              k: "op",
-              t: "× " + formatPctPlain(overdue.yearPct) + " ÷ 12 months"
-            },
-            { k: "rule" },
-            { k: "result", t: overdueRupee, emphasis: true }
-          ]
-        : [{ k: "result", t: overdueRupee, emphasis: true }];
-    let overdueNote = "Late-payment charge on the missed EMI.";
-    if (overdue.kind === "row_rate") {
-      overdueNote =
-        "The bank uses this loan’s yearly rate on the missed EMI, for this month.";
-    } else if (overdue.slabSentence) {
-      overdueNote = overdue.slabSentence;
-    } else if (overdue.kind === "slab") {
-      overdueNote = "The bank’s overdue extra for this amount — based on a slab rate.";
-    }
-    if (overdue.ruleNote) {
-      overdueNote =
-        overdueNote === "The bank’s overdue charge on this missed EMI."
-          ? overdue.ruleNote
-          : overdueNote + " " + overdue.ruleNote;
-    }
-    let bars = [
-      {
-        step: 1,
-        label: "This EMI",
-        note: "The EMI that did not get paid.",
-        value: formatInr(overdue.overdueAmount),
-        lines: [{ k: "num", t: formatInr(overdue.overdueAmount) }]
-      },
-      {
-        step: 2,
-        label: "Overdue charge",
-        note: overdueNote,
-        value: overdueRupee,
-        lines: extraWorking
-      }
-    ];
-    if (overdue.usedFloor) {
-      bars.push({
-        step: bars.length + 1,
-        label: "Bank minimum",
-        note: "Bank minimum overdue charge (shown in maths).",
-        value: formatInr(overdue.extra),
-        lines: [
-          { k: "num", t: overdueRupee },
-          { k: "op", t: "or " + formatInr(overdue.extra) },
-          { k: "rule" },
-          { k: "result", t: formatInr(overdue.extra), emphasis: true }
-        ]
-      });
-    }
-    if (overdue.graceDays) {
-      bars.push({
-        step: bars.length + 1,
-        label: "Grace",
-        note:
-          overdue.graceDays +
-          " days before overdue extra starts. A full month late is past that.",
-        value: overdue.graceDays + " days"
-      });
-    }
-    if (bounce.total > 0) {
-      bars.push({
-        step: bars.length + 1,
-        label: "Bounce charge",
-        joinOp: "+",
-        note:
-          bounce.slabSentence ||
-          "When auto-debit of the EMI fails.",
-        value:
-          bounce.gst > 0
-            ? formatInr(bounce.extra) + " + " + formatInr(bounce.gst) + " GST"
-            : formatInr(bounce.extra),
-        lines:
-          bounce.gst > 0
-            ? [
-                { k: "num", t: formatInr(bounce.extra) },
-                { k: "op", t: "+ " + formatInr(bounce.gst) + " GST" },
-                { k: "rule" },
-                { k: "result", t: formatInr(bounce.total), emphasis: true }
-              ]
-            : [{ k: "result", t: formatInr(bounce.extra), emphasis: true }]
-      });
-      bars.push({
-        step: bars.length + 1,
-        label: "Total",
-        isTotal: true,
-        joinOp: "=",
-        note: "",
-        value: formatInr(walk.total),
-        lines: [{ k: "result", t: formatInr(walk.total), emphasis: true }]
-      });
-    }
-    const stackClass =
-      bounce.total > 0 ? "hlc-math-bars--additive" : "hlc-math-bars--steps";
-    const aboutEmi =
-      walk.total >= row.emi && row.emi > 0
-        ? "One missed EMI here costs about another EMI in charges. A slightly cheaper rate does not cancel that."
-        : "";
-    const notes = aboutEmi;
-    const missedLead =
-      bounce.total > 0
-        ? "If you miss this EMI, overdue and bounce charges this month are"
-        : "If you miss this EMI, overdue charges this month are";
-    return (
-      calcStoryHtml(
-        formatInr(walk.total),
-        missedLead,
-        mathBarStackHtml(bars, { stackClass: stackClass }),
-        "",
-        { workTitle: CALC_CHARGES_TITLE }
-      ) + (notes ? '<p class="hlc-story-note">' + escapeHtml(notes) + "</p>" : "")
-    );
-  }
+    const rows = [];
 
-  function overdueCalculationHtml(row) {
-    return missedEmiWalkHtml(row);
+    if (overdue.perAnnum || overdue.kind === "row_rate") {
+      const yearCharges = overdue.overdueAmount * (Number(overdue.yearPct) / 100);
+      const monthRaw =
+        overdue.rawExtra != null ? overdue.rawExtra : overdue.extra;
+      const rateLabel =
+        overdue.kind === "row_rate" ? "Loan rate p.a." : "Overdue rate p.a.";
+
+      rows.push({
+        label: "Missed EMI amount",
+        value: formatInr(overdue.overdueAmount)
+      });
+      rows.push({
+        label: rateLabel,
+        op: "×",
+        value: formatPctPlain(overdue.yearPct),
+        ruleAfter: true
+      });
+      rows.push({
+        label: "Charges per year",
+        value: formatInr(yearCharges)
+      });
+      rows.push({
+        label: "per month",
+        op: "÷",
+        value: "12",
+        ruleAfter: true
+      });
+
+      if (overdue.graceDays) {
+        rows.push({
+          label: "Grace days",
+          value: String(overdue.graceDays)
+        });
+      }
+
+      if (overdue.usedFloor) {
+        rows.push({
+          label: "Charges per month",
+          value: formatInr(monthRaw)
+        });
+        rows.push({
+          label: "Min",
+          op: "or",
+          value: formatInr(overdue.floor),
+          ruleAfter: true
+        });
+        rows.push({
+          label: "Charges per month",
+          value: formatInr(overdue.extra),
+          final: true
+        });
+      } else {
+        rows.push({
+          label: "Charges per month",
+          value: formatInr(monthRaw),
+          final: true
+        });
+      }
+    } else {
+      if (overdue.graceDays) {
+        rows.push({
+          label: "Grace days",
+          value: String(overdue.graceDays)
+        });
+      }
+      rows.push({
+        label: "Overdue charge",
+        value: formatInr(overdue.extra),
+        final: true
+      });
+    }
+
+    return calcPanelHtml({
+      bankName: row.bankName,
+      leadHtml: calcLeadHtml(
+        "If you miss 1 EMI, charges for 1 month are",
+        formatInr(overdue.extra)
+      ),
+      receiptHtml: receiptBlockHtml(rows)
+    });
   }
 
   function bounceCalculationHtml(row) {
-    return missedEmiWalkHtml(row);
-  }
+    const walk = missedEmiMonthTotal(
+      row.overdueCharge,
+      row.emiBounceCharge,
+      row.emi,
+      row.roiDecimal,
+      row.loanAmount,
+      row.tenureMonths
+    );
+    const bounce = walk.bounce;
+    const charge = row.emiBounceCharge;
+    const rows = [];
 
-function rateChangeMethodDescription(method) {
-  if (method === RATE_CHANGE_METHOD_REPRICE) {
-    return "reprice the loan";
+    if (!(bounce.total > 0)) {
+      rows.push({
+        label: "Bounce charge",
+        value: formatInr(0),
+        final: true
+      });
+    } else {
+      const pct =
+        charge && charge.percentage != null ? Number(charge.percentage) : NaN;
+      const gstRate = governmentChargeGstRate(charge);
+
+      if (Number.isFinite(pct) && pct > 0) {
+        const beforeLimits = row.emi * pct;
+        const minHit =
+          charge.charge_min != null &&
+          beforeLimits < Number(charge.charge_min);
+        const maxHit =
+          charge.charge_max != null &&
+          beforeLimits > Number(charge.charge_max);
+
+        rows.push({
+          label: "Missed EMI amount",
+          value: formatInr(row.emi)
+        });
+        rows.push({
+          label: "Fee %",
+          op: "×",
+          value: formatPctPlain(pct * 100),
+          ruleAfter: true
+        });
+
+        if (minHit || maxHit) {
+          rows.push({
+            label: "",
+            value: formatInr(beforeLimits)
+          });
+          if (minHit) {
+            rows.push({
+              label: "Min",
+              op: "or",
+              value: formatInr(Number(charge.charge_min)),
+              ruleAfter: true
+            });
+          } else {
+            rows.push({
+              label: "Max",
+              op: "up to",
+              value: formatInr(Number(charge.charge_max)),
+              ruleAfter: true
+            });
+          }
+        }
+
+        if (bounce.gst > 0) {
+          if (!(minHit || maxHit)) {
+            rows.push({
+              label: "Bounce charge",
+              value: formatInr(bounce.extra)
+            });
+          }
+          rows.push({
+            label: "GST",
+            op: "×",
+            value: formatPctPlain(gstRate * 100),
+            ruleAfter: true
+          });
+          rows.push({
+            label: "Bounce total",
+            value: formatInr(bounce.total),
+            final: true
+          });
+        } else {
+          rows.push({
+            label: "Bounce charge",
+            value: formatInr(bounce.extra),
+            final: true
+          });
+        }
+      } else if (bounce.gst > 0) {
+        rows.push({
+          label: "Bounce charge",
+          value: formatInr(bounce.extra)
+        });
+        rows.push({
+          label: "GST",
+          op: "×",
+          value: formatPctPlain(gstRate * 100),
+          ruleAfter: true
+        });
+        rows.push({
+          label: "Bounce total",
+          value: formatInr(bounce.total),
+          final: true
+        });
+      } else {
+        rows.push({
+          label: "Bounce charge",
+          value: formatInr(bounce.extra),
+          final: true
+        });
+      }
+    }
+
+    return calcPanelHtml({
+      bankName: row.bankName,
+      leadHtml: calcLeadHtml("EMI bounce charges are", formatInr(bounce.total)),
+      receiptHtml: receiptBlockHtml(rows)
+    });
   }
-  if (method === RATE_CHANGE_METHOD_BENCHMARK) {
-    return "switch rate benchmark";
-  }
-  return "switch between floating and fixed rate";
-}
 
   function rateChangeCalculationHtml(row) {
-    const seed = rateChangeChargeForMethod(row, state.rateChangeMethod);
+    const method = state.rateChangeMethod;
+    var sentence = "Charges to switch rate type are";
+    if (method === RATE_CHANGE_METHOD_REPRICE) {
+      sentence = "Charges to reprice are";
+    } else if (method === RATE_CHANGE_METHOD_BENCHMARK) {
+      sentence = "Charges to switch benchmark are";
+    }
+
+    const seed = rateChangeChargeForMethod(row, method);
     const slabs = row.rateChangeChargeSlabs || [];
     const charge = resolveApplicableCharge(
       slabs,
@@ -11020,108 +10652,143 @@ function rateChangeMethodDescription(method) {
       amount != null && Number.isFinite(amount)
         ? formatInr(amount)
         : formatChargeDisplayText(formatRateChangeChargeDisplay(charge));
-    const bars = [
-      {
-        step: 1,
-        label: "Your outstanding loan",
-        note: "Fee is a % of what you still owe.",
-        value: formatInr(row.loanAmount),
-        lines: [{ k: "num", t: formatInr(row.loanAmount) }]
-      },
-      {
-        step: 2,
-        label: "Charge to change the rate",
-        note:
-          applicableSlabSentence(charge, chargeCaseFromRow(row)) ||
-          "Bank fee to " + rateChangeMethodDescription(state.rateChangeMethod) + ".",
-        value: resultText,
-        lines:
-          amount != null &&
-          Number.isFinite(amount) &&
-          charge &&
-          charge.percentage != null &&
-          Number.isFinite(Number(charge.percentage))
-            ? [
-                { k: "num", t: formatInr(row.loanAmount) },
-                { k: "op", t: "× " + formatPctPlain(Number(charge.percentage) * 100) },
-                { k: "rule" },
-                { k: "result", t: resultText, emphasis: true }
-              ]
-            : amount != null && Number.isFinite(amount)
-              ? [
-                  { k: "num", t: formatInr(row.loanAmount) },
-                  { k: "rule" },
-                  { k: "result", t: resultText, emphasis: true }
-                ]
-              : [{ k: "result", t: resultText, emphasis: true }]
+
+    const rows = [];
+    const pct =
+      charge && charge.percentage != null ? Number(charge.percentage) : NaN;
+
+    if (
+      Number.isFinite(pct) &&
+      pct > 0 &&
+      amount != null &&
+      Number.isFinite(amount)
+    ) {
+      const beforeLimits = row.loanAmount * pct;
+      const minHit =
+        charge.charge_min != null && beforeLimits < Number(charge.charge_min);
+      const maxHit =
+        charge.charge_max != null && beforeLimits > Number(charge.charge_max);
+
+      rows.push({
+        label: "Loan amount",
+        value: formatInr(row.loanAmount)
+      });
+      rows.push({
+        label: "Fee %",
+        op: "×",
+        value: formatPctPlain(pct * 100),
+        ruleAfter: true
+      });
+
+      if (minHit || maxHit) {
+        rows.push({
+          label: "",
+          value: formatInr(beforeLimits)
+        });
+        if (minHit) {
+          rows.push({
+            label: "Min",
+            op: "or",
+            value: formatInr(Number(charge.charge_min)),
+            ruleAfter: true
+          });
+        } else {
+          rows.push({
+            label: "Max",
+            op: "up to",
+            value: formatInr(Number(charge.charge_max)),
+            ruleAfter: true
+          });
+        }
       }
-    ];
-    return calcStoryHtml(
-      resultText,
-      "Charge to change the rate is",
-      mathBarStackHtml(bars, { stackClass: "hlc-math-bars--steps" }),
-      "",
-      { workTitle: CALC_CHARGES_TITLE }
-    );
+
+      rows.push({
+        label: "Rate change charge",
+        value: resultText,
+        final: true
+      });
+    } else {
+      rows.push({
+        label: "Rate change charge",
+        value: resultText,
+        final: true
+      });
+    }
+
+    return calcPanelHtml({
+      bankName: row.bankName,
+      leadHtml: calcLeadHtml(sentence, resultText),
+      receiptHtml: receiptBlockHtml(rows)
+    });
   }
 
   function prepaymentCalculationHtml(row) {
     const charge = prepayChargeForMethod(row, state.prepaymentMethod);
+    const sentence =
+      state.prepaymentMethod === PREPAYMENT_METHOD_BT
+        ? "Prepayment charges (balance transfer) are"
+        : "Prepayment charges (self funds) are";
+
     if (!charge || isPrepaymentNotCharged(charge)) {
-      return (
-        calcStoryHtml(
-          formatInr(0),
-          "Prepayment charge on this loan is",
-          "",
-          ""
-        ) +
-        '<p class="hlc-story-note">' +
-        floatingPrepayNoteHtml() +
-        "</p>"
-      );
+      return calcPanelHtml({
+        bankName: row.bankName,
+        leadHtml: calcLeadHtml(sentence, formatInr(0)),
+        receiptHtml: receiptBlockHtml([
+          {
+            label: "Prepayment charge",
+            value: formatInr(0),
+            final: true
+          }
+        ])
+      });
     }
+
     const pct =
       charge.percentage != null && Number.isFinite(Number(charge.percentage))
         ? Number(charge.percentage) * 100
         : null;
-    var resultLabel = pct != null
-      ? formatPctPlain(pct)
-      : formatChargeDisplayText(formatPrepaymentChargeDisplay(charge));
 
-    var prepayBarsHtml = "";
     if (pct != null) {
-      var exampleCharge = row.loanAmount * (pct / 100);
-      prepayBarsHtml = mathBarStackHtml(
-        [
+      const exampleCharge = row.loanAmount * (pct / 100);
+      return calcPanelHtml({
+        bankName: row.bankName,
+        leadHtml: calcLeadHtml(sentence, formatInr(exampleCharge)),
+        receiptHtml: receiptBlockHtml([
           {
-            step: 1,
-            label: "On your current loan amount",
-            note: "Example if you prepaid the full loan today. Actual fee depends on amount prepaid.",
+            label: "Amount prepaid",
+            value: formatInr(row.loanAmount),
+            how: "Example if full loan prepaid."
+          },
+          {
+            label: "Fee %",
+            op: "×",
+            value: formatPctPlain(pct),
+            ruleAfter: true
+          },
+          {
+            label: "Prepayment charge",
             value: formatInr(exampleCharge),
-            lines: [
-              { k: "num", t: formatInr(row.loanAmount) },
-              { k: "op", t: "× " + formatPctPlain(pct) },
-              { k: "rule" },
-              { k: "result", t: formatInr(exampleCharge), emphasis: true }
-            ]
+            final: true
           }
-        ],
-        { stackClass: "hlc-math-bars--steps" }
-      );
+        ])
+      });
     }
 
-    return (
-      calcStoryHtml(
-        resultLabel,
-        "This bank’s prepayment charge is",
-        prepayBarsHtml,
-        ""
-      ) + storyNote("Rupees depend on how much you prepay.")
+    const displayText = formatChargeDisplayText(
+      formatPrepaymentChargeDisplay(charge)
     );
+    return calcPanelHtml({
+      bankName: row.bankName,
+      leadHtml: calcLeadHtml(sentence, displayText),
+      receiptHtml: receiptBlockHtml([
+        {
+          label: "Prepayment charge",
+          value: displayText,
+          final: true
+        }
+      ])
+    });
   }
-
-  const CALC_DRAWER_FOOT =
-    '<p class="hlc-drawer-foot">These figures are a guide. The bank decides the final terms. You pick.</p>';
 
   function chargeDetailsSectionHtml(row, calculationKey) {
     const details = chargeCalculationDetailsHtml(row, calculationKey);
@@ -11129,18 +10796,16 @@ function rateChangeMethodDescription(method) {
     return '<div class="hlc-calc-details">' + details + "</div>";
   }
 
-  function openCalcDrawer(title, subtitle, calcHtml, extra) {
+  function openCalcDrawer(calcHtml, extra) {
     const packed = extra || {};
     showDrawer(
-      title,
-      subtitle,
+      "",
+      "",
       calcDrawerBodyHtml(calcHtml, {
-        calcTitle: packed.calcTitle,
         detailsHtml: packed.detailsHtml || "",
-        noteLines: packed.noteLines || [],
-        footHtml: CALC_DRAWER_FOOT
+        noteLines: packed.noteLines || []
       }),
-      { keepHeading: true }
+      { keepHeading: true, calcLead: true }
     );
   }
 
@@ -11157,39 +10822,25 @@ function rateChangeMethodDescription(method) {
       return;
     }
 
-    const bankSub = row.bankName + " · " + (row.scheme || "");
-
     if (calculationKey === "loanAmount") {
-      openCalcDrawer("Loan amount", bankSub, loanAmountCalculationHtml(row), {
-        calcTitle: CALC_HOW_TITLE
-      });
+      openCalcDrawer(loanAmountCalculationHtml(row), {});
       return;
     }
 
     if (calculationKey === "emi") {
-      openCalcDrawer("EMI", bankSub, emiCalculationHtml(row), {
-        calcTitle: CALC_HOW_TITLE
-      });
+      openCalcDrawer(emiCalculationHtml(row), {});
       return;
     }
 
     if (calculationKey === "processingFee") {
-      openCalcDrawer(
-        "Processing fee",
-        bankSub,
-        processingFeeCalculationHtml(row),
-        { calcTitle: CALC_CHARGES_TITLE }
-      );
+      openCalcDrawer(processingFeeCalculationHtml(row), {
+        noteLines: row.processingCharge ? ["Fees non-refundable."] : []
+      });
       return;
     }
 
     if (calculationKey === "propertyCheckCharges") {
-      openCalcDrawer(
-        "Property check charges",
-        bankSub,
-        propertyCheckChargeCalculationHtml(row),
-        { calcTitle: CALC_CHARGES_TITLE }
-      );
+      openCalcDrawer(propertyCheckChargeCalculationHtml(row), {});
       return;
     }
 
@@ -11200,53 +10851,38 @@ function rateChangeMethodDescription(method) {
         row.loanAmount,
         DEFAULT_JURISDICTION_STATE
       );
-      openCalcDrawer(
-        "Government charges",
-        "Loan amount " + formatInr(row.loanAmount),
-        governmentChargeCalculationHtml(row),
-        {
-          calcTitle: CALC_CHARGES_TITLE,
-          noteLines: note ? [note] : []
-        }
-      );
+      openCalcDrawer(governmentChargeCalculationHtml(row), {
+        noteLines: note ? [note] : []
+      });
       return;
     }
 
-    if (calculationKey === "overdueChargeDisplay" || calculationKey === "emiBounceChargeDisplay") {
-      openCalcDrawer(
-        calculationKey === "emiBounceChargeDisplay" ? "EMI bounce" : "Overdue charge",
-        bankSub,
-        missedEmiWalkHtml(row),
-        {
-          calcTitle: CALC_CHARGES_TITLE,
-          detailsHtml: chargeDetailsSectionHtml(row, calculationKey),
-          noteLines: chargeDrawerNoteLines(row, calculationKey)
-        }
-      );
+    if (calculationKey === "overdueChargeDisplay") {
+      openCalcDrawer(overdueCalculationHtml(row), {
+        detailsHtml: chargeDetailsSectionHtml(row, calculationKey),
+        noteLines: chargeDrawerNoteLines(row, calculationKey)
+      });
+      return;
+    }
+
+    if (calculationKey === "emiBounceChargeDisplay") {
+      openCalcDrawer(bounceCalculationHtml(row), {
+        detailsHtml: chargeDetailsSectionHtml(row, calculationKey),
+        noteLines: chargeDrawerNoteLines(row, calculationKey)
+      });
       return;
     }
 
     if (calculationKey === "rateChangeChargeDisplay") {
-      openCalcDrawer(
-        "Rate change charge",
-        bankSub,
-        rateChangeCalculationHtml(row),
-        {
-          calcTitle: CALC_CHARGES_TITLE,
-          detailsHtml: chargeDetailsSectionHtml(row, calculationKey),
-          noteLines: chargeDrawerNoteLines(row, calculationKey)
-        }
-      );
+      openCalcDrawer(rateChangeCalculationHtml(row), {
+        detailsHtml: chargeDetailsSectionHtml(row, calculationKey),
+        noteLines: chargeDrawerNoteLines(row, calculationKey)
+      });
       return;
     }
 
     if (calculationKey === "prepaymentChargeDisplay") {
-      openCalcDrawer(
-        "Prepayment charge",
-        bankSub,
-        prepaymentCalculationHtml(row),
-        { calcTitle: CALC_CHARGES_TITLE }
-      );
+      openCalcDrawer(prepaymentCalculationHtml(row), {});
       return;
     }
   }
@@ -11541,6 +11177,9 @@ function rateChangeMethodDescription(method) {
 
   function closeDrawer() {
     el.drawer.classList.remove("open");
+    el.drawer.classList.remove("hlc-drawer--calc-lead");
+    el.drawer.removeAttribute("aria-label");
+    el.drawer.setAttribute("aria-labelledby", "hlc-drawer-title");
     el.drawerBackdrop.classList.remove("open");
     el.drawer.setAttribute("aria-hidden", "true");
     setTimeout(function () {
@@ -12797,11 +12436,12 @@ module.exports = {
   gracePillLabel,
   compareRankPillsHtml,
   loanAmountWalkModel,
-  mathBarHtml,
-  gutterOpFromLines,
-  markStepWordBars,
-  mathBarStackHtml,
-  additiveStackBars,
+  loanFactorFromRate,
+  receiptRowHtml,
+  receiptBlockHtml,
+  receiptDualHtml,
+  calcPanelHtml,
+  calcLeadHtml,
   amortizationTableHtml,
   tenureMonthsForOffer,
   loanFromEmi,

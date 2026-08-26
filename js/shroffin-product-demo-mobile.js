@@ -3,7 +3,7 @@
  * Story: type → Compare → scroll to banks → peek-slide columns →
  * tabs (peek each) → filter sheet → Private rematch → drawer peek →
  * select → dock Apply once.
- * Plays through once, then stops (parent Pause can stop early).
+ * Loops on the home stage (loopGap between cycles) until parent Pause.
  * NEVER scrollIntoView. NEVER press Women. NEVER show a mouse/finger cursor — tap ripple only.
  */
 (function () {
@@ -294,7 +294,7 @@
     var count = Object.keys(selected).filter(function (id) {
       return selected[id];
     }).length;
-    setApplyCount(root, count);
+    setApplyOnceLabel(root, count);
   }
 
   function rowMatchesFilters(bankId, filters) {
@@ -328,20 +328,14 @@
       "Show " + remaining + " more bank" + (remaining === 1 ? "" : "s");
   }
 
-  function setApplyCount(root, count) {
-    root.querySelectorAll("[data-spd-apply-count]").forEach(function (node) {
-      if (count <= 0) {
-        node.hidden = true;
-        node.textContent = "";
-        return;
-      }
-      node.hidden = false;
-      node.replaceChildren();
-      var num = document.createElement("span");
-      num.className = "hlc-apply-count-n";
-      num.textContent = String(count);
-      node.appendChild(num);
-      node.appendChild(document.createTextNode(" selected"));
+  function applyOnceLabel(count) {
+    if (count > 0) return "Apply once (" + count + ")";
+    return "Apply once";
+  }
+
+  function setApplyOnceLabel(root, count) {
+    root.querySelectorAll("[data-spd-apply]").forEach(function (btn) {
+      btn.textContent = applyOnceLabel(count);
     });
   }
 
@@ -394,7 +388,7 @@
     root.querySelectorAll("[data-spd-apply]").forEach(function (btn) {
       btn.disabled = !enabled;
       btn.classList.remove("is-press");
-      btn.textContent = "Apply once";
+      if (!enabled) btn.textContent = "Apply once";
     });
   }
 
@@ -728,27 +722,47 @@
     await sleep(WAIT.settle, signal);
   }
 
+  function syncM3Field(input) {
+    var field = input && input.closest ? input.closest(".hlc-field--m3-outlined") : null;
+    if (window.HlcM3Fields && typeof window.HlcM3Fields.sync === "function") {
+      window.HlcM3Fields.sync(field);
+      return;
+    }
+    if (!field) return;
+    field.classList.toggle("is-populated", String(input.value || "").trim() !== "");
+  }
+
   async function typeField(root, key, text, signal) {
     var input = root.querySelector('[data-spd-input="' + key + '"]');
     var shell = root.querySelector('[data-spd-shell="' + key + '"]');
+    var field = input && input.closest ? input.closest(".hlc-field--m3-outlined") : null;
     if (!input) return;
     await tapOn(shell || input, signal);
     if (shell) shell.classList.add("is-typing");
+    if (field) field.classList.add("is-focused");
     input.value = "";
+    syncM3Field(input);
     for (var i = 0; i < text.length; i++) {
       input.value = text.slice(0, i + 1);
+      syncM3Field(input);
       await sleep(WAIT.typeChar, signal);
     }
     if (shell) shell.classList.remove("is-typing");
+    if (field) field.classList.remove("is-focused");
+    syncM3Field(input);
     await sleep(WAIT.afterField, signal);
   }
 
   function clearForm(root) {
     root.querySelectorAll("[data-spd-input]").forEach(function (input) {
       input.value = "";
+      syncM3Field(input);
     });
     root.querySelectorAll("[data-spd-shell]").forEach(function (shell) {
       shell.classList.remove("is-typing");
+    });
+    root.querySelectorAll(".hlc-field--m3-outlined").forEach(function (field) {
+      field.classList.remove("is-focused");
     });
     root.querySelectorAll("[data-spd-chip]").forEach(function (chip) {
       setPressed(chip, false);
@@ -758,7 +772,10 @@
   function fillFormInstant(root) {
     FIELDS.forEach(function (f) {
       var input = root.querySelector('[data-spd-input="' + f.key + '"]');
-      if (input) input.value = f.text;
+      if (input) {
+        input.value = f.text;
+        syncM3Field(input);
+      }
     });
     setChoice(root, "occupation", "Salaried");
     setChoice(root, "purpose", "Regular");
@@ -790,7 +807,7 @@
     setTab(root, "essentials");
     applyFilters(root, { bankType: "All" });
     setApplyEnabled(root, false);
-    setApplyCount(root, 0);
+    setApplyOnceLabel(root, 0);
     root.querySelectorAll(".hlc-table-scroll").forEach(function (el) {
       el.scrollLeft = 0;
     });
@@ -929,6 +946,14 @@
     await sleep(WAIT.holdApply, signal);
   }
 
+  async function playLoop(root, signal) {
+    while (!signal.aborted) {
+      await playOnce(root, signal);
+      if (signal.aborted) return;
+      await sleep(WAIT.loopGap, signal);
+    }
+  }
+
   function notifyParent(type) {
     if (!window.parent || window.parent === window) return;
     try {
@@ -993,15 +1018,15 @@
         signal = { aborted: false };
       }
       notifyParent("spd-playing");
-      playOnce(root, signal)
+      playLoop(root, signal)
         .then(function () {
-          if (signal.aborted) return;
-          root.removeAttribute("data-spd-running");
-          notifyParent("spd-ended");
+          /* stop() owns data-spd-running on abort; do not clear here (restart race). */
         })
         .catch(function (err) {
           if (err && err.name === "AbortError") return;
           console.warn("[spd]", err);
+          root.removeAttribute("data-spd-running");
+          notifyParent("spd-ended");
         });
     }
 
@@ -1015,7 +1040,7 @@
 
     notifyParent("spd-ready");
 
-    /* Standalone preview: play once. Embedded: parent starts. */
+    /* Standalone preview: loop until tab hide. Embedded: parent starts. */
     if (!isEmbedded()) {
       start();
       document.addEventListener("visibilitychange", function () {

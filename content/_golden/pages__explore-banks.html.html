@@ -84,7 +84,7 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="../css/shroffin-shell.css?v=af1a8d7c99">
-  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=6f1f4a6a80">
+  <link rel="stylesheet" href="../css/shroffin-explore-banks.css?v=3291e72159">
 </head>
 <body class="explore-banks-page">
   <!-- SHROFFIN_NAV_START -->
@@ -590,7 +590,8 @@
                     </label>
                     </div>
                   </div>
-                  <p class="hlc-form-band-footnote hlc-field-note hlc-field-note--card-load">
+                  <!-- div not p: icon-select list is a div; a p would auto-close and orphan “of limit.” -->
+                  <div class="hlc-form-band-footnote hlc-field-note hlc-field-note--card-load">
                         EMI equals
                         <span
                           class="hlc-icon-select hlc-icon-select--bare hlc-icon-select--card-load"
@@ -617,7 +618,7 @@
                           <div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div>
                         </span>
                         of limit.
-                  </p>
+                  </div>
                   </div>
                 </div>
 
@@ -759,7 +760,6 @@
                   </button>
                 </div>
                 <div class="hlc-apply-bar" id="hlc-apply-bar">
-                  <span class="hlc-apply-count" id="hlc-apply-count" hidden aria-live="polite"></span>
                   <button type="button" class="hlc-btn-primary" id="hlc-apply-btn" disabled>Apply once</button>
                 </div>
               </div>
@@ -1071,7 +1071,6 @@
   <div class="hlc-toast" id="hlc-toast" role="status"></div>
 
   <div class="hlc-apply-dock" id="hlc-apply-dock" hidden>
-    <span class="hlc-apply-count" id="hlc-apply-dock-count" hidden aria-live="polite"></span>
     <button type="button" class="hlc-btn-primary" id="hlc-apply-dock-btn" disabled>Apply once</button>
   </div>
 
@@ -1250,8 +1249,8 @@
   <script src="../js/shroffin-home-stance.js?v=ca168eb5f2"></script>
   <script src="../js/shroffin-nav.js?v=69b8861330"></script>
   <script src="../js/hlc-data-url.generated.js?v=2eb6ecb75c"></script>
-  <script src="../js/hlc-icon-select.js?v=acab712481"></script>
-  <script src="../js/home-loan-compare.bundle.js?v=93846f6d38"></script>
+  <script src="../js/hlc-icon-select.js?v=3a203dec21"></script>
+  <script src="../js/home-loan-compare.bundle.js?v=5f616aa852"></script>
   <script src="../js/hlc-field-help.js?v=305f463f51"></script>
   <script>
     (function () {

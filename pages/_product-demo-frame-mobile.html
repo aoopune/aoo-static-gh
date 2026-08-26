@@ -112,8 +112,9 @@
       height: 2.75rem;
     }
 
-    /* Help marks are decorative in the demo — never steal scripted taps */
-    .hlc-field-help {
+    /* Help + row-1 selects are chrome only — scripted taps own the story */
+    .hlc-field-help,
+    .hlc-icon-select {
       pointer-events: none;
     }
 
@@ -237,31 +238,73 @@
 
           <section class="hlc-panel hlc-panel--inputs" data-spd-inputs aria-labelledby="spd-inputs-heading">
             <h2 class="visually-hidden" id="spd-inputs-heading">Loan inputs</h2>
-            <div class="hlc-inputs-card">
+            <div class="hlc-inputs-card is-settled is-interactive">
               <form class="hlc-form" autocomplete="off" novalidate onsubmit="return false;">
-                                <div class="hlc-form-pairs">
+<!-- SPD_INPUTS_FORM_START -->
+<!--
+  Product-demo inputs card — structural twin of Explore Banks (.hlc-inputs-card).
+  Source of truth for look: content/pages/explore-banks.body.html (same hlc-* tree).
+  Demo-only deltas: spd-* ids/hooks, readonly/tabindex, no live name attrs,
+  co-applicant block omitted (single-applicant resting state).
+  Sync into frames: node scripts/sync-product-demo-form.mjs
+-->
+                <div class="hlc-form-pairs">
                   <div class="hlc-form-row hlc-form-row--mode" role="group" aria-label="Applicant mode">
                     <div class="hlc-row1-scroll">
                       <div class="hlc-row1-track">
-                        <div class="hlc-icon-select hlc-icon-select--bare">
-                          <button type="button" class="hlc-icon-select-trigger" tabindex="-1" aria-hidden="true">
-                            <span class="hlc-icon-select-text">Single applicant</span>
+                        <div class="hlc-icon-select hlc-icon-select--bare" data-hlc-icon-select data-hlc-icon-map="applicant">
+                          <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger tabindex="-1" aria-hidden="true" aria-haspopup="listbox" aria-expanded="false" aria-label="Applicant mode">
+                            <span class="hlc-icon-select-leading" data-hlc-icon-face></span>
+                            <span class="hlc-icon-select-text" data-hlc-face-text>Single applicant</span>
+                            <span class="hlc-icon-select-chevron" aria-hidden="true"></span>
                           </button>
+                          <select id="spd-coapplicant" tabindex="-1" aria-hidden="true">
+                            <option value="no" selected data-face="Single applicant" data-icon="person">Single applicant</option>
+                            <option value="yes" data-face="With co-applicant" data-icon="person_add">With co-applicant</option>
+                          </select>
+                          <div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div>
                         </div>
-                        <div class="hlc-icon-select hlc-icon-select--bare" data-spd-shell="purpose">
-                          <button type="button" class="hlc-icon-select-trigger" tabindex="-1" aria-hidden="true">
-                            <span class="hlc-icon-select-text" data-spd-chip="purpose" data-spd-choice="Regular">New home loan</span>
+                        <div class="hlc-icon-select hlc-icon-select--bare" data-hlc-icon-select data-hlc-icon-map="purpose" data-spd-shell="purpose">
+                          <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger tabindex="-1" aria-hidden="true" aria-haspopup="listbox" aria-expanded="false" aria-label="Loan purpose">
+                            <span class="hlc-icon-select-leading" data-hlc-icon-face></span>
+                            <span class="hlc-icon-select-text" data-hlc-face-text data-spd-chip="purpose" data-spd-choice="Regular">New home loan</span>
+                            <span class="hlc-icon-select-chevron" aria-hidden="true"></span>
                           </button>
+                          <select id="spd-purpose" tabindex="-1" aria-hidden="true">
+                            <option value="Regular Home Loan" selected data-face="New home loan" data-icon="home">New home loan</option>
+                            <option value="Top-up Loan" data-face="Top-up" data-icon="add_home">Top-up</option>
+                          </select>
+                          <div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div>
+                          <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true" aria-expanded="false" aria-controls="spd-help-purpose" aria-label="About Purpose"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-purpose" role="tooltip" hidden></div></span>
                         </div>
-                        <div class="hlc-icon-select hlc-icon-select--bare" data-spd-shell="occupation">
-                          <button type="button" class="hlc-icon-select-trigger" tabindex="-1" aria-hidden="true">
-                            <span class="hlc-icon-select-text" data-spd-chip="occupation" data-spd-choice="Salaried">Salaried</span>
+                        <div class="hlc-icon-select hlc-icon-select--bare" data-hlc-icon-select data-hlc-icon-map="occupation" data-spd-shell="occupation">
+                          <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger tabindex="-1" aria-hidden="true" aria-haspopup="listbox" aria-expanded="false" aria-label="Occupation">
+                            <span class="hlc-icon-select-leading" data-hlc-icon-face></span>
+                            <span class="hlc-icon-select-text" data-hlc-face-text data-spd-chip="occupation" data-spd-choice="Salaried">Salaried</span>
+                            <span class="hlc-icon-select-chevron" aria-hidden="true"></span>
                           </button>
+                          <select id="spd-occupation" tabindex="-1" aria-hidden="true">
+                            <option value="Salaried" selected data-face="Salaried" data-icon="work">Salaried</option>
+                            <option value="Self-Employed" data-face="Self-employed" data-icon="enterprise">Self-employed</option>
+                          </select>
+                          <div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div>
+                          <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true" aria-expanded="false" aria-controls="spd-help-occupation" aria-label="About Occupation"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-occupation" role="tooltip" hidden></div></span>
                         </div>
-                        <div class="hlc-icon-select hlc-icon-select--bare hlc-icon-select--foir">
-                          <button type="button" class="hlc-icon-select-trigger" tabindex="-1" aria-hidden="true">
-                            <span class="hlc-icon-select-text">FOIR 55%</span>
+                        <div class="hlc-icon-select hlc-icon-select--bare hlc-icon-select--foir" data-hlc-icon-select data-hlc-icon-map="foir">
+                          <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger tabindex="-1" aria-hidden="true" aria-haspopup="listbox" aria-expanded="false" aria-label="FOIR percent">
+                            <span class="hlc-icon-select-leading" data-hlc-icon-face hidden></span>
+                            <span class="hlc-icon-select-text" data-hlc-face-text>FOIR 55%</span>
+                            <span class="hlc-icon-select-chevron" aria-hidden="true"></span>
                           </button>
+                          <select id="spd-foir" tabindex="-1" aria-hidden="true">
+                            <option value="50" data-face="FOIR 50%">50%</option>
+                            <option value="55" selected data-face="FOIR 55%">55%</option>
+                            <option value="60" data-face="FOIR 60%">60%</option>
+                            <option value="65" data-face="FOIR 65%">65%</option>
+                            <option value="70" data-face="FOIR 70%">70%</option>
+                          </select>
+                          <div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div>
+                          <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true" aria-expanded="false" aria-controls="spd-help-foir" aria-label="About EMI limit / FOIR"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-foir" role="tooltip" hidden></div></span>
                         </div>
                       </div>
                     </div>
@@ -270,106 +313,150 @@
                   <div class="hlc-form-row hlc-form-row--loan-band" role="group" aria-label="Loan details">
                     <div class="hlc-form-band-fields">
                       <div class="hlc-form-band-strip">
-                      <label class="hlc-field hlc-field--m3-outlined is-populated" for="spd-loan">
-                        <span class="hlc-field-text-col">
-                          <span class="hlc-field-label-line"><span class="hlc-field-label">Loan amount</span></span>
-                          <span class="hlc-input-shell" data-spd-shell="loan" style="display:flex">
-                            <span class="hlc-prefix" aria-hidden="true">₹</span>
-                            <input type="text" id="spd-loan" data-spd-input="loan" value="" placeholder="50,00,000" readonly tabindex="-1" aria-hidden="true">
+                        <label class="hlc-field hlc-field--m3-outlined" for="spd-loan">
+                          <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="currency_rupee"></span>
+                          <span class="hlc-field-text-col">
+                            <span class="hlc-field-label-line">
+                              <span class="hlc-field-label">Loan amount</span>
+                            </span>
+                            <span class="hlc-input-shell" data-spd-shell="loan">
+                              <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
+                              <input type="text" id="spd-loan" data-spd-input="loan" value="" placeholder="50,00,000" readonly tabindex="-1" aria-hidden="true" inputmode="numeric" autocomplete="off">
+                            </span>
                           </span>
-                        </span>
-                      </label>
-                      <label class="hlc-field hlc-field--m3-outlined is-populated" for="spd-property">
-                        <span class="hlc-field-text-col">
-                          <span class="hlc-field-label-line"><span class="hlc-field-label"><span class="hlc-field-label-primary">Property value</span><span class="hlc-field-label-qualifier">as per agreement</span></span></span>
-                          <span class="hlc-input-shell" data-spd-shell="property" style="display:flex">
-                            <span class="hlc-prefix" aria-hidden="true">₹</span>
-                            <input type="text" id="spd-property" data-spd-input="property" value="" placeholder="62,50,000" readonly tabindex="-1" aria-hidden="true">
+                        </label>
+                        <label class="hlc-field hlc-field--m3-outlined" for="spd-property">
+                          <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="apartment"></span>
+                          <span class="hlc-field-text-col">
+                            <span class="hlc-field-label-line">
+                              <span class="hlc-field-label"><span class="hlc-field-label-primary">Property value</span><span class="hlc-field-label-qualifier">as per agreement</span></span>
+                              <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true" aria-expanded="false" aria-controls="spd-help-property-value" aria-label="About Property value"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-property-value" role="tooltip" hidden></div></span>
+                            </span>
+                            <span class="hlc-input-shell" data-spd-shell="property">
+                              <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
+                              <input type="text" id="spd-property" data-spd-input="property" value="" placeholder="62,50,000" readonly tabindex="-1" aria-hidden="true" inputmode="numeric" autocomplete="off">
+                            </span>
                           </span>
-                        </span>
-                      </label>
+                        </label>
                       </div>
                       <div class="hlc-form-band-strip">
-                      <label class="hlc-field hlc-field--m3-outlined is-populated">
-                        <span class="hlc-field-text-col">
-                          <span class="hlc-field-label-line"><span class="hlc-field-label">Loan tenure</span></span>
-                          <span class="hlc-input-shell" style="display:flex">
-                            <input type="text" value="20" readonly tabindex="-1" aria-hidden="true">
-                            <span class="hlc-suffix" aria-hidden="true">years</span>
+                        <label class="hlc-field hlc-field--m3-outlined" for="spd-tenure">
+                          <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="calendar_today"></span>
+                          <span class="hlc-field-text-col">
+                            <span class="hlc-field-label-line">
+                              <span class="hlc-field-label">Loan tenure</span>
+                              <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true" aria-expanded="false" aria-controls="spd-help-tenure" aria-label="About Loan tenure"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-tenure" role="tooltip" hidden></div></span>
+                            </span>
+                            <span class="hlc-input-shell">
+                              <input type="text" id="spd-tenure" value="20" placeholder="20" readonly tabindex="-1" aria-hidden="true" inputmode="numeric" autocomplete="off">
+                              <span class="hlc-suffix" aria-hidden="true">years</span>
+                            </span>
                           </span>
-                        </span>
-                      </label>
-                      <label class="hlc-field hlc-field--m3-outlined is-populated" for="spd-age">
-                        <span class="hlc-field-text-col">
-                          <span class="hlc-field-label-line"><span class="hlc-field-label">Age</span></span>
-                          <span class="hlc-input-shell" data-spd-shell="age" style="display:flex">
-                            <input type="text" id="spd-age" data-spd-input="age" value="" placeholder="35" readonly tabindex="-1" aria-hidden="true">
-                            <span class="hlc-suffix" aria-hidden="true">years</span>
+                        </label>
+                        <label class="hlc-field hlc-field--m3-outlined" for="spd-age">
+                          <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="person"></span>
+                          <span class="hlc-field-text-col">
+                            <span class="hlc-field-label-line">
+                              <span class="hlc-field-label">Age</span>
+                              <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true" aria-expanded="false" aria-controls="spd-help-age" aria-label="About Age"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-age" role="tooltip" hidden></div></span>
+                            </span>
+                            <span class="hlc-input-shell" data-spd-shell="age">
+                              <input type="text" id="spd-age" data-spd-input="age" value="" placeholder="35" readonly tabindex="-1" aria-hidden="true" inputmode="numeric" autocomplete="off">
+                              <span class="hlc-suffix" aria-hidden="true">years</span>
+                            </span>
                           </span>
-                        </span>
-                      </label>
+                        </label>
                       </div>
                     </div>
                   </div>
 
                   <div class="hlc-form-row hlc-form-row--capacity-band" role="group" aria-label="Repayment capacity">
-                    <div class="hlc-form-band-fields">
-                      <div class="hlc-form-band-strip">
-                      <label class="hlc-field hlc-field--m3-outlined is-populated" for="spd-income">
-                        <span class="hlc-field-text-col">
-                          <span class="hlc-field-label-line"><span class="hlc-field-label">Net monthly income</span></span>
-                          <span class="hlc-input-shell" data-spd-shell="income" style="display:flex">
-                            <span class="hlc-prefix" aria-hidden="true">₹</span>
-                            <input type="text" id="spd-income" data-spd-input="income" value="" placeholder="1,00,000" readonly tabindex="-1" aria-hidden="true">
-                          </span>
-                        </span>
-                      </label>
-                      <label class="hlc-field hlc-field--m3-outlined is-populated" for="spd-cibil">
-                        <span class="hlc-field-text-col">
-                          <span class="hlc-field-label-line"><span class="hlc-field-label">CIBIL score</span></span>
-                          <span class="hlc-input-shell" data-spd-shell="cibil" style="display:flex">
-                            <input type="text" id="spd-cibil" data-spd-input="cibil" value="" placeholder="780" readonly tabindex="-1" aria-hidden="true">
-                          </span>
-                        </span>
-                      </label>
-                      </div>
-                      <div class="hlc-form-band-strip">
-                      <label class="hlc-field hlc-field--m3-outlined is-populated">
-                        <span class="hlc-field-text-col">
-                          <span class="hlc-field-label-line"><span class="hlc-field-label">Total existing EMIs</span></span>
-                          <span class="hlc-input-shell" style="display:flex">
-                            <span class="hlc-prefix" aria-hidden="true">₹</span>
-                            <input type="text" value="0" readonly tabindex="-1" aria-hidden="true">
-                          </span>
-                        </span>
-                      </label>
-                      <div class="hlc-field-stack hlc-field-stack--cards">
-                        <label class="hlc-field hlc-field--m3-outlined is-populated">
-                          <span class="hlc-field-text-col">
-                            <span class="hlc-field-label-line"><span class="hlc-field-label">Total credit card limits</span></span>
-                            <span class="hlc-input-shell" style="display:flex">
-                              <span class="hlc-prefix" aria-hidden="true">₹</span>
-                              <input type="text" value="0" readonly tabindex="-1" aria-hidden="true">
+                    <div class="hlc-form-band-wrap">
+                      <div class="hlc-form-band-fields">
+                        <div class="hlc-form-band-strip">
+                          <label class="hlc-field hlc-field--m3-outlined" for="spd-income">
+                            <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="wallet"></span>
+                            <span class="hlc-field-text-col">
+                              <span class="hlc-field-label-line">
+                                <span class="hlc-field-label">Net monthly income</span>
+                                <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true" aria-expanded="false" aria-controls="spd-help-monthly-income" aria-label="About Net monthly income"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-monthly-income" role="tooltip" hidden></div></span>
+                              </span>
+                              <span class="hlc-input-shell" data-spd-shell="income">
+                                <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
+                                <input type="text" id="spd-income" data-spd-input="income" value="" placeholder="1,00,000" readonly tabindex="-1" aria-hidden="true" inputmode="numeric" autocomplete="off">
+                              </span>
                             </span>
-                          </span>
-                        </label>
-                        <div class="hlc-card-load">
-                          <span class="hlc-card-load-prefix">EMI equals</span>
-                          <span>10%</span>
-                          <span class="hlc-card-load-suffix">of limit.</span>
+                          </label>
+                          <label class="hlc-field hlc-field--m3-outlined" for="spd-cibil">
+                            <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="speed"></span>
+                            <span class="hlc-field-text-col">
+                              <span class="hlc-field-label-line">
+                                <span class="hlc-field-label">CIBIL score</span>
+                                <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true" aria-expanded="false" aria-controls="spd-help-cibil" aria-label="About CIBIL score"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-cibil" role="tooltip" hidden></div></span>
+                              </span>
+                              <span class="hlc-input-shell" data-spd-shell="cibil">
+                                <input type="text" id="spd-cibil" data-spd-input="cibil" value="" placeholder="780" readonly tabindex="-1" aria-hidden="true" inputmode="numeric" autocomplete="off">
+                              </span>
+                            </span>
+                          </label>
+                        </div>
+                        <div class="hlc-form-band-strip">
+                          <label class="hlc-field hlc-field--m3-outlined" for="spd-existing-emis">
+                            <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="payments"></span>
+                            <span class="hlc-field-text-col">
+                              <span class="hlc-field-label-line">
+                                <span class="hlc-field-label">Total existing EMIs</span>
+                                <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true" aria-expanded="false" aria-controls="spd-help-existing-emis" aria-label="About Total existing EMIs"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-existing-emis" role="tooltip" hidden></div></span>
+                              </span>
+                              <span class="hlc-input-shell">
+                                <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
+                                <input type="text" id="spd-existing-emis" value="0" placeholder="0" readonly tabindex="-1" aria-hidden="true" inputmode="numeric" autocomplete="off">
+                              </span>
+                            </span>
+                          </label>
+                          <label class="hlc-field hlc-field--m3-outlined" for="spd-card-limits">
+                            <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="credit_card"></span>
+                            <span class="hlc-field-text-col">
+                              <span class="hlc-field-label-line">
+                                <span class="hlc-field-label">Total credit card limits</span>
+                                <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" tabindex="-1" aria-hidden="true" aria-expanded="false" aria-controls="spd-help-card-limits" aria-label="About Total credit card limits"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-card-limits" role="tooltip" hidden></div></span>
+                              </span>
+                              <span class="hlc-input-shell">
+                                <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
+                                <input type="text" id="spd-card-limits" value="0" placeholder="0" readonly tabindex="-1" aria-hidden="true" inputmode="numeric" autocomplete="off">
+                              </span>
+                            </span>
+                          </label>
                         </div>
                       </div>
+                      <div class="hlc-form-band-footnote hlc-field-note hlc-field-note--card-load">
+                        EMI equals
+                        <span class="hlc-icon-select hlc-icon-select--bare hlc-icon-select--card-load" data-hlc-icon-select data-hlc-icon-map="cardLoad">
+                          <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger tabindex="-1" aria-hidden="true" aria-haspopup="listbox" aria-expanded="false" aria-label="EMI as percent of credit card limit">
+                            <span class="hlc-icon-select-leading" data-hlc-icon-face hidden></span>
+                            <span class="hlc-icon-select-text" data-hlc-face-text>10%</span>
+                            <span class="hlc-icon-select-chevron" aria-hidden="true"></span>
+                          </button>
+                          <select id="spd-card-load-pct" tabindex="-1" aria-hidden="true">
+                            <option value="0" data-face="0%">0%</option>
+                            <option value="5" data-face="5%">5%</option>
+                            <option value="10" selected data-face="10%">10%</option>
+                          </select>
+                          <div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div>
+                        </span>
+                        of limit.
                       </div>
                     </div>
                   </div>
                 </div>
 
-<div class="hlc-form-actions">
+                <div class="hlc-form-actions">
                   <div class="hlc-form-submit">
                     <button type="button" class="home-hero-cta home-hero-cta-primary hlc-compare-cta" data-spd-see-options tabindex="-1"><svg class="hlc-compare-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m317-160-42-42 121-121H80v-60h316L275-504l42-42 193 193-193 193Zm326-254L450-607l193-193 42 42-121 121h316v60H564l121 121-42 42Z"/></svg><span class="hlc-compare-label">Compare</span></button>
                   </div>
                 </div>
-              </form>
+<!-- SPD_INPUTS_FORM_END -->
+</form>
             </div>
           </section>
 
@@ -475,7 +562,6 @@
                   </button>
                 </div>
                 <div class="hlc-apply-bar">
-                  <span class="hlc-apply-count" data-spd-apply-count hidden aria-live="polite"></span>
                   <button type="button" class="hlc-btn-primary" disabled tabindex="-1">Apply once</button>
                 </div>
               </div>
@@ -1403,7 +1489,6 @@
 
   <div class="hlc-filters-scrim" data-spd-filters-scrim hidden></div>
   <div class="hlc-apply-dock" data-spd-apply-dock hidden>
-    <span class="hlc-apply-count" data-spd-apply-count hidden aria-live="polite"></span>
     <button type="button" class="hlc-btn-primary" data-spd-apply disabled tabindex="-1">Apply once</button>
   </div>
 
@@ -1516,6 +1601,7 @@
     </div>
   </aside>
 
-  <script src="../js/shroffin-product-demo-mobile.js?v=27"></script>
+  <script src="../js/hlc-icon-select.js?v=acab712481"></script>
+  <script src="../js/shroffin-product-demo-mobile.js?v=29"></script>
 </body>
 </html>

@@ -4,8 +4,8 @@
  * Phone: iOS 26 Safari Compact (status + bottom floating bar).
  * Never use scrollIntoView here.
  * Home: iframe product demo + calm play/pause.
- * First full demo view: plays through once without interruption, then stops.
- * Only the Pause control stops it early. No auto-repeat.
+ * Once in view, the demo loops continuously until Pause.
+ * Only the Pause control stops it. Reduced motion stays still.
  *
  * Performance:
  * - Stage box size is CSS-owned (aspect-ratio + cqw). JS only syncs
@@ -303,8 +303,11 @@
       var data = ev && ev.data;
       if (!data || data.source !== "spd-demo") return;
       if (frame.contentWindow && ev.source !== frame.contentWindow) return;
-      if (data.type === "spd-ended") setState("ended");
-      else if (data.type === "spd-playing") setState("playing");
+      if (data.type === "spd-ended") {
+        /* Safety: if the frame stops unexpectedly, restart while in view. */
+        if (!reducedMotion() && syncInView()) play();
+        else setState("ended");
+      } else if (data.type === "spd-playing") setState("playing");
       else if (data.type === "spd-paused") setState("paused");
       else if (data.type === "spd-ready") markFrameReady();
     });
@@ -312,9 +315,9 @@
     setState("paused");
 
     /*
-     * Start the first full play when the demo is in view.
-     * Do not pause on scroll-away or tab hide — that cut the first run short.
-     * Only the Pause button (or a finished playthrough) stops it.
+     * Start looping when the demo is in view.
+     * Do not pause on scroll-away or tab hide — keep the home demo in the loop.
+     * Only the Pause button stops it.
      */
     if ("IntersectionObserver" in window) {
       var io = new IntersectionObserver(
