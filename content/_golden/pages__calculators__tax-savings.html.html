@@ -3,6 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- SHROFFIN_THEME_BOOT_START -->
+  <!--
+    Phase I live theme boot. Spec: _dark-mode-phase-c-boot-injection.md §5
+    Preference: localStorage['shroffin-color-preference'] ∈ {dark, light, system}
+    Resolved: html[data-theme="dark"|"light"]; first visit unset → dark (do NOT write until user taps).
+    Default (system) ≠ first visit. OS listener only when preference === system.
+    theme-color: dark #161616 / light #fcfcfd
+    FOUC: set data-theme + color-scheme + canvas background before stylesheets.
+  -->
+  <script data-shroffin-theme-boot="live">
+  (function () {
+    var KEY = 'shroffin-color-preference';
+    var root = document.documentElement;
+    function resolve(pref) {
+      if (pref === 'light') return 'light';
+      if (pref === 'dark') return 'dark';
+      if (pref === 'system') {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      return 'dark';
+    }
+    function applyThemeColor(resolved) {
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute('name', 'theme-color');
+        if (document.head.firstChild) document.head.insertBefore(meta, document.head.firstChild);
+        else document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', resolved === 'dark' ? '#161616' : '#fcfcfd');
+    }
+    function apply(resolved) {
+      root.setAttribute('data-theme', resolved);
+      root.style.colorScheme = resolved;
+      /* Critical canvas before CSS / home inline light hardcodes */
+      root.style.backgroundColor = resolved === 'dark' ? '#161616' : '#fcfcfd';
+      applyThemeColor(resolved);
+    }
+    var pref = null;
+    try { pref = localStorage.getItem(KEY); } catch (e) {}
+    if (pref !== 'dark' && pref !== 'light' && pref !== 'system') pref = null;
+    apply(resolve(pref));
+    window.__shroffinApplyColorPreference = function (next) {
+      if (next !== 'dark' && next !== 'light' && next !== 'system') return;
+      try { localStorage.setItem(KEY, next); } catch (e) {}
+      apply(resolve(next));
+      document.dispatchEvent(new CustomEvent('shroffin-theme-change', {
+        detail: { preference: next, theme: resolve(next) }
+      }));
+    };
+    try {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+        var p = null;
+        try { p = localStorage.getItem(KEY); } catch (e) {}
+        if (p === 'system') {
+          apply(resolve('system'));
+          document.dispatchEvent(new CustomEvent('shroffin-theme-change', {
+            detail: { preference: 'system', theme: resolve('system') }
+          }));
+        }
+        /* If pref unset or dark/light: ignore OS changes */
+      });
+    } catch (e) {}
+  })();
+  </script>
+  <!-- SHROFFIN_THEME_BOOT_END -->
   <script>document.documentElement.classList.add('js');</script>
   <meta name="description" content="First-year interest under Section 22 and principal under Schedule XV, matched to the Tax benefits guide.">
   <title>Tax claims calculator – Shroffin</title>
@@ -22,13 +88,23 @@
       <ul class="globalnav-list">
         <li class="globalnav-item globalnav-item-brand">
           <a class="globalnav-link globalnav-link-brand" href="/" aria-label="Shroffin Home">
-            <img
-              class="globalnav-logo"
-              src="/images/logos/logo-h-light-clear-781x173.png"
-              alt="Shroffin"
-              width="99"
-              height="22"
-            >
+            <!-- Phase G logo swap: light mark is default until html[data-theme="dark"] (Phase I boot). CSS owner: css/shroffin-shell.css -->
+              <img
+                class="globalnav-logo globalnav-logo--light"
+                src="/images/logos/logo-h-light-clear-781x173.png"
+                alt="Shroffin"
+                width="99"
+                height="22"
+              >
+              <img
+                class="globalnav-logo globalnav-logo--dark"
+                src="/images/logos/logo-h-dark-clear-781x173.png"
+                alt=""
+                width="99"
+                height="22"
+                aria-hidden="true"
+                decoding="async"
+              >
           </a>
         </li>
         <!-- LEGACY_EDUCATION_PAGES: education-loan surfaces — kept in code, hidden from redesigned home until product is rebuilt or re-enabled
@@ -65,15 +141,6 @@
             aria-controls="nav-guide-flyout"
           >Guide</a>
         </li>
-        <li class="globalnav-item globalnav-item-support" id="nav-support">
-          <button
-            type="button"
-            class="globalnav-flyout-trigger"
-            id="nav-support-trigger"
-            aria-expanded="false"
-            aria-controls="nav-support-flyout"
-          >Support</button>
-        </li>
         <li class="globalnav-item globalnav-item-flyout" id="nav-tools">
           <button
             type="button"
@@ -82,6 +149,15 @@
             aria-expanded="false"
             aria-controls="nav-tools-flyout"
           >Tools</button>
+        </li>
+        <li class="globalnav-item globalnav-item-support" id="nav-support">
+          <button
+            type="button"
+            class="globalnav-flyout-trigger"
+            id="nav-support-trigger"
+            aria-expanded="false"
+            aria-controls="nav-support-flyout"
+          >Support</button>
         </li>
         <li class="globalnav-item">
           <a class="globalnav-link" href="/pages/about.html">About</a>
@@ -122,6 +198,26 @@
             <li>
               <a class="globalnav-submenu-link" href="/pages/home-loan-complaints.html">
                 <span class="globalnav-submenu-label">If something goes wrong</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
+      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
+        <div class="globalnav-submenu-column">
+          <h2 class="globalnav-submenu-header">Explore tools</h2>
+          <ul class="globalnav-submenu-list">
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/calculators.html">
+                <span class="globalnav-submenu-label">Calculators</span>
+              </a>
+            </li>
+            <li>
+              <a class="globalnav-submenu-link" href="/pages/project-approvals.html">
+                <span class="globalnav-submenu-label">Project Bank Finder</span>
               </a>
             </li>
           </ul>
@@ -174,26 +270,6 @@
             </a>
           </li>
         </ul>
-      </div>
-    </div>
-
-    <div class="globalnav-flyout" id="nav-tools-flyout" aria-hidden="true">
-      <div class="globalnav-flyout-content globalnav-flyout-content--guide">
-        <div class="globalnav-submenu-column">
-          <h2 class="globalnav-submenu-header">Explore tools</h2>
-          <ul class="globalnav-submenu-list">
-            <li>
-              <a class="globalnav-submenu-link" href="/pages/calculators.html">
-                <span class="globalnav-submenu-label">Calculators</span>
-              </a>
-            </li>
-            <li>
-              <a class="globalnav-submenu-link" href="/pages/project-approvals.html">
-                <span class="globalnav-submenu-label">Project Bank Finder</span>
-              </a>
-            </li>
-          </ul>
-        </div>
       </div>
     </div>
   </nav>
@@ -328,7 +404,7 @@
                     <span class="calc-choice-face"><span class="calc-choice-title">No</span></span>
                   </label>
                 </div>
-                <p class="calc-hint">If no, the Section 22 interest limit drops to ₹30,000 a year. See <a href="../tax-benefits.html#interest">Interest payment</a>.</p>
+                <p class="calc-hint">If no, the Section 22 interest limit drops to ₹30,000 a year. See<a href="../tax-benefits.html#interest">Interest payment</a>.</p>
               </div>
             </div>
 
@@ -380,7 +456,7 @@
                   <span class="calc-prefix" aria-hidden="true">₹</span>
                   <input type="text" class="calc-input" autocomplete="off" id="usedBasket" name="usedBasket" inputmode="decimal" value="0">
                 </div>
-                <p class="calc-hint">Shares a ₹1.5 lakh basket with EPF, life insurance, and other eligible items. See <a href="../tax-benefits.html#principal">Principal repayment</a>.</p>
+                <p class="calc-hint">Shares a ₹1.5 lakh basket with EPF, life insurance, and other eligible items. See<a href="../tax-benefits.html#principal">Principal repayment</a>.</p>
               </div>
             </div>
           </form>
@@ -409,7 +485,7 @@
 
       <section class="calc-assumptions calc-reveal" aria-labelledby="calc-assumptions-title">
         <h2 class="calc-assumptions-title" id="calc-assumptions-title">How this estimate works</h2>
-        <p class="calc-assumptions-lead">Rules follow the <a href="../tax-benefits.html">Tax benefits guide</a> on this site.</p>
+        <p class="calc-assumptions-lead">Rules follow the<a href="../tax-benefits.html">Tax benefits guide</a>on this site.</p>
 
         <div class="calc-formula" aria-labelledby="calc-formula-title">
           <h3 class="calc-formula-title" id="calc-formula-title">Formula used</h3>
@@ -424,17 +500,17 @@
           </ul>
         </div>
         <ul class="calc-assumptions-list">
-            <li>New tax regime slabs (FY 2025-26): nil up to ₹4 lakh; 5% on ₹4–8 lakh; 10% on ₹8–12 lakh; 15% on ₹12–16 lakh; 20% on ₹16–20 lakh; 25% on ₹20–24 lakh; 30% above ₹24 lakh. Section 87A rebate up to ₹60,000 when taxable income is up to ₹12 lakh, with marginal relief just above that line. Confirm on the <a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a>.</li>
+            <li>New tax regime slabs (FY 2025-26): nil up to ₹4 lakh; 5% on ₹4–8 lakh; 10% on ₹8–12 lakh; 15% on ₹12–16 lakh; 20% on ₹16–20 lakh; 25% on ₹20–24 lakh; 30% above ₹24 lakh. Section 87A rebate up to ₹60,000 when taxable income is up to ₹12 lakh, with marginal relief just above that line. Confirm on the<a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden">(opens official Income Tax Department page)</span></a>.</li>
             <li>Old tax regime slabs (individual): nil up to ₹2.5 lakh (₹3 lakh if 60–79; ₹5 lakh if 80+); 5% to ₹5 lakh; 20% to ₹10 lakh; 30% above ₹10 lakh. Section 87A rebate up to ₹12,500 when taxable income is up to ₹5 lakh.</li>
             <li>Health and Education Cess is 4% on tax after rebate (including surcharge where due). Surcharge starts above ₹50 lakh of taxable income (10% / 15% / 25%; old regime can reach 37% above ₹5 crore), with marginal relief at each step.</li>
-            <li>Interest payment is modelled under Section 22. Self occupied old tax regime allows up to ₹2 lakh a year when the loan is to buy or build and the home is ready within 5 years. Otherwise the self occupied interest limit is ₹30,000 a year. Repair, renewal, or reconstruction is also ₹30,000 a year. Full map: <a href="../tax-benefits.html#interest">Interest payment</a>.</li>
-            <li>Let out interest has no fixed upper cap under Section 22. On the new tax regime, let out interest can reduce house property income; a house property loss usually cannot cut salary. On the old tax regime, house property loss set off against other income is limited to ₹2 lakh a year. See <a href="../tax-benefits.html#other">Other</a> for loss set off.</li>
-            <li>Self occupied interest cannot be claimed on the new tax regime. See <a href="../tax-benefits.html#interest">Interest payment</a>.</li>
-            <li>Principal repayment is modelled under Schedule XV on the old tax regime only, up to ₹1.5 lakh a year in a shared basket. Same whether you live in the home or rent it out. It starts after possession. Full map: <a href="../tax-benefits.html#principal">Principal repayment</a>.</li>
-            <li>Year 1 figures assume possession has already happened. Pre possession interest claimed in 5 equal parts is not modelled here. See <a href="../tax-benefits.html#under-construction">Under construction</a>.</li>
-            <li>Extra first time buyer interest under Section 130 or Section 131 is not added. Those windows are narrow and closed for loans sanctioned after 31 March 2022. Details: <a href="../tax-benefits.html#other">Other</a>.</li>
+            <li>Interest payment is modelled under Section 22. Self occupied old tax regime allows up to ₹2 lakh a year when the loan is to buy or build and the home is ready within 5 years. Otherwise the self occupied interest limit is ₹30,000 a year. Repair, renewal, or reconstruction is also ₹30,000 a year. Full map:<a href="../tax-benefits.html#interest">Interest payment</a>.</li>
+            <li>Let out interest has no fixed upper cap under Section 22. On the new tax regime, let out interest can reduce house property income; a house property loss usually cannot cut salary. On the old tax regime, house property loss set off against other income is limited to ₹2 lakh a year. See<a href="../tax-benefits.html#other">Other</a>for loss set off.</li>
+            <li>Self occupied interest cannot be claimed on the new tax regime. See<a href="../tax-benefits.html#interest">Interest payment</a>.</li>
+            <li>Principal repayment is modelled under Schedule XV on the old tax regime only, up to ₹1.5 lakh a year in a shared basket. Same whether you live in the home or rent it out. It starts after possession. Full map:<a href="../tax-benefits.html#principal">Principal repayment</a>.</li>
+            <li>Year 1 figures assume possession has already happened. Pre possession interest claimed in 5 equal parts is not modelled here. See<a href="../tax-benefits.html#under-construction">Under construction</a>.</li>
+            <li>Extra first time buyer interest under Section 130 or Section 131 is not added. Those windows are narrow and closed for loans sanctioned after 31 March 2022. Details:<a href="../tax-benefits.html#other">Other</a>.</li>
             <li>Stamp duty, registration, insurance premiums in the Schedule XV basket, municipal taxes on rent, and special-rate income (for example some capital gains) are not modelled. Enter other Schedule XV use in the field above if needed.</li>
-            <li>Your name must be on the property papers to claim. Being on the loan alone is not enough. See <a href="../tax-benefits.html#how-to-claim">How to claim</a> and <a href="../tax-benefits.html#joint-loan">Joint home loan</a>.</li>
+            <li>Your name must be on the property papers to claim. Being on the loan alone is not enough. See<a href="../tax-benefits.html#how-to-claim">How to claim</a>and<a href="../tax-benefits.html#joint-loan">Joint home loan</a>.</li>
         </ul>
       </section>
       <nav class="calc-guide-links calc-reveal" aria-labelledby="calc-guide-links-title">
@@ -488,14 +564,15 @@
           <a class="site-footer-brand-link" href="/" aria-label="Shroffin Home">
             <img
               class="site-footer-logo"
-              src="/images/logos/logo.png"
+              src="/images/logos/logo-mark-40.png"
               alt=""
               width="40"
               height="40"
+              loading="lazy"
+              decoding="async"
             >
           </a>
         </section>
-
         <div class="site-footer-directory">
           <nav class="site-footer-group site-footer-group--guide" aria-labelledby="footer-guide-title">
             <h2 class="site-footer-heading" id="footer-guide-title">Guide</h2>
@@ -508,7 +585,6 @@
               <li><a href="/pages/home-loan-complaints.html">If something goes wrong</a></li>
             </ul>
           </nav>
-
           <nav class="site-footer-group" aria-labelledby="footer-tools-title">
             <h2 class="site-footer-heading" id="footer-tools-title">Tools</h2>
             <ul class="site-footer-list">
@@ -516,16 +592,15 @@
               <li><a href="/pages/project-approvals.html">Project Bank Finder</a></li>
             </ul>
           </nav>
-
           <nav class="site-footer-group" aria-labelledby="footer-company-title">
             <h2 class="site-footer-heading" id="footer-company-title">Company</h2>
             <ul class="site-footer-list">
               <li><a href="/pages/about.html">About</a></li>
               <li><a href="/privacy-policy.html">Privacy Policy</a></li>
               <li><a href="/terms-of-use.html">Terms of Use</a></li>
+              <li><a href="/sitemap.html">Site Map</a></li>
             </ul>
           </nav>
-
           <section class="site-footer-group" aria-labelledby="footer-support-title">
             <h2 class="site-footer-heading" id="footer-support-title">Support</h2>
             <ul class="site-footer-list">
@@ -540,11 +615,10 @@
                   href="https://wa.me/919112334367"
                   target="_blank"
                   rel="noopener noreferrer"
-                >Message us<span class="visually-hidden"> (opens WhatsApp)</span></a>
+                >Message us<span class="visually-hidden">(opens WhatsApp)</span></a>
               </li>
             </ul>
           </section>
-
           <nav class="site-footer-group site-footer-group--connect" aria-labelledby="footer-connect-title">
             <h2 class="site-footer-heading" id="footer-connect-title">Connect</h2>
             <ul class="site-footer-list">
@@ -555,41 +629,47 @@
           </nav>
         </div>
       </div>
-
       <div class="site-footer-meta">
         <div class="site-footer-meta-main">
           <section class="site-footer-legal" aria-labelledby="footer-disclaimer">
             <h2 class="site-footer-disclaimer-title" id="footer-disclaimer">Disclaimer</h2>
             <div class="site-footer-disclaimer">
-              <p class="site-footer-disclaimer-summary">Shroffin is not a bank or a lender. Everything shown here is for comparison. Your rate, fees, and approval are decided by the lender.</p>
+              <p class="site-footer-disclaimer-summary">Shroffin is not a bank, a Non-Banking Financial Company (NBFC), or a lender. We do not approve, sanction, underwrite, or disburse loans. The lender decides your rate, your fees, and whether you are approved.</p>
+              <p class="site-footer-disclaimer-turn">Even so, we try our best for you. We show each lender's home loan clearly, one next to the other.</p>
               <details class="site-footer-disclaimer-more">
                 <summary>Read the full disclaimer</summary>
-                <div class="site-footer-disclaimer-full">
-                  <p>Shroffin is not a bank, Non-Banking Financial Company (NBFC), or lender. We do not approve, sanction, underwrite, or disburse loans. We provide comparison and application assistance only. Use of this website does not create a borrower–lender relationship with Shroffin.</p>
-                  <p>Information on this website — including rates, fees, charges, eligibility criteria, product features, and other terms — is for comparison and education. It is indicative and based on publicly available data and verified lender interactions. It may change without notice. Final rates, fees, charges, eligibility, and loan approval depend on your credit profile, income, documents, property, and other checks, and remain at the lender’s sole discretion.</p>
-                  <p>Displaying, listing, ranking, or describing a bank or loan product does not guarantee that you will be offered that product, or that any application will be approved. Shroffin cannot override, reverse, or compel any lender’s decision.</p>
-                  <p>Any loan you take is governed by the agreement between you and the lender. Always read the lender’s sanction letter, key fact statement, and loan documents before you accept an offer. For decisions about a loan, rely on the lender’s terms and your own judgment.</p>
-                  <p>Features, banks, products, and services shown on this website are subject to change. Some information, features, or services may not be available in all regions, for all customers, or at all times.</p>
+                <div class="site-footer-disclaimer-panel">
+                  <div class="site-footer-disclaimer-full">
+                    <p>We take each lender's terms and check them with that lender. Then we put the home loans next to each other, so you can compare. We can also help you apply.</p>
+                    <p>The rates and rules we show can change. The ones the lender gives you can be different. That still depends on your credit, income, documents, the property, and the checks the lender makes. Some of this may not apply to you, to your city, or when you apply.</p>
+                    <p>Seeing a lender does not mean they will lend to you. We cannot make a lender say yes, or take back a no. When they answer, we go through it with you, and we help you decide what to do. You still choose. What the lender writes is what counts.</p>
+                    <p>If you take the loan, the agreement is with the lender, not with us. We do not become your lender. Read the sanction letter, the key fact statement, and the loan documents before you accept.</p>
+                  </div>
                 </div>
               </details>
             </div>
           </section>
-
           <div class="site-footer-bottom">
             <div class="site-footer-bottom-row">
               <p class="site-footer-copy">Copyright © 2026 Shroffin. All rights reserved.</p>
-              <nav class="site-footer-legal-nav" aria-label="Legal and official resources">
-                <ul class="site-footer-legal-links">
-                  <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-                  <li><a href="/terms-of-use.html">Terms of Use</a></li>
-                  <li><a href="/sitemap.html">Site Map</a></li>
-                </ul>
+              <div class="site-footer-theme" role="group" aria-label="Color theme">
+                <button type="button" class="site-footer-theme-btn" data-theme-pref="system" aria-label="Default" aria-pressed="false">
+                  <svg class="site-footer-theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-6v2h2v1H8v-1h2v-2H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 2v8h14V7H5z"/></svg>
+                </button>
+                <button type="button" class="site-footer-theme-btn" data-theme-pref="light" aria-label="Light" aria-pressed="false">
+                  <svg class="site-footer-theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0-5h1v3h-1V2zm0 17h1v3h-1v-3zM2 11h3v1H2v-1zm17 0h3v1h-3v-1zM4.2 4.2l2.1 2.1-.7.7-2.1-2.1.7-.7zm14.1 14.1 2.1 2.1-.7.7-2.1-2.1.7-.7zM4.2 19.8l.7.7-2.1 2.1-.7-.7 2.1-2.1zm14.1-14.1.7.7-2.1 2.1-.7-.7 2.1-2.1z"/></svg>
+                </button>
+                <button type="button" class="site-footer-theme-btn" data-theme-pref="dark" aria-label="Dark" aria-pressed="false">
+                  <svg class="site-footer-theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.1 2a9.9 9.9 0 0 0 0 19.8A10 10 0 0 1 12.1 2z"/></svg>
+                </button>
+              </div>
+              <nav class="site-footer-legal-nav" aria-label="Official resources">
                 <ul class="site-footer-official-links">
-                  <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
-                  <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
-                  <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
-                  <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
-                  <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden">(opens official RBI page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden">(opens official NHB page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden">(opens official IRDAI page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden">(opens official National Consumer Helpline page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden">(opens official Income Tax Department page)</span></a></li>
                 </ul>
               </nav>
             </div>
@@ -598,11 +678,45 @@
       </div>
     </div>
   </footer>
+  <script>(function () {
+    var KEY = 'shroffin-color-preference';
+    var root = document.querySelector('.site-footer-theme');
+    if (!root) return;
+    var buttons = root.querySelectorAll('[data-theme-pref]');
+    function currentPref() {
+      var p = null;
+      try { p = localStorage.getItem(KEY); } catch (e) {}
+      if (p === 'dark' || p === 'light' || p === 'system') return p;
+      return 'dark';
+    }
+    function syncPressed() {
+      var pref = currentPref();
+      buttons.forEach(function (btn) {
+        var on = btn.getAttribute('data-theme-pref') === pref;
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        btn.classList.toggle('is-active', on);
+      });
+    }
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var next = btn.getAttribute('data-theme-pref');
+        if (typeof window.__shroffinApplyColorPreference === 'function') {
+          window.__shroffinApplyColorPreference(next);
+        } else {
+          try { localStorage.setItem(KEY, next); } catch (e) {}
+          location.reload();
+        }
+        syncPressed();
+      });
+    });
+    syncPressed();
+    document.addEventListener('shroffin-theme-change', syncPressed);
+  })();</script>
   <!-- SHROFFIN_FOOTER_END -->
 
 
   <script src="../../js/shroffin-loan-math.js?v=5"></script>
   <script src="../../js/shroffin-calculators.js?v=calc-cast-19"></script>
-  <script src="../../js/shroffin-nav.js?v=chapters-1"></script>
+  <script src="../../js/shroffin-nav.js?v=guide-top-1"></script>
 </body>
 </html>

@@ -1,40 +1,40 @@
 <main class="calc-main">
     <div class="calc-wrap">
-      <nav class="calc-crumb" aria-label="Breadcrumb">
-        <a href="../calculators.html">Calculators</a>
+      <nav class="calc-crumb" aria-label="{{SW:t.breadcrumb.0}}">
+        <a href="../calculators.html">{{SW:t.calculators.5}}</a>
         <span aria-hidden="true">/</span>
-        <span aria-current="page">How much can you borrow?</span>
+        <span aria-current="page">{{SW:t.how_much_can_you_borrow.6}}</span>
       </nav>
       <header class="calc-hero calc-reveal">
-        <h1 class="calc-hero-title">How much can you borrow?</h1>
-        <p class="calc-hero-lead">Depends on Property value and income, whichever is lower.</p>
+        <h1 class="calc-hero-title">{{SW:t.how_much_can_you_borrow.6}}</h1>
+        <p class="calc-hero-lead">{{SW:t.depends_on_property_value_and_income_whichever_i.7}}</p>
       </header>
       <div class="calc-workspace calc-reveal">
-        <section class="calc-controls" aria-label="Loan inputs" aria-labelledby="calc-controls-title">
-          <h2 class="visually-hidden" id="calc-controls-title">Loan inputs</h2>
+        <section class="calc-controls" aria-label="{{SW:t.loan_inputs.1}}" aria-labelledby="calc-controls-title">
+          <h2 class="visually-hidden" id="calc-controls-title">{{SW:t.loan_inputs.1}}</h2>
           <form class="calc-form" data-calc="how-much-loan" novalidate>
             <div class="calc-field-group">
-              <h3 class="calc-field-group-title">Property</h3>
+              <h3 class="calc-field-group-title">{{SW:t.property.8}}</h3>
               <div class="calc-field">
                 <div class="calc-label-row">
-                  <label class="calc-label" for="price">Agreement Value</label>
+                  <label class="calc-label" for="price">{{SW:t.agreement_value.9}}</label>
                 </div>
                 <div class="calc-input-shell">
                   <span class="calc-prefix" aria-hidden="true">₹</span>
                   <input type="text" class="calc-input" autocomplete="off" id="price" name="price" inputmode="decimal" value="75,00,000">
                 </div>
                 <div class="calc-slider-wrap">
-                  <span class="calc-slider-caption">Or drag to adjust</span>
-                  <input class="calc-range" type="range" name="priceRange" min="500000" max="9999999999" step="50000" value="7500000" aria-label="Agreement Value slider">
+                  <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
+                  <input class="calc-range" type="range" name="priceRange" min="500000" max="9999999999" step="50000" value="7500000" aria-label="{{SW:t.agreement_value_slider.2}}">
                 </div>
               </div>
             </div>
             <div class="calc-field-group">
-              <h3 class="calc-field-group-title">Income</h3>
+              <h3 class="calc-field-group-title">{{SW:t.income.11}}</h3>
               <div class="calc-field-grid">
                 <div class="calc-field">
                   <div class="calc-label-row">
-                    <label class="calc-label" for="income">Monthly take-home</label>
+                    <label class="calc-label" for="income">{{SW:t.monthly_take_home.12}}</label>
                   </div>
                   <div class="calc-input-shell">
                     <span class="calc-prefix" aria-hidden="true">₹</span>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="calc-field">
                   <div class="calc-label-row">
-                    <label class="calc-label" for="existingEmis">Existing EMIs</label>
+                    <label class="calc-label" for="existingEmis">{{SW:t.existing_emis.13}}</label>
                   </div>
                   <div class="calc-input-shell">
                     <span class="calc-prefix" aria-hidden="true">₹</span>
@@ -54,7 +54,7 @@
               <div class="calc-field-grid">
                 <div class="calc-field">
                   <div class="calc-label-row">
-                    <label class="calc-label" for="cardLimits">Credit card limits</label>
+                    <label class="calc-label" for="cardLimits">{{SW:t.credit_card_limits.14}}</label>
                   </div>
                   <div class="calc-input-shell">
                     <span class="calc-prefix" aria-hidden="true">₹</span>
@@ -63,7 +63,7 @@
                 </div>
                 <div class="calc-field">
                   <div class="calc-label-row">
-                    <label class="calc-label" for="foir">FOIR for all EMIs</label>
+                    <label class="calc-label" for="foir">{{SW:t.foir_for_all_emis.15}}</label>
                   </div>
                   <div class="calc-input-shell">
                     <select class="calc-select" id="foir" name="foir">
@@ -76,27 +76,27 @@
                   </div>
                 </div>
               </div>
-              <p class="calc-hint">FOIR is Fixed Obligation to Income Ratio. About 10% of credit card limits counts as a monthly load. Same rules as <a href="../guide.html#loan-amount">Loan amount in the Guide</a>.</p>
+              <p class="calc-hint">{{SW:t.foir_is_fixed_obligation_to_income_ratio_about_1.55}}<a href="../guide.html#loan-amount">{{SW:t.loan_amount_in_the_guide.16}}</a>.</p>
               <div class="calc-field">
                 <div class="calc-label-row">
-                  <span class="calc-label" id="coApplicant-label">Co-applicant</span>
+                  <span class="calc-label" id="coApplicant-label">{{SW:t.co_applicant.17}}</span>
                 </div>
                 <div class="calc-choice calc-choice--compact" role="radiogroup" aria-labelledby="coApplicant-label">
                   <label class="calc-choice-option">
                     <input type="radio" name="coApplicant" value="no" checked>
-                    <span class="calc-choice-face"><span class="calc-choice-title">No</span></span>
+                    <span class="calc-choice-face"><span class="calc-choice-title">{{SW:t.no.56}}</span></span>
                   </label>
                   <label class="calc-choice-option">
                     <input type="radio" name="coApplicant" value="yes">
-                    <span class="calc-choice-face"><span class="calc-choice-title">Yes</span></span>
+                    <span class="calc-choice-face"><span class="calc-choice-title">{{SW:t.yes.57}}</span></span>
                   </label>
                 </div>
-                <p class="calc-hint">An earning co-applicant can help increase the loan amount.</p>
+                <p class="calc-hint">{{SW:t.an_earning_co_applicant_can_help_increase_the_lo.18}}</p>
                 <div id="co-applicant-fields" hidden>
                   <div class="calc-field-grid">
                     <div class="calc-field">
                       <div class="calc-label-row">
-                        <label class="calc-label" for="coIncome">Co-applicant take-home</label>
+                        <label class="calc-label" for="coIncome">{{SW:t.co_applicant_take_home.19}}</label>
                       </div>
                       <div class="calc-input-shell">
                         <span class="calc-prefix" aria-hidden="true">₹</span>
@@ -105,7 +105,7 @@
                     </div>
                     <div class="calc-field">
                       <div class="calc-label-row">
-                        <label class="calc-label" for="coExistingEmis">Co-applicant EMIs</label>
+                        <label class="calc-label" for="coExistingEmis">{{SW:t.co_applicant_emis.20}}</label>
                       </div>
                       <div class="calc-input-shell">
                         <span class="calc-prefix" aria-hidden="true">₹</span>
@@ -116,7 +116,7 @@
                   <div class="calc-field-grid">
                     <div class="calc-field">
                       <div class="calc-label-row">
-                        <label class="calc-label" for="coCardLimits">Co-applicant card limits</label>
+                        <label class="calc-label" for="coCardLimits">{{SW:t.co_applicant_card_limits.21}}</label>
                       </div>
                       <div class="calc-input-shell">
                         <span class="calc-prefix" aria-hidden="true">₹</span>
@@ -128,30 +128,30 @@
               </div>
             </div>
             <div class="calc-field-group">
-              <h3 class="calc-field-group-title">Assumptions</h3>
+              <h3 class="calc-field-group-title">{{SW:t.assumptions.22}}</h3>
               <div class="calc-field-grid">
                 <div class="calc-field">
                   <div class="calc-label-row">
-                    <label class="calc-label" for="rate">Interest rate (% a year)</label>
+                    <label class="calc-label" for="rate">{{SW:t.interest_rate_a_year.23}}</label>
                   </div>
                   <div class="calc-input-shell">
                     <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
                   </div>
                   <div class="calc-slider-wrap">
-                    <span class="calc-slider-caption">Or drag to adjust</span>
-                    <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="Interest rate (% a year) slider">
+                    <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
+                    <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="{{SW:t.interest_rate_a_year_slider.3}}">
                   </div>
                 </div>
                 <div class="calc-field">
                   <div class="calc-label-row">
-                    <label class="calc-label" for="years">Tenure (years)</label>
+                    <label class="calc-label" for="years">{{SW:t.tenure_years.24}}</label>
                   </div>
                   <div class="calc-input-shell">
                     <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain">
                   </div>
                   <div class="calc-slider-wrap">
-                    <span class="calc-slider-caption">Or drag to adjust</span>
-                    <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="20" aria-label="Tenure (years) slider">
+                    <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
+                    <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="20" aria-label="{{SW:t.tenure_years_slider.4}}">
                   </div>
                 </div>
               </div>
@@ -159,61 +159,61 @@
           </form>
         </section>
         <section class="calc-readout" aria-labelledby="calc-readout-title" aria-live="polite">
-          <h2 class="calc-readout-title" id="calc-readout-title">Estimate</h2>
+          <h2 class="calc-readout-title" id="calc-readout-title">{{SW:t.estimate.25}}</h2>
           <div class="calc-readout-hero">
             <p class="calc-result-num" id="out-loan">—</p>
-            <p class="calc-result-label">Indicative loan (lower of the two)</p>
+            <p class="calc-result-label">{{SW:t.indicative_loan_lower_of_the_two.26}}</p>
           </div>
           <ul class="calc-stats">
-            <li><span>By Agreement Value</span><strong id="out-prop">—</strong></li>
-            <li><span>By income</span><strong id="out-inc">—</strong></li>
-            <li id="out-co-row" hidden><span>Added by co-applicant</span><strong id="out-co-add">—</strong></li>
-            <li><span>EMI room for this home loan</span><strong id="out-emi-room">—</strong></li>
-            <li><span>Limit that binds</span><strong id="out-bind">—</strong></li>
+            <li><span>{{SW:t.by_agreement_value.27}}</span><strong id="out-prop">—</strong></li>
+            <li><span>{{SW:t.by_income.28}}</span><strong id="out-inc">—</strong></li>
+            <li id="out-co-row" hidden><span>{{SW:t.added_by_co_applicant.29}}</span><strong id="out-co-add">—</strong></li>
+            <li><span>{{SW:t.emi_room_for_this_home_loan.30}}</span><strong id="out-emi-room">—</strong></li>
+            <li><span>{{SW:t.limit_that_binds.31}}</span><strong id="out-bind">—</strong></li>
           </ul>
-          <p class="calc-truth">Planning estimate only. Not a bank offer, sanction, or promise. Final terms stay with the lender.</p>
+          <p class="calc-truth">{{SW:t.planning_estimate_only_not_a_bank_offer_sanction.32}}</p>
         </section>
       </div>
 
       <section class="calc-assumptions calc-reveal" aria-labelledby="calc-assumptions-title">
-        <h2 class="calc-assumptions-title" id="calc-assumptions-title">How this estimate works</h2>
-        <p class="calc-assumptions-lead">What goes into this estimate.</p>
+        <h2 class="calc-assumptions-title" id="calc-assumptions-title">{{SW:t.how_this_estimate_works.33}}</h2>
+        <p class="calc-assumptions-lead">{{SW:t.what_goes_into_this_estimate.34}}</p>
 
         <div class="calc-formula" aria-labelledby="calc-formula-title">
-          <h3 class="calc-formula-title" id="calc-formula-title">Formula used</h3>
-          <p class="calc-formula-eq">Property cap = Agreement Value × LTV (90% / 80% / 75% by price band)</p>
-          <p class="calc-formula-eq">Income EMI room = (combined take-home × FOIR%) − all existing EMIs − (10% × all card limits)</p>
-          <p class="calc-formula-eq">Income loan from that EMI room, then indicative loan = min(property cap, income loan)</p>
-          <p class="calc-formula-eq">Added by co-applicant = income loan with co-applicant − income loan without</p>
+          <h3 class="calc-formula-title" id="calc-formula-title">{{SW:t.formula_used.35}}</h3>
+          <p class="calc-formula-eq">{{SW:t.property_cap_agreement_value_ltv_90_80_75_by_pri.36}}</p>
+          <p class="calc-formula-eq">{{SW:t.income_emi_room_combined_take_home_foir_all_exis.37}}</p>
+          <p class="calc-formula-eq">{{SW:t.income_loan_from_that_emi_room_then_indicative_l.38}}</p>
+          <p class="calc-formula-eq">{{SW:t.added_by_co_applicant_income_loan_with_co_applic.39}}</p>
           <ul class="calc-formula-keys">
-            <li>Same two-limit logic as Guide · Loan amount</li>
-            <li>FOIR choices: 50%, 55%, 60%, 65%, 70% (Guide default 55%)</li>
+            <li>{{SW:t.same_two_limit_logic_as_guide_loan_amount.40}}</li>
+            <li>{{SW:t.foir_choices_50_55_60_65_70_guide_default_55.41}}</li>
           </ul>
         </div>
         <ul class="calc-assumptions-list">
-            <li>Two limits apply. You receive roughly the lower one.</li>
-            <li>Property: RBI ceilings on Agreement Value. Up to ₹30 lakh loan share 90%. ₹30–75 lakh 80%. Above ₹75 lakh 75%. Banks may still approve less.</li>
-            <li>Income: net take-home. Existing EMIs and about 10% of credit card limits come off first. What is left is EMI room for the home loan.</li>
-            <li>FOIR is bank practice, not an RBI fixed rule. An earning co-applicant’s take-home, EMIs, and card limits are combined under the same FOIR. Banks may still count less than 100% of co-applicant income.</li>
-            <li>Age, credit score, employer type, and document checks are not modelled.</li>
+            <li>{{SW:t.two_limits_apply_you_receive_roughly_the_lower_o.42}}</li>
+            <li>{{SW:t.property_rbi_ceilings_on_agreement_value_up_to_3.43}}</li>
+            <li>{{SW:t.income_net_take_home_existing_emis_and_about_10_.44}}</li>
+            <li>{{SW:t.foir_is_bank_practice_not_an_rbi_fixed_rule_an_e.45}}</li>
+            <li>{{SW:t.age_credit_score_employer_type_and_document_chec.46}}</li>
         </ul>
       </section>
       <nav class="calc-guide-links calc-reveal" aria-labelledby="calc-guide-links-title">
-        <h2 class="calc-guide-links-title" id="calc-guide-links-title">In the Guide</h2>
+        <h2 class="calc-guide-links-title" id="calc-guide-links-title">{{SW:t.in_the_guide.47}}</h2>
         <ul class="calc-guide-links-list">
-          <li><a href="../guide.html#loan-amount">Home loan overview · Loan amount</a></li>
-          <li><a href="../guide.html#loan-amount-property">Home loan overview · Property limit</a></li>
-          <li><a href="../guide.html#emi">Home loan overview · Equated Monthly Instalment (EMI)</a></li>
+          <li><a href="../guide.html#loan-amount">{{SW:t.home_loan_overview_loan_amount.48}}</a></li>
+          <li><a href="../guide.html#loan-amount-property">{{SW:t.home_loan_overview_property_limit.49}}</a></li>
+          <li><a href="../guide.html#emi">{{SW:t.home_loan_overview_equated_monthly_instalment_em.50}}</a></li>
         </ul>
       </nav>
 
       <nav class="calc-related calc-reveal" aria-labelledby="calc-related-title">
-        <h2 class="calc-related-title" id="calc-related-title">Related</h2>
+        <h2 class="calc-related-title" id="calc-related-title">{{SW:t.related.51}}</h2>
         <ul class="calc-related-list">
-            <li><a href="emi.html">EMI</a></li>
-            <li><a href="loan-amount.html">Loan from EMI</a></li>
-            <li><a href="prepayment.html">Prepayment</a></li>
-            <li><a href="tax-savings.html">Tax claims</a></li>
+            <li><a href="emi.html">{{SW:t.emi.58}}</a></li>
+            <li><a href="loan-amount.html">{{SW:t.loan_from_emi.52}}</a></li>
+            <li><a href="prepayment.html">{{SW:t.prepayment.53}}</a></li>
+            <li><a href="tax-savings.html">{{SW:t.tax_claims.54}}</a></li>
         </ul>
       </nav>
     </div>

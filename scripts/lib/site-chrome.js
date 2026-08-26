@@ -42,9 +42,35 @@ const SKIP_EXPLORE_BANKS_PREFOOTER_CTA = new Set([
 
 const SKIP_SITE_HELP_STRIP = new Set(['pages/about.html']);
 
-const EXPLORE_BANKS_PREFOOTER_TITLE = 'Get started with Shroffin.';
+/* Markers resolved via site-words (common/chrome.words.md). */
+const EXPLORE_BANKS_PREFOOTER_TITLE = '{{SW:prefooter.title}}';
 const EXPLORE_BANKS_PREFOOTER_LEAD =
-  'Compare every home loan bank side by side,<br>then apply once to the banks you pick.';
+  '{{SW:prefooter.lead_line1}}<br>{{SW:prefooter.lead_line2}}';
+
+function applyChromeWords(html) {
+  try {
+    const { loadChrome, applyDocToHtml } = require('./site-words');
+    return applyDocToHtml(html, loadChrome(), { escape: false });
+  } catch (e) {
+    if (!String(e.message || e).includes('Missing site-words')) throw e;
+    return html;
+  }
+}
+
+/** Resolved copy for contracts / tests (after site-words apply). */
+function exploreBanksPrefooterTitle() {
+  return applyChromeWords('{{SW:prefooter.title}}');
+}
+
+function exploreBanksPrefooterLead() {
+  return applyChromeWords(
+    '{{SW:prefooter.lead_line1}}<br>{{SW:prefooter.lead_line2}}'
+  );
+}
+
+function exploreBanksPrefooterCtaLabel() {
+  return applyChromeWords('{{SW:prefooter.cta}}');
+}
 
 function currentAttr(active) {
   return active ? ' aria-current="page"' : '';
@@ -52,37 +78,41 @@ function currentAttr(active) {
 
 function renderExploreBanksPrefooterCta(fileRel) {
   if (SKIP_EXPLORE_BANKS_PREFOOTER_CTA.has(fileRel)) return '';
-  return [
-    '<section class="site-prefooter-cta" aria-labelledby="site-prefooter-cta-title">',
-    '  <div class="site-prefooter-cta-inner">',
-    '    <h2 class="site-prefooter-cta-title" id="site-prefooter-cta-title">' +
-      EXPLORE_BANKS_PREFOOTER_TITLE +
-      '</h2>',
-    '    <p class="site-prefooter-cta-lead">' +
-      EXPLORE_BANKS_PREFOOTER_LEAD +
-      '</p>',
-    '    <a class="home-hero-cta home-hero-cta-primary site-prefooter-cta-action" href="/pages/explore-banks.html">Explore banks</a>',
-    '  </div>',
-    '</section>'
-  ].join('\n');
+  return applyChromeWords(
+    [
+      '<section class="site-prefooter-cta" aria-labelledby="site-prefooter-cta-title">',
+      '  <div class="site-prefooter-cta-inner">',
+      '    <h2 class="site-prefooter-cta-title" id="site-prefooter-cta-title">' +
+        EXPLORE_BANKS_PREFOOTER_TITLE +
+        '</h2>',
+      '    <p class="site-prefooter-cta-lead">' +
+        EXPLORE_BANKS_PREFOOTER_LEAD +
+        '</p>',
+      '    <a class="home-hero-cta home-hero-cta-primary site-prefooter-cta-action" href="/pages/explore-banks.html">{{SW:prefooter.cta}}</a>',
+      '  </div>',
+      '</section>'
+    ].join('\n')
+  );
 }
 
 function renderSiteHelpStrip(fileRel) {
   if (SKIP_SITE_HELP_STRIP.has(fileRel)) return '';
-  return [
-    '<aside class="site-help-strip" aria-label="Get help">',
-    '  <p class="site-help-strip-text">',
-    '    Need some help?',
-    '    <a',
-    '      class="guide-section-link"',
-    '      href="{{CONTACT_WHATSAPP_URL}}"',
-    '      target="_blank"',
-    '      rel="noopener noreferrer"',
-    '    >Chat now<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new window)</span></a>',
-    '    or call <a class="site-help-strip-phone" href="tel:{{CONTACT_PHONE_TEL}}">{{CONTACT_PHONE_DISPLAY_SHORT}}</a>',
-    '  </p>',
-    '</aside>'
-  ].join('\n');
+  return applyChromeWords(
+    [
+      '<aside class="site-help-strip" aria-label="{{SW:help_strip.landmark}}">',
+      '  <p class="site-help-strip-text">',
+      '    {{SW:help_strip.need_help}}',
+      '    <a',
+      '      class="guide-section-link"',
+      '      href="{{CONTACT_WHATSAPP_URL}}"',
+      '      target="_blank"',
+      '      rel="noopener noreferrer"',
+      '    >{{SW:help_strip.chat}}<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> {{SW:help_strip.chat_sr}}</span></a>',
+      '    {{SW:help_strip.or_call}} <a class="site-help-strip-phone" href="tel:{{CONTACT_PHONE_TEL}}">{{CONTACT_PHONE_DISPLAY_SHORT}}</a>',
+      '  </p>',
+      '</aside>'
+    ].join('\n')
+  );
 }
 
 function applyContacts(html) {
@@ -123,7 +153,7 @@ function renderNav(fileRel) {
   Object.keys(slots).forEach(function (key) {
     html = html.replaceAll('{{' + key + '}}', currentAttr(slots[key]));
   });
-  return indentBlock(applyContacts(html), 2);
+  return indentBlock(applyContacts(applyChromeWords(html)), 2);
 }
 
 function renderFooter(fileRel) {
@@ -150,7 +180,7 @@ function renderFooter(fileRel) {
     );
   /* Drop blank lines left by omitted optional chrome slots. */
   html = html.replace(/\n(?:[ \t]*\n)+/g, '\n');
-  return indentBlock(applyContacts(html), 2);
+  return indentBlock(applyContacts(applyChromeWords(html)), 2);
 }
 
 function renderGuideLocalnav(fileRel) {
@@ -168,7 +198,7 @@ function renderGuideLocalnav(fileRel) {
   Object.keys(slots).forEach(function (key) {
     html = html.replaceAll('{{' + key + '}}', currentAttr(slots[key]));
   });
-  return indentBlock(html, 4);
+  return indentBlock(applyChromeWords(html), 4);
 }
 
 /** Early <head> theme-boot slot from partials/theme-boot.html (Phase I live). */
@@ -285,6 +315,9 @@ module.exports = {
   SKIP_SITE_HELP_STRIP,
   EXPLORE_BANKS_PREFOOTER_TITLE,
   EXPLORE_BANKS_PREFOOTER_LEAD,
+  exploreBanksPrefooterTitle,
+  exploreBanksPrefooterLead,
+  exploreBanksPrefooterCtaLabel,
   applyNav,
   applyFooter,
   applyGuideLocalnav,

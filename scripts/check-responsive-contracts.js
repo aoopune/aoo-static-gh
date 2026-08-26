@@ -7,9 +7,13 @@ const globalNav = require(path.join(root, 'data', 'global-nav.json'));
 const {
   SKIP_EXPLORE_BANKS_PREFOOTER_CTA,
   SKIP_SITE_HELP_STRIP,
-  EXPLORE_BANKS_PREFOOTER_TITLE,
-  EXPLORE_BANKS_PREFOOTER_LEAD
+  exploreBanksPrefooterTitle,
+  exploreBanksPrefooterLead,
+  exploreBanksPrefooterCtaLabel
 } = require(path.join(root, 'scripts', 'lib', 'site-chrome'));
+const EXPLORE_BANKS_PREFOOTER_TITLE = exploreBanksPrefooterTitle();
+const EXPLORE_BANKS_PREFOOTER_LEAD = exploreBanksPrefooterLead();
+const EXPLORE_BANKS_PREFOOTER_CTA = exploreBanksPrefooterCtaLabel();
 const pages = pageRegistry.map(function (entry) {
   return entry.path;
 });
@@ -212,7 +216,11 @@ for (const entry of pageRegistry) {
       );
     }
     if (
-      !/class="site-prefooter-cta"[\s\S]*?href="\/pages\/explore-banks\.html"[\s\S]*?>Explore banks<\/a>[\s\S]*?class="site-help-strip"/.test(
+      !new RegExp(
+        'class="site-prefooter-cta"[\\s\\S]*?href="/pages/explore-banks\\.html"[\\s\\S]*?>' +
+          EXPLORE_BANKS_PREFOOTER_CTA.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') +
+          '</a>[\\s\\S]*?class="site-help-strip"'
+      ).test(
         activeSource
       )
     ) {
@@ -293,8 +301,8 @@ for (const entry of pageRegistry) {
   if (!/class="site-footer-logo"/.test(activeSource)) {
     fail(file, 'footer must show the brand logo');
   }
-  if (!/src="\/images\/logos\/logo\.png"/.test(activeSource)) {
-    fail(file, 'footer must use /images/logos/logo.png');
+  if (!/src="\/images\/logos\/logo-mark-40\.png"/.test(activeSource)) {
+    fail(file, 'footer must use /images/logos/logo-mark-40.png');
   }
   if (/class="site-footer-tagline"/.test(activeSource)) {
     fail(file, 'footer must not show a brand tagline');

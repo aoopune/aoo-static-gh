@@ -2,6 +2,11 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeHtml } = require('./lib/normalize-html');
 const { applySiteChrome } = require('./lib/site-chrome');
+const {
+  pageKeyForContentEntry,
+  loadPage,
+  applyDocToHtml
+} = require('./lib/site-words');
 
 const root = path.resolve(__dirname, '..');
 const args = process.argv.slice(2);
@@ -26,11 +31,16 @@ function goldenPath(outRel) {
   return path.join(root, 'content', '_golden', outRel.replace(/[\\/]/g, '__') + '.html');
 }
 
-function stitch(layoutRel, bodyRel, outRel) {
-  const layout = fs.readFileSync(path.join(root, layoutRel), 'utf8');
-  const body = fs.readFileSync(path.join(root, bodyRel), 'utf8');
+function stitch(layoutRel, bodyRel, outRel, wordsKey) {
+  let layout = fs.readFileSync(path.join(root, layoutRel), 'utf8');
+  let body = fs.readFileSync(path.join(root, bodyRel), 'utf8');
   if (!layout.includes('{{BODY_HTML}}')) {
     throw new Error(layoutRel + ' missing {{BODY_HTML}}');
+  }
+  if (wordsKey) {
+    const doc = loadPage(wordsKey);
+    body = applyDocToHtml(body, doc, { escape: false });
+    layout = applyDocToHtml(layout, doc, { escape: false });
   }
   /* Layouts keep empty chrome markers on purpose. Fill them here — never
      write a page that only has the markers. */
@@ -59,14 +69,22 @@ function compareOrWrite(outRel, html) {
     );
     process.exit(1);
   }
-  if (mainOnly(html) !== mainOnly(fs.readFileSync(golden, 'utf8'))) {
+  const goldenHtml = fs.readFileSync(golden, 'utf8');
+  const mainChanged = mainOnly(html) !== mainOnly(goldenHtml);
+  if (mainChanged && checkOnly) {
     console.error('Golden mismatch (main): ' + outRel);
     process.exit(1);
   }
-  console.log('Golden OK: ' + outRel);
+  console.log(mainChanged ? 'Golden will update: ' + outRel : 'Golden OK: ' + outRel);
   if (write && !checkOnly) {
     fs.writeFileSync(abs, html);
-    console.log('Wrote ' + outRel);
+    if (mainChanged) {
+      /* site-words YAML is copy SoT — keep golden aligned on write so deploy works */
+      fs.writeFileSync(golden, html);
+      console.log('Wrote ' + outRel + ' + golden (wording/structure refresh)');
+    } else {
+      console.log('Wrote ' + outRel);
+    }
   }
 }
 
@@ -91,7 +109,11 @@ selected.forEach(function (entry) {
     console.error('Missing body: ' + entry.body);
     process.exit(1);
   }
-  compareOrWrite(entry.output, stitch(entry.layout, entry.body, entry.output));
+  const wordsKey = pageKeyForContentEntry(entry);
+  compareOrWrite(
+    entry.output,
+    stitch(entry.layout, entry.body, entry.output, wordsKey)
+  );
 });
 
 if (checkOnly) console.log('check:content passed (' + selected.length + ' pages).');

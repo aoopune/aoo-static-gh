@@ -1,25 +1,24 @@
 <main class="apf-main">
     <div class="apf-shell">
       <header class="apf-hero">
-        <h1 class="apf-title">Your project across bank records.</h1>
-        <p class="apf-hero-lead">Save time and costs on projects already approved by banks.</p>
+        <h1 class="apf-title">{{SW:t.your_project_across_bank_records.3}}</h1>
+        <p class="apf-hero-lead">{{SW:t.save_time_and_costs_on_projects_already_approved.4}}</p>
       </header>
 
       <section class="apf-search-panel" aria-labelledby="apf-search-heading">
-        <h2 class="apf-section-title apf-search-title" id="apf-search-heading">
-          Find banks for projects in <span class="apf-search-place">Pune district</span>.
+        <h2 class="apf-section-title apf-search-title" id="apf-search-heading">{{SW:t.find_banks_for_projects_in.16}}<span class="apf-search-place">{{SW:t.pune_district.5}}</span>.
         </h2>
         <form class="apf-form" id="apf-search-form">
           <div class="apf-fields">
             <div class="apf-field">
-              <label class="apf-label" for="apf-project">Project</label>
+              <label class="apf-label" for="apf-project">{{SW:t.project.6}}</label>
               <input
                 class="apf-input"
                 id="apf-project"
                 name="project_name"
                 type="text"
                 autocomplete="off"
-                placeholder="e.g. 1 Gold Leaf"
+                placeholder="{{SW:t.e_g_1_gold_leaf.0}}"
                 role="combobox"
                 aria-autocomplete="list"
                 aria-controls="apf-project-options"
@@ -28,14 +27,14 @@
               <ul class="apf-options" id="apf-project-options" role="listbox" hidden></ul>
             </div>
             <div class="apf-field">
-              <label class="apf-label" for="apf-developer">Developer / Builder</label>
+              <label class="apf-label" for="apf-developer">{{SW:t.developer_builder.7}}</label>
               <input
                 class="apf-input"
                 id="apf-developer"
                 name="developer_name"
                 type="text"
                 autocomplete="off"
-                placeholder="e.g. Goldleaf Realtors"
+                placeholder="{{SW:t.e_g_goldleaf_realtors.1}}"
                 role="combobox"
                 aria-autocomplete="list"
                 aria-controls="apf-developer-options"
@@ -44,14 +43,14 @@
               <ul class="apf-options" id="apf-developer-options" role="listbox" hidden></ul>
             </div>
             <div class="apf-field">
-              <label class="apf-label" for="apf-area">Area</label>
+              <label class="apf-label" for="apf-area">{{SW:t.area.8}}</label>
               <input
                 class="apf-input"
                 id="apf-area"
                 name="area_name"
                 type="text"
                 autocomplete="off"
-                placeholder="e.g. Baner"
+                placeholder="{{SW:t.e_g_baner.2}}"
                 role="combobox"
                 aria-autocomplete="list"
                 aria-controls="apf-area-options"
@@ -60,9 +59,9 @@
               <ul class="apf-options" id="apf-area-options" role="listbox" hidden></ul>
             </div>
           </div>
-          <button class="apf-submit" id="apf-submit" type="submit" disabled>Find banks</button>
+          <button class="apf-submit" id="apf-submit" type="submit" disabled>{{SW:t.find_banks.9}}</button>
         </form>
-        <p class="apf-status" id="apf-status" role="status" aria-live="polite" aria-atomic="true">Loading project bank data.</p>
+        <p class="apf-status" id="apf-status" role="status" aria-live="polite" aria-atomic="true">{{SW:t.loading_project_bank_data.10}}</p>
       </section>
 
       <section
@@ -71,28 +70,28 @@
         aria-busy="false"
         hidden
       >
-        <h2 class="apf-section-title" id="apf-results-heading">Matching bank records</h2>
+        <h2 class="apf-section-title" id="apf-results-heading">{{SW:t.matching_bank_records.11}}</h2>
         <div class="apf-activity" id="apf-activity" aria-hidden="true" hidden>
           <span class="apf-activity-ring"></span>
-          <span>Checking project bank records.</span>
+          <span>{{SW:t.checking_project_bank_records.12}}</span>
         </div>
         <div class="apf-table-scroll" tabindex="0" role="region" aria-labelledby="apf-results-heading">
           <table class="apf-table">
-            <caption class="visually-hidden">Matching bank records</caption>
+            <caption class="visually-hidden">{{SW:t.matching_bank_records.11}}</caption>
             <thead>
               <tr>
-                <th scope="col">Bank name</th>
-                <th scope="col">Project</th>
-                <th scope="col">Developer / Builder</th>
-                <th scope="col">Area</th>
+                <th scope="col">{{SW:t.bank_name.13}}</th>
+                <th scope="col">{{SW:t.project.6}}</th>
+                <th scope="col">{{SW:t.developer_builder.7}}</th>
+                <th scope="col">{{SW:t.area.8}}</th>
               </tr>
             </thead>
             <tbody id="apf-results"></tbody>
           </table>
         </div>
-        <button class="apf-more" id="apf-more" type="button" hidden>Show more</button>
+        <button class="apf-more" id="apf-more" type="button" hidden>{{SW:t.show_more.14}}</button>
       </section>
 
-      <p class="apf-data-note">All data shown here is sourced from official bank information available in the public domain as of 12 July 2026. It has been collected and presented for informational purposes only. Ownership of the original data remains with the respective banks / publishers.</p>
+      <p class="apf-data-note">{{SW:t.all_data_shown_here_is_sourced_from_official_ban.15}}</p>
     </div>
   </main>

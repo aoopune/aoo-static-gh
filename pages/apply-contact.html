@@ -286,8 +286,7 @@
       <header class="hl-apply-contact-header">
         <div class="hl-apply-contact-head">
           <h1 class="hl-apply-title">Your Contact Details</h1>
-          <p class="hl-apply-recap" id="hl-apply-recap">
-            Applying to <span id="hl-apply-recap-n">0</span> <span id="hl-apply-recap-noun">banks</span>.
+          <p class="hl-apply-recap" id="hl-apply-recap">Applying to<span id="hl-apply-recap-n">0</span> <span id="hl-apply-recap-noun">banks</span>.
           </p>
         </div>
         <p class="hl-apply-purpose">We use this email and number for updates and the next steps on your home loan application.</p>
@@ -335,7 +334,7 @@
           <div class="hl-apply-field hl-apply-field--email">
             <label for="hl-email">Email</label>
             <div class="hl-apply-field-row hl-apply-email-row">
-              <input id="hl-email" name="email" type="email" autocomplete="email" required placeholder="name@example.com">
+              <input id="hl-email" name="email" type="email" autocomplete="email" required placeholder="[name@example.com](mailto:name@example.com)">
               <button type="button" class="hl-apply-text-action hl-apply-verify" id="hl-verify-email" disabled>Verify</button>
             </div>
             <p class="hl-apply-verify-status" id="hl-verify-status" hidden>Email verified</p>
@@ -351,7 +350,7 @@
             <span class="hl-apply-consent-copy">
               <span class="hl-apply-consent-line">I confirm that the information I provide here is true and complete to the best of my knowledge.</span>
               <span class="hl-apply-consent-line">I agree that Shroffin may email or call me about this home loan application.</span>
-              <span class="hl-apply-consent-line">See <a href="/privacy-policy.html">Privacy Policy</a> and <a href="/terms-of-use.html">Terms of Use</a>.</span>
+              <span class="hl-apply-consent-line">See<a href="/privacy-policy.html">Privacy Policy</a>and<a href="/terms-of-use.html">Terms of Use</a>.</span>
             </span>
           </label>
         </div>
@@ -456,7 +455,7 @@
                   href="https://wa.me/919112334367"
                   target="_blank"
                   rel="noopener noreferrer"
-                >Message us<span class="visually-hidden"> (opens WhatsApp)</span></a>
+                >Message us<span class="visually-hidden">(opens WhatsApp)</span></a>
               </li>
             </ul>
           </section>
@@ -506,11 +505,11 @@
               </div>
               <nav class="site-footer-legal-nav" aria-label="Official resources">
                 <ul class="site-footer-official-links">
-                  <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official RBI page)</span></a></li>
-                  <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official NHB page)</span></a></li>
-                  <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official IRDAI page)</span></a></li>
-                  <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official National Consumer Helpline page)</span></a></li>
-                  <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens official Income Tax Department page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.rbi.org.in/" target="_blank" rel="noopener noreferrer">Reserve Bank of India<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden">(opens official RBI page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.nhb.org.in/" target="_blank" rel="noopener noreferrer">National Housing Bank<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden">(opens official NHB page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://irdai.gov.in/" target="_blank" rel="noopener noreferrer">IRDAI<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden">(opens official IRDAI page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://consumerhelpline.gov.in/" target="_blank" rel="noopener noreferrer">National Consumer Helpline<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden">(opens official National Consumer Helpline page)</span></a></li>
+                  <li><a class="guide-section-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener noreferrer">Income Tax Department<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden">(opens official Income Tax Department page)</span></a></li>
                 </ul>
               </nav>
             </div>
@@ -519,8 +518,7 @@
       </div>
     </div>
   </footer>
-  <script>
-  (function () {
+  <script>(function () {
     var KEY = 'shroffin-color-preference';
     var root = document.querySelector('.site-footer-theme');
     if (!root) return;
@@ -553,8 +551,7 @@
     });
     syncPressed();
     document.addEventListener('shroffin-theme-change', syncPressed);
-  })();
-  </script>
+  })();</script>
   <!-- SHROFFIN_FOOTER_END -->
 
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -562,7 +559,8 @@
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
   <script src="../js/site-contacts.generated.js?v=96bf60e983"></script>
   <script src="../js/bank-logos.js?v=22d2c72d0a"></script>
-  <script src="../js/home-loan-apply.js?v=010a9ddf5d"></script>
+  <script src="../js/apply-success-copy.generated.js?v=1"></script>
+  <script src="../js/home-loan-apply.js?v=24989ff6eb"></script>
   <script src="../js/shroffin-nav.js?v=69b8861330"></script>
 </body>
 </html>

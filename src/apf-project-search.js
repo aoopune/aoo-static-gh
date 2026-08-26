@@ -1,6 +1,22 @@
 "use strict";
 
 const { Engine } = require("json-rules-engine");
+const apfUiCopy = require("./generated/apf-ui-copy.js");
+
+function ui(id, fallback) {
+  const v = apfUiCopy[id];
+  return v != null && String(v) !== "" ? String(v) : fallback;
+}
+
+function uiTemplate(id, fallback, vars) {
+  let out = ui(id, fallback);
+  if (vars) {
+    Object.keys(vars).forEach(function (k) {
+      out = out.split("{" + k + "}").join(String(vars[k]));
+    });
+  }
+  return out;
+}
 
 const PAGE_SIZE = 50;
 const ACTIVITY_MIN_MS = 500;
@@ -272,7 +288,9 @@ function initPage() {
 
   function setSearching(isSearching) {
     submit.disabled = isSearching;
-    submit.textContent = isSearching ? "Finding banks" : "Find banks";
+    submit.textContent = isSearching
+      ? ui("btn.finding", "Finding banks")
+      : ui("btn.find", "Find banks");
     resultSection.setAttribute("aria-busy", String(isSearching));
   }
 
@@ -321,12 +339,15 @@ function initPage() {
     hideActivity();
 
     if (!hasAnyInput(query)) {
-      status.textContent = "Enter a project, developer, or area to find matching banks.";
+      status.textContent = ui(
+        "status.enter",
+        "Enter a project, developer, or area to find matching banks."
+      );
       return;
     }
 
     setSearching(true);
-    status.textContent = "Checking matching bank records.";
+    status.textContent = ui("status.checking", "Checking matching bank records.");
     showActivity();
     const activityStartedAt = performance.now();
 
@@ -355,14 +376,19 @@ function initPage() {
       shown = 0;
 
       if (!visibleResults.length) {
-        status.textContent = "No matching bank records found.";
+        status.textContent = ui("status.none", "No matching bank records found.");
         resultSection.hidden = true;
         return;
       }
 
-      status.textContent = `${visibleResults.length} matching bank ${
-        visibleResults.length === 1 ? "record" : "records"
-      } found.`;
+      status.textContent =
+        visibleResults.length === 1
+          ? uiTemplate("status.found_singular", "Found {count} matching bank record.", {
+              count: visibleResults.length
+            })
+          : uiTemplate("status.found_plural", "Found {count} matching bank records.", {
+              count: visibleResults.length
+            });
       hideActivity();
       resultSection.hidden = false;
       renderNextPage();
@@ -372,7 +398,10 @@ function initPage() {
       scrollToResults();
     } catch (error) {
       console.error(error);
-      status.textContent = "Bank records could not be checked. Please try again.";
+      status.textContent = ui(
+        "status.error",
+        "Bank records could not be checked. Please try again."
+      );
       resultSection.hidden = true;
     } finally {
       if (version === searchVersion) {
@@ -427,7 +456,10 @@ function initPage() {
     })
     .catch((error) => {
       console.error(error);
-      status.textContent = "Project bank data is temporarily unavailable.";
+      status.textContent = ui(
+        "status.unavailable",
+        "Project bank data is temporarily unavailable."
+      );
       submit.disabled = true;
     });
 }

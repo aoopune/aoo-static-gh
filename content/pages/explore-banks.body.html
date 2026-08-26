@@ -1,40 +1,40 @@
 <main class="explore-banks-main" data-hlc-root aria-busy="true">
     <div class="hlc-shell">
       <header class="hlc-hero">
-        <h1 class="hlc-title"><span class="hlc-title-wash">Explore banks.</span></h1>
+        <h1 class="hlc-title"><span class="hlc-title-wash">{{SW:t.explore_banks.43}}</span></h1>
       </header>
 
       <div class="hlc-workspace">
         <div class="hlc-main-rail">
-          <section class="hlc-panel hlc-panel--inputs" aria-label="Loan details for bank options">
-            <h2 class="visually-hidden" id="hlc-inputs-heading">Loan inputs</h2>
+          <section class="hlc-panel hlc-panel--inputs" aria-label="{{SW:t.loan_details_for_bank_options.0}}">
+            <h2 class="visually-hidden" id="hlc-inputs-heading">{{SW:t.loan_inputs.44}}</h2>
             <div class="hlc-inputs-card">
             <form class="hlc-form" id="hlc-inputs" autocomplete="off" novalidate aria-labelledby="hlc-inputs-heading">
               <div class="hlc-form-pairs">
-                <div class="hlc-form-row hlc-form-row--mode" role="group" aria-label="Applicant mode">
+                <div class="hlc-form-row hlc-form-row--mode" role="group" aria-label="{{SW:t.applicant_mode.1}}">
                   <div class="hlc-row1-scroll">
                     <div class="hlc-row1-track">
                       <div class="hlc-icon-select hlc-icon-select--bare" data-hlc-icon-select data-hlc-icon-map="applicant">
-                        <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="Applicant mode">
+                        <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="{{SW:t.applicant_mode.1}}">
                           <span class="hlc-icon-select-leading" data-hlc-icon-face></span>
-                          <span class="hlc-icon-select-text" data-hlc-face-text>Single applicant</span>
+                          <span class="hlc-icon-select-text" data-hlc-face-text>{{SW:t.single_applicant.2}}</span>
                           <span class="hlc-icon-select-chevron" aria-hidden="true"></span>
                         </button>
                         <select id="hlc-coapplicant" name="includeCoApplicant">
-                          <option value="no" selected data-face="Single applicant" data-icon="person">Single applicant</option>
-                          <option value="yes" data-face="With co-applicant" data-icon="person_add">With co-applicant</option>
+                          <option value="no" selected data-face="{{SW:t.single_applicant.2}}" data-icon="person">{{SW:t.single_applicant.2}}</option>
+                          <option value="yes" data-face="{{SW:t.with_co_applicant.3}}" data-icon="person_add">{{SW:t.with_co_applicant.3}}</option>
                         </select>
                         <div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div>
                       </div>
                       <div class="hlc-icon-select hlc-icon-select--bare" data-hlc-icon-select data-hlc-icon-map="purpose">
-                        <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="Loan purpose">
+                        <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="{{SW:t.loan_purpose.4}}">
                           <span class="hlc-icon-select-leading" data-hlc-icon-face></span>
-                          <span class="hlc-icon-select-text" data-hlc-face-text>New home loan</span>
+                          <span class="hlc-icon-select-text" data-hlc-face-text>{{SW:t.new_home_loan.5}}</span>
                           <span class="hlc-icon-select-chevron" aria-hidden="true"></span>
                         </button>
                         <select id="hlc-purpose" name="purpose" required>
-                          <option value="Regular Home Loan" selected data-face="New home loan" data-icon="home">New home loan</option>
-                          <option value="Top-up Loan" data-face="Top-up" data-icon="add_home">Top-up</option>
+                          <option value="Regular Home Loan" selected data-face="{{SW:t.new_home_loan.5}}" data-icon="home">{{SW:t.new_home_loan.5}}</option>
+                          <option value="Top-up Loan" data-face="{{SW:t.top_up.6}}" data-icon="add_home">{{SW:t.top_up.6}}</option>
                         </select>
                         <div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div>
                         <span class="hlc-field-help-anchor"><button
@@ -42,23 +42,23 @@
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-purpose"
-                        aria-label="About Purpose"
+                        aria-label="{{SW:t.about_purpose.7}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-purpose" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">The end-use sets the product rules, papers, and how money is released.</p>
-                      <p class="hlc-field-help-text">Construction money is usually released as the building progresses.</p>
+                      <p class="hlc-field-help-text">{{SW:t.the_end_use_sets_the_product_rules_papers_and_ho.45}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.construction_money_is_usually_released_as_the_bu.46}}</p>
                     </div></span>
                       </div>
                       <div class="hlc-icon-select hlc-icon-select--bare" data-hlc-icon-select data-hlc-icon-map="occupation">
-                        <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="Occupation">
+                        <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="{{SW:t.occupation.8}}">
                           <span class="hlc-icon-select-leading" data-hlc-icon-face></span>
-                          <span class="hlc-icon-select-text" data-hlc-face-text>Salaried</span>
+                          <span class="hlc-icon-select-text" data-hlc-face-text>{{SW:t.salaried.9}}</span>
                           <span class="hlc-icon-select-chevron" aria-hidden="true"></span>
                         </button>
                         <select id="hlc-occupation" name="occupation" required>
-                          <option value="Salaried" selected data-face="Salaried" data-icon="work">Salaried</option>
-                          <option value="Self-Employed" data-face="Self-employed" data-icon="enterprise">Self-employed</option>
+                          <option value="Salaried" selected data-face="{{SW:t.salaried.9}}" data-icon="work">{{SW:t.salaried.9}}</option>
+                          <option value="Self-Employed" data-face="{{SW:t.self_employed.10}}" data-icon="enterprise">{{SW:t.self_employed.10}}</option>
                         </select>
                         <div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div>
                         <span class="hlc-field-help-anchor"><button
@@ -66,27 +66,27 @@
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-occupation"
-                        aria-label="About Occupation"
+                        aria-label="{{SW:t.about_occupation.11}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-occupation" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Which papers prove income depends on how you earn.</p>
-                      <p class="hlc-field-help-text">Self-employed files follow tax returns more than cash you say you take out.</p>
-                        <a class="hlc-field-help-more" href="guide-documents.html#income">Learn more</a>
+                      <p class="hlc-field-help-text">{{SW:t.which_papers_prove_income_depends_on_how_you_ear.47}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.self_employed_files_follow_tax_returns_more_than.48}}</p>
+                        <a class="hlc-field-help-more" href="guide-documents.html#income">{{SW:t.learn_more.49}}</a>
                     </div></span>
                       </div>
                       <div class="hlc-icon-select hlc-icon-select--bare hlc-icon-select--foir" data-hlc-icon-select data-hlc-icon-map="foir">
-                        <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="FOIR percent">
+                        <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="{{SW:t.foir_percent.12}}">
                           <span class="hlc-icon-select-leading" data-hlc-icon-face hidden></span>
-                          <span class="hlc-icon-select-text" data-hlc-face-text>FOIR 55%</span>
+                          <span class="hlc-icon-select-text" data-hlc-face-text>{{SW:t.foir_55.14}}</span>
                           <span class="hlc-icon-select-chevron" aria-hidden="true"></span>
                         </button>
                         <select id="hlc-foir" name="foirPct">
-                          <option value="50" data-face="FOIR 50%">50%</option>
-                          <option value="55" selected data-face="FOIR 55%">55%</option>
-                          <option value="60" data-face="FOIR 60%">60%</option>
-                          <option value="65" data-face="FOIR 65%">65%</option>
-                          <option value="70" data-face="FOIR 70%">70%</option>
+                          <option value="50" data-face="{{SW:t.foir_50.13}}">50%</option>
+                          <option value="55" selected data-face="{{SW:t.foir_55.14}}">55%</option>
+                          <option value="60" data-face="{{SW:t.foir_60.15}}">60%</option>
+                          <option value="65" data-face="{{SW:t.foir_65.16}}">65%</option>
+                          <option value="70" data-face="{{SW:t.foir_70.17}}">70%</option>
                         </select>
                         <div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div>
                         <span class="hlc-field-help-anchor"><button
@@ -94,30 +94,30 @@
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-foir"
-                        aria-label="About EMI limit / FOIR"
+                        aria-label="{{SW:t.about_emi_limit_foir.18}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-foir" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Share of take-home allowed for all fixed monthly repayments, including this loan.</p>
-                      <p class="hlc-field-help-text">Each bank sets its own share; there is no single India-wide rule.</p>
-                        <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
+                      <p class="hlc-field-help-text">{{SW:t.share_of_take_home_allowed_for_all_fixed_monthly.50}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.each_bank_sets_its_own_share_there_is_no_single_.51}}</p>
+                        <a class="hlc-field-help-more" href="guide.html#loan-amount">{{SW:t.learn_more.49}}</a>
                     </div></span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div class="hlc-form-row hlc-form-row--loan-band" role="group" aria-label="Loan details">
+                <div class="hlc-form-row hlc-form-row--loan-band" role="group" aria-label="{{SW:t.loan_details.19}}">
                   <div class="hlc-form-band-fields">
                     <div class="hlc-form-band-strip">
                     <label class="hlc-field hlc-field--m3-outlined" for="hlc-loan-amount">
                       <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="currency_rupee"></span>
                       <span class="hlc-field-text-col">
                         <span class="hlc-field-label-line">
-                          <span class="hlc-field-label">Loan amount</span>
+                          <span class="hlc-field-label">{{SW:t.loan_amount.52}}</span>
                         </span>
                         <span class="hlc-input-shell">
-                          <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
+                          <span class="hlc-prefix" aria-hidden="true">{{SW:t.x20b9.53}}</span>
                           <input type="text" id="hlc-loan-amount" name="loanAmountRequest" value="50,00,000" placeholder="50,00,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
                         </span>
                       </span>
@@ -126,23 +126,23 @@
                       <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="apartment"></span>
                       <span class="hlc-field-text-col">
                         <span class="hlc-field-label-line">
-                          <span class="hlc-field-label"><span class="hlc-field-label-primary">Property value</span><span class="hlc-field-label-qualifier">as per agreement</span></span>
+                          <span class="hlc-field-label"><span class="hlc-field-label-primary">{{SW:t.property_value.54}}</span><span class="hlc-field-label-qualifier">{{SW:t.as_per_agreement.55}}</span></span>
                           <span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-property-value"
-                        aria-label="About Property value"
+                        aria-label="{{SW:t.about_property_value.20}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-property-value" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Lenders finance the lower of the agreement price and their own valuation.</p>
-                      <p class="hlc-field-help-text">Stamp duty and registration are usually extra cash, not inside the loan.</p>
-                      <a class="hlc-field-help-more" href="guide.html#loan-amount-property">Learn more</a>
+                      <p class="hlc-field-help-text">{{SW:t.lenders_finance_the_lower_of_the_agreement_price.56}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.stamp_duty_and_registration_are_usually_extra_ca.57}}</p>
+                      <a class="hlc-field-help-more" href="guide.html#loan-amount-property">{{SW:t.learn_more.49}}</a>
                     </div></span>
                         </span>
                         <span class="hlc-input-shell">
-                          <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
+                          <span class="hlc-prefix" aria-hidden="true">{{SW:t.x20b9.53}}</span>
                           <input type="text" id="hlc-property-value" name="propertyValue" value="62,50,000" placeholder="62,50,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10" required>
                         </span>
                       </span>
@@ -153,24 +153,24 @@
                       <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="calendar_today"></span>
                       <span class="hlc-field-text-col">
                         <span class="hlc-field-label-line">
-                          <span class="hlc-field-label">Loan tenure</span>
+                          <span class="hlc-field-label">{{SW:t.loan_tenure.58}}</span>
                           <span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-tenure"
-                        aria-label="About Loan tenure"
+                        aria-label="{{SW:t.about_loan_tenure.21}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-tenure" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">A longer schedule lowers the EMI but usually raises total interest.</p>
-                      <p class="hlc-field-help-text">On a floating loan, holding EMI when rates rise can stretch the years.</p>
-                        <a class="hlc-field-help-more" href="guide.html#tenure">Learn more</a>
+                      <p class="hlc-field-help-text">{{SW:t.a_longer_schedule_lowers_the_emi_but_usually_rai.59}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.on_a_floating_loan_holding_emi_when_rates_rise_c.60}}</p>
+                        <a class="hlc-field-help-more" href="guide.html#tenure">{{SW:t.learn_more.49}}</a>
                     </div></span>
                         </span>
                         <span class="hlc-input-shell">
                           <input type="text" id="hlc-tenure" name="tenureYears" value="20" placeholder="20" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2" data-hlc-max="30" required>
-                          <span class="hlc-suffix" aria-hidden="true">years</span>
+                          <span class="hlc-suffix" aria-hidden="true">{{SW:t.years.61}}</span>
                         </span>
                       </span>
                     </label>
@@ -178,24 +178,24 @@
                       <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="person"></span>
                       <span class="hlc-field-text-col">
                         <span class="hlc-field-label-line">
-                          <span class="hlc-field-label">Age</span>
+                          <span class="hlc-field-label">{{SW:t.age.126}}</span>
                           <span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-age"
-                        aria-label="About Age"
+                        aria-label="{{SW:t.about_age.22}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-age" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Banks cap the loan so it ends by a set age, often around 70.</p>
-                      <p class="hlc-field-help-text">Joint loans often follow the older person's age.</p>
-                        <a class="hlc-field-help-more" href="guide.html#tenure">Learn more</a>
+                      <p class="hlc-field-help-text">{{SW:t.banks_cap_the_loan_so_it_ends_by_a_set_age_often.62}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.joint_loans_often_follow_the_older_person_s_age.63}}</p>
+                        <a class="hlc-field-help-more" href="guide.html#tenure">{{SW:t.learn_more.49}}</a>
                     </div></span>
                         </span>
                         <span class="hlc-input-shell">
                           <input type="text" id="hlc-age" name="age" value="35" placeholder="35" inputmode="numeric" autocomplete="off" data-hlc-format="digits" data-hlc-max-digits="2" required>
-                          <span class="hlc-suffix" aria-hidden="true">years</span>
+                          <span class="hlc-suffix" aria-hidden="true">{{SW:t.years.61}}</span>
                         </span>
                       </span>
                     </label>
@@ -203,7 +203,7 @@
                   </div>
                 </div>
 
-                <div class="hlc-form-row hlc-form-row--capacity-band" role="group" aria-label="Repayment capacity">
+                <div class="hlc-form-row hlc-form-row--capacity-band" role="group" aria-label="{{SW:t.repayment_capacity.23}}">
                   <div class="hlc-form-band-wrap">
                   <div class="hlc-form-band-fields">
                     <div class="hlc-form-band-strip">
@@ -211,23 +211,23 @@
                       <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="wallet"></span>
                       <span class="hlc-field-text-col">
                         <span class="hlc-field-label-line">
-                          <span class="hlc-field-label">Net monthly income</span>
+                          <span class="hlc-field-label">{{SW:t.net_monthly_income.64}}</span>
                           <span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-monthly-income"
-                        aria-label="About Net monthly income"
+                        aria-label="{{SW:t.about_net_monthly_income.24}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-monthly-income" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Use income you can prove — salary slips, Form 16, ITR, rent proof, or other regular income proof.</p>
-                      <p class="hlc-field-help-text">If that proof looks low, some lenders may still use your bank statement to check your eligibility.</p>
-                      <a class="hlc-field-help-more" href="guide.html#loan-amount">Learn more</a>
+                      <p class="hlc-field-help-text">{{SW:t.use_income_you_can_prove_salary_slips_form_16_it.65}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.if_that_proof_looks_low_some_lenders_may_still_u.66}}</p>
+                      <a class="hlc-field-help-more" href="guide.html#loan-amount">{{SW:t.learn_more.49}}</a>
                     </div></span>
                         </span>
                         <span class="hlc-input-shell">
-                          <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
+                          <span class="hlc-prefix" aria-hidden="true">{{SW:t.x20b9.53}}</span>
                           <input type="text" id="hlc-monthly-income" name="monthlyIncome" value="1,00,000" placeholder="1,00,000" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10" required>
                         </span>
                       </span>
@@ -236,18 +236,18 @@
                       <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="speed"></span>
                       <span class="hlc-field-text-col">
                         <span class="hlc-field-label-line">
-                          <span class="hlc-field-label">CIBIL score</span>
+                          <span class="hlc-field-label">{{SW:t.cibil_score.67}}</span>
                           <span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-cibil"
-                        aria-label="About CIBIL score"
+                        aria-label="{{SW:t.about_cibil_score.25}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-cibil" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Missed payments and defaults on the report can outweigh a high score.</p>
-                      <p class="hlc-field-help-text">Checking your own CIBIL usually does not lower it; a bank application can.</p>
+                      <p class="hlc-field-help-text">{{SW:t.missed_payments_and_defaults_on_the_report_can_o.68}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.checking_your_own_cibil_usually_does_not_lower_i.69}}</p>
                     </div></span>
                         </span>
                         <span class="hlc-input-shell">
@@ -261,22 +261,22 @@
                       <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="payments"></span>
                       <span class="hlc-field-text-col">
                         <span class="hlc-field-label-line">
-                          <span class="hlc-field-label">Total existing EMIs</span>
+                          <span class="hlc-field-label">{{SW:t.total_existing_emis.70}}</span>
                           <span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-existing-emis"
-                        aria-label="About Total existing EMIs"
+                        aria-label="{{SW:t.about_total_existing_emis.26}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-existing-emis" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Lenders subtract other loan instalments before they set your new home EMI.</p>
-                      <p class="hlc-field-help-text">A loan you plan to close later still counts until it is closed on the credit report.</p>
+                      <p class="hlc-field-help-text">{{SW:t.lenders_subtract_other_loan_instalments_before_t.71}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.a_loan_you_plan_to_close_later_still_counts_unti.72}}</p>
                     </div></span>
                         </span>
                         <span class="hlc-input-shell">
-                          <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
+                          <span class="hlc-prefix" aria-hidden="true">{{SW:t.x20b9.53}}</span>
                           <input type="text" id="hlc-existing-emis" name="existingEmis" value="0" placeholder="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
                         </span>
                       </span>
@@ -285,22 +285,22 @@
                       <span class="hlc-field-icon" aria-hidden="true" data-hlc-icon="credit_card"></span>
                       <span class="hlc-field-text-col">
                         <span class="hlc-field-label-line">
-                          <span class="hlc-field-label">Total credit card limits</span>
+                          <span class="hlc-field-label">{{SW:t.total_credit_card_limits.73}}</span>
                           <span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-card-limits"
-                        aria-label="About Total credit card limits"
+                        aria-label="{{SW:t.about_total_credit_card_limits.27}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-card-limits" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Even a fully paid card can still reduce how much EMI you can take.</p>
-                      <p class="hlc-field-help-text">Banks often count a share of the limit as a monthly bill; rules vary.</p>
+                      <p class="hlc-field-help-text">{{SW:t.even_a_fully_paid_card_can_still_reduce_how_much.74}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.banks_often_count_a_share_of_the_limit_as_a_mont.75}}</p>
                     </div></span>
                         </span>
                         <span class="hlc-input-shell">
-                          <span class="hlc-prefix" aria-hidden="true">&#x20B9;</span>
+                          <span class="hlc-prefix" aria-hidden="true">{{SW:t.x20b9.53}}</span>
                           <input type="text" id="hlc-card-limits" name="cardLimits" value="0" placeholder="0" inputmode="numeric" autocomplete="off" data-hlc-format="money" data-hlc-max-digits="10">
                         </span>
                       </span>
@@ -308,9 +308,7 @@
                     </div>
                   </div>
                   <!-- div not p: icon-select list is a div; a p would auto-close and orphan “of limit.” -->
-                  <div class="hlc-form-band-footnote hlc-field-note hlc-field-note--card-load">
-                        EMI equals
-                        <span
+                  <div class="hlc-form-band-footnote hlc-field-note hlc-field-note--card-load">{{SW:t.emi_equals.127}}<span
                           class="hlc-icon-select hlc-icon-select--bare hlc-icon-select--card-load"
                           data-hlc-icon-select
                           data-hlc-icon-map="cardLoad"
@@ -321,7 +319,7 @@
                             data-hlc-icon-trigger
                             aria-haspopup="listbox"
                             aria-expanded="false"
-                            aria-label="EMI as percent of credit card limit"
+                            aria-label="{{SW:t.emi_as_percent_of_credit_card_limit.28}}"
                           >
                             <span class="hlc-icon-select-leading" data-hlc-icon-face hidden></span>
                             <span class="hlc-icon-select-text" data-hlc-face-text>10%</span>
@@ -333,9 +331,7 @@
                             <option value="10" selected data-face="10%">10%</option>
                           </select>
                           <div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div>
-                        </span>
-                        of limit.
-                  </div>
+                        </span>{{SW:t.of_limit.128}}</div>
                   </div>
                 </div>
 
@@ -345,24 +341,24 @@
                       <div class="hlc-coapplicant-row" id="hlc-coapplicant-row">
                         <div class="hlc-coapplicant-toggle-cell" aria-hidden="true"></div>
                         <div class="hlc-coapplicant-fields" id="hlc-coapplicant-fields" hidden>
-                          <h2 class="hlc-coapplicant-section-title">Co-applicant details <span class="hlc-field-help-anchor"><button
+                          <h2 class="hlc-coapplicant-section-title">{{SW:t.co_applicant_details.129}}<span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-coapplicant"
-                        aria-label="About co-applicant"
+                        aria-label="{{SW:t.about_co_applicant.29}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-coapplicant" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Duty is to repay the whole loan; a missed EMI hits every co-borrower's credit.</p>
-                      <p class="hlc-field-help-text">Spouse and close family are commonly accepted; friends usually are not.</p>
-                      <a class="hlc-field-help-more" href="tax-benefits.html#joint-loan">Learn more</a>
+                      <p class="hlc-field-help-text">{{SW:t.duty_is_to_repay_the_whole_loan_a_missed_emi_hit.76}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.spouse_and_close_family_are_commonly_accepted_fr.77}}</p>
+                      <a class="hlc-field-help-more" href="tax-benefits.html#joint-loan">{{SW:t.learn_more.49}}</a>
                     </div></span></h2>
                           <div class="hlc-coapplicant-list" id="hlc-coapplicant-list"></div>
                           <div class="hlc-coapplicant-list-foot">
                             <button type="button" class="hlc-coapplicant-add" id="hlc-coapplicant-add">
                               <span class="hlc-coapplicant-add-mark" aria-hidden="true">+</span>
-                              <span class="hlc-coapplicant-add-label">Add another co-applicant</span>
+                              <span class="hlc-coapplicant-add-label">{{SW:t.add_another_co_applicant.78}}</span>
                             </button>
                             <p class="hlc-coapplicant-limit" id="hlc-coapplicant-limit" role="status"></p>
                           </div>
@@ -375,7 +371,7 @@
 
               <div class="hlc-form-actions">
               <div class="hlc-form-submit">
-                <button type="submit" class="home-hero-cta home-hero-cta-primary hlc-compare-cta" id="hlc-see-options"><svg class="hlc-compare-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m317-160-42-42 121-121H80v-60h316L275-504l42-42 193 193-193 193Zm326-254L450-607l193-193 42 42-121 121h316v60H564l121 121-42 42Z"/></svg><span class="hlc-compare-label">Compare</span></button>
+                <button type="submit" class="home-hero-cta home-hero-cta-primary hlc-compare-cta" id="hlc-see-options"><svg class="hlc-compare-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m317-160-42-42 121-121H80v-60h316L275-504l42-42 193 193-193 193Zm326-254L450-607l193-193 42 42-121 121h316v60H564l121 121-42 42Z"/></svg><span class="hlc-compare-label">{{SW:t.compare.79}}</span></button>
               </div>
               </div>
             </form>
@@ -389,9 +385,7 @@
             aria-labelledby="hlc-intelligence-sr-heading"
             hidden
           >
-            <h2 class="visually-hidden" id="hlc-intelligence-sr-heading">
-              Insights
-            </h2>
+            <h2 class="visually-hidden" id="hlc-intelligence-sr-heading">{{SW:t.insights.80}}</h2>
 
             <div class="hlc-intel-strip">
               <p
@@ -405,7 +399,7 @@
             <ol
               class="hlc-intel-tips"
               id="hlc-intel-tips"
-              aria-label="Additional insights"
+              aria-label="{{SW:t.additional_insights.30}}"
             ></ol>
 
             <button
@@ -437,7 +431,7 @@
             aria-live="polite"
             aria-atomic="true"
           >
-            <p class="hlc-searching-title">Finding your options.</p>
+            <p class="hlc-searching-title">{{SW:t.finding_your_options.81}}</p>
             <div class="hlc-searching-dots" aria-hidden="true">
               <span></span><span></span><span></span>
             </div>
@@ -446,17 +440,17 @@
           <section class="hlc-results-shell" id="hlc-results-shell" hidden aria-live="polite">
             <div class="hlc-results-head">
               <div class="hlc-results-heading">
-                <h2 class="visually-hidden" id="hlc-compare-heading">Bank options</h2>
+                <h2 class="visually-hidden" id="hlc-compare-heading">{{SW:t.bank_options.82}}</h2>
                 <p class="visually-hidden" id="hlc-status" role="status" aria-live="polite"></p>
                 <p class="visually-hidden" id="hlc-match-meta" aria-live="polite"></p>
               </div>
               <div class="hlc-results-actions">
                 <div class="hlc-results-tools-lead">
                   <div class="hlc-column-tabs-scroller">
-                    <div class="hlc-column-tabs" role="tablist" aria-label="Column groups">
-                      <button type="button" class="hlc-column-tab" role="tab" data-group="essentials" aria-current="page" aria-selected="true">Overview</button>
-                      <button type="button" class="hlc-column-tab" role="tab" data-group="charges" aria-selected="false">Charges</button>
-                      <button type="button" class="hlc-column-tab" role="tab" data-group="laterCharges" aria-selected="false">Other charges</button>
+                    <div class="hlc-column-tabs" role="tablist" aria-label="{{SW:t.column_groups.31}}">
+                      <button type="button" class="hlc-column-tab" role="tab" data-group="essentials" aria-current="page" aria-selected="true">{{SW:t.overview.83}}</button>
+                      <button type="button" class="hlc-column-tab" role="tab" data-group="charges" aria-selected="false">{{SW:t.charges.84}}</button>
+                      <button type="button" class="hlc-column-tab" role="tab" data-group="laterCharges" aria-selected="false">{{SW:t.other_charges.85}}</button>
                     </div>
                   </div>
                 </div>
@@ -467,17 +461,17 @@
                     id="hlc-filters-toggle"
                     aria-expanded="false"
                     aria-controls="hlc-filters-panel"
-                    aria-label="Filters"
+                    aria-label="{{SW:t.filters.32}}"
                   >
                     <svg class="hlc-filters-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false">
                       <path fill="currentColor" d="M440-160q-17 0-28.5-11.5T400-200v-240L168-736q-15-20-4.5-42t36.5-22h560q26 0 36.5 22t-4.5 42L560-440v240q0 17-11.5 28.5T520-160h-80Zm40-308 198-252H282l198 252Zm0 0Z"/>
                     </svg>
-                    <span class="hlc-filters-toggle-label">filter</span>
+                    <span class="hlc-filters-toggle-label">{{SW:t.filter.86}}</span>
                     <span class="hlc-filters-badge" id="hlc-filters-badge" hidden></span>
                   </button>
                 </div>
                 <div class="hlc-apply-bar" id="hlc-apply-bar">
-                  <button type="button" class="hlc-btn-primary" id="hlc-apply-btn" disabled>Apply once</button>
+                  <button type="button" class="hlc-btn-primary" id="hlc-apply-btn" disabled>{{SW:t.apply_once.87}}</button>
                 </div>
               </div>
             </div>
@@ -489,16 +483,14 @@
                 class="hlc-filters"
                 id="hlc-filters-panel"
                 role="region"
-                aria-label="Filters"
+                aria-label="{{SW:t.filters.32}}"
               >
                 <div class="hlc-filters-handle" aria-hidden="true">
                   <span class="hlc-filters-handle-pill"></span>
                 </div>
                 <div class="hlc-filters-head">
                   <div class="hlc-filters-head-actions">
-                    <button type="button" class="hlc-filters-clear" id="hlc-filters-clear" hidden>
-                      Clear all
-                    </button>
+                    <button type="button" class="hlc-filters-clear" id="hlc-filters-clear" hidden>{{SW:t.clear_all.88}}</button>
                   </div>
                 </div>
 
@@ -506,25 +498,25 @@
                 <fieldset class="hlc-filter-group">
                   <legend class="hlc-filter-legend" id="hlc-borrower-label">
                     <span class="hlc-field-label-row">
-                      <span class="hlc-field-label-text">Borrower</span>
+                      <span class="hlc-field-label-text">{{SW:t.borrower.89}}</span>
                       <span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-borrower"
-                        aria-label="About Borrower"
+                        aria-label="{{SW:t.about_borrower.33}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-borrower" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Govt or pension schemes may cut fees or rate, not skip the usual checks.</p>
-                      <p class="hlc-field-help-text">&ldquo;Zero processing&rdquo; often still leaves legal, valuation, and registry costs.</p>
+                      <p class="hlc-field-help-text">{{SW:t.govt_or_pension_schemes_may_cut_fees_or_rate_not.90}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.ldquo_zero_processing_rdquo_often_still_leaves_l.91}}</p>
                   </div></span>
                     </span>
                   </legend>
                   <div class="hlc-filter-checks hlc-borrower-chips" role="group" aria-labelledby="hlc-borrower-label">
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="govtPsu" />
-                      <span class="hlc-filter-option-label">Govt / PSU employee and pensioner</span>
+                      <span class="hlc-filter-option-label">{{SW:t.govt_psu_employee_and_pensioner.92}}</span>
                     </label>
                   </div>
                   </fieldset>
@@ -532,19 +524,19 @@
                 <fieldset class="hlc-filter-group">
                   <legend class="hlc-filter-legend" id="hlc-concessions-label">
                     <span class="hlc-field-label-row">
-                      <span class="hlc-field-label-text">Concessions</span>
+                      <span class="hlc-field-label-text">{{SW:t.concessions.93}}</span>
                       <span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-concessions"
-                        aria-label="About Concessions"
+                        aria-label="{{SW:t.about_concessions.34}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-concessions" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Small rate or fee extras differ by bank; they do not fix eligibility.</p>
-                      <p class="hlc-field-help-text">Woman cuts often need her as primary borrower, and usually as owner.</p>
-                    <a class="hlc-field-help-more" href="concessions.html#bank-rates">Learn more</a>
+                      <p class="hlc-field-help-text">{{SW:t.small_rate_or_fee_extras_differ_by_bank_they_do_.94}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.woman_cuts_often_need_her_as_primary_borrower_an.95}}</p>
+                    <a class="hlc-field-help-more" href="concessions.html#bank-rates">{{SW:t.learn_more.49}}</a>
                   </div></span>
                     </span>
                   </legend>
@@ -552,22 +544,22 @@
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="womenApplicant" />
                       <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Women applicant</span>
-                        <span class="hlc-filter-option-note">Save up to 0.05% when the woman applicant's name is first on the property papers.</span>
+                        <span class="hlc-filter-option-title">{{SW:t.women_applicant.96}}</span>
+                        <span class="hlc-filter-option-note">{{SW:t.save_up_to_0_05_when_the_woman_applicant_s_name_.97}}</span>
                       </span>
                     </label>
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="greenHome" />
                       <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Green home</span>
-                        <span class="hlc-filter-option-note">Save up to 0.10% for green-rated homes (IGBC, GRIHA, or LEED).</span>
+                        <span class="hlc-filter-option-title">{{SW:t.green_home.98}}</span>
+                        <span class="hlc-filter-option-note">{{SW:t.save_up_to_0_10_for_green_rated_homes_igbc_griha.99}}</span>
                       </span>
                     </label>
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="insurance" />
                       <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Insurance</span>
-                        <span class="hlc-filter-option-note">Save up to 0.05% when you take the property cover.</span>
+                        <span class="hlc-filter-option-title">{{SW:t.insurance.100}}</span>
+                        <span class="hlc-filter-option-note">{{SW:t.save_up_to_0_05_when_you_take_the_property_cover.101}}</span>
                       </span>
                     </label>
                   </div>
@@ -576,18 +568,18 @@
                 <fieldset class="hlc-filter-group">
                   <legend class="hlc-filter-legend" id="hlc-bank-type-label">
                     <span class="hlc-field-label-row">
-                      <span class="hlc-field-label-text">Bank type</span>
+                      <span class="hlc-field-label-text">{{SW:t.bank_type.102}}</span>
                       <span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-bank-type"
-                        aria-label="About Bank type"
+                        aria-label="{{SW:t.about_bank_type.35}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-bank-type" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Lender category hints at rate versus flexibility, not a quality ranking.</p>
-                      <p class="hlc-field-help-text">Some HFCs or NBFCs accept unusual income more often, usually at a higher cost.</p>
+                      <p class="hlc-field-help-text">{{SW:t.lender_category_hints_at_rate_versus_flexibility.103}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.some_hfcs_or_nbfcs_accept_unusual_income_more_of.104}}</p>
                   </div></span>
                     </span>
                   </legend>
@@ -595,15 +587,15 @@
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="bankPublic" checked />
                       <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Public</span>
-                        <span class="hlc-filter-option-note">Slower process, usually a better rate.</span>
+                        <span class="hlc-filter-option-title">{{SW:t.public.105}}</span>
+                        <span class="hlc-filter-option-note">{{SW:t.slower_process_usually_a_better_rate.106}}</span>
                       </span>
                     </label>
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="bankPrivate" checked />
                       <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Private</span>
-                        <span class="hlc-filter-option-note">Smoother process, usually a higher rate and fee.</span>
+                        <span class="hlc-filter-option-title">{{SW:t.private.107}}</span>
+                        <span class="hlc-filter-option-note">{{SW:t.smoother_process_usually_a_higher_rate_and_fee.108}}</span>
                       </span>
                     </label>
                   </div>
@@ -612,19 +604,19 @@
                 <fieldset class="hlc-filter-group">
                   <legend class="hlc-filter-legend" id="hlc-rate-label">
                     <span class="hlc-field-label-row">
-                      <span class="hlc-field-label-text">Rate</span>
+                      <span class="hlc-field-label-text">{{SW:t.rate.109}}</span>
                       <span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-rate"
-                        aria-label="About Rate"
+                        aria-label="{{SW:t.about_rate.36}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-rate" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Floating rates can rise or fall later, so the EMI or the years can change.</p>
-                      <p class="hlc-field-help-text">Lifelong fixed is uncommon; many &ldquo;fixed&rdquo; offers last only a few years.</p>
-                    <a class="hlc-field-help-more" href="guide.html#rates">Learn more</a>
+                      <p class="hlc-field-help-text">{{SW:t.floating_rates_can_rise_or_fall_later_so_the_emi.110}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.lifelong_fixed_is_uncommon_many_ldquo_fixed_rdqu.111}}</p>
+                    <a class="hlc-field-help-more" href="guide.html#rates">{{SW:t.learn_more.49}}</a>
                   </div></span>
                     </span>
                   </legend>
@@ -632,15 +624,15 @@
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="rateFloating" checked />
                       <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Floating</span>
-                        <span class="hlc-filter-option-note">Can move with the benchmark.</span>
+                        <span class="hlc-filter-option-title">{{SW:t.floating.112}}</span>
+                        <span class="hlc-filter-option-note">{{SW:t.can_move_with_the_benchmark.113}}</span>
                       </span>
                     </label>
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="fixedRate" />
                       <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Fixed</span>
-                        <span class="hlc-filter-option-note">Does not change for a few years (generally 5 years). About 1–2% higher than floating rate.</span>
+                        <span class="hlc-filter-option-title">{{SW:t.fixed.114}}</span>
+                        <span class="hlc-filter-option-note">{{SW:t.does_not_change_for_a_few_years_generally_5_year.115}}</span>
                       </span>
                     </label>
                   </div>
@@ -649,19 +641,19 @@
                 <fieldset class="hlc-filter-group">
                   <legend class="hlc-filter-legend" id="hlc-facility-label">
                     <span class="hlc-field-label-row">
-                      <span class="hlc-field-label-text">Facility</span>
+                      <span class="hlc-field-label-text">{{SW:t.facility.116}}</span>
                       <span class="hlc-field-help-anchor"><button
                         type="button"
                         class="hlc-field-help"
                         aria-expanded="false"
                         aria-controls="hlc-help-facility"
-                        aria-label="About Facility"
+                        aria-label="{{SW:t.about_facility.37}}"
                       >
                         <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                       </button><div class="hlc-field-help-popover" id="hlc-help-facility" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Term loans use a set EMI on reducing principal.</p>
-                      <p class="hlc-field-help-text">Overdraft home loans can cut interest if you park surplus, usually at a higher rate.</p>
-                    <a class="hlc-field-help-more" href="guide.html#loan-structure">Learn more</a>
+                      <p class="hlc-field-help-text">{{SW:t.term_loans_use_a_set_emi_on_reducing_principal.117}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.overdraft_home_loans_can_cut_interest_if_you_par.118}}</p>
+                    <a class="hlc-field-help-more" href="guide.html#loan-structure">{{SW:t.learn_more.49}}</a>
                   </div></span>
                     </span>
                   </legend>
@@ -669,35 +661,33 @@
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="facilityTermLoan" checked />
                       <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Term loan</span>
-                        <span class="hlc-filter-option-note">A general home loan product.</span>
+                        <span class="hlc-filter-option-title">{{SW:t.term_loan.119}}</span>
+                        <span class="hlc-filter-option-note">{{SW:t.a_general_home_loan_product.120}}</span>
                       </span>
                     </label>
                     <label class="hlc-filter-option">
                       <input type="checkbox" data-product-filter="overdraft" />
                       <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Overdraft<span class="hlc-field-help-anchor"><button
+                        <span class="hlc-filter-option-title">{{SW:t.overdraft.130}}<span class="hlc-field-help-anchor"><button
                           type="button"
                           class="hlc-field-help"
                           aria-expanded="false"
                           aria-controls="hlc-help-overdraft"
-                          aria-label="About Overdraft"
+                          aria-label="{{SW:t.about_overdraft.38}}"
                         >
                           <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
                         </button><div class="hlc-field-help-popover" id="hlc-help-overdraft" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">Idle money reduces the balance that earns interest; you can usually withdraw it later.</p>
-                      <p class="hlc-field-help-text">Expect a slightly higher rate than the same bank's plain term loan.</p>
+                      <p class="hlc-field-help-text">{{SW:t.idle_money_reduces_the_balance_that_earns_intere.121}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.expect_a_slightly_higher_rate_than_the_same_bank.122}}</p>
                       </div></span></span>
-                        <span class="hlc-filter-option-note">Idle money saves interest. About 0.15–1% higher than term loan</span>
+                        <span class="hlc-filter-option-note">{{SW:t.idle_money_saves_interest_about_0_15_1_higher_th.123}}</span>
                       </span>
                     </label>
                   </div>
                 </fieldset>
                 </div>
                 <div class="hlc-filters-foot">
-                  <button type="button" class="hlc-btn-primary hlc-filters-done" id="hlc-filters-done">
-                    Done
-                  </button>
+                  <button type="button" class="hlc-btn-primary hlc-filters-done" id="hlc-filters-done">{{SW:t.done.124}}</button>
                 </div>
               </aside>
 
@@ -710,12 +700,12 @@
                   -->
                   <div class="hlc-table-pin">
                     <!-- Mobile scroll hints: tap to scroll, fade when at edge -->
-                    <button type="button" class="hlc-scroll-hint hlc-scroll-hint--left" aria-label="Scroll left to see more columns">
+                    <button type="button" class="hlc-scroll-hint hlc-scroll-hint--left" aria-label="{{SW:t.scroll_left_to_see_more_columns.39}}">
                       <svg class="hlc-scroll-hint-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                         <path d="M7.8 1.2 3.2 5 7.8 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                     </button>
-                    <button type="button" class="hlc-scroll-hint hlc-scroll-hint--right" aria-label="Scroll right to see more columns">
+                    <button type="button" class="hlc-scroll-hint hlc-scroll-hint--right" aria-label="{{SW:t.scroll_right_to_see_more_columns.40}}">
                       <svg class="hlc-scroll-hint-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                         <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
@@ -729,14 +719,14 @@
                   </div>
                   <div class="hlc-table-scroll" id="hlc-table-scroll" tabindex="0" role="region" aria-labelledby="hlc-compare-heading">
                     <table class="hlc-compare hlc-compare--body">
-                      <caption class="visually-hidden">Your home loan options</caption>
+                      <caption class="visually-hidden">{{SW:t.your_home_loan_options.131}}</caption>
                       <colgroup id="hlc-compare-cols"></colgroup>
                       <tbody id="hlc-compare-body"></tbody>
                     </table>
                   </div>
                   <div class="hlc-show-more-wrap" hidden>
                     <button type="button" class="hlc-show-more" id="hlc-show-more" hidden>
-                      <span class="hlc-show-more-label">Show more banks</span>
+                      <span class="hlc-show-more-label">{{SW:t.show_more_banks.125}}</span>
                       <svg class="hlc-show-more-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                         <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
@@ -749,8 +739,8 @@
                 <p class="hlc-freshness-note" id="hlc-freshness-note" hidden></p>
 
                 <div class="hlc-paddles">
-                  <button type="button" class="hlc-paddle" id="hlc-paddle-left" aria-label="Scroll columns left">‹</button>
-                  <button type="button" class="hlc-paddle" id="hlc-paddle-right" aria-label="Scroll columns right">›</button>
+                  <button type="button" class="hlc-paddle" id="hlc-paddle-left" aria-label="{{SW:t.scroll_columns_left.41}}">‹</button>
+                  <button type="button" class="hlc-paddle" id="hlc-paddle-right" aria-label="{{SW:t.scroll_columns_right.42}}">›</button>
                 </div>
               </div>
             </div>

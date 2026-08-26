@@ -171,11 +171,13 @@
   max-width: min(100%, var(--hlc-main-max));
   margin-inline: auto;
   --hlc-shell-pad-top: var(--hlc-hero-edge-gap);
+  --hlc-shell-pad-inline-start: max(1rem, env(safe-area-inset-left, 0px));
+  --hlc-shell-pad-inline-end: max(1rem, env(safe-area-inset-right, 0px));
   padding:
     var(--hlc-shell-pad-top)
-    max(1rem, env(safe-area-inset-right))
+    var(--hlc-shell-pad-inline-end)
     3.5rem
-    max(1rem, env(safe-area-inset-left));
+    var(--hlc-shell-pad-inline-start);
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -1149,9 +1151,9 @@
   .hlc-shell {
     padding:
       var(--hlc-shell-pad-top)
-      max(1rem, env(safe-area-inset-right))
+      var(--hlc-shell-pad-inline-end)
       3rem
-      max(1rem, env(safe-area-inset-left));
+      var(--hlc-shell-pad-inline-start);
   }
 
   .hlc-hero {
@@ -8033,7 +8035,11 @@ html[data-theme="dark"] .hlc-story-divider {
  * --hlc-inputs-edge-gap — visible air above row 1 and below row 3 (to card edge).
  * --hlc-inputs-note-hang — card-load note uses translateY(50%); reserve its
  *   lower half in pad-bottom so the note line gets the same edge gap as row 1.
- * Compare CTA sits on the card bottom edge (half outside via translateY(50%)).
+ * Compare CTA sits on the card / shelf bottom edge (half outside via translateY(50%)).
+ * Phone (<834px): open shelf — fill bleeds to .hlc-shell left/right (no inset
+ *   side/top card). Bottom corners curve. Same ::before chrome as desktop
+ *   (fill, no border, --hlc-card-lift). Field gutter = shell pad tokens.
+ * Desktop: full-radius raised ::before surface + pad-x remain.
  * =============================================================================
  */
 .explore-banks-page .hlc-inputs-card {
@@ -8054,9 +8060,24 @@ html[data-theme="dark"] .hlc-story-divider {
 
 @media (max-width: 833px) {
   .explore-banks-page .hlc-inputs-card {
-    --hlc-inputs-edge-gap: 1.4rem;
-    --hlc-inputs-pad-x: 0.95rem;
+    /*
+     * Phone open shelf (Google Flights):
+     * Fill bleeds to .hlc-shell left/right — no side/top card box sitting
+     * inside the shell gutter. Fields keep the shell gutter as inner pad.
+     * Only the bottom corners read as a card ending.
+     * Chrome (fill, no border, --hlc-card-lift) is the same ::before as desktop.
+     * Desktop: unchanged full-radius raised card.
+     */
+    --hlc-inputs-edge-gap: 1.25rem;
+    --hlc-inputs-pad-x: var(--hlc-shell-pad-inline-start);
     --hlc-inputs-band-gap: 0.75rem;
+    --hlc-inputs-shelf-radius: var(--shroffin-card-radius, 16px);
+    margin-inline:
+      calc(-1 * var(--hlc-shell-pad-inline-start))
+      calc(-1 * var(--hlc-shell-pad-inline-end));
+    padding-left: var(--hlc-shell-pad-inline-start);
+    padding-right: var(--hlc-shell-pad-inline-end);
+    border-radius: 0 0 var(--hlc-inputs-shelf-radius) var(--hlc-inputs-shelf-radius);
     /*
      * Phone M3 density — 16px values, 14px resting labels, 12px floated labels,
      * ~60dp field target (label + gap + value). Matches Google Flights search-card
@@ -8129,12 +8150,6 @@ html[data-theme="dark"] .hlc-story-divider {
   .explore-banks-page .hlc-inputs-card .hlc-form-band-fields .hlc-field--m3-outlined .hlc-input-shell:has(input[data-hlc-format="money"]) {
     width: 100%;
     max-width: 100%;
-  }
-
-  /* Card surface matches the page, so on phone its edge must be drawn. */
-  .explore-banks-page .hlc-inputs-card::before {
-    border: 1px solid var(--hlc-section-line);
-    box-shadow: 0 1px 10px rgba(73, 92, 118, 0.08);
   }
 
   /* Co-applicant copy + Add are one sentence; Add wraps with the last line. */

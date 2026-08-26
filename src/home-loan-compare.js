@@ -3,6 +3,23 @@
 const { Engine } = require("json-rules-engine");
 const hlcIntelligence = require("./hlc-intelligence.js");
 const bankLogos = require("./bank-logos.js");
+const exploreUiCopy = require("./generated/explore-ui-copy.js");
+
+/** Site-words runtime pack (Explore tool UI). */
+function ui(id, fallback) {
+  const v = exploreUiCopy[id];
+  return v != null && String(v) !== "" ? String(v) : fallback;
+}
+
+function uiTemplate(id, fallback, vars) {
+  let out = ui(id, fallback);
+  if (vars) {
+    Object.keys(vars).forEach(function (k) {
+      out = out.split("{" + k + "}").join(String(vars[k]));
+    });
+  }
+  return out;
+}
 
 /** Stamped by scripts/stamp-asset-versions.js → js/hlc-data-url.generated.js */
 function resolveCompareDataUrl() {
@@ -36,22 +53,30 @@ const MAX_CO_APPLICANTS = 5;
  * borrower or co-owner, but their income does not raise the eligible amount.
  */
 const CO_APPLICANT_RELATIONSHIPS = [
-  { value: "Spouse", label: "Spouse", clubs: true },
-  { value: "Father", label: "Father", clubs: true },
-  { value: "Mother", label: "Mother", clubs: true },
-  { value: "Son", label: "Son", clubs: true },
-  { value: "Daughter", label: "Daughter", clubs: true },
-  { value: "Brother", label: "Brother", clubs: true },
-  { value: "Sister", label: "Sister", clubs: true },
-  { value: "Other", label: "Someone else", clubs: false }
+  { value: "Spouse", label: ui("rel.spouse", "Spouse"), clubs: true },
+  { value: "Father", label: ui("rel.father", "Father"), clubs: true },
+  { value: "Mother", label: ui("rel.mother", "Mother"), clubs: true },
+  { value: "Son", label: ui("rel.son", "Son"), clubs: true },
+  { value: "Daughter", label: ui("rel.daughter", "Daughter"), clubs: true },
+  { value: "Brother", label: ui("rel.brother", "Brother"), clubs: true },
+  { value: "Sister", label: ui("rel.sister", "Sister"), clubs: true },
+  { value: "Other", label: ui("rel.other", "Someone else"), clubs: false }
 ];
 const DEFAULT_CO_APPLICANT_RELATIONSHIP = "Spouse";
 /** "Not earning" keeps a co-owner on the loan without adding income. */
 const CO_APPLICANT_OCCUPATIONS = [
-  { value: "Salaried", label: "Salaried", earns: true },
-  { value: "Self-employed", label: "Self-employed", earns: true },
-  { value: "Pensioner", label: "Pensioner", earns: true },
-  { value: "Not earning", label: "Not earning", earns: false }
+  { value: "Salaried", label: ui("occ.salaried", "Salaried"), earns: true },
+  {
+    value: "Self-employed",
+    label: ui("occ.self_employed", "Self-employed"),
+    earns: true
+  },
+  { value: "Pensioner", label: ui("occ.pensioner", "Pensioner"), earns: true },
+  {
+    value: "Not earning",
+    label: ui("occ.not_earning", "Not earning"),
+    earns: false
+  }
 ];
 const DEFAULT_CO_APPLICANT_OCCUPATION = "Salaried";
 
@@ -187,29 +212,39 @@ const GOVERNMENT_CHARGES_MARKER = "^";
 
 const GROUPS = {
   essentials: [
-    { key: "effectiveRoiPct", label: "Rate", type: "pct", sort: "num" },
-    { key: "loanAmount", label: "Loan amount", type: "inr", sort: "num" },
-    { key: "tenureLabel", label: "Tenure (yrs)", type: "text", sort: "text" },
-    { key: "emi", label: "EMI", type: "inr", sort: "num" }
+    { key: "effectiveRoiPct", label: ui("col.rate", "Rate"), type: "pct", sort: "num" },
+    {
+      key: "loanAmount",
+      label: ui("col.loan_amount", "Loan amount"),
+      type: "inr",
+      sort: "num"
+    },
+    {
+      key: "tenureLabel",
+      label: ui("col.tenure", "Tenure (yrs)"),
+      type: "text",
+      sort: "text"
+    },
+    { key: "emi", label: ui("col.emi", "EMI"), type: "inr", sort: "num" }
   ],
   charges: [
     {
       key: "processingFee",
-      label: "Processing fees",
+      label: ui("col.processing_fees", "Processing fees"),
       type: "inr",
       sort: "num",
       footnote: PROCESSING_FEE_MARKER
     },
     {
       key: "propertyCheckCharges",
-      label: "Property check charges",
+      label: ui("col.property_check", "Property check charges"),
       type: "inr",
       sort: "num",
       footnote: PROPERTY_CHECK_MARKER
     },
     {
       key: "governmentCharges",
-      label: "Govt. charges",
+      label: ui("col.govt_charges", "Govt. charges"),
       type: "inr",
       sort: "num",
       footnote: GOVERNMENT_CHARGES_MARKER
@@ -218,27 +253,27 @@ const GROUPS = {
   laterCharges: [
     {
       key: "prepaymentChargeDisplay",
-      label: "Prepayment fees",
+      label: ui("col.prepayment_fees", "Prepayment fees"),
       type: "charge",
       sort: "text"
     },
     {
       key: "rateChangeChargeDisplay",
-      label: "Rate change charges",
+      label: ui("col.rate_change", "Rate change charges"),
       type: "charge",
       sort: "text",
       footnote: "°"
     },
     {
       key: "overdueChargeDisplay",
-      label: "Overdue charges",
+      label: ui("col.overdue", "Overdue charges"),
       type: "charge",
       sort: "text",
       footnote: "‡"
     },
     {
       key: "emiBounceChargeDisplay",
-      label: "EMI bounce charges",
+      label: ui("col.emi_bounce", "EMI bounce charges"),
       type: "charge",
       sort: "text",
       footnote: "^"
@@ -261,8 +296,14 @@ const PHONE_COMPACT_HEADER_WRAP_KEYS = {
 };
 
 const PHONE_COMPACT_HEADER_LINES = {
-  rateChangeChargeDisplay: ["Rate change", "charges"],
-  emiBounceChargeDisplay: ["EMI bounce", "charges"]
+  rateChangeChargeDisplay: [
+    ui("phone.rate_change", "Rate change"),
+    ui("phone.charges", "charges")
+  ],
+  emiBounceChargeDisplay: [
+    ui("phone.emi_bounce", "EMI bounce"),
+    ui("phone.charges", "charges")
+  ]
 };
 
 /* Phone only: slight extra width for fee/charge cols (not Loan amount). */
@@ -334,12 +375,12 @@ const RATE_CHANGE_REPRICING_MEANING_NOTE =
 /** Shared column notes (frequency / unit / basis / GST). Bank remarks use RATE_CHANGE_BANK_MARKERS. */
 const RATE_CHANGE_COMMON_MARKER = "°";
 /** Side-panel / column note body — amounts marked * / ° / ^ point here. */
-const GST_APPLICABLE_NOTE = "GST applicable.";
+const GST_APPLICABLE_NOTE = ui("note.gst_applicable", "GST applicable.");
 /** Side-panel fee rows: mark with * and explain once under the list (not “GST extra” on every row). */
 const GST_APPLICABLE_FOOTNOTE = "* " + GST_APPLICABLE_NOTE;
 /** Out-of-pocket on top of / instead of a fixed fee — mark on amount, wording under the fee block. */
 const OOP_EXPENSES_MARKER = "†";
-const OOP_EXPENSES_NOTE = "Out-of-pocket expenses.";
+const OOP_EXPENSES_NOTE = ui("note.oop_expenses", "Out-of-pocket expenses.");
 const OOP_EXPENSES_FOOTNOTE = OOP_EXPENSES_MARKER + " " + OOP_EXPENSES_NOTE;
 /** One stable marker per bank — must not reuse * ‡ ^ † § ◊ °. */
 const RATE_CHANGE_BANK_MARKERS = {
@@ -361,10 +402,14 @@ const RATE_CHANGE_BANK_MARKERS = {
 };
 const RBI_FLOATING_PREPAY_HREF =
   "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13140&Mode=0";
-const FLOATING_PREPAY_NOTE =
-  "Floating home loans to individuals have no prepayment charge under RBI.";
-const FIXED_FORECLOSURE_NOTE =
-  "Foreclosure means closing the full loan early. Lenders usually apply the same charge as prepayment, so foreclosure is not listed separately.";
+const FLOATING_PREPAY_NOTE = ui(
+  "note.floating_prepay",
+  "Floating home loans to individuals have no prepayment charge under RBI."
+);
+const FIXED_FORECLOSURE_NOTE = ui(
+  "note.foreclosure",
+  "Foreclosure means closing the full loan early. Lenders usually apply the same charge as prepayment, so foreclosure is not listed separately."
+);
 const PROCESSING_FEE_LOGIN_NOTE =
   PROCESSING_FEE_MARKER +
   " This fee is mandatory. You pay it to go ahead on a sanction. Banks do not usually refund it. Part is often taken first as a login fee. That amount is already inside this number.";
@@ -372,7 +417,10 @@ const PROCESSING_FEE_LOGIN_NOTE =
  * Customer label when the bank does not publish this charge or rule.
  * Source sheets may mark NA; that never reaches the UI — missing rows use this string.
  */
-const CHARGE_NOT_PUBLISHED_BY_BANK = "Not published by bank";
+const CHARGE_NOT_PUBLISHED_BY_BANK = ui(
+  "charge.not_published",
+  "Not published by bank"
+);
 
 function chargeNotPublishedDisplay() {
   return { main: CHARGE_NOT_PUBLISHED_BY_BANK, details: [], note: "" };
@@ -429,11 +477,16 @@ function rateChangeFrequencyNoteForMethod(method) {
 
 function floatingPrepayNoteHtml() {
   return (
-    escapeHtml("Floating home loans to individuals have no prepayment charge under RBI. See ") +
+    escapeHtml(
+      ui(
+        "note.floating_prepay",
+        "Floating home loans to individuals have no prepayment charge under RBI."
+      ) + " See "
+    ) +
     '<a class="guide-section-link" href="' +
     escapeHtml(RBI_FLOATING_PREPAY_HREF) +
     '" target="_blank" rel="noopener noreferrer">' +
-    "RBI directions" +
+    escapeHtml(ui("link.rbi_directions", "RBI directions")) +
     '<span class="guide-section-link-arrow" aria-hidden="true">↗</span>' +
     '<span class="visually-hidden"> (opens official RBI page)</span></a>.'
   );
@@ -486,7 +539,7 @@ function bindDetailsAccordion(container, options) {
   function syncToggleAllLabel() {
     if (!toggleAllBtn) return;
     const collapse = allGroupsOpen();
-    toggleAllBtn.textContent = collapse ? "Collapse all" : "Expand all";
+    toggleAllBtn.textContent = collapse ? ui("ui.collapse_all", "Collapse all") : ui("ui.expand_all", "Expand all");
     toggleAllBtn.setAttribute("aria-expanded", collapse ? "true" : "false");
   }
 
@@ -611,11 +664,15 @@ function bindDrawerDropdowns(container) {
 function drawerToolbarHtml(controlsId) {
   return (
     '<div class="hlc-drawer-toolbar">' +
-    '<h3 class="hlc-drawer-toolbar-heading">More details</h3>' +
+    '<h3 class="hlc-drawer-toolbar-heading">' +
+    escapeHtml(ui("ui.more_details", "More details")) +
+    "</h3>" +
     '<div class="hlc-drawer-actions">' +
     '<button type="button" class="hlc-drawer-toggle-all" aria-controls="' +
     escapeHtml(controlsId || "hlc-drawer-body") +
-    '" aria-expanded="false">Expand all</button>' +
+    '" aria-expanded="false">' +
+    escapeHtml(ui("ui.expand_all", "Expand all")) +
+    "</button>" +
     "</div></div>"
   );
 }
@@ -670,7 +727,7 @@ function calcDrawerBodyHtml(calcHtml, extras) {
   let html =
     '<div class="hlc-calc-always">' + (calcHtml || "") + "</div>";
   if (extra.detailsHtml) {
-    html += drawerDiscloseHtml("All amounts", extra.detailsHtml);
+    html += drawerDiscloseHtml(ui("ui.all_amounts", "All amounts"), extra.detailsHtml);
   }
   if (noteLines.length >= 2 && notesBlock) {
     html += drawerDiscloseHtml("Notes", notesBlock);
@@ -794,7 +851,9 @@ function chargesNoteToolbarHtml() {
     '<div class="hlc-charges-note-toolbar">' +
     '<h3 class="hlc-charges-note-heading" id="hlc-charges-note-heading">Notes</h3>' +
     '<div class="hlc-charges-note-actions">' +
-    '<button type="button" class="hlc-charges-note-toggle-all" aria-controls="hlc-charges-note" aria-expanded="false">Expand all</button>' +
+    '<button type="button" class="hlc-charges-note-toggle-all" aria-controls="hlc-charges-note" aria-expanded="false">' +
+    escapeHtml(ui("ui.expand_all", "Expand all")) +
+    "</button>" +
     "</div></div>"
   );
 }
@@ -7611,13 +7670,28 @@ function initPage() {
 
   /** Visible CTA label — count lives on the button, not a sibling "N selected". */
   function applyOnceLabel(count) {
-    if (count > 0) return "Apply once (" + count + ")";
-    return "Apply once";
+    if (count > 0) {
+      return uiTemplate("ui.apply_once_count", "Apply once ({count})", {
+        count: count
+      });
+    }
+    return ui("ui.apply_once", "Apply once");
   }
 
   function applyOnceAriaLabel(count) {
-    if (count <= 0) return "Apply once";
-    return "Apply once to " + count + (count === 1 ? " bank" : " banks");
+    if (count <= 0) return ui("ui.apply_once", "Apply once");
+    if (count === 1) {
+      return uiTemplate(
+        "ui.apply_once_to_one_bank",
+        "Apply once to {count} bank",
+        { count: count }
+      );
+    }
+    return uiTemplate(
+      "ui.apply_once_to_banks",
+      "Apply once to {count} banks",
+      { count: count }
+    );
   }
 
   function paintApplyOnceButton(btn, count) {
@@ -8800,7 +8874,14 @@ function initPage() {
       el.body.innerHTML =
         '<tr><td class="hlc-empty" colspan="' +
         colCount +
-        '">No banks matched these inputs. Try a different income, property agreement value, age, CIBIL score, purpose, or filters.</td></tr>';
+        '">' +
+        escapeHtml(
+          ui(
+            "empty.no_banks",
+            "No banks matched these inputs. Try a different income, property agreement value, age, CIBIL score, purpose, or filters."
+          )
+        ) +
+        "</td></tr>";
       state.cellSnapshot = nextSnapshot;
       updateShowMoreButton(0, 0);
       updateApplyBar();
@@ -9843,7 +9924,7 @@ function initPage() {
     const hasGroups = String(bodyHtml || "").indexOf("hlc-drawer-group") >= 0;
     const dumpChrome = hasGroups && opts.keepHeading !== true;
     if (dumpChrome) {
-      el.drawerTitle.textContent = "More details";
+      el.drawerTitle.textContent = ui("ui.more_details", "More details");
       el.drawerSub.textContent = "";
       el.drawerSub.hidden = true;
       el.drawerBody.innerHTML = bodyHtml;

@@ -1,107 +1,107 @@
 <main class="calc-main">
     <div class="calc-wrap">
-      <nav class="calc-crumb" aria-label="Breadcrumb">
-        <a href="../calculators.html">Calculators</a>
+      <nav class="calc-crumb" aria-label="{{SW:t.breadcrumb.0}}">
+        <a href="../calculators.html">{{SW:t.calculators.5}}</a>
         <span aria-hidden="true">/</span>
-        <span aria-current="page">How big a loan fits this EMI?</span>
+        <span aria-current="page">{{SW:t.how_big_a_loan_fits_this_emi.6}}</span>
       </nav>
       <header class="calc-hero calc-reveal">
-        <h1 class="calc-hero-title">How big a loan fits this EMI?</h1>
-        <p class="calc-hero-lead">Loan size from the monthly payment you can afford.</p>
+        <h1 class="calc-hero-title">{{SW:t.how_big_a_loan_fits_this_emi.6}}</h1>
+        <p class="calc-hero-lead">{{SW:t.loan_size_from_the_monthly_payment_you_can_affor.7}}</p>
       </header>
       <div class="calc-workspace calc-reveal">
-        <section class="calc-controls" aria-label="Loan inputs" aria-labelledby="calc-controls-title">
-          <h2 class="visually-hidden" id="calc-controls-title">Loan inputs</h2>
+        <section class="calc-controls" aria-label="{{SW:t.loan_inputs.1}}" aria-labelledby="calc-controls-title">
+          <h2 class="visually-hidden" id="calc-controls-title">{{SW:t.loan_inputs.1}}</h2>
           <form class="calc-form" data-calc="loan-amount" novalidate>
             <div class="calc-field">
               <div class="calc-label-row">
-                <label class="calc-label" for="emi">Monthly EMI you can pay</label>
+                <label class="calc-label" for="emi">{{SW:t.monthly_emi_you_can_pay.8}}</label>
               </div>
               <div class="calc-input-shell">
                 <span class="calc-prefix" aria-hidden="true">₹</span>
                 <input type="text" class="calc-input" autocomplete="off" id="emi" name="emi" inputmode="decimal" value="45,000">
               </div>
               <div class="calc-slider-wrap">
-                <span class="calc-slider-caption">Or drag to adjust</span>
-                <input class="calc-range" type="range" name="emiRange" min="5000" max="10000000" step="1000" value="45000" aria-label="Monthly EMI you can pay slider">
+                <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.9}}</span>
+                <input class="calc-range" type="range" name="emiRange" min="5000" max="10000000" step="1000" value="45000" aria-label="{{SW:t.monthly_emi_you_can_pay_slider.2}}">
               </div>
             </div>
             <div class="calc-field">
               <div class="calc-label-row">
-                <label class="calc-label" for="rate">Interest rate (% a year)</label>
+                <label class="calc-label" for="rate">{{SW:t.interest_rate_a_year.10}}</label>
               </div>
               <div class="calc-input-shell">
                 <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
               </div>
               <div class="calc-slider-wrap">
-                <span class="calc-slider-caption">Or drag to adjust</span>
-                <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="Interest rate (% a year) slider">
+                <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.9}}</span>
+                <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="{{SW:t.interest_rate_a_year_slider.3}}">
               </div>
             </div>
             <div class="calc-field">
               <div class="calc-label-row">
-                <label class="calc-label" for="years">Tenure (years)</label>
+                <label class="calc-label" for="years">{{SW:t.tenure_years.11}}</label>
               </div>
               <div class="calc-input-shell">
                 <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain">
               </div>
               <div class="calc-slider-wrap">
-                <span class="calc-slider-caption">Or drag to adjust</span>
-                <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="20" aria-label="Tenure (years) slider">
+                <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.9}}</span>
+                <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="20" aria-label="{{SW:t.tenure_years_slider.4}}">
               </div>
             </div>
           </form>
         </section>
         <section class="calc-readout" aria-labelledby="calc-readout-title" aria-live="polite">
-          <h2 class="calc-readout-title" id="calc-readout-title">Estimate</h2>
+          <h2 class="calc-readout-title" id="calc-readout-title">{{SW:t.estimate.12}}</h2>
           <div class="calc-readout-hero">
             <p class="calc-result-num" id="out-loan">—</p>
-            <p class="calc-result-label">Estimated loan size</p>
+            <p class="calc-result-label">{{SW:t.estimated_loan_size.13}}</p>
           </div>
           <ul class="calc-stats">
-            <li><span>Total interest</span><strong id="out-interest">—</strong></li>
-            <li><span>Total you pay</span><strong id="out-payable">—</strong></li>
+            <li><span>{{SW:t.total_interest.14}}</span><strong id="out-interest">—</strong></li>
+            <li><span>{{SW:t.total_you_pay.15}}</span><strong id="out-payable">—</strong></li>
           </ul>
-          <p class="calc-truth">Planning estimate only. Not a bank offer, sanction, or promise. Final terms stay with the lender.</p>
+          <p class="calc-truth">{{SW:t.planning_estimate_only_not_a_bank_offer_sanction.16}}</p>
         </section>
       </div>
 
       <section class="calc-assumptions calc-reveal" aria-labelledby="calc-assumptions-title">
-        <h2 class="calc-assumptions-title" id="calc-assumptions-title">How this estimate works</h2>
-        <p class="calc-assumptions-lead">What goes into this estimate.</p>
+        <h2 class="calc-assumptions-title" id="calc-assumptions-title">{{SW:t.how_this_estimate_works.17}}</h2>
+        <p class="calc-assumptions-lead">{{SW:t.what_goes_into_this_estimate.18}}</p>
 
         <div class="calc-formula" aria-labelledby="calc-formula-title">
-          <h3 class="calc-formula-title" id="calc-formula-title">Formula used</h3>
-          <p class="calc-formula-eq">P = E × (1 − (1 + r)<sup>−n</sup>) ÷ r</p>
+          <h3 class="calc-formula-title" id="calc-formula-title">{{SW:t.formula_used.19}}</h3>
+          <p class="calc-formula-eq">{{SW:t.p_e_1_1_r.31}}<sup>{{SW:t.n.32}}</sup>{{SW:t.r.33}}</p>
           <ul class="calc-formula-keys">
-            <li><strong>P</strong> — estimated loan amount</li>
-            <li><strong>E</strong> — Equated Monthly Instalment (EMI) you can pay</li>
-            <li><strong>r</strong> — monthly rate = annual rate ÷ 12 ÷ 100</li>
-            <li><strong>n</strong> — tenure in months = years × 12</li>
+            <li><strong>P</strong>{{SW:t.estimated_loan_amount.34}}</li>
+            <li><strong>E</strong>{{SW:t.equated_monthly_instalment_emi_you_can_pay.35}}</li>
+            <li><strong>r</strong>{{SW:t.monthly_rate_annual_rate_12_100.36}}</li>
+            <li><strong>n</strong>{{SW:t.tenure_in_months_years_12.37}}</li>
           </ul>
         </div>
         <ul class="calc-assumptions-list">
-            <li>This only reverses the EMI formula. It does not check income, credit score, or property rules.</li>
-            <li>Reducing balance and monthly compounding are used.</li>
-            <li>The rate is held fixed for the projection.</li>
-            <li>Your bank may sanction less after Fixed Obligation to Income Ratio (FOIR), Loan to Value (LTV), and document checks.</li>
+            <li>{{SW:t.this_only_reverses_the_emi_formula_it_does_not_c.20}}</li>
+            <li>{{SW:t.reducing_balance_and_monthly_compounding_are_use.21}}</li>
+            <li>{{SW:t.the_rate_is_held_fixed_for_the_projection.22}}</li>
+            <li>{{SW:t.your_bank_may_sanction_less_after_fixed_obligati.23}}</li>
         </ul>
       </section>
       <nav class="calc-guide-links calc-reveal" aria-labelledby="calc-guide-links-title">
-        <h2 class="calc-guide-links-title" id="calc-guide-links-title">In the Guide</h2>
+        <h2 class="calc-guide-links-title" id="calc-guide-links-title">{{SW:t.in_the_guide.24}}</h2>
         <ul class="calc-guide-links-list">
-          <li><a href="../guide.html#loan-amount">Home loan overview · Loan amount</a></li>
-          <li><a href="../guide.html#emi">Home loan overview · Equated Monthly Instalment (EMI)</a></li>
+          <li><a href="../guide.html#loan-amount">{{SW:t.home_loan_overview_loan_amount.25}}</a></li>
+          <li><a href="../guide.html#emi">{{SW:t.home_loan_overview_equated_monthly_instalment_em.26}}</a></li>
         </ul>
       </nav>
 
       <nav class="calc-related calc-reveal" aria-labelledby="calc-related-title">
-        <h2 class="calc-related-title" id="calc-related-title">Related</h2>
+        <h2 class="calc-related-title" id="calc-related-title">{{SW:t.related.27}}</h2>
         <ul class="calc-related-list">
-            <li><a href="emi.html">EMI</a></li>
-            <li><a href="how-much-loan.html">Eligibility</a></li>
-            <li><a href="prepayment.html">Prepayment</a></li>
-            <li><a href="tenure.html">Tenure</a></li>
+            <li><a href="emi.html">{{SW:t.emi.38}}</a></li>
+            <li><a href="how-much-loan.html">{{SW:t.eligibility.28}}</a></li>
+            <li><a href="prepayment.html">{{SW:t.prepayment.29}}</a></li>
+            <li><a href="tenure.html">{{SW:t.tenure.30}}</a></li>
         </ul>
       </nav>
     </div>

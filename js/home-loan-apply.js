@@ -35,7 +35,31 @@
   var HL_SUPPORT_TEL = contacts.phoneTel || "+919112334367";
   var HL_WHATSAPP_URL = contacts.whatsappUrl || "https://wa.me/919112334367";
   var HL_DOCUMENTS_URL = "guide-documents.html";
-  var HL_CONTACT_WINDOW = "48 hours";
+
+  function swApply(id, fallback) {
+    var pack =
+      (typeof window !== "undefined" && window.__SW_APPLY_SUCCESS__) || {};
+    if (pack[id] != null && String(pack[id]) !== "") return String(pack[id]);
+    return fallback;
+  }
+
+  function swApplyT(id, fallback, vars) {
+    var out = swApply(id, fallback);
+    if (vars) {
+      Object.keys(vars).forEach(function (k) {
+        out = out.split("{" + k + "}").join(String(vars[k]));
+      });
+    }
+    return out;
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
 
   var firebaseReady = false;
   var packet = null;
@@ -519,7 +543,9 @@
 
   /** One bank → "bank"; otherwise "banks". */
   function bankNoun(n) {
-    return Number(n) === 1 ? "bank" : "banks";
+    return Number(n) === 1
+      ? swApply("noun.bank", "bank")
+      : swApply("noun.banks", "banks");
   }
 
   function banksCountLabel(n) {
@@ -1102,8 +1128,21 @@
     var host = $("hl-apply-success");
     if (!host) return;
     var n = (data.banks && data.banks.length) || 0;
-    var bankLine =
-      "We've got your application for " + banksCountLabel(n) + ".";
+    var windowPhrase = swApply("contact_window", "48 hours");
+    var bankLine = swApplyT(
+      "lead",
+      "We've got your application for {banks}.",
+      { banks: banksCountLabel(n) }
+    );
+    var contactLine = swApplyT(
+      "body.contact",
+      "We'll contact you within {window} at {email} and may call {phone}.",
+      {
+        window: windowPhrase,
+        email: contact.contact_email,
+        phone: contact.phone
+      }
+    );
     host.innerHTML =
       '<div class="hl-apply-success-panel" role="dialog" aria-modal="true" aria-labelledby="hl-success-title">' +
       '<h2 id="hl-success-title" class="hl-apply-success-title">' +
@@ -1113,48 +1152,57 @@
       '<path d="M7.2 12.4 10.4 15.5 16.8 8.8" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>' +
       "</svg>" +
       "</span>" +
-      "<span>Application received</span>" +
+      "<span>" +
+      escapeHtml(swApply("title", "Application received")) +
+      "</span>" +
       "</h2>" +
       '<p class="hl-apply-success-lead">' +
-      bankLine +
+      escapeHtml(bankLine) +
       "</p>" +
       '<p class="hl-apply-success-ref">' +
-      '<span class="hl-apply-success-ref-label">Reference ID</span>' +
+      '<span class="hl-apply-success-ref-label">' +
+      escapeHtml(swApply("ref_label", "Reference ID")) +
+      "</span>" +
       '<span class="hl-apply-success-ref-value">' +
-      String(appId) +
+      escapeHtml(String(appId)) +
       "</span>" +
       "</p>" +
       '<p class="hl-apply-success-body">' +
-      "We'll contact you within " +
-      HL_CONTACT_WINDOW +
-      " at " +
-      contact.contact_email +
-      " and may call " +
-      contact.phone +
-      ".</p>" +
+      escapeHtml(contactLine) +
+      "</p>" +
       '<p class="hl-apply-success-body">' +
-      "Documents are not needed from you yet. Review the " +
+      escapeHtml(swApply("body.docs_before", "Documents are not needed from you yet. Review the")) +
+      " " +
       '<a class="hl-apply-success-docs" href="' +
       HL_DOCUMENTS_URL +
       '" target="_blank" rel="noopener noreferrer">' +
-      "Documents" +
+      escapeHtml(swApply("body.docs_link", "Documents")) +
       '<span class="visually-hidden"> (opens in a new tab)</span></a>' +
-      " list if you want to prepare ahead." +
+      " " +
+      escapeHtml(
+        swApply("body.docs_after", "list if you want to prepare ahead.")
+      ) +
       "</p>" +
       '<p class="hl-apply-success-help">' +
-      "Missed a detail? " +
+      escapeHtml(swApply("help.before", "Missed a detail?")) +
+      " " +
       '<a class="guide-section-link" href="' +
       HL_WHATSAPP_URL +
       '" target="_blank" rel="noopener noreferrer">' +
-      'Chat now<span class="guide-section-link-arrow" aria-hidden="true">↗</span>' +
+      escapeHtml(swApply("help.chat", "Chat now")) +
+      '<span class="guide-section-link-arrow" aria-hidden="true">↗</span>' +
       '<span class="visually-hidden"> (opens in a new window)</span></a>' +
-      ' or call <a class="hl-apply-success-phone" href="tel:' +
+      " " +
+      escapeHtml(swApply("help.or_call", "or call")) +
+      ' <a class="hl-apply-success-phone" href="tel:' +
       HL_SUPPORT_TEL +
       '">' +
-      HL_SUPPORT_PHONE_SHORT +
+      escapeHtml(HL_SUPPORT_PHONE_SHORT) +
       "</a>" +
       "</p>" +
-      '<button type="button" class="hl-apply-cta" id="hl-got-it">Got it</button>' +
+      '<button type="button" class="hl-apply-cta" id="hl-got-it">' +
+      escapeHtml(swApply("btn.got_it", "Got it")) +
+      "</button>" +
       "</div>";
     host.hidden = false;
     var gotIt = $("hl-got-it");

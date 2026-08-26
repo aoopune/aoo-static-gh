@@ -19,6 +19,20 @@
   var APPLICATION_PRICE_PAISE = window.APPLICATION_PRICE_PAISE || 9900;
   var APPLY_STATE_KEY = 'aoo_apply_state_v1';
 
+  function escapeHtmlSw(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function swApply(id, fallback) {
+    var pack = (typeof window !== 'undefined' && window.__SW_APPLY_SUCCESS__) || {};
+    if (pack[id] != null && String(pack[id]) !== '') return String(pack[id]);
+    return fallback;
+  }
+
   var firebaseAuth = null;
   var firebaseFirestore = null;
   if (typeof window !== 'undefined' && window.__aooAuth) {
@@ -52,7 +66,7 @@
     var el = document.createElement('div');
     el.className = 'aoo-loading-overlay';
     el.setAttribute('aria-live', 'polite');
-    el.setAttribute('aria-label', 'Loading');
+    el.setAttribute('aria-label', swApply('aria.loading', 'Loading'));
     el.innerHTML = '<div class="aoo-loading-spinner"></div>';
     el.id = 'apply-flow-loading-overlay';
     document.body.appendChild(el);
@@ -127,7 +141,9 @@
     backdrop.setAttribute('aria-modal', 'true');
     backdrop.setAttribute('role', 'dialog');
     backdrop.innerHTML = '<div class="apply-flow-modal apply-flow-modal-payment">' +
-      '<div class="apply-flow-payment-loading" id="apply-flow-payment-loading" aria-label="Loading"><div class="aoo-loading-spinner"></div></div>' +
+      '<div class="apply-flow-payment-loading" id="apply-flow-payment-loading" aria-label="' +
+      escapeHtmlSw(swApply('aria.loading', 'Loading')) +
+      '"><div class="aoo-loading-spinner"></div></div>' +
       '<iframe class="apply-flow-payment-iframe" title="Complete your payment"></iframe></div>';
     var iframe = backdrop.querySelector('.apply-flow-payment-iframe');
     var loadingEl = backdrop.querySelector('#apply-flow-payment-loading');
@@ -321,13 +337,36 @@
     overlay.setAttribute('role', 'dialog');
     overlay.innerHTML =
       '<div class="apply-flow-payment-success-modal">' +
-      '<h2 id="payment-success-title">Payment Successful</h2>' +
+      '<h2 id="payment-success-title">' +
+      escapeHtmlSw(swApply('title', 'Payment Successful')) +
+      '</h2>' +
       '<div class="payment-success-body">' +
-      '<p>We\'ve received your application for the selected offers/lenders. We\'ll contact you in the next 48 hours at <span id="payment-success-user-email"></span>.</p>' +
-      '<p>Even if you missed selecting an offer or want to correct the information, let us know at 91123 34367 or <a href="mailto:support@shroffin.com">support@shroffin.com</a>.</p>' +
-      '</div><div class="payment-success-actions"><button type="button" class="apply-flow-btn-got-it">Got It</button></div></div>';
+      '<p>' +
+      escapeHtmlSw(
+        swApply(
+          'body.received',
+          "We've received your application for the selected offers/lenders. We'll contact you in the next 48 hours at"
+        )
+      ) +
+      ' <span id="payment-success-user-email"></span>.</p>' +
+      '<p>' +
+      escapeHtmlSw(
+        swApply(
+          'body.corrections',
+          'Even if you missed selecting an offer or want to correct the information, let us know at 91123 34367 or'
+        )
+      ) +
+      ' <a href="mailto:support@shroffin.com">support@shroffin.com</a>.</p>' +
+      '</div><div class="payment-success-actions"><button type="button" class="apply-flow-btn-got-it">' +
+      escapeHtmlSw(swApply('btn.got_it', 'Got It')) +
+      '</button></div></div>';
     var emailEl = overlay.querySelector('#payment-success-user-email');
-    if (emailEl) emailEl.textContent = userEmail && String(userEmail).trim() ? userEmail : 'your registered email';
+    if (emailEl) {
+      emailEl.textContent =
+        userEmail && String(userEmail).trim()
+          ? userEmail
+          : swApply('email.fallback', 'your registered email');
+    }
     var gotItBtn = overlay.querySelector('.apply-flow-btn-got-it');
     var previousOverflow = document.body.style.overflow || '';
     document.body.style.overflow = 'hidden';
