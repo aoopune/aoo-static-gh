@@ -125,7 +125,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — Of all the applicants / co-applicants, to be affixed on the applicati…](#t.of_all_the_applicants_co_applicants_to_be_affixe.103)
 - [Text — Processing Fee Cheque](#t.processing_fee_cheque.104)
 - [Text — Cheque for processing fee favouring the lender.](#t.cheque_for_processing_fee_favouring_the_lender.105)
-- [Text — The list provided above is purely indicative, and lenders may request…](#t.the_list_provided_above_is_purely_indicative_and.106)
 - [text](#t.prepare_once.107)
 - [text](#t.apply_everywhere.108)
 - [text](#t.kyc.109)
@@ -630,11 +629,6 @@ Processing Fee Cheque
 
 ## Text — Cheque for processing fee favouring the lender. {#t.cheque_for_processing_fee_favouring_the_lender.105}
 Cheque for processing fee favouring the lender.
-
-<a id="t.the_list_provided_above_is_purely_indicative_and.106"></a>
-
-## Text — The list provided above is purely indicative, and lenders may request… {#t.the_list_provided_above_is_purely_indicative_and.106}
-The list provided above is purely indicative, and lenders may request additional documents based on your specific profile and internal credit policies.
 
 <a id="t.prepare_once.107"></a>
 

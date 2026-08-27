@@ -25,6 +25,19 @@
                           <option value="yes" data-face="{{SW:t.with_co_applicant.3}}" data-icon="person_add">{{SW:t.with_co_applicant.3}}</option>
                         </select>
                         <div class="hlc-icon-select-list" data-hlc-icon-list role="listbox" hidden></div>
+                        <span class="hlc-field-help-anchor"><button
+                        type="button"
+                        class="hlc-field-help"
+                        aria-expanded="false"
+                        aria-controls="hlc-help-applicant-mode"
+                        aria-label="{{SW:t.about_co_applicant.29}}"
+                      >
+                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
+                      </button><div class="hlc-field-help-popover" id="hlc-help-applicant-mode" role="tooltip" hidden>
+                      <p class="hlc-field-help-text">{{SW:t.add_a_co_applicant_to_borrow_more_a_missed_emi.132}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.spouse_and_close_family_are_commonly_accepted_fr.77}}</p>
+                        <a class="hlc-field-help-more" href="tax-benefits.html#joint-loan">{{SW:t.learn_more.49}}</a>
+                    </div></span>
                       </div>
                       <div class="hlc-icon-select hlc-icon-select--bare" data-hlc-icon-select data-hlc-icon-map="purpose">
                         <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="{{SW:t.loan_purpose.4}}">
@@ -77,7 +90,7 @@
                       </div>
                       <div class="hlc-icon-select hlc-icon-select--bare hlc-icon-select--foir" data-hlc-icon-select data-hlc-icon-map="foir">
                         <button type="button" class="hlc-icon-select-trigger" data-hlc-icon-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="{{SW:t.foir_percent.12}}">
-                          <span class="hlc-icon-select-leading" data-hlc-icon-face hidden></span>
+                          <span class="hlc-icon-select-leading" data-hlc-icon-face></span>
                           <span class="hlc-icon-select-text" data-hlc-face-text>{{SW:t.foir_55.14}}</span>
                           <span class="hlc-icon-select-chevron" aria-hidden="true"></span>
                         </button>
@@ -466,7 +479,6 @@
                     <svg class="hlc-filters-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false">
                       <path fill="currentColor" d="M440-160q-17 0-28.5-11.5T400-200v-240L168-736q-15-20-4.5-42t36.5-22h560q26 0 36.5 22t-4.5 42L560-440v240q0 17-11.5 28.5T520-160h-80Zm40-308 198-252H282l198 252Zm0 0Z"/>
                     </svg>
-                    <span class="hlc-filters-toggle-label">{{SW:t.filter.86}}</span>
                     <span class="hlc-filters-badge" id="hlc-filters-badge" hidden></span>
                   </button>
                 </div>
@@ -485,8 +497,8 @@
                 role="region"
                 aria-label="{{SW:t.filters.32}}"
               >
-                <div class="hlc-filters-handle" aria-hidden="true">
-                  <span class="hlc-filters-handle-pill"></span>
+                <div class="hlc-sheet-handle hlc-filters-handle" aria-hidden="true">
+                  <span class="hlc-sheet-handle-pill hlc-filters-handle-pill"></span>
                 </div>
                 <div class="hlc-filters-head">
                   <div class="hlc-filters-head-actions">
@@ -495,113 +507,7 @@
                 </div>
 
                 <div class="hlc-filters-scroll">
-                <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="hlc-borrower-label">
-                    <span class="hlc-field-label-row">
-                      <span class="hlc-field-label-text">{{SW:t.borrower.89}}</span>
-                      <span class="hlc-field-help-anchor"><button
-                        type="button"
-                        class="hlc-field-help"
-                        aria-expanded="false"
-                        aria-controls="hlc-help-borrower"
-                        aria-label="{{SW:t.about_borrower.33}}"
-                      >
-                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
-                      </button><div class="hlc-field-help-popover" id="hlc-help-borrower" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">{{SW:t.govt_or_pension_schemes_may_cut_fees_or_rate_not.90}}</p>
-                      <p class="hlc-field-help-text">{{SW:t.ldquo_zero_processing_rdquo_often_still_leaves_l.91}}</p>
-                  </div></span>
-                    </span>
-                  </legend>
-                  <div class="hlc-filter-checks hlc-borrower-chips" role="group" aria-labelledby="hlc-borrower-label">
-                    <label class="hlc-filter-option">
-                      <input type="checkbox" data-product-filter="govtPsu" />
-                      <span class="hlc-filter-option-label">{{SW:t.govt_psu_employee_and_pensioner.92}}</span>
-                    </label>
-                  </div>
-                  </fieldset>
-
-                <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="hlc-concessions-label">
-                    <span class="hlc-field-label-row">
-                      <span class="hlc-field-label-text">{{SW:t.concessions.93}}</span>
-                      <span class="hlc-field-help-anchor"><button
-                        type="button"
-                        class="hlc-field-help"
-                        aria-expanded="false"
-                        aria-controls="hlc-help-concessions"
-                        aria-label="{{SW:t.about_concessions.34}}"
-                      >
-                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
-                      </button><div class="hlc-field-help-popover" id="hlc-help-concessions" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">{{SW:t.small_rate_or_fee_extras_differ_by_bank_they_do_.94}}</p>
-                      <p class="hlc-field-help-text">{{SW:t.woman_cuts_often_need_her_as_primary_borrower_an.95}}</p>
-                    <a class="hlc-field-help-more" href="concessions.html#bank-rates">{{SW:t.learn_more.49}}</a>
-                  </div></span>
-                    </span>
-                  </legend>
-                  <div class="hlc-filter-checks" role="group" aria-labelledby="hlc-concessions-label">
-                    <label class="hlc-filter-option">
-                      <input type="checkbox" data-product-filter="womenApplicant" />
-                      <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">{{SW:t.women_applicant.96}}</span>
-                        <span class="hlc-filter-option-note">{{SW:t.save_up_to_0_05_when_the_woman_applicant_s_name_.97}}</span>
-                      </span>
-                    </label>
-                    <label class="hlc-filter-option">
-                      <input type="checkbox" data-product-filter="greenHome" />
-                      <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">{{SW:t.green_home.98}}</span>
-                        <span class="hlc-filter-option-note">{{SW:t.save_up_to_0_10_for_green_rated_homes_igbc_griha.99}}</span>
-                      </span>
-                    </label>
-                    <label class="hlc-filter-option">
-                      <input type="checkbox" data-product-filter="insurance" />
-                      <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">{{SW:t.insurance.100}}</span>
-                        <span class="hlc-filter-option-note">{{SW:t.save_up_to_0_05_when_you_take_the_property_cover.101}}</span>
-                      </span>
-                    </label>
-                  </div>
-                  </fieldset>
-
-                <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="hlc-bank-type-label">
-                    <span class="hlc-field-label-row">
-                      <span class="hlc-field-label-text">{{SW:t.bank_type.102}}</span>
-                      <span class="hlc-field-help-anchor"><button
-                        type="button"
-                        class="hlc-field-help"
-                        aria-expanded="false"
-                        aria-controls="hlc-help-bank-type"
-                        aria-label="{{SW:t.about_bank_type.35}}"
-                      >
-                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
-                      </button><div class="hlc-field-help-popover" id="hlc-help-bank-type" role="tooltip" hidden>
-                      <p class="hlc-field-help-text">{{SW:t.lender_category_hints_at_rate_versus_flexibility.103}}</p>
-                      <p class="hlc-field-help-text">{{SW:t.some_hfcs_or_nbfcs_accept_unusual_income_more_of.104}}</p>
-                  </div></span>
-                    </span>
-                  </legend>
-                  <div class="hlc-filter-checks" role="group" aria-labelledby="hlc-bank-type-label">
-                    <label class="hlc-filter-option">
-                      <input type="checkbox" data-product-filter="bankPublic" checked />
-                      <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">{{SW:t.public.105}}</span>
-                        <span class="hlc-filter-option-note">{{SW:t.slower_process_usually_a_better_rate.106}}</span>
-                      </span>
-                    </label>
-                    <label class="hlc-filter-option">
-                      <input type="checkbox" data-product-filter="bankPrivate" checked />
-                      <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">{{SW:t.private.107}}</span>
-                        <span class="hlc-filter-option-note">{{SW:t.smoother_process_usually_a_higher_rate_and_fee.108}}</span>
-                      </span>
-                    </label>
-                  </div>
-                </fieldset>
-
-                <fieldset class="hlc-filter-group">
+<fieldset class="hlc-filter-group">
                   <legend class="hlc-filter-legend" id="hlc-rate-label">
                     <span class="hlc-field-label-row">
                       <span class="hlc-field-label-text">{{SW:t.rate.109}}</span>
@@ -638,7 +544,7 @@
                   </div>
                 </fieldset>
 
-                <fieldset class="hlc-filter-group">
+<fieldset class="hlc-filter-group">
                   <legend class="hlc-filter-legend" id="hlc-facility-label">
                     <span class="hlc-field-label-row">
                       <span class="hlc-field-label-text">{{SW:t.facility.116}}</span>
@@ -685,6 +591,75 @@
                     </label>
                   </div>
                 </fieldset>
+
+<fieldset class="hlc-filter-group">
+                  <legend class="hlc-filter-legend" id="hlc-bank-type-label">{{SW:t.bank_type.102}}</legend>
+                  <div class="hlc-filter-checks" role="group" aria-labelledby="hlc-bank-type-label">
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="bankPublic" checked />
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">{{SW:t.public.105}}</span>
+                        <span class="hlc-filter-option-note">{{SW:t.slower_process_usually_a_better_rate.106}}</span>
+                      </span>
+                    </label>
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="bankPrivate" checked />
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">{{SW:t.private.107}}</span>
+                        <span class="hlc-filter-option-note">{{SW:t.smoother_process_usually_a_higher_rate_and_fee.108}}</span>
+                      </span>
+                    </label>
+                  </div>
+                </fieldset>
+
+<fieldset class="hlc-filter-group">
+                  <legend class="hlc-filter-legend" id="hlc-concessions-label">{{SW:t.concessions.93}}</legend>
+                  <div class="hlc-filter-checks" role="group" aria-labelledby="hlc-concessions-label">
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="womenApplicant" />
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">{{SW:t.women_applicant.96}}</span>
+                        <span class="hlc-filter-option-note">{{SW:t.save_up_to_0_05_when_the_woman_applicant_s_name_.97}}</span>
+                      </span>
+                    </label>
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="greenHome" />
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">{{SW:t.green_home.98}}</span>
+                        <span class="hlc-filter-option-note">{{SW:t.save_up_to_0_10_for_green_rated_homes_igbc_griha.99}}</span>
+                      </span>
+                    </label>
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="insurance" />
+                      <span class="hlc-filter-option-label">
+                        <span class="hlc-filter-option-title">{{SW:t.insurance.100}}</span>
+                        <span class="hlc-filter-option-note">{{SW:t.save_up_to_0_05_when_you_take_the_property_cover.101}}</span>
+                      </span>
+                    </label>
+                  </div>
+                  </fieldset>
+
+<fieldset class="hlc-filter-group">
+                  <legend class="hlc-filter-legend" id="hlc-borrower-label">{{SW:t.borrower.89}}</legend>
+                  <div class="hlc-filter-checks hlc-borrower-chips" role="group" aria-labelledby="hlc-borrower-label">
+                    <label class="hlc-filter-option">
+                      <input type="checkbox" data-product-filter="govtPsu" />
+                      <span class="hlc-filter-option-label">{{SW:t.govt_psu_employee_and_pensioner.92}}</span>
+                      <span class="hlc-field-help-anchor"><button
+                        type="button"
+                        class="hlc-field-help"
+                        aria-expanded="false"
+                        aria-controls="hlc-help-govt-psu"
+                        aria-label="{{SW:t.about_borrower.33}}"
+                      >
+                        <span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
+                      </button><div class="hlc-field-help-popover" id="hlc-help-govt-psu" role="tooltip" hidden>
+                      <p class="hlc-field-help-text">{{SW:t.govt_or_pension_schemes_may_cut_fees_or_rate_not.90}}</p>
+                      <p class="hlc-field-help-text">{{SW:t.ldquo_zero_processing_rdquo_often_still_leaves_l.91}}</p>
+                  </div></span>
+                    </label>
+                  </div>
+                  </fieldset>
                 </div>
                 <div class="hlc-filters-foot">
                   <button type="button" class="hlc-btn-primary hlc-filters-done" id="hlc-filters-done">{{SW:t.done.124}}</button>

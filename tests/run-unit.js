@@ -586,15 +586,15 @@ async function testHomeLoanCompare() {
     compare.computeGovernmentChargeAmount(
       { calculation_method: 'Flat', flat_amount_inr: 100, gst_applicable: 'Yes' },
       5000000
-    ) === 118,
-    'CERSAI ₹100 exclusive of GST becomes ₹118 with 18% GST'
+    ) === 100,
+    'CERSAI table amount stays exclusive of taxes'
   );
   ok(
     compare.computeGovernmentChargeAmount(
       { calculation_method: 'Flat', flat_amount_inr: 50, gst_applicable: 'Yes' },
       400000
-    ) === 59,
-    'CERSAI ₹50 exclusive of GST becomes ₹59 with 18% GST'
+    ) === 50,
+    'CERSAI lower slab stays exclusive of taxes'
   );
   ok(
     compare.computeGovernmentChargeAmount(
@@ -617,8 +617,8 @@ async function testHomeLoanCompare() {
     compare.DEFAULT_JURISDICTION_STATE
   );
   ok(
-    govtTotal50L === 31118,
-    'government total for a ₹50 lakh loan includes 18% GST on CERSAI'
+    govtTotal50L === 31100,
+    'government total for a ₹50 lakh loan excludes taxes on CERSAI'
   );
   var cersaiCreation = compare
     .listApplicableGovernmentCharges(
@@ -931,14 +931,8 @@ async function testHomeLoanCompare() {
       compare.drawerDiscloseHtml('Eligibility', '<div>body</div>').indexOf(
         ' open'
       ) === -1 &&
-      compare.drawerToolbarHtml('hlc-drawer-body').indexOf(
-        'hlc-drawer-toggle-all'
-      ) !== -1 &&
-      compare.drawerToolbarHtml('hlc-drawer-body').indexOf('More details') !==
-        -1 &&
-      compare.drawerToolbarHtml('hlc-drawer-body').indexOf('Expand all') !==
-        -1,
-    'side panel sections use disclose chevrons with Expand/Collapse all on the right'
+      typeof compare.drawerToolbarHtml === 'undefined',
+    'side panel sections use disclose chevrons without Expand/Collapse all'
   );
   ok(
     (function () {
@@ -953,7 +947,7 @@ async function testHomeLoanCompare() {
         html.indexOf('hlc-calc-always') !== -1 &&
         html.indexOf('How this is worked out') === -1 &&
         html.indexOf('Calculation of the charges') === -1 &&
-        html.indexOf('All amounts') !== -1 &&
+        html.indexOf('Charges breakup') !== -1 &&
         html.indexOf('Notes') !== -1 &&
         closedCount === 2 &&
         html.indexOf('hlc-drawer-chevron') !== -1 &&
@@ -961,7 +955,7 @@ async function testHomeLoanCompare() {
         html.indexOf('guide') > html.lastIndexOf('hlc-drawer-group')
       );
     })(),
-    'calc drawers show walk always open; All amounts + Notes stay closed discloses; foot outside'
+    'calc drawers show walk always open; Charges breakup + Notes stay closed discloses; foot outside'
   );
   ok(
     (function () {
@@ -3010,56 +3004,129 @@ async function testHomeLoanCompare() {
   );
 
   var row = compare.receiptRowHtml({
-    label: 'LTV ratio',
+    label: compare.receiptPctLabel('LTV ratio'),
     op: '×',
-    value: '80%',
+    value: compare.formatPctFigure(80),
     ruleAfter: true
   });
   ok(
     row.indexOf('hlc-receipt-op') !== -1 &&
       row.indexOf('>×<') !== -1 &&
-      row.indexOf('>80%<') !== -1,
-    'receipt row keeps op and value in separate slots'
+      row.indexOf('>80.00<') !== -1 &&
+      row.indexOf('80%') === -1 &&
+      row.indexOf('LTV ratio (%)') !== -1,
+    'receipt row keeps op and bare .00 figure; % lives on the label'
   );
   ok(
-    row.indexOf('hlc-receipt-rule') !== -1,
-    'ruleAfter emits a maths line'
+    row.indexOf('hlc-receipt-row--ruled') !== -1 &&
+      row.indexOf('hlc-receipt-rule') === -1,
+    'ruleAfter underlines the figure itself (covers the number)'
   );
 
-  var finalRow = compare.receiptRowHtml({
+  ok(
+    compare.formatPctFigure(8.5) === '8.50' &&
+      compare.formatPctFigure(80) === '80.00' &&
+      compare.formatPctPlain(80) === '80.00%' &&
+      compare.formatReceiptFigure(6250000) === '6250000.00' &&
+      compare.formatReceiptAmount(6250000) === '₹62,50,000.00' &&
+      compare.formatReceiptAmount(6250000).indexOf(',') !== -1 &&
+      compare.receiptPctLabel('Fee %') === 'Fee (%)' &&
+      compare.receiptPctLabel('Loan rate p.a.') === 'Loan rate (% p.a.)',
+    'receipt figures: always .00; amounts use Indian commas; % on label/prose'
+  );
+
+  var pctOp = compare.receiptPctOpRow('GST', 18, { ruleAfter: true });
+  ok(
+    pctOp.label === 'GST (%)' &&
+      pctOp.op === '×' &&
+      pctOp.value === '18.00' &&
+      pctOp.ruleAfter === true,
+    'receiptPctOpRow is the canonical ×-percent receipt line'
+  );
+
+  var answerRow = compare.receiptRowHtml({
     label: 'Eligible amount',
-    value: '₹80',
-    final: true
+    value: '₹80.00',
+    answer: true
   });
   ok(
-    finalRow.indexOf('hlc-receipt-row--final') !== -1,
-    'final receipt rows carry the final class'
+    answerRow.indexOf('hlc-receipt-row--answer') !== -1 &&
+      answerRow.indexOf('hlc-receipt-row--final') === -1,
+    'answer rows are sub-results, not finals'
+  );
+
+  var midAfterRule = compare.receiptBlockHtml([
+    { label: 'FOIR (%)', op: '×', value: '50.00', ruleAfter: true },
+    { label: 'Max EMI allowed', value: '₹55,000.00' }
+  ]);
+  ok(
+    midAfterRule.indexOf('Max EMI allowed') !== -1 &&
+      midAfterRule.indexOf('hlc-receipt-row--answer') === -1 &&
+      midAfterRule.indexOf('hlc-receipt-row--final') === -1,
+    'mid-working lines after a rule stay at base weight'
   );
 
   var block = compare.receiptBlockHtml([
-    { label: 'Property value', value: '₹100' },
-    { label: 'LTV ratio', op: '×', value: '80%', ruleAfter: true },
-    { label: 'Eligible amount', value: '₹80', final: true }
+    { label: 'Property value', value: compare.formatReceiptAmount(100) },
+    compare.receiptPctOpRow('LTV ratio', 80, { ruleAfter: true }),
+    {
+      label: 'Eligible amount',
+      value: compare.formatReceiptAmount(80),
+      final: true
+    }
   ]);
   ok(
     block.indexOf('hlc-receipt') !== -1 &&
       block.indexOf('Eligible amount') !== -1 &&
+      block.indexOf('LTV ratio (%)') !== -1 &&
+      block.indexOf('>80.00<') !== -1 &&
+      block.indexOf('₹100.00') !== -1 &&
+      block.indexOf('80%') === -1 &&
       block.indexOf('hlc-drawer-card') === -1,
-    'receipt block has no card wrapper'
+    'receipt block vertical method: .00 figures, commas on amounts, % on label'
+  );
+
+  ok(
+    compare.receiptPartMark(0) === 'a' &&
+      compare.receiptPartMark(1) === 'b' &&
+      compare.receiptPartLabel('CERSAI creation', 'a') === 'CERSAI creation (a)' &&
+      compare.receiptSumTotalLabel(['a', 'b', 'c']) === 'Total (a + b + c)' &&
+      compare.receiptSumTotalLabel(['1', '2', '3']) === 'Total (1 + 2 + 3)' &&
+      compare.receiptSumTotalLabel([]) === 'Total' &&
+      compare.withReceiptStepNumber(2, [{ label: 'Loan amount', value: '₹1' }])[0]
+        .label === '2. Loan amount' &&
+      compare.withReceiptStepNumber(2, [{ label: 'Loan amount', value: '₹1' }])[0]
+        .step === true,
+    'school step marks: 1./2. headings and Total (1 + 2 + 3)'
   );
 
   var dual = compare.receiptDualHtml(
     [{ label: 'Property value', value: '₹1' }],
     [{ label: 'Net monthly income', value: '₹2' }],
-    [{ label: 'Loan amount', value: '₹3', final: true }]
+    [{ label: 'Loan amount', value: '₹3' }]
   );
   ok(
     dual.indexOf('1. Property value') !== -1 &&
-      dual.indexOf('2. Monthly Income') !== -1 &&
-      dual.indexOf('3. Required loan amount') !== -1 &&
+      dual.indexOf('2. Net monthly income') !== -1 &&
+      dual.indexOf('3. Loan amount') !== -1 &&
+      dual.indexOf('hlc-receipt-row--step') !== -1 &&
+      dual.indexOf('2. Monthly Income') === -1 &&
+      dual.indexOf('3. Required loan amount') === -1 &&
       dual.indexOf('₹3') !== -1 &&
-      dual.indexOf('hlc-receipt-dual') !== -1,
-    'loan dual columns use 1. Property value | 2. Monthly Income | 3. Required loan amount'
+      dual.indexOf('hlc-receipt-dual') === -1 &&
+      dual.indexOf('hlc-receipt-col') === -1 &&
+      (dual.match(/class="hlc-receipt"/g) || []).length === 3,
+    'loan amount steps are sequential receipts like EMI/charges; numbered first labels'
+  );
+
+  var lowerResult = compare.loanLowerOfResultHtml('₹50,00,000.00');
+  ok(
+    lowerResult.indexOf('hlc-loan-lower-result') !== -1 &&
+      lowerResult.indexOf('hlc-loan-lower-result-amount') !== -1 &&
+      lowerResult.indexOf('hlc-loan-lower-result-rule') === -1 &&
+      lowerResult.indexOf('₹50,00,000.00') !== -1 &&
+      lowerResult.indexOf('Loan amount') === -1,
+    'loan lower-of result is a bare amount with figure-width underline'
   );
 
   ok(

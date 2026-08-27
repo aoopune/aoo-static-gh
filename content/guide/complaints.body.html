@@ -32,20 +32,35 @@
     <div class="guide-swap" id="guide-swap">
 
     <header class="guide-hero guide-hero--media">
-      <picture>
+      <picture class="guide-hero-picture guide-hero-picture--light">
         <source
           media="(max-width: 833px)"
           srcset="../images/guide-heroes/grievance-9x16.png?v=portrait-1"
         >
         <img
-        class="guide-hero-bg"
-        src="../images/guide-heroes/grievance.png?v=portrait-1"
-        alt=""
-        width="1600"
-        height="900"
-        decoding="async"
-        aria-hidden="true"
-      >
+          class="guide-hero-bg"
+          src="../images/guide-heroes/grievance.png?v=portrait-1"
+          alt=""
+          width="1600"
+          height="900"
+          decoding="async"
+          aria-hidden="true"
+        >
+      </picture>
+      <picture class="guide-hero-picture guide-hero-picture--dark">
+        <source
+          media="(max-width: 833px)"
+          srcset="../images/guide-heroes/grievance-9x16-dark.png?v=dark-1"
+        >
+        <img
+          class="guide-hero-bg"
+          src="../images/guide-heroes/grievance-dark.png?v=dark-1"
+          alt=""
+          width="1600"
+          height="900"
+          decoding="async"
+          aria-hidden="true"
+        >
       </picture>
       <h1 class="guide-hero-title">{{SW:t.your_home_loan.153}}<br class="guide-br--phone">{{SW:t.issue.154}}<br class="guide-br--desktop">{{SW:t.has_a.155}}<br class="guide-br--phone">{{SW:t.fair_path.156}}</h1>
       <h2 class="guide-hero-lead">{{SW:t.if_a_lender_issue_stays_stuck_you_are_not_withou.13}}</h2>
@@ -490,8 +505,5 @@
       </section>
     </div>
 
-    <div class="guide-fine-wrap">
-      <p class="guide-fine">{{SW:t.this_page_is_education_only_not_legal_advice_we_.152}}</p>
-    </div>
       </div>
 </main>

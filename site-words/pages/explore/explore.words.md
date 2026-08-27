@@ -27,7 +27,7 @@ Use **Jump to** below to open any line in this file.
 
 - [Dropdown face — Single applicant](#t.single_applicant.2)
 - [Dropdown face — With co-applicant](#t.with_co_applicant.3)
-- [Dropdown face — New home loan](#t.new_home_loan.5)
+- [Dropdown face — New loan](#t.new_home_loan.5)
 - [Dropdown face — Top-up](#t.top_up.6)
 - [Dropdown face — Salaried](#t.salaried.9)
 - [Dropdown face — Self-employed](#t.self_employed.10)
@@ -63,14 +63,15 @@ Use **Jump to** below to open any line in this file.
 - [Text — CIBIL score](#t.cibil_score.67)
 - [Text — Missed payments and defaults on the report can outweigh a high score.](#t.missed_payments_and_defaults_on_the_report_can_o.68)
 - [Text — Checking your own CIBIL usually does not lower it; a bank application…](#t.checking_your_own_cibil_usually_does_not_lower_i.69)
-- [Text — Total existing EMIs](#t.total_existing_emis.70)
+- [Text — Existing EMIs](#t.total_existing_emis.70)
 - [Text — Lenders subtract other loan instalments before they set your new home…](#t.lenders_subtract_other_loan_instalments_before_t.71)
 - [Text — A loan you plan to close later still counts until it is closed on the…](#t.a_loan_you_plan_to_close_later_still_counts_unti.72)
-- [Text — Total credit card limits](#t.total_credit_card_limits.73)
+- [Text — Credit card limits](#t.total_credit_card_limits.73)
 - [Text — Even a fully paid card can still reduce how much EMI you can take.](#t.even_a_fully_paid_card_can_still_reduce_how_much.74)
 - [Text — Banks often count a share of the limit as a monthly bill; rules vary.](#t.banks_often_count_a_share_of_the_limit_as_a_mont.75)
 - [Text — Duty is to repay the whole loan; a missed EMI hits every co-borrower'…](#t.duty_is_to_repay_the_whole_loan_a_missed_emi_hit.76)
 - [Text — Spouse and close family are commonly accepted; friends usually are not.](#t.spouse_and_close_family_are_commonly_accepted_fr.77)
+- [Text — Add a co-applicant to borrow more. A missed EMI hits every co-applicant…](#t.add_a_co_applicant_to_borrow_more_a_missed_emi.132)
 - [Text — Add another co-applicant](#t.add_another_co_applicant.78)
 - [Text — Compare](#t.compare.79)
 - [Heading — Insights](#t.insights.80)
@@ -79,7 +80,6 @@ Use **Jump to** below to open any line in this file.
 - [Button — Overview](#t.overview.83)
 - [Button — Charges](#t.charges.84)
 - [Button — Other charges](#t.other_charges.85)
-- [Text — filter](#t.filter.86)
 - [Button — Apply once](#t.apply_once.87)
 - [Button — Clear all](#t.clear_all.88)
 - [Text — Borrower](#t.borrower.89)
@@ -87,8 +87,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — &ldquo;Zero processing&rdquo; often still leaves legal, valuation, an…](#t.ldquo_zero_processing_rdquo_often_still_leaves_l.91)
 - [Text — Govt / PSU employee and pensioner](#t.govt_psu_employee_and_pensioner.92)
 - [Text — Concessions](#t.concessions.93)
-- [Text — Small rate or fee extras differ by bank; they do not fix eligibility.](#t.small_rate_or_fee_extras_differ_by_bank_they_do_.94)
-- [Text — Woman cuts often need her as primary borrower, and usually as owner.](#t.woman_cuts_often_need_her_as_primary_borrower_an.95)
 - [Text — Women applicant](#t.women_applicant.96)
 - [Text — Save up to 0.05% when the woman applicant's name is first on the prop…](#t.save_up_to_0_05_when_the_woman_applicant_s_name_.97)
 - [Text — Green home](#t.green_home.98)
@@ -96,8 +94,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — Insurance](#t.insurance.100)
 - [Text — Save up to 0.05% when you take the property cover.](#t.save_up_to_0_05_when_you_take_the_property_cover.101)
 - [Text — Bank type](#t.bank_type.102)
-- [Text — Lender category hints at rate versus flexibility, not a quality ranking.](#t.lender_category_hints_at_rate_versus_flexibility.103)
-- [Text — Some HFCs or NBFCs accept unusual income more often, usually at a hig…](#t.some_hfcs_or_nbfcs_accept_unusual_income_more_of.104)
 - [Text — Public](#t.public.105)
 - [Text — Slower process, usually a better rate.](#t.slower_process_usually_a_better_rate.106)
 - [Text — Private](#t.private.107)
@@ -138,8 +134,8 @@ With co-applicant
 
 <a id="t.new_home_loan.5"></a>
 
-## Dropdown face — New home loan {#t.new_home_loan.5}
-New home loan
+## Dropdown face — New loan {#t.new_home_loan.5}
+New loan
 
 <a id="t.top_up.6"></a>
 
@@ -318,8 +314,8 @@ Checking your own CIBIL usually does not lower it; a bank application can.
 
 <a id="t.total_existing_emis.70"></a>
 
-## Text — Total existing EMIs {#t.total_existing_emis.70}
-Total existing EMIs
+## Text — Existing EMIs {#t.total_existing_emis.70}
+Existing EMIs
 
 <a id="t.lenders_subtract_other_loan_instalments_before_t.71"></a>
 
@@ -333,8 +329,8 @@ A loan you plan to close later still counts until it is closed on the credit rep
 
 <a id="t.total_credit_card_limits.73"></a>
 
-## Text — Total credit card limits {#t.total_credit_card_limits.73}
-Total credit card limits
+## Text — Credit card limits {#t.total_credit_card_limits.73}
+Credit card limits
 
 <a id="t.even_a_fully_paid_card_can_still_reduce_how_much.74"></a>
 
@@ -396,11 +392,6 @@ Charges
 ## Button — Other charges {#t.other_charges.85}
 Other charges
 
-<a id="t.filter.86"></a>
-
-## Text — filter {#t.filter.86}
-filter
-
 <a id="t.apply_once.87"></a>
 
 ## Button — Apply once {#t.apply_once.87}
@@ -436,16 +427,6 @@ Govt / PSU employee and pensioner
 ## Text — Concessions {#t.concessions.93}
 Concessions
 
-<a id="t.small_rate_or_fee_extras_differ_by_bank_they_do_.94"></a>
-
-## Text — Small rate or fee extras differ by bank; they do not fix eligibility. {#t.small_rate_or_fee_extras_differ_by_bank_they_do_.94}
-Small rate or fee extras differ by bank; they do not fix eligibility.
-
-<a id="t.woman_cuts_often_need_her_as_primary_borrower_an.95"></a>
-
-## Text — Woman cuts often need her as primary borrower, and usually as owner. {#t.woman_cuts_often_need_her_as_primary_borrower_an.95}
-Woman cuts often need her as primary borrower, and usually as owner.
-
 <a id="t.women_applicant.96"></a>
 
 ## Text — Women applicant {#t.women_applicant.96}
@@ -480,16 +461,6 @@ Save up to 0.05% with property cover.
 
 ## Text — Bank type {#t.bank_type.102}
 Bank type
-
-<a id="t.lender_category_hints_at_rate_versus_flexibility.103"></a>
-
-## Text — Lender category hints at rate versus flexibility, not a quality ranking. {#t.lender_category_hints_at_rate_versus_flexibility.103}
-Lender category hints at rate versus flexibility, not a quality ranking.
-
-<a id="t.some_hfcs_or_nbfcs_accept_unusual_income_more_of.104"></a>
-
-## Text — Some HFCs or NBFCs accept unusual income more often, usually at a hig… {#t.some_hfcs_or_nbfcs_accept_unusual_income_more_of.104}
-Some HFCs or NBFCs accept unusual income more often, usually at a higher cost.
 
 <a id="t.public.105"></a>
 
@@ -534,7 +505,7 @@ Floating
 <a id="t.can_move_with_the_benchmark.113"></a>
 
 ## Text — Can move with the benchmark. {#t.can_move_with_the_benchmark.113}
-Can move with the benchmark.
+May rise or fall, changing your EMI.
 
 <a id="t.fixed.114"></a>
 
@@ -584,7 +555,7 @@ Expect a slightly higher rate than the same bank's plain term loan.
 <a id="t.idle_money_saves_interest_about_0_15_1_higher_th.123"></a>
 
 ## Text — Idle money saves interest. About 0.15–1% higher than term loan {#t.idle_money_saves_interest_about_0_15_1_higher_th.123}
-Idle funds save interest, but costs 0.15–1% above term loans.
+Park idle cash to save interest and withdraw anytime at +0.15 to 1% ROI.
 
 <a id="t.done.124"></a>
 
@@ -625,3 +596,8 @@ Overdraft
 
 ## text {#t.your_home_loan_options.131}
 Your home loan options
+
+<a id="t.add_a_co_applicant_to_borrow_more_a_missed_emi.132"></a>
+
+## Text — Add a co-applicant to borrow more. A missed EMI hits every co-applicant… {#t.add_a_co_applicant_to_borrow_more_a_missed_emi.132}
+Add a co-applicant to borrow more. A missed EMI hits every co-applicant's credit.

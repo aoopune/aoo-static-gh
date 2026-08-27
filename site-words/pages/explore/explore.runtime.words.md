@@ -95,6 +95,9 @@ EMI bounce
 ## Note — GST applicable {#note.gst_applicable}
 GST applicable.
 
+## Note — Excluding taxes {#note.excluding_taxes}
+Excluding taxes.
+
 ## Note — Out-of-pocket expenses {#note.oop_expenses}
 Out-of-pocket expenses.
 
@@ -116,8 +119,8 @@ Collapse all
 ## UI — More details {#ui.more_details}
 More details
 
-## UI — All amounts {#ui.all_amounts}
-All amounts
+## UI — Charges breakup {#ui.all_amounts}
+Charges breakup
 
 ## UI — Apply once {#ui.apply_once}
 Apply once

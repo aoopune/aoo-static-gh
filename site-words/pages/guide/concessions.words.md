@@ -90,7 +90,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — Processing fee may be waived when your salary is credited with that b…](#t.processing_fee_may_be_waived_when_your_salary_is.67)
 - [Text — Those fees may be waived.](#t.those_fees_may_be_waived.68)
 - [Text — Takeover fees on the old loan plus fresh charges on the new one can c…](#t.takeover_fees_on_the_old_loan_plus_fresh_charges.69)
-- [Text — For general understanding only. Concession rules depend on your incom…](#t.for_general_understanding_only_concession_rules_.70)
 - [text](#t.you_may_already.71)
 - [text](#t.pay_less.72)
 - [text](#t.she_is_usually_the_sole_owner_or_the_first_name_.73)
@@ -438,11 +437,6 @@ Those fees may be waived.
 
 ## Text — Takeover fees on the old loan plus fresh charges on the new one can c… {#t.takeover_fees_on_the_old_loan_plus_fresh_charges.69}
 Takeover fees on the old loan plus fresh charges on the new one can cancel a small waiver.
-
-<a id="t.for_general_understanding_only_concession_rules_.70"></a>
-
-## Text — For general understanding only. Concession rules depend on your incom… {#t.for_general_understanding_only_concession_rules_.70}
-For general understanding only. Concession rules depend on your income, property, and the lender’s current policy. Confirm PMAY on the official site and with your lender before you count on a subsidy. Banks and government schemes change over time.
 
 <a id="t.you_may_already.71"></a>
 

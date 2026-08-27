@@ -126,6 +126,25 @@
   padding: var(--shroffin-space-section) 0;
 }
 
+.about-band--story {
+  padding-top: calc(var(--shroffin-space-stack) + clamp(0.5rem, 2vw, 1rem));
+  border-top: 1px solid var(--shroffin-hair-soft);
+}
+
+.about-story-body {
+  max-width: var(--about-read);
+}
+
+.about-band--story .about-section-title {
+  margin-bottom: 28px;
+}
+
+.about-band--story .about-section-body {
+  font-size: var(--shroffin-type-body);
+  line-height: 1.52947;
+  color: var(--about-ink-soft);
+}
+
 .about-band--statement {
   padding: var(--shroffin-space-stack) 0 var(--shroffin-space-section);
 }

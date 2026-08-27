@@ -27,7 +27,6 @@ omitted_by_policy:
 - [Frame title — Compare lenders demo — select banks and switch Overview, Charges, and…](#t.compare_lenders_demo_select_banks_and_switch_ove.3)
 - [Frame title — Browse lenders demo — flip banks and see EMI without sharing contact …](#t.browse_lenders_demo_flip_banks_and_see_emi_witho.4)
 - [Frame title — Transparent demo — State Bank of India More details with expandable s…](#t.transparent_demo_state_bank_of_india_more_detail.5)
-- [Frame title — Apply once demo — one application sent to every bank you chose](#t.apply_once_demo_one_application_sent_to_every_ba.6)
 
 <a id="t.explore_banks_product_demo.0"></a>
 
@@ -58,8 +57,3 @@ Browse lenders demo — flip banks and see EMI without sharing contact details
 
 ## Frame title — Transparent demo — State Bank of India More details with expandable s… {#t.transparent_demo_state_bank_of_india_more_detail.5}
 Transparent demo — State Bank of India More details with expandable sections you can open
-
-<a id="t.apply_once_demo_one_application_sent_to_every_ba.6"></a>
-
-## Frame title — Apply once demo — one application sent to every bank you chose {#t.apply_once_demo_one_application_sent_to_every_ba.6}
-Apply once demo — one application sent to every bank you chose

@@ -88,7 +88,7 @@
 
 ---
 
-### Total existing EMIs
+### Existing EMIs
 
 - **Core meaning:** Monthly instalments already committed on loans (home, auto, personal, education, etc.).
 - **How Indian lenders typically use it:** Subtracted from FOIR capacity before sizing the new home EMI. Verified via credit bureau + loan account statements.
@@ -108,7 +108,7 @@
 
 ---
 
-### Total credit card limits
+### Credit card limits
 
 - **Core meaning:** Aggregate sanctioned credit-card limits. Many lenders convert cards into a **notional monthly obligation** for FOIR even if you pay in full.
 - **How Indian lenders typically use it:** Common underwriting habit: a **% of limit** and/or outstanding / minimum due — **method is lender policy**, not an RBI formula. High utilisation also hurts the bureau score separately from FOIR.

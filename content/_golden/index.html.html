@@ -450,6 +450,11 @@
       display: block;
     }
 
+    /* Keep “without surrendering your” on one line (do not break after glow word). */
+    .home-feature-phrase-keep {
+      white-space: nowrap;
+    }
+
     /* Google Material Icons (call + email) — inline with contact words */
     .home-feature-contact-term {
       white-space: nowrap;
@@ -510,6 +515,7 @@
         padding: 0;
         /* Exact two-line breaks via .home-feature-title-line — not free wrap. */
         white-space: normal;
+        text-align: left;
       }
 
       .home-feature-title-line {
@@ -527,14 +533,20 @@
       }
 
       .home-feature-copy {
-        align-items: center;
-        text-align: center;
+        align-items: flex-start;
+        text-align: left;
         padding: clamp(20px, 4vw, 28px) 16px 12px;
       }
 
       .home-feature-body {
-        margin-left: auto;
-        margin-right: auto;
+        margin-left: 0;
+        margin-right: 0;
+        text-align: left;
+      }
+
+      /* Compare body: one continuous sentence on phone (no forced line break). */
+      .home-feature-card--compare .home-feature-body-line {
+        display: inline;
       }
 
       .home-feature-visual {
@@ -543,7 +555,6 @@
 
       .home-feature-visual--compare,
       .home-feature-visual--browse,
-      .home-feature-visual--apply,
       .home-feature-visual--transparent {
         min-height: 16rem;
         padding: 12px;
@@ -641,9 +652,8 @@
       }
     }
 
-    /* Browse / apply / transparent visuals — same card size as every other feature section */
+    /* Browse / transparent visuals — same card size as every other feature section */
     .home-feature-visual--browse,
-    .home-feature-visual--apply,
     .home-feature-visual--transparent {
       display: flex;
       align-items: center;
@@ -652,7 +662,6 @@
     }
 
     .home-browse-privacy-frame,
-    .home-apply-once-frame,
     .home-transparent-frame {
       display: block;
       width: 100%;
@@ -823,7 +832,7 @@
     }
 
   </style>
-  <link rel="stylesheet" href="css/shroffin-shell.min.css?v=5cb84e0b09">
+  <link rel="stylesheet" href="css/shroffin-shell.min.css?v=81719f5847">
   <link rel="stylesheet" href="css/shroffin-product-demo.min.css?v=111">
   <!-- Below-fold home sections: non-blocking so they do not delay LCP wallpaper. -->
   <link
@@ -1221,14 +1230,14 @@
     <!-- Feature cards: title above, then one window (copy left, picture right) -->
     <section class="home-feature home-feature--compare home-moment" aria-labelledby="home-lead-title">
       <h2 class="home-feature-title" id="home-lead-title">
-        <span class="home-feature-title-line">Your home loan journey,</span>
-        <span class="home-feature-title-line">now <span class="home-title-wash home-title-wash--siri">completely re-engineered</span>.</span>
+        <span class="home-feature-title-line">Truly,</span>
+        <span class="home-feature-title-line"> <span class="home-title-wash home-title-wash--apple">Apples to Apples</span>.</span>
       </h2>
       <div class="home-feature-card home-feature-card--compare">
         <div class="home-feature-copy">
           <p class="home-feature-body home-feature-body--bright">
-            <span class="home-feature-body-line">Lender details that were scattered are now in one place,</span>
-            <span class="home-feature-body-line">so you can compare them side by side.</span>
+            <span class="home-feature-body-line">Compare every bank in a single, standardized view,</span>
+            <span class="home-feature-body-line">then apply only once to those you choose.</span>
           </p>
         </div>
         <div class="home-feature-visual home-feature-visual--compare">
@@ -1243,12 +1252,12 @@
 
     <section class="home-feature home-moment" aria-labelledby="home-browse-title">
       <h2 class="home-feature-title" id="home-browse-title">
-        <span class="home-feature-title-line">Explore everything,</span>
-        <span class="home-feature-title-line"><span class="home-title-wash home-title-wash--privacy">reveal nothing</span>.</span>
+        <span class="home-feature-title-line">Beautifully open.</span>
+        <span class="home-feature-title-line"><span class="home-title-wash home-title-wash--privacy">Entirely yours</span>.</span>
       </h2>
       <div class="home-feature-card">
         <div class="home-feature-copy">
-          <p class="home-feature-body home-feature-body--bright">You can look through all of it <span class="home-feature-word-glow">without</span> surrendering your <span class="home-feature-contact-term"><svg class="home-feature-inline-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>phone number</span> or <span class="home-feature-contact-term"><svg class="home-feature-inline-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>email</span>.</p>
+          <p class="home-feature-body home-feature-body--bright">You can explore all of it <span class="home-feature-phrase-keep"><span class="home-feature-word-glow">without</span> surrendering your</span> <span class="home-feature-contact-term"><svg class="home-feature-inline-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>phone number</span> or <span class="home-feature-contact-term"><svg class="home-feature-inline-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>email</span>.</p>
         </div>
         <div class="home-feature-visual home-feature-visual--browse">
           <iframe
@@ -1260,72 +1269,6 @@
       </div>
     </section>
 
-    <section class="home-feature home-moment" aria-labelledby="home-best-title">
-      <h2 class="home-feature-title" id="home-best-title">
-        <span class="home-feature-title-line">Best of all,</span>
-        <span class="home-feature-title-line"><span class="home-title-wash home-title-wash--sea">no noise</span> from us.</span>
-      </h2>
-      <div class="home-feature-card">
-        <div class="home-feature-copy">
-          <p class="home-feature-body home-feature-body--bright">
-            <span class="home-feature-body-line">Only to help you, or</span>
-            <span class="home-feature-body-line">to share an update.</span>
-            <span class="home-feature-body-line">That’s it.</span>
-          </p>
-        </div>
-        <div class="home-feature-visual home-calm-phone" aria-hidden="true" data-home-calm-phone>
-          <div class="hcp-stage">
-            <div class="hcp-device">
-              <span class="hcp-btn hcp-btn--silent"></span>
-              <span class="hcp-btn hcp-btn--vol-up"></span>
-              <span class="hcp-btn hcp-btn--vol-down"></span>
-              <span class="hcp-btn hcp-btn--power"></span>
-              <div class="hcp-bezel">
-                <div class="hcp-screen">
-                  <div class="hcp-wallpaper"></div>
-                  <div class="hcp-island"></div>
-                  <div class="hcp-status">
-                    <span class="hcp-time">9:41</span>
-                    <span class="hcp-status-icons">
-                      <svg class="hcp-signal-svg" viewBox="0 0 17 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.6"/><rect x="4.5" y="5.5" width="3" height="6.5" rx="0.6"/><rect x="9" y="3" width="3" height="9" rx="0.6"/><rect x="13.5" y="0" width="3" height="12" rx="0.6"/></svg>
-                      <svg class="hcp-wifi-svg" viewBox="0 0 16 12" aria-hidden="true"><path d="M8 9.6a1.35 1.35 0 1 1 0 2.7 1.35 1.35 0 0 1 0-2.7Zm0-3.55c1.7 0 3.25.62 4.45 1.65l-1.15 1.2A4.55 4.55 0 0 0 8 7.55c-1.2 0-2.3.42-3.2 1.12L3.65 7.5A6.7 6.7 0 0 1 8 6.05Zm0-3.5c2.7 0 5.15 1 7.05 2.65L13.9 6.4A8.85 8.85 0 0 0 8 4.05c-2.2 0-4.2.75-5.85 2.05L.95 4.9A11.3 11.3 0 0 1 8 2.55Z"/></svg>
-                      <svg class="hcp-battery-svg" viewBox="0 0 27 13" aria-hidden="true"><rect x="0.6" y="0.6" width="22" height="11.8" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="2.2" y="2.3" width="16.5" height="8.4" rx="1.3"/><path d="M24.2 4.2h1.1c.9 0 1.5.6 1.5 1.4v1.8c0 .8-.6 1.4-1.5 1.4h-1.1V4.2Z" opacity="0.4"/></svg>
-                    </span>
-                  </div>
-                  <div class="hcp-lock">
-                    <p class="hcp-date">Friday 21</p>
-                    <p class="hcp-clock">9:41</p>
-                  </div>
-                  <div class="hcp-stack">
-                    <div class="hcp-item">
-                      <span class="hcp-icon-wrap" aria-hidden="true">
-                        <img
-                          class="hcp-icon"
-                          src="images/logos/logo-mark-blue-clear-80x80.png"
-                          alt=""
-                          width="40"
-                          height="40"
-                          decoding="async"
-                          loading="lazy"
-                        >
-                      </span>
-                      <div class="hcp-text">
-                        <div class="hcp-row">
-                          <span class="hcp-app">Shroffin</span>
-                          <span class="hcp-time-ago">now</span>
-                        </div>
-                        <span class="hcp-line">Home loan comparison updated</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="home-feature home-moment" aria-labelledby="home-zero-title">
       <h2 class="home-feature-title" id="home-zero-title">
         <span class="home-feature-title-line">Zero bank commissions.</span>
@@ -1333,7 +1276,7 @@
       </h2>
       <div class="home-feature-card">
         <div class="home-feature-copy">
-          <p class="home-feature-body home-feature-body--bright">So you get a fair view of every lender, with no paid rankings and no one pushed ahead of another.</p>
+          <p class="home-feature-body home-feature-body--bright">Enjoy an unbiased view of every lender, with no sponsored rankings or preferred placement.</p>
         </div>
         <div
           class="home-feature-visual home-level-field"
@@ -1468,18 +1411,68 @@
       </div>
     </section>
 
-    <section class="home-feature home-moment" aria-labelledby="home-apply-title">
-      <h2 class="home-feature-title" id="home-apply-title">Now, <span class="home-title-wash home-title-wash--chip">Apply Only Once</span>.</h2>
+    <section class="home-feature home-moment" aria-labelledby="home-best-title">
+      <h2 class="home-feature-title" id="home-best-title">
+        <span class="home-feature-title-line">Best of all,</span>
+        <span class="home-feature-title-line"><span class="home-title-wash home-title-wash--sea">no noise</span> from us.</span>
+      </h2>
       <div class="home-feature-card">
         <div class="home-feature-copy">
-          <p class="home-feature-body home-feature-body--bright">Send one application to every bank you chose and let them compete for you.</p>
+          <p class="home-feature-body home-feature-body--bright">
+            <span class="home-feature-body-line">Only to help you, or</span>
+            <span class="home-feature-body-line">to share an update.</span>
+            <span class="home-feature-body-line">That’s it.</span>
+          </p>
         </div>
-        <div class="home-feature-visual home-feature-visual--apply" aria-hidden="true">
-          <iframe
-            class="home-apply-once-frame"
-            title="Apply once demo — one application sent to every bank you chose"
-            data-home-embed-src="pages/_home-apply-once-mock.html?embed=1&v=15"
-          ></iframe>
+        <div class="home-feature-visual home-calm-phone" aria-hidden="true" data-home-calm-phone>
+          <div class="hcp-stage">
+            <div class="hcp-device">
+              <span class="hcp-btn hcp-btn--silent"></span>
+              <span class="hcp-btn hcp-btn--vol-up"></span>
+              <span class="hcp-btn hcp-btn--vol-down"></span>
+              <span class="hcp-btn hcp-btn--power"></span>
+              <div class="hcp-bezel">
+                <div class="hcp-screen">
+                  <div class="hcp-wallpaper"></div>
+                  <div class="hcp-island"></div>
+                  <div class="hcp-status">
+                    <span class="hcp-time">9:41</span>
+                    <span class="hcp-status-icons">
+                      <svg class="hcp-signal-svg" viewBox="0 0 17 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.6"/><rect x="4.5" y="5.5" width="3" height="6.5" rx="0.6"/><rect x="9" y="3" width="3" height="9" rx="0.6"/><rect x="13.5" y="0" width="3" height="12" rx="0.6"/></svg>
+                      <svg class="hcp-wifi-svg" viewBox="0 0 16 12" aria-hidden="true"><path d="M8 9.6a1.35 1.35 0 1 1 0 2.7 1.35 1.35 0 0 1 0-2.7Zm0-3.55c1.7 0 3.25.62 4.45 1.65l-1.15 1.2A4.55 4.55 0 0 0 8 7.55c-1.2 0-2.3.42-3.2 1.12L3.65 7.5A6.7 6.7 0 0 1 8 6.05Zm0-3.5c2.7 0 5.15 1 7.05 2.65L13.9 6.4A8.85 8.85 0 0 0 8 4.05c-2.2 0-4.2.75-5.85 2.05L.95 4.9A11.3 11.3 0 0 1 8 2.55Z"/></svg>
+                      <svg class="hcp-battery-svg" viewBox="0 0 27 13" aria-hidden="true"><rect x="0.6" y="0.6" width="22" height="11.8" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="2.2" y="2.3" width="16.5" height="8.4" rx="1.3"/><path d="M24.2 4.2h1.1c.9 0 1.5.6 1.5 1.4v1.8c0 .8-.6 1.4-1.5 1.4h-1.1V4.2Z" opacity="0.4"/></svg>
+                    </span>
+                  </div>
+                  <div class="hcp-lock">
+                    <p class="hcp-date">Friday 21</p>
+                    <p class="hcp-clock">9:41</p>
+                  </div>
+                  <div class="hcp-stack">
+                    <div class="hcp-item">
+                      <span class="hcp-icon-wrap" aria-hidden="true">
+                        <img
+                          class="hcp-icon"
+                          src="images/logos/logo-mark-blue-clear-80x80.png"
+                          alt=""
+                          width="40"
+                          height="40"
+                          decoding="async"
+                          loading="lazy"
+                        >
+                      </span>
+                      <div class="hcp-text">
+                        <div class="hcp-row">
+                          <span class="hcp-app">Shroffin</span>
+                          <span class="hcp-time-ago"></span>
+                        </div>
+                        <span class="hcp-line">Home loan comparison updated</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

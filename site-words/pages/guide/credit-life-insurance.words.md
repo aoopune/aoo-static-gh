@@ -102,7 +102,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — Often cannot move.](#t.often_cannot_move.81)
 - [Text — The bank first, up to the outstanding loan.](#t.the_bank_first_up_to_the_outstanding_loan.82)
 - [Text — If age or health makes a term plan hard to get, loan cover can be eas…](#t.if_age_or_health_makes_a_term_plan_hard_to_get_l.83)
-- [Text — Education only. Your Certificate of Insurance wins if anything here d…](#t.education_only_your_certificate_of_insurance_win.84)
 - [text](#t.see_what_loan_cover.85)
 - [text](#t.pays_for.86)
 - [text](#t.serious_illness_permanent_disability_or_accident.87)
@@ -516,11 +515,6 @@ The bank first, up to the outstanding loan.
 
 ## Text — If age or health makes a term plan hard to get, loan cover can be eas… {#t.if_age_or_health_makes_a_term_plan_hard_to_get_l.83}
 If age or health makes a term plan hard to get, loan cover can be easier to buy, and can be paid through the loan.
-
-<a id="t.education_only_your_certificate_of_insurance_win.84"></a>
-
-## Text — Education only. Your Certificate of Insurance wins if anything here d… {#t.education_only_your_certificate_of_insurance_win.84}
-Education only. Your Certificate of Insurance wins if anything here differs.
 
 <a id="t.see_what_loan_cover.85"></a>
 

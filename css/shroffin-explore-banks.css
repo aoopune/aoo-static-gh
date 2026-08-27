@@ -3,6 +3,8 @@
 .explore-banks-page {
   --hlc-gap: 1.25rem;
   --hlc-gap-lg: 2.35rem;
+  /* Calc drawer lead — first thing to read; finals use 70% of this. */
+  --hlc-calc-lead-size: clamp(2.15rem, 4.8vw, 2.85rem);
   /* Explore steel line language (intentional ≠ shell black-alpha hair). */
   --hlc-line: rgba(108, 128, 155, 0.26);
   --hlc-line-soft: rgba(108, 128, 155, 0.14);
@@ -31,6 +33,13 @@
   --hlc-popover-lift: none;
   --hlc-check-size: 1.125rem;
   --hlc-check-gap: 0.65rem;
+  /*
+   * Bank strip geometry — one source for sticky col width + left inset.
+   * Desktop bumps both together so checkbox/name clear the edge without
+   * eating room from lender names or squeezing Rate / Loan amount.
+   */
+  --hlc-bank-col-table: 16rem;
+  --hlc-bank-pad-start: 0.35rem;
   /* Shell aliases — Explore always loads shroffin-shell.css; no light hex fallbacks. */
   --hlc-icon-rest: var(--shroffin-muted);
   --hlc-icon-hover: var(--shroffin-ink);
@@ -1920,10 +1929,16 @@
 }
 
 /*
- * Desktop only: slightly less side padding in cells; tighter air after Bank.
- * Mobile unchanged.
+ * Desktop only: Bank left inset sits a step inside the card edge; the strip
+ * widens by the same delta so names keep room. Metric cells keep 0.7rem.
+ * Mobile unchanged (keeps base --hlc-bank-pad-start / --hlc-bank-col-table).
  */
 @media (min-width: 834px) {
+  .explore-banks-page {
+    --hlc-bank-pad-start: 0.95rem;
+    --hlc-bank-col-table: 16.6rem;
+  }
+
   .explore-banks-page .hlc-compare th,
   .explore-banks-page .hlc-compare td {
     padding-left: 0.7rem;
@@ -1932,7 +1947,7 @@
 
   .explore-banks-page .hlc-compare th.hlc-sticky-col,
   .explore-banks-page .hlc-compare td.hlc-sticky-col {
-    padding-left: 0.35rem;
+    padding-left: var(--hlc-bank-pad-start);
     padding-right: 0.25rem;
   }
 }
@@ -2011,6 +2026,7 @@
 }
 
 /* Sheet chrome is mobile-only; desktop left rail unchanged. */
+.hlc-sheet-handle,
 .hlc-filters-handle,
 .hlc-filters-foot,
 .hlc-filters-scrim {
@@ -2278,35 +2294,24 @@
   .hlc-filters-toggle {
     appearance: none;
     display: inline-flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.18rem;
     box-sizing: border-box;
     position: relative;
     min-height: var(--shroffin-btn-touch, 44px);
-    min-width: 2.75rem;
+    min-width: var(--shroffin-btn-touch, 44px);
     margin: 0;
-    padding: 0.15rem 0.3rem;
+    padding: 0.15rem;
     border: none;
     border-radius: 0.5rem;
     background: transparent;
     color: var(--hlc-icon-rest);
     font: inherit;
     line-height: 1;
-    white-space: nowrap;
     cursor: pointer;
     transition:
       color var(--shroffin-micro-duration, 0.5s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1)),
       background var(--shroffin-micro-duration, 0.5s) var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
-  }
-
-  .hlc-filters-toggle-label {
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: normal;
-    line-height: 1;
-    text-transform: lowercase;
   }
 
   .hlc-filters-toggle:hover {
@@ -2375,6 +2380,8 @@
   }
 
   /* --- Modal bottom sheet --- */
+  /* Shared grabber — Filters + bank drawer (same look/feel). */
+  .hlc-sheet-handle,
   .hlc-filters-handle {
     display: flex;
     flex: 0 0 auto;
@@ -2386,6 +2393,7 @@
     touch-action: none;
   }
 
+  .hlc-sheet-handle-pill,
   .hlc-filters-handle-pill {
     width: 2rem;
     height: 0.25rem;
@@ -2447,7 +2455,8 @@
     pointer-events: auto;
   }
 
-  .hlc-filters.is-dragging {
+  .hlc-filters.is-dragging,
+  .hlc-drawer.is-dragging {
     transition: none;
   }
 
@@ -2668,7 +2677,7 @@
 
   /* Left hint — flush left, but offset past the sticky Bank column */
   .hlc-scroll-hint--left {
-    left: var(--hlc-phone-bank-col, 9rem);
+    left: var(--hlc-phone-bank-col, 9.3rem);
     justify-content: flex-start;
     padding-left: 0.5rem;
     background: linear-gradient(
@@ -2797,10 +2806,11 @@
 }
 
 .hlc-compare thead th .hlc-column-title .hlc-field-help {
-  width: 0.95em;
-  height: 0.95em;
-  min-width: 0.95em;
-  min-height: 0.95em;
+  /* 90% of prior column mark (again). */
+  width: 0.77em;
+  height: 0.77em;
+  min-width: 0.77em;
+  min-height: 0.77em;
   font-size: 1em;
 }
 
@@ -3253,11 +3263,11 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
 /*
  * Bank column is sized to its own content, not to a round number: the longest
  * lender name in the data ("Jammu and Kashmir Bank", "Tamilnad Mercantile Bank")
- * needs ~251px with the checkbox, logo and padding. 16rem clears that and hands
- * the freed width to the value columns, which are the ones that run short.
+ * needs ~251px with the checkbox, logo and padding. --hlc-bank-col-table clears
+ * that (desktop widens with pad-start) and hands leftover width to value cols.
  */
 .hlc-compare col.hlc-col-bank {
-  width: 16rem;
+  width: var(--hlc-bank-col-table);
 }
 
 .hlc-compare col.hlc-col-w-pct {
@@ -3511,9 +3521,9 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   position: sticky;
   left: 0;
   z-index: 2;
-  width: 16rem;
-  min-width: 16rem;
-  max-width: 16rem;
+  width: var(--hlc-bank-col-table);
+  min-width: var(--hlc-bank-col-table);
+  max-width: var(--hlc-bank-col-table);
   white-space: normal;
   overflow: hidden;
   box-shadow: none;
@@ -3523,10 +3533,10 @@ sup.hlc-col-footnote[data-note-target]:focus-visible {
   isolation: isolate;
 }
 
-/* Slight inset so the checkbox is not flush against the edge. */
+/* Left inset owned by --hlc-bank-pad-start (desktop raises it with the col width). */
 .hlc-compare th.hlc-sticky-col,
 .hlc-compare td.hlc-sticky-col {
-  padding-left: 0.35rem;
+  padding-left: var(--hlc-bank-pad-start);
 }
 
 .hlc-compare th.hlc-sticky-col {
@@ -4506,6 +4516,20 @@ button.hlc-bank-name-text:focus-visible {
   transform: translateY(0);
 }
 
+/* Phone grabber only — desktop side panel keeps title row as-is. */
+@media (max-width: 833px) {
+  .hlc-drawer > .hlc-sheet-handle + .hlc-drawer-top {
+    /* Handle is the top chrome; keep title close under it like Filters. */
+    padding-top: 0.25rem;
+  }
+}
+
+@media (min-width: 834px) {
+  .hlc-drawer > .hlc-sheet-handle {
+    display: none;
+  }
+}
+
 .hlc-drawer-top {
   position: relative;
   display: flex;
@@ -4558,43 +4582,6 @@ button.hlc-bank-name-text:focus-visible {
   color: var(--shroffin-muted);
   font-size: 0.9375rem;
   line-height: 1.4;
-}
-
-.hlc-drawer-actions-bar {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.55rem;
-  margin: 0;
-  padding: 0.85rem var(--hlc-drawer-pad-x) 0.25rem;
-  background: transparent;
-  border: 0;
-  z-index: 1;
-  box-sizing: border-box;
-}
-
-@media (min-width: 834px) {
-  .hlc-drawer-actions-bar {
-    padding: 0.95rem var(--hlc-drawer-pad-x) 0.3rem;
-  }
-}
-
-.hlc-drawer-actions-bar[hidden] {
-  display: none;
-}
-
-.hlc-drawer-actions-bar .hlc-drawer-toggle-all {
-  min-height: 0;
-  padding: 0;
-  font-size: 1.0625rem;
-  font-weight: 400;
-  line-height: 1.35;
-  letter-spacing: normal;
-}
-
-.hlc-drawer--sections .hlc-drawer-body {
-  padding-top: 0.15rem;
 }
 
 .hlc-icon-btn {
@@ -4672,61 +4659,6 @@ button.hlc-bank-name-text:focus-visible {
   letter-spacing: normal;
   text-transform: none;
   color: var(--shroffin-ink);
-}
-
-.hlc-drawer-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.55rem 0.85rem;
-  margin: 0 0 0.85rem;
-}
-
-.hlc-drawer-toolbar-heading {
-  margin: 0;
-  font-size: 1.0625rem;
-  font-weight: 600;
-  line-height: 1.35;
-  letter-spacing: normal;
-  color: var(--shroffin-ink);
-}
-
-.hlc-drawer-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.55rem 0.85rem;
-  margin-left: auto;
-}
-
-.hlc-drawer-toggle-all {
-  margin: 0;
-  padding: 0.25rem 0;
-  border: 0;
-  background: transparent;
-  color: var(--shroffin-link);
-  font: inherit;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  line-height: 1.35;
-  letter-spacing: normal;
-  cursor: pointer;
-  min-height: 44px;
-  transition: color var(--shroffin-micro-duration, 0.5s)
-    var(--shroffin-ease, cubic-bezier(0.22, 1, 0.36, 1));
-}
-
-.hlc-drawer-toggle-all:hover,
-.hlc-drawer-toggle-all:focus-visible {
-  color: var(--shroffin-link-active);
-}
-
-.hlc-drawer-toggle-all:focus-visible {
-  outline: var(--shroffin-focus-width, 2px) solid var(--shroffin-focus);
-  outline-offset: var(--shroffin-focus-offset, 3px);
-  border-radius: 0.35rem;
 }
 
 .hlc-drawer-group {
@@ -4996,7 +4928,8 @@ button.hlc-bank-name-text:focus-visible {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  /* Lead answer vs maths: clear section break, not one dense block */
+  gap: 1.65rem;
 }
 
 /* Corner mark — larger than the table cell logo so the bank reads at a glance. */
@@ -5014,21 +4947,21 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-calc-lead {
-  font-size: clamp(1.65rem, 3.2vw, 2rem);
+  font-size: var(--hlc-calc-lead-size);
 }
 
 .hlc-calc-lead-sentence {
   margin: 0;
   font-size: 1em;
-  line-height: 1.3;
-  font-weight: 600;
+  line-height: 1.25;
+  font-weight: 700;
   color: var(--shroffin-ink);
 }
 
 .hlc-calc-lead-amount {
-  margin: 0.25rem 0 0;
+  margin: 0.4rem 0 0;
   font-size: 0.9em;
-  line-height: 1.2;
+  line-height: 1.25;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   font-family: var(--hlc-font-num);
@@ -5037,7 +4970,7 @@ button.hlc-bank-name-text:focus-visible {
 }
 
 .hlc-calc-lead-sub {
-  margin: 0.4rem 0 0;
+  margin: 0.55rem 0 0;
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--shroffin-ink);
@@ -5052,54 +4985,94 @@ button.hlc-bank-name-text:focus-visible {
   min-width: 0;
 }
 
-/* Bank-max / required-amount blocks under loan dual */
-.hlc-calc-receipt-wrap > .hlc-receipt-dual + .hlc-receipt,
-.hlc-calc-receipt-wrap > .hlc-receipt-dual + .hlc-receipt-col,
-.hlc-calc-receipt-wrap > .hlc-receipt-col + .hlc-receipt,
-.hlc-calc-receipt-wrap > .hlc-receipt + .hlc-receipt {
-  margin-top: 1.25rem;
+/* Separate maths stories stacked in the calc drawer (loan steps, bank-max, …) */
+.hlc-calc-receipt-wrap > .hlc-receipt + .hlc-receipt,
+.hlc-calc-receipt-wrap > .hlc-loan-lower-result + .hlc-receipt {
+  margin-top: 2rem;
 }
 
-.hlc-receipt,
-.hlc-receipt-col {
+/*
+ * Lowest-of result: bare amount at lead ("Lower of") size.
+ * Top border matches the figure width (covers the number).
+ */
+.hlc-loan-lower-result {
+  margin-top: 1.85rem;
   min-width: 0;
 }
 
-.hlc-receipt-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.28rem 0;
+.hlc-loan-lower-result-amount {
+  margin: 0;
+  padding-top: 0.85rem;
+  border-top: 1.5px solid var(--shroffin-ink);
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  font-size: var(--hlc-calc-lead-size);
+  line-height: 1.25;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--hlc-font-num);
+  color: var(--shroffin-ink);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  text-align: right;
 }
 
-.hlc-receipt-row--final {
-  margin-top: 0.4rem;
+.hlc-receipt {
+  min-width: 0;
+}
+
+/*
+ * Vertical-method receipt — proximity bands (Gestalt):
+ * 1) Operand lines in one working — near each other (one sum).
+ * 2) Rule — under that working.
+ * 3) Step / sub-result — under the rule, then a clear pause before the next working.
+ * 4) Final total — its own block (not another congested operand line).
+ * Label stays with its figure on one row; gap keeps wording off the maths column.
+ */
+.hlc-receipt-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.35rem;
+  padding: 0.34rem 0;
 }
 
 .hlc-receipt-label-col {
   min-width: 0;
   flex: 1 1 auto;
-  padding-right: 0.5rem;
+  padding-right: 0.85rem;
 }
 
 .hlc-receipt-label {
-  font-size: 0.92rem;
+  font-size: 0.98rem;
   font-weight: 500;
+  line-height: 1.3;
   color: var(--hlc-ink-soft);
 }
 
-.hlc-receipt-row--final .hlc-receipt-label {
+/*
+ * Numbered step heads (1. / 2. / 3. in loan-amount calc): full primary ink
+ * for label + value — not soft fade. Dark resolves --shroffin-ink to #F5F5F7.
+ */
+.hlc-receipt-row--step .hlc-receipt-label,
+.hlc-receipt-row--step .hlc-receipt-value-col {
   color: var(--shroffin-ink);
-  font-size: 1.12rem;
-  font-weight: 700;
 }
 
 .hlc-receipt-how {
-  margin: 0.15rem 0 0;
-  font-size: 0.72rem;
-  line-height: 1.35;
+  margin: 0.2rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
   color: var(--hlc-ink-soft);
+}
+
+/* Tax disclaimer under a charge figure — quieter than the amount. */
+.hlc-receipt-how--tax {
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  font-weight: 400;
+  color: var(--shroffin-muted);
 }
 
 /*
@@ -5109,75 +5082,139 @@ button.hlc-bank-name-text:focus-visible {
  */
 .hlc-receipt-value-col {
   display: grid;
-  grid-template-columns: 3.25rem minmax(8.5ch, max-content);
-  column-gap: 0.4rem;
+  grid-template-columns: 5rem minmax(14ch, max-content);
+  column-gap: 0.45rem;
   align-items: baseline;
   justify-content: end;
   flex: 0 0 auto;
   font-variant-numeric: tabular-nums;
   font-family: var(--hlc-font-num);
   color: var(--shroffin-ink);
+  line-height: 1.25;
 }
 
 .hlc-receipt-op {
   grid-column: 1;
   text-align: right;
-  font-size: 0.92rem;
-  font-weight: 500;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.25;
   white-space: nowrap;
 }
 
 .hlc-receipt-value {
   grid-column: 2;
   text-align: right;
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   font-weight: 500;
+  line-height: 1.25;
   white-space: nowrap;
-}
-
-.hlc-receipt-row--final .hlc-receipt-value {
-  font-size: 1.12rem;
-  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 /*
- * Total line sits under the figures only (not across labels).
- * Fixed width so every calc panel’s rule looks the same length.
- * Matches value-col: op track + gap + amount column.
+ * Maths underline: full width of the figure lane (not the glyph width).
+ * Short multipliers (80.00) then share the same rule length as long amounts.
  */
-.hlc-receipt-rule {
+.hlc-receipt-row--ruled .hlc-receipt-value {
+  width: 100%;
   box-sizing: border-box;
-  width: calc(3.25rem + 0.4rem + 12ch);
-  max-width: 100%;
-  height: 0;
-  margin: 0.4rem 0 0.5rem auto;
-  border: 0;
-  border-top: 1px solid var(--hlc-drawer-rule);
+  border-bottom: 1.5px solid var(--shroffin-ink);
+  padding-bottom: 0.2rem;
 }
 
-.hlc-receipt-dual {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.75rem;
+/*
+ * Sit under the ruled figure — mid-working lines keep base size (not answers).
+ */
+.hlc-receipt-row--ruled + .hlc-receipt-row {
+  padding-top: 0.28rem;
 }
 
-.hlc-receipt-col-title {
-  margin: 0 0 0.55rem;
-  font-size: 0.85rem;
+/*
+ * Step / sub-result (end of a working): stronger than operands, quieter than final.
+ * Only rows marked answer — not every line after a rule.
+ */
+.hlc-receipt-row--answer {
+  padding-bottom: 0.45rem;
+  margin-bottom: 1.05rem;
+}
+
+.hlc-receipt-row--ruled + .hlc-receipt-row--answer {
+  margin-top: 0.08rem;
+  padding-top: 0.32rem;
+}
+
+.hlc-receipt-row--answer .hlc-receipt-label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--shroffin-ink);
+}
+
+.hlc-receipt-row--answer .hlc-receipt-value {
+  font-size: 1.12rem;
+  font-weight: 600;
+}
+
+/*
+ * Final total: own block — more weight + space so it is not “one more line”.
+ * When it follows a rule, stay near the underline; still keep answer presence.
+ */
+.hlc-receipt-row--final {
+  margin-top: 1.05rem;
+  padding-top: 0.7rem;
+  padding-bottom: 0.4rem;
+}
+
+.hlc-receipt-row--ruled + .hlc-receipt-row--final {
+  margin-top: 0.12rem;
+  padding-top: 0.42rem;
+  padding-bottom: 0.45rem;
+}
+
+.hlc-receipt-row--final .hlc-receipt-label {
+  color: var(--shroffin-ink);
+  /* Label quieter than the figure — 70% of the final value size */
+  font-size: calc(0.7 * 0.7 * var(--hlc-calc-lead-size));
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.hlc-receipt-row--final .hlc-receipt-value {
+  font-size: calc(0.7 * var(--hlc-calc-lead-size));
   font-weight: 700;
-  color: var(--hlc-ink-soft);
+  line-height: 1.3;
 }
 
-@media (min-width: 834px) {
-  .hlc-receipt-dual {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 1.75rem 2rem;
+/*
+ * Phone: keep the shared op | figure lane (so rules stay long and amounts
+ * don’t collide with labels). Trim only the idle op track + gaps — not the
+ * figure floor. Labels wrap at words only; maths stays nowrap.
+ */
+@media (max-width: 833px) {
+  .hlc-receipt-row {
+    gap: 1rem;
+  }
+
+  .hlc-receipt-label-col {
+    padding-right: 0.5rem;
+  }
+
+  .hlc-receipt-label,
+  .hlc-receipt-how {
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+  }
+
+  .hlc-receipt-op {
+    font-size: 1.15rem;
+  }
+
+  .hlc-receipt-value-col {
+    grid-template-columns: 4.25rem minmax(14ch, max-content);
+    column-gap: 0.35rem;
   }
 }
-
-
-/* Phone: rail alone on top; copy (title + note) and maths share the row below. */
-
 
 /* Ledger convention: twin rules under the final total row only. */
 .hlc-ledger-final-value {
@@ -5197,11 +5234,11 @@ button.hlc-bank-name-text:focus-visible {
 
 
 .hlc-calc-receipt-wrap > .hlc-drawer-group--nested {
-  margin: 0.35rem 0 0;
+  margin: 1rem 0 0;
 }
 
 .hlc-amort-years {
-  margin-top: 0.35rem;
+  margin-top: 0.85rem;
 }
 
 .hlc-amort-years > .hlc-drawer-group--nested {
@@ -6067,23 +6104,25 @@ button.hlc-bank-name-text:focus-visible {
   }
 
   /*
-   * Phone: bank column is narrower (9rem) so metric columns have more room.
+   * Phone: bank column is narrower (~9.3rem) so metric columns have more room.
    * Bank names wrap to a second line rather than truncating — the row height
    * grows slightly, which is fine and avoids hiding lender identity.
+   * Width includes a modest left inset (see --hlc-bank-pad-start below).
    * JS may set --hlc-phone-bank-col but must not shrink below this default.
    */
   .hlc-compare col.hlc-col-bank {
-    width: var(--hlc-phone-bank-col, 9rem);
+    width: var(--hlc-phone-bank-col, 9.3rem);
   }
 
   .hlc-sticky-col {
-    width: var(--hlc-phone-bank-col, 9rem);
-    min-width: var(--hlc-phone-bank-col, 9rem);
-    max-width: var(--hlc-phone-bank-col, 9rem);
+    width: var(--hlc-phone-bank-col, 9.3rem);
+    min-width: var(--hlc-phone-bank-col, 9.3rem);
+    max-width: var(--hlc-phone-bank-col, 9.3rem);
   }
 
   .hlc-compare th.hlc-sticky-col,
   .hlc-compare td.hlc-sticky-col {
+    padding-left: var(--hlc-bank-pad-start);
     padding-right: 0.3rem;
   }
 
@@ -6203,7 +6242,13 @@ button.hlc-bank-name-text:focus-visible {
   }
 
   .explore-banks-page {
-    --hlc-phone-bank-col: 9rem;
+    /*
+     * Modest left inset (0.35 → 0.65) + strip widen by the same delta
+     * (9 → 9.3rem) so checkbox/name clear the edge without eating name room.
+     * Keep in sync with PHONE_BANK_COL_DEFAULT_PX in home-loan-compare.js.
+     */
+    --hlc-phone-bank-col: 9.3rem;
+    --hlc-bank-pad-start: 0.65rem;
     --hlc-check-size: 0.8125rem;
     --hlc-check-gap: 0.45rem;
   }
@@ -6449,6 +6494,12 @@ button.hlc-bank-name-text:focus-visible {
   margin-left: 0;
 }
 
+.hlc-filter-option .hlc-field-help-anchor {
+  margin-left: 0;
+  margin-top: 0.2rem;
+  align-self: flex-start;
+}
+
 .hlc-field--foir .hlc-field-label-row {
   align-items: center;
 }
@@ -6463,16 +6514,18 @@ button.hlc-bank-name-text:focus-visible {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: 1.1em;
-  height: 1.1em;
-  min-width: 1.1em;
-  min-height: 1.1em;
+  /* 90% of prior mark (again) — shared inputs, filters, and band fields. */
+  width: 0.891em;
+  height: 0.891em;
+  min-width: 0.891em;
+  min-height: 0.891em;
   margin: 0;
   padding: 0;
   border: none;
   border-radius: 0;
   background: transparent;
-  color: var(--hlc-icon-rest);
+  /* Same quiet ink as footer body — not field leading-icon rest. */
+  color: var(--shroffin-quiet);
   font: inherit;
   font-size: 1em;
   font-weight: 400;
@@ -7215,6 +7268,10 @@ html[data-theme="dark"] .hlc-story-divider {
 .explore-banks-page .hlc-icon-select--foir .hlc-icon-select-trigger {
   color: var(--shroffin-muted); font-size: var(--hlc-m3-row1-muted-size);
 }
+/* FOIR glyph matches FOIR label ink (not the generic field-icon rest role). */
+.explore-banks-page .hlc-icon-select--foir .hlc-icon-select-leading .hlc-field-icon-svg {
+  color: inherit;
+}
 /* Same menu system as FOIR / row1; size only — sits in the EMI sentence. */
 .explore-banks-page .hlc-icon-select--card-load {
   display: inline-flex;
@@ -7570,7 +7627,7 @@ html[data-theme="dark"] .hlc-story-divider {
   border: none;
   border-radius: 0;
   background: transparent;
-  font-size: var(--hlc-m3-suffix-size);
+  font-size: calc(var(--hlc-m3-suffix-size) * 0.9);
   font-weight: 400;
   line-height: 1.2;
   color: var(--shroffin-muted);
@@ -7695,8 +7752,7 @@ html[data-theme="dark"] .hlc-story-divider {
    */
   .explore-banks-page .hlc-form-row--loan-band .hlc-form-band-fields,
   .explore-banks-page .hlc-form-row--capacity-band .hlc-form-band-fields,
-  .explore-banks-page .hlc-form-row--coapplicant-money .hlc-form-band-fields,
-  .explore-banks-page .hlc-form-row--coapplicant-profile .hlc-form-band-fields {
+  .explore-banks-page .hlc-form-row--coapplicant-age .hlc-form-band-fields {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0;
@@ -7749,13 +7805,12 @@ html[data-theme="dark"] .hlc-story-divider {
     border-bottom-right-radius: var(--hlc-field-radius, 0.5rem);
   }
 
-  /* Single-strip profile band (Age | CIBIL): only top corners + center divider. */
-  .explore-banks-page .hlc-form-row--coapplicant-profile .hlc-form-band-fields > .hlc-form-band-strip:only-child > .hlc-field--m3-outlined:first-child {
-    border-bottom-left-radius: var(--hlc-field-radius, 0.5rem);
-  }
-
-  .explore-banks-page .hlc-form-row--coapplicant-profile .hlc-form-band-fields > .hlc-form-band-strip:only-child > .hlc-field--m3-outlined:last-child {
-    border-bottom-right-radius: var(--hlc-field-radius, 0.5rem);
+  /*
+   * Co-applicant Age alone (loan-band shell): one cell — round all corners.
+   * Sits in the first 2-col track so width matches Tenure | Age half-cells.
+   */
+  .explore-banks-page .hlc-form-row--coapplicant-age .hlc-form-band-fields > .hlc-form-band-strip:only-child > .hlc-field--m3-outlined:only-child {
+    border-radius: var(--hlc-field-radius, 0.5rem);
   }
 }
 @media (min-width: 834px) {
@@ -7780,40 +7835,29 @@ html[data-theme="dark"] .hlc-story-divider {
   }
 
   /*
-   * Co-applicant money: reuse capacity-band 4-col shell; slot cols 1 / 3 / 4
-   * (col 2 = CIBIL gap on the main card). Profile: age + CIBIL slots then empty tail.
+   * Co-applicant Age: same track width as main-form Age (loan-band col 4),
+   * without an empty 4-column bordered shell stretching across the card.
+   * 0.78fr / (1.26+1.48+0.88+0.78)fr = loan-band Age share.
    */
-  .explore-banks-page .hlc-form-row--coapplicant-money .hlc-co-slot--income {
-    grid-column: 1;
+  .explore-banks-page .hlc-form-row--loan-band.hlc-form-row--coapplicant-age .hlc-form-band-fields {
+    display: block;
+    border: none;
+    border-radius: 0;
   }
 
-  .explore-banks-page .hlc-form-row--coapplicant-money .hlc-co-slot--emis {
-    grid-column: 3;
-  }
-
-  .explore-banks-page .hlc-form-row--coapplicant-money .hlc-co-slot--cards {
-    grid-column: 4;
-  }
-
-  .explore-banks-page .hlc-form-row--coapplicant-profile .hlc-form-band-fields {
-    display: grid;
-    grid-template-columns:
-      minmax(0, 0.78fr)
-      minmax(0, 0.85fr)
-      minmax(0, 0.88fr)
-      minmax(0, 1.48fr);
-    gap: 0;
+  .explore-banks-page .hlc-form-row--loan-band.hlc-form-row--coapplicant-age .hlc-form-band-strip {
+    display: flex;
+    width: calc(0.78 / 4.4 * 100%);
+    max-width: 100%;
     border: 1px solid var(--hlc-section-line);
     border-radius: var(--hlc-field-radius, 0.5rem);
     overflow: visible;
   }
 
-  .explore-banks-page .hlc-form-row--coapplicant-profile .hlc-co-slot--age {
-    grid-column: 1;
-  }
-
-  .explore-banks-page .hlc-form-row--coapplicant-profile .hlc-co-slot--cibil {
-    grid-column: 2;
+  .explore-banks-page .hlc-form-row--coapplicant-age .hlc-co-slot--age {
+    flex: 1 1 auto;
+    min-width: 0;
+    border-radius: var(--hlc-field-radius, 0.5rem);
   }
 
   .explore-banks-page .hlc-form-band-spacer {
@@ -7970,8 +8014,7 @@ html[data-theme="dark"] .hlc-story-divider {
 
 .explore-banks-page .hlc-inputs-card .hlc-form-row--loan-band .hlc-form-band-fields,
 .explore-banks-page .hlc-inputs-card .hlc-form-row--capacity-band .hlc-form-band-fields,
-.explore-banks-page .hlc-inputs-card .hlc-form-row--coapplicant-money .hlc-form-band-fields,
-.explore-banks-page .hlc-inputs-card .hlc-form-row--coapplicant-profile .hlc-form-band-fields {
+.explore-banks-page .hlc-inputs-card .hlc-form-row--coapplicant-age .hlc-form-band-fields {
   min-width: 0;
 }
 
@@ -8016,8 +8059,85 @@ html[data-theme="dark"] .hlc-story-divider {
 }
 
 @media (max-width: 833px) {
+  /*
+   * Phone mode chips — 2×2 like the loan/capacity band grids, but bare:
+   * no outer border, no cell lines. Smaller leading icons + tighter gaps
+   * so all four dropdowns fit without horizontal scroll.
+   */
+  .explore-banks-page .hlc-inputs-card .hlc-row1-scroll {
+    overflow: visible;
+  }
+
   .explore-banks-page .hlc-inputs-card .hlc-row1-track {
-    flex-wrap: nowrap;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.28rem 0.4rem;
+    width: 100%;
+    min-width: 0;
+    align-items: stretch;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-row1-track > .hlc-icon-select {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    width: 100%;
+    flex: unset;
+  }
+
+  /*
+   * Pin chevron + help to the cell’s right edge; keep label hugging the
+   * leading icon on the left. Do not flex-grow the text (buttons default to
+   * text-align:center — growing the label floated words away from the icon).
+   * 2×2 grid layout unchanged — only internal alignment.
+   */
+  .explore-banks-page .hlc-inputs-card .hlc-row1-track .hlc-icon-select--bare .hlc-icon-select-trigger {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 0.28rem;
+    padding: 0.3rem 0.35rem;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-row1-track .hlc-icon-select-text {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-row1-track .hlc-icon-select-chevron {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-row1-track .hlc-field-help-anchor {
+    flex: 0 0 auto;
+    margin-left: 0.1rem;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-row1-track .hlc-icon-select-leading:not([hidden]) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: var(--hlc-m3-row1-icon-size, 16px);
+    height: var(--hlc-m3-row1-icon-size, 16px);
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-row1-track .hlc-icon-select-leading:not([hidden]) .hlc-field-icon-svg {
+    display: block;
+    width: var(--hlc-m3-row1-icon-size, 16px);
+    height: var(--hlc-m3-row1-icon-size, 16px);
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-row1-track .hlc-icon-select-chevron .hlc-chevron-svg {
+    display: block;
+    width: calc(var(--hlc-m3-row1-icon-size, 16px) + 2px);
+    height: calc(var(--hlc-m3-row1-icon-size, 16px) + 2px);
   }
 }
 
@@ -8037,8 +8157,9 @@ html[data-theme="dark"] .hlc-story-divider {
  *   lower half in pad-bottom so the note line gets the same edge gap as row 1.
  * Compare CTA sits on the card / shelf bottom edge (half outside via translateY(50%)).
  * Phone (<834px): open shelf — fill bleeds to .hlc-shell left/right (no inset
- *   side/top card). Bottom corners curve. Same ::before chrome as desktop
- *   (fill, no border, --hlc-card-lift). Field gutter = shell pad tokens.
+ *   side card). All four corners curve (same radius as desktop card). Same
+ *   ::before chrome as desktop (fill, no border, --hlc-card-lift). Field
+ *   gutter = shell pad tokens.
  * Desktop: full-radius raised ::before surface + pad-x remain.
  * =============================================================================
  */
@@ -8062,9 +8183,9 @@ html[data-theme="dark"] .hlc-story-divider {
   .explore-banks-page .hlc-inputs-card {
     /*
      * Phone open shelf (Google Flights):
-     * Fill bleeds to .hlc-shell left/right — no side/top card box sitting
-     * inside the shell gutter. Fields keep the shell gutter as inner pad.
-     * Only the bottom corners read as a card ending.
+     * Fill bleeds to .hlc-shell left/right — no side card box sitting inside
+     * the shell gutter. Fields keep the shell gutter as inner pad.
+     * All four corners match the bottom (same --hlc-inputs-shelf-radius).
      * Chrome (fill, no border, --hlc-card-lift) is the same ::before as desktop.
      * Desktop: unchanged full-radius raised card.
      */
@@ -8077,7 +8198,7 @@ html[data-theme="dark"] .hlc-story-divider {
       calc(-1 * var(--hlc-shell-pad-inline-end));
     padding-left: var(--hlc-shell-pad-inline-start);
     padding-right: var(--hlc-shell-pad-inline-end);
-    border-radius: 0 0 var(--hlc-inputs-shelf-radius) var(--hlc-inputs-shelf-radius);
+    border-radius: var(--hlc-inputs-shelf-radius);
     /*
      * Phone M3 density — 16px values, 14px resting labels, 12px floated labels,
      * ~60dp field target (label + gap + value). Matches Google Flights search-card
@@ -8101,6 +8222,7 @@ html[data-theme="dark"] .hlc-story-divider {
     --hlc-m3-value-travel: 3px;
     --hlc-m3-row1-size: 0.875rem;
     --hlc-m3-row1-muted-size: 0.875rem;
+    --hlc-m3-row1-icon-size: 16px;
     --hlc-m3-cell-mode: pair;
     --hlc-m3-money-prefix-display: none;
     --hlc-inputs-note-hang: 0px;
@@ -8118,14 +8240,51 @@ html[data-theme="dark"] .hlc-story-divider {
     justify-content: flex-start;
   }
 
+  /*
+   * Keep label + help “i” on one line. -webkit-line-clamp:2 made long names
+   * (“Net monthly income”) wrap inside the label box; the i stayed beside the
+   * block and looked like it had dropped under the first line — even with
+   * empty cell space to the right.
+   */
   .explore-banks-page .hlc-inputs-card .hlc-field--m3-outlined .hlc-field-label-line {
-    flex-wrap: wrap;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.25rem;
+    width: max-content;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-field--m3-outlined .hlc-field-label {
+    display: inline;
+    flex: 0 1 auto;
+    min-width: 0;
+    width: auto;
+    max-width: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: unset;
+    -webkit-box-orient: unset;
+  }
+
+  .explore-banks-page .hlc-inputs-card .hlc-field--m3-outlined .hlc-field-help-anchor {
+    flex: 0 0 auto;
+  }
+
+  /* Qualifier stack still needs a block label (Property value). */
+  .explore-banks-page .hlc-inputs-card .hlc-field--m3-outlined .hlc-field-label:has(.hlc-field-label-qualifier) {
+    display: flex;
+    flex-direction: column;
     align-items: flex-start;
-    row-gap: 0.1rem;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
   }
 
   .explore-banks-page .hlc-inputs-card .hlc-field--m3-outlined .hlc-field-label-primary {
-    white-space: normal;
+    white-space: nowrap;
   }
 
   /* Property value: short label at rest; qualifier only while editing. */
@@ -8186,6 +8345,7 @@ html[data-theme="dark"] .hlc-story-divider {
     --hlc-m3-qualifier-size: 0.6875rem;
     --hlc-m3-row1-size: 0.8125rem;
     --hlc-m3-row1-muted-size: 0.8125rem;
+    --hlc-m3-row1-icon-size: 14px;
     --shroffin-money-font-size: var(--hlc-m3-money-size);
   }
 }

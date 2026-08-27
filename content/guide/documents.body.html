@@ -32,20 +32,35 @@
     <div class="guide-swap" id="guide-swap">
 
     <header class="guide-hero guide-hero--media">
-      <picture>
+      <picture class="guide-hero-picture guide-hero-picture--light">
         <source
           media="(max-width: 833px)"
           srcset="../images/guide-heroes/documents-9x16.png?v=portrait-1"
         >
         <img
-        class="guide-hero-bg"
-        src="../images/guide-heroes/documents.png?v=portrait-1"
-        alt=""
-        width="1600"
-        height="900"
-        decoding="async"
-        aria-hidden="true"
-      >
+          class="guide-hero-bg"
+          src="../images/guide-heroes/documents.png?v=portrait-1"
+          alt=""
+          width="1600"
+          height="900"
+          decoding="async"
+          aria-hidden="true"
+        >
+      </picture>
+      <picture class="guide-hero-picture guide-hero-picture--dark">
+        <source
+          media="(max-width: 833px)"
+          srcset="../images/guide-heroes/documents-9x16-dark.png?v=dark-1"
+        >
+        <img
+          class="guide-hero-bg"
+          src="../images/guide-heroes/documents-dark.png?v=dark-1"
+          alt=""
+          width="1600"
+          height="900"
+          decoding="async"
+          aria-hidden="true"
+        >
       </picture>
       <h1 class="guide-hero-title">{{SW:t.prepare_once.107}}<br>{{SW:t.apply_everywhere.108}}</h1>
       <h2 class="guide-hero-lead">{{SW:t.know_your_file_is_ready_so_the_application_does_.13}}</h2>
@@ -381,8 +396,5 @@
       </section>
     </div>
 
-    <div class="guide-fine-wrap">
-      <p class="guide-fine">{{SW:t.the_list_provided_above_is_purely_indicative_and.106}}</p>
-    </div>
       </div>
 </main>

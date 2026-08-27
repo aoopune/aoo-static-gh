@@ -36,16 +36,14 @@ omitted_by_policy:
 - [Screen reader — Repayment capacity](#t.repayment_capacity.23)
 - [Screen reader — About Net monthly income](#t.about_net_monthly_income.24)
 - [Screen reader — About CIBIL score](#t.about_cibil_score.25)
-- [Screen reader — About Total existing EMIs](#t.about_total_existing_emis.26)
-- [Screen reader — About Total credit card limits](#t.about_total_credit_card_limits.27)
+- [Screen reader — About Existing EMIs](#t.about_total_existing_emis.26)
+- [Screen reader — About Credit card limits](#t.about_total_credit_card_limits.27)
 - [Screen reader — EMI as percent of credit card limit](#t.emi_as_percent_of_credit_card_limit.28)
 - [Screen reader — About co-applicant](#t.about_co_applicant.29)
 - [Screen reader — Additional insights](#t.additional_insights.30)
 - [Screen reader — Column groups](#t.column_groups.31)
 - [Screen reader — Filters](#t.filters.32)
-- [Screen reader — About Borrower](#t.about_borrower.33)
-- [Screen reader — About Concessions](#t.about_concessions.34)
-- [Screen reader — About Bank type](#t.about_bank_type.35)
+- [Screen reader — About Govt / PSU employee and pensioner](#t.about_borrower.33)
 - [Screen reader — About Rate](#t.about_rate.36)
 - [Screen reader — About Facility](#t.about_facility.37)
 - [Screen reader — About Overdraft](#t.about_overdraft.38)
@@ -131,13 +129,13 @@ About CIBIL score
 
 <a id="t.about_total_existing_emis.26"></a>
 
-## Screen reader — About Total existing EMIs {#t.about_total_existing_emis.26}
-About Total existing EMIs
+## Screen reader — About Existing EMIs {#t.about_total_existing_emis.26}
+About Existing EMIs
 
 <a id="t.about_total_credit_card_limits.27"></a>
 
-## Screen reader — About Total credit card limits {#t.about_total_credit_card_limits.27}
-About Total credit card limits
+## Screen reader — About Credit card limits {#t.about_total_credit_card_limits.27}
+About Credit card limits
 
 <a id="t.emi_as_percent_of_credit_card_limit.28"></a>
 
@@ -166,18 +164,8 @@ Filters
 
 <a id="t.about_borrower.33"></a>
 
-## Screen reader — About Borrower {#t.about_borrower.33}
-About Borrower
-
-<a id="t.about_concessions.34"></a>
-
-## Screen reader — About Concessions {#t.about_concessions.34}
-About Concessions
-
-<a id="t.about_bank_type.35"></a>
-
-## Screen reader — About Bank type {#t.about_bank_type.35}
-About Bank type
+## Screen reader — About Govt / PSU employee and pensioner {#t.about_borrower.33}
+About Govt / PSU employee and pensioner
 
 <a id="t.about_rate.36"></a>
 

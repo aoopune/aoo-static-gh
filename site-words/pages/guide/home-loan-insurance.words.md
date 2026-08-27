@@ -67,7 +67,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — Term plan instead of loan cover](#t.term_plan_instead_of_loan_cover.41)
 - [Text — Often cheaper than bank loan cover for the same job.](#t.often_cheaper_than_bank_loan_cover_for_the_same_.42)
 - [Link — See loan cover](#t.see_loan_cover.43)
-- [Text — Education only. Your Certificate of Insurance or Policy Schedule wins.](#t.education_only_your_certificate_of_insurance_or_.44)
 - [text](#t.two_covers_often_sit.45)
 - [text](#t.with_the_home_loan.46)
 - [text](#t.see_property_cover.47)
@@ -294,11 +293,6 @@ Often cheaper than bank loan cover for the same job.
 
 ## Link — See loan cover {#t.see_loan_cover.43}
 See loan cover
-
-<a id="t.education_only_your_certificate_of_insurance_or_.44"></a>
-
-## Text — Education only. Your Certificate of Insurance or Policy Schedule wins. {#t.education_only_your_certificate_of_insurance_or_.44}
-Education only. Your Certificate of Insurance or Policy Schedule wins.
 
 <a id="t.two_covers_often_sit.45"></a>
 

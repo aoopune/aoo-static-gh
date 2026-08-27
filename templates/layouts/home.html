@@ -450,6 +450,11 @@
       display: block;
     }
 
+    /* Keep “without surrendering your” on one line (do not break after glow word). */
+    .home-feature-phrase-keep {
+      white-space: nowrap;
+    }
+
     /* Google Material Icons (call + email) — inline with contact words */
     .home-feature-contact-term {
       white-space: nowrap;
@@ -510,6 +515,7 @@
         padding: 0;
         /* Exact two-line breaks via .home-feature-title-line — not free wrap. */
         white-space: normal;
+        text-align: left;
       }
 
       .home-feature-title-line {
@@ -527,14 +533,20 @@
       }
 
       .home-feature-copy {
-        align-items: center;
-        text-align: center;
+        align-items: flex-start;
+        text-align: left;
         padding: clamp(20px, 4vw, 28px) 16px 12px;
       }
 
       .home-feature-body {
-        margin-left: auto;
-        margin-right: auto;
+        margin-left: 0;
+        margin-right: 0;
+        text-align: left;
+      }
+
+      /* Compare body: one continuous sentence on phone (no forced line break). */
+      .home-feature-card--compare .home-feature-body-line {
+        display: inline;
       }
 
       .home-feature-visual {
@@ -543,7 +555,6 @@
 
       .home-feature-visual--compare,
       .home-feature-visual--browse,
-      .home-feature-visual--apply,
       .home-feature-visual--transparent {
         min-height: 16rem;
         padding: 12px;
@@ -641,9 +652,8 @@
       }
     }
 
-    /* Browse / apply / transparent visuals — same card size as every other feature section */
+    /* Browse / transparent visuals — same card size as every other feature section */
     .home-feature-visual--browse,
-    .home-feature-visual--apply,
     .home-feature-visual--transparent {
       display: flex;
       align-items: center;
@@ -652,7 +662,6 @@
     }
 
     .home-browse-privacy-frame,
-    .home-apply-once-frame,
     .home-transparent-frame {
       display: block;
       width: 100%;
@@ -823,7 +832,7 @@
     }
 
   </style>
-  <link rel="stylesheet" href="css/shroffin-shell.min.css?v=5cb84e0b09">
+  <link rel="stylesheet" href="css/shroffin-shell.min.css?v=81719f5847">
   <link rel="stylesheet" href="css/shroffin-product-demo.min.css?v=111">
   <!-- Below-fold home sections: non-blocking so they do not delay LCP wallpaper. -->
   <link

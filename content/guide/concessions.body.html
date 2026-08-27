@@ -32,20 +32,35 @@
     <div class="guide-swap" id="guide-swap">
 
     <header class="guide-hero guide-hero--media">
-      <picture>
+      <picture class="guide-hero-picture guide-hero-picture--light">
         <source
           media="(max-width: 833px)"
           srcset="../images/guide-heroes/concessions-9x16.png?v=portrait-1"
         >
         <img
-        class="guide-hero-bg"
-        src="../images/guide-heroes/concessions.png?v=portrait-1"
-        alt=""
-        width="1600"
-        height="900"
-        decoding="async"
-        aria-hidden="true"
-      >
+          class="guide-hero-bg"
+          src="../images/guide-heroes/concessions.png?v=portrait-1"
+          alt=""
+          width="1600"
+          height="900"
+          decoding="async"
+          aria-hidden="true"
+        >
+      </picture>
+      <picture class="guide-hero-picture guide-hero-picture--dark">
+        <source
+          media="(max-width: 833px)"
+          srcset="../images/guide-heroes/concessions-9x16-dark.png?v=dark-1"
+        >
+        <img
+          class="guide-hero-bg"
+          src="../images/guide-heroes/concessions-dark.png?v=dark-1"
+          alt=""
+          width="1600"
+          height="900"
+          decoding="async"
+          aria-hidden="true"
+        >
       </picture>
       <h1 class="guide-hero-title">{{SW:t.you_may_already.71}}<br>{{SW:t.pay_less.72}}</h1>
       <h2 class="guide-hero-lead">{{SW:t.know_if_you_can_still_pay_less_before_you_accept.12}}</h2>
@@ -243,8 +258,5 @@
       </section>
     </div>
 
-    <div class="guide-fine-wrap">
-      <p class="guide-fine">{{SW:t.for_general_understanding_only_concession_rules_.70}}</p>
-    </div>
       </div>
 </main>

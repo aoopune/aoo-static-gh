@@ -52,7 +52,7 @@ Use **Jump to** below to open any line in this file.
 - [Text — Added by co-applicant](#t.added_by_co_applicant.29)
 - [Text — EMI room for this home loan](#t.emi_room_for_this_home_loan.30)
 - [Text — Limit that binds](#t.limit_that_binds.31)
-- [Text — Planning estimate only. Not a bank offer, sanction, or promise. Final…](#t.planning_estimate_only_not_a_bank_offer_sanction.32)
+- [Text — Planning estimate only.](#t.planning_estimate_only_not_a_bank_offer_sanction.32)
 - [Heading — How this estimate works](#t.how_this_estimate_works.33)
 - [Text — What goes into this estimate.](#t.what_goes_into_this_estimate.34)
 - [Subheading — Formula used](#t.formula_used.35)
@@ -217,8 +217,8 @@ Limit that binds
 
 <a id="t.planning_estimate_only_not_a_bank_offer_sanction.32"></a>
 
-## Text — Planning estimate only. Not a bank offer, sanction, or promise. Final… {#t.planning_estimate_only_not_a_bank_offer_sanction.32}
-Planning estimate only. Not a bank offer, sanction, or promise. Final terms stay with the lender.
+## Text — Planning estimate only. {#t.planning_estimate_only_not_a_bank_offer_sanction.32}
+Planning estimate only.
 
 <a id="t.how_this_estimate_works.33"></a>
 

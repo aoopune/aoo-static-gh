@@ -171,7 +171,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — (opens official National Consumer Helpline page)](#t.opens_official_national_consumer_helpline_page.149)
 - [Text — CPGRAMS](#t.cpgrams.150)
 - [Text — (opens official CPGRAMS page)](#t.opens_official_cpgrams_page.151)
-- [Text — This page is education only, not legal advice. We do not file Ombudsm…](#t.this_page_is_education_only_not_legal_advice_we_.152)
 - [text](#t.your_home_loan.153)
 - [text](#t.issue.154)
 - [text](#t.has_a.155)
@@ -913,11 +912,6 @@ CPGRAMS
 
 ## Text — (opens official CPGRAMS page) {#t.opens_official_cpgrams_page.151}
 (opens official CPGRAMS page)
-
-<a id="t.this_page_is_education_only_not_legal_advice_we_.152"></a>
-
-## Text — This page is education only, not legal advice. We do not file Ombudsm… {#t.this_page_is_education_only_not_legal_advice_we_.152}
-This page is education only, not legal advice. We do not file Ombudsman or NHB complaints for you. Timelines and compensation caps follow the Reserve Bank Integrated Ombudsman Scheme, 2026 (RB-IOS), in force from 1 July 2026, plus related RBI directions. Portals and circulars can change. Recheck official sources before you file.
 
 <a id="t.your_home_loan.153"></a>
 

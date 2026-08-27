@@ -23,13 +23,13 @@ Stamp duty and registration are usually extra cash, not inside the loan.
 
 **Learn more:** yes → `guide.html#loan-amount-property`
 
-### Total existing EMIs
+### Existing EMIs
 Lenders subtract other loan instalments before they set your new home EMI.
 A loan you plan to close later still counts until it is closed on the credit report.
 
 **Learn more:** no
 
-### Total credit card limits
+### Credit card limits
 Even a fully paid card can still reduce how much EMI you can take.
 Banks often count a share of the limit as a monthly bill; rules vary.
 
@@ -77,23 +77,20 @@ Spouse and close family are commonly accepted; friends usually are not.
 
 **Learn more:** yes → `tax-benefits.html#joint-loan`
 
-### Borrower
+### Applicant mode (row-1 chip)
+Add a co-applicant to borrow more. A missed EMI hits every co-applicant's credit.
+Spouse and close family are commonly accepted; friends usually are not.
+
+**Learn more:** yes → `tax-benefits.html#joint-loan`
+
+### Govt / PSU employee and pensioner
 Govt or pension schemes may cut fees or rate, not skip the usual checks.
 “Zero processing” often still leaves legal, valuation, and registry costs.
 
 **Learn more:** no
 
-### Concessions
-Small rate or fee extras differ by bank; they do not fix eligibility.
-Woman cuts often need her as primary borrower, and usually as owner.
-
-**Learn more:** yes → `concessions.html#bank-rates`
-
 ### Bank type
-Lender category hints at rate versus flexibility, not a quality ranking.
-Some HFCs or NBFCs accept unusual income more often, usually at a higher cost.
-
-**Learn more:** no
+Removed from the Filters UI (label + Public/Private notes remain; no ? tip).
 
 ### Rate (filter — floating / fixed)
 Floating rates can rise or fall later, so the EMI or the years can change.

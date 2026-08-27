@@ -378,6 +378,8 @@ const RATE_CHANGE_COMMON_MARKER = "°";
 const GST_APPLICABLE_NOTE = ui("note.gst_applicable", "GST applicable.");
 /** Side-panel fee rows: mark with * and explain once under the list (not “GST extra” on every row). */
 const GST_APPLICABLE_FOOTNOTE = "* " + GST_APPLICABLE_NOTE;
+/** Calc-panel receipt note under tax-exclusive amounts (CERSAI / bounce, etc.). */
+const EXCLUDING_TAXES_NOTE = ui("note.excluding_taxes", "Excluding taxes.");
 /** Out-of-pocket on top of / instead of a fixed fee — mark on amount, wording under the fee block. */
 const OOP_EXPENSES_MARKER = "†";
 const OOP_EXPENSES_NOTE = ui("note.oop_expenses", "Out-of-pocket expenses.");
@@ -503,6 +505,83 @@ const DRAWER_CHEVRON_SVG =
   "</svg>";
 
 /**
+ * Phone bottom-sheet drag-down dismiss (Filters, bank drawer).
+ * One binder — same thresholds, veil fade, and reduced-motion skip.
+ * options: panel, handle, veil?, isActive(), onDismiss()
+ */
+function bindBottomSheetDrag(options) {
+  const panel = options && options.panel;
+  const handle = options && options.handle;
+  const veil = (options && options.veil) || null;
+  const isActive = options && options.isActive;
+  const onDismiss = options && options.onDismiss;
+  if (!panel || !handle || typeof isActive !== "function" || typeof onDismiss !== "function") {
+    return;
+  }
+  if (handle.dataset.boundDrag === "1") return;
+  handle.dataset.boundDrag = "1";
+
+  const DISMISS_PX = 120;
+  const DISMISS_VELOCITY = 0.65;
+  let startY = 0;
+  let lastY = 0;
+  let lastT = 0;
+  let dragging = false;
+  const reduceMotion =
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function clearDragPaint() {
+    panel.style.transform = "";
+    if (veil) veil.style.opacity = "";
+    panel.classList.remove("is-dragging");
+  }
+
+  function onDown(e) {
+    if (!isActive() || reduceMotion) return;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    dragging = true;
+    startY = lastY = e.clientY;
+    lastT = performance.now();
+    panel.classList.add("is-dragging");
+    try {
+      handle.setPointerCapture(e.pointerId);
+    } catch (err) {}
+  }
+
+  function onMove(e) {
+    if (!dragging) return;
+    const dy = Math.max(0, e.clientY - startY);
+    lastY = e.clientY;
+    lastT = performance.now();
+    panel.style.transform = "translateY(" + dy + "px)";
+    if (veil) {
+      veil.style.opacity = String(Math.max(0.12, 1 - dy / 400));
+    }
+  }
+
+  function onUp(e) {
+    if (!dragging) return;
+    dragging = false;
+    try {
+      handle.releasePointerCapture(e.pointerId);
+    } catch (err) {}
+    const dy = Math.max(0, e.clientY - startY);
+    const dt = Math.max(16, performance.now() - lastT);
+    const velocity = (e.clientY - lastY) / dt;
+    clearDragPaint();
+    if (dy >= DISMISS_PX || velocity > DISMISS_VELOCITY) {
+      onDismiss();
+    }
+  }
+
+  handle.addEventListener("pointerdown", onDown);
+  handle.addEventListener("pointermove", onMove);
+  handle.addEventListener("pointerup", onUp);
+  handle.addEventListener("pointercancel", onUp);
+}
+
+/**
  * Soft open/close for <details> groups — same motion as charges notes / form more.
  * options: groupSelector, panelSelector, toggleAllSelector
  */
@@ -512,7 +591,9 @@ function bindDetailsAccordion(container, options) {
   const groupSelector = settings.groupSelector || ".hlc-charges-note-group";
   const panelSelector = settings.panelSelector || ".hlc-charges-note-panel";
   const toggleAllSelector =
-    settings.toggleAllSelector || ".hlc-charges-note-toggle-all";
+    settings.toggleAllSelector === undefined
+      ? ".hlc-charges-note-toggle-all"
+      : settings.toggleAllSelector;
   const groups = container.querySelectorAll(groupSelector);
   if (!groups.length) return;
 
@@ -527,7 +608,9 @@ function bindDetailsAccordion(container, options) {
   const duration = 900;
   const ease = "cubic-bezier(0.22, 1, 0.36, 1)";
   const busyGroups = new WeakMap();
-  const toggleAllBtn = container.querySelector(toggleAllSelector);
+  const toggleAllBtn = toggleAllSelector
+    ? container.querySelector(toggleAllSelector)
+    : null;
 
   function allGroupsOpen() {
     for (let i = 0; i < groups.length; i++) {
@@ -657,24 +740,8 @@ function bindDrawerDropdowns(container) {
   bindDetailsAccordion(container, {
     groupSelector: ".hlc-drawer-group",
     panelSelector: ".hlc-drawer-panel",
-    toggleAllSelector: ".hlc-drawer-toggle-all"
+    toggleAllSelector: null
   });
-}
-
-function drawerToolbarHtml(controlsId) {
-  return (
-    '<div class="hlc-drawer-toolbar">' +
-    '<h3 class="hlc-drawer-toolbar-heading">' +
-    escapeHtml(ui("ui.more_details", "More details")) +
-    "</h3>" +
-    '<div class="hlc-drawer-actions">' +
-    '<button type="button" class="hlc-drawer-toggle-all" aria-controls="' +
-    escapeHtml(controlsId || "hlc-drawer-body") +
-    '" aria-expanded="false">' +
-    escapeHtml(ui("ui.expand_all", "Expand all")) +
-    "</button>" +
-    "</div></div>"
-  );
 }
 
 function drawerDiscloseHtml(title, bodyHtml, options) {
@@ -727,7 +794,7 @@ function calcDrawerBodyHtml(calcHtml, extras) {
   let html =
     '<div class="hlc-calc-always">' + (calcHtml || "") + "</div>";
   if (extra.detailsHtml) {
-    html += drawerDiscloseHtml(ui("ui.all_amounts", "All amounts"), extra.detailsHtml);
+    html += drawerDiscloseHtml(ui("ui.all_amounts", "Charges breakup"), extra.detailsHtml);
   }
   if (noteLines.length >= 2 && notesBlock) {
     html += drawerDiscloseHtml("Notes", notesBlock);
@@ -926,11 +993,124 @@ function monthlyRateFromAnnualDecimal(annualDecimal) {
   return Number(annualDecimal) / 12;
 }
 
+/**
+ * Vertical-method receipt figure: always two decimals.
+ * No currency symbol — use formatReceiptAmount for money.
+ */
+function formatReceiptFigure(value) {
+  if (value == null || !Number.isFinite(Number(value))) return "—";
+  return Number(value).toFixed(2);
+}
+
+/**
+ * Money figure for vertical-method receipts.
+ * Indian commas (standard) + always two decimals — e.g. ₹62,50,000.00
+ */
+function formatReceiptAmount(value) {
+  if (value == null || !Number.isFinite(Number(value))) return "—";
+  return (
+    "₹" +
+    Number(value).toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })
+  );
+}
+
+/**
+ * Percent figure for vertical-method receipt maths.
+ * No "%" glyph — put the unit on the label via receiptPctLabel().
+ * Always two decimals (same standard as other receipt figures).
+ */
+function formatPctFigure(value) {
+  return formatReceiptFigure(value);
+}
+
+/** Percent for prose / how-lines (includes "%"). */
 function formatPctPlain(value) {
-  if (!Number.isFinite(Number(value))) return "—";
-  const n = Number(value);
-  if (Math.abs(n - Math.round(n)) < 0.005) return String(Math.round(n)) + "%";
-  return (Math.round(n * 100) / 100).toFixed(2) + "%";
+  const fig = formatPctFigure(value);
+  return fig === "—" ? "—" : fig + "%";
+}
+
+/**
+ * Label for a percent operand in vertical-method receipts.
+ * Keeps the maths column a pure figure column (school-style stack).
+ */
+function receiptPctLabel(name) {
+  var base = String(name == null ? "" : name).trim();
+  base = base
+    .replace(/\s*\(%\s*p\.a\.\)\s*$/i, "")
+    .replace(/\s*\(%\)\s*$/, "")
+    .replace(/\s*%\s*$/, "")
+    .trim();
+  if (/p\.a\.\s*$/i.test(base)) {
+    return base.replace(/\s*p\.a\.\s*$/i, "").trim() + " (% p.a.)";
+  }
+  return base + " (%)";
+}
+
+/**
+ * Canonical ×-percent receipt row (vertical method).
+ * @param {string} label
+ * @param {number} pctValue percent points (e.g. 80 for 80%)
+ * @param {object} [extras] ruleAfter, how, final, …
+ */
+function receiptPctOpRow(label, pctValue, extras) {
+  return Object.assign(
+    {
+      label: receiptPctLabel(label),
+      op: "×",
+      value: formatPctFigure(pctValue)
+    },
+    extras || {}
+  );
+}
+
+/** School part marks for results used later in a sum: (a), (b), (c)… */
+function receiptPartMark(index) {
+  var i = Math.max(0, Math.floor(Number(index) || 0));
+  if (i < 26) return String.fromCharCode(97 + i);
+  return String(i + 1);
+}
+
+/** Label a result that will be referenced in a later total — e.g. "CERSAI (a)". */
+function receiptPartLabel(label, mark) {
+  var base = String(label == null ? "" : label).trim();
+  var m = String(mark == null ? "" : mark).trim();
+  if (!m) return base;
+  if (new RegExp("\\(" + m.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\)\\s*$").test(base)) {
+    return base;
+  }
+  return (base ? base + " " : "") + "(" + m + ")";
+}
+
+/** Final sum label that cites earlier parts — e.g. "Total (1 + 2 + 3)" or "Total (a + b + c)". */
+function receiptSumTotalLabel(marks) {
+  var list = (marks || [])
+    .map(function (m) {
+      return String(m == null ? "" : m).trim();
+    })
+    .filter(Boolean);
+  if (!list.length) return "Total";
+  return "Total (" + list.join(" + ") + ")";
+}
+
+/**
+ * Number the first label of a working like loan-amount steps: "1. Property value".
+ * Result rows stay unmarked — the step number is the reference.
+ * Marks that first row `step: true` so label + value use full ink (not soft fade).
+ */
+function withReceiptStepNumber(step, rows) {
+  if (!rows || !rows.length) return rows || [];
+  var n = String(step);
+  return rows.map(function (row, i) {
+    if (i !== 0 || !row) return row;
+    var label = String(row.label || "");
+    if (/^\d+\.\s/.test(label)) {
+      return Object.assign({}, row, { step: true });
+    }
+    return Object.assign({}, row, { label: n + ". " + label, step: true });
+  });
 }
 
 function tenureInWordsFromRow(row) {
@@ -3870,8 +4050,9 @@ function governmentChargeAmountParts(charge, loanAmount) {
   };
 }
 
+/** Published govt fee for table + totals — exclusive of taxes (GST stays off the figure). */
 function computeGovernmentChargeAmount(charge, loanAmount) {
-  return governmentChargeAmountParts(charge, loanAmount).total;
+  return governmentChargeAmountParts(charge, loanAmount).base;
 }
 
 function listApplicableGovernmentCharges(governmentCharges, query, loanAmount, state) {
@@ -6983,20 +7164,31 @@ function loanFactorHowText(roiDecimal, tenureMonths) {
 }
 
 /**
- * One receipt row.
- * @param {{label:string, op?:string, value:string, how?:string, final?:boolean, ruleAfter?:boolean}} row
+ * One vertical-method receipt row (school column maths).
+ * Figures stack right-aligned; op sits left of the figure; ruleAfter draws
+ * an underline under that row’s figure (same width as the number). Put units
+ * on `label` (e.g. via receiptPctLabel) — never suffix "%" onto `value`.
+ * Figures use formatReceiptFigure / formatReceiptAmount.
+ * `answer` = end of a working (sub-result). `final` = panel total.
+ * Mid-working lines after a rule stay at base size — they are not answers.
+ * @param {{label:string, op?:string, value:string, how?:string, howTax?:boolean, answer?:boolean, final?:boolean, ruleAfter?:boolean, step?:boolean}} row
  */
 function receiptRowHtml(row) {
   if (!row) return "";
+  var howClass =
+    "hlc-receipt-how" + (row.howTax ? " hlc-receipt-how--tax" : "");
   var how = row.how
-    ? '<p class="hlc-receipt-how">' + escapeHtml(row.how) + "</p>"
+    ? '<p class="' + howClass + '">' + escapeHtml(row.how) + "</p>"
     : "";
   var opHtml =
     '<span class="hlc-receipt-op" aria-hidden="true">' +
     escapeHtml(row.op || "") +
     "</span>";
-  var rowClass =
-    "hlc-receipt-row" + (row.final ? " hlc-receipt-row--final" : "");
+  var rowClass = "hlc-receipt-row";
+  if (row.final) rowClass += " hlc-receipt-row--final";
+  else if (row.answer) rowClass += " hlc-receipt-row--answer";
+  if (row.step) rowClass += " hlc-receipt-row--step";
+  if (row.ruleAfter) rowClass += " hlc-receipt-row--ruled";
   return (
     '<div class="' +
     rowClass +
@@ -7011,10 +7203,7 @@ function receiptRowHtml(row) {
     opHtml +
     '<span class="hlc-receipt-value">' +
     escapeHtml(row.value || "") +
-    "</span></div></div>" +
-    (row.ruleAfter
-      ? '<div class="hlc-receipt-rule" aria-hidden="true"></div>'
-      : "")
+    "</span></div></div>"
   );
 }
 
@@ -7027,27 +7216,33 @@ function receiptBlockHtml(rows) {
   );
 }
 
-function receiptColumnHtml(title, rows) {
-  return (
-    '<section class="hlc-receipt-col">' +
-    '<h4 class="hlc-receipt-col-title">' +
-    escapeHtml(String(title)) +
-    "</h4>" +
-    receiptBlockHtml(rows) +
-    "</section>"
-  );
-}
-
+/**
+ * Loan-amount maths: three sequential receipts — same vertical stack as EMI /
+ * charges. (Name is historical; never a side-by-side dual anymore.)
+ * Step numbers live on the first label of each block (1. / 2. / 3.).
+ */
 function receiptDualHtml(col1Rows, col2Rows, col3Rows) {
   var html =
-    '<div class="hlc-receipt-dual">' +
-    receiptColumnHtml("1. Property value", col1Rows) +
-    receiptColumnHtml("2. Monthly Income", col2Rows) +
-    "</div>";
+    receiptBlockHtml(withReceiptStepNumber(1, col1Rows)) +
+    receiptBlockHtml(withReceiptStepNumber(2, col2Rows));
   if (col3Rows && col3Rows.length) {
-    html += receiptColumnHtml("3. Required loan amount", col3Rows);
+    html += receiptBlockHtml(withReceiptStepNumber(3, col3Rows));
   }
   return html;
+}
+
+/**
+ * After the lower-of candidates: underline the winning amount’s own width,
+ * then the bare amount under the loan-amount lead.
+ */
+function loanLowerOfResultHtml(amountText) {
+  if (amountText == null || String(amountText).trim() === "") return "";
+  return (
+    '<div class="hlc-loan-lower-result">' +
+    '<p class="hlc-loan-lower-result-amount">' +
+    escapeHtml(String(amountText)) +
+    "</p></div>"
+  );
 }
 
 function calcLeadHtml(sentence, amountText, subText) {
@@ -7566,8 +7761,6 @@ function initPage() {
     drawerHeading: document.getElementById("hlc-drawer-heading"),
     drawerTitle: document.getElementById("hlc-drawer-title"),
     drawerSub: document.getElementById("hlc-drawer-sub"),
-    drawerActionsBar: document.getElementById("hlc-drawer-actions-bar"),
-    drawerToggleAll: document.getElementById("hlc-drawer-toggle-all"),
     drawerScroll: document.getElementById("hlc-drawer-scroll"),
     drawerBody: document.getElementById("hlc-drawer-body"),
     drawerClose: document.getElementById("hlc-drawer-close"),
@@ -8097,7 +8290,7 @@ function initPage() {
         values.occupation
       ) +
       "</div></div></div>" +
-      '<div class="hlc-form-row hlc-form-row--capacity-band hlc-form-row--coapplicant-money" role="group" aria-label="Co-applicant ' +
+      '<div class="hlc-form-row hlc-form-row--capacity-band" role="group" aria-label="Co-applicant ' +
       n +
       ' repayment capacity">' +
       '<div class="hlc-form-band-fields">' +
@@ -8105,35 +8298,40 @@ function initPage() {
       coApplicantM3FieldHtml({
         id: prefix + "income",
         field: "monthlyIncome",
-        label: "Monthly income",
+        label: "Net monthly income",
         icon: "wallet",
         value: values.monthlyIncome,
-        format: "money",
-        slot: "income"
+        format: "money"
       }) +
+      coApplicantM3FieldHtml({
+        id: prefix + "cibil",
+        field: "cibilScore",
+        label: "CIBIL score",
+        icon: "speed",
+        value: values.cibilScore,
+        maxDigits: "3",
+        max: "900"
+      }) +
+      "</div>" +
+      '<div class="hlc-form-band-strip">' +
       coApplicantM3FieldHtml({
         id: prefix + "emis",
         field: "existingEmis",
-        label: "Total existing EMIs",
+        label: "Existing EMIs",
         icon: "payments",
         value: values.existingEmis,
-        format: "money",
-        slot: "emis"
+        format: "money"
       }) +
-      "</div>" +
-      '<div class="hlc-form-band-strip hlc-form-band-strip--cards-slot">' +
       coApplicantM3FieldHtml({
         id: prefix + "cards",
         field: "cardLimits",
-        label: "Total credit card limits",
+        label: "Credit card limits",
         icon: "credit_card",
         value: values.cardLimits,
-        format: "money",
-        slot: "cards"
+        format: "money"
       }) +
-      '<div class="hlc-form-band-spacer" aria-hidden="true"></div>' +
       "</div></div></div>" +
-      '<div class="hlc-form-row hlc-form-row--coapplicant-profile" role="group" aria-label="Co-applicant ' +
+      '<div class="hlc-form-row hlc-form-row--loan-band hlc-form-row--coapplicant-age" role="group" aria-label="Co-applicant ' +
       n +
       ' personal details">' +
       '<div class="hlc-form-band-fields">' +
@@ -8147,16 +8345,6 @@ function initPage() {
         maxDigits: "2",
         suffix: "years",
         slot: "age"
-      }) +
-      coApplicantM3FieldHtml({
-        id: prefix + "cibil",
-        field: "cibilScore",
-        label: "CIBIL score",
-        icon: "speed",
-        value: values.cibilScore,
-        maxDigits: "3",
-        max: "900",
-        slot: "cibil"
       }) +
       "</div></div></div></div></div>"
     );
@@ -9145,8 +9333,8 @@ function initPage() {
     return Math.max(200, Math.floor(fallback - 32));
   }
 
-  /** Phone CSS default for sticky Bank (`--hlc-phone-bank-col: 9rem`). */
-  const PHONE_BANK_COL_DEFAULT_PX = Math.round(9 * 16);
+  /** Phone CSS default for sticky Bank (`--hlc-phone-bank-col: 9.3rem`). */
+  const PHONE_BANK_COL_DEFAULT_PX = Math.round(9.3 * 16);
   /* Never shrink Bank below the restored phone width — names stay readable. */
   const PHONE_BANK_COL_FLOOR_PX = PHONE_BANK_COL_DEFAULT_PX;
   /* Leave a hair so borders / subpixel rounding do not force a useless x-scroll. */
@@ -9158,7 +9346,7 @@ function initPage() {
 
   /**
    * Cap sticky Bank so metric columns can still fit beside it on phone.
-   * Floor is the CSS phone Bank width (9rem) — do not squeeze names smaller.
+   * Floor is the CSS phone Bank width (9.3rem) — do not squeeze names smaller.
    */
   function phoneBankColCapPx(portPx, twoMetricReservePx) {
     const port = Math.max(0, portPx || 0);
@@ -9432,7 +9620,7 @@ function initPage() {
     }
 
     /*
-     * Overview on phone: Bank stays at the CSS phone width (9rem). Rate keeps a
+     * Overview on phone: Bank stays at the CSS phone width (9.3rem). Rate keeps a
      * readable floor; Loan amount hugs its wrapped header (not stretched to
      * fill leftover). Tenure / EMI keep natural (boosted) widths and scroll.
      */
@@ -9928,17 +10116,6 @@ function initPage() {
       el.drawerSub.textContent = "";
       el.drawerSub.hidden = true;
       el.drawerBody.innerHTML = bodyHtml;
-      if (el.drawerActionsBar) {
-        el.drawerActionsBar.hidden = false;
-      }
-      if (el.drawerToggleAll) {
-        const fresh = el.drawerToggleAll.cloneNode(true);
-        fresh.hidden = false;
-        fresh.textContent = "Expand all";
-        fresh.setAttribute("aria-expanded", "false");
-        el.drawerToggleAll.parentNode.replaceChild(fresh, el.drawerToggleAll);
-        el.drawerToggleAll = fresh;
-      }
       el.drawer.classList.add("hlc-drawer--sections");
       bindDrawerDropdowns(el.drawer);
     } else {
@@ -9946,29 +10123,6 @@ function initPage() {
       el.drawerSub.textContent = subtitle || "";
       el.drawerSub.hidden = !String(subtitle || "").trim();
       el.drawerBody.innerHTML = bodyHtml;
-      const groupCount = hasGroups
-        ? el.drawerBody.querySelectorAll(
-            opts.calcLead
-              ? ".hlc-drawer-group:not(.hlc-drawer-group--nested)"
-              : ".hlc-drawer-group"
-          ).length
-        : 0;
-      const showExpand = groupCount >= 2;
-      if (el.drawerActionsBar) {
-        el.drawerActionsBar.hidden = !showExpand;
-      }
-      if (el.drawerToggleAll) {
-        if (showExpand) {
-          const fresh = el.drawerToggleAll.cloneNode(true);
-          fresh.hidden = false;
-          fresh.textContent = "Expand all";
-          fresh.setAttribute("aria-expanded", "false");
-          el.drawerToggleAll.parentNode.replaceChild(fresh, el.drawerToggleAll);
-          el.drawerToggleAll = fresh;
-        } else {
-          el.drawerToggleAll.hidden = true;
-        }
-      }
       el.drawer.classList.remove("hlc-drawer--sections");
       if (hasGroups) bindDrawerDropdowns(el.drawer);
     }
@@ -9979,6 +10133,9 @@ function initPage() {
       el.drawerBody.scrollTop = 0;
     }
 
+    el.drawer.classList.remove("is-dragging");
+    el.drawer.style.transform = "";
+    el.drawerBackdrop.style.opacity = "";
     el.drawerBackdrop.hidden = false;
     requestAnimationFrame(function () {
       el.drawerBackdrop.classList.add("open");
@@ -10093,35 +10250,25 @@ function initPage() {
     var propRows = [
       {
         label: "Property value",
-        value: formatInr(model.propertyValue)
+        value: formatReceiptAmount(model.propertyValue)
       },
-      {
-        label: "LTV ratio",
-        op: "×",
-        value: formatPctPlain(model.fundedPct),
-        ruleAfter: true
-      },
+      receiptPctOpRow("LTV ratio", model.fundedPct, { ruleAfter: true }),
       {
         label: "Eligible amount",
-        value: formatInr(model.fromProperty),
-        final: true
+        value: formatReceiptAmount(model.fromProperty),
+        answer: true
       }
     ];
 
     var incomeRows = [
       {
         label: "Net monthly income",
-        value: formatInr(model.totalIncome)
+        value: formatReceiptAmount(model.totalIncome)
       },
-      {
-        label: "FOIR",
-        op: "×",
-        value: formatPctPlain(model.foirPct),
-        ruleAfter: true
-      },
+      receiptPctOpRow("FOIR", model.foirPct, { ruleAfter: true }),
       {
         label: "Max EMI allowed",
-        value: formatInr(model.incomeAllowance)
+        value: formatReceiptAmount(model.incomeAllowance)
       }
     ];
 
@@ -10129,14 +10276,14 @@ function initPage() {
       incomeRows.push({
         label: "Existing EMIs",
         op: "−",
-        value: formatInr(model.existingEmis)
+        value: formatReceiptAmount(model.existingEmis)
       });
     }
     if (model.cardLoad > 0) {
       incomeRows.push({
         label: "Credit cards",
         op: "−",
-        value: formatInr(model.cardLoad),
+        value: formatReceiptAmount(model.cardLoad),
         how: formatPctPlain(model.cardLoadPct) + " of card limits"
       });
     }
@@ -10145,14 +10292,14 @@ function initPage() {
       incomeRows[incomeRows.length - 1].ruleAfter = true;
       incomeRows.push({
         label: "Max EMI available",
-        value: formatInr(model.emiRoom)
+        value: formatReceiptAmount(model.emiRoom)
       });
     }
 
     incomeRows.push({
       label: "Loan factor",
       op: "×",
-      value: Number(loanFactor).toFixed(2),
+      value: formatReceiptFigure(loanFactor),
       how: loanFactorHowText(
         model.roiDecimal != null ? model.roiDecimal : row.roiDecimal,
         model.tenureMonths != null ? model.tenureMonths : row.tenureMonths
@@ -10161,8 +10308,8 @@ function initPage() {
     });
     incomeRows.push({
       label: "Eligible amount",
-      value: formatInr(model.fromIncome),
-      final: true
+      value: formatReceiptAmount(model.fromIncome),
+      answer: true
     });
 
     var requestedAmt = Math.max(0, Number(readQuery().loanAmountRequest) || 0);
@@ -10171,23 +10318,26 @@ function initPage() {
       under += receiptBlockHtml([
         {
           label: "This bank's maximum",
-          value: formatInr(model.bankMaximum),
-          final: true
+          value: formatReceiptAmount(model.bankMaximum),
+          answer: true
         }
       ]);
     }
 
     return calcPanelHtml({
       bankName: row.bankName,
-      leadHtml: calcLeadHtml("Lower of"),
+      leadHtml: calcLeadHtml(
+        "The loan amount you get is the lower of:"
+      ),
       receiptHtml:
         receiptDualHtml(propRows, incomeRows, [
           {
             label: "Loan amount",
-            value: formatInr(requestedAmt),
-            final: true
+            value: formatReceiptAmount(requestedAmt)
           }
-        ]) + under
+        ]) +
+        loanLowerOfResultHtml(formatReceiptAmount(model.result)) +
+        under
     });
   }
 
@@ -10200,22 +10350,24 @@ function initPage() {
     );
     return calcPanelHtml({
       bankName: row.bankName,
-      leadHtml: calcLeadHtml("EMI every month is", formatInr(row.emi)),
+      leadHtml: calcLeadHtml(
+        "A fixed monthly payment made to repay a loan."
+      ),
       receiptHtml: receiptBlockHtml([
         {
           label: "Loan amount",
-          value: formatInr(row.loanAmount)
+          value: formatReceiptAmount(row.loanAmount)
         },
         {
           label: "Loan factor",
           op: "÷",
-          value: Number(factor).toFixed(2),
+          value: formatReceiptFigure(factor),
           how: loanFactorHowText(row.roiDecimal, row.tenureMonths),
           ruleAfter: true
         },
         {
           label: "EMI",
-          value: formatInr(row.emi),
+          value: formatReceiptAmount(row.emi),
           final: true
         }
       ]),
@@ -10228,7 +10380,9 @@ function initPage() {
     if (!charge) {
       return calcPanelHtml({
         bankName: row.bankName,
-        leadHtml: calcLeadHtml("Processing fee is", formatInr(0)),
+        leadHtml: calcLeadHtml(
+          "A one-time fee to process and approve your loan."
+        ),
         receiptHtml: ""
       });
     }
@@ -10247,77 +10401,71 @@ function initPage() {
 
       rows.push({
         label: "Loan amount",
-        value: formatInr(row.loanAmount)
+        value: formatReceiptAmount(row.loanAmount)
       });
-      rows.push({
-        label: "Fee %",
-        op: "×",
-        value: formatPctPlain(pct * 100),
-        ruleAfter: true
-      });
+      rows.push(receiptPctOpRow("Fee", pct * 100, { ruleAfter: true }));
 
       if (minHit) {
         rows.push({
           label: "",
-          value: formatInr(beforeLimits)
+          value: formatReceiptAmount(beforeLimits)
         });
         rows.push({
           label: "Min",
-          op: "or",
-          value: formatInr(Number(charge.charge_min)),
+          op: "at least",
+          value: formatReceiptAmount(Number(charge.charge_min)),
           ruleAfter: true
         });
       } else if (maxHit) {
         rows.push({
           label: "",
-          value: formatInr(beforeLimits)
+          value: formatReceiptAmount(beforeLimits)
         });
         rows.push({
           label: "Max",
           op: "up to",
-          value: formatInr(Number(charge.charge_max)),
+          value: formatReceiptAmount(Number(charge.charge_max)),
           ruleAfter: true
         });
       }
 
       rows.push({
         label: "Processing fee",
-        value: formatInr(row.processingFee),
+        value: formatReceiptAmount(row.processingFee),
         final: true
       });
     } else if (Number.isFinite(fixed)) {
       rows.push({
         label: "Processing fee",
-        value: formatInr(fixed),
+        value: formatReceiptAmount(fixed),
         final: true
       });
     } else if (charge.percentage === 0) {
       rows.push({
         label: "Loan amount",
-        value: formatInr(row.loanAmount)
+        value: formatReceiptAmount(row.loanAmount)
       });
-      rows.push({
-        label: "Fee %",
-        op: "×",
-        value: formatPctPlain(0),
-        ruleAfter: true
-      });
+      rows.push(receiptPctOpRow("Fee", 0, { ruleAfter: true }));
       rows.push({
         label: "Processing fee",
-        value: formatInr(0),
+        value: formatReceiptAmount(0),
         final: true
       });
     } else {
       return calcPanelHtml({
         bankName: row.bankName,
-        leadHtml: calcLeadHtml("Processing fee is", formatInr(0)),
+        leadHtml: calcLeadHtml(
+          "A one-time fee to process and approve your loan."
+        ),
         receiptHtml: ""
       });
     }
 
     return calcPanelHtml({
       bankName: row.bankName,
-      leadHtml: calcLeadHtml("Processing fee is", formatInr(row.processingFee)),
+      leadHtml: calcLeadHtml(
+        "A one-time fee to process and approve your loan."
+      ),
       receiptHtml: receiptBlockHtml(rows)
     });
   }
@@ -10328,34 +10476,35 @@ function initPage() {
       return calcPanelHtml({
         bankName: row.bankName,
         leadHtml: calcLeadHtml(
-          "Property check charges are",
-          formatInr(row.propertyCheckCharges || 0)
+          "Fees to confirm a property is legal and correctly valued."
         ),
         receiptHtml: ""
       });
     }
 
-    const rows = lines.map(function (line) {
+    const partMarks = [];
+    const rows = lines.map(function (line, index) {
       var label = line.name || "Charge";
       if (label === "Valuation") label = "Valuation report";
+      var step = index + 1;
+      partMarks.push(String(step));
       return {
-        label: label,
-        value: formatInr(line.amount)
+        label: step + ". " + label,
+        value: formatReceiptAmount(line.amount)
       };
     });
 
     rows[rows.length - 1].ruleAfter = true;
     rows.push({
-      label: "Total",
-      value: formatInr(row.propertyCheckCharges),
+      label: receiptSumTotalLabel(partMarks),
+      value: formatReceiptAmount(row.propertyCheckCharges),
       final: true
     });
 
     return calcPanelHtml({
       bankName: row.bankName,
       leadHtml: calcLeadHtml(
-        "Property check charges are",
-        formatInr(row.propertyCheckCharges)
+        "Fees to confirm a property is legal and correctly valued."
       ),
       receiptHtml: receiptBlockHtml(rows)
     });
@@ -10369,25 +10518,14 @@ function initPage() {
       row.loanAmount,
       DEFAULT_JURISDICTION_STATE
     );
-    const rows = [];
-    var hasPercentage = false;
-    charges.forEach(function (charge) {
-      if (normalizeText(charge.calculation_method) === "percentage") {
-        hasPercentage = true;
-      }
-    });
-
-    if (hasPercentage) {
-      rows.push({
-        label: "Loan amount",
-        value: formatInr(row.loanAmount)
-      });
-    }
+    const chargeBlocks = [];
 
     charges.forEach(function (charge) {
       const parts = governmentChargeAmountParts(charge, row.loanAmount);
       const name = governmentChargeName(charge.charge_name);
       const method = normalizeText(charge.calculation_method);
+      const chargeRows = [];
+      const taxHow = parts.gstRate > 0 ? EXCLUDING_TAXES_NOTE : "";
 
       if (method === "percentage") {
         const beforeLimits = row.loanAmount * Number(charge.percentage);
@@ -10398,99 +10536,85 @@ function initPage() {
           charge.max_amount_inr != null &&
           beforeLimits > Number(charge.max_amount_inr);
 
-        rows.push({
-          label: name,
-          op: "×",
-          value: formatPctPlain(Number(charge.percentage) * 100),
-          ruleAfter: true
+        chargeRows.push({
+          label: "Loan amount",
+          value: formatReceiptAmount(row.loanAmount)
         });
+        chargeRows.push(
+          receiptPctOpRow(name, Number(charge.percentage) * 100, {
+            ruleAfter: true
+          })
+        );
 
         if (minApplied || maxApplied) {
-          rows.push({
+          chargeRows.push({
             label: "",
-            value: formatInr(beforeLimits)
+            value: formatReceiptAmount(beforeLimits)
           });
           if (minApplied) {
-            rows.push({
+            chargeRows.push({
               label: "Min",
-              op: "or",
-              value: formatInr(Number(charge.min_amount_inr)),
+              op: "at least",
+              value: formatReceiptAmount(Number(charge.min_amount_inr)),
               ruleAfter: true
             });
           } else {
-            rows.push({
+            chargeRows.push({
               label: "Max",
               op: "up to",
-              value: formatInr(Number(charge.max_amount_inr)),
+              value: formatReceiptAmount(Number(charge.max_amount_inr)),
               ruleAfter: true
             });
           }
         }
 
-        if (parts.gstRate > 0) {
-          if (!(minApplied || maxApplied)) {
-            rows.push({
-              label: "",
-              value: formatInr(parts.base)
-            });
-          }
-          rows.push({
-            label: "GST",
-            op: "×",
-            value: formatPctPlain(parts.gstRate * 100),
-            ruleAfter: true
-          });
-          rows.push({
-            label: name,
-            value: formatInr(parts.total)
-          });
-        } else {
-          rows.push({
-            label: name,
-            value: formatInr(parts.total)
-          });
-        }
+        chargeRows.push({
+          label: name,
+          value: formatReceiptAmount(parts.base),
+          how: taxHow || undefined,
+          howTax: Boolean(taxHow)
+        });
       } else if (parts.base != null) {
-        if (parts.gstRate > 0) {
-          rows.push({
-            label: name,
-            value: formatInr(parts.base)
-          });
-          rows.push({
-            label: "GST",
-            op: "×",
-            value: formatPctPlain(parts.gstRate * 100),
-            ruleAfter: true
-          });
-          rows.push({
-            label: name,
-            value: formatInr(parts.total)
-          });
-        } else {
-          rows.push({
-            label: name,
-            value: formatInr(parts.total)
-          });
-        }
+        chargeRows.push({
+          label: name,
+          value: formatReceiptAmount(parts.base),
+          how: taxHow || undefined,
+          howTax: Boolean(taxHow)
+        });
       }
+
+      if (chargeRows.length) chargeBlocks.push(chargeRows);
     });
 
-    if (rows.length) {
-      rows[rows.length - 1].ruleAfter = true;
-    }
-    rows.push({
-      label: "Total",
-      value: formatInr(row.governmentCharges),
-      final: true
+    const stepMarks = [];
+    var receiptHtml = "";
+    chargeBlocks.forEach(function (chargeRows, index) {
+      var step = index + 1;
+      stepMarks.push(String(step));
+      var numbered = withReceiptStepNumber(step, chargeRows);
+      var lastPatch = { answer: true };
+      if (index === chargeBlocks.length - 1) lastPatch.ruleAfter = true;
+      numbered[numbered.length - 1] = Object.assign(
+        {},
+        numbered[numbered.length - 1],
+        lastPatch
+      );
+      receiptHtml += receiptBlockHtml(numbered);
     });
+    receiptHtml += receiptBlockHtml([
+      {
+        label: receiptSumTotalLabel(stepMarks),
+        value: formatReceiptAmount(row.governmentCharges),
+        final: true
+      }
+    ]);
 
     return calcPanelHtml({
       bankName: row.bankName,
       leadHtml: calcLeadHtml(
-        "State charges on this loan are",
-        formatInr(row.governmentCharges)
+        "Fees paid to legally register your loan and deposit property deeds."
       ),
-      receiptHtml: receiptBlockHtml(rows)
+      receiptHtml: receiptHtml
     });
   }
 
@@ -10515,52 +10639,49 @@ function initPage() {
 
       rows.push({
         label: "Missed EMI amount",
-        value: formatInr(overdue.overdueAmount)
+        value: formatReceiptAmount(overdue.overdueAmount)
       });
-      rows.push({
-        label: rateLabel,
-        op: "×",
-        value: formatPctPlain(overdue.yearPct),
-        ruleAfter: true
-      });
+      rows.push(
+        receiptPctOpRow(rateLabel, overdue.yearPct, { ruleAfter: true })
+      );
       rows.push({
         label: "Charges per year",
-        value: formatInr(yearCharges)
+        value: formatReceiptAmount(yearCharges)
       });
       rows.push({
         label: "per month",
         op: "÷",
-        value: "12",
+        value: formatReceiptFigure(12),
         ruleAfter: true
       });
 
       if (overdue.graceDays) {
         rows.push({
           label: "Grace days",
-          value: String(overdue.graceDays)
+          value: formatReceiptFigure(overdue.graceDays)
         });
       }
 
       if (overdue.usedFloor) {
         rows.push({
           label: "Charges per month",
-          value: formatInr(monthRaw)
+          value: formatReceiptAmount(monthRaw)
         });
         rows.push({
           label: "Min",
-          op: "or",
-          value: formatInr(overdue.floor),
+          op: "at least",
+          value: formatReceiptAmount(overdue.floor),
           ruleAfter: true
         });
         rows.push({
           label: "Charges per month",
-          value: formatInr(overdue.extra),
+          value: formatReceiptAmount(overdue.extra),
           final: true
         });
       } else {
         rows.push({
           label: "Charges per month",
-          value: formatInr(monthRaw),
+          value: formatReceiptAmount(monthRaw),
           final: true
         });
       }
@@ -10568,12 +10689,12 @@ function initPage() {
       if (overdue.graceDays) {
         rows.push({
           label: "Grace days",
-          value: String(overdue.graceDays)
+          value: formatReceiptFigure(overdue.graceDays)
         });
       }
       rows.push({
         label: "Overdue charge",
-        value: formatInr(overdue.extra),
+        value: formatReceiptAmount(overdue.extra),
         final: true
       });
     }
@@ -10600,17 +10721,17 @@ function initPage() {
     const bounce = walk.bounce;
     const charge = row.emiBounceCharge;
     const rows = [];
+    const taxHow = bounce.gst > 0 ? EXCLUDING_TAXES_NOTE : undefined;
 
-    if (!(bounce.total > 0)) {
+    if (!(bounce.extra > 0)) {
       rows.push({
         label: "Bounce charge",
-        value: formatInr(0),
+        value: formatReceiptAmount(0),
         final: true
       });
     } else {
       const pct =
         charge && charge.percentage != null ? Number(charge.percentage) : NaN;
-      const gstRate = governmentChargeGstRate(charge);
 
       if (Number.isFinite(pct) && pct > 0) {
         const beforeLimits = row.emi * pct;
@@ -10623,82 +10744,45 @@ function initPage() {
 
         rows.push({
           label: "Missed EMI amount",
-          value: formatInr(row.emi)
+          value: formatReceiptAmount(row.emi)
         });
-        rows.push({
-          label: "Fee %",
-          op: "×",
-          value: formatPctPlain(pct * 100),
-          ruleAfter: true
-        });
+        rows.push(receiptPctOpRow("Fee", pct * 100, { ruleAfter: true }));
 
         if (minHit || maxHit) {
           rows.push({
             label: "",
-            value: formatInr(beforeLimits)
+            value: formatReceiptAmount(beforeLimits)
           });
           if (minHit) {
             rows.push({
               label: "Min",
-              op: "or",
-              value: formatInr(Number(charge.charge_min)),
+              op: "at least",
+              value: formatReceiptAmount(Number(charge.charge_min)),
               ruleAfter: true
             });
           } else {
             rows.push({
               label: "Max",
               op: "up to",
-              value: formatInr(Number(charge.charge_max)),
+              value: formatReceiptAmount(Number(charge.charge_max)),
               ruleAfter: true
             });
           }
         }
 
-        if (bounce.gst > 0) {
-          if (!(minHit || maxHit)) {
-            rows.push({
-              label: "Bounce charge",
-              value: formatInr(bounce.extra)
-            });
-          }
-          rows.push({
-            label: "GST",
-            op: "×",
-            value: formatPctPlain(gstRate * 100),
-            ruleAfter: true
-          });
-          rows.push({
-            label: "Bounce total",
-            value: formatInr(bounce.total),
-            final: true
-          });
-        } else {
-          rows.push({
-            label: "Bounce charge",
-            value: formatInr(bounce.extra),
-            final: true
-          });
-        }
-      } else if (bounce.gst > 0) {
         rows.push({
           label: "Bounce charge",
-          value: formatInr(bounce.extra)
-        });
-        rows.push({
-          label: "GST",
-          op: "×",
-          value: formatPctPlain(gstRate * 100),
-          ruleAfter: true
-        });
-        rows.push({
-          label: "Bounce total",
-          value: formatInr(bounce.total),
+          value: formatReceiptAmount(bounce.extra),
+          how: taxHow,
+          howTax: Boolean(taxHow),
           final: true
         });
       } else {
         rows.push({
           label: "Bounce charge",
-          value: formatInr(bounce.extra),
+          value: formatReceiptAmount(bounce.extra),
+          how: taxHow,
+          howTax: Boolean(taxHow),
           final: true
         });
       }
@@ -10706,18 +10790,29 @@ function initPage() {
 
     return calcPanelHtml({
       bankName: row.bankName,
-      leadHtml: calcLeadHtml("EMI bounce charges are", formatInr(bounce.total)),
+      leadHtml: calcLeadHtml(
+        "Fees penalized when your auto-debit EMI payment fails."
+      ),
       receiptHtml: receiptBlockHtml(rows)
     });
   }
 
   function rateChangeCalculationHtml(row) {
     const method = state.rateChangeMethod;
-    var sentence = "Charges to switch rate type are";
+    var sentence =
+      "Fees paid to switch from a changing to a fixed interest rate.";
     if (method === RATE_CHANGE_METHOD_REPRICE) {
-      sentence = "Charges to reprice are";
+      sentence =
+        "Fees paid to switch your loan to a lower interest rate.";
     } else if (method === RATE_CHANGE_METHOD_BENCHMARK) {
-      sentence = "Charges to switch benchmark are";
+      sentence =
+        "Fees paid to switch your loan to a new pricing system.";
+    } else if (
+      normalizeRateTypeToken(primaryRateType(state.productFilters)) ===
+      "Fixed"
+    ) {
+      sentence =
+        "Fees paid to switch from a fixed to a changing interest rate.";
     }
 
     const seed = rateChangeChargeForMethod(row, method);
@@ -10733,6 +10828,10 @@ function initPage() {
       amount != null && Number.isFinite(amount)
         ? formatInr(amount)
         : formatChargeDisplayText(formatRateChangeChargeDisplay(charge));
+    const resultFigure =
+      amount != null && Number.isFinite(amount)
+        ? formatReceiptAmount(amount)
+        : resultText;
 
     const rows = [];
     const pct =
@@ -10752,32 +10851,27 @@ function initPage() {
 
       rows.push({
         label: "Loan amount",
-        value: formatInr(row.loanAmount)
+        value: formatReceiptAmount(row.loanAmount)
       });
-      rows.push({
-        label: "Fee %",
-        op: "×",
-        value: formatPctPlain(pct * 100),
-        ruleAfter: true
-      });
+      rows.push(receiptPctOpRow("Fee", pct * 100, { ruleAfter: true }));
 
       if (minHit || maxHit) {
         rows.push({
           label: "",
-          value: formatInr(beforeLimits)
+          value: formatReceiptAmount(beforeLimits)
         });
         if (minHit) {
           rows.push({
             label: "Min",
-            op: "or",
-            value: formatInr(Number(charge.charge_min)),
+            op: "at least",
+            value: formatReceiptAmount(Number(charge.charge_min)),
             ruleAfter: true
           });
         } else {
           rows.push({
             label: "Max",
             op: "up to",
-            value: formatInr(Number(charge.charge_max)),
+            value: formatReceiptAmount(Number(charge.charge_max)),
             ruleAfter: true
           });
         }
@@ -10785,20 +10879,20 @@ function initPage() {
 
       rows.push({
         label: "Rate change charge",
-        value: resultText,
+        value: resultFigure,
         final: true
       });
     } else {
       rows.push({
         label: "Rate change charge",
-        value: resultText,
+        value: resultFigure,
         final: true
       });
     }
 
     return calcPanelHtml({
       bankName: row.bankName,
-      leadHtml: calcLeadHtml(sentence, resultText),
+      leadHtml: calcLeadHtml(sentence),
       receiptHtml: receiptBlockHtml(rows)
     });
   }
@@ -10806,18 +10900,16 @@ function initPage() {
   function prepaymentCalculationHtml(row) {
     const charge = prepayChargeForMethod(row, state.prepaymentMethod);
     const sentence =
-      state.prepaymentMethod === PREPAYMENT_METHOD_BT
-        ? "Prepayment charges (balance transfer) are"
-        : "Prepayment charges (self funds) are";
+      "Fees paid to the bank for repaying loans early.";
 
     if (!charge || isPrepaymentNotCharged(charge)) {
       return calcPanelHtml({
         bankName: row.bankName,
-        leadHtml: calcLeadHtml(sentence, formatInr(0)),
+        leadHtml: calcLeadHtml(sentence),
         receiptHtml: receiptBlockHtml([
           {
             label: "Prepayment charge",
-            value: formatInr(0),
+            value: formatReceiptAmount(0),
             final: true
           }
         ])
@@ -10833,22 +10925,17 @@ function initPage() {
       const exampleCharge = row.loanAmount * (pct / 100);
       return calcPanelHtml({
         bankName: row.bankName,
-        leadHtml: calcLeadHtml(sentence, formatInr(exampleCharge)),
+        leadHtml: calcLeadHtml(sentence),
         receiptHtml: receiptBlockHtml([
           {
             label: "Amount prepaid",
-            value: formatInr(row.loanAmount),
+            value: formatReceiptAmount(row.loanAmount),
             how: "Example if full loan prepaid."
           },
-          {
-            label: "Fee %",
-            op: "×",
-            value: formatPctPlain(pct),
-            ruleAfter: true
-          },
+          receiptPctOpRow("Fee", pct, { ruleAfter: true }),
           {
             label: "Prepayment charge",
-            value: formatInr(exampleCharge),
+            value: formatReceiptAmount(exampleCharge),
             final: true
           }
         ])
@@ -10860,7 +10947,7 @@ function initPage() {
     );
     return calcPanelHtml({
       bankName: row.bankName,
-      leadHtml: calcLeadHtml(sentence, displayText),
+      leadHtml: calcLeadHtml(sentence),
       receiptHtml: receiptBlockHtml([
         {
           label: "Prepayment charge",
@@ -11257,11 +11344,13 @@ function initPage() {
   }
 
   function closeDrawer() {
-    el.drawer.classList.remove("open");
+    el.drawer.classList.remove("open", "is-dragging");
+    el.drawer.style.transform = "";
     el.drawer.classList.remove("hlc-drawer--calc-lead");
     el.drawer.removeAttribute("aria-label");
     el.drawer.setAttribute("aria-labelledby", "hlc-drawer-title");
     el.drawerBackdrop.classList.remove("open");
+    el.drawerBackdrop.style.opacity = "";
     el.drawer.setAttribute("aria-hidden", "true");
     setTimeout(function () {
       if (!el.drawer.classList.contains("open")) el.drawerBackdrop.hidden = true;
@@ -11602,72 +11691,19 @@ function initPage() {
     });
   });
 
-  function bindFiltersSheetDrag() {
-    var panel = el.filtersPanel;
-    var handle = panel && panel.querySelector(".hlc-filters-handle");
-    if (!panel || !handle || handle.dataset.boundDrag) return;
-    handle.dataset.boundDrag = "1";
-
-    var DISMISS_PX = 120;
-    var DISMISS_VELOCITY = 0.65;
-    var startY = 0;
-    var lastY = 0;
-    var lastT = 0;
-    var dragging = false;
-    var reduceMotion =
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    function onDown(e) {
-      if (!isExploreMobile() || !isFiltersOpen()) return;
-      if (e.pointerType === "mouse" && e.button !== 0) return;
-      if (reduceMotion) return;
-      dragging = true;
-      startY = lastY = e.clientY;
-      lastT = performance.now();
-      panel.classList.add("is-dragging");
-      try {
-        handle.setPointerCapture(e.pointerId);
-      } catch (err) {}
-    }
-
-    function onMove(e) {
-      if (!dragging) return;
-      var dy = Math.max(0, e.clientY - startY);
-      lastY = e.clientY;
-      lastT = performance.now();
-      panel.style.transform = "translateY(" + dy + "px)";
-      if (el.filtersScrim) {
-        el.filtersScrim.style.opacity = String(Math.max(0.12, 1 - dy / 400));
-      }
-    }
-
-    function onUp(e) {
-      if (!dragging) return;
-      dragging = false;
-      panel.classList.remove("is-dragging");
-      try {
-        handle.releasePointerCapture(e.pointerId);
-      } catch (err) {}
-      var dy = Math.max(0, e.clientY - startY);
-      var dt = Math.max(16, performance.now() - lastT);
-      var velocity = (e.clientY - lastY) / dt;
-      panel.style.transform = "";
-      if (el.filtersScrim) el.filtersScrim.style.opacity = "";
-      if (dy >= DISMISS_PX || velocity > DISMISS_VELOCITY) {
+  if (el.filtersToggle && el.filtersControl && el.filtersPanel) {
+    bindBottomSheetDrag({
+      panel: el.filtersPanel,
+      handle: el.filtersPanel.querySelector(".hlc-sheet-handle, .hlc-filters-handle"),
+      veil: el.filtersScrim,
+      isActive: function () {
+        return isExploreMobile() && isFiltersOpen();
+      },
+      onDismiss: function () {
         setFiltersOpen(false);
         if (el.filtersToggle) el.filtersToggle.focus();
       }
-    }
-
-    handle.addEventListener("pointerdown", onDown);
-    handle.addEventListener("pointermove", onMove);
-    handle.addEventListener("pointerup", onUp);
-    handle.addEventListener("pointercancel", onUp);
-  }
-
-  if (el.filtersToggle && el.filtersControl && el.filtersPanel) {
-    bindFiltersSheetDrag();
+    });
 
     el.filtersToggle.addEventListener("click", function (event) {
       event.preventDefault();
@@ -11898,6 +11934,17 @@ function initPage() {
 
   el.drawerClose.addEventListener("click", closeDrawer);
   el.drawerBackdrop.addEventListener("click", closeDrawer);
+  if (el.drawer) {
+    bindBottomSheetDrag({
+      panel: el.drawer,
+      handle: el.drawer.querySelector(".hlc-sheet-handle"),
+      veil: el.drawerBackdrop,
+      isActive: function () {
+        return isExploreMobile() && el.drawer.classList.contains("open");
+      },
+      onDismiss: closeDrawer
+    });
+  }
   document.addEventListener("keydown", function (event) {
     if (event.key !== "Escape") return;
     if (isExploreMobile() && isFiltersOpen()) return;
@@ -12443,7 +12490,6 @@ module.exports = {
   bindChargesNoteDropdowns,
   bindDrawerDropdowns,
   bindDetailsAccordion,
-  drawerToolbarHtml,
   drawerDiscloseHtml,
   calcDrawerBodyHtml,
   laterChargesColumns,
@@ -12496,7 +12542,16 @@ module.exports = {
   maxLoanForProperty,
   propertyFundedPct,
   monthlyRateFromAnnualDecimal,
+  formatPctFigure,
   formatPctPlain,
+  formatReceiptFigure,
+  formatReceiptAmount,
+  receiptPctLabel,
+  receiptPctOpRow,
+  receiptPartMark,
+  receiptPartLabel,
+  receiptSumTotalLabel,
+  withReceiptStepNumber,
   tenureInWordsFromRow,
   amortizationSchedule,
   chargeUsesWhicheverHigher,
@@ -12521,6 +12576,7 @@ module.exports = {
   receiptRowHtml,
   receiptBlockHtml,
   receiptDualHtml,
+  loanLowerOfResultHtml,
   calcPanelHtml,
   calcLeadHtml,
   amortizationTableHtml,

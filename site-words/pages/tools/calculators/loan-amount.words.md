@@ -36,7 +36,7 @@ Use **Jump to** below to open any line in this file.
 - [Text — Estimated loan size](#t.estimated_loan_size.13)
 - [Text — Total interest](#t.total_interest.14)
 - [Text — Total you pay](#t.total_you_pay.15)
-- [Text — Planning estimate only. Not a bank offer, sanction, or promise. Final…](#t.planning_estimate_only_not_a_bank_offer_sanction.16)
+- [Text — Planning estimate only.](#t.planning_estimate_only_not_a_bank_offer_sanction.16)
 - [Heading — How this estimate works](#t.how_this_estimate_works.17)
 - [Text — What goes into this estimate.](#t.what_goes_into_this_estimate.18)
 - [Subheading — Formula used](#t.formula_used.19)
@@ -117,8 +117,8 @@ Total you pay
 
 <a id="t.planning_estimate_only_not_a_bank_offer_sanction.16"></a>
 
-## Text — Planning estimate only. Not a bank offer, sanction, or promise. Final… {#t.planning_estimate_only_not_a_bank_offer_sanction.16}
-Planning estimate only. Not a bank offer, sanction, or promise. Final terms stay with the lender.
+## Text — Planning estimate only. {#t.planning_estimate_only_not_a_bank_offer_sanction.16}
+Planning estimate only.
 
 <a id="t.how_this_estimate_works.17"></a>
 

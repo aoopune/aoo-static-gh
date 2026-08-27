@@ -32,20 +32,35 @@
     <div class="guide-swap" id="guide-swap">
 
     <header class="guide-hero guide-hero--media guide-hero--art-nudge-up">
-      <picture>
+      <picture class="guide-hero-picture guide-hero-picture--light">
         <source
           media="(max-width: 833px)"
           srcset="../images/guide-heroes/property-cover-9x16.png?v=portrait-2"
         >
         <img
-        class="guide-hero-bg"
-        src="../images/guide-heroes/property-cover.png?v=landscape-3"
-        alt=""
-        width="1600"
-        height="900"
-        decoding="async"
-        aria-hidden="true"
-      >
+          class="guide-hero-bg"
+          src="../images/guide-heroes/property-cover.png?v=landscape-3"
+          alt=""
+          width="1600"
+          height="900"
+          decoding="async"
+          aria-hidden="true"
+        >
+      </picture>
+      <picture class="guide-hero-picture guide-hero-picture--dark">
+        <source
+          media="(max-width: 833px)"
+          srcset="../images/guide-heroes/property-cover-9x16-dark.png?v=dark-1"
+        >
+        <img
+          class="guide-hero-bg"
+          src="../images/guide-heroes/property-cover-dark.png?v=dark-1"
+          alt=""
+          width="1600"
+          height="900"
+          decoding="async"
+          aria-hidden="true"
+        >
       </picture>
       <h1 class="guide-hero-title">{{SW:t.see_what_property_cover.66}}<br>{{SW:t.pays_for.67}}</h1>
       <h2 class="guide-hero-lead">{{SW:t.know_the_house_that_secures_the_loan_can_still_b.13}}</h2>
@@ -249,8 +264,5 @@
       </section>
     </div>
 
-    <div class="guide-fine-wrap">
-      <p class="guide-fine">{{SW:t.education_only_your_policy_schedule_wins_if_anyt.65}}</p>
-    </div>
       </div>
 </main>

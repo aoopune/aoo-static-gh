@@ -695,6 +695,22 @@ body.guide-reading .guide-hero--media picture {
   pointer-events: none;
 }
 
+/*
+ * Theme art swap — same dual-asset pattern as nav wordmarks.
+ * Without data-theme, light art stays visible; dark theme shows *-dark.png.
+ */
+body.guide-reading .guide-hero--media .guide-hero-picture--dark {
+  display: none;
+}
+
+html[data-theme="dark"] body.guide-reading .guide-hero--media .guide-hero-picture--light {
+  display: none;
+}
+
+html[data-theme="dark"] body.guide-reading .guide-hero--media .guide-hero-picture--dark {
+  display: block;
+}
+
 body.guide-reading .guide-hero-bg {
   position: absolute;
   inset: 0;
@@ -819,6 +835,35 @@ body.guide-reading .guide-hero--media .guide-hero-lead,
 body.guide-reading .guide-hero--media .mag-standfirst,
 body.guide-reading .guide-hero--media h2.guide-hero-lead {
   color: #3a3a40;
+}
+
+/*
+ * Dark masthead: same clipped steel wash as light, inverted to theme white.
+ * Light is charcoal → soft steel (#202027 → #485879); dark is ink → cool mist.
+ * Keep background-clip — do not flatten to solid fill (loses the fade).
+ */
+html[data-theme="dark"] .guide-hero-title,
+html[data-theme="dark"] .mag-title {
+  background-image: linear-gradient(90deg, #F5F5F7 0%, #A8B4C8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Photo + plain heroes: supporting line uses soft white (beats #3a3a40 media harden). */
+html[data-theme="dark"] .guide-hero-lead,
+html[data-theme="dark"] .mag-standfirst,
+html[data-theme="dark"] h2.guide-hero-lead,
+html[data-theme="dark"] body.guide-reading .guide-hero--media .guide-hero-lead,
+html[data-theme="dark"] body.guide-reading .guide-hero--media .mag-standfirst,
+html[data-theme="dark"] body.guide-reading .guide-hero--media h2.guide-hero-lead,
+html[data-theme="dark"] .mag .guide-hero-lead,
+html[data-theme="dark"] .mag .mag-standfirst,
+html[data-theme="dark"] .guide-content .guide-hero-lead,
+html[data-theme="dark"] .guide-content .mag-standfirst,
+html[data-theme="dark"] .guide-content h2.guide-hero-lead {
+  color: var(--shroffin-ink-soft);
 }
 
 @media (max-width: 833px) {
@@ -965,10 +1010,10 @@ body.guide-reading .mag-index-label {
 @media (max-width: 1199px) {
   body.guide-reading .mag-index {
     position: relative;
-    /* Frosted band — chapter labels stay readable when the strip sits on photo. */
-    background: rgba(255, 255, 255, 0.92);
-    -webkit-backdrop-filter: saturate(140%) blur(16px);
-    backdrop-filter: saturate(140%) blur(16px);
+    /* Same frosted chrome as the Guide bar (localnav) — light + dark. */
+    background: var(--shroffin-gn-bg);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
     /* Equal block padding — vertical center is owned by flex align-items, not top-only air. */
     padding-block: 0;
     padding-inline: var(--mag-inline) var(--mag-inline-end);
@@ -991,9 +1036,9 @@ body.guide-reading .mag-index-label {
     inset-inline-start: 0;
     background: linear-gradient(
       to left,
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0.88) 55%,
-      rgba(255, 255, 255, 0.96)
+      transparent,
+      color-mix(in srgb, var(--shroffin-gn-frost) 88%, transparent) 55%,
+      var(--shroffin-gn-frost)
     );
   }
 
@@ -1001,9 +1046,9 @@ body.guide-reading .mag-index-label {
     inset-inline-end: 0;
     background: linear-gradient(
       to right,
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0.88) 55%,
-      rgba(255, 255, 255, 0.96)
+      transparent,
+      color-mix(in srgb, var(--shroffin-gn-frost) 88%, transparent) 55%,
+      var(--shroffin-gn-frost)
     );
   }
 
@@ -1531,12 +1576,11 @@ body.guide-reading {
 .guide-chapter-card {
   /* One spacing ladder for every chapter card (proximity + uniformity).
      Title hugs its body a touch tighter; body regions share one stack gap;
-     hairline rows get equal air above and below the rule. */
+     rows get equal air from padding — no hairline dividers between wording. */
   --guide-card-gap-title: 14px;
   --guide-card-gap-stack: 18px;
   --guide-card-row-pad: 14px;
-  /* Air under card switches → first line of content (phone + desktop).
-     Matches the air between ledger rows (row-pad above + below a hairline). */
+  /* Air under card switches → first line of content (phone + desktop). */
   --guide-switch-gap: 28px;
   display: block;
   width: 100%;
@@ -1737,6 +1781,23 @@ body.guide-reading .mag-p {
   --guide-title-g: linear-gradient(90deg, #5e5ce6 0%, #bf5af2 42%, #2997ff 100%);
 }
 
+/* Same apple-skin asset as .home-title-wash--apple (no filter — clip-safe). */
+.guide-title-wash--glow-apple {
+  --guide-title-g: linear-gradient(100deg, #e53935 0%, #ffca28 50%, #66bb6a 100%);
+  background-image:
+    radial-gradient(
+      ellipse 34% 52% at 18% 26%,
+      rgba(255, 255, 252, 0.7) 0%,
+      rgba(255, 240, 210, 0.28) 36%,
+      transparent 68%
+    ),
+    url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22960%22%20height%3D%22320%22%20viewBox%3D%220%200%20960%20320%22%20preserveAspectRatio%3D%22none%22%3E%20%3Cdefs%3E%20%3ClinearGradient%20id%3D%22body%22%20x1%3D%220%22%20y1%3D%220.2%22%20x2%3D%221%22%20y2%3D%220.8%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%238a141c%22%2F%3E%20%3Cstop%20offset%3D%2212%25%22%20stop-color%3D%22%23d32f2f%22%2F%3E%20%3Cstop%20offset%3D%2228%25%22%20stop-color%3D%22%23ef5350%22%2F%3E%20%3Cstop%20offset%3D%2242%25%22%20stop-color%3D%22%23ff8a00%22%2F%3E%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%23ffca28%22%2F%3E%20%3Cstop%20offset%3D%2264%25%22%20stop-color%3D%22%23d4e157%22%2F%3E%20%3Cstop%20offset%3D%2278%25%22%20stop-color%3D%22%239ccc65%22%2F%3E%20%3Cstop%20offset%3D%2290%25%22%20stop-color%3D%22%2366bb6a%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232e7d32%22%2F%3E%20%3C%2FlinearGradient%3E%20%3ClinearGradient%20id%3D%22streaks%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220.15%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23fff8e1%22%20stop-opacity%3D%220%22%2F%3E%20%3Cstop%20offset%3D%2235%25%22%20stop-color%3D%22%23fff8e1%22%20stop-opacity%3D%220.28%22%2F%3E%20%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%23c62828%22%20stop-opacity%3D%220.2%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23fff8e1%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FlinearGradient%3E%20%3Cpattern%20id%3D%22streakPat%22%20width%3D%2256%22%20height%3D%22320%22%20patternUnits%3D%22userSpaceOnUse%22%20patternTransform%3D%22rotate%2812%29%22%3E%20%3Crect%20width%3D%2256%22%20height%3D%22320%22%20fill%3D%22url%28%23streaks%29%22%2F%3E%20%3C%2Fpattern%3E%20%3CradialGradient%20id%3D%22gloss%22%20cx%3D%2222%25%22%20cy%3D%2230%25%22%20r%3D%2242%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ffffff%22%20stop-opacity%3D%220.95%22%2F%3E%20%3Cstop%20offset%3D%2222%25%22%20stop-color%3D%22%23fff8e7%22%20stop-opacity%3D%220.6%22%2F%3E%20%3Cstop%20offset%3D%2248%25%22%20stop-color%3D%22%23ffd7a8%22%20stop-opacity%3D%220.22%22%2F%3E%20%3Cstop%20offset%3D%2270%25%22%20stop-color%3D%22%23ffffff%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FradialGradient%3E%20%3CradialGradient%20id%3D%22shade%22%20cx%3D%2250%25%22%20cy%3D%22110%25%22%20r%3D%2255%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%232a0508%22%20stop-opacity%3D%220.35%22%2F%3E%20%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%232a0508%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FradialGradient%3E%20%3CradialGradient%20id%3D%22cheek%22%20cx%3D%2282%25%22%20cy%3D%2262%25%22%20r%3D%2228%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ffe082%22%20stop-opacity%3D%220.4%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23ffe082%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FradialGradient%3E%20%3C%2Fdefs%3E%20%3Crect%20width%3D%22960%22%20height%3D%22320%22%20fill%3D%22url%28%23body%29%22%2F%3E%20%3Cellipse%20cx%3D%2290%22%20cy%3D%22150%22%20rx%3D%22160%22%20ry%3D%22180%22%20fill%3D%22%23e53935%22%20opacity%3D%220.5%22%2F%3E%20%3Cellipse%20cx%3D%22260%22%20cy%3D%22110%22%20rx%3D%22130%22%20ry%3D%22150%22%20fill%3D%22%23ff7043%22%20opacity%3D%220.42%22%2F%3E%20%3Cellipse%20cx%3D%22420%22%20cy%3D%22180%22%20rx%3D%22150%22%20ry%3D%22160%22%20fill%3D%22%23ffb300%22%20opacity%3D%220.48%22%2F%3E%20%3Cellipse%20cx%3D%22610%22%20cy%3D%22120%22%20rx%3D%22140%22%20ry%3D%22170%22%20fill%3D%22%23aed581%22%20opacity%3D%220.45%22%2F%3E%20%3Cellipse%20cx%3D%22800%22%20cy%3D%22170%22%20rx%3D%22150%22%20ry%3D%22175%22%20fill%3D%22%2366bb6a%22%20opacity%3D%220.5%22%2F%3E%20%3Cellipse%20cx%3D%22920%22%20cy%3D%22140%22%20rx%3D%22110%22%20ry%3D%22150%22%20fill%3D%22%232e7d32%22%20opacity%3D%220.42%22%2F%3E%20%3Crect%20width%3D%22960%22%20height%3D%22320%22%20fill%3D%22url%28%23streakPat%29%22%20opacity%3D%220.55%22%2F%3E%20%3Crect%20width%3D%22960%22%20height%3D%22320%22%20fill%3D%22url%28%23shade%29%22%2F%3E%20%3Crect%20width%3D%22960%22%20height%3D%22320%22%20fill%3D%22url%28%23cheek%29%22%2F%3E%20%3Crect%20width%3D%22960%22%20height%3D%22320%22%20fill%3D%22url%28%23gloss%29%22%2F%3E%20%3Cg%20fill%3D%22%234a1810%22%20opacity%3D%220.32%22%3E%20%3Ccircle%20cx%3D%2270%22%20cy%3D%2290%22%20r%3D%221.4%22%2F%3E%20%3Ccircle%20cx%3D%22130%22%20cy%3D%22160%22%20r%3D%221.1%22%2F%3E%20%3Ccircle%20cx%3D%22190%22%20cy%3D%2270%22%20r%3D%221.3%22%2F%3E%20%3Ccircle%20cx%3D%22240%22%20cy%3D%22200%22%20r%3D%221%22%2F%3E%20%3Ccircle%20cx%3D%22310%22%20cy%3D%22120%22%20r%3D%221.2%22%2F%3E%20%3Ccircle%20cx%3D%22360%22%20cy%3D%22230%22%20r%3D%221.1%22%2F%3E%20%3Ccircle%20cx%3D%22430%22%20cy%3D%2280%22%20r%3D%221.3%22%2F%3E%20%3Ccircle%20cx%3D%22490%22%20cy%3D%22170%22%20r%3D%221%22%2F%3E%20%3Ccircle%20cx%3D%22550%22%20cy%3D%22100%22%20r%3D%221.2%22%2F%3E%20%3Ccircle%20cx%3D%22610%22%20cy%3D%22210%22%20r%3D%221.1%22%2F%3E%20%3Ccircle%20cx%3D%22680%22%20cy%3D%2290%22%20r%3D%221.3%22%2F%3E%20%3Ccircle%20cx%3D%22740%22%20cy%3D%22160%22%20r%3D%221%22%2F%3E%20%3Ccircle%20cx%3D%22800%22%20cy%3D%2270%22%20r%3D%221.2%22%2F%3E%20%3Ccircle%20cx%3D%22860%22%20cy%3D%22200%22%20r%3D%221.1%22%2F%3E%20%3Ccircle%20cx%3D%22910%22%20cy%3D%22130%22%20r%3D%221.2%22%2F%3E%20%3Ccircle%20cx%3D%22150%22%20cy%3D%22240%22%20r%3D%221%22%2F%3E%20%3Ccircle%20cx%3D%22520%22%20cy%3D%2250%22%20r%3D%221.1%22%2F%3E%20%3Ccircle%20cx%3D%22770%22%20cy%3D%22250%22%20r%3D%221%22%2F%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E"),
+    linear-gradient(100deg, #e53935 0%, #ff8a00 28%, #ffca28 50%, #9ccc65 74%, #43a047 100%);
+  background-size: 100% 100%, 170% 170%, 100% 100%;
+  background-position: center, 28% 42%, center;
+  background-blend-mode: soft-light, normal, normal;
+}
+
 .guide-title-wash--glow-privacy {
   --guide-title-g: linear-gradient(90deg, #0a84ff 0%, #64d2ff 45%, #00c7be 100%);
 }
@@ -1825,7 +1886,7 @@ body.guide-reading .mag-p {
 .guide-tile-list li {
   margin: 0;
   padding: 18px 0;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
   color: var(--mag-ink);
   font-size: var(--shroffin-type-lead);
   font-weight: 500;
@@ -1934,7 +1995,7 @@ body.guide-reading .mag-p {
   gap: 4px;
   margin: 0;
   padding: var(--guide-card-row-pad, 14px) 0;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
 }
 
 .guide-share-when,
@@ -2021,7 +2082,7 @@ body.guide-reading .mag-p {
   letter-spacing: normal;
   line-height: 1.45;
   padding: var(--guide-card-row-pad, 14px) 0;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
 }
 
 /* Charges front: then-label above a muted note */
@@ -2160,7 +2221,7 @@ body.guide-reading .mag-p {
 .mag-note {
   margin: clamp(22px, 4vw, 30px) 0 0;
   padding: 14px 0 0;
-  border-block-start: 1px solid var(--mag-hair-soft);
+  border-block-start: 0;
   background: transparent;
   border-radius: 0;
   color: var(--mag-ink);
@@ -2229,7 +2290,7 @@ body.guide-reading .mag-p {
 .guide-doc-row,
 .mag-doc {
   padding: var(--guide-card-row-pad, 14px) 0;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
 }
 
 .guide-doc-name,
@@ -2291,11 +2352,11 @@ body.guide-reading .mag-p {
   font-weight: 600;
   letter-spacing: normal;
   line-height: 1.3;
-  border-bottom: 1px solid var(--mag-hair);
+  border-bottom: 0;
 }
 
 .guide-doc-table tbody tr + tr td {
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
 }
 
 .guide-doc-table th:first-child,
@@ -2353,7 +2414,7 @@ body.guide-reading .mag-p {
   gap: 4px;
   margin: 0;
   padding: 18px 0 18px 44px;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
   color: var(--mag-ink);
   font-size: clamp(16px, 2vw, 18px);
   font-weight: 500;
@@ -2384,10 +2445,8 @@ body.guide-reading .mag-p {
 }
 
 /*
- * Opening ledgers — no hairline above the first row.
- * Between-row rules stay. A top rule is only for separation from content above;
- * when the list / stack / note opens the card (or a band already drew the rule),
- * a first-row top border is redundant.
+ * Opening ledgers — first row sits flush (no extra top pad).
+ * Cards use spacing only; no hairline dividers between rows.
  */
 .guide-chapter-card > .guide-share-list > li:first-child,
 .guide-chapter-card > .mag-defs > .mag-def:first-child,
@@ -2415,7 +2474,7 @@ body.guide-reading .mag-p {
   border-top: 0;
 }
 
-/* Band already drew the rule — don’t stack a second on the first ledger row */
+/* First ledger row under a band sits flush. */
 .guide-answer-pair + .guide-share-list > li:first-child,
 .guide-answer--hero + .guide-share-list > li:first-child,
 .guide-answer-stage > .guide-doc-sub + .guide-share-list > li:first-child,
@@ -2430,7 +2489,7 @@ body.guide-reading .mag-p {
 }
 
 @media (min-width: 834px) {
-  /* Two-column grids: clear the top rule on both opening cells */
+  /* Two-column grids: opening cells sit flush */
   .guide-chapter-card > .guide-perk-grid > :nth-child(-n+2),
   .guide-chapter-card > .guide-status-grid > :nth-child(-n+2),
   .guide-chapter-card > .guide-doc-rows--cols > :nth-child(-n+2),
@@ -3142,7 +3201,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 .guide-rate-notes > p {
   margin: 0;
   padding: 12px 0;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
   color: var(--mag-ink);
   font-size: var(--shroffin-type-lead);
   line-height: 1.5;
@@ -3196,7 +3255,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
   gap: 12px 20px;
   margin: 0;
   padding: 10px 0;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
 }
 
 .guide-fee-cluster,
@@ -3395,8 +3454,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 }
 
 /*
- * List opening under a switch — same as opening ledgers: no hairline above
- * the first row (the switch already separates). Between-row rules stay.
+ * List opening under a switch — first row sits flush (switch already separates).
  */
 .guide-seg-panel > .guide-share-list:first-child > li:first-child,
 .guide-seg-panel > .mag-defs:first-child > .mag-def:first-child,
@@ -3410,7 +3468,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 .guide-chapter-card .guide-flow + .guide-doc-sub {
   margin-top: 36px;
   padding-top: 28px;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
 }
 
 /* Heading → tabs → answer share one left edge (one eye path). */
@@ -3432,7 +3490,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
  * 1. One left edge inside the card — tabs, labels, answers, rules.
  * 2. Number / phrase is loudest; labels and units stay quieter.
  * 3. Comparison columns share the same row structure.
- * 4. Secondary facts under a hairline, full width, skim first.
+ * 4. Secondary facts below, full width, skim first.
  * Never mix centered tabs with left headings or centered body.
  */
 
@@ -3476,14 +3534,14 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 @media (min-width: 834px) {
   .guide-answer-pair > .guide-answer:first-child {
     padding-inline-end: 40px;
-    border-inline-end: 1px solid var(--mag-hair-soft);
+    border-inline-end: 0;
   }
 }
 
 @media (max-width: 833px) {
   .guide-answer-pair > .guide-answer + .guide-answer {
     padding-top: 24px;
-    border-top: 1px solid var(--mag-hair-soft);
+    border-top: 0;
   }
 }
 
@@ -3565,10 +3623,10 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 .guide-answer--hero + .guide-quiet-facts {
   margin-top: 36px;
   padding-top: 28px;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
 }
 
-/* Band already draws the rule — don’t stack a second on the first row */
+/* First quiet-fact row under a band sits flush. */
 .guide-answer-pair + .guide-quiet-facts > li:first-child,
 .guide-answer--hero + .guide-quiet-facts > li:first-child {
   border-top: 0;
@@ -3577,7 +3635,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 .guide-answer-stage > .guide-doc-sub {
   margin-top: 36px;
   padding-top: 28px;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
   margin-bottom: 0;
   color: var(--mag-muted);
   font-size: var(--shroffin-type-body);
@@ -3598,7 +3656,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 .guide-chapter-card > .guide-glance {
   margin-top: 28px;
   padding-top: 20px;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
   text-align: left;
 }
 
@@ -3624,7 +3682,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
   gap: 4px;
   margin: 0;
   padding: 14px 0;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
   text-align: left;
 }
 
@@ -3710,7 +3768,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
   }
 
   /*
-   * Contrast answer: compact companion under a hairline.
+   * Contrast answer: compact companion under the primary.
    * Hide alignment spacers — they only exist for desktop column grid.
    */
   .guide-answer-pair > .guide-answer--contrast,
@@ -3722,7 +3780,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
     gap: 2px;
     margin-top: 16px;
     padding-top: 16px;
-    border-top: 1px solid var(--mag-hair-soft);
+    border-top: 0;
     row-gap: 0;
   }
 
@@ -3857,7 +3915,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 }
 
 .guide-quiet-facts--bare li {
-  border-top-color: color-mix(in srgb, var(--mag-hair-soft) 70%, transparent);
+  border-top-color: transparent;
 }
 
 /* ---- Source note / accordion disclosures -------------------------------- */
@@ -3870,7 +3928,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 .guide-disclosure {
   margin-top: clamp(28px, 4vw, 36px);
   padding-top: 24px;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
   text-align: left;
 }
 
@@ -3979,7 +4037,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
 .guide-chapter-card > .guide-source {
   margin-top: clamp(28px, 4vw, 36px);
   padding-top: 24px;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
 }
 
 .guide-source-cite,
@@ -4144,7 +4202,7 @@ body.guide-flip-focus .guide-flip.is-flipped .guide-flip-scene {
   gap: 10px 12px;
   align-items: center;
   padding: 14px 0 0;
-  border-block-start: 1px solid var(--mag-hair-soft);
+  border-block-start: 0;
 }
 
 .guide-teach-from,
@@ -4427,15 +4485,9 @@ a.guide-note-ref:hover {
     position: relative;
   }
 
-  /* one thin rule between the two compare columns */
+  /* Compare columns: spacing only — no vertical rule. */
   .guide-limits::before {
-    content: "";
-    position: absolute;
-    top: 2px;
-    bottom: 2px;
-    left: 50%;
-    width: 1px;
-    background: var(--mag-hair-soft);
+    content: none;
   }
 
   .guide-doc-rows--cols {
@@ -4875,10 +4927,10 @@ a.guide-note-ref:hover {
     margin: 0;
     padding-block: 0;
     padding-inline: var(--mag-inline) var(--mag-inline-end);
-    background: rgba(255, 255, 255, 0.82);
+    background: var(--shroffin-gn-bg);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     backdrop-filter: saturate(180%) blur(20px);
-    border-block-end: 1px solid rgba(0, 0, 0, 0.08);
+    border-block-end: 0;
     overflow-x: auto;
     overscroll-behavior-inline: contain;
     scrollbar-width: none;
@@ -5072,9 +5124,9 @@ a.guide-note-ref:hover {
     inset-inline-start: 0;
     background: linear-gradient(
       to left,
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0.88) 55%,
-      rgba(255, 255, 255, 0.96)
+      transparent,
+      color-mix(in srgb, var(--shroffin-gn-frost) 88%, transparent) 55%,
+      var(--shroffin-gn-frost)
     );
   }
 
@@ -5082,9 +5134,9 @@ a.guide-note-ref:hover {
     inset-inline-end: 0;
     background: linear-gradient(
       to right,
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0.88) 55%,
-      rgba(255, 255, 255, 0.96)
+      transparent,
+      color-mix(in srgb, var(--shroffin-gn-frost) 88%, transparent) 55%,
+      var(--shroffin-gn-frost)
     );
   }
 }
@@ -5170,10 +5222,10 @@ a.guide-note-ref:hover {
     /* Height = --guide-index-on-photo; pull uses that same token. */
     padding-block: 0;
     padding-inline: var(--mag-inline) var(--mag-inline-end);
-    background: rgba(255, 255, 255, 0.82);
+    background: var(--shroffin-gn-bg);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     backdrop-filter: saturate(180%) blur(20px);
-    border-block-end: 1px solid rgba(0, 0, 0, 0.08);
+    border-block-end: 0;
     box-sizing: border-box;
     transition: top 0.85s cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -5363,7 +5415,7 @@ a.guide-note-ref:hover {
 #income .guide-seg-panel .guide-doc-rows + .guide-doc-sub {
   margin-top: 28px;
   padding-top: 20px;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
 }
 
 #kyc .guide-chapter-card .guide-doc-sub + .guide-doc-rows,
@@ -5416,8 +5468,7 @@ a.guide-note-ref:hover {
   #emi .guide-chapter-card > .guide-seg,
   #emi #emi-panel-starts > .guide-seg,
   #rates .guide-chapter-card > .guide-seg,
-  #loan-structure .guide-chapter-card > .guide-seg,
-  #project-bank-approval .guide-chapter-card > .guide-seg {
+  #loan-structure .guide-chapter-card > .guide-seg {
     display: inline-flex;
     width: fit-content;
     max-width: 100%;
@@ -5426,30 +5477,17 @@ a.guide-note-ref:hover {
   #emi .guide-chapter-card > .guide-seg .guide-seg-btn,
   #emi #emi-panel-starts > .guide-seg .guide-seg-btn,
   #rates .guide-chapter-card > .guide-seg .guide-seg-btn,
-  #loan-structure .guide-chapter-card > .guide-seg .guide-seg-btn,
-  #project-bank-approval .guide-chapter-card > .guide-seg .guide-seg-btn {
+  #loan-structure .guide-chapter-card > .guide-seg .guide-seg-btn {
     flex: 0 0 auto;
   }
 }
 
-/* Project: air under “It depends…” (beat chapter-card > .guide-seg { margin-top: 0 }) */
-#project-bank-approval .guide-chapter-card > .guide-seg {
-  margin-top: 18px;
+/* Project bank-approval: stack new + resale answers with normal card gap. */
+#project-bank-approval .guide-chapter-card > .guide-limit-copy + .guide-limit-copy {
+  margin-top: var(--guide-card-gap-stack, 18px);
 }
 
-/*
- * Phone only: unequal segments so “New / under-construction” has room;
- * “Resale” stays shorter. Desktop (≥834) still hugs labels via flex: 0 0 auto.
- */
 @media (max-width: 833px) {
-  #project-bank-approval .guide-chapter-card > .guide-seg #apf-tab-new {
-    flex: 2.2 1 0;
-  }
-
-  #project-bank-approval .guide-chapter-card > .guide-seg #apf-tab-resale {
-    flex: 1 1 0;
-  }
-
   /*
    * Property papers: New + Resale on row 1; Build on N.A. plot on row 2.
    * Same touch height / type as other card switches (wrap must not slim them).
@@ -5656,11 +5694,6 @@ a.guide-note-ref:hover {
   }
 }
 
-#project-bank-approval .guide-chapter-card > .guide-glance {
-  margin-top: 18px;
-  padding-top: 24px;
-}
-
 /*
  * EMI: same switch → content gap as every other card (--guide-card-gap-stack).
  */
@@ -5671,7 +5704,7 @@ a.guide-note-ref:hover {
 #emi-flip .guide-flip-face--front > .guide-chapter-card > .guide-share-list + .guide-limit-title {
   margin-top: 32px;
   padding-top: 24px;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
 }
 
 #emi-flip .guide-flip-face--front .guide-limit-copy + .guide-seg {
@@ -5803,7 +5836,7 @@ a.guide-note-ref:hover {
 #bank-rates .guide-perk {
   margin: 0;
   padding: 18px 0;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -5869,7 +5902,7 @@ a.guide-note-ref:hover {
   }
 
   #bank-rates .guide-perk {
-    border-top: 1px solid var(--mag-hair-soft);
+    border-top: 0;
     padding: 20px 0;
   }
 
@@ -5895,7 +5928,7 @@ a.guide-note-ref:hover {
 .guide-story--insurance-hub .guide-status {
   margin: 0;
   padding: 18px 0;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -5960,7 +5993,7 @@ a.guide-note-ref:hover {
 .guide-story--property-cover #pay .guide-share-list > li {
   margin: 0;
   padding: 18px 0;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -6000,7 +6033,7 @@ a.guide-note-ref:hover {
   }
 
   .guide-story--insurance-hub .guide-status {
-    border-top: 1px solid var(--mag-hair-soft);
+    border-top: 0;
     padding: 20px 0;
   }
 
@@ -6028,7 +6061,7 @@ a.guide-note-ref:hover {
 .guide-story--complaints .guide-perk {
   margin: 0;
   padding: 18px 0;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -6075,7 +6108,7 @@ a.guide-note-ref:hover {
 .guide-story--complaints #talk-flip .guide-flip-face--front .guide-share-list > li {
   margin: 0;
   padding: 18px 0;
-  border-top: 1px solid var(--mag-hair-soft);
+  border-top: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -6113,7 +6146,7 @@ a.guide-note-ref:hover {
 
   .guide-story--complaints .guide-status,
   .guide-story--complaints .guide-perk {
-    border-top: 1px solid var(--mag-hair-soft);
+    border-top: 0;
     padding: 20px 0;
   }
 
@@ -6446,26 +6479,7 @@ html[data-theme="dark"] .guide-flip-focus-scrim {
   }
 }
 
-@media (max-width: 1199px) {
-  html[data-theme="dark"] body.guide-reading .mag-index {
-    background: rgba(30, 30, 30, 0.92);
-  }
-  html[data-theme="dark"] body.guide-reading .mag-index.has-more-left::before {
-    background: linear-gradient(to left, rgba(22, 22, 22, 0), rgba(22, 22, 22, 0.88) 55%, rgba(22, 22, 22, 0.96));
-  }
-  html[data-theme="dark"] body.guide-reading .mag-index.has-more-right::after {
-    background: linear-gradient(to right, rgba(22, 22, 22, 0), rgba(22, 22, 22, 0.88) 55%, rgba(22, 22, 22, 0.96));
-  }
-}
-
 @media (min-width: 834px) {
-  html[data-theme="dark"] body.guide-reading .mag-index.has-more-left::before {
-    background: linear-gradient(to left, rgba(22, 22, 22, 0), rgba(22, 22, 22, 0.88) 55%, rgba(22, 22, 22, 0.96));
-  }
-  html[data-theme="dark"] body.guide-reading .mag-index.has-more-right::after {
-    background: linear-gradient(to right, rgba(22, 22, 22, 0), rgba(22, 22, 22, 0.88) 55%, rgba(22, 22, 22, 0.96));
-  }
-
   html[data-theme="dark"] body.guide-reading .mag-index-link.is-active,
   html[data-theme="dark"] body.guide-reading .mag-index-link[aria-current="true"],
   html[data-theme="dark"] body.guide-reading .mag-toc-shell .mag-index-link.is-active,
@@ -6485,34 +6499,6 @@ html[data-theme="dark"] .guide-flip-focus-scrim {
 }
 
 @media (max-width: 833px) {
-  /*
-   * Phone dark: edge fades must match the chapter-strip frost (#1E1E1E /
-   * rgba(30,30,30)), not the page canvas (#161616). Canvas-dark fades read as
-   * a muddy blotch around the scroll chevron. Same paint family as the strip
-   * background above — one source for “what hides overflow.”
-   */
-  html[data-theme="dark"] body.guide-reading .mag-index {
-    --guide-index-edge: 30, 30, 30;
-  }
-
-  html[data-theme="dark"] body.guide-reading .mag-index.has-more-left::before {
-    background: linear-gradient(
-      to left,
-      rgba(var(--guide-index-edge), 0),
-      rgba(var(--guide-index-edge), 0.88) 55%,
-      rgba(var(--guide-index-edge), 0.96)
-    );
-  }
-
-  html[data-theme="dark"] body.guide-reading .mag-index.has-more-right::after {
-    background: linear-gradient(
-      to right,
-      rgba(var(--guide-index-edge), 0),
-      rgba(var(--guide-index-edge), 0.88) 55%,
-      rgba(var(--guide-index-edge), 0.96)
-    );
-  }
-
   html[data-theme="dark"] body.guide-reading .mag-index-link.is-active,
   html[data-theme="dark"] body.guide-reading .mag-index-link[aria-current="true"],
   html[data-theme="dark"] body.guide-reading .mag-index-link.is-active:link,
@@ -6537,13 +6523,7 @@ html[data-theme="dark"] .guide-flip-focus-scrim {
   }
 }
 
-/* Live guides use bare .mag-index (no mag-toc-shell on pages). Cover ≥834 frost L4760/5045. */
-html[data-theme="dark"] body.guide-reading .mag-index,
-html[data-theme="dark"] body.guide-reading .guide-hero + .mag-index,
-html[data-theme="dark"] body.guide-reading .mag-toc-shell .mag-index {
-  background: rgba(30, 30, 30, 0.82);
-  border-block-end-color: rgba(255, 255, 255, 0.08);
-}
+/* Chapter strip uses the same frosted chrome as the Guide bar (--shroffin-gn-bg). */
 
 @media (prefers-reduced-motion: reduce) {
   html[data-theme="dark"] .guide-flip-focus-scrim {

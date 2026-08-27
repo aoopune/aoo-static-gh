@@ -32,20 +32,35 @@
     <div class="guide-swap" id="guide-swap">
 
     <header class="guide-hero guide-hero--media guide-hero--media-pods">
-      <picture>
+      <picture class="guide-hero-picture guide-hero-picture--light">
         <source
           media="(max-width: 833px)"
           srcset="../images/guide-heroes/insurance-9x16.png?v=portrait-1"
         >
         <img
-        class="guide-hero-bg"
-        src="../images/guide-heroes/insurance.png?v=portrait-4"
-        alt=""
-        width="1600"
-        height="900"
-        decoding="async"
-        aria-hidden="true"
-      >
+          class="guide-hero-bg"
+          src="../images/guide-heroes/insurance.png?v=portrait-4"
+          alt=""
+          width="1600"
+          height="900"
+          decoding="async"
+          aria-hidden="true"
+        >
+      </picture>
+      <picture class="guide-hero-picture guide-hero-picture--dark">
+        <source
+          media="(max-width: 833px)"
+          srcset="../images/guide-heroes/insurance-9x16-dark.png?v=dark-1"
+        >
+        <img
+          class="guide-hero-bg"
+          src="../images/guide-heroes/insurance-dark.png?v=dark-1"
+          alt=""
+          width="1600"
+          height="900"
+          decoding="async"
+          aria-hidden="true"
+        >
       </picture>
       <h1 class="guide-hero-title">{{SW:t.two_covers_often_sit.45}}<br>{{SW:t.with_the_home_loan.46}}</h1>
       <h2 class="guide-hero-lead">{{SW:t.know_what_each_is_for_before_the_cost_joins_the_.9}}</h2>
@@ -159,8 +174,5 @@
       </section>
     </div>
 
-    <div class="guide-fine-wrap">
-      <p class="guide-fine">{{SW:t.education_only_your_certificate_of_insurance_or_.44}}</p>
-    </div>
       </div>
 </main>

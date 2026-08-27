@@ -32,7 +32,7 @@
     <div class="guide-swap" id="guide-swap">
 
     <header class="guide-hero guide-hero--media">
-      <picture>
+      <picture class="guide-hero-picture guide-hero-picture--light">
         <source
           media="(max-width: 833px)"
           srcset="../images/guide-heroes/overview-9x16.png?v=portrait-1"
@@ -40,6 +40,21 @@
         <img
           class="guide-hero-bg"
           src="../images/guide-heroes/overview.png?v=landscape-2"
+          alt=""
+          width="1600"
+          height="900"
+          decoding="async"
+          aria-hidden="true"
+        >
+      </picture>
+      <picture class="guide-hero-picture guide-hero-picture--dark">
+        <source
+          media="(max-width: 833px)"
+          srcset="../images/guide-heroes/overview-9x16-dark.png?v=dark-1"
+        >
+        <img
+          class="guide-hero-bg"
+          src="../images/guide-heroes/overview-dark.png?v=dark-1"
           alt=""
           width="1600"
           height="900"
@@ -249,29 +264,15 @@
                 <div class="guide-seg-panel" role="tabpanel" id="emi-panel-how" aria-labelledby="emi-tab-how">
                   <ul class="guide-share-list guide-share-list--plain">
                     <li>{{SW:t.in_the_early_years_you_are_mostly_paying_interes.60}}</li>
-                    <li>{{SW:t.in_the_later_years_you_are_mostly_paying_off_the.61}}</li>
                     <li>{{SW:t.fixed_interest_rates_keep_the_equated_monthly_in.62}}</li>
                   </ul>
                 </div>
 
                 <div class="guide-seg-panel" role="tabpanel" id="emi-panel-starts" aria-labelledby="emi-tab-starts" hidden>
-                  <p class="guide-limit-copy">{{SW:t.depends_on_if_the_property_is_ready_to_move_in_o.63}}</p>
-                  <div class="guide-seg" role="tablist" aria-label="{{SW:t.property_readiness.7}}">
-                    <button type="button" class="guide-seg-btn" role="tab" id="emi-tab-ready" aria-selected="true" aria-controls="emi-panel-ready">{{SW:t.ready_home.64}}</button>
-                    <button type="button" class="guide-seg-btn" role="tab" id="emi-tab-uc" aria-selected="false" aria-controls="emi-panel-uc" tabindex="-1">{{SW:t.under_construction.65}}</button>
-                  </div>
-                  <div class="guide-seg-panels">
-                    <div class="guide-seg-panel" role="tabpanel" id="emi-panel-ready" aria-labelledby="emi-tab-ready">
-                      <ul class="guide-share-list guide-share-list--plain">
-                        <li>{{SW:t.full_emi_about_one_month_after_first_disbursemen.66}}</li>
-                      </ul>
-                    </div>
-                    <div class="guide-seg-panel" role="tabpanel" id="emi-panel-uc" aria-labelledby="emi-tab-uc" hidden>
-                      <ul class="guide-share-list guide-share-list--plain">
-                        <li>{{SW:t.interest_only_pre_emi_on_what_s_disbursed_then_f.67}}</li>
-                      </ul>
-                    </div>
-                  </div>
+                  <ul class="guide-share-list guide-share-list--plain">
+                    <li>{{SW:t.full_emi_about_one_month_after_first_disbursemen.66}}</li>
+                    <li>{{SW:t.interest_only_pre_emi_on_what_s_disbursed_then_f.67}}</li>
+                  </ul>
 
                   <p class="guide-tip">
                     <span class="guide-tip-icon" aria-hidden="true">
@@ -388,7 +389,6 @@
                   <div class="guide-seg-panel" role="tabpanel" id="rate-panel-floating" aria-labelledby="rate-tab-floating">
                     <p class="guide-limit-copy">{{SW:t.the_interest_rate_fluctuates_in_line_with_the_be.78}}</p>
                     <ul class="guide-share-list guide-share-list--plain">
-                      <li>{{SW:t.the_total_interest_rate_equals_an_external_bench.79}}</li>
                       <li>{{SW:t.the_repo_rate_is_re_evaluated_and_reset_at_least.80}}</li>
                       <li>{{SW:t.if_interest_rates_rise_your_lender_gives_you_opt.81}}</li>
                       <li>{{SW:t.under.185}}<a
@@ -459,13 +459,14 @@
                   <div class="guide-seg-panel" role="tabpanel" id="structure-panel-term" aria-labelledby="structure-tab-term">
                     <p class="guide-limit-copy">{{SW:t.under_a_standard_home_loan_you_pay_a_fixed_emi_e.99}}</p>
                     <ul class="guide-share-list guide-share-list--plain">
-                      <li>{{SW:t.to_reduce_your_overall_interest_burden_early_on_.100}}</li>
+                      <li>{{SW:t.your_emi_and_loan_tenure_stay_fixed_unless_you_.195}}</li>
                       <li>{{SW:t.this_structure_is_ideal_if_you_do_not_plan_on_ho.101}}</li>
                     </ul>
                   </div>
                   <div class="guide-seg-panel" role="tabpanel" id="structure-panel-od" aria-labelledby="structure-tab-od" hidden>
                     <p class="guide-limit-copy">{{SW:t.under_a_home_loan_overdraft_facility_idle_funds_.102}}</p>
                     <ul class="guide-share-list guide-share-list--plain">
+                      <li>{{SW:t.your_emi_stays_the_same_but_more_goes_toward_th.196}}</li>
                       <li>{{SW:t.overdraft_home_loans_typically_carry_an_interest.103}}</li>
                       <li>{{SW:t.the_overdraft_option_is_only_cost_effective_if_t.104}}</li>
                     </ul>
@@ -693,21 +694,8 @@
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-siri guide-tile-question">{{SW:t.is_your_project_bank_approved.164}}</span></h2>
               <p class="guide-tile-copy guide-tile-copy--rule">{{SW:t.before_the_loan_is_released_the_bank_must_clear_.165}}</p>
           <div class="guide-chapter-card">
-          <p class="guide-tile-copy guide-tile-copy--rule">{{SW:t.it_depends_on_how_you_buy.166}}</p>
-<div class="guide-seg" role="tablist" aria-label="{{SW:t.home_type.12}}">
-            <button type="button" class="guide-seg-btn" role="tab" id="apf-tab-new" aria-selected="true" aria-controls="apf-panel-new">{{SW:t.new_under_construction.167}}</button>
-            <button type="button" class="guide-seg-btn" role="tab" id="apf-tab-resale" aria-selected="false" aria-controls="apf-panel-resale" tabindex="-1">{{SW:t.resale.168}}</button>
-          </div>
-
-          <div class="guide-seg-panels">
-          <div class="guide-seg-panel" role="tabpanel" id="apf-panel-new" aria-labelledby="apf-tab-new">
-            <p class="guide-limit-copy">{{SW:t.for_new_or_under_construction_properties_choosin.169}}</p>
-          </div>
-
-          <div class="guide-seg-panel" role="tabpanel" id="apf-panel-resale" aria-labelledby="apf-tab-resale" hidden>
-            <p class="guide-limit-copy">{{SW:t.for_resale_properties_the_lender_evaluates_your_.170}}</p>
-          </div>
-          </div>
+          <p class="guide-limit-copy">{{SW:t.for_new_or_under_construction_properties_choosin.169}}</p>
+          <p class="guide-limit-copy">{{SW:t.for_resale_properties_the_lender_evaluates_your_.170}}</p>
           <a class="guide-flip-link guide-project-link" href="project-approvals.html">{{SW:t.find_banks_that_already_approve_your_project.194}}<svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
               <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -718,8 +706,5 @@
       </section>
     </div>
 
-    <div class="guide-fine-wrap">
-      <p class="guide-fine">{{SW:t.this_guide_is_for_educational_and_comparison_pur.171}}</p>
-    </div>
       </div>
 </main>

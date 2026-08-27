@@ -67,7 +67,7 @@ Use **Jump to** below to open any line in this file.
 - [Text — Tax after these claims](#t.tax_after_these_claims.44)
 - [Text — Year 1 interest paid](#t.year_1_interest_paid.45)
 - [Text — Year 1 principal paid](#t.year_1_principal_paid.46)
-- [Text — Planning estimate only. Not a bank offer, sanction, tax advice, or yo…](#t.planning_estimate_only_not_a_bank_offer_sanction.47)
+- [Text — Planning estimate only.](#t.planning_estimate_only_not_a_bank_offer_sanction.47)
 - [Heading — How this estimate works](#t.how_this_estimate_works.48)
 - [Link — Tax benefits guide](#t.tax_benefits_guide.49)
 - [Subheading — Formula used](#t.formula_used.50)
@@ -329,8 +329,8 @@ Year 1 principal paid
 
 <a id="t.planning_estimate_only_not_a_bank_offer_sanction.47"></a>
 
-## Text — Planning estimate only. Not a bank offer, sanction, tax advice, or yo… {#t.planning_estimate_only_not_a_bank_offer_sanction.47}
-Planning estimate only. Not a bank offer, sanction, tax advice, or your refund. Confirm with a tax professional before you file.
+## Text — Planning estimate only. {#t.planning_estimate_only_not_a_bank_offer_sanction.47}
+Planning estimate only.
 
 <a id="t.how_this_estimate_works.48"></a>
 

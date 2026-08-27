@@ -84,7 +84,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — The bank is usually on the building policy as loss payee or under an …](#t.the_bank_is_usually_on_the_building_policy_as_lo.62)
 - [Text — Contents payout may go to you even when the bank is named on the buil…](#t.contents_payout_may_go_to_you_even_when_the_bank.63)
 - [Text — On total loss, the bank is usually named on the building payout.](#t.on_total_loss_the_bank_is_usually_named_on_the_b.64)
-- [Text — Education only. Your Policy Schedule wins if anything here differs.](#t.education_only_your_policy_schedule_wins_if_anyt.65)
 - [text](#t.see_what_property_cover.66)
 - [text](#t.pays_for.67)
 - [text](#t.until_handover_risk_for_the_unfinished_house_usu.68)
@@ -403,11 +402,6 @@ Contents payout may go to you even when the bank is named on the building cover.
 
 ## Text — On total loss, the bank is usually named on the building payout. {#t.on_total_loss_the_bank_is_usually_named_on_the_b.64}
 On total loss, the bank is usually named on the building payout.
-
-<a id="t.education_only_your_policy_schedule_wins_if_anyt.65"></a>
-
-## Text — Education only. Your Policy Schedule wins if anything here differs. {#t.education_only_your_policy_schedule_wins_if_anyt.65}
-Education only. Your Policy Schedule wins if anything here differs.
 
 <a id="t.see_what_property_cover.66"></a>
 

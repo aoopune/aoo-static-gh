@@ -80,6 +80,7 @@ All color-ish roles in `css/shroffin-shell.css` `:root` after Phase B. **Dark tw
 | `--shroffin-ink-soft` | `#3a3a3d` | Softer body / lead ink | **Promoted** (editorial/about/stance still hardcode same hex until Phase E) | yes | Soft ink stays private forever | New in Phase B; do not invent competing softs |
 | `--shroffin-ink-strong` | `#000000` | Full-strength chrome hover when rest is already ink | nav flyout / compact / disclaimer | yes — dark `#ffffff` | Hover stays blue forever | Darker (light) / brighter (dark); not link blue |
 | `--shroffin-muted` | `#6e6e73` | Secondary / fine print | shell + stacks | yes | Fine print wrong on dark | |
+| `--shroffin-quiet` | `rgba(0,0,0,0.56)` | Quiet chrome text (softer than muted) | footer body, Explore help “i” rest | yes — dark `rgba(255,255,255,0.45)` | Footer/help marks stay black on dark | Was hardcoded on `.site-footer`; do not invent parallel quiet rgba |
 | `--shroffin-ghost` | `#c5c9cf` | Large decorative numerals | **Promoted** (mag/about still local until E) | yes | Ghost type disappears or chalks | |
 | `--shroffin-blue` | `#0071e3` | Brand / accent blue | accents, icons, focus twin | yes — dark `#0A84FF` | Brand chrome wrong | ≠ link blue; ≠ filled CTA on dark |
 | `--shroffin-btn-primary` | `#0071e3` | Primary button **fill** | elevated CTAs | yes — dark `#edecec` | CTAs wrong | Light: Apple Buy blue. Dark: Cursor marketing pill (`--color-theme-fg`) |

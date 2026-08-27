@@ -25,11 +25,9 @@ omitted_by_policy:
 - [Screen reader — Overview chapters](#t.overview_chapters.1)
 - [Screen reader — How much can you borrow](#t.how_much_can_you_borrow.2)
 - [Screen reader — How do you repay the loan](#t.how_do_you_repay_the_loan.6)
-- [Screen reader — Property readiness](#t.property_readiness.7)
 - [Screen reader — Interest rate type](#t.interest_rate_type.9)
 - [Screen reader — Loan structure type](#t.loan_structure_type.10)
 - [Screen reader — What are the charges to get the loan](#t.what_are_the_charges_to_get_the_loan.11)
-- [Screen reader — Home type](#t.home_type.12)
 
 <a id="t.guide.0"></a>
 
@@ -51,11 +49,6 @@ How much can you borrow
 ## Screen reader — How do you repay the loan {#t.how_do_you_repay_the_loan.6}
 How do you repay the loan
 
-<a id="t.property_readiness.7"></a>
-
-## Screen reader — Property readiness {#t.property_readiness.7}
-Property readiness
-
 <a id="t.interest_rate_type.9"></a>
 
 ## Screen reader — Interest rate type {#t.interest_rate_type.9}
@@ -70,8 +63,3 @@ Loan structure type
 
 ## Screen reader — What are the charges to get the loan {#t.what_are_the_charges_to_get_the_loan.11}
 What are the charges to get the loan
-
-<a id="t.home_type.12"></a>
-
-## Screen reader — Home type {#t.home_type.12}
-Home type

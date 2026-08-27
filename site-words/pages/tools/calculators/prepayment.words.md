@@ -46,7 +46,7 @@ Use **Jump to** below to open any line in this file.
 - [Text — New EMI](#t.new_emi.23)
 - [Text — New tenure](#t.new_tenure.24)
 - [Text — Months fewer](#t.months_fewer.25)
-- [Text — Planning estimate only. Not a bank offer, sanction, or promise. Final…](#t.planning_estimate_only_not_a_bank_offer_sanction.26)
+- [Text — Planning estimate only.](#t.planning_estimate_only_not_a_bank_offer_sanction.26)
 - [Heading — How this estimate works](#t.how_this_estimate_works.27)
 - [Text — What goes into this estimate.](#t.what_goes_into_this_estimate.28)
 - [Subheading — Formula used](#t.formula_used.29)
@@ -178,8 +178,8 @@ Months fewer
 
 <a id="t.planning_estimate_only_not_a_bank_offer_sanction.26"></a>
 
-## Text — Planning estimate only. Not a bank offer, sanction, or promise. Final… {#t.planning_estimate_only_not_a_bank_offer_sanction.26}
-Planning estimate only. Not a bank offer, sanction, or promise. Final terms stay with the lender.
+## Text — Planning estimate only. {#t.planning_estimate_only_not_a_bank_offer_sanction.26}
+Planning estimate only.
 
 <a id="t.how_this_estimate_works.27"></a>
 

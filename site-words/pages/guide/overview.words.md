@@ -77,13 +77,9 @@ Use **Jump to** below to open any line in this file.
 - [Button — How EMI works](#t.how_emi_works.58)
 - [Button — When it starts](#t.when_it_starts.59)
 - [List item — In the early years, you are mostly paying interest.](#t.in_the_early_years_you_are_mostly_paying_interes.60)
-- [List item — In the later years, you are mostly paying off the principal.](#t.in_the_later_years_you_are_mostly_paying_off_the.61)
 - [List item — Fixed interest rates keep the Equated Monthly Installment (EMI) stabl…](#t.fixed_interest_rates_keep_the_equated_monthly_in.62)
-- [Text — Depends on if the property is ready to move in or under construction.](#t.depends_on_if_the_property_is_ready_to_move_in_o.63)
-- [Button — Ready home](#t.ready_home.64)
-- [Button — Under construction](#t.under_construction.65)
-- [List item — Full EMI about one month after first disbursement.](#t.full_emi_about_one_month_after_first_disbursemen.66)
-- [List item — Interest-only (pre-EMI) on what’s disbursed, then full EMI around pos…](#t.interest_only_pre_emi_on_what_s_disbursed_then_f.67)
+- [List item — For ready-to-move properties, full EMI payments begin roughly one mon…](#t.full_emi_about_one_month_after_first_disbursemen.66)
+- [List item — For under-construction properties, you pay interest only on the disbu…](#t.interest_only_pre_emi_on_what_s_disbursed_then_f.67)
 - [Text — Estimate your EMI](#t.estimate_your_emi.68)
 - [Text — Loan amount (₹)](#t.loan_amount.69)
 - [Text — Indicative EMI](#t.indicative_emi.70)
@@ -95,7 +91,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — Preferred](#t.preferred.76)
 - [Button — Fixed / hybrid](#t.fixed_hybrid.77)
 - [Text — The interest rate fluctuates in line with the benchmark throughout th…](#t.the_interest_rate_fluctuates_in_line_with_the_be.78)
-- [List item — The total interest rate equals an external benchmark—typically the re…](#t.the_total_interest_rate_equals_an_external_bench.79)
 - [List item — The repo rate is re-evaluated and reset at least once every quarter.](#t.the_repo_rate_is_re_evaluated_and_reset_at_least.80)
 - [List item — If interest rates rise, your lender gives you options to manage the i…](#t.if_interest_rates_rise_your_lender_gives_you_opt.81)
 - [Text — (opens official RBI page)](#t.opens_official_rbi_page.82)
@@ -116,9 +111,10 @@ Use **Jump to** below to open any line in this file.
 - [Text — Regular](#t.regular.97)
 - [Button — Overdraft](#t.overdraft.98)
 - [Text — Under a standard home loan, you pay a fixed EMI each month while inte…](#t.under_a_standard_home_loan_you_pay_a_fixed_emi_e.99)
-- [List item — To reduce your overall interest burden early on, you must make partia…](#t.to_reduce_your_overall_interest_burden_early_on_.100)
+- [List item — Your EMI and loan tenure stay fixed unless you make a formal prepay…](#t.your_emi_and_loan_tenure_stay_fixed_unless_you_.195)
 - [List item — This structure is ideal if you do not plan on holding large idle cash…](#t.this_structure_is_ideal_if_you_do_not_plan_on_ho.101)
 - [Text — Under a home loan overdraft facility, idle funds parked in your linke…](#t.under_a_home_loan_overdraft_facility_idle_funds_.102)
+- [List item — Your EMI stays the same, but more goes toward the principal—paying o…](#t.your_emi_stays_the_same_but_more_goes_toward_th.196)
 - [List item — Overdraft home loans typically carry an interest rate that is 0.15% t…](#t.overdraft_home_loans_typically_carry_an_interest.103)
 - [List item — The overdraft option is only cost-effective if the interest saved by …](#t.the_overdraft_option_is_only_cost_effective_if_t.104)
 - [Text — Rules after you choose a structure](#t.rules_after_you_choose_a_structure.105)
@@ -182,12 +178,8 @@ Use **Jump to** below to open any line in this file.
 - [Text — ₹100*](#t.100.163)
 - [Text — Is your project bank-approved?](#t.is_your_project_bank_approved.164)
 - [Text — Before the loan is released, the bank must clear the property. Lender…](#t.before_the_loan_is_released_the_bank_must_clear_.165)
-- [Text — It depends on how you buy.](#t.it_depends_on_how_you_buy.166)
-- [Button — New / under-construction](#t.new_under_construction.167)
-- [Button — Resale](#t.resale.168)
 - [Text — For new or under-construction properties, choosing a project with pre…](#t.for_new_or_under_construction_properties_choosin.169)
 - [Text — For resale properties, the lender evaluates your specific unit indivi…](#t.for_resale_properties_the_lender_evaluates_your_.170)
-- [Text — This guide is for educational and comparison purposes only; all figur…](#t.this_guide_is_for_educational_and_comparison_pur.171)
 - [text](#t.the_essentials.172)
 - [text](#t.before_you_choose_a_lender.173)
 - [text](#t.emi.174)
@@ -375,7 +367,7 @@ Start with monthly take-home.
 <a id="t.minus_emis_and_a_share_of_card_limits_what_s_lef.41"></a>
 
 ## List item — Minus EMIs and a share of card limits — what’s left is your EMI capac… {#t.minus_emis_and_a_share_of_card_limits_what_s_lef.41}
-Minus EMIs and a share of card limits — what’s left is your EMI capacity.
+Minus EMIs and a share of card limits — what’s left is your EMI capacity. (Total EMIs are max 55%-70% of your take home income)
 
 <a id="t.from_that_emi_rate_and_tenure_the_bank_sets_the_.42"></a>
 
@@ -385,7 +377,6 @@ From that EMI, rate, and tenure, the bank sets the loan amount.
 <a id="t.all_emis_are_usually_limited_to_about_55_70_of_t.43"></a>
 
 ## Text — All EMIs are usually limited to about 55–70% of take-home. {#t.all_emis_are_usually_limited_to_about_55_70_of_t.43}
-All EMIs are usually limited to about 55–70% of take-home.
 
 <a id="t.estimate_your_loan_amount.44"></a>
 
@@ -455,7 +446,7 @@ How do you repay the loan?
 <a id="t.through_an_equated_monthly_instalment_emi_which_.57"></a>
 
 ## Text — Through an Equated Monthly Instalment (EMI) — which includes both the… {#t.through_an_equated_monthly_instalment_emi_which_.57}
-Through an Equated Monthly Instalment (EMI) — which includes both the principal and the interest together.
+Through an Equated Monthly Instalment (EMI) — includes both the principal and the interest.
 
 <a id="t.how_emi_works.58"></a>
 
@@ -470,42 +461,22 @@ When it starts
 <a id="t.in_the_early_years_you_are_mostly_paying_interes.60"></a>
 
 ## List item — In the early years, you are mostly paying interest. {#t.in_the_early_years_you_are_mostly_paying_interes.60}
-In the early years, you are mostly paying interest.
-
-<a id="t.in_the_later_years_you_are_mostly_paying_off_the.61"></a>
-
-## List item — In the later years, you are mostly paying off the principal. {#t.in_the_later_years_you_are_mostly_paying_off_the.61}
-In the later years, you are mostly paying off the principal.
+In the early years, you pay mostly interest because you owe the most money, while later, you pay mostly toward the principal.
 
 <a id="t.fixed_interest_rates_keep_the_equated_monthly_in.62"></a>
 
 ## List item — Fixed interest rates keep the Equated Monthly Installment (EMI) stabl… {#t.fixed_interest_rates_keep_the_equated_monthly_in.62}
-Fixed interest rates keep the Equated Monthly Installment (EMI) stable; floating rates adjust either the monthly repayment amount or the total loan tenure.
-
-<a id="t.depends_on_if_the_property_is_ready_to_move_in_o.63"></a>
-
-## Text — Depends on if the property is ready to move in or under construction. {#t.depends_on_if_the_property_is_ready_to_move_in_o.63}
-Depends on if the property is ready to move in or under construction.
-
-<a id="t.ready_home.64"></a>
-
-## Button — Ready home {#t.ready_home.64}
-Ready home
-
-<a id="t.under_construction.65"></a>
-
-## Button — Under construction {#t.under_construction.65}
-Under construction
+EMI stays fixed on a fixed rate, but moves up or down on a floating rate (if rates change).
 
 <a id="t.full_emi_about_one_month_after_first_disbursemen.66"></a>
 
-## List item — Full EMI about one month after first disbursement. {#t.full_emi_about_one_month_after_first_disbursemen.66}
-Full EMI about one month after first disbursement.
+## List item — For ready-to-move properties, full EMI payments begin roughly one mon… {#t.full_emi_about_one_month_after_first_disbursemen.66}
+For ready-to-move properties, full EMI payments begin roughly one month after the initial disbursement.
 
 <a id="t.interest_only_pre_emi_on_what_s_disbursed_then_f.67"></a>
 
-## List item — Interest-only (pre-EMI) on what’s disbursed, then full EMI around pos… {#t.interest_only_pre_emi_on_what_s_disbursed_then_f.67}
-Interest-only (pre-EMI) on what’s disbursed, then full EMI around possession.
+## List item — For under-construction properties, you pay interest only on the disbu… {#t.interest_only_pre_emi_on_what_s_disbursed_then_f.67}
+For under-construction properties, you pay interest only on the disbursed amount until full EMIs kick in near possession.
 
 <a id="t.estimate_your_emi.68"></a>
 
@@ -560,22 +531,17 @@ Fixed / hybrid
 <a id="t.the_interest_rate_fluctuates_in_line_with_the_be.78"></a>
 
 ## Text — The interest rate fluctuates in line with the benchmark throughout th… {#t.the_interest_rate_fluctuates_in_line_with_the_be.78}
-The interest rate fluctuates in line with the benchmark throughout the loan duration.
-
-<a id="t.the_total_interest_rate_equals_an_external_bench.79"></a>
-
-## List item — The total interest rate equals an external benchmark—typically the re… {#t.the_total_interest_rate_equals_an_external_bench.79}
-The total interest rate equals an external benchmark—typically the repo rate—plus the bank’s added margin or spread.
+The interest rate is linked to an external benchmark, such as the RBI repo rate, plus the bank's spread.
 
 <a id="t.the_repo_rate_is_re_evaluated_and_reset_at_least.80"></a>
 
 ## List item — The repo rate is re-evaluated and reset at least once every quarter. {#t.the_repo_rate_is_re_evaluated_and_reset_at_least.80}
-The repo rate is re-evaluated and reset at least once every quarter.
+The RBI reviews the repo rate every two months, and whenever it changes, banks must adjust your interest rate.
 
 <a id="t.if_interest_rates_rise_your_lender_gives_you_opt.81"></a>
 
 ## List item — If interest rates rise, your lender gives you options to manage the i… {#t.if_interest_rates_rise_your_lender_gives_you_opt.81}
-If interest rates rise, your lender gives you options to manage the increased cost: make a lump-sum payment, increase your monthly EMI, extend your loan tenure, or combine these approaches.
+If rates rise, you can manage costs by paying a lump sum, raising your EMI, extending your tenure, or combining these options
 
 <a id="t.opens_official_rbi_page.82"></a>
 
@@ -585,27 +551,27 @@ If interest rates rise, your lender gives you options to manage the increased co
 <a id="t.the_interest_rate_remains_fixed_for_an_initial_p.83"></a>
 
 ## Text — The interest rate remains fixed for an initial period before transiti… {#t.the_interest_rate_remains_fixed_for_an_initial_p.83}
-The interest rate remains fixed for an initial period before transitioning to a variable rate.
+The interest rate stays fixed for an initial period and then switches to a floating rate.
 
 <a id="t.the_interest_rate_is_calculated_using_an_externa.84"></a>
 
 ## List item — The interest rate is calculated using an external benchmark—typically… {#t.the_interest_rate_is_calculated_using_an_externa.84}
-The interest rate is calculated using an external benchmark—typically the repo rate—plus the bank's margin and an additional fixed-rate premium.
+An additional fixed-rate premium is added to the benchmark (external or internal) and the bank's margin.
 
 <a id="t.the_fixed_rate_duration_is_typically_set_for_3_o.85"></a>
 
 ## List item — The fixed-rate duration is typically set for 3 or 5 years, depending … {#t.the_fixed_rate_duration_is_typically_set_for_3_o.85}
-The fixed-rate duration is typically set for 3 or 5 years, depending on the lender's policy.
+This fixed period usually lasts for 3 to 5 years, depending on your lender.
 
 <a id="t.during_the_fixed_period_the_interest_rate_is_gen.86"></a>
 
 ## List item — During the fixed period, the interest rate is generally 1% to 2% high… {#t.during_the_fixed_period_the_interest_rate_is_gen.86}
-During the fixed period, the interest rate is generally 1% to 2% higher than prevailing floating rates.
+During this fixed period, your rate is typically 1% to 2% higher than floating rates.
 
 <a id="t.prepaying_or_foreclosing_the_loan_during_the_fix.87"></a>
 
 ## List item — Prepaying or foreclosing the loan during the fixed-rate tenure incurs… {#t.prepaying_or_foreclosing_the_loan_during_the_fix.87}
-Prepaying or foreclosing the loan during the fixed-rate tenure incurs a penalty of 2% to 4%.
+Prepaying or closing your loan incurs a 2% to 4% penalty on the amount paid.
 
 <a id="t.rate_options_after_sanction.88"></a>
 
@@ -645,7 +611,7 @@ A newly sanctioned loan can take about 90 days for the first change.
 <a id="t.what_are_the_types_of_loan_structures.95"></a>
 
 ## Text — What are the types of loan structures? {#t.what_are_the_types_of_loan_structures.95}
-What are the types of loan structures?
+What are the types of loan facilities?
 
 <a id="t.a_regular_term_loan_or_an_overdraft_where_spare_.96"></a>
 
@@ -665,37 +631,42 @@ Overdraft
 <a id="t.under_a_standard_home_loan_you_pay_a_fixed_emi_e.99"></a>
 
 ## Text — Under a standard home loan, you pay a fixed EMI each month while inte… {#t.under_a_standard_home_loan_you_pay_a_fixed_emi_e.99}
-Under a standard home loan, you pay a fixed EMI each month while interest accumulates on the remaining principal balance, regardless of the funds sitting in your savings account.
+Interest is charged only on your remaining loan balance as you pay it off.
 
-<a id="t.to_reduce_your_overall_interest_burden_early_on_.100"></a>
+<a id="t.your_emi_and_loan_tenure_stay_fixed_unless_you_.195"></a>
 
-## List item — To reduce your overall interest burden early on, you must make partia… {#t.to_reduce_your_overall_interest_burden_early_on_.100}
-To reduce your overall interest burden early on, you must make partial prepayments toward the loan principal.
+## List item — Your EMI and loan tenure stay fixed unless you make a formal prepay… {#t.your_emi_and_loan_tenure_stay_fixed_unless_you_.195}
+EMI and loan tenure stay fixed unless you make a formal prepayment.
 
 <a id="t.this_structure_is_ideal_if_you_do_not_plan_on_ho.101"></a>
 
 ## List item — This structure is ideal if you do not plan on holding large idle cash… {#t.this_structure_is_ideal_if_you_do_not_plan_on_ho.101}
-This structure is ideal if you do not plan on holding large idle cash balances in your bank account over extended periods.
+Ideal if you don't leave extra money in the bank for a long time.
 
 <a id="t.under_a_home_loan_overdraft_facility_idle_funds_.102"></a>
 
 ## Text — Under a home loan overdraft facility, idle funds parked in your linke… {#t.under_a_home_loan_overdraft_facility_idle_funds_.102}
-Under a home loan overdraft facility, idle funds parked in your linked account offset your outstanding balance to reduce interest, while remaining fully accessible for withdrawal whenever needed.
+Extra money in your account reduces your interest, but you can withdraw it anytime.
+
+<a id="t.your_emi_stays_the_same_but_more_goes_toward_th.196"></a>
+
+## List item — Your EMI stays the same, but more goes toward the principal—paying o… {#t.your_emi_stays_the_same_but_more_goes_toward_th.196}
+EMI stays the same, but more goes toward the principal—paying off your loan faster.
 
 <a id="t.overdraft_home_loans_typically_carry_an_interest.103"></a>
 
 ## List item — Overdraft home loans typically carry an interest rate that is 0.15% t… {#t.overdraft_home_loans_typically_carry_an_interest.103}
-Overdraft home loans typically carry an interest rate that is 0.15% to 1% higher than a standard term loan from the same bank.
+The interest rate is 0.15% to 1% higher than on a term loan.
 
 <a id="t.the_overdraft_option_is_only_cost_effective_if_t.104"></a>
 
 ## List item — The overdraft option is only cost-effective if the interest saved by … {#t.the_overdraft_option_is_only_cost_effective_if_t.104}
-The overdraft option is only cost-effective if the interest saved by parking your extra cash outweighs the higher base interest rate of the loan.
+This saves money only if the interest you cut with extra cash is higher than the loan's extra rate.
 
 <a id="t.rules_after_you_choose_a_structure.105"></a>
 
 ## Text — Rules after you choose a structure {#t.rules_after_you_choose_a_structure.105}
-Rules after you choose a structure
+Rules after you choose a facility
 
 <a id="t.these_rules_matter_when_you_choose.106"></a>
 
@@ -995,37 +966,17 @@ Is your project bank-approved?
 <a id="t.before_the_loan_is_released_the_bank_must_clear_.165"></a>
 
 ## Text — Before the loan is released, the bank must clear the property. Lender… {#t.before_the_loan_is_released_the_bank_must_clear_.165}
-Before the loan is released, the bank must clear the property. Lenders call this Approved Project Finance (APF).
-
-<a id="t.it_depends_on_how_you_buy.166"></a>
-
-## Text — It depends on how you buy. {#t.it_depends_on_how_you_buy.166}
-It depends on how you buy.
-
-<a id="t.new_under_construction.167"></a>
-
-## Button — New / under-construction {#t.new_under_construction.167}
-New / under-construction
-
-<a id="t.resale.168"></a>
-
-## Button — Resale {#t.resale.168}
-Resale
+Banks verify and approve a property before releasing your loan, which is known as Approved Project Finance (APF).
 
 <a id="t.for_new_or_under_construction_properties_choosin.169"></a>
 
 ## Text — For new or under-construction properties, choosing a project with pre… {#t.for_new_or_under_construction_properties_choosin.169}
-For new or under-construction properties, choosing a project with pre-approved financing (APF) speeds up loan processing and reduces redundant legal, technical, and title search fees.
+For new or under-construction projects, banks approve the entire property upfront, saving buyers time and legal fees — though not all banks approve every project.
 
 <a id="t.for_resale_properties_the_lender_evaluates_your_.170"></a>
 
 ## Text — For resale properties, the lender evaluates your specific unit indivi… {#t.for_resale_properties_the_lender_evaluates_your_.170}
-For resale properties, the lender evaluates your specific unit individually, which can prolong approval times and add separate legal, technical, and title search charges.
-
-<a id="t.this_guide_is_for_educational_and_comparison_pur.171"></a>
-
-## Text — This guide is for educational and comparison purposes only; all figur… {#t.this_guide_is_for_educational_and_comparison_pur.171}
-This guide is for educational and comparison purposes only; all figures and summaries are indicative. Final interest rates, charges, loan eligibility, insurance requirements, and approvals depend on your individual profile, property evaluation, and lender policies—with the terms in your official sanction letter, loan agreement, and policy documents taking precedence.
+For resale properties, an individual APF is required for each unit, causing extra legal fees and longer approval times.
 
 <a id="t.the_essentials.172"></a>
 
@@ -1045,7 +996,6 @@ EMI
 <a id="t.tip.175"></a>
 
 ## text {#t.tip.175}
-Tip
 
 <a id="t.an_earning_co_applicant_can_raise_the_loan_amoun.176"></a>
 
@@ -1095,7 +1045,7 @@ Floating
 <a id="t.under.185"></a>
 
 ## text {#t.under.185}
-Under
+Per 
 
 <a id="t.rbi_guidelines.186"></a>
 
@@ -1105,8 +1055,7 @@ RBI guidelines
 <a id="t.banks_cannot_charge_any_penalty_for_prepaying_or.187"></a>
 
 ## text {#t.banks_cannot_charge_any_penalty_for_prepaying_or.187}
-,
-                        banks cannot charge any penalty for prepaying or closing a floating-rate home loan early.
+, banks cannot charge prepayment or foreclosure penalties on floating-rate home loans.
 
 <a id="t.see_rate_options_after_sanction.188"></a>
 
@@ -1121,7 +1070,7 @@ Term loan
 <a id="t.see_rules_after_you_choose_a_structure.190"></a>
 
 ## text {#t.see_rules_after_you_choose_a_structure.190}
-See rules after you choose a structure
+See rules after you choose a facility
 
 <a id="t.excluding_gst.191"></a>
 

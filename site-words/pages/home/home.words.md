@@ -51,8 +51,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — Transparent](#t.transparent.30)
 - [Text — like never before.](#t.like_never_before.31)
 - [Text — Know everything about your choice before you make it.](#t.know_everything_about_your_choice_before_you_mak.32)
-- [Text — Apply Only Once](#t.apply_only_once.33)
-- [Text — Send one application to every bank you chose and let them compete for…](#t.send_one_application_to_every_bank_you_chose_and.34)
 - [text](#t.way_to_choose.35)
 - [text](#t.shroffin_com.36)
 - [text](#t.now.37)
@@ -62,7 +60,6 @@ Use **Jump to** below to open any line in this file.
 - [text](#t.or.41)
 - [text](#t.email.42)
 - [text](#t.from_us.43)
-- [text](#t.now.44)
 
 <a id="t.fair.7"></a>
 
@@ -92,32 +89,32 @@ Animated demonstration of Explore banks on a phone-sized layout. Open Explore ba
 <a id="t.your_home_loan_journey.12"></a>
 
 ## Text — Your home loan journey, {#t.your_home_loan_journey.12}
-Your home loan journey,
+Truly,
 
 <a id="t.completely_re_engineered.13"></a>
 
 ## Text — completely re-engineered {#t.completely_re_engineered.13}
-completely re-engineered
+Apples to Apples
 
 <a id="t.lender_details_that_were_scattered_are_now_in_on.14"></a>
 
 ## Text — Lender details that were scattered are now in one place, {#t.lender_details_that_were_scattered_are_now_in_on.14}
-Lender details that were scattered are now in one place,
+Compare every bank in a single, standardized view,
 
 <a id="t.so_you_can_compare_them_side_by_side.15"></a>
 
 ## Text — so you can compare them side by side. {#t.so_you_can_compare_them_side_by_side.15}
-so you can compare them side by side.
+then apply only once to those you choose.
 
 <a id="t.explore_everything.16"></a>
 
 ## Text — Explore everything, {#t.explore_everything.16}
-Explore everything,
+Beautifully open.
 
 <a id="t.reveal_nothing.17"></a>
 
 ## Text — reveal nothing {#t.reveal_nothing.17}
-reveal nothing
+Entirely yours
 
 <a id="t.without.18"></a>
 
@@ -177,7 +174,7 @@ Zero bias
 <a id="t.so_you_get_a_fair_view_of_every_lender_with_no_p.29"></a>
 
 ## Text — So you get a fair view of every lender, with no paid rankings and no … {#t.so_you_get_a_fair_view_of_every_lender_with_no_p.29}
-So you get a fair view of every lender, with no paid rankings and no one pushed ahead of another.
+Enjoy an unbiased view of every lender, with no sponsored rankings or preferred placement.
 
 <a id="t.transparent.30"></a>
 
@@ -194,16 +191,6 @@ like never before.
 ## Text — Know everything about your choice before you make it. {#t.know_everything_about_your_choice_before_you_mak.32}
 Know everything about your choice before you make it.
 
-<a id="t.apply_only_once.33"></a>
-
-## Text — Apply Only Once {#t.apply_only_once.33}
-Apply Only Once
-
-<a id="t.send_one_application_to_every_bank_you_chose_and.34"></a>
-
-## Text — Send one application to every bank you chose and let them compete for… {#t.send_one_application_to_every_bank_you_chose_and.34}
-Send one application to every bank you chose and let them compete for you.
-
 <a id="t.way_to_choose.35"></a>
 
 ## text {#t.way_to_choose.35}
@@ -217,12 +204,11 @@ shroffin.com
 <a id="t.now.37"></a>
 
 ## text {#t.now.37}
-now
 
 <a id="t.you_can_look_through_all_of_it.38"></a>
 
 ## text {#t.you_can_look_through_all_of_it.38}
-You can look through all of it
+You can explore all of it
 
 <a id="t.surrendering_your.39"></a>
 
@@ -248,8 +234,3 @@ email
 
 ## text {#t.from_us.43}
 from us.
-
-<a id="t.now.44"></a>
-
-## text {#t.now.44}
-Now,

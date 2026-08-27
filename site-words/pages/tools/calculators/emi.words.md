@@ -37,7 +37,7 @@ Use **Jump to** below to open any line in this file.
 - [Text — Total interest](#t.total_interest.15)
 - [Text — Total you pay](#t.total_you_pay.16)
 - [Text — Tenure](#t.tenure.17)
-- [Text — Planning estimate only. Not a bank offer, sanction, or promise. Final…](#t.planning_estimate_only_not_a_bank_offer_sanction.18)
+- [Text — Planning estimate only.](#t.planning_estimate_only_not_a_bank_offer_sanction.18)
 - [Text — Year by year first. Open any year to see each month.](#t.year_by_year_first_open_any_year_to_see_each_mon.19)
 - [Heading — How this estimate works](#t.how_this_estimate_works.20)
 - [Text — What goes into this estimate.](#t.what_goes_into_this_estimate.21)
@@ -124,8 +124,8 @@ Tenure
 
 <a id="t.planning_estimate_only_not_a_bank_offer_sanction.18"></a>
 
-## Text — Planning estimate only. Not a bank offer, sanction, or promise. Final… {#t.planning_estimate_only_not_a_bank_offer_sanction.18}
-Planning estimate only. Not a bank offer, sanction, or promise. Final terms stay with the lender.
+## Text — Planning estimate only. {#t.planning_estimate_only_not_a_bank_offer_sanction.18}
+Planning estimate only.
 
 <a id="t.year_by_year_first_open_any_year_to_see_each_mon.19"></a>
 

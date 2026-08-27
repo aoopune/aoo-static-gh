@@ -6,6 +6,8 @@
     /* Full-strength ink for chrome hover when rest is already --shroffin-ink (nav flyouts). */
     --shroffin-ink-strong: #000000;
     --shroffin-muted: #6e6e73;
+    /* Quiet chrome text — footer body + Explore help “i” rest (softer than muted). */
+    --shroffin-quiet: rgba(0, 0, 0, 0.56);
     /* Decorative large numerals / ghost type (editorial + about). */
     --shroffin-ghost: #c5c9cf;
     --shroffin-blue: #0071e3;
@@ -162,7 +164,7 @@
 
     /*
      * Disclose chevron — Apply “Show more” SVG recipe, site-wide.
-     * 0.55em (cap 12px). Nav flyout cue stays smaller (0.4rem) by design.
+     * 0.55em (cap 12px).
      */
     --shroffin-disclose-size: 0.55em;
     --shroffin-disclose-max: 12px;
@@ -205,6 +207,7 @@ html[data-theme="dark"] {
   --shroffin-ink-soft: #C7C7CC;
   --shroffin-ink-strong: #ffffff;
   --shroffin-muted: #A1A1A6;
+  --shroffin-quiet: rgba(255, 255, 255, 0.45);
   --shroffin-ghost: #636366;
   /* Accents/icons stay system blue; filled CTAs follow Cursor dark marketing pills
    * (https://cursor.com/home): soft warm off-white fill, near-black label, dimmer hover.
@@ -612,7 +615,6 @@ html[data-theme="light"] {
 
   /*
    * Disclose / “more” chevrons — same SVG mark and size everywhere panels open.
-   * (Nav Guide/Support flyout cue stays the smaller 0.4rem chrome chevron.)
    */
   .hl-apply-disclose-arrow,
   .guide-flip-link-arrow,
@@ -751,35 +753,6 @@ html[data-theme="light"] {
     .globalnav-flyout-trigger {
       font-size: 0.9375rem;
     }
-  }
-
-  /*
-   * Dropdown cue — small chevron after Guide / Tools / Support.
-   * Points down at rest; flips up while the flyout is open.
-   * Border chevron sits optically low after rotate — nudge up to share the label’s midline.
-   */
-  .globalnav-flyout-trigger {
-    gap: 0.5rem;
-  }
-
-  .globalnav-flyout-trigger::after {
-    content: "";
-    flex: 0 0 auto;
-    align-self: center;
-    inline-size: 0.4em;
-    block-size: 0.4em;
-    margin-block-start: -0.28em;
-    border-inline-end: 1.5px solid currentColor;
-    border-block-end: 1.5px solid currentColor;
-    transform: rotate(45deg);
-    transition:
-      transform var(--shroffin-micro-duration) var(--shroffin-ease),
-      margin-block-start var(--shroffin-micro-duration) var(--shroffin-ease);
-  }
-
-  .globalnav-flyout-trigger[aria-expanded="true"]::after {
-    margin-block-start: 0.08em;
-    transform: rotate(-135deg);
   }
 
   /* Top bar: Guide / Tools / Support / About — clear ink steps, never link blue. */
@@ -1490,7 +1463,7 @@ html[data-theme="light"] {
   .site-prefooter-cta-lead {
     margin: 0;
     margin-block-end: 21px;
-    /* ~2 lines for the compare/apply-once sentence; scales with font-size. */
+    /* ~2 lines for the compare sentence; scales with font-size. */
     max-width: 24em;
     width: 100%;
     /* Phone default; 735–833 kept small by the max-width: 833 override below. */
@@ -1570,7 +1543,11 @@ html[data-theme="light"] {
     margin-block-end: 0;
   }
 
-  /* Help strip: footer chrome. Flush to content above and footer below. Same on every page. */
+  /*
+   * Help strip: footer chrome. Flush to content above and footer below. Same on every page.
+   * Wash with --shroffin-paper-note so the band sits apart from page surface and footer
+   * (light: #eef1f4; dark: #2C2C2C) — not transparent through to the section above.
+   */
   .site-help-strip {
     box-sizing: border-box;
     width: 100%;
@@ -1581,6 +1558,7 @@ html[data-theme="light"] {
     padding-inline: max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right));
     border-block-start: 1px solid var(--shroffin-rule);
     border-block-end: 1px solid var(--shroffin-rule);
+    background: var(--shroffin-paper-note);
     text-align: center;
     font-family: var(--shroffin-font);
   }
@@ -1718,7 +1696,7 @@ html[data-theme="light"] {
     margin-block-start: 0;
     border-block-start: 1px solid var(--shroffin-rule);
     background: var(--shroffin-footer);
-    color: rgba(0, 0, 0, 0.56);
+    color: var(--shroffin-quiet);
     font-family: var(--shroffin-font);
     font-size: 0.875rem;
     line-height: 1.3334;
@@ -2818,6 +2796,27 @@ html[data-theme="light"] {
   --home-title-g: linear-gradient(90deg, #5e5ce6 0%, #bf5af2 42%, #2997ff 100%);
 }
 
+/*
+ * Real apple skin — painted fruit texture (gloss, cheeks, pores), clipped to glyphs.
+ * Asset: images/textures/apple-skin.svg
+ * No filter here: drop-shadow + background-clip:text blanks the fill in Chromium.
+ */
+.home-title-wash--apple {
+  --home-title-g: linear-gradient(100deg, #e53935 0%, #ffca28 50%, #66bb6a 100%);
+  background-image:
+    radial-gradient(
+      ellipse 34% 52% at 18% 26%,
+      rgba(255, 255, 252, 0.7) 0%,
+      rgba(255, 240, 210, 0.28) 36%,
+      transparent 68%
+    ),
+    url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22960%22%20height%3D%22320%22%20viewBox%3D%220%200%20960%20320%22%20preserveAspectRatio%3D%22none%22%3E%20%3Cdefs%3E%20%3ClinearGradient%20id%3D%22body%22%20x1%3D%220%22%20y1%3D%220.2%22%20x2%3D%221%22%20y2%3D%220.8%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%238a141c%22%2F%3E%20%3Cstop%20offset%3D%2212%25%22%20stop-color%3D%22%23d32f2f%22%2F%3E%20%3Cstop%20offset%3D%2228%25%22%20stop-color%3D%22%23ef5350%22%2F%3E%20%3Cstop%20offset%3D%2242%25%22%20stop-color%3D%22%23ff8a00%22%2F%3E%20%3Cstop%20offset%3D%2252%25%22%20stop-color%3D%22%23ffca28%22%2F%3E%20%3Cstop%20offset%3D%2264%25%22%20stop-color%3D%22%23d4e157%22%2F%3E%20%3Cstop%20offset%3D%2278%25%22%20stop-color%3D%22%239ccc65%22%2F%3E%20%3Cstop%20offset%3D%2290%25%22%20stop-color%3D%22%2366bb6a%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%232e7d32%22%2F%3E%20%3C%2FlinearGradient%3E%20%3ClinearGradient%20id%3D%22streaks%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220.15%22%20y2%3D%221%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23fff8e1%22%20stop-opacity%3D%220%22%2F%3E%20%3Cstop%20offset%3D%2235%25%22%20stop-color%3D%22%23fff8e1%22%20stop-opacity%3D%220.28%22%2F%3E%20%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%23c62828%22%20stop-opacity%3D%220.2%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23fff8e1%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FlinearGradient%3E%20%3Cpattern%20id%3D%22streakPat%22%20width%3D%2256%22%20height%3D%22320%22%20patternUnits%3D%22userSpaceOnUse%22%20patternTransform%3D%22rotate%2812%29%22%3E%20%3Crect%20width%3D%2256%22%20height%3D%22320%22%20fill%3D%22url%28%23streaks%29%22%2F%3E%20%3C%2Fpattern%3E%20%3CradialGradient%20id%3D%22gloss%22%20cx%3D%2222%25%22%20cy%3D%2230%25%22%20r%3D%2242%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ffffff%22%20stop-opacity%3D%220.95%22%2F%3E%20%3Cstop%20offset%3D%2222%25%22%20stop-color%3D%22%23fff8e7%22%20stop-opacity%3D%220.6%22%2F%3E%20%3Cstop%20offset%3D%2248%25%22%20stop-color%3D%22%23ffd7a8%22%20stop-opacity%3D%220.22%22%2F%3E%20%3Cstop%20offset%3D%2270%25%22%20stop-color%3D%22%23ffffff%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FradialGradient%3E%20%3CradialGradient%20id%3D%22shade%22%20cx%3D%2250%25%22%20cy%3D%22110%25%22%20r%3D%2255%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%232a0508%22%20stop-opacity%3D%220.35%22%2F%3E%20%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%232a0508%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FradialGradient%3E%20%3CradialGradient%20id%3D%22cheek%22%20cx%3D%2282%25%22%20cy%3D%2262%25%22%20r%3D%2228%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ffe082%22%20stop-opacity%3D%220.4%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23ffe082%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FradialGradient%3E%20%3C%2Fdefs%3E%20%3Crect%20width%3D%22960%22%20height%3D%22320%22%20fill%3D%22url%28%23body%29%22%2F%3E%20%3Cellipse%20cx%3D%2290%22%20cy%3D%22150%22%20rx%3D%22160%22%20ry%3D%22180%22%20fill%3D%22%23e53935%22%20opacity%3D%220.5%22%2F%3E%20%3Cellipse%20cx%3D%22260%22%20cy%3D%22110%22%20rx%3D%22130%22%20ry%3D%22150%22%20fill%3D%22%23ff7043%22%20opacity%3D%220.42%22%2F%3E%20%3Cellipse%20cx%3D%22420%22%20cy%3D%22180%22%20rx%3D%22150%22%20ry%3D%22160%22%20fill%3D%22%23ffb300%22%20opacity%3D%220.48%22%2F%3E%20%3Cellipse%20cx%3D%22610%22%20cy%3D%22120%22%20rx%3D%22140%22%20ry%3D%22170%22%20fill%3D%22%23aed581%22%20opacity%3D%220.45%22%2F%3E%20%3Cellipse%20cx%3D%22800%22%20cy%3D%22170%22%20rx%3D%22150%22%20ry%3D%22175%22%20fill%3D%22%2366bb6a%22%20opacity%3D%220.5%22%2F%3E%20%3Cellipse%20cx%3D%22920%22%20cy%3D%22140%22%20rx%3D%22110%22%20ry%3D%22150%22%20fill%3D%22%232e7d32%22%20opacity%3D%220.42%22%2F%3E%20%3Crect%20width%3D%22960%22%20height%3D%22320%22%20fill%3D%22url%28%23streakPat%29%22%20opacity%3D%220.55%22%2F%3E%20%3Crect%20width%3D%22960%22%20height%3D%22320%22%20fill%3D%22url%28%23shade%29%22%2F%3E%20%3Crect%20width%3D%22960%22%20height%3D%22320%22%20fill%3D%22url%28%23cheek%29%22%2F%3E%20%3Crect%20width%3D%22960%22%20height%3D%22320%22%20fill%3D%22url%28%23gloss%29%22%2F%3E%20%3Cg%20fill%3D%22%234a1810%22%20opacity%3D%220.32%22%3E%20%3Ccircle%20cx%3D%2270%22%20cy%3D%2290%22%20r%3D%221.4%22%2F%3E%20%3Ccircle%20cx%3D%22130%22%20cy%3D%22160%22%20r%3D%221.1%22%2F%3E%20%3Ccircle%20cx%3D%22190%22%20cy%3D%2270%22%20r%3D%221.3%22%2F%3E%20%3Ccircle%20cx%3D%22240%22%20cy%3D%22200%22%20r%3D%221%22%2F%3E%20%3Ccircle%20cx%3D%22310%22%20cy%3D%22120%22%20r%3D%221.2%22%2F%3E%20%3Ccircle%20cx%3D%22360%22%20cy%3D%22230%22%20r%3D%221.1%22%2F%3E%20%3Ccircle%20cx%3D%22430%22%20cy%3D%2280%22%20r%3D%221.3%22%2F%3E%20%3Ccircle%20cx%3D%22490%22%20cy%3D%22170%22%20r%3D%221%22%2F%3E%20%3Ccircle%20cx%3D%22550%22%20cy%3D%22100%22%20r%3D%221.2%22%2F%3E%20%3Ccircle%20cx%3D%22610%22%20cy%3D%22210%22%20r%3D%221.1%22%2F%3E%20%3Ccircle%20cx%3D%22680%22%20cy%3D%2290%22%20r%3D%221.3%22%2F%3E%20%3Ccircle%20cx%3D%22740%22%20cy%3D%22160%22%20r%3D%221%22%2F%3E%20%3Ccircle%20cx%3D%22800%22%20cy%3D%2270%22%20r%3D%221.2%22%2F%3E%20%3Ccircle%20cx%3D%22860%22%20cy%3D%22200%22%20r%3D%221.1%22%2F%3E%20%3Ccircle%20cx%3D%22910%22%20cy%3D%22130%22%20r%3D%221.2%22%2F%3E%20%3Ccircle%20cx%3D%22150%22%20cy%3D%22240%22%20r%3D%221%22%2F%3E%20%3Ccircle%20cx%3D%22520%22%20cy%3D%2250%22%20r%3D%221.1%22%2F%3E%20%3Ccircle%20cx%3D%22770%22%20cy%3D%22250%22%20r%3D%221%22%2F%3E%20%3C%2Fg%3E%20%3C%2Fsvg%3E"),
+    linear-gradient(100deg, #e53935 0%, #ff8a00 28%, #ffca28 50%, #9ccc65 74%, #43a047 100%);
+  background-size: 100% 100%, 170% 170%, 100% 100%;
+  background-position: center, 28% 42%, center;
+  background-blend-mode: soft-light, normal, normal;
+}
+
 /* Blue → cyan → teal (privacy) */
 .home-title-wash--privacy {
   --home-title-g: linear-gradient(90deg, #0a84ff 0%, #64d2ff 45%, #00c7be 100%);
@@ -2883,6 +2882,7 @@ html[data-theme="light"] .home-clear-word {
     background-image: none;
     color: CanvasText;
     -webkit-text-fill-color: CanvasText;
+    filter: none;
   }
 
   .home-clear-word {
@@ -2990,9 +2990,6 @@ html[data-theme="dark"] .shroffin-sel-thumb--pill {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
-html[data-theme="dark"] .site-footer {
-  color: rgba(255, 255, 255, 0.45);
-}
 
 /* Phase I — footer theme pill (Cursor-like: compact track, clear active chip) */
 .site-footer-theme {

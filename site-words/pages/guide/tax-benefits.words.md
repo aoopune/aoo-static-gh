@@ -94,7 +94,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — A loss from this usually cannot cut other income like salary.](#t.a_loss_from_this_usually_cannot_cut_other_income.71)
 - [Text — You usually claim principal repayment on tax only after a house is bu…](#t.you_usually_claim_principal_repayment_on_tax_onl.72)
 - [Text — Under the old tax regime only, and only if this was your first home, …](#t.under_the_old_tax_regime_only_and_only_if_this_w.73)
-- [Text — For general understanding only. Home loan tax rules depend on your fa…](#t.for_general_understanding_only_home_loan_tax_rul.74)
 - [text](#t.your_home_loan_emi.75)
 - [text](#t.has_tax_benefits.76)
 - [text](#t.yes_your_limit_depends_on_who_lives_in_the_home_.77)
@@ -464,11 +463,6 @@ You usually claim principal repayment on tax only after a house is built on that
 
 ## Text — Under the old tax regime only, and only if this was your first home, … {#t.under_the_old_tax_regime_only_and_only_if_this_w.73}
 Under the old tax regime only, and only if this was your first home, older rules allowed extra interest for loans sanctioned in fixed windows.
-
-<a id="t.for_general_understanding_only_home_loan_tax_rul.74"></a>
-
-## Text — For general understanding only. Home loan tax rules depend on your fa… {#t.for_general_understanding_only_home_loan_tax_rul.74}
-For general understanding only. Home loan tax rules depend on your facts, the tax regime you choose, and current law. Confirm claims with a qualified tax professional before you file.
 
 <a id="t.your_home_loan_emi.75"></a>
 
