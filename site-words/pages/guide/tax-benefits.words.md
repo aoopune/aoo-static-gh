@@ -71,9 +71,7 @@ Use **Jump to** below to open any line in this file.
 - [Text — Pre-construction interest accrued prior to taking possession can be c…](#t.pre_construction_interest_accrued_prior_to_takin.48)
 - [Text — Post-possession interest paid during the year can be claimed in full …](#t.post_possession_interest_paid_during_the_year_ca.49)
 - [Text — About the ₹2 lakh interest limit](#t.about_the_2_lakh_interest_limit.50)
-- [Button — You live there](#t.you_live_there.51)
-- [Text — Under the old tax regime, pre-possession and after-possession interes…](#t.under_the_old_tax_regime_pre_possession_and_afte.52)
-- [Text — The ₹2 lakh limit does not apply when you rent it out.](#t.the_2_lakh_limit_does_not_apply_when_you_rent_it.53)
+- [Text — Under the old tax regime, pre-possession interest and post-possession i…](#t.under_the_old_tax_regime_pre_possession_and_afte.52)
 - [Text — Can both co-owners claim tax benefits?](#t.can_both_co_owners_claim_tax_benefits.54)
 - [Text — Yes, when both names are on the property papers and the loan, and eac…](#t.yes_when_both_names_are_on_the_property_papers_a.55)
 - [Text — How do you claim it?](#t.how_do_you_claim_it.56)
@@ -91,7 +89,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — Claimed in the year you pay them, within the same ₹1.5 lakh principal…](#t.claimed_in_the_year_you_pay_them_within_the_same.68)
 - [Text — Premium can sit in the same ₹1.5 lakh basket if you pay it yourself —…](#t.premium_can_sit_in_the_same_1_5_lakh_basket_if_y.69)
 - [Text — If interest creates a loss, only up to ₹2 lakh can be set off against…](#t.if_interest_creates_a_loss_only_up_to_2_lakh_can.70)
-- [Text — A loss from this usually cannot cut other income like salary.](#t.a_loss_from_this_usually_cannot_cut_other_income.71)
 - [Text — You usually claim principal repayment on tax only after a house is bu…](#t.you_usually_claim_principal_repayment_on_tax_onl.72)
 - [Text — Under the old tax regime only, and only if this was your first home, …](#t.under_the_old_tax_regime_only_and_only_if_this_w.73)
 - [text](#t.your_home_loan_emi.75)
@@ -106,10 +103,8 @@ Use **Jump to** below to open any line in this file.
 - [text](#t.a_deduction_from_total_income.84)
 - [text](#t.see_tax_claims_calculator.85)
 - [text](#t.stamp_duty_and_registration_property_purchase_on.86)
-- [text](#t.not_loan_costs.87)
 - [text](#t.home_loan_protection_insurance.88)
 - [text](#t.house_property_loss_old_tax_regime.89)
-- [text](#t.the_rest_can_be_carried_forward.90)
 - [text](#t.house_property_loss_new_tax_regime.91)
 - [text](#t.interest_on_a_rented_home_can_still_reduce_renta.92)
 - [text](#t.loan_for_a_plot_only_no_house_yet.93)
@@ -197,7 +192,7 @@ Other
 <a id="t.can_you_claim_the_interest_on_tax_return.20"></a>
 
 ## Text — Can you claim the interest on tax return? {#t.can_you_claim_the_interest_on_tax_return.20}
-Can you claim the interest on tax return?
+Can you claim interest in your ITR?
 
 <a id="t.opens_official_income_tax_page.21"></a>
 
@@ -297,7 +292,7 @@ Up to two homes can be treated as self-occupied.
 <a id="t.can_you_claim_the_principal_on_tax_return.40"></a>
 
 ## Text — Can you claim the principal on tax return? {#t.can_you_claim_the_principal_on_tax_return.40}
-Can you claim the principal on tax return?
+Can you claim prinicpal in your ITR?
 
 <a id="t.1_5_lakh.41"></a>
 
@@ -312,17 +307,17 @@ a year under the old tax regime
 <a id="t.the_principal_repayment_limit_under_section_80c_.43"></a>
 
 ## Text — The principal repayment limit under Section 80C is shared with other … {#t.the_principal_repayment_limit_under_section_80c_.43}
-The principal repayment limit under Section 80C is shared with other eligible investments, such as EPF contributions, life insurance premiums, and PPF.
+This principal limit is counted together with EPF, life insurance, and PPF as per section 80C
 
 <a id="t.you_can_only_claim_tax_benefits_on_principal_rep.44"></a>
 
 ## Text — You can only claim tax benefits on principal repayment starting from … {#t.you_can_only_claim_tax_benefits_on_principal_rep.44}
-You can only claim tax benefits on principal repayment starting from the financial year in which construction is completed and you take possession of the property.
+Principal repayment deductions start only after construction is finished and possession is taken.
 
 <a id="t.if_you_sell_the_home_within_5_years_of_getting_p.45"></a>
 
 ## Text — If you sell the home within 5 years of getting possession, all previo… {#t.if_you_sell_the_home_within_5_years_of_getting_p.45}
-If you sell the home within 5 years of getting possession, all previously claimed Section 80C principal deductions are added back to your taxable income for that year; however, Section 24(b) interest deductions are not reversed.
+If the property is sold within 5 years, past principal tax savings must be paid back, but interest tax savings are kept.
 
 <a id="t.what_if_the_home_is_under_construction.46"></a>
 
@@ -332,37 +327,27 @@ What if the home is under construction?
 <a id="t.claim_the_interest_starting_from_the_year_you_ge.47"></a>
 
 ## Text — Claim the interest starting from the year you get the keys. {#t.claim_the_interest_starting_from_the_year_you_ge.47}
-Claim the interest starting from the year you get the keys.
+Claim the interest starting from the year you get the possession.
 
 <a id="t.pre_construction_interest_accrued_prior_to_takin.48"></a>
 
 ## Text — Pre-construction interest accrued prior to taking possession can be c… {#t.pre_construction_interest_accrued_prior_to_takin.48}
-Pre-construction interest accrued prior to taking possession can be claimed in five equal annual installments starting from the year of possession.
+Interest built up before getting possession is claimed in five equal parts starting from the possession year.
 
 <a id="t.post_possession_interest_paid_during_the_year_ca.49"></a>
 
 ## Text — Post-possession interest paid during the year can be claimed in full … {#t.post_possession_interest_paid_during_the_year_ca.49}
-Post-possession interest paid during the year can be claimed in full on an annual basis under Section 24(b).
+Interest paid each year is claimed in full under Section 24(b).
 
 <a id="t.about_the_2_lakh_interest_limit.50"></a>
 
 ## Text — About the ₹2 lakh interest limit {#t.about_the_2_lakh_interest_limit.50}
 About the ₹2 lakh interest limit
 
-<a id="t.you_live_there.51"></a>
-
-## Button — You live there {#t.you_live_there.51}
-You live there
-
 <a id="t.under_the_old_tax_regime_pre_possession_and_afte.52"></a>
 
-## Text — Under the old tax regime, pre-possession and after-possession interes… {#t.under_the_old_tax_regime_pre_possession_and_afte.52}
-Under the old tax regime, pre-possession and after-possession interest together stay inside the ₹2 lakh limit.
-
-<a id="t.the_2_lakh_limit_does_not_apply_when_you_rent_it.53"></a>
-
-## Text — The ₹2 lakh limit does not apply when you rent it out. {#t.the_2_lakh_limit_does_not_apply_when_you_rent_it.53}
-The ₹2 lakh limit does not apply when you rent it out.
+## Text — Under the old tax regime, pre-possession interest and post-possession i… {#t.under_the_old_tax_regime_pre_possession_and_afte.52}
+Under the old tax regime, pre-possession interest and post-possession interest together stay within the ₹2 lakh limit.
 
 <a id="t.can_both_co_owners_claim_tax_benefits.54"></a>
 
@@ -372,7 +357,7 @@ Can both co-owners claim tax benefits?
 <a id="t.yes_when_both_names_are_on_the_property_papers_a.55"></a>
 
 ## Text — Yes, when both names are on the property papers and the loan, and eac… {#t.yes_when_both_names_are_on_the_property_papers_a.55}
-Yes, when both names are on the property papers and the loan, and each pays their share of the EMI. Each can claim within their ownership share and what they actually paid.
+Yes, both co-owners can claim tax deductions if their names are on the papers and the loan, and each pays their share based on their ownership percentage and the amount they actually paid.
 
 <a id="t.how_do_you_claim_it.56"></a>
 
@@ -382,7 +367,7 @@ How do you claim it?
 <a id="t.interest_and_principal_go_in_different_sections_.57"></a>
 
 ## Text — Interest and principal go in different sections of your tax return. {#t.interest_and_principal_go_in_different_sections_.57}
-Interest and principal go in different sections of your tax return.
+Interest and principal go into different parts of your ITR.
 
 <a id="t.claimed_under.58"></a>
 
@@ -412,7 +397,7 @@ Interest certificate
 <a id="t.from_the_lender_for_the_year_shows_interest_paym.63"></a>
 
 ## Text — From the lender for the year. Shows interest payment and principal re… {#t.from_the_lender_for_the_year_shows_interest_paym.63}
-From the lender for the year. Shows interest payment and principal repayment split.
+A statement given by the lender showing the yearly split between interest and principal.
 
 <a id="t.possession_proof.64"></a>
 
@@ -432,7 +417,7 @@ Anything else on tax?
 <a id="t.there_are_a_few_extra_benefits_beyond_the_main_i.67"></a>
 
 ## Text — There are a few extra benefits beyond the main interest and principal… {#t.there_are_a_few_extra_benefits_beyond_the_main_i.67}
-There are a few extra benefits beyond the main interest and principal deductions.
+A few extra benefits beyond the interest and principal deductions.
 
 <a id="t.claimed_in_the_year_you_pay_them_within_the_same.68"></a>
 
@@ -442,22 +427,17 @@ Claimed in the year you pay them, within the same ₹1.5 lakh principal repaymen
 <a id="t.premium_can_sit_in_the_same_1_5_lakh_basket_if_y.69"></a>
 
 ## Text — Premium can sit in the same ₹1.5 lakh basket if you pay it yourself —… {#t.premium_can_sit_in_the_same_1_5_lakh_basket_if_y.69}
-Premium can sit in the same ₹1.5 lakh basket if you pay it yourself — not if the lender adds it to your EMI.
+Premium counts inside the ₹1.5 lakh basket if paid directly, not if added to the EMI by the lender.
 
 <a id="t.if_interest_creates_a_loss_only_up_to_2_lakh_can.70"></a>
 
 ## Text — If interest creates a loss, only up to ₹2 lakh can be set off against… {#t.if_interest_creates_a_loss_only_up_to_2_lakh_can.70}
-If interest creates a loss, only up to ₹2 lakh can be set off against other income like salary in that year.
-
-<a id="t.a_loss_from_this_usually_cannot_cut_other_income.71"></a>
-
-## Text — A loss from this usually cannot cut other income like salary. {#t.a_loss_from_this_usually_cannot_cut_other_income.71}
-A loss from this usually cannot cut other income like salary.
+Excess interest creating a loss up to ₹2 lakh offsets other income like salary in that year, with the rest carried forward.
 
 <a id="t.you_usually_claim_principal_repayment_on_tax_onl.72"></a>
 
 ## Text — You usually claim principal repayment on tax only after a house is bu… {#t.you_usually_claim_principal_repayment_on_tax_onl.72}
-You usually claim principal repayment on tax only after a house is built on that plot and you have possession.
+Principal repayment claims begin only after a house is built on the plot and possession is taken.
 
 <a id="t.under_the_old_tax_regime_only_and_only_if_this_w.73"></a>
 
@@ -524,11 +504,6 @@ See tax claims calculator
 ## text {#t.stamp_duty_and_registration_property_purchase_on.86}
 Stamp duty and registration (property purchase only)
 
-<a id="t.not_loan_costs.87"></a>
-
-## text {#t.not_loan_costs.87}
-Not loan costs.
-
 <a id="t.home_loan_protection_insurance.88"></a>
 
 ## text {#t.home_loan_protection_insurance.88}
@@ -539,11 +514,6 @@ Home loan protection insurance
 ## text {#t.house_property_loss_old_tax_regime.89}
 House property loss (old tax regime)
 
-<a id="t.the_rest_can_be_carried_forward.90"></a>
-
-## text {#t.the_rest_can_be_carried_forward.90}
-The rest can be carried forward.
-
 <a id="t.house_property_loss_new_tax_regime.91"></a>
 
 ## text {#t.house_property_loss_new_tax_regime.91}
@@ -552,7 +522,7 @@ House property loss (new tax regime)
 <a id="t.interest_on_a_rented_home_can_still_reduce_renta.92"></a>
 
 ## text {#t.interest_on_a_rented_home_can_still_reduce_renta.92}
-Interest on a rented home can still reduce rental income.
+Interest on rented property reduces rental income, but such losses generally do not reduce salary or other income.
 
 <a id="t.loan_for_a_plot_only_no_house_yet.93"></a>
 

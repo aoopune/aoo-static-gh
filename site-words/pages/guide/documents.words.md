@@ -129,6 +129,7 @@ Use **Jump to** below to open any line in this file.
 - [text](#t.apply_everywhere.108)
 - [text](#t.kyc.109)
 - [text](#t.filing_several_years_together_just_before_applyi.110)
+- [Text — Unreported cash money cannot be used because banks need official paper proof.](#t.unreported_cash_money_cannot_be_used_because_banks.111)
 
 <a id="t.overview.6"></a>
 
@@ -293,7 +294,7 @@ What proves your income?
 <a id="t.income_documents_for_the_applicant_and_co_applic.38"></a>
 
 ## Text — Income documents for the applicant and co-applicant(s). {#t.income_documents_for_the_applicant_and_co_applic.38}
-Income documents for the applicant and co-applicant(s).
+Documented income proofs for the applicant and co-applicant(s), as cash income is not accepted.
 
 <a id="t.salaried.39"></a>
 
@@ -649,3 +650,8 @@ KYC
 
 ## text {#t.filing_several_years_together_just_before_applyi.110}
 Filing several years together just before applying can look like income made for the loan.
+
+<a id="t.unreported_cash_money_cannot_be_used_because_banks.111"></a>
+
+## Text — Unreported cash money cannot be used because banks need official paper proof. {#t.unreported_cash_money_cannot_be_used_because_banks.111}
+Unreported cash money cannot be used because banks need official paper proof.

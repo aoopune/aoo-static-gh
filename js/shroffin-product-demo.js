@@ -79,8 +79,8 @@
     federal: { type: "Private" }
   };
 
-  /* First page of All vs Private — same order as live sort. */
-  var ALL_IDS = ["bom","iob","pnb","canara","centralboi","axis","unionboi","bob"];
+  /* First page — same count and order band as live (INITIAL_VISIBLE_BANKS = 10). */
+  var ALL_IDS = ["bom","iob","pnb","canara","centralboi","axis","unionboi","bob","jkb","sib"];
   var PRIVATE_IDS = ["axis","sib","jkb","nainital","hdfc","bandhan","icici","federal"];
 
   /* Live matchOffers counts for the demo query. */
@@ -562,6 +562,12 @@
     if (plus) plus.hidden = !on;
   }
 
+  function setFreshnessNote(root, on) {
+    var el = root.querySelector("[data-spd-freshness]");
+    if (!el) return;
+    el.hidden = !on;
+  }
+
   function setResults(root, on) {
     var el = root.querySelector("[data-spd-results]");
     if (!el) return;
@@ -569,10 +575,13 @@
       el.hidden = false;
       el.classList.add("is-visible");
       root.classList.add("is-spd-results");
+      setFreshnessNote(root, true);
     } else {
       el.hidden = true;
       el.classList.remove("is-visible");
       root.classList.remove("is-spd-results");
+      setFreshnessNote(root, false);
+      setScrollY(0);
     }
   }
 
@@ -597,23 +606,16 @@
   }
 
   /*
-   * Same intent as live softScrollToOptions: park the results head near the
-   * top so the loan-input card leaves the view.
-   * Demo frame has no site nav → gap only (live uses nav + gap).
+   * Park the results tools row flush to the top of the frame viewport so the
+   * form, intelligence strip, and hero all scroll away — filters + table fill
+   * one view like live Explore (demo frame has no site nav).
    */
   function resultsScrollTop(root) {
     var scrollRoot = scrollingRoot();
     var head =
       root.querySelector("[data-spd-results] .hlc-results-head") ||
       root.querySelector("[data-spd-results]");
-    var y = targetScrollTop(head, 52);
-    /* Guarantee the input card is fully above the viewport (live feel). */
-    var inputs = root.querySelector("[data-spd-inputs]");
-    if (inputs) {
-      var inputsBottom =
-        inputs.getBoundingClientRect().bottom + scrollRoot.scrollTop;
-      y = Math.max(y, inputsBottom + 8);
-    }
+    var y = targetScrollTop(head, 0);
     var maxY = Math.max(0, scrollRoot.scrollHeight - scrollRoot.clientHeight);
     return Math.min(Math.max(0, y), maxY);
   }
@@ -655,7 +657,17 @@
     setScrollY(targetScrollTop(el, pad));
   }
 
+  function afterLayout() {
+    return new Promise(function (resolve) {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(resolve);
+      });
+    });
+  }
+
   async function softScrollToResults(root, signal) {
+    await afterLayout();
+    if (signal && signal.aborted) return;
     var y = resultsScrollTop(root);
     await animateScrollY(y, signal);
     setScrollY(resultsScrollTop(root));
@@ -767,7 +779,9 @@
     });
     syncSelection(root);
     setApplyEnabled(root, true);
-    setScrollY(resultsScrollTop(root));
+    afterLayout().then(function () {
+      setScrollY(resultsScrollTop(root));
+    });
   }
 
   async function clickPress(cursor, el, signal) {
@@ -809,8 +823,9 @@
 
     /* 4 — Tips then banks; calm scroll so the input card leaves the view */
     setIntelligence(root, true);
-    setResults(root, true);
     resetResultsState(root);
+    setResults(root, true);
+    await afterLayout();
     await sleep(WAIT.revealPause, signal);
     await softScrollToResults(root, signal);
     await sleep(WAIT.settle, signal);

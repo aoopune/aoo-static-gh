@@ -26,7 +26,6 @@ omitted_by_policy:
 - [Screen reader — Complaint contents](#t.complaint_contents.2)
 - [Screen reader — Ombudsman and NHB](#t.ombudsman_and_nhb.3)
 - [Screen reader — What is outside this path](#t.what_is_outside_this_path.4)
-- [Screen reader — Where to file](#t.where_to_file.5)
 
 <a id="t.guide.0"></a>
 
@@ -52,8 +51,3 @@ Ombudsman and NHB
 
 ## Screen reader — What is outside this path {#t.what_is_outside_this_path.4}
 What is outside this path
-
-<a id="t.where_to_file.5"></a>
-
-## Screen reader — Where to file {#t.where_to_file.5}
-Where to file

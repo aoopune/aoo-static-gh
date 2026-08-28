@@ -85,7 +85,7 @@
   <link rel="preload" href="../fonts/GoogleSansFlex/GoogleSansFlex_72pt-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="../css/shroffin-shell.css?v=cdc0259e7a">
   <link rel="stylesheet" href="../css/shroffin-guide.css?v=nav-center-1">
-  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=guide-card-no-hair-1">
+  <link rel="stylesheet" href="../css/shroffin-editorial.css?v=guide-head-card-gap-5">
 </head>
 <body class="guide-reading">
   <!-- SHROFFIN_NAV_START -->
@@ -397,7 +397,7 @@
 <div class="mag-content">
         <div class="guide-flip" id="borrow-flip">
           <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-ember guide-tile-question">How much can you borrow?</span></h2>
-          <p class="guide-tile-copy guide-tile-copy--rule">The bank takes the lower of your property value and your income.</p>
+          <p class="guide-tile-copy guide-tile-copy--rule">Max loan amount is the lower of your property value limit or income capacity.</p>
 
           <div class="guide-flip-scene" data-flip-scene>
           <div class="guide-flip-inner">
@@ -409,22 +409,22 @@
                 </div>
                 <div class="guide-limits" data-guide-scrub="on" data-guide-seg-mobile-panels>
                 <div class="guide-limit" id="loan-amount-property" role="tabpanel" aria-labelledby="borrow-tab-property">
-                  <h3 class="guide-limit-title">1. Property value</h3>
-                  <p class="guide-limit-copy">The bank can lend only up to certain percentages of the Agreement Value given below.</p>
+                  <h3 class="guide-limit-title">1. Property value limit</h3>
+                  <p class="guide-limit-copy">Limited to the percentages of the Agreement Value listed below (as per RBI limits):</p>
                   <ul class="guide-share-list guide-share-list--plain">
                     <li>Up to ₹30 lakh: up to 90%.</li>
                     <li>From ₹30 lakh to ₹75 lakh: up to 80%.</li>
                     <li>Above ₹75 lakh: up to 75%.</li>
                   </ul>
-                  <p class="guide-glance">These are RBI’s highest limits. What a bank actually offers can be less or more than a simple estimate, based on your profile and their rules.</p>
+                  <p class="guide-glance">Amount can be more or less depending on your profile and lender rules.</p>
                 </div>
                 <div class="guide-limit" id="borrow-panel-income" role="tabpanel" aria-labelledby="borrow-tab-income">
-                  <h3 class="guide-limit-title">2. Income</h3>
-                  <p class="guide-limit-copy">The bank can lend only up to what your monthly EMI capacity supports, worked out as below.</p>
+                  <h3 class="guide-limit-title">2. Income capacity</h3>
+                  <p class="guide-limit-copy">Limited to what your monthly budget can support, calculated as follows:</p>
                   <ul class="guide-share-list guide-share-list--plain">
-                    <li>Start with monthly take-home.</li>
-                    <li>Minus EMIs and a share of card limits — what’s left is your EMI capacity. (Total EMIs are max 55%-70% of your take home income)</li>
-                    <li>From that EMI, rate, and tenure, the bank sets the loan amount.</li>
+                    <li>Start with your monthly take-home income.</li>
+                    <li>Subtract your current EMIs and a portion of your credit card limits (total EMIs can generally use up 55% to 70% of your income).</li>
+                    <li>Final loan amount is then calculated using this leftover amount, interest rate, and tenure.</li>
                   </ul>
                   <p class="guide-glance"></p>
                   <p class="guide-tip">
@@ -446,7 +446,7 @@
                       </svg>
                     </span>
                     <span class="guide-tip-body">
-                      <span class="guide-tip-label"></span>An earning co-applicant can raise the loan amount.</span>
+                      <span class="guide-tip-label"></span>Adding an earning co-applicant in the loan increases the loan amount.</span>
                   </p>
                 </div>
                 </div>
@@ -461,7 +461,7 @@
               <div class="guide-chapter-card">
               <div class="guide-flip-back-scroll">
                 <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sky">Estimate your loan amount</span></h2>
-                <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">This figure is indicative only.</p>
+                <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">Figures are indicative only.</p>
 <div class="guide-calc-body guide-calc-body--split">
                   <form class="guide-calc" id="borrow-calc-form" novalidate>
                     <div class="guide-calc-row">
@@ -513,7 +513,7 @@
                       <li>By Agreement Value:<strong id="borrow-calc-prop">—</strong></li>
                       <li>By income:<strong id="borrow-calc-inc">—</strong></li>
                     </ul>
-                    <p class="guide-glance">Final eligibility depends on your profile.</p>
+                    <p class="guide-glance"></p>
                   </div>
                 </div>
               </div>
@@ -593,7 +593,7 @@
               <div class="guide-chapter-card">
               <div class="guide-flip-back-scroll">
                 <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea">Estimate your EMI</span></h2>
-                <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">This figure is indicative only.</p>
+                <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">Figures are indicative only.</p>
 <div class="guide-calc-body guide-calc-body--split">
                   <form class="guide-calc" id="emi-calc-form" novalidate>
                     <label class="guide-calc-field">
@@ -619,7 +619,7 @@
                       <li>Total payable:<strong id="emi-calc-payable">—</strong></li>
                       <li>Total interest payment:<strong id="emi-calc-interest">—</strong></li>
                     </ul>
-                    <p class="guide-glance">Final EMI depends on the sanctioned rate, fees in the loan, and reset rules.</p>
+                    <p class="guide-glance"></p>
                   </div>
                 </div>
               </div>
@@ -704,14 +704,15 @@
               <div class="guide-chapter-card">
               <div class="guide-flip-back-scroll">
                 <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-gold">Rate options after sanction</span></h2>
-                <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">These still matter later, so weigh them while you choose the rate type.</p>
+                <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">Options you have after taking a loan:</p>
 <div class="guide-rate-notes">
-                  <p>You can switch between fixed and floating later, if the bank allows it and you pay their switch fee.</p>
-                  <p>You can also switch the benchmark the loan follows, under the bank’s rules and fees.</p>
-                  <p>If your credit score improves, you can ask the bank to cut your rate — they decide, and a fee may apply.</p>
-                  <p>When the repo rate changes, a floating rate must reset within 3 months. Your bank’s reset date sets the exact wait.</p>
-                  <p>A newly sanctioned loan can take about 90 days for the first change.</p>
+                  <p>1. Switch between fixed and floating rates.</p>
+                  <p>2. Move to a different benchmark.</p>
+                  <p>3. Ask for a rate cut if credit scores improve.</p>
+                  <p>For existing loans, floating rates automatically adjust within three months when the RBI changes the repo rate.</p>
+                  <p>For new loans, if RBI recently changed the rate, it may take up to 90 days to update.</p>
                 </div>
+                <p class="guide-glance">Note: All changes are subject to bank approval and applicable fees.</p>
               </div>
                 <button type="button" class="guide-flip-link guide-flip-dock" data-flip="rate-flip" aria-controls="rate-ask" aria-expanded="false">Close<svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                     <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -748,11 +749,12 @@
                     </ul>
                   </div>
                   <div class="guide-seg-panel" role="tabpanel" id="structure-panel-od" aria-labelledby="structure-tab-od" hidden>
-                    <p class="guide-limit-copy">Extra money in your account reduces your interest, but you can withdraw it anytime.</p>
+                    <p class="guide-limit-copy">Extra money in your account lowers your interest, effectively acting as savings while remaining withdrawable anytime.</p>
                     <ul class="guide-share-list guide-share-list--plain">
                       <li>EMI stays the same, but more goes toward the principal—paying off your loan faster.</li>
                       <li>The interest rate is 0.15% to 1% higher than on a term loan.</li>
                       <li>This saves money only if the interest you cut with extra cash is higher than the loan's extra rate.</li>
+                      <li>Lenders may charge non-utilisation fees if you use too little of your sanctioned limit.</li>
                     </ul>
                   </div>
                 </div>
@@ -789,8 +791,8 @@
       <section class="mag-section guide-moment" id="charges">
 <div class="mag-content">
         <div class="guide-flip" id="charges-flip">
-          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">What are the charges to get the loan?</span></h2>
-          <p class="guide-tile-copy guide-tile-copy--rule">You pay bank fees, property checks, and government charges.</p>
+          <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-dusk guide-tile-question">What are the loan charges?</span></h2>
+          <p class="guide-tile-copy guide-tile-copy--rule">Bank fees, property check charges, and government charges.</p>
 
           <div class="guide-flip-scene" data-flip-scene>
           <div class="guide-flip-inner">
@@ -803,11 +805,12 @@
 <div class="guide-limits" data-guide-scrub="on" data-guide-seg-mobile-panels>
                 <div class="guide-limit" id="charges-panel-bank" role="tabpanel" aria-labelledby="charges-tab-bank">
                   <h3 class="guide-limit-title">Bank fees</h3>
-                  <p class="guide-limit-copy">What the lender charges to open and run your case.</p>
+                  <p class="guide-limit-copy">Charges to open and manage your loan.</p>
                   <ul class="guide-share-list guide-share-list--plain">
                     <li>
-                      <span class="guide-share-then">Processing fee</span>
-                      <span class="guide-share-when">Part may be taken upfront as a login fee; the rest at final sanction.</span>
+                      <span class="guide-share-then">Processing fee<span class="guide-limit-note">(Non-refundable)</span></span>
+                      <span class="guide-share-when">A one-time fee to process and approve your loan.
+Part may be taken upfront as a login fee; the rest at final sanction.</span>
                     </li>
                     <li>
                       <span class="guide-share-then">Others</span>
@@ -817,27 +820,38 @@
                 </div>
                 <div class="guide-limit" id="charges-panel-other" role="tabpanel" aria-labelledby="charges-tab-other">
                   <h3 class="guide-limit-title">Other fees</h3>
-                  <p class="guide-limit-copy">Fees for checks and for registering the loan and security.</p>
+                  <p class="guide-limit-copy">Fees to check the property and register the loan and security.</p>
                   <ul class="guide-share-list guide-share-list--plain">
                     <li>
                       <span class="guide-share-then">Legal and technical fees</span>
-                      <span class="guide-share-when">Fee to check legal papers and the property.</span>
+                      <span class="guide-share-when">To check the property and its legal papers.</span>
                     </li>
                     <li>
                       <span class="guide-share-then">Title search report fees</span>
-                      <span class="guide-share-when">Fee to check the property title.</span>
+                      <span class="guide-share-when">To check that the property title is clear and free from encumbrances.</span>
                     </li>
                     <li>
                       <span class="guide-share-then">Valuation fees</span>
-                      <span class="guide-share-when">Fee to value the property.</span>
+                      <span class="guide-share-when">To check the property's market value.</span>
                     </li>
                     <li>
                       <span class="guide-share-then">Government charges</span>
-                      <span class="guide-share-when">Government fees to register the loan security.</span>
+                      <span class="guide-share-when">To register the loan & security.</span>
                     </li>
                   </ul>
                 </div>
               </div>
+              <h3 class="guide-limit-title">Notes</h3>
+              <ul class="guide-share-list guide-share-list--plain">
+                <li>Insurance and other add-ons are separate from the processing fee.</li>
+                <li>Checks are conducted exclusively by the bank, and outside reports provided by you will not be accepted.</li>
+                <li>As per<a
+                    class="guide-section-link"
+                    href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13140&amp;Mode=0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >RBI guidelines Chapter VIII B. (5)<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden">(opens official RBI page)</span></a>, only charges listed in the Key Fact Statement (KFS) are enforceable, so read every line before paying upfront.</li>
+              </ul>
               <button type="button" class="guide-flip-link guide-flip-dock" data-flip="charges-flip" aria-controls="charges-breakdown" aria-expanded="false">Fee breakdown<svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                   <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -849,7 +863,7 @@
               <div class="guide-chapter-card">
               <div class="guide-flip-back-scroll">
                 <h2 class="guide-tile-title"><span class="guide-title-wash guide-title-wash--ink-sea">Fee breakdown</span></h2>
-                <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">Usual one-time costs at sanction and disbursement. Banks may rename or bundle them.</p>
+                <p class="guide-tile-copy guide-tile-copy--muted guide-calc-lead">One-time fees paid at sanction and disbursement, sometimes bundled or renamed by banks.</p>
 <div class="guide-fee-schedule">
                   <div class="guide-fee-col">
                     <div class="guide-fee-block">
@@ -857,7 +871,7 @@
                       <ul class="guide-fee-rows">
                         <li class="guide-fee-cluster">
                           <div class="guide-fee-row">
-                            <span class="guide-fee-name">Processing fee<span class="guide-limit-note">Non-refundable</span></span>
+                            <span class="guide-fee-name">Processing fee<span class="guide-limit-note">(Non-refundable)</span></span>
                             <span class="guide-fee-value">Up to 2%–3%*</span>
                           </div>
                           <div class="guide-fee-nested">
@@ -951,7 +965,18 @@
                     </ul>
                   </div>
                 </div>
-                <p class="guide-glance">* Excluding GST.<br># Only in Maharashtra. Differs from state to state as per state laws.<br>Figures above are typical industry averages. Exact fees may differ by lender and as per your profile.</p>
+                <h3 class="guide-limit-title">Notes</h3>
+                <ul class="guide-share-list guide-share-list--plain">
+                  <li>Insurance and other add-ons are separate from the processing fee.</li>
+                  <li>Checks are conducted exclusively by the bank, and outside reports provided by you will not be accepted.</li>
+                  <li>As per<a
+                      class="guide-section-link"
+                      href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13140&amp;Mode=0"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >RBI guidelines Chapter VIII B. (5)<span class="guide-section-link-arrow" aria-hidden="true">↗</span><span class="visually-hidden">(opens official RBI page)</span></a>, only charges listed in the Key Fact Statement (KFS) are enforceable, so read every line before paying upfront.</li>
+                </ul>
+                <p class="guide-glance">* Excluding GST.<br># Applicable only in Maharashtra, as stamp duty and registration laws vary by state.<br>These are average figures, so your exact fees depend on your profile.</p>
               </div>
                 <button type="button" class="guide-flip-link guide-flip-dock" data-flip="charges-flip" aria-controls="charges-breakdown" aria-expanded="false">Close<svg class="guide-flip-link-arrow" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
                     <path d="M2.2 1.2 6.8 5 2.2 8.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1170,8 +1195,6 @@
   })();</script>
   <!-- SHROFFIN_FOOTER_END -->
 
-  <script src="../js/guide-intelligence.generated.js?v=guide-intel-9"></script>
-  <script src="../js/shroffin-guide-intelligence.js?v=guide-intel-9"></script>
   <script src="../js/guide-page-overview.js?v=flip-close-top-4"></script>
   <script src="../js/shroffin-nav.js?v=guide-top-1"></script>
   <script src="../js/shroffin-guide.js?v=guide-reveal-2"></script>

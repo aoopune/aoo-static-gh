@@ -160,20 +160,14 @@
       padding: 0 6px 6px 0 !important;
       align-items: center !important;
       justify-content: flex-start !important;
-      gap: 0.55rem !important;
+      gap: 0 !important;
     }
 
     .pane .hlc-results-actions .hlc-apply-bar .hlc-btn-primary {
       flex: 0 0 auto !important;
-      order: -1 !important;
       min-height: 38px !important;
       padding: 0 16px !important;
       font-size: 14.5px !important;
-    }
-
-    .pane .hlc-apply-count {
-      font-size: 14px !important;
-      white-space: nowrap;
     }
 
     .pane .hlc-column-tab {
@@ -437,8 +431,7 @@
                 </div>
               </div>
               <div class="hlc-apply-bar">
-                <span class="hlc-apply-count" data-demo-count><span class="hlc-apply-count-n">1</span> selected</span>
-                <button type="button" class="hlc-btn-primary" data-demo-apply>Apply once</button>
+                <button type="button" class="hlc-btn-primary" data-demo-apply>Apply once (1)</button>
               </div>
             </div>
           </div>
@@ -683,6 +676,11 @@
         });
       }
 
+      function applyOnceLabel(count) {
+        if (count > 0) return "Apply once (" + count + ")";
+        return "Apply once";
+      }
+
       function paintSelection() {
         var ids = Object.keys(selected).filter(function (id) { return selected[id]; });
         var n = ids.length;
@@ -699,13 +697,11 @@
           btn.setAttribute("data-state", state);
         });
 
-        var countEl = root.querySelector("[data-demo-count]");
         var applyBtn = root.querySelector("[data-demo-apply]");
-        if (countEl) {
-          countEl.innerHTML = '<span class="hlc-apply-count-n">' + n + "</span> selected";
-          countEl.hidden = n === 0;
+        if (applyBtn) {
+          applyBtn.disabled = n === 0;
+          applyBtn.textContent = applyOnceLabel(n);
         }
-        if (applyBtn) applyBtn.disabled = n === 0;
       }
 
       function toggleBank(id) {
@@ -747,7 +743,7 @@
           if (!n) return;
           applyBtn.textContent = "Applied (" + n + ")";
           window.setTimeout(function () {
-            applyBtn.textContent = "Apply once";
+            applyBtn.textContent = applyOnceLabel(n);
           }, 1400);
         });
       }

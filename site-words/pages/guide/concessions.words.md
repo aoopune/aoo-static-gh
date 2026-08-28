@@ -36,18 +36,15 @@ Use **Jump to** below to open any line in this file.
 - [Text — Contents](#t.contents.13)
 - [Text — Rate discounts](#t.rate_discounts.14)
 - [Text — PMAY subsidy](#t.pmay_subsidy.15)
-- [Text — Fees](#t.fees.16)
 - [Text — What can lower your home loan rate?](#t.what_can_lower_your_home_loan_rate.17)
 - [Text — Some banks offer a discount on their listed rate when you meet their …](#t.some_banks_offer_a_discount_on_their_listed_rate.18)
 - [Text — Woman as primary applicant](#t.woman_as_primary_applicant.19)
 - [Text — Often 0.05% to 0.10% lower.](#t.often_0_05_to_0_10_lower.20)
 - [Text — Salary with the same bank](#t.salary_with_the_same_bank.21)
-- [Text — Holding an active salary account with your lender can help you secure…](#t.holding_an_active_salary_account_with_your_lende.22)
 - [Text — Existing savings or loan customer](#t.existing_savings_or_loan_customer.23)
-- [Text — Long-standing customers sometimes get a small cut at sanction.](#t.long_standing_customers_sometimes_get_a_small_cu.24)
 - [Text — Green home](#t.green_home.25)
 - [Text — Often 0.05% to 0.10% lower when the project is rated by IGBC, GRIHA, …](#t.often_0_05_to_0_10_lower_when_the_project_is_rat.26)
-- [Text — Your final rate is what the bank writes at sanction — the listed rate…](#t.your_final_rate_is_what_the_bank_writes_at_sanct.27)
+- [Text — , or any other approved India’s agency for granting certification of …](#t.green_home_rate_tail.88)
 - [Text — Who can get a PMAY subsidy?](#t.who_can_get_a_pmay_subsidy.28)
 - [Text — (opens official PMAY interest subsidy page)](#t.opens_official_pmay_interest_subsidy_page.29)
 - [Button — PMAY CLSS (closed)](#t.pmay_clss_closed.30)
@@ -82,36 +79,12 @@ Use **Jump to** below to open any line in this file.
 - [Text — Through the bank](#t.through_the_bank.59)
 - [Text — At sanction, the bank checked eligibility and filed the claim with th…](#t.at_sanction_the_bank_checked_eligibility_and_fil.60)
 - [Text — It lowered EMI or outstanding balance.](#t.it_lowered_emi_or_outstanding_balance.61)
-- [Text — Closed for new loans](#t.closed_for_new_loans.62)
-- [Text — MIG closed 31 Mar 2021. EWS and LIG closed 31 Mar 2022.](#t.mig_closed_31_mar_2021_ews_and_lig_closed_31_mar.63)
-- [Text — Can fees be waived?](#t.can_fees_be_waived.64)
-- [Text — Yes, banks sometimes waive charges for a limited time.](#t.yes_banks_sometimes_waive_charges_for_a_limited_.65)
-- [Text — Processing fee may be zero or discounted.](#t.processing_fee_may_be_zero_or_discounted.66)
-- [Text — Processing fee may be waived when your salary is credited with that b…](#t.processing_fee_may_be_waived_when_your_salary_is.67)
-- [Text — Those fees may be waived.](#t.those_fees_may_be_waived.68)
-- [Text — Takeover fees on the old loan plus fresh charges on the new one can c…](#t.takeover_fees_on_the_old_loan_plus_fresh_charges.69)
+- [Text — Current status](#t.closed_for_new_loans.62)
 - [text](#t.you_may_already.71)
 - [text](#t.pay_less.72)
 - [text](#t.she_is_usually_the_sole_owner_or_the_first_name_.73)
 - [text](#t.if_your_household_income_is_up_to_3_6_or_9_lakh_.74)
-- [text](#t.no_housing_scheme_benefit_in_the_last_20_years_t.75)
-- [text](#t.loan_up_to_25_lakh_house_value_up_to_35_lakh_car.76)
-- [text](#t.the_4_is_worked_out_for_up_to_12_years.77)
-- [text](#t.only_for_loans_sanctioned_and_disbursed_on_or_af.78)
-- [text](#t.then_it_goes_to_your_bank_or_housing_finance_com.79)
-- [text](#t.you_do_not_get_cash_in_hand.80)
-- [text](#t.loan_must_stay_active_and_more_than_half_the_pri.81)
-- [text](#t.each_band_had_its_own_income_and_loan_caps.82)
-- [text](#t.woman_owner_or_co_owner_in_many_cases.83)
-- [text](#t.not_always_on_your_full_sanction.84)
-- [text](#t.you_did_not_file_a_separate_pmay_form_for_that_s.85)
-- [text](#t.not_cash_in_hand.86)
 - [text](#t.use_this_tab_only_if_you_already_claimed_clss_or.87)
-- [text](#t.during_a_festival_or_campaign.88)
-- [text](#t.gst_may_or_may_not_be_included_in_the_waiver.89)
-- [text](#t.offer_with_free_legal_or_valuation.90)
-- [text](#t.others_still_charge_them_separately.91)
-- [text](#t.moving_your_loan_to_another_bank.92)
 
 <a id="t.overview.5"></a>
 
@@ -168,15 +141,10 @@ Rate discounts
 ## Text — PMAY subsidy {#t.pmay_subsidy.15}
 PMAY subsidy
 
-<a id="t.fees.16"></a>
-
-## Text — Fees {#t.fees.16}
-Fees
-
 <a id="t.what_can_lower_your_home_loan_rate.17"></a>
 
 ## Text — What can lower your home loan rate? {#t.what_can_lower_your_home_loan_rate.17}
-What can lower your home loan rate?
+What can lower your Interest rate?
 
 <a id="t.some_banks_offer_a_discount_on_their_listed_rate.18"></a>
 
@@ -191,27 +159,17 @@ Woman as primary applicant
 <a id="t.often_0_05_to_0_10_lower.20"></a>
 
 ## Text — Often 0.05% to 0.10% lower. {#t.often_0_05_to_0_10_lower.20}
-Often 0.05% to 0.10% lower.
+Up to 0.10% lower interest rate when she is the sole owner or the first name on the property papers.
 
 <a id="t.salary_with_the_same_bank.21"></a>
 
 ## Text — Salary with the same bank {#t.salary_with_the_same_bank.21}
-Salary with the same bank
-
-<a id="t.holding_an_active_salary_account_with_your_lende.22"></a>
-
-## Text — Holding an active salary account with your lender can help you secure… {#t.holding_an_active_salary_account_with_your_lende.22}
-Holding an active salary account with your lender can help you secure discounted interest rates or preferential terms.
+Salary account with the same bank.
 
 <a id="t.existing_savings_or_loan_customer.23"></a>
 
 ## Text — Existing savings or loan customer {#t.existing_savings_or_loan_customer.23}
-Existing savings or loan customer
-
-<a id="t.long_standing_customers_sometimes_get_a_small_cu.24"></a>
-
-## Text — Long-standing customers sometimes get a small cut at sanction. {#t.long_standing_customers_sometimes_get_a_small_cu.24}
-Long-standing customers sometimes get a small cut at sanction.
+Existing savings, loan account, or any long-term customer relationship.
 
 <a id="t.green_home.25"></a>
 
@@ -221,12 +179,11 @@ Green home
 <a id="t.often_0_05_to_0_10_lower_when_the_project_is_rat.26"></a>
 
 ## Text — Often 0.05% to 0.10% lower when the project is rated by IGBC, GRIHA, … {#t.often_0_05_to_0_10_lower_when_the_project_is_rat.26}
-Often 0.05% to 0.10% lower when the project is rated by IGBC, GRIHA, LEED, or another approved Indian agency.
+Up to 0.10% lower interest rate if the project is certified / rated by
+<a id="t.green_home_rate_tail.88"></a>
 
-<a id="t.your_final_rate_is_what_the_bank_writes_at_sanct.27"></a>
-
-## Text — Your final rate is what the bank writes at sanction — the listed rate… {#t.your_final_rate_is_what_the_bank_writes_at_sanct.27}
-Your final rate is what the bank writes at sanction — the listed rate is only a starting point.
+## Text — , or any other approved India’s agency for granting certification of … {#t.green_home_rate_tail.88}
+, or any other approved India’s agency for granting certification of green projects / buildings.
 
 <a id="t.who_can_get_a_pmay_subsidy.28"></a>
 
@@ -271,7 +228,7 @@ First home
 <a id="t.you_and_your_family_should_not_already_own_a_fin.36"></a>
 
 ## Text — You and your family should not already own a finished house anywhere … {#t.you_and_your_family_should_not_already_own_a_fin.36}
-You and your family should not already own a finished house anywhere in India.
+You and your family must not own a finished house in India, must have no housing-scheme benefits in the last 20 years, and the house must usually be in a woman's name or joint with her.
 
 <a id="t.loan_and_house.37"></a>
 
@@ -281,7 +238,7 @@ Loan and house
 <a id="t.purchase_repurchase_or_construction.38"></a>
 
 ## Text — Purchase, repurchase, or construction. {#t.purchase_repurchase_or_construction.38}
-Purchase, repurchase, or construction.
+Applies to purchase, repurchase, or construction for loans up to ₹25 lakh, houses up to ₹35 lakh, and a carpet area up to 120 sqm.
 
 <a id="t.loan_tenure.39"></a>
 
@@ -291,7 +248,7 @@ Loan tenure
 <a id="t.longer_than_5_years.40"></a>
 
 ## Text — Longer than 5 years. {#t.longer_than_5_years.40}
-Longer than 5 years.
+Tenure must be longer than 5 years, with the 4% calculated for up to 12 years.
 
 <a id="t.bank_s_numbers.41"></a>
 
@@ -301,7 +258,7 @@ Bank’s numbers
 <a id="t.income_and_house_value_as_the_bank_assesses_them.42"></a>
 
 ## Text — Income and house value as the bank assesses them must stay within the… {#t.income_and_house_value_as_the_bank_assesses_them.42}
-Income and house value as the bank assesses them must stay within the caps.
+Income and house value assessed by the bank must stay within the caps.
 
 <a id="t.subsidy.43"></a>
 
@@ -311,7 +268,7 @@ Subsidy
 <a id="t.4_a_year_on_the_first_8_lakh_of_the_loan_max_abo.44"></a>
 
 ## Text — 4% a year on the first ₹8 lakh of the loan. Max about ₹1.80 lakh. {#t.4_a_year_on_the_first_8_lakh_of_the_loan_max_abo.44}
-4% a year on the first ₹8 lakh of the loan. Max about ₹1.80 lakh.
+4% a year on the first ₹8 lakh of the loan up to about ₹1.80 lakh max for loans sanctioned and disbursed on or after 1 Sep 2024.
 
 <a id="t.one_house_one_subsidy.45"></a>
 
@@ -321,37 +278,37 @@ One house, one subsidy
 <a id="t.if_a_previous_owner_already_got_iss_on_that_hous.46"></a>
 
 ## Text — If a previous owner already got ISS on that house, you usually cannot. {#t.if_a_previous_owner_already_got_iss_on_that_hous.46}
-If a previous owner already got ISS on that house, you usually cannot.
+You usually cannot get it if a previous owner already got ISS on that house.
 
 <a id="t.register_on_the_pmay_portal.47"></a>
 
 ## Text — Register on the PMAY portal {#t.register_on_the_pmay_portal.47}
-Register on the PMAY portal
+How to apply
 
 <a id="t.put_in_your_demand_on_the_unified_web_portal.48"></a>
 
 ## Text — Put in your demand on the Unified Web Portal. {#t.put_in_your_demand_on_the_unified_web_portal.48}
-Put in your demand on the Unified Web Portal.
+Submit your demand on the Unified Web Portal to send it to your bank or housing finance company.
 
 <a id="t.on_your_loan_account.49"></a>
 
 ## Text — On your loan account {#t.on_your_loan_account.49}
-On your loan account
+How you get the subsidy
 
 <a id="t.subsidy_comes_in_5_yearly_credits_on_the_loan_it.50"></a>
 
 ## Text — Subsidy comes in 5 yearly credits on the loan. It cuts principal. {#t.subsidy_comes_in_5_yearly_credits_on_the_loan_it.50}
-Subsidy comes in 5 yearly credits on the loan. It cuts principal.
+It is credited directly to your loan account in 5 yearly installments to reduce your principal, not given as cash.
 
 <a id="t.what_you_give_the_bank.51"></a>
 
 ## Text — What you give the bank {#t.what_you_give_the_bank.51}
-What you give the bank
+What you need to provide and maintain
 
 <a id="t.aadhaar_and_income_proof_for_the_claim.52"></a>
 
 ## Text — Aadhaar and income proof for the claim. {#t.aadhaar_and_income_proof_for_the_claim.52}
-Aadhaar and income proof for the claim.
+Provide income proof and ID verification, keep your loan active, and ensure more than half the principal remains outstanding when each credit is applied.
 
 <a id="t.who_it_was_for.53"></a>
 
@@ -371,27 +328,27 @@ Income bands
 <a id="t.ews_lig_mig_i_mig_ii.56"></a>
 
 ## Text — EWS, LIG, MIG-I, MIG-II. {#t.ews_lig_mig_i_mig_ii.56}
-EWS, LIG, MIG-I, MIG-II.
+Divided into EWS, LIG, MIG-I, and MIG-II, with each band having its own specific income and loan caps.
 
 <a id="t.no_finished_house_already_in_the_family_s_name.57"></a>
 
 ## Text — No finished house already in the family’s name. {#t.no_finished_house_already_in_the_family_s_name.57}
-No finished house already in the family’s name.
+The family must not already own a finished house, and the property must often be in a woman's name or held as a co-owner.
 
 <a id="t.interest_cut_on_a_capped_loan_amount_by_category.58"></a>
 
 ## Text — Interest cut on a capped loan amount by category (about 6.5% / 4% / 3… {#t.interest_cut_on_a_capped_loan_amount_by_category.58}
-Interest cut on a capped loan amount by category (about 6.5% / 4% / 3% on up to about ₹6 lakh / ₹9 lakh / ₹12 lakh).
+Provides an interest cut on a capped loan amount depending on the category (roughly 6.5%, 4%, or 3% on loans up to about ₹6 lakh, ₹9 lakh, or ₹12 lakh), which may not apply to your full sanction amount.
 
 <a id="t.through_the_bank.59"></a>
 
 ## Text — Through the bank {#t.through_the_bank.59}
-Through the bank
+How it was filed
 
 <a id="t.at_sanction_the_bank_checked_eligibility_and_fil.60"></a>
 
 ## Text — At sanction, the bank checked eligibility and filed the claim with th… {#t.at_sanction_the_bank_checked_eligibility_and_fil.60}
-At sanction, the bank checked eligibility and filed the claim with the nodal agency.
+The bank checks eligibility and files the claim with the nodal agency at sanction, so you do not need to file a separate PMAY form.
 
 <a id="t.it_lowered_emi_or_outstanding_balance.61"></a>
 
@@ -400,43 +357,8 @@ It lowered EMI or outstanding balance.
 
 <a id="t.closed_for_new_loans.62"></a>
 
-## Text — Closed for new loans {#t.closed_for_new_loans.62}
-Closed for new loans
-
-<a id="t.mig_closed_31_mar_2021_ews_and_lig_closed_31_mar.63"></a>
-
-## Text — MIG closed 31 Mar 2021. EWS and LIG closed 31 Mar 2022. {#t.mig_closed_31_mar_2021_ews_and_lig_closed_31_mar.63}
-MIG closed 31 Mar 2021. EWS and LIG closed 31 Mar 2022.
-
-<a id="t.can_fees_be_waived.64"></a>
-
-## Text — Can fees be waived? {#t.can_fees_be_waived.64}
-Can fees be waived?
-
-<a id="t.yes_banks_sometimes_waive_charges_for_a_limited_.65"></a>
-
-## Text — Yes, banks sometimes waive charges for a limited time. {#t.yes_banks_sometimes_waive_charges_for_a_limited_.65}
-Yes, banks sometimes waive charges for a limited time.
-
-<a id="t.processing_fee_may_be_zero_or_discounted.66"></a>
-
-## Text — Processing fee may be zero or discounted. {#t.processing_fee_may_be_zero_or_discounted.66}
-Processing fee may be zero or discounted.
-
-<a id="t.processing_fee_may_be_waived_when_your_salary_is.67"></a>
-
-## Text — Processing fee may be waived when your salary is credited with that b… {#t.processing_fee_may_be_waived_when_your_salary_is.67}
-Processing fee may be waived when your salary is credited with that bank.
-
-<a id="t.those_fees_may_be_waived.68"></a>
-
-## Text — Those fees may be waived. {#t.those_fees_may_be_waived.68}
-Those fees may be waived.
-
-<a id="t.takeover_fees_on_the_old_loan_plus_fresh_charges.69"></a>
-
-## Text — Takeover fees on the old loan plus fresh charges on the new one can c… {#t.takeover_fees_on_the_old_loan_plus_fresh_charges.69}
-Takeover fees on the old loan plus fresh charges on the new one can cancel a small waiver.
+## Text — Current status {#t.closed_for_new_loans.62}
+Current status
 
 <a id="t.you_may_already.71"></a>
 
@@ -451,99 +373,13 @@ pay less.
 <a id="t.she_is_usually_the_sole_owner_or_the_first_name_.73"></a>
 
 ## text {#t.she_is_usually_the_sole_owner_or_the_first_name_.73}
-She is usually the sole owner or the first name on the property papers.
 
 <a id="t.if_your_household_income_is_up_to_3_6_or_9_lakh_.74"></a>
 
 ## text {#t.if_your_household_income_is_up_to_3_6_or_9_lakh_.74}
-If your household income is up to ₹3, ₹6, or ₹9 lakh a year, this is your first home, your loan is up to ₹25 lakh, and the house is up to ₹35 lakh.
-
-<a id="t.no_housing_scheme_benefit_in_the_last_20_years_t.75"></a>
-
-## text {#t.no_housing_scheme_benefit_in_the_last_20_years_t.75}
-No housing-scheme benefit in the last 20 years. The house is usually in a woman’s name, or joint with her.
-
-<a id="t.loan_up_to_25_lakh_house_value_up_to_35_lakh_car.76"></a>
-
-## text {#t.loan_up_to_25_lakh_house_value_up_to_35_lakh_car.76}
-Loan up to ₹25 lakh. House value up to ₹35 lakh. Carpet area up to 120 sqm.
-
-<a id="t.the_4_is_worked_out_for_up_to_12_years.77"></a>
-
-## text {#t.the_4_is_worked_out_for_up_to_12_years.77}
-The 4% is worked out for up to 12 years.
-
-<a id="t.only_for_loans_sanctioned_and_disbursed_on_or_af.78"></a>
-
-## text {#t.only_for_loans_sanctioned_and_disbursed_on_or_af.78}
-Only for loans sanctioned and disbursed on or after 1 Sep 2024.
-
-<a id="t.then_it_goes_to_your_bank_or_housing_finance_com.79"></a>
-
-## text {#t.then_it_goes_to_your_bank_or_housing_finance_com.79}
-Then it goes to your bank or housing finance company.
-
-<a id="t.you_do_not_get_cash_in_hand.80"></a>
-
-## text {#t.you_do_not_get_cash_in_hand.80}
-You do not get cash in hand.
-
-<a id="t.loan_must_stay_active_and_more_than_half_the_pri.81"></a>
-
-## text {#t.loan_must_stay_active_and_more_than_half_the_pri.81}
-Loan must stay active, and more than half the principal must still be outstanding when each credit lands.
-
-<a id="t.each_band_had_its_own_income_and_loan_caps.82"></a>
-
-## text {#t.each_band_had_its_own_income_and_loan_caps.82}
-Each band had its own income and loan caps.
-
-<a id="t.woman_owner_or_co_owner_in_many_cases.83"></a>
-
-## text {#t.woman_owner_or_co_owner_in_many_cases.83}
-Woman owner or co-owner in many cases.
-
-<a id="t.not_always_on_your_full_sanction.84"></a>
-
-## text {#t.not_always_on_your_full_sanction.84}
-Not always on your full sanction.
-
-<a id="t.you_did_not_file_a_separate_pmay_form_for_that_s.85"></a>
-
-## text {#t.you_did_not_file_a_separate_pmay_form_for_that_s.85}
-You did not file a separate PMAY form for that scheme.
-
-<a id="t.not_cash_in_hand.86"></a>
-
-## text {#t.not_cash_in_hand.86}
-Not cash in hand.
+First-time homebuyers with an annual income up to ₹9 lakh, taking a loan up to ₹25 lakh for a house up to ₹35 lakh.
 
 <a id="t.use_this_tab_only_if_you_already_claimed_clss_or.87"></a>
 
 ## text {#t.use_this_tab_only_if_you_already_claimed_clss_or.87}
-Use this tab only if you already claimed CLSS, or your old claim was in that window.
-
-<a id="t.during_a_festival_or_campaign.88"></a>
-
-## text {#t.during_a_festival_or_campaign.88}
-During a festival or campaign
-
-<a id="t.gst_may_or_may_not_be_included_in_the_waiver.89"></a>
-
-## text {#t.gst_may_or_may_not_be_included_in_the_waiver.89}
-GST may or may not be included in the waiver.
-
-<a id="t.offer_with_free_legal_or_valuation.90"></a>
-
-## text {#t.offer_with_free_legal_or_valuation.90}
-Offer with free legal or valuation
-
-<a id="t.others_still_charge_them_separately.91"></a>
-
-## text {#t.others_still_charge_them_separately.91}
-Others still charge them separately.
-
-<a id="t.moving_your_loan_to_another_bank.92"></a>
-
-## text {#t.moving_your_loan_to_another_bank.92}
-Moving your loan to another bank
+Closed for new loans (MIG closed on 31 March 2021, and EWS/LIG closed on 31 March 2022), meaning you should only use this tab if you already claimed CLSS or your old claim was in that window.

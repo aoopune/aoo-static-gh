@@ -1708,7 +1708,7 @@
 
     document
       .querySelectorAll(
-        ".guide-moment .guide-tile-title, .guide-moment .mag-h, .guide-moment .guide-tile-copy--rule"
+        ".guide-moment .guide-tile-title, .guide-moment .mag-h, .guide-moment .guide-tile-copy--rule, .guide-moment .guide-path-plain"
       )
       .forEach(function (el) {
         if (!isChapterTextRise(el)) return;
@@ -2004,6 +2004,109 @@
     });
   }
 
+  function initGuideSheetDialogs() {
+    var sheetState = { openId: null, lastTrigger: null, isClosing: false };
+
+    function prefersReducedMotion() {
+      return (
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      );
+    }
+
+    function finishClose(dialog) {
+      dialog.classList.remove("guide-sheet-dialog--open", "guide-sheet-dialog--closing");
+      dialog.hidden = true;
+      sheetState.isClosing = false;
+      sheetState.openId = null;
+      if (sheetState.lastTrigger && typeof sheetState.lastTrigger.focus === "function") {
+        sheetState.lastTrigger.focus();
+      }
+      sheetState.lastTrigger = null;
+    }
+
+    function closeDialog(dialog) {
+      if (!dialog || dialog.hidden || sheetState.isClosing) return;
+      if (prefersReducedMotion()) {
+        finishClose(dialog);
+        return;
+      }
+      sheetState.isClosing = true;
+      dialog.classList.remove("guide-sheet-dialog--open");
+      dialog.classList.add("guide-sheet-dialog--closing");
+      window.setTimeout(function () {
+        if (sheetState.isClosing) finishClose(dialog);
+      }, 950);
+    }
+
+    function openDialog(id, trigger) {
+      var dialog = document.getElementById(id);
+      if (!dialog || !dialog.classList.contains("guide-sheet-dialog")) return;
+      sheetState.lastTrigger = trigger;
+      sheetState.isClosing = false;
+      dialog.classList.remove("guide-sheet-dialog--closing");
+      dialog.hidden = false;
+      var closeBtn = dialog.querySelector(".guide-sheet-dialog__close");
+      if (prefersReducedMotion()) {
+        dialog.classList.add("guide-sheet-dialog--open");
+      } else {
+        requestAnimationFrame(function () {
+          dialog.classList.add("guide-sheet-dialog--open");
+        });
+      }
+      if (closeBtn) closeBtn.focus();
+      sheetState.openId = id;
+    }
+
+    document.querySelectorAll(".guide-sheet-dialog").forEach(function (dialog) {
+      if (dialog.parentElement !== document.body) {
+        document.body.appendChild(dialog);
+      }
+
+      var panel = dialog.querySelector(".guide-sheet-dialog__panel");
+      dialog.addEventListener("click", function (event) {
+        if (event.target === dialog) closeDialog(dialog);
+      });
+      dialog.querySelectorAll("[data-guide-sheet-close]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          closeDialog(dialog);
+        });
+      });
+      if (panel) {
+        panel.addEventListener("transitionend", function (event) {
+          if (event.target !== panel) return;
+          if (event.propertyName !== "transform") return;
+          if (!dialog.classList.contains("guide-sheet-dialog--closing")) return;
+          finishClose(dialog);
+        });
+      }
+    });
+
+    document.querySelectorAll("[data-guide-sheet-open]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-guide-sheet-open");
+        if (id) openDialog(id, btn);
+      });
+    });
+
+    function onKeydown(event) {
+      if (event.key !== "Escape" || !sheetState.openId) return;
+      var dialog = document.getElementById(sheetState.openId);
+      if (!dialog || dialog.hidden) return;
+      event.preventDefault();
+      closeDialog(dialog);
+    }
+
+    document.addEventListener("keydown", onKeydown);
+    addContentCleanup(function () {
+      document.removeEventListener("keydown", onKeydown);
+      document.querySelectorAll(".guide-sheet-dialog").forEach(function (dialog) {
+        if (!dialog.hidden) finishClose(dialog);
+      });
+    });
+  }
+
   function initContent() {
     beginContentLifecycle();
     initPageModules();
@@ -2014,6 +2117,7 @@
     initSegPanels();
     initScrollRegions();
     initGuideDisclosures();
+    initGuideSheetDialogs();
     if (window.ShroffinGuideIntelligenceInit) {
       window.ShroffinGuideIntelligenceInit({
         root: document.getElementById("guide-swap"),

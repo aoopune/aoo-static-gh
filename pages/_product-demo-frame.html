@@ -25,7 +25,7 @@
      */
     html {
       width: 100%;
-      height: 1025px;
+      height: 1077px;
       overflow-x: hidden;
       overflow-y: auto;
       scrollbar-width: none;
@@ -49,23 +49,9 @@
 
     /* Keep the working shell pad; title sits in the same rhythm as live */
     .hlc-shell {
-      padding-top: 1.75rem !important;
-      padding-bottom: 2.5rem !important;
+      padding-top: 0.75rem !important;
+      padding-bottom: 1.25rem !important;
       background: var(--shroffin-surface);
-    }
-
-    /*
-     * Hero type + wash come from shroffin-explore-banks.css tokens.
-     * Only kill entrance animation so the title is visible in the loop.
-     */
-    .hlc-hero {
-      margin-bottom: 0.5rem;
-      padding-block: clamp(0.8rem, 2.4vw, 1.4rem);
-    }
-
-    .hlc-title {
-      opacity: 1 !important;
-      animation: none !important;
     }
 
     /* Help + row-1 selects are chrome only — scripted cursor owns the story */
@@ -113,6 +99,33 @@
     /* Filters rematch like live — hide non-matching rows on every tab */
     .hlc-compare tr[hidden] {
       display: none !important;
+    }
+
+    .hlc-intelligence {
+      margin-block: 0 0.65rem !important;
+    }
+
+    /*
+     * Demo frame has no site nav — sticky tools + column titles pin from y=0.
+     * Matches live results view geometry inside the iframe viewport.
+     */
+    body.explore-banks-page {
+      --shroffin-gn-offset: 0px;
+    }
+
+    @media (min-width: 834px) {
+      [data-spd-results]:not([hidden]) .hlc-results-head {
+        top: 0;
+      }
+
+      [data-spd-results]:not([hidden]) .hlc-table-pin {
+        top: var(--hlc-sticky-tools-h, 2.75rem);
+      }
+    }
+
+    /* Results phase: drop extra gap above the compare stage */
+    [data-spd-results]:not([hidden]) .hlc-compare-stage {
+      gap: 0 !important;
     }
 
     .hlc-form-more {
@@ -499,7 +512,7 @@
           <section class="hlc-results-shell" data-spd-results hidden aria-live="polite">
             <div class="hlc-results-head">
               <div class="hlc-results-heading">
-                <h2 class="visually-hidden">Banks</h2>
+                <h2 class="visually-hidden" id="spd-compare-heading">Bank options</h2>
               </div>
               <div class="hlc-results-actions">
                 <div class="hlc-results-tools-lead">
@@ -541,13 +554,12 @@
                 id="spd-filters-panel"
                 data-spd-filters-panel
                 role="region"
-                aria-labelledby="spd-filters-heading"
+                aria-label="Filters"
               >
-                <div class="hlc-filters-handle" aria-hidden="true">
-                  <span class="hlc-filters-handle-pill"></span>
+                <div class="hlc-sheet-handle hlc-filters-handle" aria-hidden="true">
+                  <span class="hlc-sheet-handle-pill hlc-filters-handle-pill"></span>
                 </div>
                 <div class="hlc-filters-head">
-                  <h3 class="hlc-filters-title" id="spd-filters-heading">Filters</h3>
                   <div class="hlc-filters-head-actions">
                     <button type="button" class="hlc-filters-clear" hidden tabindex="-1">Clear all</button>
                   </div>
@@ -555,126 +567,126 @@
                 <div class="hlc-filters-scroll">
 
                   <fieldset class="hlc-filter-group">
-                    <legend class="hlc-filter-legend" id="spd-borrower-label">
+                    <legend class="hlc-filter-legend" id="spd-rate-label">
                       <span class="hlc-field-label-row">
-                        <span class="hlc-field-label-text">Borrower</span>
-                        <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-label="About Borrower" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span>
+                        <span class="hlc-field-label-text">Rate</span>
+                        <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-controls="spd-help-rate" aria-label="About Rate" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-rate" role="tooltip" hidden>
+                          <p class="hlc-field-help-text">Floating rates can rise or fall later, so the EMI or the years can change.</p>
+                          <p class="hlc-field-help-text">Lifelong fixed is uncommon; many &ldquo;fixed&rdquo; offers last only a few years.</p>
+                          <a class="hlc-field-help-more" href="../pages/guide.html#rates" tabindex="-1">Learn more</a>
+                        </div></span>
                       </span>
                     </legend>
-                    <div class="hlc-filter-checks hlc-borrower-chips" role="group" aria-labelledby="spd-borrower-label">
+                    <div class="hlc-filter-checks" role="group" aria-labelledby="spd-rate-label">
                       <label class="hlc-filter-option">
-                        <input type="checkbox" data-spd-filter="govt" data-spd-default-pressed="false" tabindex="-1" />
-                        <span class="hlc-filter-option-label">Govt / PSU employee and pensioner</span>
+                        <input type="checkbox" data-spd-filter="Floating" data-spd-default-pressed="true" checked tabindex="-1" />
+                        <span class="hlc-filter-option-label">
+                          <span class="hlc-filter-option-title">Floating</span>
+                          <span class="hlc-filter-option-note">May rise or fall, changing your EMI.</span>
+                        </span>
+                      </label>
+                      <label class="hlc-filter-option">
+                        <input type="checkbox" data-spd-filter="Fixed" data-spd-default-pressed="false" tabindex="-1" />
+                        <span class="hlc-filter-option-label">
+                          <span class="hlc-filter-option-title">Fixed</span>
+                          <span class="hlc-filter-option-note">Fixed for ~5 years; typically 1–2% above floating rates.</span>
+                        </span>
                       </label>
                     </div>
                   </fieldset>
 
                   <fieldset class="hlc-filter-group">
-                    <legend class="hlc-filter-legend" id="spd-concessions-label">
+                    <legend class="hlc-filter-legend" id="spd-facility-label">
                       <span class="hlc-field-label-row">
-                        <span class="hlc-field-label-text">Concessions</span>
-                        <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-label="About Concessions" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span>
+                        <span class="hlc-field-label-text">Facility</span>
+                        <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-controls="spd-help-facility" aria-label="About Facility" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-facility" role="tooltip" hidden>
+                          <p class="hlc-field-help-text">Term loans use a set EMI on reducing principal.</p>
+                          <p class="hlc-field-help-text">Overdraft home loans can cut interest if you park surplus, usually at a higher rate.</p>
+                          <a class="hlc-field-help-more" href="../pages/guide.html#loan-structure" tabindex="-1">Learn more</a>
+                        </div></span>
                       </span>
                     </legend>
+                    <div class="hlc-filter-checks" role="group" aria-labelledby="spd-facility-label">
+                      <label class="hlc-filter-option">
+                        <input type="checkbox" data-spd-filter="Term" data-spd-default-pressed="true" checked tabindex="-1" />
+                        <span class="hlc-filter-option-label">
+                          <span class="hlc-filter-option-title">Term loan</span>
+                          <span class="hlc-filter-option-note">A general home loan product.</span>
+                        </span>
+                      </label>
+                      <label class="hlc-filter-option">
+                        <input type="checkbox" data-spd-filter="OD" data-spd-default-pressed="false" tabindex="-1" />
+                        <span class="hlc-filter-option-label">
+                          <span class="hlc-filter-option-title">Overdraft<span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-controls="spd-help-overdraft" aria-label="About Overdraft" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-overdraft" role="tooltip" hidden>
+                              <p class="hlc-field-help-text">Idle money reduces the balance that earns interest; you can usually withdraw it later.</p>
+                              <p class="hlc-field-help-text">Expect a slightly higher rate than the same bank's plain term loan.</p>
+                            </div></span></span>
+                          <span class="hlc-filter-option-note">Park idle cash to save interest and withdraw anytime at +0.15 to 1% ROI.</span>
+                        </span>
+                      </label>
+                    </div>
+                  </fieldset>
+
+                  <fieldset class="hlc-filter-group">
+                    <legend class="hlc-filter-legend" id="spd-bank-type-label">Bank type</legend>
+                    <div class="hlc-filter-checks" role="group" aria-labelledby="spd-bank-type-label">
+                      <label class="hlc-filter-option">
+                        <input type="checkbox" data-spd-filter="Public" data-spd-default-pressed="true" checked tabindex="-1" />
+                        <span class="hlc-filter-option-label">
+                          <span class="hlc-filter-option-title">Public</span>
+                          <span class="hlc-filter-option-note">Slower process, usually a better rate.</span>
+                        </span>
+                      </label>
+                      <label class="hlc-filter-option">
+                        <input type="checkbox" data-spd-filter="Private" data-spd-default-pressed="true" checked tabindex="-1" />
+                        <span class="hlc-filter-option-label">
+                          <span class="hlc-filter-option-title">Private</span>
+                          <span class="hlc-filter-option-note">Faster process, usually higher rates and fees.</span>
+                        </span>
+                      </label>
+                    </div>
+                  </fieldset>
+
+                  <fieldset class="hlc-filter-group">
+                    <legend class="hlc-filter-legend" id="spd-concessions-label">Concessions</legend>
                     <div class="hlc-filter-checks" role="group" aria-labelledby="spd-concessions-label">
                       <label class="hlc-filter-option">
                         <input type="checkbox" data-spd-filter="women" data-spd-default-pressed="false" tabindex="-1" />
                         <span class="hlc-filter-option-label">
                           <span class="hlc-filter-option-title">Women applicant</span>
-                          <span class="hlc-filter-option-note">Usually 0.05 to 0.10% off when a woman is the main applicant and first name on the property papers.</span>
+                          <span class="hlc-filter-option-note">Save up to 0.05% as co-owner and co-borrower.</span>
                         </span>
                       </label>
                       <label class="hlc-filter-option">
                         <input type="checkbox" data-spd-filter="green" data-spd-default-pressed="false" tabindex="-1" />
                         <span class="hlc-filter-option-label">
                           <span class="hlc-filter-option-title">Green home</span>
-                          <span class="hlc-filter-option-note">Usually 0.05 to 0.10% off when the house has a green rating (IGBC, GRIHA, or LEED).</span>
+                          <span class="hlc-filter-option-note">Save up to 0.10% with green building certification.</span>
                         </span>
                       </label>
                       <label class="hlc-filter-option">
                         <input type="checkbox" data-spd-filter="insurance" data-spd-default-pressed="false" tabindex="-1" />
                         <span class="hlc-filter-option-label">
                           <span class="hlc-filter-option-title">Insurance</span>
-                          <span class="hlc-filter-option-note">Up to 0.05% off if you take their cover; house cover is usually required, life cover you can refuse or buy elsewhere.</span>
+                          <span class="hlc-filter-option-note">Save up to 0.05% with property cover.</span>
                         </span>
                       </label>
                     </div>
                   </fieldset>
 
-                <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="spd-bank-type-label">
-                    <span class="hlc-field-label-row">
-                      <span class="hlc-field-label-text">Bank type</span>
-                      <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-label="About Bank type" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span>
-                    </span>
-                  </legend>
-                  <div class="hlc-filter-checks" role="group" aria-labelledby="spd-bank-type-label">
-                    <label class="hlc-filter-option">
-                      <input type="checkbox" data-spd-filter="Public" data-spd-default-pressed="true" checked tabindex="-1" />
-                      <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Public</span>
-                        <span class="hlc-filter-option-note">Slower process, usually a better rate.</span>
-                      </span>
-                    </label>
-                    <label class="hlc-filter-option">
-                      <input type="checkbox" data-spd-filter="Private" data-spd-default-pressed="true" checked tabindex="-1" />
-                      <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Private</span>
-                        <span class="hlc-filter-option-note">Smoother process, usually a higher rate and fee.</span>
-                      </span>
-                    </label>
-                  </div>
-                </fieldset>
-
-                <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="spd-rate-label">
-                    <span class="hlc-field-label-row">
-                      <span class="hlc-field-label-text">Rate</span>
-                      <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-label="About Rate" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span>
-                    </span>
-                  </legend>
-                  <div class="hlc-filter-checks" role="group" aria-labelledby="spd-rate-label">
-                    <label class="hlc-filter-option">
-                      <input type="checkbox" data-spd-filter="Floating" data-spd-default-pressed="true" checked tabindex="-1" />
-                      <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Floating</span>
-                        <span class="hlc-filter-option-note">Can move with the benchmark.</span>
-                      </span>
-                    </label>
-                    <label class="hlc-filter-option">
-                      <input type="checkbox" data-spd-filter="Fixed" data-spd-default-pressed="false" tabindex="-1" />
-                      <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Fixed</span>
-                        <span class="hlc-filter-option-note">Does not change for a few years (generally 5 years). About 1–2% higher than floating rate.</span>
-                      </span>
-                    </label>
-                  </div>
-                </fieldset>
-
-                <fieldset class="hlc-filter-group">
-                  <legend class="hlc-filter-legend" id="spd-facility-label">
-                    <span class="hlc-field-label-row">
-                      <span class="hlc-field-label-text">Facility</span>
-                      <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-label="About Facility" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span>
-                    </span>
-                  </legend>
-                  <div class="hlc-filter-checks" role="group" aria-labelledby="spd-facility-label">
-                    <label class="hlc-filter-option">
-                      <input type="checkbox" data-spd-filter="Term" data-spd-default-pressed="true" checked tabindex="-1" />
-                      <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Term loan</span>
-                        <span class="hlc-filter-option-note">A general home loan product.</span>
-                      </span>
-                    </label>
-                    <label class="hlc-filter-option">
-                      <input type="checkbox" data-spd-filter="OD" data-spd-default-pressed="false" tabindex="-1" />
-                      <span class="hlc-filter-option-label">
-                        <span class="hlc-filter-option-title">Overdraft<span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-label="About Overdraft" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button></span></span>
-                        <span class="hlc-filter-option-note">Idle money saves interest. About 0.15–1% higher than term loan</span>
-                      </span>
-                    </label>
-                  </div>
-                </fieldset>
+                  <fieldset class="hlc-filter-group">
+                    <legend class="hlc-filter-legend" id="spd-borrower-label">Borrower</legend>
+                    <div class="hlc-filter-checks hlc-borrower-chips" role="group" aria-labelledby="spd-borrower-label">
+                      <label class="hlc-filter-option">
+                        <input type="checkbox" data-spd-filter="govt" data-spd-default-pressed="false" tabindex="-1" />
+                        <span class="hlc-filter-option-label">Govt / PSU employee and pensioner</span>
+                        <span class="hlc-field-help-anchor"><button type="button" class="hlc-field-help" aria-expanded="false" aria-controls="spd-help-govt-psu" aria-label="About Govt / PSU employee and pensioner" tabindex="-1"><span class="hlc-field-help-mark" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path fill="currentColor" d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span></button><div class="hlc-field-help-popover" id="spd-help-govt-psu" role="tooltip" hidden>
+                          <p class="hlc-field-help-text">Govt or pension schemes may cut fees or rate, not skip the usual checks.</p>
+                          <p class="hlc-field-help-text">&ldquo;Zero processing&rdquo; often still leaves legal, valuation, and registry costs.</p>
+                        </div></span>
+                      </label>
+                    </div>
+                  </fieldset>
                 </div>
                 <div class="hlc-filters-foot">
                   <button type="button" class="hlc-btn-primary hlc-filters-done" data-spd-filters-done tabindex="-1">
@@ -685,9 +697,55 @@
 
               <div class="hlc-compare-table-area">
                 <div class="hlc-table-wrap" data-spd-panel="essentials">
-                  <div class="hlc-table-scroll" data-spd-scroll tabindex="0" role="region" aria-label="Matching banks">
-                    <table class="hlc-compare" data-group="essentials">
-                      <caption class="visually-hidden">Matching banks</caption>
+                  <div class="hlc-table-pin">
+                    <div class="hlc-table-head-scroll">
+                      <table class="hlc-compare hlc-compare--head" data-group="essentials">
+                        <colgroup>
+                          <col class="hlc-col-bank">
+                          <col class="hlc-col-w-pct">
+                          <col class="hlc-col-w-inr">
+                          <col class="hlc-col-w-tenure">
+                          <col class="hlc-col-w-inr">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th scope="col" class="hlc-sticky-col hlc-sort-static" id="spd-th-bank">
+                              <div class="hlc-bank-head">
+                                <span class="hlc-bank-head-label">Lenders</span>
+                              </div>
+                            </th>
+                            <th scope="col" class="hlc-col-num hlc-sortable" aria-sort="ascending" data-sort="rate">Rate
+                              <span class="hlc-sort-ind" aria-hidden="true">
+                                <span class="hlc-sort-up"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 4.5 4 1.5 7 4.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                <span class="hlc-sort-down"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 0.5 4 3.5 7 0.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                              </span>
+                            </th>
+                            <th scope="col" class="hlc-col-num hlc-sortable" aria-sort="none" data-sort="loan">Loan amount
+                              <span class="hlc-sort-ind" aria-hidden="true">
+                                <span class="hlc-sort-up"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 4.5 4 1.5 7 4.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                <span class="hlc-sort-down"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 0.5 4 3.5 7 0.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                              </span>
+                            </th>
+                            <th scope="col" class="hlc-col-text hlc-sortable" aria-sort="none" data-sort="tenure">Tenure (yrs)
+                              <span class="hlc-sort-ind" aria-hidden="true">
+                                <span class="hlc-sort-up"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 4.5 4 1.5 7 4.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                <span class="hlc-sort-down"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 0.5 4 3.5 7 0.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                              </span>
+                            </th>
+                            <th scope="col" class="hlc-col-num hlc-sortable" aria-sort="none" data-sort="emi">EMI
+                              <span class="hlc-sort-ind" aria-hidden="true">
+                                <span class="hlc-sort-up"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 4.5 4 1.5 7 4.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                <span class="hlc-sort-down"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 0.5 4 3.5 7 0.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                              </span>
+                            </th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="hlc-table-scroll" data-spd-scroll tabindex="0" role="region" aria-labelledby="spd-compare-heading">
+                    <table class="hlc-compare hlc-compare--body" data-group="essentials">
+                      <caption class="visually-hidden">Your home loan options</caption>
                       <colgroup>
                         <col class="hlc-col-bank">
                         <col class="hlc-col-w-pct">
@@ -695,35 +753,6 @@
                         <col class="hlc-col-w-tenure">
                         <col class="hlc-col-w-inr">
                       </colgroup>
-                      <thead>
-                        <tr>
-                          <th scope="col" class="hlc-sticky-col hlc-sort-static">Bank</th>
-                          <th scope="col" class="hlc-col-num hlc-sortable" aria-sort="ascending" data-sort="rate">Rate
-                            <span class="hlc-sort-ind" aria-hidden="true">
-                              <span class="hlc-sort-up"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 4.5 4 1.5 7 4.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                              <span class="hlc-sort-down"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 0.5 4 3.5 7 0.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                            </span>
-                          </th>
-                          <th scope="col" class="hlc-col-num hlc-sortable" aria-sort="none" data-sort="loan">Loan amount
-                            <span class="hlc-sort-ind" aria-hidden="true">
-                              <span class="hlc-sort-up"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 4.5 4 1.5 7 4.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                              <span class="hlc-sort-down"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 0.5 4 3.5 7 0.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                            </span>
-                          </th>
-                          <th scope="col" class="hlc-col-text hlc-sortable" aria-sort="none" data-sort="tenure">Tenure (yrs)
-                            <span class="hlc-sort-ind" aria-hidden="true">
-                              <span class="hlc-sort-up"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 4.5 4 1.5 7 4.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                              <span class="hlc-sort-down"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 0.5 4 3.5 7 0.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                            </span>
-                          </th>
-                          <th scope="col" class="hlc-col-num hlc-sortable" aria-sort="none" data-sort="emi">EMI
-                            <span class="hlc-sort-ind" aria-hidden="true">
-                              <span class="hlc-sort-up"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 4.5 4 1.5 7 4.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                              <span class="hlc-sort-down"><svg width="8" height="5" viewBox="0 0 8 5" focusable="false"><path d="M1 0.5 4 3.5 7 0.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                            </span>
-                          </th>
-                        </tr>
-                      </thead>
                       <!-- Same bank order on every tab (rate ascending). Bank name only in the table. -->
                       <tbody>
                         <tr class="hlc-selectable-row" data-spd-row data-bank="bom" data-bank-type="Public" aria-selected="false">
@@ -735,10 +764,10 @@
                               </div>
                             </div>
                           </td>
-                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.25%</span></td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-rank-wrap"><span class="hlc-rank-figure"><span class="hlc-cell-value hlc-rank-num hlc-rank-num--helpful">7.25%</span></span><span class="hlc-rank-pills"><span class="hlc-rank-pill hlc-rank-pill--helpful">Lowest</span></span></span></td>
                           <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
                           <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
-                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹39,519</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-rank-wrap"><span class="hlc-rank-figure"><span class="hlc-cell-value hlc-rank-num hlc-rank-num--helpful">₹39,519</span></span><span class="hlc-rank-pills"><span class="hlc-rank-pill hlc-rank-pill--helpful">Lowest</span></span></span></td>
                         </tr>
                         <tr class="hlc-selectable-row" data-spd-row data-bank="iob" data-bank-type="Public" aria-selected="false">
                           <td class="hlc-sticky-col">
@@ -749,10 +778,10 @@
                               </div>
                             </div>
                           </td>
-                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.25%</span></td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-rank-wrap"><span class="hlc-rank-figure"><span class="hlc-cell-value hlc-rank-num hlc-rank-num--helpful">7.25%</span></span><span class="hlc-rank-pills"><span class="hlc-rank-pill hlc-rank-pill--helpful">Lowest</span></span></span></td>
                           <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
                           <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
-                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹39,519</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-rank-wrap"><span class="hlc-rank-figure"><span class="hlc-cell-value hlc-rank-num hlc-rank-num--helpful">₹39,519</span></span><span class="hlc-rank-pills"><span class="hlc-rank-pill hlc-rank-pill--helpful">Lowest</span></span></span></td>
                         </tr>
                         <tr class="hlc-selectable-row" data-spd-row data-bank="pnb" data-bank-type="Public" aria-selected="false">
                           <td class="hlc-sticky-col">
@@ -763,10 +792,10 @@
                               </div>
                             </div>
                           </td>
-                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-cell-value">7.25%</span></td>
+                          <td class="hlc-col-num" data-spd-metric="rate"><span class="hlc-rank-wrap"><span class="hlc-rank-figure"><span class="hlc-cell-value hlc-rank-num hlc-rank-num--helpful">7.25%</span></span><span class="hlc-rank-pills"><span class="hlc-rank-pill hlc-rank-pill--helpful">Lowest</span></span></span></td>
                           <td class="hlc-col-num"><span class="hlc-cell-value">₹50,00,000</span></td>
                           <td class="hlc-col-text"><span class="hlc-cell-value">20</span></td>
-                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-cell-value">₹39,519</span></td>
+                          <td class="hlc-col-num" data-spd-metric="emi"><span class="hlc-rank-wrap"><span class="hlc-rank-figure"><span class="hlc-cell-value hlc-rank-num hlc-rank-num--helpful">₹39,519</span></span><span class="hlc-rank-pills"><span class="hlc-rank-pill hlc-rank-pill--helpful">Lowest</span></span></span></td>
                         </tr>
                         <tr class="hlc-selectable-row" data-spd-row data-bank="canara" data-bank-type="Public" aria-selected="false">
                           <td class="hlc-sticky-col">
@@ -1407,7 +1436,7 @@
                 <div class="hlc-charges-note" data-spd-panel="later" id="spd-later-note" hidden>
                   <p class="hlc-charges-note-body">° Usually each rate-type switch. ‡ On overdue amount. ^ Per bounce.</p>
                 </div>
-                <p class="hlc-freshness-note">Last checked on 14 July 2026</p>
+                <p class="hlc-freshness-note" data-spd-freshness hidden>Last checked on 14 July 2026</p>
               </div>
             </div>
           </section>
@@ -1527,6 +1556,6 @@
   </aside>
 
   <script src="../js/hlc-icon-select.js?v=acab712481"></script>
-  <script src="../js/shroffin-product-demo.js?v=78"></script>
+  <script src="../js/shroffin-product-demo.js?v=83"></script>
 </body>
 </html>

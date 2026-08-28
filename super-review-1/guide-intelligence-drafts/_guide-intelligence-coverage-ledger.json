@@ -2,84 +2,21 @@
   "job": "guide-intelligence-draft",
   "pages": [
     {
-      "page_key": "overview",
-      "body_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/content/guide/overview.body.html",
-      "out_file": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/guide-intelligence-drafts/01-overview.md",
-      "cards_expected": ["loan-amount", "emi", "tenure", "rates", "loan-structure", "charges", "project-bank-approval"],
-      "cards_drafted": ["loan-amount", "emi", "tenure", "rates", "loan-structure", "charges", "project-bank-approval"],
-      "confidence_by_card": {
-        "loan-amount": "high",
-        "emi": "high",
-        "tenure": "high",
-        "rates": "high",
-        "loan-structure": "high",
-        "charges": "high",
-        "project-bank-approval": "medium"
-      },
-      "status": "complete"
-    },
-    {
-      "page_key": "documents",
-      "body_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/content/guide/documents.body.html",
-      "out_file": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/guide-intelligence-drafts/02-documents.md",
-      "cards_expected": ["kyc", "income", "property", "other"],
-      "cards_drafted": ["kyc", "income", "property", "other"],
-      "confidence_by_card": {
-        "kyc": "medium",
-        "income": "high",
-        "property": "high",
-        "other": "medium"
-      },
-      "status": "complete"
-    },
-    {
-      "page_key": "tax-benefits",
-      "body_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/content/guide/tax-benefits.body.html",
-      "out_file": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/guide-intelligence-drafts/03-tax-benefits.md",
-      "cards_expected": ["interest", "principal", "under-construction", "joint-loan", "how-to-claim", "other"],
-      "cards_drafted": ["interest", "principal", "under-construction", "joint-loan", "how-to-claim", "other"],
-      "confidence_by_card": {
-        "interest": "high",
-        "principal": "high",
-        "under-construction": "high",
-        "joint-loan": "medium",
-        "how-to-claim": "high",
-        "other": "high"
-      },
-      "status": "complete"
-    },
-    {
-      "page_key": "concessions",
-      "body_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/content/guide/concessions.body.html",
-      "out_file": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/guide-intelligence-drafts/04-concessions.md",
-      "cards_expected": ["bank-rates", "pmay", "fees"],
-      "cards_drafted": ["bank-rates", "pmay", "fees"],
-      "confidence_by_card": {
-        "bank-rates": "high",
-        "pmay": "high",
-        "fees": "high"
-      },
-      "status": "complete"
-    },
-    {
-      "page_key": "insurance-hub",
-      "body_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/content/guide/home-loan-insurance.body.html",
-      "out_file": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/guide-intelligence-drafts/05-home-loan-insurance.md",
-      "cards_expected": ["cover-types", "must-buy", "key-points"],
-      "cards_drafted": ["cover-types", "must-buy", "key-points"],
-      "confidence_by_card": {
-        "cover-types": "high",
-        "must-buy": "high",
-        "key-points": "high"
-      },
-      "status": "complete"
-    },
-    {
       "page_key": "property-cover",
       "body_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/content/guide/property-home-insurance.body.html",
       "out_file": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/guide-intelligence-drafts/06-property-home-insurance.md",
-      "cards_expected": ["coverage", "setup", "pay", "claim"],
-      "cards_drafted": ["coverage", "setup", "pay", "claim"],
+      "cards_expected": [
+        "coverage",
+        "setup",
+        "pay",
+        "claim"
+      ],
+      "cards_drafted": [
+        "coverage",
+        "setup",
+        "pay",
+        "claim"
+      ],
       "confidence_by_card": {
         "coverage": "high",
         "setup": "high",
@@ -92,30 +29,26 @@
       "page_key": "loan-cover",
       "body_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/content/guide/credit-life-insurance.body.html",
       "out_file": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/guide-intelligence-drafts/07-credit-life-insurance.md",
-      "cards_expected": ["coverage", "setup", "pay", "claim", "compare"],
-      "cards_drafted": ["coverage", "setup", "pay", "claim", "compare"],
+      "cards_expected": [
+        "coverage",
+        "setup",
+        "pay",
+        "claim",
+        "compare"
+      ],
+      "cards_drafted": [
+        "coverage",
+        "setup",
+        "pay",
+        "claim",
+        "compare"
+      ],
       "confidence_by_card": {
         "coverage": "high",
         "setup": "high",
         "pay": "high",
         "claim": "high",
         "compare": "medium"
-      },
-      "status": "complete"
-    },
-    {
-      "page_key": "complaints",
-      "body_path": "/home/yash/Projects Etc & aoo/aoo-static-gh/content/guide/complaints.body.html",
-      "out_file": "/home/yash/Projects Etc & aoo/aoo-static-gh/super-review-1/guide-intelligence-drafts/08-complaints.md",
-      "cards_expected": ["path", "talk", "write", "stuck", "limits", "contacts"],
-      "cards_drafted": ["path", "talk", "write", "stuck", "limits", "contacts"],
-      "confidence_by_card": {
-        "path": "high",
-        "talk": "high",
-        "write": "high",
-        "stuck": "high",
-        "limits": "high",
-        "contacts": "high"
       },
       "status": "complete"
     }
@@ -197,26 +130,6 @@
   "cards_marked_confidence_low": [],
   "cards_marked_confidence_medium": [
     {
-      "page_key": "overview",
-      "card_id": "project-bank-approval",
-      "why": "APF speed and fee savings vary by lender and project; no universal rupee band"
-    },
-    {
-      "page_key": "documents",
-      "card_id": "kyc",
-      "why": "Mismatch stalls are standing practice plus page callout; no dedicated co-founder KYC-mismatch recording"
-    },
-    {
-      "page_key": "documents",
-      "card_id": "other",
-      "why": "Processing-fee honesty well sourced; own-contribution/photo/cheque framing mostly page plus standing practice"
-    },
-    {
-      "page_key": "tax-benefits",
-      "card_id": "joint-loan",
-      "why": "Ownership-share claim splits beyond the short on-page rule need professional confirmation"
-    },
-    {
       "page_key": "property-cover",
       "card_id": "pay",
       "why": "Inside-vs-outside loan premium guidance leans on hub/sheet patterns, not a hard page rupee band"
@@ -227,6 +140,6 @@
       "why": "Usually cheaper / health-block framing rests on Guide standing copy, not insurer premium sheet data"
     }
   ],
-  "total_pages": 8,
-  "total_cards": 38
+  "total_pages": 2,
+  "total_cards": 9
 }

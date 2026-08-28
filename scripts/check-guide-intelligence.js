@@ -11,14 +11,8 @@ const ledgerPath = path.join(
 const ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
 
 const PAGE_FILES = {
-  overview: 'content/guide/overview.body.html',
-  documents: 'content/guide/documents.body.html',
-  'tax-benefits': 'content/guide/tax-benefits.body.html',
-  concessions: 'content/guide/concessions.body.html',
-  'insurance-hub': 'content/guide/home-loan-insurance.body.html',
   'property-cover': 'content/guide/property-home-insurance.body.html',
-  'loan-cover': 'content/guide/credit-life-insurance.body.html',
-  complaints: 'content/guide/complaints.body.html'
+  'loan-cover': 'content/guide/credit-life-insurance.body.html'
 };
 
 function sectionIdsInHtml(html) {

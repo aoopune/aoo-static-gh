@@ -106,6 +106,7 @@ Use **Jump to** below to open any line in this file.
 - [Text — If your credit score improves, you can ask the bank to cut your rate …](#t.if_your_credit_score_improves_you_can_ask_the_ba.92)
 - [Text — When the repo rate changes, a floating rate must reset within 3 month…](#t.when_the_repo_rate_changes_a_floating_rate_must_.93)
 - [Text — A newly sanctioned loan can take about 90 days for the first change.](#t.a_newly_sanctioned_loan_can_take_about_90_days_f.94)
+- [Text — All changes are subject to bank approval and applicable fees.](#t.all_changes_are_subject_to_bank_approval_and_ap.197)
 - [Text — What are the types of loan structures?](#t.what_are_the_types_of_loan_structures.95)
 - [Text — A regular term loan or an overdraft (where spare cash reduces interest).](#t.a_regular_term_loan_or_an_overdraft_where_spare_.96)
 - [Text — Regular](#t.regular.97)
@@ -117,6 +118,7 @@ Use **Jump to** below to open any line in this file.
 - [List item — Your EMI stays the same, but more goes toward the principal—paying o…](#t.your_emi_stays_the_same_but_more_goes_toward_th.196)
 - [List item — Overdraft home loans typically carry an interest rate that is 0.15% t…](#t.overdraft_home_loans_typically_carry_an_interest.103)
 - [List item — The overdraft option is only cost-effective if the interest saved by …](#t.the_overdraft_option_is_only_cost_effective_if_t.104)
+- [List item — Lenders may charge non-utilisation fees if you use too little of your…](#t.lenders_may_charge_non_utilisation_fees_if_you_.198)
 - [Text — Rules after you choose a structure](#t.rules_after_you_choose_a_structure.105)
 - [Text — These rules matter when you choose.](#t.these_rules_matter_when_you_choose.106)
 - [Text — You can switch between term loan and overdraft later, if the bank all…](#t.you_can_switch_between_term_loan_and_overdraft_l.107)
@@ -124,6 +126,12 @@ Use **Jump to** below to open any line in this file.
 - [Text — On overdraft, the usable limit may fall over the years (dropline), as…](#t.on_overdraft_the_usable_limit_may_fall_over_the_.109)
 - [Text — What are the charges to get the loan?](#t.what_are_the_charges_to_get_the_loan.110)
 - [Text — You pay bank fees, property checks, and government charges.](#t.you_pay_bank_fees_property_checks_and_government.111)
+- [Text — Only charges listed in the Key Fact Statement (KFS) are enforceable, s…](#t.only_charges_listed_in_the_key_fact_statement_k.199)
+- [Text — As per ](#t.as_per_kfs_note.202)
+- [Text — RBI guidelines Chapter VIII B. (5)](#t.rbi_guidelines_chapter_viii_b_5.203)
+- [Text — Checks are conducted exclusively by the bank, and outside reports pr…](#t.checks_are_conducted_exclusively_by_the_bank_and_.200)
+- [Text — Notes](#t.notes.201)
+- [Text — Insurance and other add-ons are separate from the processing fee.](#t.insurance_and_other_add_ons_are_separate_from_the.204)
 - [Button — Bank fees](#t.bank_fees.112)
 - [Button — Other fees](#t.other_fees.113)
 - [Text — What the lender charges to open and run your case.](#t.what_the_lender_charges_to_open_and_run_your_cas.114)
@@ -307,7 +315,7 @@ How much can you borrow?
 <a id="t.the_bank_takes_the_lower_of_your_property_value_.29"></a>
 
 ## Text — The bank takes the lower of your property value and your income. {#t.the_bank_takes_the_lower_of_your_property_value_.29}
-The bank takes the lower of your property value and your income.
+Max loan amount is the lower of your property value limit or income capacity.
 
 <a id="t.property_value.30"></a>
 
@@ -322,12 +330,12 @@ Income
 <a id="t.1_property_value.32"></a>
 
 ## Subheading — 1. Property value {#t.1_property_value.32}
-1. Property value
+1. Property value limit
 
 <a id="t.the_bank_can_lend_only_up_to_certain_percentages.33"></a>
 
 ## Text — The bank can lend only up to certain percentages of the Agreement Val… {#t.the_bank_can_lend_only_up_to_certain_percentages.33}
-The bank can lend only up to certain percentages of the Agreement Value given below.
+Limited to the percentages of the Agreement Value listed below (as per RBI limits):
 
 <a id="t.up_to_30_lakh_up_to_90.34"></a>
 
@@ -347,32 +355,32 @@ Above ₹75 lakh: up to 75%.
 <a id="t.these_are_rbi_s_highest_limits_what_a_bank_actua.37"></a>
 
 ## Text — These are RBI’s highest limits. What a bank actually offers can be le… {#t.these_are_rbi_s_highest_limits_what_a_bank_actua.37}
-These are RBI’s highest limits. What a bank actually offers can be less or more than a simple estimate, based on your profile and their rules.
+Amount can be more or less depending on your profile and lender rules.
 
 <a id="t.2_income.38"></a>
 
 ## Subheading — 2. Income {#t.2_income.38}
-2. Income
+2. Income capacity
 
 <a id="t.the_bank_can_lend_only_up_to_what_your_monthly_e.39"></a>
 
 ## Text — The bank can lend only up to what your monthly EMI capacity supports,… {#t.the_bank_can_lend_only_up_to_what_your_monthly_e.39}
-The bank can lend only up to what your monthly EMI capacity supports, worked out as below.
+Limited to what your monthly budget can support, calculated as follows:
 
 <a id="t.start_with_monthly_take_home.40"></a>
 
 ## List item — Start with monthly take-home. {#t.start_with_monthly_take_home.40}
-Start with monthly take-home.
+Start with your monthly take-home income.
 
 <a id="t.minus_emis_and_a_share_of_card_limits_what_s_lef.41"></a>
 
 ## List item — Minus EMIs and a share of card limits — what’s left is your EMI capac… {#t.minus_emis_and_a_share_of_card_limits_what_s_lef.41}
-Minus EMIs and a share of card limits — what’s left is your EMI capacity. (Total EMIs are max 55%-70% of your take home income)
+Subtract your current EMIs and a portion of your credit card limits (total EMIs can generally use up 55% to 70% of your income).
 
 <a id="t.from_that_emi_rate_and_tenure_the_bank_sets_the_.42"></a>
 
 ## List item — From that EMI, rate, and tenure, the bank sets the loan amount. {#t.from_that_emi_rate_and_tenure_the_bank_sets_the_.42}
-From that EMI, rate, and tenure, the bank sets the loan amount.
+Final loan amount is then calculated using this leftover amount, interest rate, and tenure.
 
 <a id="t.all_emis_are_usually_limited_to_about_55_70_of_t.43"></a>
 
@@ -386,7 +394,7 @@ Estimate your loan amount
 <a id="t.this_figure_is_indicative_only.45"></a>
 
 ## Text — This figure is indicative only. {#t.this_figure_is_indicative_only.45}
-This figure is indicative only.
+Figures are indicative only.
 
 <a id="t.property_agreement_value.46"></a>
 
@@ -436,7 +444,7 @@ Indicative amount
 <a id="t.final_eligibility_depends_on_your_profile.55"></a>
 
 ## Text — Final eligibility depends on your profile. {#t.final_eligibility_depends_on_your_profile.55}
-Final eligibility depends on your profile.
+
 
 <a id="t.how_do_you_repay_the_loan.56"></a>
 
@@ -496,7 +504,7 @@ Indicative EMI
 <a id="t.final_emi_depends_on_the_sanctioned_rate_fees_in.71"></a>
 
 ## Text — Final EMI depends on the sanctioned rate, fees in the loan, and reset… {#t.final_emi_depends_on_the_sanctioned_rate_fees_in.71}
-Final EMI depends on the sanctioned rate, fees in the loan, and reset rules.
+
 
 <a id="t.up_to_what_period_can_you_repay.72"></a>
 
@@ -581,32 +589,37 @@ Rate options after sanction
 <a id="t.these_still_matter_later_so_weigh_them_while_you.89"></a>
 
 ## Text — These still matter later, so weigh them while you choose the rate type. {#t.these_still_matter_later_so_weigh_them_while_you.89}
-These still matter later, so weigh them while you choose the rate type.
+Options you have after taking a loan:
 
 <a id="t.you_can_switch_between_fixed_and_floating_later_.90"></a>
 
 ## Text — You can switch between fixed and floating later, if the bank allows i… {#t.you_can_switch_between_fixed_and_floating_later_.90}
-You can switch between fixed and floating later, if the bank allows it and you pay their switch fee.
+1. Switch between fixed and floating rates.
 
 <a id="t.you_can_also_switch_the_benchmark_the_loan_follo.91"></a>
 
 ## Text — You can also switch the benchmark the loan follows, under the bank’s … {#t.you_can_also_switch_the_benchmark_the_loan_follo.91}
-You can also switch the benchmark the loan follows, under the bank’s rules and fees.
+2. Move to a different benchmark.
 
 <a id="t.if_your_credit_score_improves_you_can_ask_the_ba.92"></a>
 
 ## Text — If your credit score improves, you can ask the bank to cut your rate … {#t.if_your_credit_score_improves_you_can_ask_the_ba.92}
-If your credit score improves, you can ask the bank to cut your rate — they decide, and a fee may apply.
+3. Ask for a rate cut if credit scores improve.
 
 <a id="t.when_the_repo_rate_changes_a_floating_rate_must_.93"></a>
 
 ## Text — When the repo rate changes, a floating rate must reset within 3 month… {#t.when_the_repo_rate_changes_a_floating_rate_must_.93}
-When the repo rate changes, a floating rate must reset within 3 months. Your bank’s reset date sets the exact wait.
+For existing loans, floating rates automatically adjust within three months when the RBI changes the repo rate.
 
 <a id="t.a_newly_sanctioned_loan_can_take_about_90_days_f.94"></a>
 
 ## Text — A newly sanctioned loan can take about 90 days for the first change. {#t.a_newly_sanctioned_loan_can_take_about_90_days_f.94}
-A newly sanctioned loan can take about 90 days for the first change.
+For new loans, if RBI recently changed the rate, it may take up to 90 days to update.
+
+<a id="t.all_changes_are_subject_to_bank_approval_and_ap.197"></a>
+
+## Text — All changes are subject to bank approval and applicable fees. {#t.all_changes_are_subject_to_bank_approval_and_ap.197}
+Note: All changes are subject to bank approval and applicable fees.
 
 <a id="t.what_are_the_types_of_loan_structures.95"></a>
 
@@ -646,7 +659,7 @@ Ideal if you don't leave extra money in the bank for a long time.
 <a id="t.under_a_home_loan_overdraft_facility_idle_funds_.102"></a>
 
 ## Text — Under a home loan overdraft facility, idle funds parked in your linke… {#t.under_a_home_loan_overdraft_facility_idle_funds_.102}
-Extra money in your account reduces your interest, but you can withdraw it anytime.
+Extra money in your account lowers your interest, effectively acting as savings while remaining withdrawable anytime.
 
 <a id="t.your_emi_stays_the_same_but_more_goes_toward_th.196"></a>
 
@@ -662,6 +675,11 @@ The interest rate is 0.15% to 1% higher than on a term loan.
 
 ## List item — The overdraft option is only cost-effective if the interest saved by … {#t.the_overdraft_option_is_only_cost_effective_if_t.104}
 This saves money only if the interest you cut with extra cash is higher than the loan's extra rate.
+
+<a id="t.lenders_may_charge_non_utilisation_fees_if_you_.198"></a>
+
+## List item — Lenders may charge non-utilisation fees if you use too little of your… {#t.lenders_may_charge_non_utilisation_fees_if_you_.198}
+Lenders may charge non-utilisation fees if you use too little of your sanctioned limit.
 
 <a id="t.rules_after_you_choose_a_structure.105"></a>
 
@@ -691,12 +709,42 @@ On overdraft, the usable limit may fall over the years (dropline), as per the le
 <a id="t.what_are_the_charges_to_get_the_loan.110"></a>
 
 ## Text — What are the charges to get the loan? {#t.what_are_the_charges_to_get_the_loan.110}
-What are the charges to get the loan?
+What are the loan charges?
 
 <a id="t.you_pay_bank_fees_property_checks_and_government.111"></a>
 
 ## Text — You pay bank fees, property checks, and government charges. {#t.you_pay_bank_fees_property_checks_and_government.111}
-You pay bank fees, property checks, and government charges.
+Bank fees, property check charges, and government charges.
+
+<a id="t.only_charges_listed_in_the_key_fact_statement_k.199"></a>
+
+## Text — Only charges listed in the Key Fact Statement (KFS) are enforceable, s… {#t.only_charges_listed_in_the_key_fact_statement_k.199}
+, only charges listed in the Key Fact Statement (KFS) are enforceable, so read every line before paying upfront.
+
+<a id="t.as_per_kfs_note.202"></a>
+
+## Text — As per  {#t.as_per_kfs_note.202}
+As per 
+
+<a id="t.rbi_guidelines_chapter_viii_b_5.203"></a>
+
+## Text — RBI guidelines Chapter VIII B. (5) {#t.rbi_guidelines_chapter_viii_b_5.203}
+RBI guidelines Chapter VIII B. (5)
+
+<a id="t.checks_are_conducted_exclusively_by_the_bank_and_.200"></a>
+
+## Text — Checks are conducted exclusively by the bank, and outside reports pr… {#t.checks_are_conducted_exclusively_by_the_bank_and_.200}
+Checks are conducted exclusively by the bank, and outside reports provided by you will not be accepted.
+
+<a id="t.notes.201"></a>
+
+## Text — Notes {#t.notes.201}
+Notes
+
+<a id="t.insurance_and_other_add_ons_are_separate_from_the.204"></a>
+
+## Text — Insurance and other add-ons are separate from the processing fee. {#t.insurance_and_other_add_ons_are_separate_from_the.204}
+Insurance and other add-ons are separate from the processing fee.
 
 <a id="t.bank_fees.112"></a>
 
@@ -711,7 +759,7 @@ Other fees
 <a id="t.what_the_lender_charges_to_open_and_run_your_cas.114"></a>
 
 ## Text — What the lender charges to open and run your case. {#t.what_the_lender_charges_to_open_and_run_your_cas.114}
-What the lender charges to open and run your case.
+Charges to open and manage your loan.
 
 <a id="t.processing_fee.115"></a>
 
@@ -721,6 +769,7 @@ Processing fee
 <a id="t.part_may_be_taken_upfront_as_a_login_fee_the_res.116"></a>
 
 ## Text — Part may be taken upfront as a login fee; the rest at final sanction. {#t.part_may_be_taken_upfront_as_a_login_fee_the_res.116}
+A one-time fee to process and approve your loan.
 Part may be taken upfront as a login fee; the rest at final sanction.
 
 <a id="t.others.117"></a>
@@ -736,7 +785,7 @@ Account handling fees or any other as per lender.
 <a id="t.fees_for_checks_and_for_registering_the_loan_and.119"></a>
 
 ## Text — Fees for checks and for registering the loan and security. {#t.fees_for_checks_and_for_registering_the_loan_and.119}
-Fees for checks and for registering the loan and security.
+Fees to check the property and register the loan and security.
 
 <a id="t.legal_and_technical_fees.120"></a>
 
@@ -746,7 +795,7 @@ Legal and technical fees
 <a id="t.fee_to_check_legal_papers_and_the_property.121"></a>
 
 ## Text — Fee to check legal papers and the property. {#t.fee_to_check_legal_papers_and_the_property.121}
-Fee to check legal papers and the property.
+To check the property and its legal papers.
 
 <a id="t.title_search_report_fees.122"></a>
 
@@ -756,7 +805,7 @@ Title search report fees
 <a id="t.fee_to_check_the_property_title.123"></a>
 
 ## Text — Fee to check the property title. {#t.fee_to_check_the_property_title.123}
-Fee to check the property title.
+To check that the property title is clear and free from encumbrances.
 
 <a id="t.valuation_fees.124"></a>
 
@@ -766,7 +815,7 @@ Valuation fees
 <a id="t.fee_to_value_the_property.125"></a>
 
 ## Text — Fee to value the property. {#t.fee_to_value_the_property.125}
-Fee to value the property.
+To check the property's market value.
 
 <a id="t.government_charges.126"></a>
 
@@ -776,7 +825,7 @@ Government charges
 <a id="t.government_fees_to_register_the_loan_security.127"></a>
 
 ## Text — Government fees to register the loan security. {#t.government_fees_to_register_the_loan_security.127}
-Government fees to register the loan security.
+To register the loan & security.
 
 <a id="t.fee_breakdown.128"></a>
 
@@ -786,7 +835,7 @@ Fee breakdown
 <a id="t.usual_one_time_costs_at_sanction_and_disbursemen.129"></a>
 
 ## Text — Usual one-time costs at sanction and disbursement. Banks may rename o… {#t.usual_one_time_costs_at_sanction_and_disbursemen.129}
-Usual one-time costs at sanction and disbursement. Banks may rename or bundle them.
+One-time fees paid at sanction and disbursement, sometimes bundled or renamed by banks.
 
 <a id="t.lender.130"></a>
 
@@ -796,7 +845,7 @@ Lender
 <a id="t.non_refundable.131"></a>
 
 ## Text — Non-refundable {#t.non_refundable.131}
-Non-refundable
+(Non-refundable)
 
 <a id="t.up_to_2_3.132"></a>
 
@@ -1000,7 +1049,7 @@ EMI
 <a id="t.an_earning_co_applicant_can_raise_the_loan_amoun.176"></a>
 
 ## text {#t.an_earning_co_applicant_can_raise_the_loan_amoun.176}
-An earning co-applicant can raise the loan amount.
+Adding an earning co-applicant in the loan increases the loan amount.
 
 <a id="t.by_agreement_value.177"></a>
 
@@ -1080,12 +1129,12 @@ See rules after you choose a facility
 <a id="t.only_in_maharashtra_differs_from_state_to_state_.192"></a>
 
 ## text {#t.only_in_maharashtra_differs_from_state_to_state_.192}
-# Only in Maharashtra. Differs from state to state as per state laws.
+# Applicable only in Maharashtra, as stamp duty and registration laws vary by state.
 
 <a id="t.figures_above_are_typical_industry_averages_exac.193"></a>
 
 ## text {#t.figures_above_are_typical_industry_averages_exac.193}
-Figures above are typical industry averages. Exact fees may differ by lender and as per your profile.
+These are average figures, so your exact fees depend on your profile.
 
 <a id="t.find_banks_that_already_approve_your_project.194"></a>
 

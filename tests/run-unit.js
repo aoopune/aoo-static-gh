@@ -3182,38 +3182,19 @@ function testGuideIntelligence() {
   var data = dataMatch ? JSON.parse(dataMatch[1]) : {};
 
   var pageKeys = Object.keys(data);
-  ok(pageKeys.length === 8, 'GI-03 eight page keys in generated data');
+  ok(pageKeys.length === 2, 'GI-03 two page keys in generated data');
 
   var total = 0;
   pageKeys.forEach(function (pk) {
     total += Object.keys(data[pk]).length;
   });
-  ok(total === 38, 'GI-04 thirty-eight section entries total');
+  ok(total === 9, 'GI-04 nine section entries total');
 
   ok(
-    data.documents &&
-      data.documents.other &&
-      Array.isArray(data.documents.other.bulletsHtml) &&
-      data.documents.other.bulletsHtml.length === 2,
-    'GI-05 documents#other has bulletsHtml with RBI link'
-  );
-  ok(
-    data.documents.other.bulletsHtml[1].indexOf('guide-section-link') !== -1,
-    'GI-06 RBI bullet uses guide-section-link'
-  );
-
-  ok(
-    data.overview &&
-      data.overview.emi &&
-      data.overview.emi.bullets.length === 2,
-    'GI-07 EMI card has two grouped bullets'
-  );
-
-  ok(
-    data['tax-benefits'] &&
-      data['tax-benefits'].interest &&
-      data['tax-benefits'].interest.bullets.length === 3,
-    'GI-08 tax interest card has three bullets'
+    data['loan-cover'] &&
+      data['loan-cover'].compare &&
+      data['loan-cover'].compare.bullets.length === 2,
+    'GI-05 loan-cover compare card has two bullets'
   );
 
   var intelUi = require('../js/shroffin-guide-intelligence.js');
@@ -3221,7 +3202,7 @@ function testGuideIntelligence() {
   ok(intelUi.escapeSectionId('loan-amount') === 'loan-amount', 'GI-09b escapeSectionId passes simple ids');
 
   var ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
-  ok(ledger.choices.length === 38, 'GI-11 ledger still has 38 choices');
+  ok(ledger.choices.length === 9, 'GI-11 ledger still has 9 choices');
 }
 
 // ─── Intelligence layer tests (T01–T20) ───────────────────────────────────────

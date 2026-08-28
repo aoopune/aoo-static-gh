@@ -2,14 +2,8 @@
   "use strict";
 
   var GUIDE_PAGE_KEY = {
-    "guide.html": "overview",
-    "guide-documents.html": "documents",
-    "tax-benefits.html": "tax-benefits",
-    "concessions.html": "concessions",
-    "home-loan-insurance.html": "insurance-hub",
     "property-home-insurance.html": "property-cover",
-    "credit-life-insurance.html": "loan-cover",
-    "home-loan-complaints.html": "complaints"
+    "credit-life-insurance.html": "loan-cover"
   };
 
   var dialog = null;

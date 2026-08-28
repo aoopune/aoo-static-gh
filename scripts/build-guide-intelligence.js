@@ -14,8 +14,10 @@ const outPath = path.join(root, 'js/guide-intelligence.generated.js');
 const ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
 const byPage = Object.create(null);
 
-if (!Array.isArray(ledger.choices) || ledger.choices.length !== 38) {
-  console.error('Expected 38 choices in ledger, got ' + (ledger.choices && ledger.choices.length));
+if (!Array.isArray(ledger.choices) || ledger.choices.length !== ledger.total_cards) {
+  console.error(
+    'Expected ' + ledger.total_cards + ' choices in ledger, got ' + (ledger.choices && ledger.choices.length)
+  );
   process.exit(1);
 }
 

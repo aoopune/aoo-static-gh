@@ -45,10 +45,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — Lenders ask so the outstanding loan can still be paid if the borrower…](#t.lenders_ask_so_the_outstanding_loan_can_still_be.19)
 - [Text — Must you buy insurance?](#t.must_you_buy_insurance.20)
 - [Text — Property cover is often required. Loan cover is usually optional.](#t.property_cover_is_often_required_loan_cover_is_u.21)
-- [Text — Property cover](#t.property_cover.22)
-- [Text — Often written into the loan agreement while the loan runs.](#t.often_written_into_the_loan_agreement_while_the_.23)
-- [Text — Loan cover](#t.loan_cover.24)
-- [Text — An existing term plan can often be used instead.](#t.an_existing_term_plan_can_often_be_used_instead.25)
 - [Text — For both, you can usually choose the insurer — including one outside …](#t.for_both_you_can_usually_choose_the_insurer_incl.26)
 - [Text — (opens official RBI page)](#t.opens_official_rbi_page.27)
 - [<strong> text](#t.corporate_agency.28)
@@ -66,11 +62,10 @@ Use **Jump to** below to open any line in this file.
 - [Text — Cover often stops with the loan, and you may get only some of the pre…](#t.cover_often_stops_with_the_loan_and_you_may_get_.40)
 - [Text — Term plan instead of loan cover](#t.term_plan_instead_of_loan_cover.41)
 - [Text — Often cheaper than bank loan cover for the same job.](#t.often_cheaper_than_bank_loan_cover_for_the_same_.42)
-- [Link — See loan cover](#t.see_loan_cover.43)
 - [text](#t.two_covers_often_sit.45)
 - [text](#t.with_the_home_loan.46)
 - [text](#t.see_property_cover.47)
-- [text](#t.usually_optional.48)
+- [text](#t.see_loan_cover.48)
 - [text](#t.as_per_rbi_insurance_is_voluntary_banks_cannot_f.49)
 - [text](#t.official_wording_from.50)
 - [text](#t.rbi_master_directions.51)
@@ -81,8 +76,6 @@ Use **Jump to** below to open any line in this file.
 - [text](#t.purchase_is.56)
 - [text](#t.and_is.57)
 - [text](#t.from_the_bank.58)
-- [text](#t.pay_it_separately_and_you_avoid_that_interest.59)
-- [text](#t.to_compare.60)
 
 <a id="t.overview.2"></a>
 
@@ -147,32 +140,32 @@ Before you buy
 <a id="t.what_does_property_cover_pay_for.14"></a>
 
 ## Text — What does property cover pay for? {#t.what_does_property_cover_pay_for.14}
-What does property cover pay for?
+Home insurance
 
 <a id="t.property_cover_pays_to_repair_or_rebuild_after_l.15"></a>
 
 ## Text — Property cover pays to repair or rebuild after listed damage. {#t.property_cover_pays_to_repair_or_rebuild_after_l.15}
-Property cover pays to repair or rebuild after listed damage.
+Repairs or rebuilds the home after specified damage occurs.
 
 <a id="t.lenders_ask_so_fire_or_flood_does_not_wipe_out_t.16"></a>
 
 ## Text — Lenders ask so fire or flood does not wipe out the house that secures… {#t.lenders_ask_so_fire_or_flood_does_not_wipe_out_t.16}
-Lenders ask so fire or flood does not wipe out the house that secures the loan.
+Lenders require it so disasters like fire or floods do not destroy the house that secures the loan.
 
 <a id="t.what_does_loan_cover_pay_for.17"></a>
 
 ## Text — What does loan cover pay for? {#t.what_does_loan_cover_pay_for.17}
-What does loan cover pay for?
+Loan insurance
 
 <a id="t.loan_cover_pays_toward_the_outstanding_home_loan.18"></a>
 
 ## Text — Loan cover pays toward the outstanding home loan. {#t.loan_cover_pays_toward_the_outstanding_home_loan.18}
-Loan cover pays toward the outstanding home loan.
+Pays off the outstanding home loan balance.
 
 <a id="t.lenders_ask_so_the_outstanding_loan_can_still_be.19"></a>
 
 ## Text — Lenders ask so the outstanding loan can still be paid if the borrower… {#t.lenders_ask_so_the_outstanding_loan_can_still_be.19}
-Lenders ask so the outstanding loan can still be paid if the borrower named on the cover dies.
+Lenders require it so the outstanding loan is paid off if the borrower dies.
 
 <a id="t.must_you_buy_insurance.20"></a>
 
@@ -182,32 +175,12 @@ Must you buy insurance?
 <a id="t.property_cover_is_often_required_loan_cover_is_u.21"></a>
 
 ## Text — Property cover is often required. Loan cover is usually optional. {#t.property_cover_is_often_required_loan_cover_is_u.21}
-Property cover is often required. Loan cover is usually optional.
-
-<a id="t.property_cover.22"></a>
-
-## Text — Property cover {#t.property_cover.22}
-Property cover
-
-<a id="t.often_written_into_the_loan_agreement_while_the_.23"></a>
-
-## Text — Often written into the loan agreement while the loan runs. {#t.often_written_into_the_loan_agreement_while_the_.23}
-Often written into the loan agreement while the loan runs.
-
-<a id="t.loan_cover.24"></a>
-
-## Text — Loan cover {#t.loan_cover.24}
-Loan cover
-
-<a id="t.an_existing_term_plan_can_often_be_used_instead.25"></a>
-
-## Text — An existing term plan can often be used instead. {#t.an_existing_term_plan_can_often_be_used_instead.25}
-An existing term plan can often be used instead.
+Home insurance is usually required, while loan insurance is optional.
 
 <a id="t.for_both_you_can_usually_choose_the_insurer_incl.26"></a>
 
 ## Text — For both, you can usually choose the insurer — including one outside … {#t.for_both_you_can_usually_choose_the_insurer_incl.26}
-For both, you can usually choose the insurer — including one outside the bank’s partner list.
+Any insurance provider can be chosen for both, even outside the bank's partner list.
 
 <a id="t.opens_official_rbi_page.27"></a>
 
@@ -262,62 +235,57 @@ Check the premium added to the loan, the refund policy if you leave early, and t
 <a id="t.premium_inside_the_loan.37"></a>
 
 ## Text — Premium inside the loan {#t.premium_inside_the_loan.37}
-Premium inside the loan
+Loan-bundled premium
 
 <a id="t.if_the_premium_sits_in_the_loan_you_pay_interest.38"></a>
 
 ## Text — If the premium sits in the loan, you pay interest on it too. {#t.if_the_premium_sits_in_the_loan_you_pay_interest.38}
-If the premium sits in the loan, you pay interest on it too.
+Financed into the loan, meaning you pay interest on it. Pay separately to avoid extra interest.
 
 <a id="t.early_close_or_transfer.39"></a>
 
 ## Text — Early close or transfer {#t.early_close_or_transfer.39}
-Early close or transfer
+Early close or balance transfer
 
 <a id="t.cover_often_stops_with_the_loan_and_you_may_get_.40"></a>
 
 ## Text — Cover often stops with the loan, and you may get only some of the pre… {#t.cover_often_stops_with_the_loan_and_you_may_get_.40}
-Cover often stops with the loan, and you may get only some of the premium back, or nothing.
+Coverage often terminates with the loan, yielding a partial refund or nothing.
 
 <a id="t.term_plan_instead_of_loan_cover.41"></a>
 
 ## Text — Term plan instead of loan cover {#t.term_plan_instead_of_loan_cover.41}
-Term plan instead of loan cover
+Term plan alternative
 
 <a id="t.often_cheaper_than_bank_loan_cover_for_the_same_.42"></a>
 
 ## Text — Often cheaper than bank loan cover for the same job. {#t.often_cheaper_than_bank_loan_cover_for_the_same_.42}
-Often cheaper than bank loan cover for the same job.
-
-<a id="t.see_loan_cover.43"></a>
-
-## Link — See loan cover {#t.see_loan_cover.43}
-See loan cover
+Usually cheaper than bank-bundled coverage for the same protection.
 
 <a id="t.two_covers_often_sit.45"></a>
 
 ## text {#t.two_covers_often_sit.45}
-Two covers often sit
+Two insurance covers
 
 <a id="t.with_the_home_loan.46"></a>
 
 ## text {#t.with_the_home_loan.46}
-with the home loan.
+apply to home loan.
 
 <a id="t.see_property_cover.47"></a>
 
 ## text {#t.see_property_cover.47}
-See property cover
+More details
 
-<a id="t.usually_optional.48"></a>
+<a id="t.see_loan_cover.48"></a>
 
-## text {#t.usually_optional.48}
-Usually optional.
+## text {#t.see_loan_cover.48}
+More details
 
 <a id="t.as_per_rbi_insurance_is_voluntary_banks_cannot_f.49"></a>
 
 ## text {#t.as_per_rbi_insurance_is_voluntary_banks_cannot_f.49}
-As per RBI, insurance is voluntary. Banks cannot force their insurer or tie it to the loan.
+As per RBI rules, insurance is voluntary and cannot be forced or linked to your loan.
 
 <a id="t.official_wording_from.50"></a>
 
@@ -363,13 +331,3 @@ and is
 
 ## text {#t.from_the_bank.58}
 from the bank …
-
-<a id="t.pay_it_separately_and_you_avoid_that_interest.59"></a>
-
-## text {#t.pay_it_separately_and_you_avoid_that_interest.59}
-Pay it separately and you avoid that interest.
-
-<a id="t.to_compare.60"></a>
-
-## text {#t.to_compare.60}
-to compare.
