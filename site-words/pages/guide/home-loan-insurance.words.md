@@ -145,7 +145,7 @@ Home insurance
 <a id="t.property_cover_pays_to_repair_or_rebuild_after_l.15"></a>
 
 ## Text — Property cover pays to repair or rebuild after listed damage. {#t.property_cover_pays_to_repair_or_rebuild_after_l.15}
-Repairs or rebuilds the home after specified damage occurs.
+It pays for repairs or rebuilds the home after specified damage occurs.
 
 <a id="t.lenders_ask_so_fire_or_flood_does_not_wipe_out_t.16"></a>
 
@@ -160,7 +160,7 @@ Loan insurance
 <a id="t.loan_cover_pays_toward_the_outstanding_home_loan.18"></a>
 
 ## Text — Loan cover pays toward the outstanding home loan. {#t.loan_cover_pays_toward_the_outstanding_home_loan.18}
-Pays off the outstanding home loan balance.
+It pays off the outstanding home loan.
 
 <a id="t.lenders_ask_so_the_outstanding_loan_can_still_be.19"></a>
 
@@ -230,7 +230,7 @@ What to check before you buy?
 <a id="t.check_the_premium_added_to_the_loan_the_refund_p.36"></a>
 
 ## Text — Check the premium added to the loan, the refund policy if you leave e… {#t.check_the_premium_added_to_the_loan_the_refund_p.36}
-Check the premium added to the loan, the refund policy if you leave early, and term plan vs. loan cover.
+Check the premium added to the loan, the refund policy if you leave early, and skip loan cover if you have a term plan.
 
 <a id="t.premium_inside_the_loan.37"></a>
 

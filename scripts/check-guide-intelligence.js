@@ -11,7 +11,6 @@ const ledgerPath = path.join(
 const ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
 
 const PAGE_FILES = {
-  'property-cover': 'content/guide/property-home-insurance.body.html',
   'loan-cover': 'content/guide/credit-life-insurance.body.html'
 };
 

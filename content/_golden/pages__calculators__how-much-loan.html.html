@@ -293,56 +293,70 @@
             <div class="calc-field-group">
               <h3 class="calc-field-group-title">Property</h3>
               <div class="calc-field">
-                <div class="calc-label-row">
-                  <label class="calc-label" for="price">Agreement Value</label>
-                </div>
-                <div class="calc-input-shell">
+              <label class="calc-field--m3" for="price">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">Agreement Value</span>
+                  </span>
+                  <span class="calc-input-shell">
                   <span class="calc-prefix" aria-hidden="true">₹</span>
-                  <input type="text" class="calc-input" autocomplete="off" id="price" name="price" inputmode="decimal" value="75,00,000">
-                </div>
-                <div class="calc-slider-wrap">
-                  <span class="calc-slider-caption">Or drag to adjust</span>
-                  <input class="calc-range" type="range" name="priceRange" min="500000" max="9999999999" step="50000" value="7500000" aria-label="Agreement Value slider">
-                </div>
-              </div>
+                  <input type="text" class="calc-input" autocomplete="off" id="price" name="price" inputmode="decimal" value="75,00,000" placeholder="75,00,000">
+                </span>
+                </span>
+              </label>
+            </div>
             </div>
             <div class="calc-field-group">
               <h3 class="calc-field-group-title">Income</h3>
               <div class="calc-field-grid">
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="income">Monthly take-home</label>
-                  </div>
-                  <div class="calc-input-shell">
+              <label class="calc-field--m3" for="income">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">Monthly take-home</span>
+                  </span>
+                  <span class="calc-input-shell">
                     <span class="calc-prefix" aria-hidden="true">₹</span>
-                    <input type="text" class="calc-input" autocomplete="off" id="income" name="income" inputmode="decimal" value="1,20,000">
-                  </div>
-                </div>
+                    <input type="text" class="calc-input" autocomplete="off" id="income" name="income" inputmode="decimal" value="1,20,000" placeholder="1,20,000">
+                  </span>
+                </span>
+              </label>
+            </div>
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="existingEmis">Existing EMIs</label>
-                  </div>
-                  <div class="calc-input-shell">
+              <label class="calc-field--m3" for="existingEmis">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">Existing EMIs</span>
+                  </span>
+                  <span class="calc-input-shell">
                     <span class="calc-prefix" aria-hidden="true">₹</span>
-                    <input type="text" class="calc-input" autocomplete="off" id="existingEmis" name="existingEmis" inputmode="decimal" value="0">
-                  </div>
+                    <input type="text" class="calc-input" autocomplete="off" id="existingEmis" name="existingEmis" inputmode="decimal" value="0" placeholder="0">
+                  </span>
+                </span>
+              </label>
+            </div>
                 </div>
-              </div>
               <div class="calc-field-grid">
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="cardLimits">Credit card limits</label>
-                  </div>
-                  <div class="calc-input-shell">
+              <label class="calc-field--m3" for="cardLimits">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">Credit card limits</span>
+                  </span>
+                  <span class="calc-input-shell">
                     <span class="calc-prefix" aria-hidden="true">₹</span>
-                    <input type="text" class="calc-input" autocomplete="off" id="cardLimits" name="cardLimits" inputmode="decimal" value="0">
-                  </div>
-                </div>
+                    <input type="text" class="calc-input" autocomplete="off" id="cardLimits" name="cardLimits" inputmode="decimal" value="0" placeholder="0">
+                  </span>
+                </span>
+              </label>
+            </div>
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="foir">FOIR for all EMIs</label>
-                  </div>
-                  <div class="calc-input-shell">
+              <label class="calc-field--m3" for="foir">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">FOIR for all EMIs</span>
+                  </span>
+                  <span class="calc-input-shell">
                     <select class="calc-select" id="foir" name="foir">
                       <option value="50">50%</option>
                       <option value="55" selected>55%</option>
@@ -350,9 +364,11 @@
                       <option value="65">65%</option>
                       <option value="70">70%</option>
                     </select>
-                  </div>
+                  </span>
+                </span>
+              </label>
+            </div>
                 </div>
-              </div>
               <p class="calc-hint">FOIR is Fixed Obligation to Income Ratio. About 10% of credit card limits counts as a monthly load. Same rules as<a href="../guide.html#loan-amount">Loan amount in the Guide</a>.</p>
               <div class="calc-field">
                 <div class="calc-label-row">
@@ -372,65 +388,77 @@
                 <div id="co-applicant-fields" hidden>
                   <div class="calc-field-grid">
                     <div class="calc-field">
-                      <div class="calc-label-row">
-                        <label class="calc-label" for="coIncome">Co-applicant take-home</label>
-                      </div>
-                      <div class="calc-input-shell">
+              <label class="calc-field--m3" for="coIncome">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">Co-applicant take-home</span>
+                  </span>
+                  <span class="calc-input-shell">
                         <span class="calc-prefix" aria-hidden="true">₹</span>
-                        <input type="text" class="calc-input" autocomplete="off" id="coIncome" name="coIncome" inputmode="decimal" value="0">
-                      </div>
-                    </div>
+                        <input type="text" class="calc-input" autocomplete="off" id="coIncome" name="coIncome" inputmode="decimal" value="0" placeholder="0">
+                      </span>
+                </span>
+              </label>
+            </div>
                     <div class="calc-field">
-                      <div class="calc-label-row">
-                        <label class="calc-label" for="coExistingEmis">Co-applicant EMIs</label>
-                      </div>
-                      <div class="calc-input-shell">
+              <label class="calc-field--m3" for="coExistingEmis">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">Co-applicant EMIs</span>
+                  </span>
+                  <span class="calc-input-shell">
                         <span class="calc-prefix" aria-hidden="true">₹</span>
-                        <input type="text" class="calc-input" autocomplete="off" id="coExistingEmis" name="coExistingEmis" inputmode="decimal" value="0">
-                      </div>
-                    </div>
+                        <input type="text" class="calc-input" autocomplete="off" id="coExistingEmis" name="coExistingEmis" inputmode="decimal" value="0" placeholder="0">
+                      </span>
+                </span>
+              </label>
+            </div>
                   </div>
                   <div class="calc-field-grid">
                     <div class="calc-field">
-                      <div class="calc-label-row">
-                        <label class="calc-label" for="coCardLimits">Co-applicant card limits</label>
-                      </div>
-                      <div class="calc-input-shell">
+              <label class="calc-field--m3" for="coCardLimits">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">Co-applicant card limits</span>
+                  </span>
+                  <span class="calc-input-shell">
                         <span class="calc-prefix" aria-hidden="true">₹</span>
-                        <input type="text" class="calc-input" autocomplete="off" id="coCardLimits" name="coCardLimits" inputmode="decimal" value="0">
-                      </div>
-                    </div>
+                        <input type="text" class="calc-input" autocomplete="off" id="coCardLimits" name="coCardLimits" inputmode="decimal" value="0" placeholder="0">
+                      </span>
+                </span>
+              </label>
+            </div>
                   </div>
                 </div>
-              </div>
+                    </div>
             </div>
             <div class="calc-field-group">
               <h3 class="calc-field-group-title">Assumptions</h3>
               <div class="calc-field-grid">
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="rate">Interest rate (% a year)</label>
-                  </div>
-                  <div class="calc-input-shell">
-                    <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
-                  </div>
-                  <div class="calc-slider-wrap">
-                    <span class="calc-slider-caption">Or drag to adjust</span>
-                    <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="Interest rate (% a year) slider">
-                  </div>
-                </div>
+              <label class="calc-field--m3" for="rate">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">Interest rate (% a year)</span>
+                  </span>
+                  <span class="calc-input-shell">
+                    <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain" placeholder="8.5">
+                  </span>
+                </span>
+              </label>
+            </div>
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="years">Tenure (years)</label>
-                  </div>
-                  <div class="calc-input-shell">
-                    <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain">
-                  </div>
-                  <div class="calc-slider-wrap">
-                    <span class="calc-slider-caption">Or drag to adjust</span>
-                    <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="20" aria-label="Tenure (years) slider">
-                  </div>
-                </div>
+              <label class="calc-field--m3" for="years">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">Tenure (years)</span>
+                  </span>
+                  <span class="calc-input-shell">
+                    <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain" placeholder="20">
+                  </span>
+                </span>
+              </label>
+            </div>
               </div>
             </div>
           </form>

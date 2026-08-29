@@ -16,43 +16,43 @@
             <div class="calc-field-group">
               <h3 class="calc-field-group-title">{{SW:t.loan.8}}</h3>
               <div class="calc-field">
-                <div class="calc-label-row">
-                  <label class="calc-label" for="principal">{{SW:t.loan_amount.9}}</label>
-                </div>
-                <div class="calc-input-shell">
+              <label class="calc-field--m3" for="principal">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.loan_amount.9}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                   <span class="calc-prefix" aria-hidden="true">₹</span>
-                  <input type="text" class="calc-input" autocomplete="off" id="principal" name="principal" inputmode="decimal" value="50,00,000">
-                </div>
-                <div class="calc-slider-wrap">
-                  <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
-                  <input class="calc-range" type="range" name="principalRange" min="100000" max="9999999999" step="50000" value="5000000" aria-label="{{SW:t.loan_amount_slider.2}}">
-                </div>
-              </div>
+                  <input type="text" class="calc-input" autocomplete="off" id="principal" name="principal" inputmode="decimal" value="50,00,000" placeholder="50,00,000">
+                </span>
+                </span>
+              </label>
+            </div>
               <div class="calc-field-grid">
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="rate">{{SW:t.interest_rate_a_year.11}}</label>
-                  </div>
-                  <div class="calc-input-shell">
-                    <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
-                  </div>
-                  <div class="calc-slider-wrap">
-                    <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
-                    <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="{{SW:t.interest_rate_a_year_slider.3}}">
-                  </div>
-                </div>
+              <label class="calc-field--m3" for="rate">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.interest_rate_a_year.11}}</span>
+                  </span>
+                  <span class="calc-input-shell">
+                    <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain" placeholder="8.5">
+                  </span>
+                </span>
+              </label>
+            </div>
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="years">{{SW:t.tenure_years.12}}</label>
-                  </div>
-                  <div class="calc-input-shell">
-                    <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain">
-                  </div>
-                  <div class="calc-slider-wrap">
-                    <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
-                    <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="20" aria-label="{{SW:t.tenure_years_slider.4}}">
-                  </div>
-                </div>
+              <label class="calc-field--m3" for="years">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.tenure_years.12}}</span>
+                  </span>
+                  <span class="calc-input-shell">
+                    <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain" placeholder="20">
+                  </span>
+                </span>
+              </label>
+            </div>
               </div>
               <p class="calc-hint">{{SW:t.year_1_interest_and_principal_come_from_a_normal.13}}</p>
             </div>
@@ -134,15 +134,19 @@
             <div class="calc-field-group" data-rupee-wrap>
               <h3 class="calc-field-group-title">{{SW:t.rupee_estimate.27}}</h3>
               <div class="calc-field" data-income-wrap>
-                <div class="calc-label-row">
-                  <label class="calc-label" id="taxable-income-label" for="taxableIncome">{{SW:t.taxable_income_before_these_claims.28}}</label>
-                </div>
-                <div class="calc-input-shell">
+              <label class="calc-field--m3" for="taxableIncome" id="taxable-income-label">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.taxable_income_before_these_claims.28}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                   <span class="calc-prefix" aria-hidden="true">₹</span>
-                  <input type="text" class="calc-input" autocomplete="off" id="taxableIncome" name="taxableIncome" inputmode="decimal" value="15,00,000">
-                </div>
+                  <input type="text" class="calc-input" autocomplete="off" id="taxableIncome" name="taxableIncome" inputmode="decimal" value="15,00,000" placeholder="15,00,000">
+                </span>
+                </span>
+              </label>
                 <p class="calc-hint" id="taxable-income-hint">{{SW:t.after_standard_deduction_and_other_deductions_be.29}}</p>
-              </div>
+            </div>
               <div class="calc-field" data-age-wrap>
                 <div class="calc-label-row"><span class="calc-label" id="age-label">{{SW:t.age_band_old_regime_exemption.30}}</span></div>
                 <div class="calc-choice calc-choice--compact" role="radiogroup" aria-labelledby="age-label">
@@ -162,25 +166,33 @@
                 <p class="calc-hint">{{SW:t.old_regime_basic_exemption_2_5_lakh_3_lakh_5_lak.34}}</p>
               </div>
               <div class="calc-field" data-rent-wrap hidden>
-                <div class="calc-label-row">
-                  <label class="calc-label" for="annualRent">{{SW:t.annual_rent.35}}</label>
-                </div>
-                <div class="calc-input-shell">
+              <label class="calc-field--m3" for="annualRent">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.annual_rent.35}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                   <span class="calc-prefix" aria-hidden="true">₹</span>
-                  <input type="text" class="calc-input" autocomplete="off" id="annualRent" name="annualRent" inputmode="decimal" value="3,00,000">
-                </div>
+                  <input type="text" class="calc-input" autocomplete="off" id="annualRent" name="annualRent" inputmode="decimal" value="3,00,000" placeholder="3,00,000">
+                </span>
+                </span>
+              </label>
                 <p class="calc-hint">{{SW:t.gross_rent_for_the_year_house_property_income_us.36}}</p>
-              </div>
+            </div>
               <div class="calc-field" data-basket-wrap>
-                <div class="calc-label-row">
-                  <label class="calc-label" for="usedBasket">{{SW:t.other_schedule_xv_items_already_used.37}}</label>
-                </div>
-                <div class="calc-input-shell">
+              <label class="calc-field--m3" for="usedBasket">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.other_schedule_xv_items_already_used.37}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                   <span class="calc-prefix" aria-hidden="true">₹</span>
-                  <input type="text" class="calc-input" autocomplete="off" id="usedBasket" name="usedBasket" inputmode="decimal" value="0">
-                </div>
+                  <input type="text" class="calc-input" autocomplete="off" id="usedBasket" name="usedBasket" inputmode="decimal" value="0" placeholder="0">
+                </span>
+                </span>
+              </label>
                 <p class="calc-hint">{{SW:t.shares_a_1_5_lakh_basket_with_epf_life_insurance.81}}<a href="../tax-benefits.html#principal">{{SW:t.principal_repayment.38}}</a>.</p>
-              </div>
+            </div>
             </div>
           </form>
         </section>

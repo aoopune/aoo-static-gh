@@ -78,7 +78,7 @@
   <link rel="apple-touch-icon" href="../../apple-touch-icon.png?v=6">
   <link rel="manifest" href="../../site.webmanifest?v=6">
   <link rel="stylesheet" href="../../css/shroffin-shell.css?v=cdc0259e7a">
-  <link rel="stylesheet" href="../../css/shroffin-calculators.css?v=calc-cast-19">
+  <link rel="stylesheet" href="../../css/shroffin-calculators.css?v=calc-cast-20">
 </head>
 <body class="calc-page calc-page--cast-1">
   <!-- SHROFFIN_NAV_START -->
@@ -291,41 +291,41 @@
           <h2 class="visually-hidden" id="calc-controls-title">Loan inputs</h2>
           <form class="calc-form" data-calc="emi" novalidate>
             <div class="calc-field">
-              <div class="calc-label-row">
-                <label class="calc-label" for="principal">Loan amount</label>
-              </div>
-              <div class="calc-input-shell">
+              <label class="calc-field--m3" for="principal">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">Loan amount</span>
+                  </span>
+                  <span class="calc-input-shell">
                 <span class="calc-prefix" aria-hidden="true">₹</span>
-                <input type="text" class="calc-input" autocomplete="off" id="principal" name="principal" inputmode="decimal" value="50,00,000">
-              </div>
-              <div class="calc-slider-wrap">
-                <span class="calc-slider-caption">Or drag to adjust</span>
-                <input class="calc-range" type="range" name="principalRange" min="100000" max="9999999999" step="50000" value="5000000" aria-label="Loan amount slider">
-              </div>
+                <input type="text" class="calc-input" autocomplete="off" id="principal" name="principal" inputmode="decimal" value="50,00,000" placeholder="50,00,000">
+              </span>
+                </span>
+              </label>
             </div>
             <div class="calc-field">
-              <div class="calc-label-row">
-                <label class="calc-label" for="rate">Interest rate (% a year)</label>
-              </div>
-              <div class="calc-input-shell">
-                <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
-              </div>
-              <div class="calc-slider-wrap">
-                <span class="calc-slider-caption">Or drag to adjust</span>
-                <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="Interest rate (% a year) slider">
-              </div>
+              <label class="calc-field--m3" for="rate">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">Interest rate (% a year)</span>
+                  </span>
+                  <span class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain" placeholder="8.5">
+              </span>
+                </span>
+              </label>
             </div>
             <div class="calc-field">
-              <div class="calc-label-row">
-                <label class="calc-label" for="years">Tenure (years)</label>
-              </div>
-              <div class="calc-input-shell">
-                <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain">
-              </div>
-              <div class="calc-slider-wrap">
-                <span class="calc-slider-caption">Or drag to adjust</span>
-                <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="20" aria-label="Tenure (years) slider">
-              </div>
+              <label class="calc-field--m3" for="years">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">Tenure (years)</span>
+                  </span>
+                  <span class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain" placeholder="20">
+              </span>
+                </span>
+              </label>
             </div>
           </form>
         </section>
@@ -359,7 +359,7 @@
           <h2 class="calc-amort-title" id="amort-title">Amortisation</h2>
           <p class="calc-amort-lead">Year by year first. Open any year to see each month.</p>
           <div id="calc-amort-body"></div>
-        </div>
+            </div>
       </section>
       <section class="calc-assumptions calc-reveal" aria-labelledby="calc-assumptions-title">
         <h2 class="calc-assumptions-title" id="calc-assumptions-title">How this estimate works</h2>
@@ -582,7 +582,7 @@
 
 
   <script src="../../js/shroffin-loan-math.js?v=4"></script>
-  <script src="../../js/shroffin-calculators.js?v=calc-cast-19"></script>
+  <script src="../../js/shroffin-calculators.js?v=calc-cast-20"></script>
   <script src="../../js/shroffin-nav.js?v=guide-top-1"></script>
 </body>
 </html>

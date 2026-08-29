@@ -29,7 +29,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — Does paying extra cut interest enough?](#t.does_paying_extra_cut_interest_enough.6)
 - [Text — Interest saved after any fee.](#t.interest_saved_after_any_fee.7)
 - [Field label — Outstanding principal](#t.outstanding_principal.8)
-- [Text — Or drag to adjust](#t.or_drag_to_adjust.9)
 - [Field label — Interest rate (% a year)](#t.interest_rate_a_year.10)
 - [Field label — Years left](#t.years_left.11)
 - [Field label — Lump sum now](#t.lump_sum_now.12)
@@ -90,11 +89,6 @@ Interest saved after any fee.
 
 ## Field label — Outstanding principal {#t.outstanding_principal.8}
 Outstanding principal
-
-<a id="t.or_drag_to_adjust.9"></a>
-
-## Text — Or drag to adjust {#t.or_drag_to_adjust.9}
-Or drag to adjust
 
 <a id="t.interest_rate_a_year.10"></a>
 

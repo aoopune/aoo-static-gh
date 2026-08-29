@@ -29,7 +29,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — How big a loan fits this EMI?](#t.how_big_a_loan_fits_this_emi.6)
 - [Text — Loan size from the monthly payment you can afford.](#t.loan_size_from_the_monthly_payment_you_can_affor.7)
 - [Field label — Monthly EMI you can pay](#t.monthly_emi_you_can_pay.8)
-- [Text — Or drag to adjust](#t.or_drag_to_adjust.9)
 - [Field label — Interest rate (% a year)](#t.interest_rate_a_year.10)
 - [Field label — Tenure (years)](#t.tenure_years.11)
 - [Heading — Estimate](#t.estimate.12)
@@ -79,11 +78,6 @@ Loan size from the monthly payment you can afford.
 
 ## Field label — Monthly EMI you can pay {#t.monthly_emi_you_can_pay.8}
 Monthly EMI you can pay
-
-<a id="t.or_drag_to_adjust.9"></a>
-
-## Text — Or drag to adjust {#t.or_drag_to_adjust.9}
-Or drag to adjust
 
 <a id="t.interest_rate_a_year.10"></a>
 

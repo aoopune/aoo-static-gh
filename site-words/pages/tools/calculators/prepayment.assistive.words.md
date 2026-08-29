@@ -23,9 +23,6 @@ omitted_by_policy:
 
 - [Screen reader — Breadcrumb](#t.breadcrumb.0)
 - [Screen reader — Loan inputs](#t.loan_inputs.1)
-- [Screen reader — Loan amount slider](#t.loan_amount_slider.2)
-- [Screen reader — Interest rate (% a year) slider](#t.interest_rate_a_year_slider.3)
-- [Screen reader — Years left slider](#t.years_left_slider.4)
 
 <a id="t.breadcrumb.0"></a>
 
@@ -37,17 +34,3 @@ Breadcrumb
 ## Screen reader — Loan inputs {#t.loan_inputs.1}
 Loan inputs
 
-<a id="t.loan_amount_slider.2"></a>
-
-## Screen reader — Loan amount slider {#t.loan_amount_slider.2}
-Loan amount slider
-
-<a id="t.interest_rate_a_year_slider.3"></a>
-
-## Screen reader — Interest rate (% a year) slider {#t.interest_rate_a_year_slider.3}
-Interest rate (% a year) slider
-
-<a id="t.years_left_slider.4"></a>
-
-## Screen reader — Years left slider {#t.years_left_slider.4}
-Years left slider

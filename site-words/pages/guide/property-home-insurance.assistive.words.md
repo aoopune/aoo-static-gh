@@ -23,7 +23,6 @@ omitted_by_policy:
 
 - [Screen reader — Guide](#t.guide.0)
 - [Screen reader — Property cover chapters](#t.property_cover_chapters.1)
-- [Screen reader — What does it pay for](#t.what_does_it_pay_for.2)
 - [Screen reader — How is the cover set up](#t.how_is_the_cover_set_up.3)
 - [Screen reader — How big is the premium](#t.how_big_is_the_premium.4)
 - [Screen reader — What happens after damage](#t.what_happens_after_damage.5)
@@ -37,11 +36,6 @@ Guide
 
 ## Screen reader — Property cover chapters {#t.property_cover_chapters.1}
 Property cover chapters
-
-<a id="t.what_does_it_pay_for.2"></a>
-
-## Screen reader — What does it pay for {#t.what_does_it_pay_for.2}
-What does it pay for
 
 <a id="t.how_is_the_cover_set_up.3"></a>
 

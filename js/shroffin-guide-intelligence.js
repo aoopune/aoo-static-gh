@@ -2,7 +2,6 @@
   "use strict";
 
   var GUIDE_PAGE_KEY = {
-    "property-home-insurance.html": "property-cover",
     "credit-life-insurance.html": "loan-cover"
   };
 

@@ -165,7 +165,7 @@ Exactly one owner per candidate: `shell_promote` | `stack_local` | `themeable_ho
 | ink-soft (`#3a3a3d`) | **shell_promote** | `--shroffin-ink-soft` (≥2 stacks) | E |
 | ghost (`#c5c9cf`) | **shell_promote** | `--shroffin-ghost` | E |
 | guide-card-surface `#f7f7f7` | **stack_local** | `--guide-card-surface` (editorial) | E |
-| calc-paper / calc-hub-surface / calc-line* | **stack_local** | `--calc-*` on `.calc-page` | E |
+| calc-paper / calc-hub-surface / calc-line* / calc-m3-* | **stack_local** | `--calc-*` on `.calc-page`; M3 outline/label alias shell `--shroffin-field-line` / `--shroffin-muted` | E |
 | about note / soft inks | **shell_promote** for shared hexes; about may keep aliases | `--about-*` → shell names in E | E |
 | home stance soft ink | **shell_promote** | `--stance-ink-soft` → `--shroffin-ink-soft` in E | E |
 | home story paints `#1a1a1a`, `#0a0a0a`, light-on-dark `#f5f5f7` | **themeable_home_follow** | Reserve `--home-story-bg`, `--home-story-ink`, `--home-device-stage` (values later) | theme / home follow |

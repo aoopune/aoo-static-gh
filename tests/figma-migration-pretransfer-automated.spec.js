@@ -134,7 +134,7 @@ test.describe('Figma pre-transfer: automated verification (DOM/ARIA)', () => {
   });
 
   test('Guide intelligence dialog opens and closes', async ({ page }) => {
-    await page.goto('/pages/property-home-insurance.html');
+    await page.goto('/pages/credit-life-insurance.html');
 
     await page.waitForSelector('.guide-intel-trigger', { timeout: 15000 });
     await page.locator('.guide-intel-trigger').first().click();

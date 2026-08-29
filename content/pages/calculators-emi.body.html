@@ -14,41 +14,41 @@
           <h2 class="visually-hidden" id="calc-controls-title">{{SW:t.loan_inputs.1}}</h2>
           <form class="calc-form" data-calc="emi" novalidate>
             <div class="calc-field">
-              <div class="calc-label-row">
-                <label class="calc-label" for="principal">{{SW:t.loan_amount.9}}</label>
-              </div>
-              <div class="calc-input-shell">
+              <label class="calc-field--m3" for="principal">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.loan_amount.9}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                 <span class="calc-prefix" aria-hidden="true">₹</span>
-                <input type="text" class="calc-input" autocomplete="off" id="principal" name="principal" inputmode="decimal" value="50,00,000">
-              </div>
-              <div class="calc-slider-wrap">
-                <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
-                <input class="calc-range" type="range" name="principalRange" min="100000" max="9999999999" step="50000" value="5000000" aria-label="{{SW:t.loan_amount_slider.2}}">
-              </div>
+                <input type="text" class="calc-input" autocomplete="off" id="principal" name="principal" inputmode="decimal" value="50,00,000" placeholder="50,00,000">
+              </span>
+                </span>
+              </label>
             </div>
             <div class="calc-field">
-              <div class="calc-label-row">
-                <label class="calc-label" for="rate">{{SW:t.interest_rate_a_year.11}}</label>
-              </div>
-              <div class="calc-input-shell">
-                <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
-              </div>
-              <div class="calc-slider-wrap">
-                <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
-                <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="{{SW:t.interest_rate_a_year_slider.3}}">
-              </div>
+              <label class="calc-field--m3" for="rate">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.interest_rate_a_year.11}}</span>
+                  </span>
+                  <span class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain" placeholder="8.5">
+              </span>
+                </span>
+              </label>
             </div>
             <div class="calc-field">
-              <div class="calc-label-row">
-                <label class="calc-label" for="years">{{SW:t.tenure_years.12}}</label>
-              </div>
-              <div class="calc-input-shell">
-                <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain">
-              </div>
-              <div class="calc-slider-wrap">
-                <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
-                <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="20" aria-label="{{SW:t.tenure_years_slider.4}}">
-              </div>
+              <label class="calc-field--m3" for="years">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.tenure_years.12}}</span>
+                  </span>
+                  <span class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain" placeholder="20">
+              </span>
+                </span>
+              </label>
             </div>
           </form>
         </section>
@@ -82,7 +82,7 @@
           <h2 class="calc-amort-title" id="amort-title">{{SW:t.amortisation.5}}</h2>
           <p class="calc-amort-lead">{{SW:t.year_by_year_first_open_any_year_to_see_each_mon.19}}</p>
           <div id="calc-amort-body"></div>
-        </div>
+            </div>
       </section>
       <section class="calc-assumptions calc-reveal" aria-labelledby="calc-assumptions-title">
         <h2 class="calc-assumptions-title" id="calc-assumptions-title">{{SW:t.how_this_estimate_works.20}}</h2>

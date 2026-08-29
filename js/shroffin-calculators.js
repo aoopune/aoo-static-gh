@@ -7,8 +7,6 @@
   var MathLib = window.ShroffinLoanMath;
   /** No calculator number field may hold more than this many digit characters. */
   var MAX_DIGITS = 10;
-  /** Largest whole number expressible with MAX_DIGITS digits (slider ceiling). */
-  var MAX_BY_DIGITS = Math.pow(10, MAX_DIGITS) - 1;
   /** Interest rate fields: at most this many digits after the decimal. */
   var RATE_DECIMALS = 2;
   /** Tenure / years fields: at most this many digit characters. */
@@ -231,54 +229,6 @@
     }
   }
 
-  function syncRange(numberInput, rangeInput) {
-    if (!numberInput || !rangeInput) return;
-    var money = numberInput.getAttribute("data-format") !== "plain";
-    var rateField = isRateField(numberInput);
-    var tenureField = isTenureField(numberInput);
-    if (money) {
-      var rangeMax = Number(rangeInput.max);
-      if (!Number.isFinite(rangeMax) || rangeMax > MAX_BY_DIGITS) {
-        rangeInput.max = String(MAX_BY_DIGITS);
-      }
-    }
-
-    function fromNumber() {
-      var n = parseMoney(numberInput.value);
-      if (!Number.isFinite(n)) return;
-      if (rateField) {
-        n = Math.round(n * Math.pow(10, RATE_DECIMALS)) / Math.pow(10, RATE_DECIMALS);
-      }
-      if (tenureField) n = parseYears(n);
-      var min = Number(rangeInput.min);
-      var max = Number(rangeInput.max);
-      rangeInput.value = String(Math.min(max, Math.max(min, n)));
-    }
-
-    function formatPlain(n) {
-      if (!Number.isFinite(n)) return "";
-      if (rateField) return formatRate(n);
-      if (tenureField) return String(parseYears(n));
-      var step = Number(rangeInput.step);
-      if (Number.isFinite(step) && step < 1) {
-        var decimals = String(step).includes(".") ? String(step).split(".")[1].length : 0;
-        return Number(n).toFixed(decimals).replace(/\.?0+$/, "") || String(n);
-      }
-      return String(Math.round(n));
-    }
-
-    function fromRange() {
-      var n = Number(rangeInput.value);
-      numberInput.value = money ? n.toLocaleString("en-IN") : formatPlain(n);
-      numberInput.dispatchEvent(new Event("input", { bubbles: true }));
-    }
-
-    numberInput.addEventListener("input", fromNumber);
-    numberInput.addEventListener("blur", fromNumber);
-    rangeInput.addEventListener("input", fromRange);
-    fromNumber();
-  }
-
   function setText(id, text) {
     var el = document.getElementById(id);
     if (el) el.textContent = text;
@@ -431,9 +381,6 @@
     ["principal", "rate", "years"].forEach(function (name) {
       bindMoneyInput(form.elements[name]);
     });
-    syncRange(form.elements.principal, form.elements.principalRange);
-    syncRange(form.elements.rate, form.elements.rateRange);
-    syncRange(form.elements.years, form.elements.yearsRange);
     form.addEventListener("input", run);
     form.addEventListener("change", run);
     if (amortToggle) {
@@ -476,9 +423,6 @@
     ["emi", "rate", "years"].forEach(function (name) {
       bindMoneyInput(form.elements[name]);
     });
-    syncRange(form.elements.emi, form.elements.emiRange);
-    syncRange(form.elements.rate, form.elements.rateRange);
-    syncRange(form.elements.years, form.elements.yearsRange);
     form.addEventListener("input", run);
     run();
   }
@@ -550,9 +494,6 @@
     ].forEach(function (name) {
       if (form.elements[name]) bindMoneyInput(form.elements[name]);
     });
-    syncRange(form.elements.price, form.elements.priceRange);
-    syncRange(form.elements.rate, form.elements.rateRange);
-    syncRange(form.elements.years, form.elements.yearsRange);
     form.addEventListener("input", run);
     form.addEventListener("change", run);
     run();
@@ -625,9 +566,6 @@
     ["principal", "rate", "years", "lumpSum", "extraEmi", "fee"].forEach(function (name) {
       bindMoneyInput(form.elements[name]);
     });
-    syncRange(form.elements.principal, form.elements.principalRange);
-    syncRange(form.elements.rate, form.elements.rateRange);
-    syncRange(form.elements.years, form.elements.yearsRange);
     form.addEventListener("input", run);
     form.addEventListener("change", run);
     run();
@@ -650,10 +588,6 @@
     ["outstanding", "oldRate", "newRate", "yearsLeft", "fees"].forEach(function (name) {
       bindMoneyInput(form.elements[name]);
     });
-    syncRange(form.elements.outstanding, form.elements.outstandingRange);
-    syncRange(form.elements.oldRate, form.elements.oldRateRange);
-    syncRange(form.elements.newRate, form.elements.newRateRange);
-    syncRange(form.elements.yearsLeft, form.elements.yearsLeftRange);
     form.addEventListener("input", run);
     run();
   }
@@ -679,9 +613,6 @@
     ["principal", "rate", "emi"].forEach(function (name) {
       bindMoneyInput(form.elements[name]);
     });
-    syncRange(form.elements.principal, form.elements.principalRange);
-    syncRange(form.elements.rate, form.elements.rateRange);
-    syncRange(form.elements.emi, form.elements.emiRange);
     form.addEventListener("input", run);
     run();
   }
@@ -784,9 +715,6 @@
         if (form.elements[name]) bindMoneyInput(form.elements[name]);
       }
     );
-    syncRange(form.elements.principal, form.elements.principalRange);
-    syncRange(form.elements.rate, form.elements.rateRange);
-    syncRange(form.elements.years, form.elements.yearsRange);
     form.addEventListener("input", run);
     form.addEventListener("change", run);
     run();

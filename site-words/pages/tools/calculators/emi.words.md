@@ -29,7 +29,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — How do you repay the loan?](#t.how_do_you_repay_the_loan.7)
 - [Text — Equated Monthly Instalment (EMI) — interest and principal together.](#t.equated_monthly_instalment_emi_interest_and_prin.8)
 - [Field label — Loan amount](#t.loan_amount.9)
-- [Text — Or drag to adjust](#t.or_drag_to_adjust.10)
 - [Field label — Interest rate (% a year)](#t.interest_rate_a_year.11)
 - [Field label — Tenure (years)](#t.tenure_years.12)
 - [Heading — Estimate](#t.estimate.13)
@@ -81,11 +80,6 @@ Equated Monthly Instalment (EMI) — interest and principal together.
 
 ## Field label — Loan amount {#t.loan_amount.9}
 Loan amount
-
-<a id="t.or_drag_to_adjust.10"></a>
-
-## Text — Or drag to adjust {#t.or_drag_to_adjust.10}
-Or drag to adjust
 
 <a id="t.interest_rate_a_year.11"></a>
 

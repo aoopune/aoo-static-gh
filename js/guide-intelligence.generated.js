@@ -1,31 +1,5 @@
 /* Generated from super-review-1/guide-intelligence-drafts/_guide-intelligence-founder-choices-ledger.json — do not edit. */
 window.ShroffinGuideIntelligence = {
-  "property-cover": {
-    "coverage": {
-      "bullets": [
-        "Property cover pays to rebuild the structure — not the flat's market price if it falls, and not the land underneath. Insure for reconstruction cost, not the headline price you paid the builder."
-      ],
-      "bulletsHtml": null
-    },
-    "setup": {
-      "bullets": [
-        "The cover amount should match rebuild cost — not the bank's loan valuation or the price you paid for flat plus land. Using the wrong number leaves you under-insured without noticing."
-      ],
-      "bulletsHtml": null
-    },
-    "pay": {
-      "bullets": [
-        "Property premium is usually smaller than loan cover — but if it still goes into your loan, you pay interest on it every month. Pay the insurer directly when the bank allows."
-      ],
-      "bulletsHtml": null
-    },
-    "claim": {
-      "bullets": [
-        "If the house is a total loss, the building insurance payout often pays the bank first — up to what you still owe on the loan. Anything left after that comes to you. That is normal when the bank is named on the policy."
-      ],
-      "bulletsHtml": null
-    }
-  },
   "loan-cover": {
     "coverage": {
       "bullets": [

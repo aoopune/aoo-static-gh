@@ -29,7 +29,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — How long to repay at this EMI?](#t.how_long_to_repay_at_this_emi.6)
 - [Text — Years until the loan clears.](#t.years_until_the_loan_clears.7)
 - [Field label — Loan amount](#t.loan_amount.8)
-- [Text — Or drag to adjust](#t.or_drag_to_adjust.9)
 - [Field label — Interest rate (% a year)](#t.interest_rate_a_year.10)
 - [Field label — Monthly EMI](#t.monthly_emi.11)
 - [Text — EMI must be higher than the first month interest or the loan never cl…](#t.emi_must_be_higher_than_the_first_month_interest.12)
@@ -78,11 +77,6 @@ Years until the loan clears.
 
 ## Field label — Loan amount {#t.loan_amount.8}
 Loan amount
-
-<a id="t.or_drag_to_adjust.9"></a>
-
-## Text — Or drag to adjust {#t.or_drag_to_adjust.9}
-Or drag to adjust
 
 <a id="t.interest_rate_a_year.10"></a>
 

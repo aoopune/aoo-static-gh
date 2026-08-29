@@ -14,62 +14,66 @@
           <h2 class="visually-hidden" id="calc-controls-title">{{SW:t.loan_inputs.1}}</h2>
           <form class="calc-form" data-calc="balance-transfer" novalidate>
             <div class="calc-field">
-              <div class="calc-label-row">
-                <label class="calc-label" for="outstanding">{{SW:t.outstanding_principal.9}}</label>
-              </div>
-              <div class="calc-input-shell">
+              <label class="calc-field--m3" for="outstanding">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.outstanding_principal.9}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                 <span class="calc-prefix" aria-hidden="true">₹</span>
-                <input type="text" class="calc-input" autocomplete="off" id="outstanding" name="outstanding" inputmode="decimal" value="35,00,000">
-              </div>
-              <div class="calc-slider-wrap">
-                <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
-                <input class="calc-range" type="range" name="outstandingRange" min="100000" max="9999999999" step="50000" value="3500000" aria-label="{{SW:t.outstanding_balance_slider.2}}">
-              </div>
+                <input type="text" class="calc-input" autocomplete="off" id="outstanding" name="outstanding" inputmode="decimal" value="35,00,000" placeholder="35,00,000">
+              </span>
+                </span>
+              </label>
             </div>
             <div class="calc-field">
-              <div class="calc-label-row">
-                <label class="calc-label" for="oldRate">{{SW:t.current_rate_a_year.11}}</label>
-              </div>
-              <div class="calc-input-shell">
-                <input type="text" class="calc-input" autocomplete="off" id="oldRate" name="oldRate" inputmode="decimal" value="9.0" data-format="plain">
-              </div>
-              <div class="calc-slider-wrap">
-                <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
-                <input class="calc-range" type="range" name="oldRateRange" min="5" max="20" step="0.05" value="9.0" aria-label="{{SW:t.current_rate_a_year_slider.3}}">
-              </div>
+              <label class="calc-field--m3" for="oldRate">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.current_rate_a_year.11}}</span>
+                  </span>
+                  <span class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="oldRate" name="oldRate" inputmode="decimal" value="9.0" data-format="plain" placeholder="9.0">
+              </span>
+                </span>
+              </label>
             </div>
             <div class="calc-field">
-              <div class="calc-label-row">
-                <label class="calc-label" for="newRate">{{SW:t.new_rate_a_year.12}}</label>
-              </div>
-              <div class="calc-input-shell">
-                <input type="text" class="calc-input" autocomplete="off" id="newRate" name="newRate" inputmode="decimal" value="8.4" data-format="plain">
-              </div>
-              <div class="calc-slider-wrap">
-                <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
-                <input class="calc-range" type="range" name="newRateRange" min="5" max="20" step="0.05" value="8.4" aria-label="{{SW:t.new_rate_a_year_slider.4}}">
-              </div>
+              <label class="calc-field--m3" for="newRate">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.new_rate_a_year.12}}</span>
+                  </span>
+                  <span class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="newRate" name="newRate" inputmode="decimal" value="8.4" data-format="plain" placeholder="8.4">
+              </span>
+                </span>
+              </label>
             </div>
             <div class="calc-field">
-              <div class="calc-label-row">
-                <label class="calc-label" for="yearsLeft">{{SW:t.years_left.13}}</label>
-              </div>
-              <div class="calc-input-shell">
-                <input type="text" class="calc-input" autocomplete="off" id="yearsLeft" name="yearsLeft" inputmode="decimal" value="12" data-format="plain">
-              </div>
-              <div class="calc-slider-wrap">
-                <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
-                <input class="calc-range" type="range" name="yearsLeftRange" min="1" max="30" step="1" value="12" aria-label="{{SW:t.years_left_slider.5}}">
-              </div>
+              <label class="calc-field--m3" for="yearsLeft">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.years_left.13}}</span>
+                  </span>
+                  <span class="calc-input-shell">
+                <input type="text" class="calc-input" autocomplete="off" id="yearsLeft" name="yearsLeft" inputmode="decimal" value="12" data-format="plain" placeholder="12">
+              </span>
+                </span>
+              </label>
             </div>
             <div class="calc-field">
-              <div class="calc-label-row">
-                <label class="calc-label" for="fees">{{SW:t.switching_costs.14}}</label>
-              </div>
-              <div class="calc-input-shell">
+              <label class="calc-field--m3" for="fees">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.switching_costs.14}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                 <span class="calc-prefix" aria-hidden="true">₹</span>
-                <input type="text" class="calc-input" autocomplete="off" id="fees" name="fees" inputmode="decimal" value="25,000">
-              </div>
+                <input type="text" class="calc-input" autocomplete="off" id="fees" name="fees" inputmode="decimal" value="25,000" placeholder="25,000">
+              </span>
+                </span>
+              </label>
               <p class="calc-hint">{{SW:t.processing_legal_valuation_and_related_charges_o.15}}</p>
             </div>
           </form>

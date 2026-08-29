@@ -23,9 +23,6 @@ omitted_by_policy:
 
 - [Screen reader — Breadcrumb](#t.breadcrumb.0)
 - [Screen reader — Loan inputs](#t.loan_inputs.1)
-- [Screen reader — Monthly EMI you can pay slider](#t.monthly_emi_you_can_pay_slider.2)
-- [Screen reader — Interest rate (% a year) slider](#t.interest_rate_a_year_slider.3)
-- [Screen reader — Tenure (years) slider](#t.tenure_years_slider.4)
 
 <a id="t.breadcrumb.0"></a>
 
@@ -37,17 +34,3 @@ Breadcrumb
 ## Screen reader — Loan inputs {#t.loan_inputs.1}
 Loan inputs
 
-<a id="t.monthly_emi_you_can_pay_slider.2"></a>
-
-## Screen reader — Monthly EMI you can pay slider {#t.monthly_emi_you_can_pay_slider.2}
-Monthly EMI you can pay slider
-
-<a id="t.interest_rate_a_year_slider.3"></a>
-
-## Screen reader — Interest rate (% a year) slider {#t.interest_rate_a_year_slider.3}
-Interest rate (% a year) slider
-
-<a id="t.tenure_years_slider.4"></a>
-
-## Screen reader — Tenure (years) slider {#t.tenure_years_slider.4}
-Tenure (years) slider

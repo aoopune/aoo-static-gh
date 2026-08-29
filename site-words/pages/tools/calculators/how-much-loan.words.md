@@ -30,7 +30,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — Depends on Property value and income, whichever is lower.](#t.depends_on_property_value_and_income_whichever_i.7)
 - [Subheading — Property](#t.property.8)
 - [Field label — Agreement Value](#t.agreement_value.9)
-- [Text — Or drag to adjust](#t.or_drag_to_adjust.10)
 - [Subheading — Income](#t.income.11)
 - [Field label — Monthly take-home](#t.monthly_take_home.12)
 - [Field label — Existing EMIs](#t.existing_emis.13)
@@ -104,11 +103,6 @@ Property
 
 ## Field label — Agreement Value {#t.agreement_value.9}
 Agreement Value
-
-<a id="t.or_drag_to_adjust.10"></a>
-
-## Text — Or drag to adjust {#t.or_drag_to_adjust.10}
-Or drag to adjust
 
 <a id="t.income.11"></a>
 

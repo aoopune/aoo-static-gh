@@ -16,56 +16,70 @@
             <div class="calc-field-group">
               <h3 class="calc-field-group-title">{{SW:t.property.8}}</h3>
               <div class="calc-field">
-                <div class="calc-label-row">
-                  <label class="calc-label" for="price">{{SW:t.agreement_value.9}}</label>
-                </div>
-                <div class="calc-input-shell">
+              <label class="calc-field--m3" for="price">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.agreement_value.9}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                   <span class="calc-prefix" aria-hidden="true">₹</span>
-                  <input type="text" class="calc-input" autocomplete="off" id="price" name="price" inputmode="decimal" value="75,00,000">
-                </div>
-                <div class="calc-slider-wrap">
-                  <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
-                  <input class="calc-range" type="range" name="priceRange" min="500000" max="9999999999" step="50000" value="7500000" aria-label="{{SW:t.agreement_value_slider.2}}">
-                </div>
-              </div>
+                  <input type="text" class="calc-input" autocomplete="off" id="price" name="price" inputmode="decimal" value="75,00,000" placeholder="75,00,000">
+                </span>
+                </span>
+              </label>
+            </div>
             </div>
             <div class="calc-field-group">
               <h3 class="calc-field-group-title">{{SW:t.income.11}}</h3>
               <div class="calc-field-grid">
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="income">{{SW:t.monthly_take_home.12}}</label>
-                  </div>
-                  <div class="calc-input-shell">
+              <label class="calc-field--m3" for="income">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.monthly_take_home.12}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                     <span class="calc-prefix" aria-hidden="true">₹</span>
-                    <input type="text" class="calc-input" autocomplete="off" id="income" name="income" inputmode="decimal" value="1,20,000">
-                  </div>
-                </div>
+                    <input type="text" class="calc-input" autocomplete="off" id="income" name="income" inputmode="decimal" value="1,20,000" placeholder="1,20,000">
+                  </span>
+                </span>
+              </label>
+            </div>
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="existingEmis">{{SW:t.existing_emis.13}}</label>
-                  </div>
-                  <div class="calc-input-shell">
+              <label class="calc-field--m3" for="existingEmis">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.existing_emis.13}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                     <span class="calc-prefix" aria-hidden="true">₹</span>
-                    <input type="text" class="calc-input" autocomplete="off" id="existingEmis" name="existingEmis" inputmode="decimal" value="0">
-                  </div>
+                    <input type="text" class="calc-input" autocomplete="off" id="existingEmis" name="existingEmis" inputmode="decimal" value="0" placeholder="0">
+                  </span>
+                </span>
+              </label>
+            </div>
                 </div>
-              </div>
               <div class="calc-field-grid">
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="cardLimits">{{SW:t.credit_card_limits.14}}</label>
-                  </div>
-                  <div class="calc-input-shell">
+              <label class="calc-field--m3" for="cardLimits">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.credit_card_limits.14}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                     <span class="calc-prefix" aria-hidden="true">₹</span>
-                    <input type="text" class="calc-input" autocomplete="off" id="cardLimits" name="cardLimits" inputmode="decimal" value="0">
-                  </div>
-                </div>
+                    <input type="text" class="calc-input" autocomplete="off" id="cardLimits" name="cardLimits" inputmode="decimal" value="0" placeholder="0">
+                  </span>
+                </span>
+              </label>
+            </div>
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="foir">{{SW:t.foir_for_all_emis.15}}</label>
-                  </div>
-                  <div class="calc-input-shell">
+              <label class="calc-field--m3" for="foir">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.foir_for_all_emis.15}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                     <select class="calc-select" id="foir" name="foir">
                       <option value="50">50%</option>
                       <option value="55" selected>55%</option>
@@ -73,9 +87,11 @@
                       <option value="65">65%</option>
                       <option value="70">70%</option>
                     </select>
-                  </div>
+                  </span>
+                </span>
+              </label>
+            </div>
                 </div>
-              </div>
               <p class="calc-hint">{{SW:t.foir_is_fixed_obligation_to_income_ratio_about_1.55}}<a href="../guide.html#loan-amount">{{SW:t.loan_amount_in_the_guide.16}}</a>.</p>
               <div class="calc-field">
                 <div class="calc-label-row">
@@ -95,65 +111,77 @@
                 <div id="co-applicant-fields" hidden>
                   <div class="calc-field-grid">
                     <div class="calc-field">
-                      <div class="calc-label-row">
-                        <label class="calc-label" for="coIncome">{{SW:t.co_applicant_take_home.19}}</label>
-                      </div>
-                      <div class="calc-input-shell">
+              <label class="calc-field--m3" for="coIncome">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.co_applicant_take_home.19}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                         <span class="calc-prefix" aria-hidden="true">₹</span>
-                        <input type="text" class="calc-input" autocomplete="off" id="coIncome" name="coIncome" inputmode="decimal" value="0">
-                      </div>
-                    </div>
+                        <input type="text" class="calc-input" autocomplete="off" id="coIncome" name="coIncome" inputmode="decimal" value="0" placeholder="0">
+                      </span>
+                </span>
+              </label>
+            </div>
                     <div class="calc-field">
-                      <div class="calc-label-row">
-                        <label class="calc-label" for="coExistingEmis">{{SW:t.co_applicant_emis.20}}</label>
-                      </div>
-                      <div class="calc-input-shell">
+              <label class="calc-field--m3" for="coExistingEmis">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.co_applicant_emis.20}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                         <span class="calc-prefix" aria-hidden="true">₹</span>
-                        <input type="text" class="calc-input" autocomplete="off" id="coExistingEmis" name="coExistingEmis" inputmode="decimal" value="0">
-                      </div>
-                    </div>
+                        <input type="text" class="calc-input" autocomplete="off" id="coExistingEmis" name="coExistingEmis" inputmode="decimal" value="0" placeholder="0">
+                      </span>
+                </span>
+              </label>
+            </div>
                   </div>
                   <div class="calc-field-grid">
                     <div class="calc-field">
-                      <div class="calc-label-row">
-                        <label class="calc-label" for="coCardLimits">{{SW:t.co_applicant_card_limits.21}}</label>
-                      </div>
-                      <div class="calc-input-shell">
+              <label class="calc-field--m3" for="coCardLimits">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.co_applicant_card_limits.21}}</span>
+                  </span>
+                  <span class="calc-input-shell">
                         <span class="calc-prefix" aria-hidden="true">₹</span>
-                        <input type="text" class="calc-input" autocomplete="off" id="coCardLimits" name="coCardLimits" inputmode="decimal" value="0">
-                      </div>
-                    </div>
+                        <input type="text" class="calc-input" autocomplete="off" id="coCardLimits" name="coCardLimits" inputmode="decimal" value="0" placeholder="0">
+                      </span>
+                </span>
+              </label>
+            </div>
                   </div>
                 </div>
-              </div>
+                    </div>
             </div>
             <div class="calc-field-group">
               <h3 class="calc-field-group-title">{{SW:t.assumptions.22}}</h3>
               <div class="calc-field-grid">
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="rate">{{SW:t.interest_rate_a_year.23}}</label>
-                  </div>
-                  <div class="calc-input-shell">
-                    <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain">
-                  </div>
-                  <div class="calc-slider-wrap">
-                    <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
-                    <input class="calc-range" type="range" name="rateRange" min="5" max="20" step="0.05" value="8.5" aria-label="{{SW:t.interest_rate_a_year_slider.3}}">
-                  </div>
-                </div>
+              <label class="calc-field--m3" for="rate">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.interest_rate_a_year.23}}</span>
+                  </span>
+                  <span class="calc-input-shell">
+                    <input type="text" class="calc-input" autocomplete="off" id="rate" name="rate" inputmode="decimal" value="8.5" data-format="plain" placeholder="8.5">
+                  </span>
+                </span>
+              </label>
+            </div>
                 <div class="calc-field">
-                  <div class="calc-label-row">
-                    <label class="calc-label" for="years">{{SW:t.tenure_years.24}}</label>
-                  </div>
-                  <div class="calc-input-shell">
-                    <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain">
-                  </div>
-                  <div class="calc-slider-wrap">
-                    <span class="calc-slider-caption">{{SW:t.or_drag_to_adjust.10}}</span>
-                    <input class="calc-range" type="range" name="yearsRange" min="1" max="30" step="1" value="20" aria-label="{{SW:t.tenure_years_slider.4}}">
-                  </div>
-                </div>
+              <label class="calc-field--m3" for="years">
+                <span class="calc-field-text-col">
+                  <span class="calc-field-label-line">
+                    <span class="calc-field-label">{{SW:t.tenure_years.24}}</span>
+                  </span>
+                  <span class="calc-input-shell">
+                    <input type="text" class="calc-input" autocomplete="off" id="years" name="years" inputmode="decimal" value="20" data-format="plain" placeholder="20">
+                  </span>
+                </span>
+              </label>
+            </div>
               </div>
             </div>
           </form>

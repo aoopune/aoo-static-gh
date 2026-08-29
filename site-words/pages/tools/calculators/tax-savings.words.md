@@ -30,7 +30,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — First-year interest and principal claims.](#t.first_year_interest_and_principal_claims.7)
 - [Subheading — Loan](#t.loan.8)
 - [Field label — Loan amount](#t.loan_amount.9)
-- [Text — Or drag to adjust](#t.or_drag_to_adjust.10)
 - [Field label — Interest rate (% a year)](#t.interest_rate_a_year.11)
 - [Field label — Tenure (years)](#t.tenure_years.12)
 - [Text — Year 1 interest and principal come from a normal Equated Monthly Inst…](#t.year_1_interest_and_principal_come_from_a_normal.13)
@@ -141,11 +140,6 @@ Loan
 
 ## Field label — Loan amount {#t.loan_amount.9}
 Loan amount
-
-<a id="t.or_drag_to_adjust.10"></a>
-
-## Text — Or drag to adjust {#t.or_drag_to_adjust.10}
-Or drag to adjust
 
 <a id="t.interest_rate_a_year.11"></a>
 

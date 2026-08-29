@@ -3182,13 +3182,13 @@ function testGuideIntelligence() {
   var data = dataMatch ? JSON.parse(dataMatch[1]) : {};
 
   var pageKeys = Object.keys(data);
-  ok(pageKeys.length === 2, 'GI-03 two page keys in generated data');
+  ok(pageKeys.length === 1, 'GI-03 one page key in generated data');
 
   var total = 0;
   pageKeys.forEach(function (pk) {
     total += Object.keys(data[pk]).length;
   });
-  ok(total === 9, 'GI-04 nine section entries total');
+  ok(total === 5, 'GI-04 five section entries total');
 
   ok(
     data['loan-cover'] &&
@@ -3202,7 +3202,7 @@ function testGuideIntelligence() {
   ok(intelUi.escapeSectionId('loan-amount') === 'loan-amount', 'GI-09b escapeSectionId passes simple ids');
 
   var ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
-  ok(ledger.choices.length === 9, 'GI-11 ledger still has 9 choices');
+  ok(ledger.choices.length === 5, 'GI-11 ledger still has 5 choices');
 }
 
 // ─── Intelligence layer tests (T01–T20) ───────────────────────────────────────

@@ -47,7 +47,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — Death of the borrower named on the cover.](#t.death_of_the_borrower_named_on_the_cover.26)
 - [Subheading — Usually not covered](#t.usually_not_covered.27)
 - [Text — Anything not named on your policy papers.](#t.anything_not_named_on_your_policy_papers.28)
-- [Text — The bank may accept assignment of that cover to the loan instead of n…](#t.the_bank_may_accept_assignment_of_that_cover_to_.29)
 - [Text — How is the cover set up?](#t.how_is_the_cover_set_up.30)
 - [Text — The written details are found on your Certificate of Insurance.](#t.the_written_details_are_found_on_your_certificat.31)
 - [Button — What to check](#t.what_to_check.32)
@@ -58,7 +57,7 @@ Use **Jump to** below to open any line in this file.
 - [Text — The home loan named on that certificate must match the loan account.](#t.the_home_loan_named_on_that_certificate_must_mat.37)
 - [Text — How long cover runs](#t.how_long_cover_runs.38)
 - [Text — Should match the loan term.](#t.should_match_the_loan_term.39)
-- [Text — Reducing goes down as the loan is repaid. Level stays the same, and c…](#t.reducing_goes_down_as_the_loan_is_repaid_level_s.40)
+- [Text — Cover amount decreases as you repay the loan. (Used when the loan bal…](#t.reducing_goes_down_as_the_loan_is_repaid_level_s.40)
 - [Text — How big is the premium?](#t.how_big_is_the_premium.41)
 - [Text — It is usually higher than property cover.](#t.it_is_usually_higher_than_property_cover.42)
 - [Button — When you pay](#t.when_you_pay.43)
@@ -66,7 +65,7 @@ Use **Jump to** below to open any line in this file.
 - [Button — Your own policy](#t.your_own_policy.45)
 - [Button — Can I cancel?](#t.can_i_cancel.46)
 - [Button — Taxes](#t.taxes.47)
-- [Text — Most often once at the start, paid outside the loan.](#t.most_often_once_at_the_start_paid_outside_the_lo.48)
+- [Text — Paid once at the start, outside the loan. (Most common)](#t.most_often_once_at_the_start_paid_outside_the_lo.48)
 - [Text — Interest applies on that premium for the remaining tenure, so the sam…](#t.interest_applies_on_that_premium_for_the_remaini.49)
 - [Text — It is not the same as bank-bundled loan cover.](#t.it_is_not_the_same_as_bank_bundled_loan_cover.50)
 - [Text — Many life policies allow a short cancel period after issue.](#t.many_life_policies_allow_a_short_cancel_period_a.51)
@@ -104,12 +103,12 @@ Use **Jump to** below to open any line in this file.
 - [Text — If age or health makes a term plan hard to get, loan cover can be eas…](#t.if_age_or_health_makes_a_term_plan_hard_to_get_l.83)
 - [text](#t.see_what_loan_cover.85)
 - [text](#t.pays_for.86)
-- [text](#t.serious_illness_permanent_disability_or_accident.87)
-- [text](#t.illness_before_the_waiting_period_ends_claims_in.88)
 - [text](#t.already_have_term_insurance.89)
-- [text](#t.a_mismatch_means_no_cover.90)
-- [text](#t.a_few_plans_renew_every_year_instead_that_is_not.91)
 - [text](#t.while_the_house_is_being_built_cover_often_stays.92)
+- [text](#t.reducing_cover.113)
+- [text](#t.level_cover.114)
+- [text](#t.single_premium.115)
+- [text](#t.regular_premium.116)
 - [text](#t.some_plans_take_yearly_or_monthly_payments_inste.93)
 - [text](#t.the_premium_is_added_to_the_loan_principal_and_r.94)
 - [text](#t.needs_clear_consent_buying_stays_voluntary.95)
@@ -214,37 +213,32 @@ The outstanding home loan if the borrower dies.
 <a id="t.covered_or_not.23"></a>
 
 ## Button — Covered or not {#t.covered_or_not.23}
-Covered or not
+Coverage
 
 <a id="t.use_your_term_cover.24"></a>
 
 ## Button — Use your term cover {#t.use_your_term_cover.24}
-Use your term cover
+Using Existing Term Insurance
 
 <a id="t.often_covered.25"></a>
 
 ## Subheading — Often covered {#t.often_covered.25}
-Often covered
+Events Covered
 
 <a id="t.death_of_the_borrower_named_on_the_cover.26"></a>
 
 ## Text — Death of the borrower named on the cover. {#t.death_of_the_borrower_named_on_the_cover.26}
-Death of the borrower named on the cover.
+Death of the borrower named on the policy, along with serious illness, permanent disability, or accidental death if explicitly listed in your documents.
 
 <a id="t.usually_not_covered.27"></a>
 
 ## Subheading — Usually not covered {#t.usually_not_covered.27}
-Usually not covered
+Events Excluded
 
 <a id="t.anything_not_named_on_your_policy_papers.28"></a>
 
 ## Text — Anything not named on your policy papers. {#t.anything_not_named_on_your_policy_papers.28}
-Anything not named on your policy papers.
-
-<a id="t.the_bank_may_accept_assignment_of_that_cover_to_.29"></a>
-
-## Text — The bank may accept assignment of that cover to the loan instead of n… {#t.the_bank_may_accept_assignment_of_that_cover_to_.29}
-The bank may accept assignment of that cover to the loan instead of new loan cover.
+Anything unlisted, illnesses arising before the waiting period ends, or first-year claims that pay out a reduced amount.
 
 <a id="t.how_is_the_cover_set_up.30"></a>
 
@@ -264,7 +258,7 @@ What to check
 <a id="t.cover_goes_down.33"></a>
 
 ## Button — Cover goes down? {#t.cover_goes_down.33}
-Cover goes down?
+Cover type
 
 <a id="t.when_cover_starts.34"></a>
 
@@ -274,32 +268,32 @@ When cover starts
 <a id="t.usually_when_the_loan_is_disbursed_and_the_insur.35"></a>
 
 ## Text — Usually when the loan is disbursed and the insurer has received payment. {#t.usually_when_the_loan_is_disbursed_and_the_insur.35}
-Usually when the loan is disbursed and the insurer has received payment.
+Begins when the loan is disbursed and payment is received.
 
 <a id="t.the_loan.36"></a>
 
 ## Text — The loan {#t.the_loan.36}
-The loan
+Loan Match
 
 <a id="t.the_home_loan_named_on_that_certificate_must_mat.37"></a>
 
 ## Text — The home loan named on that certificate must match the loan account. {#t.the_home_loan_named_on_that_certificate_must_mat.37}
-The home loan named on that certificate must match the loan account.
+The certificate's home loan number must match your loan account or coverage is invalid.
 
 <a id="t.how_long_cover_runs.38"></a>
 
 ## Text — How long cover runs {#t.how_long_cover_runs.38}
-How long cover runs
+Cover Duration
 
 <a id="t.should_match_the_loan_term.39"></a>
 
 ## Text — Should match the loan term. {#t.should_match_the_loan_term.39}
-Should match the loan term.
+Should match your loan term, though some plans require annual renewals instead.
 
 <a id="t.reducing_goes_down_as_the_loan_is_repaid_level_s.40"></a>
 
-## Text — Reducing goes down as the loan is repaid. Level stays the same, and c… {#t.reducing_goes_down_as_the_loan_is_repaid_level_s.40}
-Reducing goes down as the loan is repaid. Level stays the same, and costs more.
+## Text — Cover amount decreases as you repay the loan. (Used when the loan bal… {#t.reducing_goes_down_as_the_loan_is_repaid_level_s.40}
+Cover amount decreases as you repay the loan. (Used when the loan balance decreases over time)
 
 <a id="t.how_big_is_the_premium.41"></a>
 
@@ -314,7 +308,7 @@ It is usually higher than property cover.
 <a id="t.when_you_pay.43"></a>
 
 ## Button — When you pay {#t.when_you_pay.43}
-When you pay
+Payment Frequency
 
 <a id="t.in_the_loan.44"></a>
 
@@ -338,8 +332,8 @@ Taxes
 
 <a id="t.most_often_once_at_the_start_paid_outside_the_lo.48"></a>
 
-## Text — Most often once at the start, paid outside the loan. {#t.most_often_once_at_the_start_paid_outside_the_lo.48}
-Most often once at the start, paid outside the loan.
+## Text — Paid once at the start, outside the loan. (Most common) {#t.most_often_once_at_the_start_paid_outside_the_lo.48}
+Paid once at the start, outside the loan. (Most common)
 
 <a id="t.interest_applies_on_that_premium_for_the_remaini.49"></a>
 
@@ -519,47 +513,47 @@ If age or health makes a term plan hard to get, loan cover can be easier to buy,
 <a id="t.see_what_loan_cover.85"></a>
 
 ## text {#t.see_what_loan_cover.85}
-See what loan cover
+See what loan insurance
 
 <a id="t.pays_for.86"></a>
 
 ## text {#t.pays_for.86}
 pays for.
 
-<a id="t.serious_illness_permanent_disability_or_accident.87"></a>
-
-## text {#t.serious_illness_permanent_disability_or_accident.87}
-Serious illness, permanent disability, or accidental death when those events are named on your policy papers.
-
-<a id="t.illness_before_the_waiting_period_ends_claims_in.88"></a>
-
-## text {#t.illness_before_the_waiting_period_ends_claims_in.88}
-Illness before the waiting period ends. Claims in the first year often pay less than the full amount.
-
 <a id="t.already_have_term_insurance.89"></a>
 
 ## text {#t.already_have_term_insurance.89}
-Already have term insurance?
-
-<a id="t.a_mismatch_means_no_cover.90"></a>
-
-## text {#t.a_mismatch_means_no_cover.90}
-A mismatch means no cover.
-
-<a id="t.a_few_plans_renew_every_year_instead_that_is_not.91"></a>
-
-## text {#t.a_few_plans_renew_every_year_instead_that_is_not.91}
-A few plans renew every year instead. That is not the same as cover matched to the full loan.
+Banks may accept assigning an existing term insurance policy to cover the loan instead of requiring a brand new policy.
 
 <a id="t.while_the_house_is_being_built_cover_often_stays.92"></a>
 
 ## text {#t.while_the_house_is_being_built_cover_often_stays.92}
-While the house is being built, cover often stays flat until EMIs begin.
+Cover amount stays the same, but costs more. (Used during construction before EMIs begin, or for a fixed payout)
+
+<a id="t.reducing_cover.113"></a>
+
+## Subheading — Reducing cover {#t.reducing_cover.113}
+Reducing cover
+
+<a id="t.level_cover.114"></a>
+
+## Subheading — Level cover {#t.level_cover.114}
+Level cover
+
+<a id="t.single_premium.115"></a>
+
+## Subheading — Single Premium {#t.single_premium.115}
+Single Premium
+
+<a id="t.regular_premium.116"></a>
+
+## Subheading — Regular Premium {#t.regular_premium.116}
+Regular Premium
 
 <a id="t.some_plans_take_yearly_or_monthly_payments_inste.93"></a>
 
 ## text {#t.some_plans_take_yearly_or_monthly_payments_inste.93}
-Some plans take yearly or monthly payments instead.
+Paid yearly or monthly instead.
 
 <a id="t.the_premium_is_added_to_the_loan_principal_and_r.94"></a>
 

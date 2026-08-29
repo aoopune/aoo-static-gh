@@ -23,10 +23,6 @@ omitted_by_policy:
 
 - [Screen reader — Breadcrumb](#t.breadcrumb.0)
 - [Screen reader — Loan inputs](#t.loan_inputs.1)
-- [Screen reader — Outstanding balance slider](#t.outstanding_balance_slider.2)
-- [Screen reader — Current rate (% a year) slider](#t.current_rate_a_year_slider.3)
-- [Screen reader — New rate (% a year) slider](#t.new_rate_a_year_slider.4)
-- [Screen reader — Years left slider](#t.years_left_slider.5)
 
 <a id="t.breadcrumb.0"></a>
 
@@ -38,22 +34,3 @@ Breadcrumb
 ## Screen reader — Loan inputs {#t.loan_inputs.1}
 Loan inputs
 
-<a id="t.outstanding_balance_slider.2"></a>
-
-## Screen reader — Outstanding balance slider {#t.outstanding_balance_slider.2}
-Outstanding balance slider
-
-<a id="t.current_rate_a_year_slider.3"></a>
-
-## Screen reader — Current rate (% a year) slider {#t.current_rate_a_year_slider.3}
-Current rate (% a year) slider
-
-<a id="t.new_rate_a_year_slider.4"></a>
-
-## Screen reader — New rate (% a year) slider {#t.new_rate_a_year_slider.4}
-New rate (% a year) slider
-
-<a id="t.years_left_slider.5"></a>
-
-## Screen reader — Years left slider {#t.years_left_slider.5}
-Years left slider

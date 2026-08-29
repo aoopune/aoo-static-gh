@@ -5633,30 +5633,6 @@ a.guide-note-ref:hover {
   }
 
   /*
-   * Property cover (coverage): 3 equal cells — When to insure | What is insured | Covered or not.
-   * Labels wrap so the row stays on one phone width. Desktop unchanged.
-   */
-  .guide-story--property-cover #coverage .guide-chapter-card > .guide-seg {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    overflow-x: visible;
-    min-height: 0;
-  }
-
-  .guide-story--property-cover #coverage .guide-chapter-card > .guide-seg .guide-seg-btn {
-    flex: unset;
-    width: auto;
-    max-width: none;
-    min-width: 0;
-    min-height: var(--shroffin-btn-touch, 44px);
-    min-block-size: var(--shroffin-btn-touch, 44px);
-    font-size: var(--shroffin-type-body);
-    line-height: 1.2;
-    padding: 0 0.4em;
-    white-space: normal;
-  }
-
-  /*
    * Claim after damage (property): 3 equal cells — Claim steps | How payout works | If the bank is named.
    * Labels wrap so the row stays on one phone width. Desktop unchanged.
    */

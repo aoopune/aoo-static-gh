@@ -29,7 +29,6 @@ Use **Jump to** below to open any line in this file.
 - [Text — Is switching banks worth it?](#t.is_switching_banks_worth_it.7)
 - [Text — Interest saved after switch costs.](#t.interest_saved_after_switch_costs.8)
 - [Field label — Outstanding principal](#t.outstanding_principal.9)
-- [Text — Or drag to adjust](#t.or_drag_to_adjust.10)
 - [Field label — Current rate (% a year)](#t.current_rate_a_year.11)
 - [Field label — New rate (% a year)](#t.new_rate_a_year.12)
 - [Field label — Years left](#t.years_left.13)
@@ -83,11 +82,6 @@ Interest saved after switch costs.
 
 ## Field label — Outstanding principal {#t.outstanding_principal.9}
 Outstanding principal
-
-<a id="t.or_drag_to_adjust.10"></a>
-
-## Text — Or drag to adjust {#t.or_drag_to_adjust.10}
-Or drag to adjust
 
 <a id="t.current_rate_a_year.11"></a>
 
